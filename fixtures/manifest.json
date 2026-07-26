@@ -65,8 +65,8 @@
     {
       "category": "actionref-canonical",
       "path": "actionref-canonical/actionref-canonical-fixture-v1.json",
-      "canonical_sha256": "07e894afb085055e3fb779d1be9b228be80f6b60499efc7366b903ad0779f955",
-      "vector_count": 4,
+      "canonical_sha256": "a14490dbb712b58a0d20ba07aa016d938d433c0b0bc27833923d41b235081543",
+      "vector_count": 6,
       "spec_section": "Native action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1)"
     },
     {

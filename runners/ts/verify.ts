@@ -398,13 +398,39 @@ function compareCodePoints(a: string, b: string): number {
 // RFC 8785 (JCS) canonicalization of {agentId, actionType, scopeRequired,
 // timestamp}. Reuses the vendored JCS canonicalizer and the accountability lib's
 // SHA-256 helper; no crypto is reimplemented here.
+// Section 4.1 defines scope_required as a duplicate-free array, so a duplicated
+// array has no canonical form and is rejected rather than deduplicated. The
+// check runs AFTER NFC normalization, so two spellings that collide only under
+// NFC reject as well. Thrown before any digest is computed, so a duplicated
+// array can never present as an action_ref mismatch.
+const DUPLICATE_SCOPE_REQUIRED = 'duplicate_scope_required'
+
+class DuplicateScopeRequiredError extends Error {
+  readonly rejectionKind = DUPLICATE_SCOPE_REQUIRED
+  constructor(message: string) {
+    super(message)
+    this.name = 'DuplicateScopeRequiredError'
+  }
+}
+
 function computeNativeActionRef(input: {
   agentId: string
   actionType: string
   scopeRequired: string[]
   timestamp: string
 }): { actionRef: string; scopeOrder: string[] } {
-  const scopeOrder = input.scopeRequired.map((s) => s.normalize('NFC')).sort(compareCodePoints)
+  const normalized = input.scopeRequired.map((s) => s.normalize('NFC'))
+  const seen = new Set<string>()
+  for (const s of normalized) {
+    if (seen.has(s)) {
+      throw new DuplicateScopeRequiredError(
+        `scope_required contains duplicate elements after NFC normalization ` +
+          `(${DUPLICATE_SCOPE_REQUIRED}): ${JSON.stringify(s)}`,
+      )
+    }
+    seen.add(s)
+  }
+  const scopeOrder = normalized.sort(compareCodePoints)
   const tuple = {
     agentId: input.agentId,
     actionType: input.actionType,
@@ -424,6 +450,23 @@ function verifyActionRefFile(category: string, fixture: string, data: FixtureFil
     const problems: string[] = []
     if (!v.input || !Array.isArray(v.input.scopeRequired)) {
       problems.push('missing input.scopeRequired')
+    } else if (v.expected_verification === false) {
+      // Negative vector: canonicalization MUST reject, and with the declared
+      // rejection_kind. Computing an action_ref at all is the failure.
+      try {
+        const { actionRef } = computeNativeActionRef(v.input)
+        problems.push(
+          `expected rejection ${JSON.stringify(v.rejection_kind)} but canonicalization ` +
+            `succeeded (action_ref ${actionRef.slice(0, 16)}…)`,
+        )
+      } catch (e) {
+        const kind = e instanceof DuplicateScopeRequiredError ? e.rejectionKind : undefined
+        if (kind === undefined) {
+          problems.push(`rejected with an unnamed error: ${JSON.stringify(String(e))}`)
+        } else if (kind !== v.rejection_kind) {
+          problems.push(`rejection_kind mismatch (got ${JSON.stringify(kind)}, expected ${JSON.stringify(v.rejection_kind)})`)
+        }
+      }
     } else {
       const { actionRef, scopeOrder } = computeNativeActionRef(v.input)
       if (typeof v.action_ref !== 'string') {

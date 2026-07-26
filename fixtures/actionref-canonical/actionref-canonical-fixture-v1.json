@@ -70,6 +70,36 @@
         "scope:𐐀"
       ],
       "action_ref": "2adf3d32f65a24aa65f29f595be88fbd91fccbb980e14ea36a2be2f61bdba433"
+    },
+    {
+      "name": "negative-duplicate-scope-raw",
+      "input": {
+        "agentId": "did:aps:zVectorAgent01",
+        "actionType": "document.sign",
+        "scopeRequired": [
+          "repo:write",
+          "repo:write"
+        ],
+        "timestamp": "2026-07-10T00:00:04Z"
+      },
+      "expected_verification": false,
+      "rejection_kind": "duplicate_scope_required",
+      "note": "Section 4.1 defines scope_required as duplicate-free. The array is rejected, never deduplicated: a silent dedupe would map this input and [\"repo:write\"] onto one identity with no error."
+    },
+    {
+      "name": "negative-duplicate-scope-nfc-collision",
+      "input": {
+        "agentId": "did:aps:zVectorAgent01",
+        "actionType": "document.sign",
+        "scopeRequired": [
+          "café:read",
+          "café:read"
+        ],
+        "timestamp": "2026-07-10T00:00:05Z"
+      },
+      "expected_verification": false,
+      "rejection_kind": "duplicate_scope_required",
+      "note": "Distinct code points that collide under NFC (U+00E9 vs e + U+0301). Duplicate detection runs AFTER normalization, so this rejects too."
     }
   ]
 }

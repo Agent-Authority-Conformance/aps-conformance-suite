@@ -1,7 +1,7 @@
 // Fail-before / pass-after test for the fail-loud + wired-vector fix.
 //
 // Verifies two properties the runner used to violate:
-//   1. WIRED ASSERTIONS: the actionref-canonical (4) and bilateral-pair (6)
+//   1. WIRED ASSERTIONS: the actionref-canonical (6) and bilateral-pair (6)
 //      vectors are actually asserted (real pass counts), so the whole suite has
 //      exactly one legitimate, explicitly-declared skip.
 //   2. FAIL LOUD: a vector that carries a corrupted expected value, and a vector
@@ -94,7 +94,7 @@ if (!existsSync(TSX)) {
   const r = runVerify()
   check('real fixtures exit 0', r.code === 0, `exit ${r.code}`)
   const ar = categoryCounts(r.stdout, 'actionref-canonical')
-  check('actionref-canonical asserted (pass=4 fail=0 skip=0)', !!ar && ar.pass === 4 && ar.fail === 0 && ar.skip === 0, JSON.stringify(ar))
+  check('actionref-canonical asserted (pass=6 fail=0 skip=0)', !!ar && ar.pass === 6 && ar.fail === 0 && ar.skip === 0, JSON.stringify(ar))
   const bp = categoryCounts(r.stdout, 'bilateral-pair')
   check('bilateral-pair asserted (pass=6 fail=0 skip=0)', !!bp && bp.pass === 6 && bp.fail === 0 && bp.skip === 0, JSON.stringify(bp))
   const skip = totalSkip(r.stdout)
