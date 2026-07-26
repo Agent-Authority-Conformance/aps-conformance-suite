@@ -1,7 +1,7 @@
 {
   "version": "v1",
-  "spec": "APS accountability-record v0.1. Record shape derived from agent-passport-system (decisionReceipt predicate + execution-envelope field convention + computeActionRef, draft-pidlisnyi-aps-00 §4.1). Canonicalization: JCS RFC 8785. Signature: Ed25519 over the signing input. Inline payload field is `action`; action_digest is over the `action` object.",
-  "spec_ref": "https://datatracker.ietf.org/doc/draft-pidlisnyi-aps-00/",
+  "spec": "APS accountability-record v0.1. Record shape derived from agent-passport-system (decisionReceipt predicate + execution-envelope field convention + computeActionRef, draft-pidlisnyi-aps §4.1). Canonicalization: JCS RFC 8785. Signature: Ed25519 over the signing input. Inline payload field is `action`; action_digest is over the `action` object.",
+  "spec_ref": "https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/",
   "schema": "./accountability-record.schema.json",
   "seed_input": "aps-accountability-record-fixture-v1",
   "seed_sha256_hex": "439ca784bc79c1e481d4ae9d976861383b5cb75c7e6f01f1288ebfa4b4e62753",
