@@ -30,3 +30,24 @@ Scope, restated for the automated corpus: it covers issuer signature validity an
 bounds, and nothing else. It asserts nothing about the bearer agent, its audit history, or APS
 receipt semantics. A run records what was executed against which bytes by which operator at
 which time. It is not a conformance verdict about any implementation.
+
+Corpus repair, 2026-07-29. Three drops had been verified in correspondence and never landed
+here: 2026-06-17, 2026-07-15 and 2026-07-22. All three are reconstructed from the issuer's
+original emails, every token signature-verified before writing, and marked as reconstructed in
+their own schema_note. The issuer's own same-day correction of the 2026-07-29 drop is ingested
+alongside them; it was mailed 57 minutes after the first send and was never run at the time.
+
+One token was repaired. Our local copy of aat-2026-06-24-expired had lost a single character
+from al_nid at our write boundary, which left it parsing cleanly and failing only the signature.
+The issuer's archive copy and his Sent copy were byte-identical to each other and verified, so
+the loss was ours. He resent the bytes and the fixture now carries them.
+
+Two integrity checks exist because of that. Every vector records the length and SHA-256 of its
+compact token string, a convention agreed with the issuer so a transport corruption is one line
+to spot rather than a thread. And al_nid is checked for multicodec well-formedness, which would
+have localised the June loss without any signature verification at all.
+
+Rotation history, stated rather than implied. The pre-expired half is the previous drop's live
+token from 2026-07-01 onward. It is not that at two earlier seams: 2026-06-17 used a freshly
+minted short-lived token, and 2026-06-24 used the live half of a file the issuer's cron wrote
+but never sent. Both are recorded here so neither is rediscovered as a defect.

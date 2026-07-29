@@ -1,0 +1,36 @@
+{
+ "schema": "aat-pair-v1",
+ "schema_note": "two-vector drop. RECONSTRUCTED 2026-07-29 from the email of record; this drop was verified in correspondence on 2026-06-17 but never landed in the corpus.",
+ "provenance": "reconstructed from the issuer's original email of record; never ingested at the time. Every token signature-verified against the live JWKS before writing.",
+ "issuer_jwks": {
+  "url": "https://agentlair.dev/.well-known/jwks.json",
+  "kid": "ab0502f7",
+  "alg": "EdDSA"
+ },
+ "authored_at": "2026-06-17T08:09:12Z",
+ "vectors": [
+  {
+   "id": "aat-2026-06-17-live",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzgxNjg3MjQ4LCJpYXQiOjE3ODE2ODM2NDgsImp0aSI6ImFhdF8xU1AwSnZBSmR6YXR0SzBkIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF8xU1AwSnZBSmR6YXR0SzBkIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NDgsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC44NjI5NDg3MDc0MjQ1NDA0LCJjb21wdXRlZF9hdCI6IjIwMjYtMDYtMTdUMDg6MDc6MjguOTI1WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.VbXA7TJi8BGiF-cj71Z0t7cR9u20AM7m2Q8d3P7oe7j8hXYBepZHNpN2-UzaQsyJB6UB-xcok1IivyxaKyekAw",
+   "notBefore": "2026-06-17T08:07:28Z",
+   "notAfter": "2026-06-17T09:07:28Z",
+   "verification_time": "2026-06-17T08:37:28Z",
+   "expected_result": "valid",
+   "token_len": 870,
+   "token_sha256": "652a6e59fd1ccb3c3893a0f0c1ffa7460ca91930fa95e739bf1554d59a79f16c",
+   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time"
+  },
+  {
+   "id": "aat-2026-06-17-expired",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzgxNjgzNzE3LCJpYXQiOjE3ODE2ODM2NTcsImp0aSI6ImFhdF9zSG9pdVJmTklyZzUyRVZHIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9zSG9pdVJmTklyZzUyRVZHIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NDgsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC44NzIxMzg0MzM2ODA5MTg3LCJjb21wdXRlZF9hdCI6IjIwMjYtMDYtMTdUMDg6MDc6MzcuMjk0WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.3nKlqT1Q5b9raoVZLikdrjXoriZ-BqR87Q0mNAB0zY7Vkxuy394cNoeV2_2FTBqqpi1laNTsb8tN_6FCJPi0Cw",
+   "expiredAt": "2026-06-17T08:08:37Z",
+   "verification_time": "2026-06-17T08:37:28Z",
+   "expected_result": "exp_reject",
+   "expected_failure_stage": "window_check",
+   "expected_reason": "expired before verification time",
+   "token_len": 870,
+   "token_sha256": "66c5e2b49dac9bf9f47895c2a0973cc0d92af615833f7ec6c27f373fabaf0394",
+   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token"
+  }
+ ]
+}

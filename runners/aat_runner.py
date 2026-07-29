@@ -156,6 +156,46 @@ def classify_window(
     return WINDOW_INSIDE
 
 
+_B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
+
+def _b58_decode(s: str) -> bytes:
+    n = 0
+    for ch in s:
+        if ch not in _B58:
+            raise ValueError("bad base58 character")
+        n = n * 58 + _B58.index(ch)
+    out = n.to_bytes((n.bit_length() + 7) // 8, "big")
+    return b"\x00" * (len(s) - len(s.lstrip("1"))) + out
+
+
+def did_key_wellformed(did: str) -> bool:
+    """True when a did:key is a syntactically valid Ed25519 key.
+
+    A single dropped character inside the multibase body still base58-decodes
+    and still parses as JSON, but the multicodec prefix stops being 0xed01.
+    That is exactly what happened to aat-2026-06-24-expired: one lost byte in
+    al_nid, undetectable by every check except the signature, for six weeks.
+    This is the cheap detector that localises it.
+    """
+    if not isinstance(did, str) or not did.startswith("did:key:z"):
+        return False
+    try:
+        raw = _b58_decode(did[len("did:key:z"):])
+    except ValueError:
+        return False
+    return raw[:2] == b"\xed\x01" and len(raw) - 2 == 32
+
+
+def token_fingerprint(token: str) -> dict[str, Any]:
+    """Length plus SHA-256 of the compact token string, the convention agreed
+    with the issuer on 2026-07-29 so a transport corruption is one line to spot."""
+    return {
+        "token_len": len(token),
+        "token_sha256": hashlib.sha256(token.encode("utf-8")).hexdigest(),
+    }
+
+
 _QUARANTINE_CACHE: dict[str, Any] | None = None
 
 
@@ -217,6 +257,21 @@ def evaluate_vector(
         except InvalidSignature:
             signature_ok = False
         record["signature"] = "VALID" if signature_ok else "INVALID"
+
+    # integrity: fingerprint every token, and check the declared one if present
+    fp = token_fingerprint(token)
+    record.update(fp)
+    declared_len = vector.get("token_len")
+    declared_sha = vector.get("token_sha256")
+    if declared_len is not None or declared_sha is not None:
+        record["fingerprint_match"] = (
+            declared_len in (None, fp["token_len"])
+            and declared_sha in (None, fp["token_sha256"])
+        )
+
+    # integrity: al_nid must be a well-formed Ed25519 did:key when present
+    al_nid = payload.get("al_nid")
+    record["al_nid_wellformed"] = did_key_wellformed(al_nid) if al_nid is not None else None
 
     # (b) both window bounds against THIS vector's own verification_time
     verification_time = parse_instant(vector["verification_time"])
@@ -361,6 +416,18 @@ def run_fixture(
             # Any vector whose signature did not verify. Under signature-first
             # precedence such a vector already scores sig_reject, so this list
             # is a second, independent place the anomaly stays visible.
+            # Integrity, independent of signature and window. A malformed
+            # al_nid or a fingerprint mismatch localises a transport corruption
+            # to a field instead of leaving it as an opaque signature failure.
+            "integrity_anomalies": [
+                {
+                    "id": r["id"],
+                    "al_nid_wellformed": r.get("al_nid_wellformed"),
+                    "fingerprint_match": r.get("fingerprint_match"),
+                }
+                for r in records
+                if r.get("al_nid_wellformed") is False or r.get("fingerprint_match") is False
+            ],
             "signature_anomalies": [
                 {"id": r["id"], "signature": r["signature"]}
                 for r in records

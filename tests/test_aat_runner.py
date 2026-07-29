@@ -28,9 +28,13 @@ AS_RECEIVED = FIXTURES / "aat-amdal-2026-07-29-AS-RECEIVED.json"
 CORRECTED = FIXTURES / "aat-amdal-2026-07-29b.json"
 HISTORICAL = [
     FIXTURES / "aat-amdal-2026-06-12.json",
+    FIXTURES / "aat-amdal-2026-06-17.json",
     FIXTURES / "aat-amdal-2026-06-24.json",
     FIXTURES / "aat-amdal-2026-07-01.json",
     FIXTURES / "aat-amdal-2026-07-08.json",
+    FIXTURES / "aat-amdal-2026-07-15.json",
+    FIXTURES / "aat-amdal-2026-07-22.json",
+    FIXTURES / "aat-amdal-2026-07-29-CORRECTED-1006.json",
 ]
 
 
@@ -120,57 +124,96 @@ class TestHistoricalCorpus(unittest.TestCase):
                 )
 
 
-class TestSignatureAnomalyIsPinned(unittest.TestCase):
-    """One historical vector does not verify, and that must stay visible.
+class TestCorpusIntegrity(unittest.TestCase):
+    """The 2026-06-24 repair, and the detector that would have caught it.
 
-    aat-2026-06-24-expired is the only vector in the corpus whose signature
-    fails. Under signature-first precedence it now scores sig_reject against a
-    declared exp_reject, so it no longer matches. The issuer's expectation is
-    correct for the token that was sent; our local copy is corrupt. It is
-    therefore quarantined rather than rescored, and excluded from the pass
-    count until the issuer resends.
+    Our local copy of aat-2026-06-24-expired lost one character from al_nid at
+    the write boundary in June. It still parsed, still decoded, and failed only
+    the signature, so it read as an ordinary expired vector for six weeks. The
+    issuer resent the bytes on 2026-07-29 and the fixture is repaired.
     """
 
-    def test_the_one_known_bad_signature_is_reported(self):
-        result = run(FIXTURES / "aat-amdal-2026-06-24.json")
-        anomalies = result["summary"]["signature_anomalies"]
-        self.assertEqual(len(anomalies), 1, anomalies)
-        self.assertEqual(anomalies[0]["id"], "aat-2026-06-24-expired")
-        self.assertEqual(anomalies[0]["signature"], "INVALID")
-
-    def test_signature_precedence_beats_window(self):
-        """The invariant that hid this vector for six weeks."""
-        result = run(FIXTURES / "aat-amdal-2026-06-24.json")
-        record = next(
-            r for r in result["vectors"] if r["id"] == "aat-2026-06-24-expired"
-        )
-        self.assertEqual(record["signature"], "INVALID")
-        self.assertEqual(record["window"], "EXPIRED")
-        self.assertEqual(record["computed_result"], "sig_reject")
-        self.assertFalse(record["match"])
-
-    def test_that_vector_is_quarantined_not_rescored(self):
-        result = run(FIXTURES / "aat-amdal-2026-06-24.json")
-        record = next(
-            r for r in result["vectors"] if r["id"] == "aat-2026-06-24-expired"
-        )
-        self.assertTrue(record["quarantined"])
-        self.assertEqual(record["quarantine_state"], "local_integrity_anomaly")
-        self.assertEqual(record["quarantine_pending"], "issuer_resend")
-        self.assertEqual(record["expected_result"], "exp_reject")
-
-    def test_quarantine_keeps_it_out_of_the_failure_count(self):
-        result = run(FIXTURES / "aat-amdal-2026-06-24.json")
-        self.assertEqual(result["summary"]["failed"], 0)
-        self.assertEqual(len(result["summary"]["quarantined"]), 1)
-
-    def test_every_other_corpus_vector_verifies(self):
+    def test_no_signature_anomalies_anywhere(self):
         for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
             with self.subTest(fixture=path.name):
                 result = run(path)
-                anomalies = result["summary"]["signature_anomalies"]
-                expected = 1 if path.name == "aat-amdal-2026-06-24.json" else 0
-                self.assertEqual(len(anomalies), expected, anomalies)
+                self.assertEqual(result["summary"]["signature_anomalies"], [])
+
+    def test_no_integrity_anomalies_anywhere(self):
+        for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
+            with self.subTest(fixture=path.name):
+                result = run(path)
+                self.assertEqual(result["summary"]["integrity_anomalies"], [])
+
+    def test_the_repaired_vector_now_verifies(self):
+        result = run(FIXTURES / "aat-amdal-2026-06-24.json")
+        record = next(
+            r for r in result["vectors"] if r["id"] == "aat-2026-06-24-expired"
+        )
+        self.assertEqual(record["signature"], "VALID")
+        self.assertEqual(record["computed_result"], "exp_reject")
+        self.assertTrue(record["match"])
+        self.assertEqual(record["token_len"], 870)
+        self.assertEqual(
+            record["token_sha256"],
+            "560da7b4e38fd0590dc92046f5b69d931c81c9629bff3177e2ddd17102d11bee",
+        )
+
+    def test_the_malformed_al_nid_detector_catches_the_june_corruption(self):
+        """The cheap check that would have localised it without any signature."""
+        import aat_runner
+        good = "did:key:z6MkgRmUXtGdTkXhAcfpoabEyvZEjsdvTnGw6gaX3LcSdhhj"
+        corrupt = "did:key:z6MkgRmUXtGdTkXhAcfpoabEyZEjsdvTnGw6gaX3LcSdhhj"
+        self.assertTrue(aat_runner.did_key_wellformed(good))
+        self.assertFalse(aat_runner.did_key_wellformed(corrupt))
+
+    def test_every_vector_carries_a_declared_fingerprint_that_matches(self):
+        for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
+            with self.subTest(fixture=path.name):
+                result = run(path)
+                for record in result["vectors"]:
+                    self.assertIs(record.get("fingerprint_match"), True, record["id"])
+
+
+class TestReconstructedDrops(unittest.TestCase):
+    """Three drops were verified in correspondence and never ingested."""
+
+    RECONSTRUCTED = [
+        FIXTURES / "aat-amdal-2026-06-17.json",
+        FIXTURES / "aat-amdal-2026-07-15.json",
+        FIXTURES / "aat-amdal-2026-07-22.json",
+    ]
+
+    def test_all_reconstructed_drops_pass(self):
+        for path in self.RECONSTRUCTED:
+            with self.subTest(fixture=path.name):
+                result = run(path)
+                self.assertEqual(result["summary"]["failed"], 0, result["summary"])
+
+    def test_rotation_holds_from_07_01_onward(self):
+        """Two seams broke early. 06-17 and 06-24 are recorded, not hidden."""
+        import json as _json, base64 as _b64
+        def jti(path, vid):
+            with open(path, encoding="utf-8") as fh:
+                d = _json.load(fh)
+            v = [x for x in d["vectors"] if x["id"] == vid][0]
+            pad = lambda t: t + "=" * (-len(t) % 4)
+            return _json.loads(_b64.urlsafe_b64decode(pad(v["aat"].split(".")[1])))["jti"]
+        pairs = [
+            ("aat-amdal-2026-07-01.json", "aat-2026-07-01-expired",
+             "aat-amdal-2026-06-24.json", "aat-2026-06-24-live"),
+            ("aat-amdal-2026-07-08.json", "aat-2026-07-08-expired",
+             "aat-amdal-2026-07-01.json", "aat-2026-07-01-live"),
+            ("aat-amdal-2026-07-15.json", "aat-2026-07-15-expired",
+             "aat-amdal-2026-07-08.json", "aat-2026-07-08-live"),
+            ("aat-amdal-2026-07-22.json", "aat-2026-07-22-expired",
+             "aat-amdal-2026-07-15.json", "aat-2026-07-15-live"),
+            ("aat-amdal-2026-07-29b.json", "aat-2026-07-29b-expired",
+             "aat-amdal-2026-07-22.json", "aat-2026-07-22-live"),
+        ]
+        for ef, ev, lf, lv in pairs:
+            with self.subTest(drop=ef):
+                self.assertEqual(jti(FIXTURES / ef, ev), jti(FIXTURES / lf, lv))
 
 
 class TestUpperBoundOnlyRunnerFailsThisSuite(unittest.TestCase):

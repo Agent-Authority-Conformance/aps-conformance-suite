@@ -1,0 +1,58 @@
+{
+ "schema": "aat-pair-v1",
+ "schema_note": "the issuer's OWN correction of the 09:09 send, mailed 57 minutes later with both live vectors re-minted and the subject already back to pipeline-test. Superseded the same day by the 7b four-vector drop. Ingested 2026-07-29 for completeness; this send was never run at the time.",
+ "provenance": "reconstructed from the issuer's original email of record; never ingested at the time. Every token signature-verified against the live JWKS before writing.",
+ "issuer_jwks": {
+  "url": "https://agentlair.dev/.well-known/jwks.json",
+  "kid": "ab0502f7",
+  "alg": "EdDSA"
+ },
+ "authored_at": "2026-07-29T10:06:49Z",
+ "vectors": [
+  {
+   "id": "aat-2026-07-29-live",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1MzIzMDc2LCJpYXQiOjE3ODUzMTk0NzYsImp0aSI6ImFhdF9qQ201VVl2bkNPdHU2M2xXIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9qQ201VVl2bkNPdHU2M2xXIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTEsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45NjM3MzYyODM2MjUzNTE3LCJjb21wdXRlZF9hdCI6IjIwMjYtMDctMjlUMTA6MDQ6MzcuMzA5WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.5AUkcp9MlUPiNBOxbcHCuCEJ4EMxZwwmyoRaFyZn6vsJMv7TLlcmcxwuKraLRWuiyOBObBh_BK_9ha0vL100Cg",
+   "notBefore": "2026-07-29T10:04:36Z",
+   "notAfter": "2026-07-29T11:04:36Z",
+   "verification_time": "2026-07-29T10:06:49Z",
+   "expected_result": "valid",
+   "token_len": 870,
+   "token_sha256": "ae0b8f81510b4e25f246044c8c55574bb157b765044e205684038e3c4bc7f2eb",
+   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time"
+  },
+  {
+   "id": "aat-2026-07-29-expired",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg0NzE4MTI2LCJpYXQiOjE3ODQ3MTQ1MjYsImp0aSI6ImFhdF9ic1N5YjVLOWdZckNHZWhGIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9ic1N5YjVLOWdZckNHZWhGIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTAsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45NTc3MTAyMjgxNTc5NjYyLCJjb21wdXRlZF9hdCI6IjIwMjYtMDctMjJUMTA6MDI6MDYuMjg3WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.XhpLWlxhJO-L-3EK932MyFWcyoHOvYHso6fO19fNXOWbOoD1bn6L6NgeiPfmcxmLFeB1TTFS3-YiQKvTUFfpCw",
+   "expiredAt": "2026-07-22T11:02:06Z",
+   "verification_time": "2026-07-29T10:06:49Z",
+   "expected_result": "exp_reject",
+   "expected_failure_stage": "window_check",
+   "expected_reason": "expired before verification time",
+   "token_len": 870,
+   "token_sha256": "8691ba5f2fbc9c1e7fe30f11ac82e87fd2b9b5ef019f20d321bf6826586b72ba",
+   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token"
+  },
+  {
+   "id": "aat-2026-07-29-act-binding",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1MzIzMDk0LCJpYXQiOjE3ODUzMTk0OTQsImp0aSI6ImFhdF94WEdBUE1hRm14ZExMem1GIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF94WEdBUE1hRm14ZExMem1GIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJ1cm46ZGFzaGNsYXc6YWN0LWJpbmRpbmciOnsidHlwIjoiYWN0aW9uLWJpbmRpbmcvdjEiLCJoYXNoIjoic2hhMjU2OlRvX0F0Ujd2MHA4aW0zWTY5Q0NGS2FBTlcwQUdQdXNMZ1h1M1ctSjFCelUifSwiYWxfdHJ1c3QiOnsic2NvcmUiOjUyLCJsZXZlbCI6ImludGVybiIsImNvbmZpZGVuY2UiOjAuOTY2NDMwNzc2NzE4NTE3NSwiY29tcHV0ZWRfYXQiOiIyMDI2LTA3LTI5VDEwOjA0OjU0LjY3MloiLCJ0cmVuZCI6InN0YWJsZSJ9LCJhbF9uaWQiOiJkaWQ6a2V5Ono2TWtnUm1VWHRHZFRrWGhBY2Zwb2FiRXl2WkVqc2R2VG5HdzZnYVgzTGNTZGhoaiJ9.RfU6az3fnD2XwrQUAg0RvHHbXlEH614dT_OP663AEDALFkLAXwTrgf8ZOfqXqjPBavvPk7E1il7rzstOouxIDQ",
+   "notBefore": "2026-07-29T10:04:54Z",
+   "notAfter": "2026-07-29T11:04:54Z",
+   "verification_time": "2026-07-29T10:06:49Z",
+   "expected_result": "valid",
+   "token_len": 1023,
+   "token_sha256": "f6fb52b393c057f8ebb6e8c1061677eb31f6acd470a168a2e640177ccc5c6560",
+   "act_binding": {
+    "claim": "urn:dashclaw:act-binding",
+    "typ": "action-binding/v1",
+    "preimage": {
+     "action": "verify",
+     "target": "https://gateway.aeoess.com",
+     "goal": "aps:conformance:act-binding"
+    },
+    "canonicalization": "RFC 8785 JCS. Keys sorted by UTF-16 code unit at serialization time (NOT insertion order); string-only values, NFC-normalized; no whitespace. digest = 'sha256:' + base64url(SHA-256(utf8(JCS(preimage)))).",
+    "hash": "sha256:To_AtR7v0p8im3Y69CCFKaANW0AGPusLgXu3W-J1BzU"
+   },
+   "verifier_must": "validate signature against pinned JWKS and check the window at verification_time; THEN recompute the act-binding digest over the JCS canonicalization of the preimage and confirm it equals the claim hash byte-for-byte"
+  }
+ ]
+}
