@@ -2,6 +2,7 @@
  "schema": "aat-pair-v1",
  "schema_note": "the issuer's OWN correction of the 09:09 send, mailed 57 minutes later with both live vectors re-minted and the subject already back to pipeline-test. Superseded the same day by the 7b four-vector drop. Ingested 2026-07-29 for completeness; this send was never run at the time.",
  "provenance": "reconstructed from the issuer's original email of record; never ingested at the time. Every token signature-verified against the live JWKS before writing.",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",

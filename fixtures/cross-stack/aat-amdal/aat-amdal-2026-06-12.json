@@ -1,12 +1,12 @@
 {
  "schema": "aat-pair-v1",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
   "alg": "EdDSA"
  },
  "authored_at": "2026-06-12T01:08:30Z",
- "note": "Bootstrap pipeline-test pair preceding the 2026-06-17 weekly cadence. Live half expired in transit; see SOURCE.md for the verification_time schema amendment this motivated.",
  "vectors": [
   {
    "id": "aat-2026-06-12-live",
@@ -31,5 +31,6 @@
    "token_len": 870,
    "token_sha256": "fb51e38c2a13b9016c72d5bb66e26b3a64e33bc58d7825ca24065c1a39783485"
   }
- ]
+ ],
+ "note": "Bootstrap pipeline-test pair preceding the 2026-06-17 weekly cadence. Live half expired in transit; see SOURCE.md for the verification_time schema amendment this motivated."
 }

@@ -138,6 +138,22 @@ def fetch_jwks(url: str, timeout: int = 20) -> dict[str, Any]:
     return _JWKS_CACHE[url]
 
 
+def resolve_keys(issuer: dict[str, Any], timeout: int = 20) -> dict[str, Any]:
+    """Return the issuer's keys indexed by kid, from a URL or from the config.
+
+    An issuer may carry `jwks_inline` instead of `jwks_url`. That exists so a
+    synthetic fixture can be verified with no network at all: the regression
+    oracle must not be able to fail because a third party's DNS is down.
+    """
+    inline = issuer.get("jwks_inline")
+    if inline is not None:
+        return {k["kid"]: k for k in inline.get("keys", [])}
+    url = issuer.get("jwks_url")
+    if not url:
+        raise SystemExit("issuer config has neither jwks_url nor jwks_inline")
+    return fetch_jwks(url, timeout=timeout)
+
+
 def classify_window(
     verification_time: datetime.datetime,
     issued_at: datetime.datetime,
@@ -220,7 +236,10 @@ def quarantine_entry(vector_id: str, runners_dir: Path | None = None):
 
 
 def evaluate_vector(
-    vector: dict[str, Any], keys: dict[str, Any], check_lower_bound: bool = True
+    vector: dict[str, Any],
+    keys: dict[str, Any],
+    check_lower_bound: bool = True,
+    convention_declared: bool = False,
 ) -> dict[str, Any]:
     """Evaluate one vector and return its record.
 
@@ -258,12 +277,23 @@ def evaluate_vector(
             signature_ok = False
         record["signature"] = "VALID" if signature_ok else "INVALID"
 
-    # integrity: fingerprint every token, and check the declared one if present
+    # integrity: fingerprint every token, then compare against the declared stamp.
+    #
+    # An earlier version only compared when a stamp was present, so a vector with
+    # no stamp left fingerprint_match unset and the runner reported nothing. The
+    # guard was weakest exactly where an unstamped drop would land. A fixture that
+    # declares integrity_convention now FAILS any vector without a stamp, and a
+    # pre-convention fixture names its unattributable vectors instead of passing
+    # them quietly.
     fp = token_fingerprint(token)
     record.update(fp)
     declared_len = vector.get("token_len")
     declared_sha = vector.get("token_sha256")
-    if declared_len is not None or declared_sha is not None:
+    if declared_len is None and declared_sha is None:
+        record["unattributable"] = True
+        record["fingerprint_match"] = False if convention_declared else None
+    else:
+        record["unattributable"] = False
         record["fingerprint_match"] = (
             declared_len in (None, fp["token_len"])
             and declared_sha in (None, fp["token_sha256"])
@@ -375,13 +405,23 @@ def run_fixture(
             "fixture schema is %r, expected %r" % (fixture.get("schema"), SCHEMA)
         )
     issuer = load_issuer(issuer_name, runners_dir)
-    keys = fetch_jwks(issuer["jwks_url"])
+    keys = resolve_keys(issuer)
 
     records = [
-        evaluate_vector(v, keys, check_lower_bound=check_lower_bound)
+        evaluate_vector(
+            v,
+            keys,
+            check_lower_bound=check_lower_bound,
+            convention_declared=bool(fixture.get("integrity_convention")),
+        )
         for v in fixture["vectors"]
     ]
-    failures = [r for r in records if not r["match"] and not r.get("quarantined")]
+    failures = [
+        r
+        for r in records
+        if (not r["match"] or r.get("fingerprint_match") is False)
+        and not r.get("quarantined")
+    ]
     quarantined = [r for r in records if r.get("quarantined")]
     return {
         "run": {
@@ -395,7 +435,7 @@ def run_fixture(
             "fixture_sha256": hashlib.sha256(raw).hexdigest(),
             "schema": fixture["schema"],
             "issuer_config": issuer_name,
-            "jwks_url": issuer["jwks_url"],
+            "key_source": issuer.get("jwks_url") or "inline (no network)",
             "pinned_kid": issuer["kid"],
             "kids_offered_by_jwks": sorted(keys.keys()),
             "lower_bound_checked": check_lower_bound,
@@ -416,6 +456,11 @@ def run_fixture(
             # Any vector whose signature did not verify. Under signature-first
             # precedence such a vector already scores sig_reject, so this list
             # is a second, independent place the anomaly stays visible.
+            "integrity_convention_declared": bool(fixture.get("integrity_convention")),
+            # Vectors carrying no length-and-digest stamp. Under a declared
+            # convention these are failures; otherwise they are named, never
+            # passed silently.
+            "unattributable": [r["id"] for r in records if r.get("unattributable")],
             # Integrity, independent of signature and window. A malformed
             # al_nid or a fingerprint mismatch localises a transport corruption
             # to a field instead of leaving it as an opaque signature failure.

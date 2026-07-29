@@ -2,6 +2,14 @@
  "schema": "aat-pair-v1",
  "schema_note": "three-vector drop. RECONSTRUCTED 2026-07-29 from the email of record; verified in correspondence on 2026-07-15 but never landed in the corpus.",
  "provenance": "reconstructed from the issuer's original email of record; never ingested at the time. Every token signature-verified against the live JWKS before writing.",
+ "wire_provenance": {
+  "source": "issuer Sent folder",
+  "message_id": "<c69e7f23-5bdf-01d9-1195-0f9f10abec68@amdal.dev>",
+  "sent_at": "2026-07-15T10:06:27Z",
+  "stamped": "2026-07-29",
+  "note": "Token bytes and their digests are anchored to the mail that left the issuer, not to the issuer's own archive file. The two disagreed on 2026-06-17. Declared window fields were normalised on reconstruction and are NOT wire-faithful; only the token bytes, token_len and token_sha256 are."
+ },
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
@@ -18,7 +26,8 @@
    "expected_result": "valid",
    "token_len": 874,
    "token_sha256": "d117d559e8e721f46860009114af85c316c5c8d815fee8df46d3266354b02604",
-   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time"
+   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time",
+   "wire_verified": true
   },
   {
    "id": "aat-2026-07-15-expired",
@@ -30,7 +39,8 @@
    "expected_reason": "expired before verification time",
    "token_len": 870,
    "token_sha256": "cd61d155839c582da02b27f86fcd01729255fe2e646835024dde2e770100e634",
-   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token"
+   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token",
+   "wire_verified": true
   },
   {
    "id": "aat-2026-07-15-act-binding",
@@ -52,7 +62,8 @@
     "canonicalization": "RFC 8785 JCS. Keys sorted by UTF-16 code unit at serialization time (NOT insertion order); string-only values, NFC-normalized; no whitespace. digest = 'sha256:' + base64url(SHA-256(utf8(JCS(preimage)))).",
     "hash": "sha256:To_AtR7v0p8im3Y69CCFKaANW0AGPusLgXu3W-J1BzU"
    },
-   "verifier_must": "validate signature against pinned JWKS and check the window at verification_time; THEN recompute the act-binding digest over the JCS canonicalization of the preimage and confirm it equals the claim hash byte-for-byte"
+   "verifier_must": "validate signature against pinned JWKS and check the window at verification_time; THEN recompute the act-binding digest over the JCS canonicalization of the preimage and confirm it equals the claim hash byte-for-byte",
+   "wire_verified": true
   }
  ]
 }

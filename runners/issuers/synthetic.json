@@ -1,0 +1,17 @@
+{
+  "name": "synthetic",
+  "jwks_inline": {
+    "keys": [
+      {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "alg": "EdDSA",
+        "kid": "56475aa7",
+        "x": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      }
+    ]
+  },
+  "kid": "56475aa7",
+  "alg": "EdDSA",
+  "note": "Synthetic regression issuer. Key derived from a fixed published seed in runners/generate_synthetic_regression.py. No network, no third-party dependency."
+}

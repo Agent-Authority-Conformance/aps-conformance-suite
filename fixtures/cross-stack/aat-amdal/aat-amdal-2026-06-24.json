@@ -1,12 +1,12 @@
 {
  "schema": "aat-pair-v1",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
   "alg": "EdDSA"
  },
  "authored_at": "2026-06-24T10:01:52Z",
- "note": "Regular Wednesday drop (week 2). verification_time pinned to authored_at in both vectors per the 2026-06-12 agreement; replayable after transit expiry.",
  "vectors": [
   {
    "id": "aat-2026-06-24-live",
@@ -32,5 +32,6 @@
    "token_len": 870,
    "token_sha256": "560da7b4e38fd0590dc92046f5b69d931c81c9629bff3177e2ddd17102d11bee"
   }
- ]
+ ],
+ "note": "Regular Wednesday drop (week 2). verification_time pinned to authored_at in both vectors per the 2026-06-12 agreement; replayable after transit expiry."
 }

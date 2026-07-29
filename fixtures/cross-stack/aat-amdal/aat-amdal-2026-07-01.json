@@ -1,5 +1,6 @@
 {
  "schema": "aat-pair-v1",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",

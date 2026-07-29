@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Regression oracle for runners/aat_runner.py.
 
-The point of this suite is the last test. A runner that checks only the upper
-window bound cannot detect the defect in the 2026-07-29 drop as received, and a
-runner that cannot detect that defect is worthless. That property is asserted
-directly by re-running the AS-RECEIVED fixture with the lower-bound check
-disabled and confirming the assertions below stop holding.
+The point of this suite is the last class. A runner that checks only the upper
+window bound cannot detect a not-yet-valid token, and a runner that cannot
+detect that is worthless. The property is asserted by re-running the synthetic
+oracle with the lower-bound check disabled and confirming it stops holding.
 
-Requires network access to fetch the issuer JWKS.
+The oracle is synthetic and self-contained: its key is derived from a fixed
+published seed and verified inline, so it never depends on a third party's DNS.
+The issuer-sourced fixtures do require network access for the JWKS.
 """
 
 from __future__ import annotations
@@ -24,7 +25,7 @@ sys.path.insert(0, str(RUNNERS))
 from aat_runner import run_fixture  # noqa: E402
 
 ISSUER = "agentlair"
-AS_RECEIVED = FIXTURES / "aat-amdal-2026-07-29-AS-RECEIVED.json"
+SYNTHETIC = FIXTURES.parent / "synthetic" / "aat-synthetic-regression.json"
 CORRECTED = FIXTURES / "aat-amdal-2026-07-29b.json"
 HISTORICAL = [
     FIXTURES / "aat-amdal-2026-06-12.json",
@@ -38,43 +39,51 @@ HISTORICAL = [
 ]
 
 
-def run(path: Path, check_lower_bound: bool = True):
-    return run_fixture(path, ISSUER, RUNNERS, check_lower_bound=check_lower_bound)
+ALL_FIXTURES = [(p, ISSUER) for p in HISTORICAL] + [
+    (CORRECTED, ISSUER),
+    (SYNTHETIC, "synthetic"),
+]
 
 
-class TestAsReceivedIsKnownBroken(unittest.TestCase):
-    """The 2026-07-29 drop as shipped declares two vectors valid that are not."""
+def run(path: Path, check_lower_bound: bool = True, issuer: str = ISSUER):
+    return run_fixture(path, issuer, RUNNERS, check_lower_bound=check_lower_bound)
 
-    def test_exactly_two_failures(self):
-        result = run(AS_RECEIVED)
-        self.assertEqual(result["summary"]["failed"], 2, result["summary"])
 
-    def test_both_failures_are_not_yet_valid_on_live_and_act_binding(self):
-        result = run(AS_RECEIVED)
-        failed = {r["id"]: r for r in result["vectors"] if not r["match"]}
-        self.assertEqual(
-            sorted(failed),
-            ["aat-2026-07-29-act-binding", "aat-2026-07-29-live"],
-            sorted(failed),
+def run_synthetic(check_lower_bound: bool = True):
+    return run(SYNTHETIC, check_lower_bound=check_lower_bound, issuer="synthetic")
+
+
+class TestSyntheticOracle(unittest.TestCase):
+    """A fixture we own, whose lower-bound vector is the thing being asserted.
+
+    This replaced a reconstruction of the issuer's 2026-07-29 first send. He
+    corrected that send 57 minutes later, so publishing it as a permanent
+    artifact pinned a mistake he had already fixed. A synthetic token we control
+    can be regenerated and explained without a reader having to work out which
+    of two mails was canonical.
+    """
+
+    def test_all_three_pass_with_both_bounds(self):
+        result = run_synthetic()
+        self.assertEqual(result["summary"]["failed"], 0, result["summary"])
+
+    def test_the_lower_bound_vector_is_classified_as_such(self):
+        result = run_synthetic()
+        record = next(
+            r for r in result["vectors"] if r["id"] == "syn-regression-not-yet-valid"
         )
-        for vector_id, record in failed.items():
-            self.assertEqual(record["window"], "NOT_YET_VALID", vector_id)
-            self.assertEqual(record["computed_result"], "nbf_reject", vector_id)
-            self.assertEqual(record["expected_result"], "valid", vector_id)
+        self.assertEqual(record["window"], "NOT_YET_VALID")
+        self.assertEqual(record["computed_result"], "nbf_reject")
 
-    def test_the_expired_vector_still_matches(self):
-        result = run(AS_RECEIVED)
-        expired = next(
-            r for r in result["vectors"] if r["id"] == "aat-2026-07-29-expired"
-        )
-        self.assertTrue(expired["match"])
-        self.assertEqual(expired["window"], "EXPIRED")
+    def test_it_needs_no_network(self):
+        result = run_synthetic()
+        self.assertEqual(result["run"]["key_source"], "inline (no network)")
 
     def test_signatures_are_all_valid(self):
-        """The defect is in the window, not the signatures."""
-        result = run(AS_RECEIVED)
+        result = run_synthetic()
         for record in result["vectors"]:
-            self.assertEqual(record["signature"], "VALID", record["id"])
+            with self.subTest(vector=record["id"]):
+                self.assertEqual(record["signature"], "VALID")
 
 
 class TestCorrectedDrop(unittest.TestCase):
@@ -115,7 +124,7 @@ class TestCorrectedDrop(unittest.TestCase):
 
 
 class TestHistoricalCorpus(unittest.TestCase):
-    def test_all_four_historical_fixtures_pass(self):
+    def test_all_historical_fixtures_pass(self):
         for path in HISTORICAL:
             with self.subTest(fixture=path.name):
                 result = run(path)
@@ -134,15 +143,15 @@ class TestCorpusIntegrity(unittest.TestCase):
     """
 
     def test_no_signature_anomalies_anywhere(self):
-        for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
+        for path, issuer in ALL_FIXTURES:
             with self.subTest(fixture=path.name):
-                result = run(path)
+                result = run(path, issuer=issuer)
                 self.assertEqual(result["summary"]["signature_anomalies"], [])
 
     def test_no_integrity_anomalies_anywhere(self):
-        for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
+        for path, issuer in ALL_FIXTURES:
             with self.subTest(fixture=path.name):
-                result = run(path)
+                result = run(path, issuer=issuer)
                 self.assertEqual(result["summary"]["integrity_anomalies"], [])
 
     def test_the_repaired_vector_now_verifies(self):
@@ -168,9 +177,9 @@ class TestCorpusIntegrity(unittest.TestCase):
         self.assertFalse(aat_runner.did_key_wellformed(corrupt))
 
     def test_every_vector_carries_a_declared_fingerprint_that_matches(self):
-        for path in HISTORICAL + [AS_RECEIVED, CORRECTED]:
+        for path, issuer in ALL_FIXTURES:
             with self.subTest(fixture=path.name):
-                result = run(path)
+                result = run(path, issuer=issuer)
                 for record in result["vectors"]:
                     self.assertIs(record.get("fingerprint_match"), True, record["id"])
 
@@ -217,38 +226,21 @@ class TestReconstructedDrops(unittest.TestCase):
 
 
 class TestUpperBoundOnlyRunnerFailsThisSuite(unittest.TestCase):
-    """The acceptance gate.
+    """The acceptance gate. Remove the lower bound and the oracle must go red."""
 
-    Disabling the lower-bound check simulates a runner that only asks whether a
-    token has expired. Against the AS-RECEIVED fixture such a runner reports
-    zero failures, so every assertion in TestAsReceivedIsKnownBroken stops
-    holding. That is the defect this corpus exists to catch.
-    """
+    def test_upper_bound_only_misses_the_lower_bound_vector(self):
+        result = run_synthetic(check_lower_bound=False)
+        self.assertEqual(result["summary"]["failing_ids"], ["syn-regression-not-yet-valid"])
 
-    def test_upper_bound_only_reports_no_failures_on_a_broken_fixture(self):
-        result = run(AS_RECEIVED, check_lower_bound=False)
-        self.assertEqual(
-            result["summary"]["failed"],
-            0,
-            "expected an upper-bound-only runner to miss the defect entirely",
+    def test_that_vector_reads_valid_without_the_lower_bound(self):
+        result = run_synthetic(check_lower_bound=False)
+        record = next(
+            r for r in result["vectors"] if r["id"] == "syn-regression-not-yet-valid"
         )
-
-    def test_the_two_bad_vectors_look_valid_without_the_lower_bound(self):
-        result = run(AS_RECEIVED, check_lower_bound=False)
-        for vector_id in ("aat-2026-07-29-live", "aat-2026-07-29-act-binding"):
-            record = next(r for r in result["vectors"] if r["id"] == vector_id)
-            self.assertEqual(record["window"], "INSIDE", vector_id)
-            self.assertEqual(record["computed_result"], "valid", vector_id)
-            self.assertTrue(record["match"], vector_id)
+        self.assertEqual(record["window"], "INSIDE")
+        self.assertEqual(record["computed_result"], "valid")
+        self.assertFalse(record["match"])
 
     def test_both_bounds_and_upper_only_disagree(self):
-        """Pin the disagreement itself, so neither side can drift silently."""
-        both = run(AS_RECEIVED, check_lower_bound=True)
-        upper = run(AS_RECEIVED, check_lower_bound=False)
-        self.assertEqual(both["summary"]["failed"], 2)
-        self.assertEqual(upper["summary"]["failed"], 0)
-        self.assertNotEqual(both["summary"]["failed"], upper["summary"]["failed"])
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
+        self.assertEqual(run_synthetic()["summary"]["failed"], 0)
+        self.assertEqual(run_synthetic(check_lower_bound=False)["summary"]["failed"], 1)

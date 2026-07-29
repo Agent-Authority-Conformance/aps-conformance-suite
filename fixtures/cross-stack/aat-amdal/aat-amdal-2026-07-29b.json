@@ -1,13 +1,14 @@
 {
  "schema": "aat-pair-v1",
  "schema_note": "four-vector corrected 2026-07-29 drop: live + pre-expired pair, act-binding-carrying live vector, and an explicit not-yet-valid vector that reuses the live token bytes at an earlier verification_time.",
+ "provenance": "tokens transcribed byte for byte from the corrected drop emailed by the issuer on 2026-07-29; the not-yet-valid vector reuses the live token bytes, which is why its jti repeats",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
   "alg": "EdDSA"
  },
  "authored_at": "2026-07-29T16:11:02Z",
- "provenance": "tokens transcribed byte for byte from the corrected drop emailed by the issuer on 2026-07-29; the not-yet-valid vector reuses the live token bytes, which is why its jti repeats",
  "vectors": [
   {
    "id": "aat-2026-07-29b-live",

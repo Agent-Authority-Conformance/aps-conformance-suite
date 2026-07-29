@@ -2,6 +2,14 @@
  "schema": "aat-pair-v1",
  "schema_note": "two-vector drop. RECONSTRUCTED 2026-07-29 from the email of record; this drop was verified in correspondence on 2026-06-17 but never landed in the corpus.",
  "provenance": "reconstructed from the issuer's original email of record; never ingested at the time. Every token signature-verified against the live JWKS before writing.",
+ "wire_provenance": {
+  "source": "issuer Sent folder",
+  "message_id": "<a2d2082c-31fd-862a-6063-a203210ff80b@amdal.dev>",
+  "sent_at": "2026-06-17T08:11:32Z",
+  "stamped": "2026-07-29",
+  "note": "Token bytes and their digests are anchored to the mail that left the issuer, not to the issuer's own archive file. The two disagreed on 2026-06-17. Declared window fields were normalised on reconstruction and are NOT wire-faithful; only the token bytes, token_len and token_sha256 are."
+ },
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
@@ -18,7 +26,8 @@
    "expected_result": "valid",
    "token_len": 870,
    "token_sha256": "652a6e59fd1ccb3c3893a0f0c1ffa7460ca91930fa95e739bf1554d59a79f16c",
-   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time"
+   "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time",
+   "wire_verified": true
   },
   {
    "id": "aat-2026-06-17-expired",
@@ -30,7 +39,8 @@
    "expected_reason": "expired before verification time",
    "token_len": 870,
    "token_sha256": "66c5e2b49dac9bf9f47895c2a0973cc0d92af615833f7ec6c27f373fabaf0394",
-   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token"
+   "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token",
+   "wire_verified": true
   }
  ]
 }

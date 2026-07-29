@@ -47,7 +47,29 @@ compact token string, a convention agreed with the issuer so a transport corrupt
 to spot rather than a thread. And al_nid is checked for multicodec well-formedness, which would
 have localised the June loss without any signature verification at all.
 
-Rotation history, stated rather than implied. The pre-expired half is the previous drop's live
-token from 2026-07-01 onward. It is not that at two earlier seams: 2026-06-17 used a freshly
-minted short-lived token, and 2026-06-24 used the live half of a file the issuer's cron wrote
-but never sent. Both are recorded here so neither is rediscovered as a defect.
+Rotation history, corrected 2026-07-29 by the issuer against decoded tokens rather than declared
+windows. The pre-expired half is the previous drop's live token from 2026-07-01 onward. Before
+that it never was. The 2026-06-12 and 2026-06-17 drops both shipped a freshly minted sixty-second
+companion as the expired half, minted seconds after the live one, so that was the original
+behaviour rather than a break. A generator that reached back for the previous week's live token
+did exist by 2026-06-17, and its own file proves it, but that file was never sent. So the correct
+statement is not that the invariant broke twice. It is that the invariant was never on the path
+that sent mail until 2026-07-01.
+
+One consequence worth keeping. In the issuer's own archive the chain is unbroken at both seams
+that are holes on the wire, so an invariant asserted over an archive can be satisfied by a chain
+that was never transmitted. Assert the seam over sent bytes. The five seams the runner asserts,
+2026-06-24 into 07-01 and then each week to 07-29, are anchored to wire fingerprints for the three
+reconstructed drops and to our own ingests for the rest, one of which we know was corrupted on
+write.
+
+Wire anchoring. The 2026-06-17, 2026-07-15 and 2026-07-22 fixtures carry wire_provenance: the
+issuer's message id, send time, and per-vector token_len and token_sha256 taken from his Sent
+folder rather than his archive. Declared window fields in those three were normalised on
+reconstruction and are NOT wire-faithful. Only the token bytes and their digests are.
+
+Regression oracle. The lower-bound oracle is synthetic and lives at
+fixtures/cross-stack/synthetic/. It replaced a reconstruction of the issuer's 2026-07-29 first
+send, which he corrected 57 minutes later; publishing that would have pinned a mistake he had
+already fixed. The synthetic key derives from a fixed published seed and verifies inline, so the
+oracle cannot fail because of a third party's DNS.

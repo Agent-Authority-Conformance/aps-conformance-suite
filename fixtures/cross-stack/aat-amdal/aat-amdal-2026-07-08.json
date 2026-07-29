@@ -1,6 +1,7 @@
 {
  "schema": "aat-pair-v1",
  "schema_note": "three-vector: live + pre-expired pair (window semantics) + act-binding-carrying live vector (extra claim, added 2026-07-01). The act-binding vector is an EXTRA claim, not a shape change. JWKS/window/signature checks pass unchanged.",
+ "integrity_convention": "token_len + token_sha256 over utf8 of the compact JWT, hex",
  "issuer_jwks": {
   "url": "https://agentlair.dev/.well-known/jwks.json",
   "kid": "ab0502f7",
