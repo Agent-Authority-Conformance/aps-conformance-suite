@@ -1,0 +1,7 @@
+{
+  "name": "agentlair",
+  "jwks_url": "https://agentlair.dev/.well-known/jwks.json",
+  "kid": "ab0502f7",
+  "alg": "EdDSA",
+  "note": "AgentLair AAT issuer. kid pinned per fixtures/cross-stack/aat-amdal/SOURCE.md. A new issuer is a new file here, not a new script."
+}

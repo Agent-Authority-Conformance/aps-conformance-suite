@@ -16,3 +16,17 @@ not replayable.
 What this corpus does and does not cover: issuer signature validity and window semantics
 for AAT bearer tokens at the APS verification boundary. It does not assert anything about
 the bearer agent behavior, audit history accuracy, or APS receipt semantics.
+
+Schema as of 2026-07-29: per-vector verification_time is mandatory. Every vector carries the
+reference instant at which its expected_result holds, and runners evaluate both window bounds
+against that instant. A file-level authored_at is metadata and is never used for window
+evaluation. The subject is pinned per drop: all vectors in a drop carry one sub and one
+al_name, recorded as an observation rather than enforced as a check.
+
+Verification is automated by runners/aat_runner.py. Issuer JWKS URL and pinned kid live in
+runners/issuers/, so a new issuer is a config entry rather than a new script.
+
+Scope, restated for the automated corpus: it covers issuer signature validity and both window
+bounds, and nothing else. It asserts nothing about the bearer agent, its audit history, or APS
+receipt semantics. A run records what was executed against which bytes by which operator at
+which time. It is not a conformance verdict about any implementation.

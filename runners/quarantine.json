@@ -1,0 +1,14 @@
+{
+  "_note": "Vectors whose LOCAL COPY is known to be unusable. The declared expected_result describes the token the issuer sent. It is not rewritten here. A quarantined vector is evaluated and reported in full, and excluded from the pass count and the exit code, until the issuer resends.",
+  "entries": [
+    {
+      "vector_id": "aat-2026-06-24-expired",
+      "fixture": "aat-amdal-2026-06-24.json",
+      "jti": "aat_ZhlxHRSsPVLMWXCB",
+      "state": "local_integrity_anomaly",
+      "reason": "Ed25519 signature does not verify against the pinned JWKS key. Our own ingestion-check-2026-06-24.json records this exact vector as signature valid on the same independent verification path on 2026-06-24. The fixture has one commit and has not been modified since. Every other token signed by the same kid, including older ones, still verifies. The likeliest cause is corruption at our write boundary during ingestion rather than a defect in the issued token.",
+      "pending": "issuer_resend",
+      "recorded": "2026-07-29"
+    }
+  ]
+}
