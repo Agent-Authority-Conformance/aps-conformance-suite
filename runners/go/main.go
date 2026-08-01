@@ -21,6 +21,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -294,6 +295,11 @@ type actionRefVector struct {
 	} `json:"input"`
 	CanonicalScopeOrder []string `json:"canonical_scope_order"`
 	ActionRef           string   `json:"action_ref"`
+	// Negative vectors carry no action_ref. They assert that the SDK REJECTS the
+	// input. Pointer so an absent field stays distinguishable from an explicit
+	// false, matching the TypeScript runner's Vector contract.
+	ExpectedVerification *bool  `json:"expected_verification"`
+	RejectionKind        string `json:"rejection_kind"`
 }
 
 func checkActionRefVectors(category, fixture string, raws []json.RawMessage) []result {
@@ -305,8 +311,30 @@ func checkActionRefVectors(category, fixture string, raws []json.RawMessage) []r
 			continue
 		}
 		var problems []string
-		canon := actionref.CanonicalizeScopes(v.Input.ScopeRequired)
-		if len(v.CanonicalScopeOrder) > 0 {
+		// Negative vector: section 4.1 defines scope_required as duplicate-free, so
+		// the SDK must reject rather than silently deduplicate. Accepting the input
+		// is the failure here; rejecting it with the recorded kind is the pass.
+		if v.ExpectedVerification != nil && !*v.ExpectedVerification {
+			_, err := actionref.CanonicalizeScopes(v.Input.ScopeRequired)
+			switch {
+			case err == nil:
+				problems = append(problems, "expected rejection ("+v.RejectionKind+") but the input was accepted")
+			case v.RejectionKind == "duplicate_scope_required" && !errors.Is(err, actionref.ErrDuplicateScopeRequired):
+				problems = append(problems, "rejected with the wrong error: "+err.Error())
+			}
+			status, details := "pass", ""
+			if len(problems) > 0 {
+				status = "fail"
+				details = problems[0]
+			}
+			out = append(out, result{category, fixture, v.Name, status, details})
+			continue
+		}
+
+		canon, err := actionref.CanonicalizeScopes(v.Input.ScopeRequired)
+		if err != nil {
+			problems = append(problems, "canonicalize scopes: "+err.Error())
+		} else if len(v.CanonicalScopeOrder) > 0 {
 			if len(canon) != len(v.CanonicalScopeOrder) {
 				problems = append(problems, fmt.Sprintf("canonical_scope_order length %d != recorded %d", len(canon), len(v.CanonicalScopeOrder)))
 			} else {
