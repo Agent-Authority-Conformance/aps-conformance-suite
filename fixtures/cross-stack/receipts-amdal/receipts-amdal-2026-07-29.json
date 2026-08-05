@@ -1,0 +1,135 @@
+{
+ "schema": "agentlair-receipt-vectors-v1",
+ "schema_note": "First outbound set of the bilateral exchange, received 2026-07-29. Exercises the TRANSPORT/IDENTITY layer only: signer_did resolution, JCS canonicalization, Ed25519. Not APS receipt semantics.",
+ "authored_at": "2026-07-29T18:19:18Z",
+ "profile": {
+   "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+   "key_custody": "Private half held by the issuer. NOT the key behind al_nid in the AAT corpus.",
+   "canonicalization": "RFC 8785 JCS over the envelope with signature EXCLUDED. Keys sorted by UTF-16 code unit at serialization time. Values NFC-normalized. No whitespace.",
+   "scalars": "String-only. v1 receipts carry no JSON numbers, booleans or nulls.",
+   "signature": "Ed25519 over utf8(canonical bytes), base64url, unpadded.",
+   "receipt_id": "body0 = envelope minus receipt_id and signature; receipt_id = 'r1:' + base64url(SHA-256(utf8('agentlair-receipt/v1:' + JCS(body0)))). receipt_id IS covered by the signature.",
+   "evaluation_order": "profile -> key_resolution -> signature -> receipt_id.",
+   "failure_codes": ["OK","PROFILE_VIOLATION","DID_URI_INVALID","SIGNER_DID_MISSING","SIGNATURE_MISSING","SIGNATURE_INVALID","RECEIPT_ID_MISMATCH"],
+   "result_shape": "Single code plus stage plus detail."
+ },
+ "vectors": [
+  {
+   "id": "receipt-2026-07-29-valid",
+   "expected_result": "valid",
+   "expected_reason": "OK",
+   "receipt": {
+    "typ": "agentlair-receipt/v1",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "receipt_id": "r1:ApRbLne11sT1rRKeQwr1B_Py5TGuHCQWMX4hEjbTYUk",
+    "signature": "mhXtzZxK6zqcPAT3lEZCuaAL_sgijzPdV4w4iljhzihiwhcb31m_pKTT9fkusm7OKG7Tlkxe2eguHS1HhlfiAg"
+   }
+  },
+  {
+   "id": "receipt-2026-07-29-sig-invalid",
+   "expected_result": "invalid",
+   "expected_reason": "SIGNATURE_INVALID",
+   "expected_failure_stage": "signature",
+   "receipt": {
+    "typ": "agentlair-receipt/v1",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verifY",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "receipt_id": "r1:ApRbLne11sT1rRKeQwr1B_Py5TGuHCQWMX4hEjbTYUk",
+    "signature": "mhXtzZxK6zqcPAT3lEZCuaAL_sgijzPdV4w4iljhzihiwhcb31m_pKTT9fkusm7OKG7Tlkxe2eguHS1HhlfiAg"
+   },
+   "vector_note": "action mutated from verify to verifY AFTER signing."
+  },
+  {
+   "id": "receipt-2026-07-29-receipt-id-mismatch",
+   "expected_result": "invalid",
+   "expected_reason": "RECEIPT_ID_MISMATCH",
+   "expected_failure_stage": "receipt_id",
+   "receipt": {
+    "typ": "agentlair-receipt/v1",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "receipt_id": "r1:egDo186-h8oG-9cPjohbvyPYIFjFpaigtOtb7yA8GbQ",
+    "signature": "9FI3P5pLFji5CekkQdUAAKzckCkTT5W6Fn4xxy98DBgnE_H58peGc3WzgaOQLGXMDYBvN4bfIOFtZBoZ4n6_Dg"
+   },
+   "vector_note": "Signature VALID over this exact envelope. Only the declared receipt_id is wrong."
+  },
+  {
+   "id": "receipt-2026-07-29-wrong-signer-did",
+   "expected_result": "invalid",
+   "expected_reason": "SIGNATURE_INVALID",
+   "expected_failure_stage": "signature",
+   "receipt": {
+    "typ": "agentlair-receipt/v1",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "signer_did": "did:key:z6Mkqpkd4kEpPHvajntM2Tz1JGKPJfDw5zBNYpou4BHjWxMW",
+    "receipt_id": "r1:ApRbLne11sT1rRKeQwr1B_Py5TGuHCQWMX4hEjbTYUk",
+    "signature": "mhXtzZxK6zqcPAT3lEZCuaAL_sgijzPdV4w4iljhzihiwhcb31m_pKTT9fkusm7OKG7Tlkxe2eguHS1HhlfiAg"
+   },
+   "vector_note": "Well-formed Ed25519 did:key for a key that did NOT sign. Resolution succeeds, verification fails."
+  },
+  {
+   "id": "receipt-2026-07-29-did-uri-invalid",
+   "expected_result": "invalid",
+   "expected_reason": "DID_URI_INVALID",
+   "expected_failure_stage": "key_resolution",
+   "receipt": {
+    "typ": "agentlair-receipt/v1",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "signer_did": "did:key:z6MkNOTAVALIDKEY",
+    "receipt_id": "r1:ApRbLne11sT1rRKeQwr1B_Py5TGuHCQWMX4hEjbTYUk",
+    "signature": "mhXtzZxK6zqcPAT3lEZCuaAL_sgijzPdV4w4iljhzihiwhcb31m_pKTT9fkusm7OKG7Tlkxe2eguHS1HhlfiAg"
+   },
+   "vector_note": "Malformed did:key. Decodes but carries no 0xed01 multicodec prefix."
+  },
+  {
+   "id": "receipt-2026-07-29-key-order-reversed",
+   "expected_result": "valid",
+   "expected_reason": "OK",
+   "receipt": {
+    "signature": "mhXtzZxK6zqcPAT3lEZCuaAL_sgijzPdV4w4iljhzihiwhcb31m_pKTT9fkusm7OKG7Tlkxe2eguHS1HhlfiAg",
+    "receipt_id": "r1:ApRbLne11sT1rRKeQwr1B_Py5TGuHCQWMX4hEjbTYUk",
+    "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "completed_at": "2026-07-29T18:19:18Z",
+    "requested_at": "2026-07-29T18:19:16Z",
+    "target": "https://gateway.aeoess.com",
+    "action": "verify",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "issuer": "https://agentlair.dev",
+    "typ": "agentlair-receipt/v1"
+   },
+   "vector_note": "Byte-identical content to the valid vector, transmitted with reversed key order. Verifies ONLY if canonicalization sorts at serialization time."
+  }
+ ]
+}
