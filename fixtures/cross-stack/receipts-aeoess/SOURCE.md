@@ -77,11 +77,18 @@ Read out of `src/v2/receipt-core/receipt.ts` and `src/v2/receipt-core/jcs.ts` at
 These are the interesting part of the exchange and are stated plainly rather than hidden in
 a passing test.
 
-**1. Evaluation order is reversed.** AgentLair evaluates the signature before `receipt_id`,
-so a tampered id can never be masked by a bad signature. We recompute `receipt_id` before
-the signature, per `draft-pidlisnyi-aps-03` section 5.2 ("A verifier MUST recompute
-receipt_id before signature verification"). Neither order is wrong; they defend different
-things.
+**1. Evaluation order is reversed.** AgentLair evaluates the signature before `receipt_id`
+and short-circuits on the first failure. We recompute `receipt_id` first and do not
+short-circuit, per `draft-pidlisnyi-aps-03` section 5.2 ("A verifier MUST recompute
+receipt_id before signature verification").
+
+An earlier revision of this file claimed the AgentLair order meant "a tampered id can never
+be masked by a bad signature." That was backwards and is corrected here. A mutation that
+breaks both checks reports one code at one stage on their side, so the id mismatch is the
+thing that gets masked. It is our order, combined with the absence of a short-circuit, that
+surfaces both. The orders still defend different things, but the non-masking property
+belongs to this profile, not theirs. The error was ours and AgentLair stated the mechanism
+correctly on 2026-08-05.
 
 **2. We do not short-circuit, and our result is a list.** AgentLair returns a single code
 plus a stage. `verifyReceiptV1` runs every applicable check and returns
@@ -96,6 +103,28 @@ error list. It does **not** return the four-value valid / invalid / indeterminat
 unsupported result that `draft-pidlisnyi-aps-03` section 3.3 requires, and that AgentLair
 was told in writing on 2026-07-29 to expect. That gap has not closed. It is recorded in the
 fixture's `profile.result_shape` so nobody has to discover it by running the set.
+
+## What a lone `receipt_id_mismatch` means
+
+Difference 2 says a content mutation after signing reports two errors on our side. The
+inverse is worth stating, and it was drawn by AgentLair on 2026-08-05 from running this set
+rather than from reading it.
+
+Two different constructions both produce `[receipt_id_mismatch, signature_invalid]`. The
+`sig-invalid` vector is one of them: it mutates `delegation_ref` after signing, so the body
+no longer hashes to the declared id and the signature no longer covers the bytes presented.
+The other, not represented in this set, is corrupting a declared `receipt_id` on an
+otherwise valid receipt, which breaks the signature too because `signature_form` includes
+`receipt_id`. Same error list, different fault.
+
+The `receipt-id-mismatch` vector reports one error rather than two. It differs from the
+valid vector in `receipt_id` and in `signatures`, which is to say it was signed over the
+wrong id rather than altered after signing. So on this profile a lone `receipt_id_mismatch`
+alongside a valid signature is evidence of issuer-side construction: whoever signed it
+computed the id wrongly and signed that value. It is not evidence of tampering, and it is
+not by itself proof of fault ownership, since the same shape can be produced deliberately.
+
+A runner that maps `receipt_id_mismatch` to "tampered" will mislabel this vector.
 
 ## delegation_chain_root
 
@@ -117,6 +146,35 @@ opposite of `receipt_id`. That asymmetry is deliberate and is being published ra
 quietly fixed: the value is already emitted by shipped code, so changing the preimage would
 silently invalidate every previously computed root. Any future correction will arrive as an
 explicitly versioned construction under a new name, never as a substitution under this one.
+
+Two further properties, stated because they raise the cost of getting this value wrong.
+
+**It is named in the draft, but not constructed there.** `draft-pidlisnyi-aps-03` section
+7.3 defines the delegation chain root as "the canonical content digest over the APS-signed
+hops built under the imported grant," and section 9 refers to an imported external chain
+root relocating the root of a chain. What the draft does not give anywhere is the exact
+preimage, the encoding, a domain-separation rule, the field name, its placement in any
+receipt, or its revocation semantics. The concept is specified. The construction published
+here is not.
+
+**It is consulted at a revocation enforcement point.** In the shipped offline verifier
+(`src/v2/offline-verifier/context.ts`) an `ActionReceipt` of claim type `aps:action:v1` is
+refused when its `delegation_chain_root` appears in a caller-supplied list:
+
+```
+if (ctx.revoked_delegation_roots.includes(receipt.delegation_chain_root)) {
+  return { valid: false, reason: 'DELEGATION_REVOKED' }
+}
+```
+
+This is an exact membership test, not a cascade computation: the verifier walks no
+descendants and proves no cascade completion, so any cascade has to be materialized by the
+caller before the list is handed in. The context type also declares `active_delegation_root`,
+which this verifier never consults. The family here is the accountability receipt, not the
+`aps-receipt-v1` envelope these vectors carry.
+
+The gap is ours and it is open: a digest that gates a revocation decision has a semantic
+definition in the draft and a byte construction only in shipped code and in this fixture.
 
 ## Integrity convention
 
