@@ -1,0 +1,106 @@
+{
+ "schema": "aat-pair-v1",
+ "schema_note": "five-vector: live (positive) + pre-expired (upper-bound negative) + act-binding-carrying live (positive, extra claim) + not-yet-valid (LOWER-bound negative, added 2026-07-29 at Tima's request) + cross-subject (positive, DIFFERENT sub, added 2026-08-05). verification_time is stamped PER VECTOR after minting, not copied from a pre-minting authored_at.",
+ "integrity_convention": "Every vector carries token_len (character count of the compact JWT string) and token_sha256 (hex SHA-256 of its UTF-8 bytes) as FLAT fields - your field names, deliberately. We had built it as a nested fingerprint={chars,sha256}: same convention, zero interop, because it was announced in prose without naming the fields. Yours shipped across 27 vectors and ours had shipped in none, so ours moved. Check it before parsing anything: a mismatch means the token was altered between our send and your read, which is a different fault from a vector that is simply wrong. Introduced 2026-07-29 after a 24-Jun vector failed in your runner and it took a byte-comparison against our Sent copy to place the fault. Declaring this key makes the stamp MANDATORY in our verifier: an unstamped vector fails instead of skipping. Cross-week use: this week's -expired vector IS last week's -live token, so its token_sha256 must equal the one you recorded last week. That makes the rotation invariant something you can check rather than something I assert - and it must be checked over the SENT bytes, not the archive: our 17-Jun and 24-Jun seams are internally consistent inside our own corpus and broken on the wire, so an archive-only chain shows green across a hole.",
+ "issuer_jwks": {
+   "url": "https://agentlair.dev/.well-known/jwks.json",
+   "kid": "ab0502f7",
+   "alg": "EdDSA"
+ },
+ "subject_pin": {
+   "sub": "acc_6vLlkdaZKKwghJBD",
+   "al_name": "pipeline-test",
+   "note": "The conformance subject is PINNED to this account for every vector EXCEPT the one carrying subject_assert.must_differ_from_pinned. al_trust.level is a per-subject value (score+confidence, then capped by account tier and evidence-mix gates) and is NOT comparable across subjects - verifiers must not pin the level string for policy. Assertable, not just readable: fail the drop if any other vector's sub differs from this one."
+ },
+ "authored_at": "2026-08-05T10:05:05Z",
+ "vectors": [
+   {
+     "id": "aat-2026-08-05-live",
+     "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1OTI3OTA0LCJpYXQiOjE3ODU5MjQzMDQsImp0aSI6ImFhdF9HZG9JNVlIQWtlZEIwSnlyIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9HZG9JNVlIQWtlZEIwSnlyIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTgsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45ODc4NzE1NjUwMTU3MjU3LCJjb21wdXRlZF9hdCI6IjIwMjYtMDgtMDVUMTA6MDU6MDQuOTU1WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.HpWku8ppM6Y-tlQUlXFHkMWzHjmHir8OTAdHYKpUOaoZirxFwvytzKt6CqZT5gC4NAriOLJZSNQXbDssC2WSBA",
+     "token_len": 870,
+     "token_sha256": "d9250bbbecb9428b17dd7420b9230f748349ea5900a765eed0890ffdc1ecb43e",
+     "notBefore": "2026-08-05T10:05:04Z",
+     "notAfter": "2026-08-05T11:05:04Z",
+     "verification_time": "2026-08-05T10:05:05Z",
+     "expected_result": "valid",
+     "verifier_must": "validate signature against pinned JWKS, then check BOTH window bounds at verification_time"
+   },
+   {
+     "id": "aat-2026-08-05-expired",
+     "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1MzQ1MDYxLCJpYXQiOjE3ODUzNDE0NjEsImp0aSI6ImFhdF9DU2d0NjY5akVVNm5yTGNEIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9DU2d0NjY5akVVNm5yTGNEIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTUsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45NzUzOTc1NzE1OTcyNjA1LCJjb21wdXRlZF9hdCI6IjIwMjYtMDctMjlUMTY6MTE6MDEuNDQyWiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.HvUGGDjHDKNOtldVGQLIOxcwi-rSVfkdTLzdE7RS_UQ5zjNSi3Jc1NRlOBQ2ccEiE_UOvC8_klWXgs_YKSyYDw",
+     "token_len": 870,
+     "token_sha256": "f4313e8782c7e413d37339ff413e4c389ad4aa0df8edd7dd72c2796a42c36731",
+     "expiredAt": "2026-07-29T17:11:01Z",
+     "verification_time": "2026-08-05T10:05:05Z",
+     "expected_result": "exp_reject",
+     "expected_failure_stage": "window_check",
+     "expected_reason": "expired before verification time",
+     "verifier_must": "reject at the window check at verification_time; signature validity does not rescue an expired token"
+   },
+   {
+     "id": "aat-2026-08-05-act-binding",
+     "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1OTI3OTA1LCJpYXQiOjE3ODU5MjQzMDUsImp0aSI6ImFhdF9MNHVXT3pkVDZ2S2VLbXMzIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9MNHVXT3pkVDZ2S2VLbXMzIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJ1cm46ZGFzaGNsYXc6YWN0LWJpbmRpbmciOnsidHlwIjoiYWN0aW9uLWJpbmRpbmcvdjEiLCJoYXNoIjoic2hhMjU2OlRvX0F0Ujd2MHA4aW0zWTY5Q0NGS2FBTlcwQUdQdXNMZ1h1M1ctSjFCelUifSwiYWxfdHJ1c3QiOnsic2NvcmUiOjU5LCJsZXZlbCI6ImludGVybiIsImNvbmZpZGVuY2UiOjAuOTg4NzkzNTkzNjc4MTU3MSwiY29tcHV0ZWRfYXQiOiIyMDI2LTA4LTA1VDEwOjA1OjA1Ljc2N1oiLCJ0cmVuZCI6InN0YWJsZSJ9LCJhbF9uaWQiOiJkaWQ6a2V5Ono2TWtnUm1VWHRHZFRrWGhBY2Zwb2FiRXl2WkVqc2R2VG5HdzZnYVgzTGNTZGhoaiJ9.lwt0B5vI_vqOve2-4A56Tmr4-0Y9e2nID9GMvRsjCsym0IU9fpcKo6xEadM-rCggIhcn5BVTEUpYy5PKnL7VBg",
+     "token_len": 1023,
+     "token_sha256": "0007962f88b37f1b938b02402bc79015091a01e43f9de84266ce11a73ca66dee",
+     "notBefore": "2026-08-05T10:05:05Z",
+     "notAfter": "2026-08-05T11:05:05Z",
+     "verification_time": "2026-08-05T10:05:05Z",
+     "expected_result": "valid",
+     "act_binding": {
+       "claim": "urn:dashclaw:act-binding",
+       "typ": "action-binding/v1",
+       "preimage": {
+         "action": "verify",
+         "target": "https://gateway.aeoess.com",
+         "goal": "aps:conformance:act-binding"
+       },
+       "canonicalization": "RFC 8785 JCS. Keys sorted by UTF-16 code unit at serialization time (NOT insertion order); string-only values, NFC-normalized; no whitespace. For this preimage the sort yields action < goal < target. digest = 'sha256:' + base64url(SHA-256(utf8(JCS(preimage)))).",
+       "hash": "sha256:To_AtR7v0p8im3Y69CCFKaANW0AGPusLgXu3W-J1BzU"
+     },
+     "verifier_must": "validate signature against pinned JWKS and check the window at verification_time (positive vector, same as live); THEN decode urn:dashclaw:act-binding, recompute the digest over the JCS canonicalization of the preimage, and confirm it equals the claim hash byte-for-byte. The act-binding claim is an EXTRA claim: it neither rescues nor sinks window/signature validity."
+   },
+   {
+     "id": "aat-2026-08-05-not-yet-valid",
+     "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1OTI3OTA0LCJpYXQiOjE3ODU5MjQzMDQsImp0aSI6ImFhdF9HZG9JNVlIQWtlZEIwSnlyIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9HZG9JNVlIQWtlZEIwSnlyIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTgsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45ODc4NzE1NjUwMTU3MjU3LCJjb21wdXRlZF9hdCI6IjIwMjYtMDgtMDVUMTA6MDU6MDQuOTU1WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.HpWku8ppM6Y-tlQUlXFHkMWzHjmHir8OTAdHYKpUOaoZirxFwvytzKt6CqZT5gC4NAriOLJZSNQXbDssC2WSBA",
+     "token_len": 870,
+     "token_sha256": "d9250bbbecb9428b17dd7420b9230f748349ea5900a765eed0890ffdc1ecb43e",
+     "notBefore": "2026-08-05T10:05:04Z",
+     "notAfter": "2026-08-05T11:05:04Z",
+     "verification_time": "2026-08-05T10:04:04Z",
+     "expected_result": "nbf_reject",
+     "expected_failure_stage": "window_check",
+     "expected_reason": "not yet valid at verification_time",
+     "vector_note": "Same token bytes as aat-2026-08-05-live - ONLY verification_time differs (notBefore minus 60s). Signature and claims are identical, so the lower window bound is the only thing that can produce a different outcome. Shared bytes are deliberate (agreed 2026-07-29). Consequence to expect: a verifier that treats jti as a one-time-use replay nonce is behaving CORRECTLY when it rejects this vector - it has already seen this jti in the live vector. That rejection surfaces at jti_check while looking like a window bug. If your runner does that, report it as jti_check and not as a mismatch; it is the one vector in the set where 'reject' has two legitimate causes.",
+     "verifier_must": "reject at the window check at verification_time because verification_time < notBefore; a valid signature does not rescue a token that is not yet valid"
+   },
+   {
+     "id": "aat-2026-08-05-cross-subject",
+     "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfQkU5VHl1YlVzZGJ5cGYwbyIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1OTI3OTA0LCJpYXQiOjE3ODU5MjQzMDQsImp0aSI6ImFhdF9zSWQ2ZFZYVnB2YUJnMG1aIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfQkU5VHl1YlVzZGJ5cGYwbyIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9zSWQ2ZFZYVnB2YUJnMG1aIiwiYWxfbmFtZSI6ImFwcy1jb25mb3JtYW5jZS1jcm9zcy1zdWJqZWN0In0.F8MuzKYGc3y0V7yGfdPsu_dViEp52oQLnTHvdBtj0_DpEB1YKQjcbmbuQzrxvlkApV8Horo4vPLXzJIpuK7WDw",
+     "token_len": 626,
+     "token_sha256": "e87c643a44efcbcbcc2faa54bc1c08ada52c20fe220227b15a7fa1a9e639472d",
+     "notBefore": "2026-08-05T10:05:04Z",
+     "notAfter": "2026-08-05T11:05:04Z",
+     "verification_time": "2026-08-05T10:05:05Z",
+     "expected_result": "valid",
+     "subject_assert": {
+       "must_differ_from_pinned": true,
+       "expect_sub": "acc_BE9TyubUsdbypf0o"
+     },
+     "subject": {
+       "sub": "acc_BE9TyubUsdbypf0o",
+       "al_name": "aps-conformance-cross-subject",
+       "al_trust": null,
+       "al_trust_present": false,
+       "pinned_subject_al_trust": {
+         "score": 58,
+         "level": "intern",
+         "confidence": 0.9878715650157257,
+         "computed_at": "2026-08-05T10:05:04.955Z",
+         "trend": "stable"
+       }
+     },
+     "vector_note": "DELIBERATE cross-subject vector - same issuer, same kid, same audience, different sub. It makes the per-subject nature of al_trust assertable instead of merely documented: this token and aat-2026-08-05-live are both valid and both signed by kid ab0502f7, yet their al_trust differs. On this subject al_trust is ABSENT ENTIRELY (a fresh account with no evidence yet), which is the sharper case: a policy path that reads al_trust.level does not get a different string here, it gets undefined. If your runner throws, or silently defaults to a permissive branch, that is the finding. Either way, a verifier that pins an al_trust level for policy is reading a per-subject value as if it were an issuer-wide one. Substitution note: I said picoclaw on 29 July and used a dedicated second fixture account instead - picoclaw is my operational identity and I am not going to mail you a live bearer token for it.",
+     "verifier_must": "validate signature against the pinned JWKS and check both window bounds at verification_time (positive vector, same as live); THEN assert sub != subject_pin.sub, and assert your policy path handles al_trust being absent without throwing and without falling through to a permissive default. If the same policy decision comes out for live and for this vector, report it - that is the bug this vector exists to find, not a pass."
+   }
+ ]
+}
