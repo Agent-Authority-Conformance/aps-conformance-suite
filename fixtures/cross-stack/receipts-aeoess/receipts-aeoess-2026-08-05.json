@@ -1,0 +1,330 @@
+{
+ "schema": "aeoess-aps-receipt-vectors-v1",
+ "schema_note": "First outbound set of the reciprocal leg. Exercises the aps-receipt-v1 TRANSPORT layer: RFC 8785 JCS canonicalization, domain-separated receipt_id, domain-separated Ed25519 receipt signatures, and closed-schema validation. It asserts nothing about APS receipt semantics and nothing about any production issuer.",
+ "authored_at": "2026-08-05T00:00:00Z",
+ "integrity_convention": "receipt_len + receipt_sha256 over utf8 of the COMPACT JSON serialization of the receipt in the member order as published, hex. Not over the canonical form.",
+ "profile": {
+  "signer_key_resolution": "Explicit inline key table below, keyed by (signer, key_id). The shipped verifier takes a resolveKey(signer, key_id, issued_at) callback returning a raw 32-byte lowercase-hex Ed25519 public key, so there is no did:key derivation inside receipt-core. The did:key form of each key is published alongside the hex so an existing did:key resolver derives the identical 32 bytes.",
+  "key_custody": "Both private halves derive from published seeds and are burned test keys. Neither is a production APS signer and neither appears in any other aeoess corpus.",
+  "canonicalization": "RFC 8785 JCS. Keys sorted at serialization time by UTF-16 code unit. No whitespace. Lone surrogates are rejected rather than escaped.",
+  "scalars": "String-only in this round, except evidence_refs member counts. No JSON numbers, booleans or nulls appear in any signed body, so JCS number canonicalization is out of scope for round 1.",
+  "signature": "value = lowercase-hex(Ed25519-Sign(key, ASCII(\"APS-RECEIPT-SIG-V1\") || 0x00 || UTF8(JCS(signature_form)))) where signature_form = {\"receipt\": receipt without signatures, \"signer\": {signer, key_id, alg}}. The signature form INCLUDES receipt_id.",
+  "receipt_id": "receipt_id = lowercase-hex(SHA-256(ASCII(\"APS-RECEIPT-ID-V1\") || 0x00 || UTF8(JCS(receipt without receipt_id and signatures)))).",
+  "delegation_chain_root": "delegation_chain_root = lowercase-hex(SHA-256(UTF8(JCS(chain)))). Bare: no domain tag, no separator byte. Deliberately NOT domain-separated while receipt_id is. Not a member of the aps-receipt-v1 envelope.",
+  "evaluation_order": "schema validation -> receipt_id recomputation -> key resolution -> signature. receipt_id BEFORE signature, per draft-pidlisnyi-aps-03 section 5.2, which is the reverse of the agentlair-receipt-vectors-v1 order. Verification does NOT short-circuit after the first failure: every applicable check runs and every failure is reported.",
+  "failure_codes": [
+   "receipt_id_mismatch",
+   "signature_invalid",
+   "ReceiptV1: unknown field <name>",
+   "ReceiptV1: missing field <name>",
+   "ReceiptV1: profile",
+   "ReceiptV1: empty identifier",
+   "ReceiptV1: receipt_id",
+   "ReceiptV1: action_ref",
+   "ReceiptV1: decision_ref",
+   "ReceiptV1: prev",
+   "ReceiptV1: issued_at",
+   "ReceiptV1: result",
+   "ReceiptV1: arrays",
+   "ReceiptV1: duplicate evidence_ref",
+   "ReceiptV1: evidence_refs not sorted",
+   "ReceiptV1: duplicate signature",
+   "ReceiptV1: signatures not sorted",
+   "ReceiptV1: issuer signature missing",
+   "EvidenceRefV1: value",
+   "ReceiptSignatureV1: value"
+  ],
+  "signature_result_reasons": [
+   "key_unresolved",
+   "key_resolution_error"
+  ],
+  "failure_code_note": "Read out of src/v2/receipt-core/receipt.ts and jcs.ts at the commit named in SOURCE.md. These are the literal strings the verifier emits. There is no symbolic enum and no INVALID_CLAIM_TYPE code: a wrong profile surfaces as \"ReceiptV1: profile\".",
+  "result_shape": "Object: {valid: boolean, receipt_id_valid: boolean, signature_results: [...], errors: [string]}. A boolean plus an error list, NOT the four-value valid / invalid / indeterminate / unsupported result that draft-pidlisnyi-aps-03 section 3.3 specifies. That gap is open and is disclosed here because it was disclosed in writing on 2026-07-29 and has not closed since.",
+  "keys": [
+   {
+    "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+    "public_key_hex": "dc9efedac63513b5496fbd6d624c951b5abb1f2bf664da322880b12928935e8c",
+    "did_key": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "role": "issuer verification method k1. Signed every valid vector."
+   },
+   {
+    "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k2",
+    "public_key_hex": "fcb4fcf07a413f93893c104b002cec15fe432c1ec89beff178f92088e3cb1604",
+    "did_key": "did:key:z6MkwTirNaeUFuJj4mSgkE65JyMAZshpVkafbXhdb5mYbpxs",
+    "role": "issuer verification method k2. Registered to the same issuer and resolvable, but its private half never signed anything in this corpus."
+   }
+  ],
+  "key_id_note": "key_id is opaque to the verifier and is resolved through the table above. The did_key column gives the did:key encoding of the same 32 public bytes, so an existing did:key resolver can confirm it derives the identical key material."
+ },
+ "vectors": [
+  {
+   "id": "aps-receipt-2026-08-05-valid",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "4b596dd8becc7daecbe34cbdf6bdfb8d221dc48bc8ea427814b6ce9db1cd9afb",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+      "alg": "Ed25519",
+      "value": "c6927a08187182c72377071fb51b33744e7f410ff3dd3adbe49a0954b12549d92c61b64dbe31d173db300383efdacea3f68ef9cc2a5205137e5b7a4416f00e06"
+     }
+    ]
+   },
+   "vector_note": "Baseline. receipt_id recomputes and the issuer signature verifies against key A.",
+   "receipt_len": 1126,
+   "receipt_sha256": "ac7d80e37a0fa552693d922e525c5c4b190e218192a265782d7ae40775d6cdc0"
+  },
+  {
+   "id": "aps-receipt-2026-08-05-sig-invalid",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "receipt_id_mismatch",
+    "signature_invalid"
+   ],
+   "expected_failure_stage": "receipt_id",
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:379930abf8a0eabaad320edc621a1c0979c2933a4362f4e66563528b561a3fc3",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "4b596dd8becc7daecbe34cbdf6bdfb8d221dc48bc8ea427814b6ce9db1cd9afb",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+      "alg": "Ed25519",
+      "value": "c6927a08187182c72377071fb51b33744e7f410ff3dd3adbe49a0954b12549d92c61b64dbe31d173db300383efdacea3f68ef9cc2a5205137e5b7a4416f00e06"
+     }
+    ]
+   },
+   "vector_note": "delegation_ref mutated AFTER signing. Two errors, not one: receipt_id covers every member except receipt_id and signatures, so a content mutation breaks the id as well as the signature, and this verifier does not short-circuit. Compare receipt-2026-07-29-sig-invalid, which reports SIGNATURE_INVALID alone because that profile evaluates the signature first and stops.",
+   "receipt_len": 1126,
+   "receipt_sha256": "3d303dcc2280ed0572e6b94decbcb67b68bd3548e6cf5d89bb7c8808bfb53dc8"
+  },
+  {
+   "id": "aps-receipt-2026-08-05-receipt-id-mismatch",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "receipt_id_mismatch"
+   ],
+   "expected_failure_stage": "receipt_id",
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "c09a41166a7583cb00400ecee7f0b894615b829be36eaf56116d7a55916c5065",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+      "alg": "Ed25519",
+      "value": "5d2ff06682edbd940722411e034f313b4d0a86a2d92c88caa373357aaca9f3f2b437949a5fd06adbe2e9eb68860b03fa54d34c40bcb4f7363c9782515d184a03"
+     }
+    ]
+   },
+   "vector_note": "Signature VALID over this exact envelope, including the wrong declared receipt_id. Only the id fails to recompute. Single fault, directly comparable to receipt-2026-07-29-receipt-id-mismatch.",
+   "receipt_len": 1126,
+   "receipt_sha256": "2f277eb65c6e058040bd4448ea2c2c7cbe19ab96a7f322dba3ea3e1aef4c9637"
+  },
+  {
+   "id": "aps-receipt-2026-08-05-wrong-signer",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "signature_invalid"
+   ],
+   "expected_failure_stage": "signature",
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "4b596dd8becc7daecbe34cbdf6bdfb8d221dc48bc8ea427814b6ce9db1cd9afb",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k2",
+      "alg": "Ed25519",
+      "value": "c6927a08187182c72377071fb51b33744e7f410ff3dd3adbe49a0954b12549d92c61b64dbe31d173db300383efdacea3f68ef9cc2a5205137e5b7a4416f00e06"
+     }
+    ]
+   },
+   "vector_note": "key_id names key B, a well-formed Ed25519 key that did not sign. signer stays the issuer so the issuer-signature rule still holds. receipt_id is unaffected because it excludes signatures, so this is a clean single-fault signature failure.",
+   "receipt_len": 1126,
+   "receipt_sha256": "c02f5b52e8507e554eeb9ca5ccc8a4363ae4da7d8acf5042b863c65f2188e125"
+  },
+  {
+   "id": "aps-receipt-2026-08-05-key-order-reversed",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt": {
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+      "alg": "Ed25519",
+      "value": "c6927a08187182c72377071fb51b33744e7f410ff3dd3adbe49a0954b12549d92c61b64dbe31d173db300383efdacea3f68ef9cc2a5205137e5b7a4416f00e06"
+     }
+    ],
+    "receipt_id": "4b596dd8becc7daecbe34cbdf6bdfb8d221dc48bc8ea427814b6ce9db1cd9afb",
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "receipt_type": "aps:action-intent:v1",
+    "profile": "aps-receipt-v1"
+   },
+   "vector_note": "Byte-identical content to the valid vector, transmitted with reversed member order. Verifies ONLY if canonicalization sorts at serialization time. Note receipt_sha256 differs from the valid vector while the canonical bytes and the signature are identical.",
+   "receipt_len": 1126,
+   "receipt_sha256": "dcc5bfdd0be4eb4fbbd2e598a99e75b715f93bb2ddf7d3d6d321caade64cc24f"
+  },
+  {
+   "id": "aps-receipt-2026-08-05-chain-root",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "subject_agent": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "4b596dd8becc7daecbe34cbdf6bdfb8d221dc48bc8ea427814b6ce9db1cd9afb",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "key_id": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51#k1",
+      "alg": "Ed25519",
+      "value": "c6927a08187182c72377071fb51b33744e7f410ff3dd3adbe49a0954b12549d92c61b64dbe31d173db300383efdacea3f68ef9cc2a5205137e5b7a4416f00e06"
+     }
+    ]
+   },
+   "delegation_chain": [
+    {
+     "delegation_id": "dlg_root_0001",
+     "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+     "subject": "did:aps:test:agent-mid",
+     "scope": "repo:read",
+     "expires_at": "2026-08-06T00:00:00.000Z"
+    },
+    {
+     "delegation_id": "dlg_leaf_0002",
+     "issuer": "did:aps:test:agent-mid",
+     "subject": "did:aps:test:agent-leaf",
+     "scope": "repo:read:aeoess/aps-conformance-suite",
+     "expires_at": "2026-08-05T18:00:00.000Z"
+    }
+   ],
+   "delegation_chain_root": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+   "vector_note": "Worked delegation_chain_root example. root = lowercase-hex(SHA-256(UTF8(JCS(chain)))), computed over the chain array ALONE. No domain tag and no 0x00 separator, which is the opposite of receipt_id and is deliberate rather than an oversight. Any future correction arrives as an explicitly versioned construction, never as a silent substitution under the same name. delegation_chain_root is NOT a member of the aps-receipt-v1 envelope: it lives on the v1 PolicyReceipt and on the v2 accountability and instruction-provenance records. The receipt here is the baseline valid receipt, unchanged; the chain and its root are carried beside it so the construction can be reproduced without inventing a field the closed receipt schema would reject.",
+   "receipt_len": 1126,
+   "receipt_sha256": "ac7d80e37a0fa552693d922e525c5c4b190e218192a265782d7ae40775d6cdc0"
+  }
+ ]
+}
