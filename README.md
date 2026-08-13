@@ -13,7 +13,7 @@ A packaged corpus of test vectors that any APS-compatible implementation can run
 - **bilateral-delegation**: JCS canonicalization (RFC 8785) vectors used in bilateral delegation receipts. 10 vectors, deterministic seed `aps-canonicalize-fixture-v1`.
 - **inference-session**: CTEF v0.3.1 cryptographic agent identity vectors (validity windows, sequence bounds). 7 vectors, deterministic seed `ctef-synthetic-fixture-v1`.
 - **instruction-provenance**: InstructionProvenanceReceipt v0.2 envelope, path canonicalization, exhaustiveness, action-time recompute. 10 vectors (6 positive + 4 negative), deterministic seed `aps-instruction-provenance-fixture-v1`.
-- **aivss-scenarios**: AIVSS §3.6 worked scenarios (OWASP AAI001-AAI010) with CVSS+AIVSS scoring and APS-primitive mappings. 10 scenarios, structural fixtures.
+- **aivss-scenarios**: AIVSS §3.6 worked scenarios (OWASP AAI001 through AAI010) with CVSS+AIVSS scoring and APS-primitive mappings. 10 scenarios, structural fixtures.
 - **canonical-bytes**: RFC 8785 JCS byte-contract vectors (UTF-16 key ordering, ECMAScript number serialization, NFC, string escaping), TS-reference-derived and runner-verified, plus a production-derived string-concatenation preimage failure-class fixture (qntm v0.3.2). 9 fixtures (8 JCS vectors verified, 1 production-diff).
 - **accountability-record**: signed enforcement-boundary decision records (allow/deny/halt plus execution status) with a detached-payload action digest. 12 vectors.
 - **read-fidelity-receipt**: sampled readback fidelity receipts with word-digest handles. 8 vectors.
@@ -27,7 +27,7 @@ A `.well-known/aps-test-vectors.json` mirrors the agentgraph.co `.well-known` sh
 
 - **Not a normative spec.** The spec lives in the eight APS papers (Zenodo) and the IETF Internet-Draft `draft-pidlisnyi-aps`. This suite is the conformance corpus that says "does your implementation match the canonical reference at the byte level."
 - **Not the live test suite.** For full APS adversarial testing, run `agent-passport-system` `npm test` upstream. This suite extracts the byte-canonical reference set; it does not replace dynamic test execution.
-- **Not a validator.** The runner verifies your canonicalizer against the corpus. It does not validate that your implementation's API surface matches APS. That is an integration question, not a canonicalization one.
+- **Not a validator.** The runner verifies your canonicalizer against the corpus. It does not validate that your implementation's API surface matches APS; that is an integration question, not a canonicalization one.
 
 ## Running the TS runner
 
