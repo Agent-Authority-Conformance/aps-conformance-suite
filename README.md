@@ -10,16 +10,16 @@ Cross-implementation test corpus for the **Agent Passport System (APS)** protoco
 
 A packaged corpus of test vectors that any APS-compatible implementation can run to verify it agrees, byte-for-byte, with the canonical APS reference. Ten fixture categories cover the major spec surfaces:
 
-- **bilateral-delegation** — JCS canonicalization (RFC 8785) vectors used in bilateral delegation receipts. 10 vectors, deterministic seed `aps-canonicalize-fixture-v1`.
-- **inference-session** — CTEF v0.3.1 cryptographic agent identity vectors (validity windows, sequence bounds). 7 vectors, deterministic seed `ctef-synthetic-fixture-v1`.
-- **instruction-provenance** — InstructionProvenanceReceipt v0.2 envelope, path canonicalization, exhaustiveness, action-time recompute. 10 vectors (6 positive + 4 negative), deterministic seed `aps-instruction-provenance-fixture-v1`.
-- **aivss-scenarios** — AIVSS §3.6 worked scenarios (OWASP AAI001–AAI010) with CVSS+AIVSS scoring and APS-primitive mappings. 10 scenarios, structural fixtures.
-- **canonical-bytes** — RFC 8785 JCS byte-contract vectors (UTF-16 key ordering, ECMAScript number serialization, NFC, string escaping), TS-reference-derived and runner-verified, plus a production-derived string-concatenation preimage failure-class fixture (qntm v0.3.2). 9 fixtures (8 JCS vectors verified, 1 production-diff).
-- **accountability-record** — signed enforcement-boundary decision records (allow/deny/halt plus execution status) with a detached-payload action digest. 12 vectors.
-- **read-fidelity-receipt** — sampled readback fidelity receipts with word-digest handles. 8 vectors.
-- **actionref-canonical** — native action_ref scopeRequired canonicalization: NFC per scope string plus Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1). 4 vectors, TS-generated and Go-verified.
-- **bilateral-pair** — bilateral pair reconciliation verdicts across the five mismatch classes. 6 vectors, co-signed.
-- **bilateral-golden** — BilateralReceipt canonical signable bytes carrying aud and action_ref; independently derived and cross-verified (TypeScript reference plus from-scratch Python RFC 8785). 2 vectors, runner-checked signatures.
+- **bilateral-delegation**: JCS canonicalization (RFC 8785) vectors used in bilateral delegation receipts. 10 vectors, deterministic seed `aps-canonicalize-fixture-v1`.
+- **inference-session**: CTEF v0.3.1 cryptographic agent identity vectors (validity windows, sequence bounds). 7 vectors, deterministic seed `ctef-synthetic-fixture-v1`.
+- **instruction-provenance**: InstructionProvenanceReceipt v0.2 envelope, path canonicalization, exhaustiveness, action-time recompute. 10 vectors (6 positive + 4 negative), deterministic seed `aps-instruction-provenance-fixture-v1`.
+- **aivss-scenarios**: AIVSS §3.6 worked scenarios (OWASP AAI001-AAI010) with CVSS+AIVSS scoring and APS-primitive mappings. 10 scenarios, structural fixtures.
+- **canonical-bytes**: RFC 8785 JCS byte-contract vectors (UTF-16 key ordering, ECMAScript number serialization, NFC, string escaping), TS-reference-derived and runner-verified, plus a production-derived string-concatenation preimage failure-class fixture (qntm v0.3.2). 9 fixtures (8 JCS vectors verified, 1 production-diff).
+- **accountability-record**: signed enforcement-boundary decision records (allow/deny/halt plus execution status) with a detached-payload action digest. 12 vectors.
+- **read-fidelity-receipt**: sampled readback fidelity receipts with word-digest handles. 8 vectors.
+- **actionref-canonical**: native action_ref scopeRequired canonicalization: NFC per scope string plus Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1). 4 vectors, TS-generated and Go-verified.
+- **bilateral-pair**: bilateral pair reconciliation verdicts across the five mismatch classes. 6 vectors, co-signed.
+- **bilateral-golden**: BilateralReceipt canonical signable bytes carrying aud and action_ref; independently derived and cross-verified (TypeScript reference plus from-scratch Python RFC 8785). 2 vectors, runner-checked signatures.
 
 A `.well-known/aps-test-vectors.json` mirrors the agentgraph.co `.well-known` shape for the canonical reference subset.
 
@@ -27,7 +27,7 @@ A `.well-known/aps-test-vectors.json` mirrors the agentgraph.co `.well-known` sh
 
 - **Not a normative spec.** The spec lives in the eight APS papers (Zenodo) and the IETF Internet-Draft `draft-pidlisnyi-aps`. This suite is the conformance corpus that says "does your implementation match the canonical reference at the byte level."
 - **Not the live test suite.** For full APS adversarial testing, run `agent-passport-system` `npm test` upstream. This suite extracts the byte-canonical reference set; it does not replace dynamic test execution.
-- **Not a validator.** The runner verifies your canonicalizer against the corpus. It does not validate that your implementation's API surface matches APS — that's an integration question, not a canonicalization one.
+- **Not a validator.** The runner verifies your canonicalizer against the corpus. It does not validate that your implementation's API surface matches APS. That is an integration question, not a canonicalization one.
 
 ## Running the TS runner
 
@@ -44,7 +44,7 @@ npm install
 npx tsx runners/ts/verify.ts
 ```
 
-The runner ships a vendored RFC 8785 JCS canonicalizer in `runners/ts/canonicalize.ts` so external implementations can run it standalone — **no dependency on `agent-passport-system` at runtime**. Implementations under test bring their own canonicalizer; this runner verifies the corpus against the reference.
+The runner ships a vendored RFC 8785 JCS canonicalizer in `runners/ts/canonicalize.ts` so external implementations can run it standalone, with **no dependency on `agent-passport-system` at runtime**. Implementations under test bring their own canonicalizer; this runner verifies the corpus against the reference.
 
 Output: pass/fail per vector + per-category summary. Exit code 0 on full pass, 1 on any failure.
 
@@ -77,13 +77,13 @@ aps-conformance-suite/
 
 ## Cross-validation triangle (CTEF v0.3.2 §A-aligned)
 
-Three independent implementations (ArkForge / APS / AgentGraph) anchor the cross-validation triangle. CTEF v0.3.2 §A names two reader-runnable verifier scripts (`verify-aps-byte-match.mjs` and `verify-ctef-byte-match.mjs`) as the canonical reproduction references, mirrored byte-exact in this repo's [`cross-impl-receipts/`](./cross-impl-receipts/) with daily-poll synchronization. Any third party resolving any one of the three repos arrives at byte-identical canonical envelopes — the conformance bar is reproducibility-without-maintainer-rerun, not the count of byte-matches.
+Three independent implementations (ArkForge / APS / AgentGraph) anchor the cross-validation triangle. CTEF v0.3.2 §A names two reader-runnable verifier scripts (`verify-aps-byte-match.mjs` and `verify-ctef-byte-match.mjs`) as the canonical reproduction references, mirrored byte-exact in this repo's [`cross-impl-receipts/`](./cross-impl-receipts/) with daily-poll synchronization. Any third party resolving any one of the three repos arrives at byte-identical canonical envelopes. The conformance bar is reproducibility-without-maintainer-rerun, not the count of byte-matches.
 
 | Implementation | Repo | Fixture path / harness URL | Verifier |
 |---|---|---|---|
 | **APS** | [`aeoess/aps-conformance-suite`](https://github.com/aeoess/aps-conformance-suite) | `cross-impl-receipts/` (this repo) + `fixtures/bilateral-delegation/canonicalize-fixture-v1.json` (upstream) | `runners/ts/verify.ts` (this repo) + Nobulex `scripts/verify-aps-byte-match.mjs` mirrored byte-exact at [`cross-impl-receipts/`](./cross-impl-receipts/) |
-| **ArkForge** | [`corpollc/qntm`](https://github.com/corpollc/qntm) | `specs/test-vectors/` + production-derived `canonical-bytes-diff-v032.json` (qntm#15) | TODO — finalize when CTEF v0.3.2 §A draft names ArkForge's verifier code path |
-| **AgentGraph** | [`agentgraph-co/agentgraph`](https://github.com/agentgraph-co/agentgraph) (frozen at `69ad94d`) | [`https://agentgraph.co/.well-known/interop-harness.json`](https://agentgraph.co/.well-known/interop-harness.json) `cross_validation_receipts` block | Nobulex `scripts/verify-ctef-byte-match.mjs` against CTEF v0.3.1 inline vectors (4/4 incl. negative-path `INVALID_CLAIM_SCOPE` + `INVALID_COMPOSITION`) — named normatively in CTEF v0.3.2 §A draft as one of the two reader-runnable verifier scripts |
+| **ArkForge** | [`corpollc/qntm`](https://github.com/corpollc/qntm) | `specs/test-vectors/` + production-derived `canonical-bytes-diff-v032.json` (qntm#15) | TODO, finalize when CTEF v0.3.2 §A draft names ArkForge's verifier code path |
+| **AgentGraph** | [`agentgraph-co/agentgraph`](https://github.com/agentgraph-co/agentgraph) (frozen at `69ad94d`) | [`https://agentgraph.co/.well-known/interop-harness.json`](https://agentgraph.co/.well-known/interop-harness.json) `cross_validation_receipts` block | Nobulex `scripts/verify-ctef-byte-match.mjs` against CTEF v0.3.1 inline vectors (4/4 incl. negative-path `INVALID_CLAIM_SCOPE` + `INVALID_COMPOSITION`), named normatively in CTEF v0.3.2 §A draft as one of the two reader-runnable verifier scripts |
 
 ### Three SHA-256 commitments
 
@@ -95,9 +95,9 @@ The byte-faithful mirrored receipts in [`cross-impl-receipts/`](./cross-impl-rec
 | `cross-impl-receipts/ctef-byte-match-receipt.json` | `2e8afc85080ed64fe539c913410f2343d10cba8c5b17f61cc8a7d19e4fa11216` |
 | `cross-impl-receipts/ctef-vectors.json`            | `b655d1b3e7aeccb8b75517c1efc46d2dbf6759dea07581a1b39d4ab59baa7046` |
 
-### Reciprocal pointer — AgentGraph harness aggregator
+### Reciprocal pointer: AgentGraph harness aggregator
 
-The same three SHA-256s are surfaced by AgentGraph at [`https://agentgraph.co/.well-known/interop-harness.json`](https://agentgraph.co/.well-known/interop-harness.json) under the `cross_validation_receipts.receipt_sources.mirror.files_pinned_2026_05_02` block, with `source_commit` pinned to `arian-gogani/nobulex@d68fcee`. Reviewers can pull receipt artifacts from either [`arian-gogani/nobulex`](https://github.com/arian-gogani/nobulex) (originating) or this mirror and reproduce the byte-match independently — the maintainer-rerun-dependency gap is closed.
+The same three SHA-256s are surfaced by AgentGraph at [`https://agentgraph.co/.well-known/interop-harness.json`](https://agentgraph.co/.well-known/interop-harness.json) under the `cross_validation_receipts.receipt_sources.mirror.files_pinned_2026_05_02` block, with `source_commit` pinned to `arian-gogani/nobulex@d68fcee`. Reviewers can pull receipt artifacts from either [`arian-gogani/nobulex`](https://github.com/arian-gogani/nobulex) (originating) or this mirror and reproduce the byte-match independently, so the maintainer-rerun-dependency gap is closed.
 
 ### Cross-stack corpora (`fixtures/cross-stack/`)
 
@@ -131,24 +131,24 @@ See `docs/adding-vectors.md`. Vectors are added upstream first, then copied here
 
 This suite is the conformance reference for the protocol described in:
 
-- *The Agent Social Contract* — https://doi.org/10.5281/zenodo.18749779
-- *Monotonic Narrowing* — https://doi.org/10.5281/zenodo.18932404
-- *Faceted Authority Attenuation* — https://doi.org/10.5281/zenodo.19260073
-- *Behavioral Derivation Rights* — https://doi.org/10.5281/zenodo.19476002
-- *Physics-Enforced Delegation* — https://doi.org/10.5281/zenodo.19478584
-- *Governance in the Medium* — https://doi.org/10.5281/zenodo.19582550
-- *Cognitive Attestation* — https://doi.org/10.5281/zenodo.19646276
-- *The Evidence-Safety Gap* — https://doi.org/10.5281/zenodo.19914628
+- *The Agent Social Contract*: https://doi.org/10.5281/zenodo.18749779
+- *Monotonic Narrowing*: https://doi.org/10.5281/zenodo.18932404
+- *Faceted Authority Attenuation*: https://doi.org/10.5281/zenodo.19260073
+- *Behavioral Derivation Rights*: https://doi.org/10.5281/zenodo.19476002
+- *Physics-Enforced Delegation*: https://doi.org/10.5281/zenodo.19478584
+- *Governance in the Medium*: https://doi.org/10.5281/zenodo.19582550
+- *Cognitive Attestation*: https://doi.org/10.5281/zenodo.19646276
+- *The Evidence-Safety Gap*: https://doi.org/10.5281/zenodo.19914628
 - IETF Internet-Draft: `draft-pidlisnyi-aps-03`
 
 AIVSS scenario fixtures cite: *AIVSS Scoring System For OWASP Agentic AI Core Security Risks v0.8* (OWASP, accessed 2026-04-26).
 
 ## Related
 
-- **Agent Passport System SDK** — https://github.com/aeoess/agent-passport-system
-- **Agent Governance Vocabulary** — https://github.com/aeoess/agent-governance-vocabulary
-- **Agent Passport System org** — https://agent-passport.org
-- **InstructionProvenanceReceipt v0.2 spec** — `agent-passport-system/specs/INSTRUCTION-PROVENANCE-RECEIPT-DRAFT-v0.2.md`
+- **Agent Passport System SDK**: https://github.com/aeoess/agent-passport-system
+- **Agent Governance Vocabulary**: https://github.com/aeoess/agent-governance-vocabulary
+- **Agent Passport System org**: https://agent-passport.org
+- **InstructionProvenanceReceipt v0.2 spec**: `agent-passport-system/specs/INSTRUCTION-PROVENANCE-RECEIPT-DRAFT-v0.2.md`
 
 ## License
 
