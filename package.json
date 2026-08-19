@@ -29,6 +29,6 @@
   "homepage": "https://aeoess.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aeoess/aps-conformance-suite.git"
+    "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"
   }
 }
