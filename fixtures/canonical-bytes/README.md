@@ -85,3 +85,19 @@ They pin the byte-exact behaviors a naive canonicalizer gets wrong:
 - Keys are used exactly as given: JCS does NOT Unicode-normalize keys, so an NFD
   key is preserved as NFD and is distinct from its NFC form.
 - Recursive key sorting in nested objects, with array element order preserved.
+
+## JCS byte-contract vectors v2 (canonical-bytes-jcs-v2.json)
+
+Ten vectors: the eight v1 vectors carried byte-identical (v1 stays frozen) plus
+two RFC 8785 integer-domain vectors derived per section 3.2.2.3 and appendix B:
+
+- `integer-2pow60-inside-int64`: 1152921504606846976 canonicalizes to
+  `1152921504606847000`. Inside signed int64, above 2^53, so a consumer that
+  parses integer tokens as int64 and prints them exactly diverges here.
+- `integer-2pow68-above-int64`: 295147905179352825856 canonicalizes to
+  `295147905179352830000`. Above signed int64, so an int64 parse fails and a
+  consumer that falls back to the original token diverges here instead.
+
+The two exercise different consumer code paths and both are required to
+attribute a divergence to the right branch. Verified byte-identical against the
+agent-passport-system and agent-passport-python reference canonicalizers.
