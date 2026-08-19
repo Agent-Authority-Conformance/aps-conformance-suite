@@ -91,6 +91,13 @@
       "spec_section": "RFC 8785 JCS byte-contract vectors: ECMAScript number formatting (float, 1e21 boundary, negative zero, integer above 2^53, exponent-vs-decimal), UTF-16 key ordering, NFD keys used as given, nested objects. Verified via the runner vendored canonicalizer."
     },
     {
+      "category": "canonical-bytes",
+      "path": "canonical-bytes/canonical-bytes-jcs-v2.json",
+      "canonical_sha256": "9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593",
+      "vector_count": 10,
+      "spec_section": "RFC 8785 JCS byte-contract vectors, v2: the eight v1 vectors byte-identical (v1 stays frozen) plus two integer-domain vectors, 2^60 inside signed int64 and 2^68 above it (RFC 8785 section 3.2.2.3 and appendix B). The pair exercises different integer paths in consumers that parse numbers as int64 before serializing. Verified against the TypeScript and Python reference canonicalizers."
+    },
+    {
       "category": "merkle-root-parity",
       "path": "merkle-root-parity/vectors.json",
       "canonical_sha256": "3947dfb596bebb6eef2119003b1addc50c0d7a26cf44347ba005f9ad10dcb5cd",
