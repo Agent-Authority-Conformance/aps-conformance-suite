@@ -8,7 +8,7 @@
 //
 // Fixture classes:
 //   byte-level handle-correctness (recompute-drift): giskard09/argentum-core
-//     (external) and aeoess/aps-conformance-suite action-ref-v1-negatives
+//     (external) and Agent-Authority-Conformance/aps-conformance-suite action-ref-v1-negatives
 //     (ours, a second implementation of the same class).
 //   issuer-binding and scope-replay (near-miss): giskard09/argentum-core
 //     (external).
@@ -33,7 +33,7 @@ const OURS = join(REPO_ROOT, 'fixtures', 'cross-stack', 'action-ref-v1-negatives
 
 const read = (p: string) => JSON.parse(readFileSync(p, 'utf8'))
 
-const AEOESS = 'aeoess/aps-conformance-suite (ours)'
+const AEOESS = 'Agent-Authority-Conformance/aps-conformance-suite (ours)'
 const ARGENTUM = 'giskard09/argentum-core (external)'
 
 interface Case {

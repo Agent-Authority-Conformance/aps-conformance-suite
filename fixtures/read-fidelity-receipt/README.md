@@ -97,7 +97,7 @@ fixture file.
 ## Verify from a cold clone
 
 ```
-git clone https://github.com/aeoess/aps-conformance-suite
+git clone https://github.com/Agent-Authority-Conformance/aps-conformance-suite
 cd aps-conformance-suite
 npm install
 
