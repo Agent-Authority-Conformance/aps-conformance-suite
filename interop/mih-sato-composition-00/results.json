@@ -1,0 +1,260 @@
+{
+ "@version": "AAC-COMPOSITION-CROSS-SLOT-RESULTS-v1",
+ "composition_pin": "draft-mih-sato-agent-accountability-composition-00",
+ "manifest_digest": "sha256:f2cdeb77e2337d25d387c5468e3b69c1cc7541aa0340c91a7a91ba063cc22575",
+ "bundle_digest": "sha256:a1c28295a87882a32360b5a5d3c00583c25b8627c0628a7fe0707f1c17aa9470",
+ "case_count": 27,
+ "reproduced": 27,
+ "vocabulary": [
+  "pass",
+  "fail",
+  "not_evaluated",
+  "unsupported",
+  "indeterminate"
+ ],
+ "rows": [
+  {
+   "id": "COMP-POSITIVE-01",
+   "variant": "positive",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-01",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "subject.action_bytes",
+   "observed_terminal": "fail",
+   "observed_check": "subject.action_bytes",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-01.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-02",
+   "variant": "negative",
+   "expected_terminal": "indeterminate",
+   "expected_check": "join.digest_context",
+   "observed_terminal": "indeterminate",
+   "observed_check": "join.digest_context",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-02.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-03",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "join.digest_representation",
+   "observed_terminal": "fail",
+   "observed_check": "join.digest_representation",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-03.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-04",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "join.protected_cross_reference",
+   "observed_terminal": "fail",
+   "observed_check": "join.protected_cross_reference",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-04.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-05",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "join.additional_binding_context",
+   "observed_terminal": "fail",
+   "observed_check": "join.additional_binding_context",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-05.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-06",
+   "variant": "negative",
+   "expected_terminal": "unsupported",
+   "expected_check": "policy.binding_semantics",
+   "observed_terminal": "unsupported",
+   "observed_check": "policy.binding_semantics",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BIND-06.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BASIS-01",
+   "variant": "negative",
+   "expected_terminal": "indeterminate",
+   "expected_check": "join.field_basis",
+   "observed_terminal": "indeterminate",
+   "observed_check": "join.field_basis",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BASIS-01.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BASIS-02",
+   "variant": "negative",
+   "expected_terminal": "indeterminate",
+   "expected_check": "join.field_mapping",
+   "observed_terminal": "indeterminate",
+   "observed_check": "join.field_mapping",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-BASIS-02.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-RESULT-01",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "report.result_separation",
+   "observed_terminal": "fail",
+   "observed_check": "report.result_separation",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-RESULT-01.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-RESULT-02",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "report.result_preservation",
+   "observed_terminal": "fail",
+   "observed_check": "report.result_preservation",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-RESULT-02.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-JOIN-01",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "join.exact_action",
+   "observed_terminal": "fail",
+   "observed_check": "join.exact_action",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-JOIN-01.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-JOIN-02",
+   "variant": "negative",
+   "expected_terminal": "fail",
+   "expected_check": "report.not_evaluated_preservation",
+   "observed_terminal": "fail",
+   "observed_check": "report.not_evaluated_preservation",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-JOIN-02.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-UNKNOWN-01",
+   "variant": "negative",
+   "expected_terminal": "unsupported",
+   "expected_check": "policy.required_profile",
+   "observed_terminal": "unsupported",
+   "observed_check": "policy.required_profile",
+   "result": "reproduced"
+  },
+  {
+   "id": "COMP-UNKNOWN-01.condition_removed",
+   "variant": "condition_removed",
+   "expected_terminal": "pass",
+   "expected_check": "composition.complete",
+   "observed_terminal": "pass",
+   "observed_check": "composition.complete",
+   "result": "reproduced"
+  }
+ ]
+}
