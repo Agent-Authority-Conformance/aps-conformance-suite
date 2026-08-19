@@ -11,7 +11,7 @@
   "publisher": {
     "did": "did:web:aeoess.com",
     "homepage": "https://aeoess.com",
-    "repository": "https://github.com/aeoess/aps-conformance-suite"
+    "repository": "https://github.com/Agent-Authority-Conformance/aps-conformance-suite"
   },
   "categories": {
     "bilateral-delegation": {
