@@ -1,0 +1,410 @@
+{
+ "schema": "agentlair-receipt-vectors-v2",
+ "authored_at": "2026-08-12T10:25:42Z",
+ "profile": {
+  "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+  "closed_schema": [
+   "aat_jti",
+   "action",
+   "completed_at",
+   "delegation_chain",
+   "delegation_chain_root",
+   "issuer",
+   "receipt_id",
+   "requested_at",
+   "signature",
+   "subject",
+   "target",
+   "typ"
+  ],
+  "delegation_chain_root": {
+   "cross_check": {
+    "chain_jcs_bytes": 391,
+    "bare_root": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+    "tagged_root": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA",
+    "your_published_bare_root_2026_08_05": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+    "agrees": true
+   }
+  }
+ },
+ "envelope_separation": {
+  "r1": {
+   "separates": false
+  },
+  "v2": {
+   "separates": true
+  },
+  "claim_holds": true
+ },
+ "vectors": [
+  {
+   "id": "receipt-v2-2026-08-12-valid",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt_len": 1092,
+   "receipt_sha256": "3ed113482f17ec7809412b127c9f65a17d24bb3093a85af172e315214368f486",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-content-tampered",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "RECEIPT_ID_MISMATCH",
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "7256174c2ad7d952315ed95d75202b275a6f38de8c6af6d1680d0366fcc14c33",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verifY",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-wrong-signer",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "03f729340abd1372a1f26bfef4618e37e78bb441a93cbe6949ab5c52c833c9f0",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "signature": {
+     "signer_did": "did:key:z6MkjbQqrVvuJoy1DKVYjuuLQXqQVnyiqfJMkFfPBoriScT1",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-receipt-id-mismatch",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "RECEIPT_ID_MISMATCH"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "e901a8c96f2227a67e4b8acf36e0c5d1a892b835fcbb4596444bd9e2dd8ba167",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:egDo186-h8oG-9cPjohbvyPYIFjFpaigtOtb7yA8GbQ",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "pbHDNOex0IPrqpI9HkZP2J55EqqsCulV3Ta_wE-vZkPLXqZyTnUnxYfLPppYY9LHeCWSlC4HwYCQtq4WRldJDw"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-did-uri-invalid",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "DID_URI_INVALID"
+   ],
+   "receipt_len": 1060,
+   "receipt_sha256": "3fd823c44c005cb65cc9a4e119594415678c98201bfc3ee19f699fa7873d8ca3",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "signature": {
+     "signer_did": "did:key:z6MkNOTAVALIDKEY",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-signature-missing",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "SIGNATURE_MISSING"
+   ],
+   "receipt_len": 893,
+   "receipt_sha256": "ec6618ad7c48dea51f859cde94e136145bedf699c3627bb936f267410fd45712",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo"
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-unknown-member",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "PROFILE_VIOLATION",
+    "RECEIPT_ID_MISMATCH",
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1116,
+   "receipt_sha256": "a7a810d1f19257caae0739736fae0b21ff23aa6ee167f4d70c4a1d4571ad3bb8",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "completed_at": "2026-08-12T10:25:42Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    },
+    "chain_root": "deadbeef"
+   }
+  },
+  {
+   "id": "receipt-v2-2026-08-12-key-order-reversed",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt_len": 1092,
+   "receipt_sha256": "cba8ff4e3181600f9374fecc0e82bf387c47299169cdf1f7b309d43334db65c4",
+   "receipt": {
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "aYj8zsiqkbuRtDnERihl18XO5Y9yaPIJVt2U76d2JZK32l6VZveGdJULEZNCnNtX-ktyxIXwQ7t2r47e2L_GBQ"
+    },
+    "receipt_id": "r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo",
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "completed_at": "2026-08-12T10:25:42Z",
+    "requested_at": "2026-08-12T10:25:40Z",
+    "target": "https://gateway.aeoess.com",
+    "action": "verify",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "issuer": "https://agentlair.dev",
+    "typ": "agentlair-receipt/v2"
+   }
+  }
+ ],
+ "schema_note": "ARCHIVED 2026-08-12 by aeoess from Pico Amdal's Drop #10 mail (round 2, v2 envelope). RECONSTRUCTION STATUS: all eight receipt envelopes are reproduced with published member order preserved, and every receipt_len and receipt_sha256 was recomputed and matched before this file was written. The issuer's prose (profile text, errata block, per-vector vector_note) is NOT reproduced; the mail is the record for those. r1 (receipts-amdal-2026-07-29.json) is frozen and unchanged beside this file.",
+ "archive_provenance": {
+  "archived_by": "aeoess",
+  "archived_at_utc": "2026-08-12",
+  "verified_before_write": [
+   "receipt_len",
+   "receipt_sha256",
+   "expected_errors reproduced under the stated profile"
+  ],
+  "findings_raised": [
+   "did-uri-invalid fixture fails base58 decode, not the multicodec check its note describes",
+   "receipt_id no longer commits to signer identity; two valid signers over one body share an id"
+  ]
+ }
+}
