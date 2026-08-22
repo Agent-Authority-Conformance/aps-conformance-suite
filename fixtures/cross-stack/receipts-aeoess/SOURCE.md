@@ -72,7 +72,7 @@ Read out of `src/v2/receipt-core/receipt.ts` and `src/v2/receipt-core/jcs.ts` at
   identical bytes.
 - Evaluation order: schema, then `receipt_id`, then key resolution, then signature.
 
-## Three places the two profiles differ
+## Four places the two profiles differ
 
 These are the interesting part of the exchange and are stated plainly rather than hidden in
 a passing test.
@@ -103,6 +103,26 @@ error list. It does **not** return the four-value valid / invalid / indeterminat
 unsupported result that `draft-pidlisnyi-aps-03` section 3.3 requires, and that AgentLair
 was told in writing on 2026-07-29 to expect. That gap has not closed. It is recorded in the
 fixture's `profile.result_shape` so nobody has to discover it by running the set.
+
+**4. `receipt_id` does not commit to signer identity, on either side (added 2026-08-12).**
+
+Our preimage is `receipt without receipt_id and signatures`, so the signature member is
+excluded and the id is content-addressed. AgentLair's r1 put signer identity inside the id
+preimage; their v2, shipped 2026-08-12, moved it out and now matches us. We raised the
+consequence with them and it applies to us identically, so it is recorded here rather than
+only asked of them.
+
+Two different valid signers over the same receipt body produce the SAME `receipt_id` and
+different signatures. Verified by construction against both profiles on 2026-08-12.
+
+That is deliberate and it is what makes wrong-signer separable from tampered-content: a
+wrong signer leaves the id intact and fails only the signature. The cost is that
+`receipt_id` identifies unsigned receipt content, not a signer-bound object. Anywhere the id
+is used for deduplication, as a database key, as a cross-reference, or as a revocation
+target, two legitimate signers over one body collide. If a caller needs a signer-bound
+identifier it must derive one; this field is not it.
+
+Nothing in `draft-pidlisnyi-aps-03` currently states this either way. Flagged for draft-04.
 
 ## What a lone `receipt_id_mismatch` means
 

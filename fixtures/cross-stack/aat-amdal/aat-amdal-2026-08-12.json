@@ -1,0 +1,101 @@
+{
+ "schema": "aat-pair-v1",
+ "issuer_jwks": {
+  "url": "https://agentlair.dev/.well-known/jwks.json",
+  "kid": "ab0502f7",
+  "alg": "EdDSA"
+ },
+ "subject_pin": {
+  "sub": "acc_6vLlkdaZKKwghJBD",
+  "al_name": "pipeline-test"
+ },
+ "authored_at": "2026-08-12T10:20:32Z",
+ "predecessor": {
+  "authored_at": "2026-08-05T10:05:05Z",
+  "live_jti": "aat_GdoI5YHAkedB0Jyr",
+  "expected_live_token_sha256": "d9250bbbecb9428b17dd7420b9230f748349ea5900a765eed0890ffdc1ecb43e"
+ },
+ "vectors": [
+  {
+   "id": "aat-2026-08-12-live",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg2NTMzNjMyLCJpYXQiOjE3ODY1MzAwMzIsImp0aSI6ImFhdF9XMEE3V1BMUFM0VEhrSVRhIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9XMEE3V1BMUFM0VEhrSVRhIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTUsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45OTExNjM1OTk1MzkzOTIzLCJjb21wdXRlZF9hdCI6IjIwMjYtMDgtMTJUMTA6MjA6MzIuMTE3WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.jgpklw3FfqnZRJKnePREAOJkIERjsJV-uas0tun6I96dEO1GKv1W7gtJARxAjIUNXjZiMUq8rtJll_lHyJSVCQ",
+   "token_len": 870,
+   "token_sha256": "30fc25ea6a9f71275faf0b39621e152c699110fe715c010f5f2e31d33eff0c42",
+   "notBefore": "2026-08-12T10:20:32Z",
+   "notAfter": "2026-08-12T11:20:32Z",
+   "verification_time": "2026-08-12T10:20:32Z",
+   "expected_result": "valid"
+  },
+  {
+   "id": "aat-2026-08-12-expired",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg1OTI3OTA0LCJpYXQiOjE3ODU5MjQzMDQsImp0aSI6ImFhdF9HZG9JNVlIQWtlZEIwSnlyIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9HZG9JNVlIQWtlZEIwSnlyIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTgsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45ODc4NzE1NjUwMTU3MjU3LCJjb21wdXRlZF9hdCI6IjIwMjYtMDgtMDVUMTA6MDU6MDQuOTU1WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.HpWku8ppM6Y-tlQUlXFHkMWzHjmHir8OTAdHYKpUOaoZirxFwvytzKt6CqZT5gC4NAriOLJZSNQXbDssC2WSBA",
+   "token_len": 870,
+   "token_sha256": "d9250bbbecb9428b17dd7420b9230f748349ea5900a765eed0890ffdc1ecb43e",
+   "expiredAt": "2026-08-05T11:05:04Z",
+   "verification_time": "2026-08-12T10:20:32Z",
+   "expected_result": "exp_reject"
+  },
+  {
+   "id": "aat-2026-08-12-act-binding",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg2NTMzNjMyLCJpYXQiOjE3ODY1MzAwMzIsImp0aSI6ImFhdF9tOFc1MFg4UlFMbUFxTlRhIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9tOFc1MFg4UlFMbUFxTlRhIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJ1cm46ZGFzaGNsYXc6YWN0LWJpbmRpbmciOnsidHlwIjoiYWN0aW9uLWJpbmRpbmcvdjEiLCJoYXNoIjoic2hhMjU2OlRvX0F0Ujd2MHA4aW0zWTY5Q0NGS2FBTlcwQUdQdXNMZ1h1M1ctSjFCelUifSwiYWxfdHJ1c3QiOnsic2NvcmUiOjU5LCJsZXZlbCI6ImludGVybiIsImNvbmZpZGVuY2UiOjAuOTkxODM3NDI4ODQ2ODQwMSwiY29tcHV0ZWRfYXQiOiIyMDI2LTA4LTEyVDEwOjIwOjMyLjM5MloiLCJ0cmVuZCI6ImltcHJvdmluZyJ9LCJhbF9uaWQiOiJkaWQ6a2V5Ono2TWtnUm1VWHRHZFRrWGhBY2Zwb2FiRXl2WkVqc2R2VG5HdzZnYVgzTGNTZGhoaiJ9.nPnrkR6qpedJtGX_WmkzKdVCwoY-04vsxEG7k5KJce3zth0VLPTp0KbwyQOq9y3WKVbLO0VqrKP5_CAYbkJQDg",
+   "token_len": 1027,
+   "token_sha256": "ceeb30bdd8a440039437bf6986a784d8452399f67d48c569673d35728dc2a1f9",
+   "notBefore": "2026-08-12T10:20:32Z",
+   "notAfter": "2026-08-12T11:20:32Z",
+   "verification_time": "2026-08-12T10:20:32Z",
+   "expected_result": "valid",
+   "act_binding": {
+    "claim": "urn:dashclaw:act-binding",
+    "typ": "action-binding/v1",
+    "preimage": {
+     "action": "verify",
+     "target": "https://gateway.aeoess.com",
+     "goal": "aps:conformance:act-binding"
+    },
+    "hash": "sha256:To_AtR7v0p8im3Y69CCFKaANW0AGPusLgXu3W-J1BzU"
+   }
+  },
+  {
+   "id": "aat-2026-08-12-not-yet-valid",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfNnZMbGtkYVpLS3dnaEpCRCIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg2NTMzNjMyLCJpYXQiOjE3ODY1MzAwMzIsImp0aSI6ImFhdF9XMEE3V1BMUFM0VEhrSVRhIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfNnZMbGtkYVpLS3dnaEpCRCIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF9XMEE3V1BMUFM0VEhrSVRhIiwiYWxfbmFtZSI6InBpcGVsaW5lLXRlc3QiLCJhbF90cnVzdCI6eyJzY29yZSI6NTUsImxldmVsIjoiaW50ZXJuIiwiY29uZmlkZW5jZSI6MC45OTExNjM1OTk1MzkzOTIzLCJjb21wdXRlZF9hdCI6IjIwMjYtMDgtMTJUMTA6MjA6MzIuMTE3WiIsInRyZW5kIjoic3RhYmxlIn0sImFsX25pZCI6ImRpZDprZXk6ejZNa2dSbVVYdEdkVGtYaEFjZnBvYWJFeXZaRWpzZHZUbkd3NmdhWDNMY1NkaGhqIn0.jgpklw3FfqnZRJKnePREAOJkIERjsJV-uas0tun6I96dEO1GKv1W7gtJARxAjIUNXjZiMUq8rtJll_lHyJSVCQ",
+   "token_len": 870,
+   "token_sha256": "30fc25ea6a9f71275faf0b39621e152c699110fe715c010f5f2e31d33eff0c42",
+   "notBefore": "2026-08-12T10:20:32Z",
+   "notAfter": "2026-08-12T11:20:32Z",
+   "verification_time": "2026-08-12T10:19:32Z",
+   "expected_result": "nbf_reject"
+  },
+  {
+   "id": "aat-2026-08-12-cross-subject",
+   "aat": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImFiMDUwMmY3In0.eyJpc3MiOiJodHRwczovL2FnZW50bGFpci5kZXYiLCJzdWIiOiJhY2NfQkU5VHl1YlVzZGJ5cGYwbyIsImF1ZCI6Imh0dHBzOi8vZ2F0ZXdheS5hZW9lc3MuY29tIiwiZXhwIjoxNzg2NTMzNjMxLCJpYXQiOjE3ODY1MzAwMzEsImp0aSI6ImFhdF80SWROUkdwNnFMS2RvUU5sIiwiZGlkIjoiZGlkOndlYjphZ2VudGxhaXIuZGV2OmFnZW50czphY2NfQkU5VHl1YlVzZGJ5cGYwbyIsImFsX3Njb3BlcyI6WyJhcHM6dmVyaWZ5OmxpdmUiXSwiYWxfYXVkaXRfdXJsIjoiaHR0cHM6Ly9hZ2VudGxhaXIuZGV2L3YxL2F1ZGl0L2FhdF80SWROUkdwNnFMS2RvUU5sIiwiYWxfbmFtZSI6ImFwcy1jb25mb3JtYW5jZS1jcm9zcy1zdWJqZWN0In0.ZZZPOD_7fa8R319gufZ4t4XDF7HikbEm2DxrUkuV_wWOBoZrgFyyIJkz3XYRN6JGdNbeeMyiEVyp8YOFedUbBA",
+   "token_len": 626,
+   "token_sha256": "0f09ce1907cf79290cad1ebf2ce148ff93f21b81064418b0ffd1d5a768e20cd0",
+   "notBefore": "2026-08-12T10:20:31Z",
+   "notAfter": "2026-08-12T11:20:31Z",
+   "verification_time": "2026-08-12T10:20:32Z",
+   "expected_result": "valid",
+   "subject_assert": {
+    "must_differ_from_pinned": true,
+    "expect_sub": "acc_BE9TyubUsdbypf0o"
+   }
+  }
+ ],
+ "schema_note": "ARCHIVED 2026-08-12 by aeoess from Pico Amdal's Drop #10 mail. RECONSTRUCTION STATUS, stated per the 2026-07-29 corpus-repair precedent in SOURCE.md: all five token strings, digests, lengths, verification_time values, the act_binding preimage and the predecessor block are VERBATIM from the mail. The issuer's prose fields (his schema_note, integrity_convention, per-vector vector_note and verifier_must) are NOT reproduced here; the mail is the record for those. Every token was signature-verified against the live JWKS at kid ab0502f7 before this file was written. The load-bearing use of this file is the rotation seam, which needs the token bytes, and those are exact.",
+ "archive_provenance": {
+  "archived_by": "aeoess",
+  "archived_at_utc": "2026-08-12",
+  "verified_before_write": [
+   "ed25519_signature",
+   "token_sha256",
+   "token_len"
+  ],
+  "jwks_fetched_live": "https://agentlair.dev/.well-known/jwks.json",
+  "kid": "ab0502f7",
+  "seam_check": "this drop's -expired token string is byte-identical to the -live token in aat-amdal-2026-08-05.json; digest recomputed independently from both files agrees with both declared values",
+  "findings_raised": [
+   "no nbf claim in any vector; declared notBefore is iat restated",
+   "60s not-yet-valid gap sits inside RFC 7519 4.1.5 clock-skew leeway",
+   "cross-subject differential policy claim not supported by the fixture"
+  ]
+ }
+}
