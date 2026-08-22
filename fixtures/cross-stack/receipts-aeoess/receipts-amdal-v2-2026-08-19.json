@@ -1,0 +1,484 @@
+{
+  "schema": "agentlair-receipt-vectors-v2",
+  "authored_at": "2026-08-19T10:06:22Z",
+  "predecessor": {
+    "previous_authored_at": "2026-08-12T10:20:32Z",
+    "previous_live_jti": "aat_W0A7WPLPS4THkITa",
+    "expected_previous_live_token_sha256": "30fc25ea6a9f71275faf0b39621e152c699110fe715c010f5f2e31d33eff0c42"
+  },
+  "profile": {
+    "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "receipt_id": "body0 = envelope minus {receipt_id, signature}; receipt_id = \"r2:\" + base64url(SHA-256(ASCII(\"AGENTLAIR-RECEIPT-ID-V2\") || 0x00 || UTF8(JCS(body0)))). Signer identity is NOT in body0.",
+    "signature": "sig_form = {\"receipt\": envelope minus {signature}, \"signer\": {signer_did, alg}}; value = base64url(Ed25519(ASCII(\"AGENTLAIR-RECEIPT-SIG-V2\") || 0x00 || UTF8(JCS(sig_form)))), unpadded.",
+    "failure_codes": [
+      "OK",
+      "PROFILE_VIOLATION",
+      "DID_URI_INVALID",
+      "SIGNER_DID_MISSING",
+      "SIGNATURE_MISSING",
+      "SIGNATURE_INVALID",
+      "RECEIPT_ID_MISMATCH"
+    ],
+    "closed_schema": [
+      "aat_jti",
+      "action",
+      "completed_at",
+      "delegation_chain",
+      "delegation_chain_root",
+      "issuer",
+      "receipt_id",
+      "requested_at",
+      "signature",
+      "subject",
+      "target",
+      "typ"
+    ],
+    "note": "Condensed local save. Full profile prose, errata, envelope_separation table and vector notes live in the wire copy (Gmail message 1a0197eef4e5c4ca, 2026-08-19)."
+  },
+  "signer_independence": {
+    "signer_a": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+    "signer_b": "did:key:z6MkqAJ1KZvSePy8XS3Z3mhqkwf61hWKMa9y5oiwWZ5MjQDQ",
+    "v2_receipt_id": "r2:PNo7yUaGAStv6ZDxEmgo88E-fh5qF4mXJrKN_bPFywM",
+    "r1_receipt_id_a": "r1:Se4akgZXhsdeftkg1Z4dXFWNywiyZfbr_5LmV6TrgIE",
+    "r1_receipt_id_b": "r1:ZnNYgAOqXWN23WgW3Ksc9sKnBl9st7BJj2cKHjYHckQ",
+    "receipt_a": {
+      "typ": "agentlair-receipt/v1",
+      "issuer": "https://agentlair.dev",
+      "subject": "acc_6vLlkdaZKKwghJBD",
+      "aat_jti": "aat_CSgt669jEU6nrLcD",
+      "action": "verify",
+      "target": "https://gateway.aeoess.com",
+      "requested_at": "2026-08-19T10:06:20Z",
+      "completed_at": "2026-08-19T10:06:22Z",
+      "receipt_id": "r2:PNo7yUaGAStv6ZDxEmgo88E-fh5qF4mXJrKN_bPFywM",
+      "signature": {
+        "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+        "alg": "Ed25519",
+        "value": "xZbskxji2ZuWpac9qD2r7eD1LEaR3HlERPA3QLBICW-MKX4VL0GAJtZ4bABfYigE3IpMRoFrSsJBZCRffsHFAA"
+      }
+    },
+    "receipt_b": {
+      "typ": "agentlair-receipt/v1",
+      "issuer": "https://agentlair.dev",
+      "subject": "acc_6vLlkdaZKKwghJBD",
+      "aat_jti": "aat_CSgt669jEU6nrLcD",
+      "action": "verify",
+      "target": "https://gateway.aeoess.com",
+      "requested_at": "2026-08-19T10:06:20Z",
+      "completed_at": "2026-08-19T10:06:22Z",
+      "receipt_id": "r2:PNo7yUaGAStv6ZDxEmgo88E-fh5qF4mXJrKN_bPFywM",
+      "signature": {
+        "signer_did": "did:key:z6MkqAJ1KZvSePy8XS3Z3mhqkwf61hWKMa9y5oiwWZ5MjQDQ",
+        "alg": "Ed25519",
+        "value": "oe_MSnWY05b1TM1g0sWRBHlnjEkgSD_ix5DxlcYTHUxFjsBY9xMG0R-1okedI-MRThdUx3zOwyXJ9ZfOTCLXDw"
+      }
+    }
+  },
+  "chain_cross_check": {
+    "chain_jcs_bytes": 391,
+    "bare_root": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+    "tagged_root": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+  },
+  "vectors": [
+    {
+      "id": "receipt-v2-2026-08-12-valid",
+      "expected_result": "valid",
+      "expected_errors": [],
+      "receipt_len": 1092,
+      "receipt_sha256": "93529fa5b53d0a2df0c5fa8e3e6d5a1b1e72415db9b5d3efb1400525dc937b79",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-content-tampered",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "RECEIPT_ID_MISMATCH",
+        "SIGNATURE_INVALID"
+      ],
+      "receipt_len": 1092,
+      "receipt_sha256": "d49cceaaab8ccf15bd6527583ec5b7c72793d252cf09900958701159850b6e05",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verifY",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-wrong-signer",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "SIGNATURE_INVALID"
+      ],
+      "receipt_len": 1092,
+      "receipt_sha256": "4c7542bf89eed04606c58152c10abcf3479922ec1f8cfc345de8b823f8020a55",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6MkqAJ1KZvSePy8XS3Z3mhqkwf61hWKMa9y5oiwWZ5MjQDQ",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-receipt-id-mismatch",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "RECEIPT_ID_MISMATCH"
+      ],
+      "receipt_len": 1092,
+      "receipt_sha256": "6b08edd38d76da0a858567aab97e191342a34c3b7a936818275889393194a79d",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:egDo186-h8oG-9cPjohbvyPYIFjFpaigtOtb7yA8GbQ",
+        "signature": {
+          "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+          "alg": "Ed25519",
+          "value": "5N4a2UFyttazBwXXUIbUiYEUovPs0evlT0CODPzCKt_U_tmpimCgraOXo8btUXaHjn7IyNQ6rY32J36S1qsxAQ"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-did-uri-invalid",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "DID_URI_INVALID"
+      ],
+      "receipt_len": 1060,
+      "receipt_sha256": "fc0a7c9145e1c50b58c3a2531a1834a14e670d5bb352475ff888b004fcd2a5a0",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6MkNOTAVALIDKEY",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-did-wrong-key-type",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "DID_URI_INVALID"
+      ],
+      "receipt_len": 1092,
+      "receipt_sha256": "21e557c962dfeb0cec314fa99cbc732c5c25178958834837940acb434dade679",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6LSbgC4DpuCf7zxewhFPnYcyBm3YgxjEEovsehvWqZzTm8z",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        }
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-signature-missing",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "SIGNATURE_MISSING"
+      ],
+      "receipt_len": 893,
+      "receipt_sha256": "9b6973d5b3c5c43fe7d81a280bd30c784ae590bef22847fd9a25e40213938e18",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0"
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-unknown-member",
+      "expected_result": "invalid",
+      "expected_errors": [
+        "PROFILE_VIOLATION",
+        "RECEIPT_ID_MISMATCH",
+        "SIGNATURE_INVALID"
+      ],
+      "receipt_len": 1116,
+      "receipt_sha256": "2caed05c60455bbda32a7e911826ad1d8ab4e9ffe58040e8d1fb4131b15918b2",
+      "receipt": {
+        "typ": "agentlair-receipt/v2",
+        "issuer": "https://agentlair.dev",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "action": "verify",
+        "target": "https://gateway.aeoess.com",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "completed_at": "2026-08-19T10:06:22Z",
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "signature": {
+          "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        },
+        "chain_root": "deadbeef"
+      }
+    },
+    {
+      "id": "receipt-v2-2026-08-12-key-order-reversed",
+      "expected_result": "valid",
+      "expected_errors": [],
+      "receipt_len": 1092,
+      "receipt_sha256": "e161d918f96f7e8dc499eea0067108920110554122264bf5498873e31ff03200",
+      "receipt": {
+        "signature": {
+          "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+          "alg": "Ed25519",
+          "value": "MT88eXyxGxfZeNneckqByH4JfB67dW2cWn5M5MVyPaF4S0J1cym0yjOq5_0Mnk0H49rW322ZZKixPu6-brIWBA"
+        },
+        "receipt_id": "r2:-WRLhB9rl2GJyNKePh3kwGdO4DorE-E-JuTMvZpmQz0",
+        "delegation_chain_root": {
+          "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+          "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+        },
+        "delegation_chain": [
+          {
+            "delegation_id": "dlg_root_0001",
+            "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+            "subject": "did:aps:test:agent-mid",
+            "scope": "repo:read",
+            "expires_at": "2026-08-06T00:00:00.000Z"
+          },
+          {
+            "delegation_id": "dlg_leaf_0002",
+            "issuer": "did:aps:test:agent-mid",
+            "subject": "did:aps:test:agent-leaf",
+            "scope": "repo:read:aeoess/aps-conformance-suite",
+            "expires_at": "2026-08-05T18:00:00.000Z"
+          }
+        ],
+        "completed_at": "2026-08-19T10:06:22Z",
+        "requested_at": "2026-08-19T10:06:20Z",
+        "target": "https://gateway.aeoess.com",
+        "action": "verify",
+        "aat_jti": "aat_CSgt669jEU6nrLcD",
+        "subject": "acc_6vLlkdaZKKwghJBD",
+        "issuer": "https://agentlair.dev",
+        "typ": "agentlair-receipt/v2"
+      }
+    }
+  ]
+}
