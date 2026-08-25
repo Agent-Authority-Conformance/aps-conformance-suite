@@ -1,8 +1,10 @@
 # aps-conformance-suite
 
-Verify bundles in the browser at https://agent-passport.org/verify.html
+This is the Agent Passport System corpus hosted by Agent Authority Conformance, an LF Decentralized Trust lab: byte-level test vectors, verifier adapters and reproducible run reports for identity, delegated authority and signed decision receipts. It is one corpus in the lab; the lab itself is at https://github.com/Agent-Authority-Conformance.
 
-Cross-implementation test corpus for the **Agent Passport System (APS)** protocol. Byte-identical JCS canonicalization fixtures, deterministic Ed25519 signatures, OWASP AIVSS §3.6 scenario fixtures, and InstructionProvenanceReceipt vectors. Apache-2.0.
+Run it: `npm ci --include=dev && npm test`. After dependencies are installed, the conformance run makes no network calls. Exit 0 on full pass.
+
+Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 
 > **Status:** v0.1.0. The corpus carries cross-stack fixtures from two outside parties, and a weekly signed-token exchange with one of them (AgentLair) has run since 2026-06-17. That is a seed. It is not independent conformance yet.
 
@@ -149,6 +151,8 @@ AIVSS scenario fixtures cite: *AIVSS Scoring System For OWASP Agentic AI Core Se
 - **Agent Governance Vocabulary**: https://github.com/aeoess/agent-governance-vocabulary
 - **Agent Passport System org**: https://agent-passport.org
 - **InstructionProvenanceReceipt v0.2 spec**: `agent-passport-system/specs/INSTRUCTION-PROVENANCE-RECEIPT-DRAFT-v0.2.md`
+
+Verify bundles in the browser at https://agent-passport.org/verify.html
 
 ## License
 
