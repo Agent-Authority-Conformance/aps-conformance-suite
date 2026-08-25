@@ -13,9 +13,9 @@ In order:
    calls. Exit 0 means every vector passed.
 4. Copy the verbatim output of step 3. Do not summarize it and do not trim it.
 5. File it, either way:
-   - Open a Run report issue using the form at
-     [.github/ISSUE_TEMPLATE/run-report.yml](../.github/ISSUE_TEMPLATE/run-report.yml),
-     which asks for the fields below, or
+   - Open a Run report issue at
+     https://github.com/Agent-Authority-Conformance/aps-conformance-suite/issues/new?template=run-report.yml
+     (the form asks for the fields below), or
    - Add a directory `interop/<implementation>-<target>-<pin>/` containing `run-report.md`
      and any script needed to recompute your result, and open a pull request.
 
