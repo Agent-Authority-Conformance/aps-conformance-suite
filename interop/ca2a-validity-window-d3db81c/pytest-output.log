@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /private/tmp/ca2a-repro/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /private/tmp/ca2a-repro
+configfile: pyproject.toml
+collecting ... collected 46 items
+
+tests/conformance/test_profile_conformance.py::test_deleg_001_signature PASSED [  2%]
+tests/conformance/test_profile_conformance.py::test_deleg_002_attenuation PASSED [  4%]
+tests/conformance/test_profile_conformance.py::test_deleg_003_continuity PASSED [  6%]
+tests/conformance/test_profile_conformance.py::test_deleg_004_depth PASSED [  8%]
+tests/conformance/test_profile_conformance.py::test_deleg_005_replay PASSED [ 10%]
+tests/conformance/test_profile_conformance.py::test_deleg_006_valid_chain_accepted PASSED [ 13%]
+tests/conformance/test_profile_conformance.py::test_deleg_006a_untrusted_root_rejected PASSED [ 15%]
+tests/conformance/test_profile_conformance.py::test_deleg_007_expired_credential_rejected PASSED [ 17%]
+tests/conformance/test_profile_conformance.py::test_deleg_008_not_yet_valid_credential_rejected PASSED [ 19%]
+tests/conformance/test_profile_conformance.py::test_deleg_009_chain_within_validity_window_accepted PASSED [ 21%]
+tests/conformance/test_profile_conformance.py::test_policy_001_intersection PASSED [ 23%]
+tests/conformance/test_profile_conformance.py::test_policy_002_delegated_not_allowed_denied PASSED [ 26%]
+tests/conformance/test_profile_conformance.py::test_policy_003_allowed_not_delegated_denied PASSED [ 28%]
+tests/conformance/test_profile_conformance.py::test_attest_001_providers_fail_closed PASSED [ 30%]
+tests/conformance/test_profile_conformance.py::test_attest_002_wrong_measurement PASSED [ 32%]
+tests/conformance/test_profile_conformance.py::test_attest_003_untrusted_root PASSED [ 34%]
+tests/conformance/test_profile_conformance.py::test_attest_004_tampered_report PASSED [ 36%]
+tests/conformance/test_profile_conformance.py::test_attest_005_tdx_wrong_mrtd PASSED [ 39%]
+tests/conformance/test_profile_conformance.py::test_seal_001_only_peer_key_opens PASSED [ 41%]
+tests/conformance/test_profile_conformance.py::test_seal_002_no_plaintext_in_blob PASSED [ 43%]
+tests/conformance/test_profile_conformance.py::test_seal_003_tamper_fails_closed PASSED [ 45%]
+tests/conformance/test_profile_conformance.py::test_prov_001_dag_verifies PASSED [ 47%]
+tests/conformance/test_profile_conformance.py::test_prov_002_tamper_detected PASSED [ 50%]
+tests/conformance/test_profile_conformance.py::test_prov_003_bound_to_authority PASSED [ 52%]
+tests/conformance/test_profile_conformance.py::test_pipe_001_grants_and_records PASSED [ 54%]
+tests/conformance/test_profile_conformance.py::test_pipe_002_sealed_without_key_fails_closed PASSED [ 56%]
+tests/conformance/test_profile_conformance.py::test_pipe_003_invalid_chain_rejected_first PASSED [ 58%]
+tests/conformance/test_profile_conformance.py::test_action_001_valid_delegated_action_evidence PASSED [ 60%]
+tests/conformance/test_profile_conformance.py::test_action_002_parent_trace_hash_mismatch_is_provenance_invalid PASSED [ 63%]
+tests/conformance/test_profile_conformance.py::test_action_003_missing_parent_trace_record_is_provenance_invalid PASSED [ 65%]
+tests/conformance/test_profile_conformance.py::test_action_004_unknown_delegation_credential_id_is_provenance_invalid PASSED [ 67%]
+tests/conformance/test_profile_conformance.py::test_action_005_action_outside_delegated_scope_is_authorization_invalid PASSED [ 69%]
+tests/conformance/test_profile_conformance.py::test_action_006_local_policy_denial_is_authorization_invalid PASSED [ 71%]
+tests/conformance/test_profile_conformance.py::test_action_007_controller_rejection_is_valid_negative_outcome PASSED [ 73%]
+tests/conformance/test_profile_conformance.py::test_action_008_invalid_delegation_signature_is_provenance_invalid PASSED [ 76%]
+tests/conformance/test_profile_conformance.py::test_action_009_multi_hop_attenuation_verifies PASSED [ 78%]
+tests/conformance/test_profile_conformance.py::test_action_010_intermediate_scope_widening_is_provenance_invalid PASSED [ 80%]
+tests/conformance/test_profile_conformance.py::test_action_011_delegatee_mismatch_is_provenance_invalid PASSED [ 82%]
+tests/conformance/test_profile_conformance.py::test_action_012_expired_delegation_credential_is_provenance_invalid PASSED [ 84%]
+tests/conformance/test_profile_conformance.py::test_action_013_not_yet_valid_delegation_credential_is_provenance_invalid PASSED [ 86%]
+tests/conformance/test_profile_conformance.py::test_hold_001_chain_without_a_proof_is_refused PASSED [ 89%]
+tests/conformance/test_profile_conformance.py::test_hold_002_proof_by_a_non_holder_is_refused PASSED [ 91%]
+tests/conformance/test_profile_conformance.py::test_hold_003_proof_answering_an_unissued_challenge_is_refused PASSED [ 93%]
+tests/conformance/test_profile_conformance.py::test_hold_004_proof_for_another_audience_is_refused PASSED [ 95%]
+tests/conformance/test_profile_conformance.py::test_hold_005_proof_does_not_transfer_across_capabilities PASSED [ 97%]
+tests/conformance/test_profile_conformance.py::test_hold_006_an_attested_caller_cannot_use_another_partys_chain PASSED [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/_pytest/config/__init__.py:1464
+  /private/tmp/ca2a-repro/.venv/lib/python3.14/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_mode
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 46 passed, 1 warning in 1.35s =========================
