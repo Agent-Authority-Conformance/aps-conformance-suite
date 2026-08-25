@@ -1,0 +1,106 @@
+name: Run report
+description: Report a run of this corpus, in either run mode. Passes and divergences are both useful.
+title: "[run report] "
+labels: ["run report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        docs/RUN-REPORT.md explains the two run modes and what a published report means.
+        Paste output verbatim. Do not summarize it and do not trim it.
+
+  - type: input
+    id: who
+    attributes:
+      label: Who ran it
+      description: Your GitHub handle or name.
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: The date of the run, YYYY-MM-DD.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: run-mode
+    attributes:
+      label: Run mode
+      description: Mode A runs this repository's runner. Mode B recomputes with your own implementation.
+      options:
+        - "A: reproduction, this repository's runner in my environment"
+        - "B: independent recomputation, my own implementation"
+    validations:
+      required: true
+
+  - type: input
+    id: implementation
+    attributes:
+      label: Implementation name
+      description: What was tested.
+    validations:
+      required: true
+
+  - type: input
+    id: implementation-ref
+    attributes:
+      label: Implementation repo and commit or version
+      description: Enough to fetch exactly what you ran.
+    validations:
+      required: true
+
+  - type: input
+    id: corpus-ref
+    attributes:
+      label: Corpus reference
+      description: The tag or commit sha of this repository you ran against.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Language, runtime version, operating system.
+    validations:
+      required: true
+
+  - type: textarea
+    id: per-vector
+    attributes:
+      label: Per-vector results
+      description: Mode A, paste the runner output. Mode B, list every vector as match or diverge, with your observed bytes or verdict on each divergence.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: verbatim
+    attributes:
+      label: Verbatim command and output
+      description: The commands you ran and what they printed, uncut.
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: independence
+    attributes:
+      label: Author-produced or independent
+      description: Independent means you are neither the author of the vectors nor the author of the implementation under test.
+      options:
+        - "independent"
+        - "author-produced"
+    validations:
+      required: true
+
+  - type: textarea
+    id: suspected-defective
+    attributes:
+      label: Suspected defective vectors
+      description: Optional. Any vector you believe is wrong, and why.
+    validations:
+      required: false

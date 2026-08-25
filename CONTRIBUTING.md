@@ -4,7 +4,7 @@ This repo publishes the conformance fixtures for the Agent Passport System: dete
 
 ## The fastest way to contribute: run it and report
 
-The most valuable contribution is a recompute or breakage report. Clone cold, run `validate.py` and `verify.ts`, and open an issue with your environment, the verbatim output, and what diverged. Reports of vectors that fail where they should pass, pass where they should fail, or diverge between the two verifiers get priority attention. No PR needed.
+The most valuable contribution is a recompute or breakage report. Clone cold, run `npm ci --include=dev && npm test`, or recompute the fixtures with your own implementation, and file a run report with the verbatim output (docs/RUN-REPORT.md explains both run modes and the issue form). Reports of vectors that fail where they should pass, pass where they should fail, or diverge between the two verifiers get priority attention. No PR needed.
 
 ## What lands by PR
 
