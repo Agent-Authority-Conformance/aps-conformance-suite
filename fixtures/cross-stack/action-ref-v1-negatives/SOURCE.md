@@ -16,9 +16,15 @@ README, and a standalone stdlib runner.
 - Local commit: `43223a658b6805c68a679f258a1dfb1a16964338`
 - Base commit (upstream `main` at clone time):
   `6e6eaacd` ("fix: include conformance_source in get_payg_account SELECT")
-- The branch exists only in the local clone. Nothing was pushed, so no
-  upstream URL is claimed for the fixture files themselves. The argentum-core
-  spec the vectors target is public:
+- CORRECTION 2026-08-25: an earlier version of this file stated that the branch
+  existed only in the local clone and that nothing was pushed. That was false.
+  The branch `fixtures/action-ref-v1-recompute` at
+  `43223a658b6805c68a679f258a1dfb1a16964338` was opened as
+  giskard09/argentum-core PR #12 and merged 2026-06-13T02:15:29Z as merge commit
+  `3aea9c6af1c1fb9a5de7aecd19d4a14bdd1364e4`. The fixtures are upstream at
+  `examples/conformance/recompute-drift-v1/`, carrying the positives and all
+  nine drift vectors. This directory is the APS-side copy, not an unpushed
+  original. The argentum-core spec the vectors target is public:
   https://github.com/giskard09/argentum-core/blob/action-ref-v1.0/docs/spec/action-ref.md
 
 ## How the digests were produced
