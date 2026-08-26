@@ -1,0 +1,566 @@
+{
+ "schema": "agentlair-receipt-vectors-v2",
+ "schema_note": "Round 2. r1 (2026-07-29) is FROZEN and unchanged — these ship beside it, not instead of it. Two deltas only: your tag||0x00 domain separation adopted under a new name, and signer identity moved out of the receipt_id preimage into the signature entry. The second is the load-bearing one and envelope_separation below is its test, run on every build.",
+ "authored_at": "2026-08-26T10:08:43Z",
+ "predecessor": {
+   "note": "Your idea, accepted. A date-ordered walk of our drops picked the wrong node once already — there are TWO sends dated 2026-07-29 (10:06 and a correction) and nothing in the artifacts distinguished them. Each drop now names its predecessor explicitly, so the chain is followed by declaration rather than by sort order.",
+   "previous_authored_at": "2026-08-19T10:01:11Z",
+   "previous_live_jti": "aat_UFJEsye5eK05E3rJ",
+   "expected_previous_live_token_sha256": "305cd30dea012f7576ae7ea719038503355d887461ce1c90e6d3cdac8a4ea532"
+ },
+ "profile": {
+   "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+   "key_custody": "Same key as r1. Private half held by this agent; not the key behind al_nid in the AAT corpus.",
+   "canonicalization": "RFC 8785 JCS, keys sorted by UTF-16 code unit at serialization time, NO Unicode normalization (§3.1 — we removed our NFC pass 2026-08-05), no whitespace. Unchanged from r1.",
+   "scalars": "String-only, as r1. delegation_chain adds nested objects and an array; still no numbers, booleans or nulls.",
+   "domain_separation": "ASCII tag || 0x00 || UTF8(JCS(...)) — your construction. Adopted because 0x00 cannot occur in JCS output, so tag and payload are unambiguously separable; our r1 text prefix was only prefix-free by convention. r1 bytes are NOT retrofitted.",
+   "receipt_id": "body0 = envelope minus {receipt_id, signature}; receipt_id = \"r2:\" + base64url(SHA-256(ASCII(\"AGENTLAIR-RECEIPT-ID-V2\") || 0x00 || UTF8(JCS(body0)))). Signer identity is NOT in body0.",
+   "receipt_id_identifies_content_not_signer": "STATED EXPLICITLY at your request (finding 4, 2026-08-12). r2 is a name for UNSIGNED CONTENT. Two different valid signers over an identical body produce the SAME receipt_id and different signature values; you measured r2:pZew-E9dYq9wU8UHNB0Y3GNtIKgRcpy572mN1QRHcGo from both sides. This is intended and it is not separable from the property v2 exists for: wrong-signer is distinguishable from tampered-content EXACTLY BECAUSE the id survives a signer swap. You cannot have the separation and a signer-committing id at once. signer_independence in this document is the executable form — one body, two independent keys, both verifying, ids equal, signatures different, and the r1 ids over the same content NOT equal. The build refuses to emit if it fails. CONSEQUENCES a consumer must decide deliberately, none of which we are prescribing for APS: (1) DEDUP is by content, not by (signer, content) — a second signer over the same body is a duplicate under this key, so co-signing/counter-signing collapses unless the store keys on the pair; (2) a DB PRIMARY KEY on receipt_id alone silently rejects or overwrites the second signer — key on (receipt_id, signer_did) if both must coexist; (3) a REFERENCE to a receipt_id names content, so 'the receipt X signed' needs the signer named alongside it; (4) REVOCATION targeting a receipt_id revokes the content under every signer, which is right for a bad statement and wrong for a compromised key — key revocation belongs at the DID, not here. r1 had the opposite trade and we are not migrating it: both remain published.",
+   "did_key_taxonomy": "ANSWER to your taxonomy question (finding 2, 2026-08-12). We did NOT add an unsupported-key-type code. A verifier's decision at this stage is binary — can I obtain a key to verify with — and no consumer behaviour differs between 'not base58btc' and 'valid base58btc, wrong multicodec'. Widening a published failure-code set that counterparties may match exhaustively, to encode a distinction that changes nothing, costs more than it carries. The distinction IS real when a human debugs a fixture, so it rides in `detail` as sub_reason (base58btc_decode / multicodec_prefix / not_a_did_key_z_uri) with the code unchanged. Reverse this if APS ever gives the two cases different consequences — that is your call, not ours. Both branches now have a vector: -did-uri-invalid decodes-never, -did-wrong-key-type decodes-then-fails-the-header. Until your finding, the second branch had a published description and no fixture.",
+   "signature": "sig_form = {\"receipt\": envelope minus {signature}, \"signer\": {signer_did, alg}}; value = base64url(Ed25519(ASCII(\"AGENTLAIR-RECEIPT-SIG-V2\") || 0x00 || UTF8(JCS(sig_form)))), unpadded. receipt_id and signer are both inside the signed bytes, so neither is malleable.",
+   "evaluation_order": "ACCUMULATING, no short-circuit: schema → canonicalization → receipt_id → key resolution → signature. Errors collect into a list. r1 short-circuits and returns one code; that is unchanged and both remain published. We moved to a list here for the same reason yours has one — you cannot see two faults separate if you only report the first.",
+   "failure_codes": [
+     "OK",
+     "PROFILE_VIOLATION",
+     "DID_URI_INVALID",
+     "SIGNER_DID_MISSING",
+     "SIGNATURE_MISSING",
+     "SIGNATURE_INVALID",
+     "RECEIPT_ID_MISMATCH"
+   ],
+   "closed_schema": [
+     "aat_jti",
+     "action",
+     "completed_at",
+     "delegation_chain",
+     "delegation_chain_root",
+     "issuer",
+     "receipt_id",
+     "requested_at",
+     "signature",
+     "subject",
+     "target",
+     "typ"
+   ],
+   "delegation_chain_root": {
+     "shared_chain_note": "Both roots are computed over ONE shared chain — the chain from your 2026-08-05 -chain-root vector — so the parity test exercises the two constructions rather than asserting they agree. We reproduce your published bare root over it: see cross_check below.",
+     "bare": "lowercase-hex(SHA-256(UTF8(JCS(chain)))) — YOURS, emitted unchanged.",
+     "tagged": "\"cr2:\" + base64url(SHA-256(ASCII(\"AGENTLAIR-CHAIN-ROOT-V2\") || 0x00 || UTF8(JCS(chain)))) — OURS.",
+     "status": "OURS IS NOT A PROPOSED APS CONVENTION AND MUST NOT BE READ AS ONE. You have stated that draft-pidlisnyi-aps-03 §7.3 names the delegation chain root but fixes no preimage, encoding, domain-separation rule, field name, receipt placement or revocation semantics; that the byte construction currently lives in fixtures and reference implementations rather than in the draft; and that you declined to name a construction in mail because that is precisely the unilateral convention-setting the corpus exists to replace. So this is one implementation's construction, published as a worked cross-implementation example against yours over identical bytes, and offered as input to your review — not as a recommendation. Your open questions are yours to settle: what the root covers, its ordering and encoding, where it sits in the receipt, and whether revocation should target a chain root at all rather than delegation identities with cascade state materialized elsewhere. We note without arguing from it that your offline verifier already refuses an accountability receipt whose delegation_chain_root appears in a caller-supplied revoked list, so whatever this digest becomes, it sits at an enforcement point.",
+     "cross_check": {
+       "chain_jcs_bytes": 391,
+       "bare_root": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+       "tagged_root": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA",
+       "your_published_bare_root_2026_08_05": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+       "agrees": true
+     }
+   },
+   "integrity_convention": "receipt_len (character count of the compact JSON, published member order) and receipt_sha256 (hex SHA-256 of its UTF-8 bytes) — your field names, as in the AAT corpus."
+ },
+ "errata": {
+   "r1_did_uri_invalid_note": {
+     "published_in": "receipts-amdal-2026-07-29.json + receipts-v2-amdal-2026-08-12.json, the -did-uri-invalid vector_note",
+     "wrong_text": "Malformed did:key — decodes but carries no 0xed01 multicodec prefix.",
+     "status": "FALSE, in both drops. Found by you, 2026-08-12, finding 2.",
+     "correction": "`z6MkNOTAVALIDKEY` does not decode. `O` at index 4 and `I` at index 10 of the body are not in the base58btc alphabet, so b58decode throws and the multicodec check on the next line is never reached. We wrote the note from the intent of the fixture rather than from its execution path, and no test distinguished the two because both land on the same published code.",
+     "measured": "Run against our own resolver, not argued: b58decode('6MkNOTAVALIDKEY') throws `invalid base58btc character \"O\"`; b58decode of your X25519 fixture returns 34 bytes with header 0xec01 and the multicodec check is what rejects it.",
+     "consequence": "The r1 bytes stay frozen. The generator now emits the true mechanism, the resolver carries a sub_reason, and the branch we had only described now has your fixture running against it."
+   },
+   "r1_evaluation_order_claim": {
+     "published_in": "receipts-amdal-2026-07-29.json, profile.evaluation_order",
+     "wrong_text": "profile → key_resolution → signature → receipt_id. Signature before receipt_id, so a tampered id can never be masked by a bad signature.",
+     "status": "FALSE. Preserved, not edited — the 2026-07-29 corpus keeps its bytes.",
+     "correction": "It is backwards, and it is the same error you issued an erratum for at d9dd1f4 — we had it in our own profile text and did not notice while reading yours. Signature-first WITH a short-circuit is exactly the arrangement in which the id mismatch gets masked: a mutation that breaks both checks stops at the signature and never reaches the id. The non-masking property comes from the absence of a short-circuit, not from the order. Ordering alone decides which fault you see FIRST; only accumulation decides whether you see the second at all.",
+     "measured": "Run against our own r1 verifier, not argued: take the r1 -valid receipt, mutate `action` after signing so BOTH the receipt_id and the signature break. receipt_id genuinely mismatches (recomputation confirms), and evaluateReceipt() returns SIGNATURE_INVALID at stage=signature. The id mismatch is masked. Our published claim said it could not be.",
+     "consequence": "v2 accumulates for this reason, and it is why the r1-vs-v2 comparison in envelope_separation holds evaluation order CONSTANT — both sides accumulate there. Comparing v2's list against r1's short-circuit would have credited the envelope change with a difference that was really just the order."
+   }
+ },
+ "envelope_separation": {
+   "r1": {
+     "tampered_content": "RECEIPT_ID_MISMATCH+SIGNATURE_INVALID",
+     "wrong_signer": "RECEIPT_ID_MISMATCH+SIGNATURE_INVALID",
+     "separates": false
+   },
+   "v2": {
+     "tampered_content": "RECEIPT_ID_MISMATCH+SIGNATURE_INVALID",
+     "wrong_signer": "SIGNATURE_INVALID",
+     "separates": true
+   },
+   "claim_holds": true
+ },
+ "signer_independence": {
+   "signer_a": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+   "signer_b": "did:key:z6Mkg4g3rKEqugne127kYLEbGLohWMhaEZzqDwngVXXUX9vF",
+   "both_verify": true,
+   "v2_receipt_id_a": "r2:eMMhQ_VKXpzKGADUoyzYw2tzUtDbIZUmnMJOA74f3ck",
+   "v2_receipt_id_b": "r2:eMMhQ_VKXpzKGADUoyzYw2tzUtDbIZUmnMJOA74f3ck",
+   "v2_ids_agree": true,
+   "v2_signatures_differ": true,
+   "r1_receipt_id_a": "r1:cK3DWEhpkxFoRBZgt3NqT8GH2mOhoBevq-rx0cz01yw",
+   "r1_receipt_id_b": "r1:4drHwGDoNUzLnSbeZ8k1xCu08ofS5MnSuYSFV0Lur8Q",
+   "r1_ids_agree": false,
+   "claim_holds": true,
+   "r1_mapping": {
+     "note": "Your 2026-08-22 note. receipt_a/receipt_b below ship in the v2 envelope, where signer_did is nested inside `signature`. The r1 profile body is flat and carries signer_did at top level, so the r1 half of this proof is not reproducible from these bytes without the mapping. Stating it rather than shipping r1-shaped twins: twins would be a second set of bytes to keep honest, and the mapping is the thing that was actually missing.",
+     "rule": "r1_body = omit(v2_receipt, 'receipt_id', 'signature') + { signer_did: v2_receipt.signature.signer_did }; then r1 receipt_id = 'r1:' + base64url(sha256(utf8(RECEIPT_DOMAIN + JCS(r1_body)))), the unchanged 2026-07-29 r1 construction.",
+     "r1_body_keys": [
+       "typ",
+       "issuer",
+       "subject",
+       "aat_jti",
+       "action",
+       "target",
+       "requested_at",
+       "completed_at",
+       "signer_did"
+     ],
+     "key_order_note": "JCS sorts keys, so the listing order above carries no meaning — it is the key SET that matters.",
+     "recomputed_from_receipt_a": "r1:cK3DWEhpkxFoRBZgt3NqT8GH2mOhoBevq-rx0cz01yw",
+     "recomputed_from_receipt_b": "r1:4drHwGDoNUzLnSbeZ8k1xCu08ofS5MnSuYSFV0Lur8Q",
+     "reproduces_published_r1_ids": true
+   },
+   "receipt_a": {
+     "typ": "agentlair-receipt/v1",
+     "issuer": "https://agentlair.dev",
+     "subject": "acc_6vLlkdaZKKwghJBD",
+     "aat_jti": "aat_CSgt669jEU6nrLcD",
+     "action": "verify",
+     "target": "https://gateway.aeoess.com",
+     "requested_at": "2026-08-26T10:08:41Z",
+     "completed_at": "2026-08-26T10:08:43Z",
+     "receipt_id": "r2:eMMhQ_VKXpzKGADUoyzYw2tzUtDbIZUmnMJOA74f3ck",
+     "signature": {
+       "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+       "alg": "Ed25519",
+       "value": "BMsUaRRjHcEBht62b0Cu2Kh6kQbQcNII8rVf0hoPC_UiXBnAeB0VcYv6n1VSrYpu__824VQK-u39sQ3so9JIBw"
+     }
+   },
+   "receipt_b": {
+     "typ": "agentlair-receipt/v1",
+     "issuer": "https://agentlair.dev",
+     "subject": "acc_6vLlkdaZKKwghJBD",
+     "aat_jti": "aat_CSgt669jEU6nrLcD",
+     "action": "verify",
+     "target": "https://gateway.aeoess.com",
+     "requested_at": "2026-08-26T10:08:41Z",
+     "completed_at": "2026-08-26T10:08:43Z",
+     "receipt_id": "r2:eMMhQ_VKXpzKGADUoyzYw2tzUtDbIZUmnMJOA74f3ck",
+     "signature": {
+       "signer_did": "did:key:z6Mkg4g3rKEqugne127kYLEbGLohWMhaEZzqDwngVXXUX9vF",
+       "alg": "Ed25519",
+       "value": "-snZTB_R03XVw2yNsYITFH4HBGjAnH9fi1C3tPjrnvcbKi6FZYaEG6EXflCKPaldjnoyE15apeCod0Qfan4nBQ"
+     }
+   }
+ },
+ "vectors": [
+  {
+   "id": "receipt-v2-2026-08-12-valid",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt_len": 1092,
+   "receipt_sha256": "e323523bdc0d33f6af9fc5645c02875b48fa549e5bb6fa0f578a8d4e9d6ec7c7",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    }
+   },
+   "vector_note": "Baseline. Carries the delegation chain and BOTH roots over it. verifier_must: recompute receipt_id over the envelope minus {receipt_id, signature} under the ID tag, then verify Ed25519 over {receipt, signer} under the SIG tag. Both roots are over this vector's own delegation_chain."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-content-tampered",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "RECEIPT_ID_MISMATCH",
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "2757ee183953a53032395f534495e17c7baa21ea02f5f2740d3ab02dcc2dd166",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verifY",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    }
+   },
+   "vector_note": "`action` mutated 'verify'→'verifY' after sealing. Content sits in body0, so the id breaks; content also sits in sig_form.receipt, so the signature breaks. TWO errors. Pair this with -wrong-signer."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-wrong-signer",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "5d512c6a82500a769ee96c820480f90a646b08ab6e0266dfc4fba120cd3098cb",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6Mkg4g3rKEqugne127kYLEbGLohWMhaEZzqDwngVXXUX9vF",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    }
+   },
+   "vector_note": "signer_did replaced with a well-formed did:key that did not sign. body0 excludes signer identity in v2, so receipt_id STILL REPRODUCES and only the signature fails. ONE error. Under r1 this vector and -content-tampered are indistinguishable; that is the whole reason v2 exists."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-receipt-id-mismatch",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "RECEIPT_ID_MISMATCH"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "b8c59d4b7606b5e7c9514669f3eb9c1500d9c2037329db2096adbdd61aac2d68",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:egDo186-h8oG-9cPjohbvyPYIFjFpaigtOtb7yA8GbQ",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "adC0QjL3KWOY3Kpd89wX1FjHxMp5VYOgRi3tGePpPncuTORvkmJDGFnkG310WiC1Q0JhQSZEqKs9tCh9w97pCg"
+    }
+   },
+   "vector_note": "Signature is VALID over this exact envelope; only the declared receipt_id is wrong. Isolates the id check. A verifier that short-circuits on signature will still reject, but reports one error where this profile reports one specific one."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-did-uri-invalid",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "DID_URI_INVALID"
+   ],
+   "receipt_len": 1060,
+   "receipt_sha256": "29831ae57ff155ab7fff551130adc950acdba616533f1b051b41396b04ceef82",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6MkNOTAVALIDKEY",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    }
+   },
+   "vector_note": "signer_did `z6MkNOTAVALIDKEY` is not base58btc: `O` at index 4 and `I` at index 10 are not in that alphabet. Resolution fails inside the DECODER, so the multicodec-prefix check is never reached. Key resolution fails, so the signature is not evaluated and DOES NOT appear in the error list. CORRECTED 2026-08-13 (your finding 2): drop #10 published `decodes but carries no 0xed01 multicodec prefix` for this vector, which is false. Our detail now carries sub_reason=base58btc_decode; the code is unchanged."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-did-wrong-key-type",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "DID_URI_INVALID"
+   ],
+   "receipt_len": 1092,
+   "receipt_sha256": "db25dd1386e569326fdfce6cc0f55cdfa8b6e87135947464cb588104756d02be",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6LSbgC4DpuCf7zxewhFPnYcyBm3YgxjEEovsehvWqZzTm8z",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    }
+   },
+   "vector_note": "YOUR fixture, adopted verbatim: did:key:z6LSbgC4DpuCf7zxewhFPnYcyBm3YgxjEEovsehvWqZzTm8z is valid base58btc, decodes to 34 bytes with multicodec header 0xec01 (X25519). Well-formed did:key naming a key that cannot verify an Ed25519 signature. This is the vector that actually exercises the multicodec branch — until you pointed it out we had described that branch and never run it. Same published code DID_URI_INVALID (see profile.did_key_taxonomy for why we did not add one), detail carries sub_reason=multicodec_prefix."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-signature-missing",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "SIGNATURE_MISSING"
+   ],
+   "receipt_len": 893,
+   "receipt_sha256": "b08e4fef957b3d25a4428fa88c24e3277e9e4aeabfe1d278869bf3c75433d089",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I"
+   },
+   "vector_note": "No signature member at all. receipt_id still reproduces — an unsigned receipt is well-formed and worthless, and the error list says exactly that."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-unknown-member",
+   "expected_result": "invalid",
+   "expected_errors": [
+    "PROFILE_VIOLATION",
+    "RECEIPT_ID_MISMATCH",
+    "SIGNATURE_INVALID"
+   ],
+   "receipt_len": 1116,
+   "receipt_sha256": "f625ee1096bcf9570de54ad91598f6f3a8a7a2c05ab3c16d0d34d7391040d38c",
+   "receipt": {
+    "typ": "agentlair-receipt/v2",
+    "issuer": "https://agentlair.dev",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "action": "verify",
+    "target": "https://gateway.aeoess.com",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "completed_at": "2026-08-26T10:08:43Z",
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    },
+    "chain_root": "deadbeef"
+   },
+   "vector_note": "`chain_root` added after sealing. v2 is a CLOSED schema like your ReceiptV1, so this is a profile violation; it also lands in body0 and in sig_form.receipt, hence three errors. Note the closed-schema check is the one your runner taught us — our APS member set was wrong in both directions until we read runners/aeoess_receipt_runner.py."
+  },
+  {
+   "id": "receipt-v2-2026-08-12-key-order-reversed",
+   "expected_result": "valid",
+   "expected_errors": [],
+   "receipt_len": 1092,
+   "receipt_sha256": "357051455c93d2cd5b8f3c994207358cd34db6279697c31ea720d14edd259997",
+   "receipt": {
+    "signature": {
+     "signer_did": "did:key:z6MktWEUC4pUCK1Lk6Mnr5LWgf2sn7GWtGkAssqdMQV9k4on",
+     "alg": "Ed25519",
+     "value": "3P4GxGeje0zVS1hiTVliEER_T0VAbMp3yC7Uuty_EE0p-g-duNKBGaopU1WIpA35298bJdr9kv3uo4mAmEazCg"
+    },
+    "receipt_id": "r2:2sD0qaSnlsGW0S7j8Xs4h53OdgEDWfyntSA56AOl5-I",
+    "delegation_chain_root": {
+     "bare": "6dc0edff881bbd29f2dc62b1cfd6c18af5593ae83e0afe5d450cee0f7071b574",
+     "tagged": "cr2:QmpA7HDd8JAVWrzGnFPkGgASCFbD7Qz95pHoiJW4DUA"
+    },
+    "delegation_chain": [
+     {
+      "delegation_id": "dlg_root_0001",
+      "issuer": "did:key:z6MkuJUMZwUEso3NatcaRiwghQbQJAMv7Gfn5GNpVjeYMN51",
+      "subject": "did:aps:test:agent-mid",
+      "scope": "repo:read",
+      "expires_at": "2026-08-06T00:00:00.000Z"
+     },
+     {
+      "delegation_id": "dlg_leaf_0002",
+      "issuer": "did:aps:test:agent-mid",
+      "subject": "did:aps:test:agent-leaf",
+      "scope": "repo:read:aeoess/aps-conformance-suite",
+      "expires_at": "2026-08-05T18:00:00.000Z"
+     }
+    ],
+    "completed_at": "2026-08-26T10:08:43Z",
+    "requested_at": "2026-08-26T10:08:41Z",
+    "target": "https://gateway.aeoess.com",
+    "action": "verify",
+    "aat_jti": "aat_CSgt669jEU6nrLcD",
+    "subject": "acc_6vLlkdaZKKwghJBD",
+    "issuer": "https://agentlair.dev",
+    "typ": "agentlair-receipt/v2"
+   },
+   "vector_note": "Byte-identical content to -valid, transmitted with reversed member order. Verifies ONLY if canonicalization sorts at serialization time. Mirror of your `actor` divergence case; receipt_sha256 differs from -valid while the canonical bytes do not."
+  }
+ ]
+}

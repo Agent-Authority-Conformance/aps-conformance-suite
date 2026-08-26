@@ -322,7 +322,10 @@ def evaluate_vector(
     if claim is None:
         record["act_binding"] = "ABSENT"
     else:
+        # flat key is ours; AgentLair ships the preimage nested under act_binding (2026-08-26)
         preimage = vector.get("act_binding_preimage")
+        if preimage is None and isinstance(vector.get("act_binding"), dict):
+            preimage = vector["act_binding"].get("preimage")
         if preimage is None:
             # The claim is present but the fixture does not carry the preimage.
             # Recomputing would mean inventing input, so this is reported and

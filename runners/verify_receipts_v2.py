@@ -79,6 +79,13 @@ for v in doc['vectors']:
     ok = sorted(errs) == sorted(v['expected_errors'])
     allok &= ok
     print(f"  {v['id']:45s} got={sorted(errs)!s:60s} {'OK' if ok else 'MISMATCH expected ' + str(sorted(v['expected_errors']))}")
+stamp_ok = True
+for v in doc['vectors']:
+    compact = json.dumps(v['receipt'], separators=(',', ':'), ensure_ascii=False)
+    ok = (len(compact) == v['receipt_len']) and (hashlib.sha256(compact.encode()).hexdigest() == v['receipt_sha256'])
+    stamp_ok &= ok
+    if not ok: print(f"  STAMP MISMATCH {v['id']} len={len(compact)} stated={v['receipt_len']}")
+print('STAMPS (receipt_len/receipt_sha256 over published member order):', 'ALL MATCH' if stamp_ok else 'MISMATCH')
 print('VECTORS:', 'ALL MATCH' if allok else 'MISMATCH')
 
 print('== signer_independence, re-run from published bytes ==')
@@ -88,7 +95,8 @@ def v2_id(env):
     body0 = {k: v for k, v in env.items() if k not in ('receipt_id', 'signature')}
     return 'r2:' + b64u(hashlib.sha256(ID_TAG + jcs(body0).encode()).digest())
 ida, idb = v2_id(ra), v2_id(rb)
-print('  ids recompute equal:', ida == idb == si['v2_receipt_id'], ida)
+stated_ids = [si[k] for k in ('v2_receipt_id', 'v2_receipt_id_a', 'v2_receipt_id_b') if k in si]
+print('  ids recompute equal:', ida == idb and all(s == ida for s in stated_ids), ida, '| stated keys:', [k for k in ('v2_receipt_id','v2_receipt_id_a','v2_receipt_id_b') if k in si])
 def v2_sigcheck(env):
     sig = env['signature']
     pub, err = resolve_did_key(sig['signer_did'])
@@ -103,15 +111,30 @@ print('  signatures differ:', ra['signature']['value'] != rb['signature']['value
 def r1_id(env):
     body0 = {k: v for k, v in env.items() if k not in ('receipt_id', 'signature')}
     return 'r1:' + b64u(hashlib.sha256(('agentlair-receipt/v1:' + jcs(body0)).encode()).digest())
-r1a, r1b = r1_id(ra), r1_id(rb)
-print('  r1 ids differ:', r1a != r1b, '| match stated:', r1a == si['r1_receipt_id_a'], r1b == si['r1_receipt_id_b'])
+def r1_id_mapped(env):
+    # the flat r1 shape: signer_did at top level, receipt_id and signature omitted (r1_mapping.rule)
+    body = {k: v for k, v in env.items() if k not in ('receipt_id', 'signature')}
+    body['signer_did'] = env['signature']['signer_did']
+    return 'r1:' + b64u(hashlib.sha256(('agentlair-receipt/v1:' + jcs(body)).encode()).digest()), sorted(body.keys())
+(r1a, ka), (r1b, kb) = r1_id_mapped(ra), r1_id_mapped(rb)
+print('  r1 ids (mapped shape) differ:', r1a != r1b, '| match stated:', r1a == si['r1_receipt_id_a'], r1b == si['r1_receipt_id_b'])
+print('  r1 ids (unmapped, no signer_did) match stated:', r1_id(ra) == si['r1_receipt_id_a'], r1_id(rb) == si['r1_receipt_id_b'])
+rm = si.get('r1_mapping')
+if rm:
+    print('  r1_mapping block present; key set matches declared:', ka == sorted(rm['r1_body_keys']), kb == sorted(rm['r1_body_keys']))
+    print('  r1_mapping recomputed_from_receipt_a/b match ours:', rm['recomputed_from_receipt_a'] == r1a, rm['recomputed_from_receipt_b'] == r1b)
+    print('  r1_mapping.reproduces_published_r1_ids stated:', rm['reproduces_published_r1_ids'], '| ours:', r1a == si['r1_receipt_id_a'] and r1b == si['r1_receipt_id_b'])
+else:
+    print('  r1_mapping block ABSENT (fails under the 2026-08-26 declaration; skip-only under earlier drops)')
+for k in ('both_verify', 'v2_ids_agree', 'v2_signatures_differ', 'r1_ids_agree', 'claim_holds'):
+    if k in si: print(f'  stated {k}={si[k]}')
 
 print('== chain root cross-check ==')
 chain = doc['vectors'][0]['receipt']['delegation_chain']
 cj = jcs(chain)
 bare = hashlib.sha256(cj.encode()).hexdigest()
 tagged = 'cr2:' + b64u(hashlib.sha256(b'AGENTLAIR-CHAIN-ROOT-V2\x00' + cj.encode()).digest())
-cc = doc['chain_cross_check']
+cc = doc.get('chain_cross_check') or doc['profile']['delegation_chain_root']['cross_check']
 print('  jcs bytes:', len(cj.encode()), '(stated', cc['chain_jcs_bytes'], ')')
 print('  bare  ==', bare == cc['bare_root'], bare)
 print('  tagged==', tagged == cc['tagged_root'], tagged)
