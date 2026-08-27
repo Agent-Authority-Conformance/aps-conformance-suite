@@ -1,0 +1,138 @@
+{
+ "schema": "aps-receipt-vectors-v1",
+ "schema_note": "Round 2. Reciprocal artifact for the agentlair v2 signer-independence pair. Two vectors over ONE body, differing only in which distinct co-signer key accompanies the fixed issuer signature. Both carry the SAME receipt_id because signatures sit outside the receipt_id preimage.",
+ "authored_at": "2026-08-27T19:34:25Z",
+ "representation_limit": "READ THIS BEFORE COMPARING WITH THE agentlair v2 PAIR. APS CANNOT express the symmetric single-signature construction agentlair v2 uses, where one body is signed by signer A alone and by signer B alone. validateReceiptV1 requires at least one signature whose signer equals the receipt issuer (src/v2/receipt-core/receipt.ts, the issuer-signature check), so a receipt signed only by a non-issuer is rejected. The reciprocal test APS can run is therefore FIXED ISSUER plus a VARYING DISTINCT CO-SIGNER KEY. The property under test, that receipt_id names content and not signer, is the same property; the shape that carries it is not. This difference is reported rather than engineered away, and the receipt model was NOT changed to make the two corpora match.",
+ "integrity_convention": "receipt_len (character count of the compact JSON in published member order) and receipt_sha256 (hex SHA-256 of its UTF-8 bytes), the agentlair field names.",
+ "acceptance_rule": "ADOPTED THIS ROUND after our previous build passed a gate that could not have failed. For any did:key signer, the verification key MUST be derived from the signer DID itself. A (signer, key_id) lookup table MAY assist resolution but MUST NOT allow a vector to pass whose signature does not verify under the key its own signer DID encodes. Every signature below was checked that way, with no table consulted.",
+ "profile": {
+  "receipt_id": "receipt_id = sha256(RECEIPT_ID_TAG || 0x00 || JCS(receipt minus {receipt_id, signatures})). Signer identity is NOT in the preimage, because the whole signatures member is excluded.",
+  "signature": "sig_form = {receipt: receipt minus {signatures}, signer: {signer, key_id, alg}}; value = Ed25519 over RECEIPT_SIG_TAG || 0x00 || JCS(sig_form), lowercase hex.",
+  "canonicalization": "RFC 8785 JCS, keys sorted at serialization time by UTF-16 code unit, no whitespace, no Unicode normalization.",
+  "delegation_root_scope": "THIS ROUND MAKES NO DELEGATION-ROOT CLAIM. The signed body carries delegation_ref, an opaque digest reference, and no delegation_chain_root member. Nothing here defines or changes what a chain root commits to, its ordering, its encoding, its placement, or any revocation relationship. Those questions are open and are not answered by this artifact.",
+  "key_custody": "Three burned test keys from the published seeds below. None is a production APS signer and none appears in any other aeoess corpus.",
+  "keys": [
+   {
+    "role": "issuer, signs BOTH vectors",
+    "seed": "1111111111111111111111111111111111111111111111111111111111111111",
+    "signer": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "key_id": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "public_key_hex": "d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737"
+   },
+   {
+    "role": "distinct co-signer key A, signs vector A only",
+    "seed": "2222222222222222222222222222222222222222222222222222222222222222",
+    "signer": "did:key:z6MkqGC3nWZhYieEVTVDKW5v588CiGfsDSmRVG9ZwwWTvLSK",
+    "key_id": "did:key:z6MkqGC3nWZhYieEVTVDKW5v588CiGfsDSmRVG9ZwwWTvLSK",
+    "public_key_hex": "a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0"
+   },
+   {
+    "role": "distinct co-signer key B, signs vector B only",
+    "seed": "3333333333333333333333333333333333333333333333333333333333333333",
+    "signer": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+    "key_id": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+    "public_key_hex": "17cb79fb2b4120f2b1ec65e4198d6e08b28e813feb01e4a400839b85e18080ce"
+   }
+  ]
+ },
+ "measured_result": {
+  "receipt_ids_agree": true,
+  "shared_receipt_id": "9705b02ade3fa12d3ec1dd41c48ceb14b617e9b4fca02d6ba1f064036bd548b0",
+  "id_preimages_byte_identical": true,
+  "signature_sets_differ": true,
+  "interpretation": "receipt_id names UNSIGNED CONTENT, the same property agentlair v2 reports for r2 and the opposite of what their r1 does. Two different signature sets over an identical body produce one receipt_id. The consumer consequences agentlair listed for r2 apply here unchanged: dedup is by content, a primary key on receipt_id alone collapses the two, and a reference to a receipt_id names content rather than a signed statement.",
+  "distinct_signing_keys_cryptographic": 3,
+  "negative_control": "The acceptance rule was run against the earlier BROKEN build of this same pair, which gave both signatures one did:key distinguished only by non-resolving #k1 / #k2 fragments. That run reports 1 failure and exit 1, with 1 distinct signer DID where 3 are required. The same script reports 0 failures and exit 0 on the vectors below. The rule therefore rejects an artifact whose signature does not verify under the identity it publishes, rather than merely finding some key that works."
+ },
+ "vectors": [
+  {
+   "id": "aps-receipt-2026-08-27-issuer-plus-cosigner-a",
+   "expected_result": "valid",
+   "receipt_len": 1416,
+   "receipt_sha256": "79f5334d5c8e7759c715e76ee3d1e14e64b28f934d0c37250d7fe971c2ab6068",
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "subject_agent": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "9705b02ade3fa12d3ec1dd41c48ceb14b617e9b4fca02d6ba1f064036bd548b0",
+    "signatures": [
+     {
+      "signer": "did:key:z6MkqGC3nWZhYieEVTVDKW5v588CiGfsDSmRVG9ZwwWTvLSK",
+      "key_id": "did:key:z6MkqGC3nWZhYieEVTVDKW5v588CiGfsDSmRVG9ZwwWTvLSK",
+      "alg": "Ed25519",
+      "value": "0863c178579bcb65b08268f2d62c8253fa017853806ccdc41bef833da7131b46706032256ce6a77eec72394bd6d5e0a3834071ea020d925fbc2396a7c3808d09"
+     },
+     {
+      "signer": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+      "key_id": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+      "alg": "Ed25519",
+      "value": "55f6dd15c8c511f5a92e4518ec1929d09c9aaab50d20004e67c2b16bf72bc70eeedaf1ab443d980a3457b04305bd82447fbb5176ab2a329482cded96f5f2fd07"
+     }
+    ]
+   }
+  },
+  {
+   "id": "aps-receipt-2026-08-27-issuer-plus-cosigner-b",
+   "expected_result": "valid",
+   "receipt_len": 1416,
+   "receipt_sha256": "71bc78a0b994a1b875cdca229169ad9ec3278765f57d29a2b8abb4652db3d885",
+   "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps:action-intent:v1",
+    "issuer": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "subject_agent": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+    "action_ref": "6173f2bbecb1563745bf59522c6afffeff90fd60f8340f40374cfd13a1108519",
+    "delegation_ref": "sha256:cb497075c968eafdaf7014a7371d115b860bef43b1a5a8d5b58861a7fea57677",
+    "issued_at": "2026-08-05T12:00:00.000Z",
+    "evidence_refs": [
+     {
+      "artifact_type": "aps:request-body",
+      "sha256": "ea31ffc502d1bc795166864d7963e00573486d8a2b8a4916f87257e49222a3a9"
+     },
+     {
+      "artifact_type": "aps:tool-manifest",
+      "sha256": "df095aa1da95be10a60ca9bdd1005ac044fe2ef163b2049d5253d412157346ef"
+     }
+    ],
+    "result": {
+     "profile": "aps-action-intent-result-v1",
+     "status": "declared"
+    },
+    "receipt_id": "9705b02ade3fa12d3ec1dd41c48ceb14b617e9b4fca02d6ba1f064036bd548b0",
+    "signatures": [
+     {
+      "signer": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+      "key_id": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+      "alg": "Ed25519",
+      "value": "85bbed0ce61df9ab3dc31898a70549445e9736c0e9a5afe5b6463c10857f0239b2c4a81c19985649965f49b22d055a4e6fc530bffe20132986ee9059336dda05"
+     },
+     {
+      "signer": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+      "key_id": "did:key:z6MktULudTtAsAhRegYPiZ6631RV3viv12qd4GQF8z1xB22S",
+      "alg": "Ed25519",
+      "value": "55f6dd15c8c511f5a92e4518ec1929d09c9aaab50d20004e67c2b16bf72bc70eeedaf1ab443d980a3457b04305bd82447fbb5176ab2a329482cded96f5f2fd07"
+     }
+    ]
+   }
+  }
+ ],
+ "key_independence_scope": "EVIDENCE STRENGTH, stated so it is not overread. The three keys here are CRYPTOGRAPHICALLY DISTINCT: three different did:key values, therefore three different public keys, verified by deriving each key from its own DID. That is all this artifact establishes. It does NOT establish organizational or control independence between the co-signers, which would need an independence relation nobody has shown here. The word \"independent\" is reserved for that, and is deliberately not used about these keys."
+}
