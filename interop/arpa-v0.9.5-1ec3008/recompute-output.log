@@ -1,0 +1,34 @@
+ARPA v0.9.5 authority-evaluation recomputation from specification text
+checkout   : /tmp/arpa-v095-repro
+pinned SHA : 1ec3008effc00f3ccbac26769f5528d97d065c9b
+rules from : spec/agent-registry-protocol-v0.9.0.md section 28.2
+imports    : glob, json, os, sys, datetime (standard library only)
+
+PASS ONE, computed from the vector input alone, before any expected value was read:
+  TV-B-01   allow                  steps 3 to 16 satisfied
+  TV-B-02   deny                   step 3: registration status does not permit the requested class of action
+  TV-B-03   indeterminate          step 5 with the closing rule: status age 600s exceeds policy_max_status_age_seconds 120
+  TV-C-01   allow                  steps 3 to 16 satisfied
+  TV-C-02   allow_with_conditions  step 12: approval required by condition "amount > 25000"
+  TV-C-03   deny                   step 10: amount exceeds the per_transaction limit
+  TV-D-01   allow                  steps 3 to 16 satisfied
+  TV-D-02   deny                   step 11: the requested action is a mandatory prohibition
+  TV-D-03   deny                   step 8: request time is outside the authority envelope validity interval
+
+PASS TWO, the vectors' own expected_outcome read from disk and compared:
+
+  vector    expected               recomputed             match
+  --------------------------------------------------------------
+  TV-B-01   allow                  allow                  yes
+  TV-B-02   deny                   deny                   yes
+  TV-B-03   indeterminate          indeterminate          yes
+  TV-C-01   allow                  allow                  yes
+  TV-C-02   allow_with_conditions  allow_with_conditions  yes
+  TV-C-03   deny                   deny                   yes
+  TV-D-01   allow                  allow                  yes
+  TV-D-02   deny                   deny                   yes
+  TV-D-03   deny                   deny                   yes
+
+authority-evaluation vectors attempted: 9
+recomputed outcomes matching the vectors' own expected outcomes: 9/9
+not attempted, check is not authority_evaluation: TV-A-01, TV-A-02, TV-A-03
