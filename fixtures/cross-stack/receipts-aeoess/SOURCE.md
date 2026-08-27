@@ -221,3 +221,43 @@ import from the SDK: 6/6 match expectation, 0 integrity failures, 0 chain-root f
 Gate B independently recomputes both domain-separated preimages, the bare chain root, and
 every `receipt_len` and `receipt_sha256` from the published bytes. A positive that passed
 only because both sides shared one implementation would not survive Gate B.
+
+
+## Round 2, 2026-08-27: fixed issuer plus a distinct co-signer key
+
+`receipts-aeoess-2026-08-27.json` answers the agentlair v2 signer-independence pair with the
+closest construction APS can actually express, and states where the two differ.
+
+1. Both vectors carry the required issuer signature plus exactly one distinct co-signer key.
+   The issuer signature is byte-identical across the pair; only the co-signer differs.
+
+2. Every signing key is derived solely from the `signer` DID published in the vector during
+   verification. No private resolver table supplies a key. A `(signer, key_id)` table may
+   assist lookup, but it must not let a vector pass whose signature fails under the key its
+   own signer DID encodes.
+
+3. The two envelopes carry the same `receipt_id`. `receiptIdPayloadV1` excludes the whole
+   `signatures` member, so signer identity is not in the id preimage and the id names unsigned
+   content. This is the property agentlair reports for their r2 and the opposite of their r1.
+
+4. This is NOT equivalent to agentlair's symmetric single-signature construction. APS requires
+   a signature whose signer equals the issuer, so a receipt signed only by a non-issuer is
+   rejected, and the reciprocal test is necessarily fixed-issuer plus a varying co-signer. The
+   receipt model was not changed to make the corpora match; the mismatch is the finding.
+
+5. This artifact says nothing about `delegation_chain_root`. The `aps-receipt-v1` envelope here
+   carries `delegation_ref` and has no chain-root member, so nothing here defines what a chain
+   root commits to, its ordering, its encoding, its placement, or any revocation relationship.
+   Those questions are open and this round is not a position on them.
+
+Evidence strength, stated so it is not overread: three different `did:key` values prove three
+CRYPTOGRAPHICALLY DISTINCT public keys. That is all. Organizational or control independence
+between the co-signers is not established here and the word independent is not used for it.
+
+Negative control. An earlier build of this same pair gave both signatures one `did:key`,
+distinguished only by `#k1` / `#k2` fragments that do not resolve, so one signature did not
+verify under the identity it named. Our harness passed it, because it resolved keys from a
+private table rather than from the DID. The acceptance rule above rejects that artifact, 1
+failure and exit 1 with 1 distinct signer DID where 3 are required, and accepts the vectors
+here, 0 failures and exit 0. A harness has to validate the public identity binding an artifact
+asserts, not merely show that some caller-supplied resolver can return a key that verifies.
