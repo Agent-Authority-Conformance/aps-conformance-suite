@@ -189,9 +189,11 @@ if (ctx.revoked_delegation_roots.includes(receipt.delegation_chain_root)) {
 
 This is an exact membership test, not a cascade computation: the verifier walks no
 descendants and proves no cascade completion, so any cascade has to be materialized by the
-caller before the list is handed in. The context type also declares `active_delegation_root`,
-which this verifier never consults. The family here is the accountability receipt, not the
-`aps-receipt-v1` envelope these vectors carry.
+caller before the list is handed in. In the released APS 4.4.0 verifier, `ReceiptContext`
+carries `active_delegation_root`, but `verifyReceiptContext()` does not enforce equality with
+the receipt's `delegation_chain_root`. Callers must not treat that field as checked by 4.4.0.
+The family here is the accountability receipt, not the `aps-receipt-v1` envelope these
+vectors carry.
 
 The gap is ours and it is open: a digest that gates a revocation decision has a semantic
 definition in the draft and a byte construction only in shipped code and in this fixture.
