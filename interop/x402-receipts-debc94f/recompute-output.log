@@ -1,0 +1,29 @@
+value domain across the 7 receipt envelopes
+  objects 52  arrays 0  strings 133  integers 24  nulls 11  booleans 0
+  non-ASCII keys: 0   non-ASCII string values: 0   control characters: 0   non-integer numbers: 0   astral-plane keys: 0
+
+JCS rules EXERCISED by these inputs
+  RFC 8785 3.2.3   member ordering by UTF-16 code unit, on 52 objects
+  RFC 8785 3.2.2.3 ECMAScript Number::toString, on 24 integers
+  string encoding with mandatory escapes only, on 133 strings
+  separators with no whitespace, on every container
+  UTF-8 output encoding, at the hash boundary
+
+JCS rules NOT exercised by these inputs, so this run is no evidence about them
+  non-BMP (astral) key ordering: no astral key present
+  float serialization: no non-integer number present
+  control character escaping: no control character present
+  non-ASCII passthrough: no non-ASCII character present
+  array serialization inside the envelope: no array present
+
+vector                                    independent sha256                                                  matches pinned
+--------------------------------------------------------------------------------------------------------------------------------
+neg-countersig-not-payer                  05264696dd2c53536b2b1d70ec03fcd9bf539984ba49127d5a4c67964bd73155    YES
+neg-delivered-not-settled                 cef6d26c5eef38bb403942ec5cc95bed6a22976bda19e2a0fec746a23f2d1db7    YES
+neg-funded-not-delivered                  4fb1ec3149cc40cb503752418a71258f4f55d7a29478075a9f06f9bd36650e33    YES
+neg-leaf-not-in-anchored-root             e420aac6cbffef025e463af9c7bd10538dd01c5044aa2b80b7897ea48566e806    YES
+neg-settled-to-expected-solver-mismatch   20646a53e788ca9a51fca1ec52e84fb4525bef210b2c177da71b55ff9beaa7e9    YES
+pass-countersigned-anchored               d9a835dfba19cb6da87f390a85ade40202f1281d9a2a2179ab2f0fc3841770bb    YES
+pass-settled-delivered                    b287e7addc8f0a06754a39f13a88fdd7e14b8b856a799288ba5ba0c7b526d991    YES
+--------------------------------------------------------------------------------------------------------------------------------
+vectors independently recomputed: 7   matching the pinned digest: 7
