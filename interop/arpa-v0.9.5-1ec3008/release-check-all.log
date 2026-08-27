@@ -1,0 +1,250 @@
+python3 scripts/validate_examples.py
+[OK] examples/valid/agent-card-arpa-extension.json: expected valid, got valid
+[OK] examples/valid/agent-core.json: expected valid, got valid
+[OK] examples/valid/agent-description-reference.json: expected valid, got valid
+[OK] examples/valid/agent-version.json: expected valid, got valid
+[OK] examples/valid/assurance-claim.json: expected valid, got valid
+[OK] examples/valid/authority-envelope.json: expected valid, got valid
+[OK] examples/valid/capability-declaration.json: expected valid, got valid
+[OK] examples/valid/capability-verification.json: expected valid, got valid
+[OK] examples/valid/conformance-declaration.json: expected valid, got valid
+[OK] examples/valid/decision-receipt.json: expected valid, got valid
+[OK] examples/valid/deployment.json: expected valid, got valid
+[OK] examples/valid/event.json: expected valid, got valid
+[OK] examples/valid/execution-receipt.json: expected valid, got valid
+[OK] examples/valid/governance.json: expected valid, got valid
+[OK] examples/valid/identifier-alias.json: expected valid, got valid
+[OK] examples/valid/key-binding.json: expected valid, got valid
+[OK] examples/valid/recognition.json: expected valid, got valid
+[OK] examples/valid/redress-record.json: expected valid, got valid
+[OK] examples/valid/registry-metadata.json: expected valid, got valid
+[OK] examples/valid/relationship.json: expected valid, got valid
+[OK] examples/valid/service-endpoint.json: expected valid, got valid
+[OK] examples/valid/status.json: expected valid, got valid
+[OK] examples/invalid/agent-card-arpa-extension.json: expected invalid, got invalid
+    - $: 'extension_version' is a required property
+    - $: 'arpa_profile' is a required property
+    - $: 'registry_id' is a required property
+    - $.agent_id: 'not-agentreg' does not match '^agentreg:'
+    - $.description_digest: 'bad' does not match '^sha256:[A-Fa-f0-9]{64}$'
+[OK] examples/invalid/agent-core.json: expected invalid, got invalid
+    - $.registration_status: 'trusted' is not one of ['provisioned', 'pending_assurance', 'active', 'restricted', 'suspended', 'quarantined', 'compromised', 'revoked', 'retired', 'superseded', 'under_investigation']
+[OK] examples/invalid/agent-description-reference.json: expected invalid, got invalid
+    - $: 'uri' is a required property
+[OK] examples/invalid/agent-version.json: expected invalid, got invalid
+    - $: 'release_timestamp' is a required property
+    - $.artifact_digest: 'not-a-digest' does not match '^sha256:[A-Fa-f0-9]{64}$'
+[OK] examples/invalid/assurance-claim.json: expected invalid, got invalid
+    - $: 'effective_until' is a required property
+    - $.subject.artifact_digest: 'unspecified' does not match '^sha256:[A-Fa-f0-9]{64}$'
+[OK] examples/invalid/authority-envelope.json: expected invalid, got invalid
+    - $.delegation_mode: 'delegable_freely' is not one of ['non_delegable', 'delegable_once', 'delegable_within_scope', 'delegable_with_explicit_approval', 'delegable_to_named_agents', 'delegable_under_governance_profile']
+    - $.revocation: 'cascade' is a required property
+[OK] examples/invalid/capability-declaration.json: expected invalid, got invalid
+    - $: 'capability_id' is a required property
+[OK] examples/invalid/capability-verification.json: expected invalid, got invalid
+    - $: 'capability_id' is a required property
+[OK] examples/invalid/conformance-declaration.json: expected invalid, got invalid
+    - $: 'implementation_name' is a required property
+[OK] examples/invalid/decision-receipt.json: expected invalid, got invalid
+    - $.conditions: [] should be non-empty
+[OK] examples/invalid/deployment.json: expected invalid, got invalid
+    - $.operational_status: 'running' is not one of ['available', 'degraded', 'restricted', 'maintenance', 'offline', 'draining', 'quarantined', 'unknown']
+[OK] examples/invalid/event.json: expected invalid, got invalid
+    - $: 'sequence' is a required property
+    - $.event_type: 'agent.updated' is not one of ['agent.registered', 'agent.suspended', 'agent.restored', 'agent.retired', 'agent.superseded', 'deployment.created', 'deployment.quarantined', 'delegation.issued', 'delegation.suspended', 'delegation.revoked', 'assurance.issued', 'assurance.expired', 'assurance.suspended', 'assurance.revoked', 'incident.opened', 'incident.updated', 'incident.closed', 'appeal.filed', 'appeal.decided', 'status.restored', 'recognition.added', 'recognition.changed', 'recognition.withdrawn']
+[OK] examples/invalid/execution-receipt.json: expected invalid, got invalid
+    - $: 'authority_envelope_id' is a required property
+    - $: 'authority_decision_receipt' is a required property
+[OK] examples/invalid/governance.json: expected invalid, got invalid
+    - $: 'appeal_procedure' is a required property
+    - $: 'redress_process' is a required property
+[OK] examples/invalid/identifier-alias.json: expected invalid, got invalid
+    - $: 'canonical_id' is a required property
+[OK] examples/invalid/key-binding.json: expected invalid, got invalid
+    - $: 'controller' is a required property
+    - $.intended_use: 'runtime_identity_and_administration' is not one of ['registry_administration', 'runtime_identity', 'delegation_issuance', 'receipt_signing', 'payment', 'recovery', 'security_suspension', 'assurance_issuance']
+[OK] examples/invalid/recognition.json: expected invalid, got invalid
+    - $: 'status_handling' is a required property
+    - $.recognized_record_types: [] should be non-empty
+[OK] examples/invalid/redress-record.json: expected invalid, got invalid
+    - $: 'case_type' is a required property
+[OK] examples/invalid/registry-metadata.json: expected invalid, got invalid
+    - $: 'name' is a required property
+    - $: 'arpa_version' is a required property
+    - $: 'supported_modules' is a required property
+    - $: 'supported_profiles' is a required property
+    - $: 'authoritative_base_uri' is a required property
+    - $: 'conformance_declaration_uri' is a required property
+[OK] examples/invalid/relationship.json: expected invalid, got invalid
+    - $.relationship_type: 'owns' is not one of ['developed_by', 'published_by', 'deployed_by', 'operated_by', 'controlled_by', 'sponsored_by', 'accountable_to', 'assured_by', 'governed_by', 'hosted_by', 'acts_for', 'benefits', 'supervises', 'delegates_to', 'recognized_by']
+[OK] examples/invalid/service-endpoint.json: expected invalid, got invalid
+    - $: 'purpose' is a required property
+[OK] examples/invalid/status.json: expected invalid, got invalid
+    - $: 'observed_at' is a required property
+    - $: 'valid_until' is a required property
+
+validate_examples.py: 44/44 OK
+python3 scripts/validate_test_vectors.py
+[OK] TV-A-01 (A): active_record
+[OK] TV-A-02 (A): not_found
+[OK] TV-A-03 (A): terminal_record
+[OK] TV-B-01 (B): allow
+[OK] TV-B-02 (B): deny
+[OK] TV-B-03 (B): indeterminate
+[OK] TV-C-01 (C): allow
+[OK] TV-C-02 (C): allow_with_conditions
+[OK] TV-C-03 (C): deny
+[OK] TV-D-01 (D): allow
+[OK] TV-D-02 (D): deny
+[OK] TV-D-03 (D): deny
+
+Per-profile positive/negative coverage:
+  Profile A: 1 granting case(s), 2 blocking case(s) [OK]
+  Profile B: 1 granting case(s), 2 blocking case(s) [OK]
+  Profile C: 2 granting case(s), 1 blocking case(s) [OK]
+  Profile D: 1 granting case(s), 2 blocking case(s) [OK]
+
+validate_test_vectors.py: 12/12 OK
+python3 scripts/validate_extended_vectors.py
+[OK] EV-01: digest
+[OK] EV-02: issuer_competence
+[OK] EV-03: issuer_competence
+[OK] EV-04: transfer
+[OK] EV-05: transfer
+[OK] EV-06: event_gap
+[OK] EV-07: event_gap
+[OK] EV-08: alias_graph
+[OK] EV-09: alias_graph
+[OK] EV-10: alias_graph
+[OK] EV-11: delegation_chain
+[OK] EV-12: delegation_chain
+[OK] EV-13: recognition
+[OK] EV-14: lifecycle_transition
+validate_extended_vectors.py: 14/14 OK
+python3 scripts/validate_artifacts.py
+validate_artifacts.py: schemas, registries and YAML parsed successfully
+python3 scripts/validate_repository.py
+validate_repository.py: flagship baseline and local Markdown links OK
+python3 scripts/validate_licensing.py
+validate_licensing.py: artifact-specific licensing map OK
+python3 scripts/validate_candidate.py
+validate_candidate.py: mapping complete; 13 projection vectors and 15 historical vectors present
+python3 scripts/validate_historical_resolution.py
+validate_historical_resolution.py: 15/15 historical vectors passed
+python3 scripts/validate_a2a_interoperability.py
+[OK] A2A-001 valid-public-card.json: accept
+[OK] A2A-002 valid-task-receipt.json: accept
+[OK] A2A-003 digest-mismatch.json: reject ARPA-A2A-CARD-DIGEST-MISMATCH
+[OK] A2A-004 unsupported-required-extension.json: reject ARPA-A2A-REQUIRED-EXTENSION-UNSUPPORTED
+[OK] A2A-005 status-conflict.json: reject ARPA-A2A-CARD-STATUS-CONFLICT
+[OK] A2A-006 missing-authority.json: reject ARPA-A2A-TASK-AUTHORITY-MISSING
+[OK] A2A-R-01 publication-public.json: accept
+[OK] A2A-R-02 publication-restricted-filtered.json: accept
+[OK] A2A-R-03 publication-uri-rewritten.json: reject ARPA-A2A-PUBLICATION-URI-MISMATCH
+[OK] A2A-R-04 publication-digest-bound.json: accept
+[OK] A2A-R-05 publication-snapshot-missing.json: reject ARPA-A2A-SNAPSHOT-MISSING
+[OK] A2A-R-06 compatible-add-skill.json: accept
+[OK] A2A-R-07 breaking-remove-skill.json: accept
+[OK] A2A-R-08 breaking-remove-interface.json: accept
+[OK] A2A-R-09 discovery-no-authority.json: accept
+[OK] A2A-R-10 auth-no-authority.json: accept
+[OK] A2A-R-11 revoked-overrides-card.json: accept
+[OK] A2A-R-12 unknown-required-extension.json: reject ARPA-A2A-REQUIRED-EXTENSION-UNSUPPORTED
+validate_a2a_interoperability.py: 18/18 OK
+python3 -m pytest -q
+............                                                             [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /private/tmp/arpa-v095-repro/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+12 passed, 1 warning in 0.45s
+python3 scripts/run_interoperability.py
+[OK] metadata-discovery
+[OK] canonical-resolution
+[OK] scoped-recognition
+[OK] event-continuity
+[OK] revocation-propagation
+[OK] enforcement-acknowledgement
+[OK] policy-portability
+interoperability: 7/7 checks passed
+python3 scripts/run_candidate_program.py
+candidate-program: 15/15 checks passed
+python3 scripts/generate_implementation_report.py
+/private/tmp/arpa-v095-repro/conformance/reports/reference-implementation-report.json
+cd typescript && (if [ -x node_modules/.bin/tsc ] || command -v tsc >/dev/null 2>&1; then npm run release-check; else npm install --ignore-scripts --no-audit --no-fund && npm run release-check; fi)
+
+> arpa-typescript-implementation@0.3.0 release-check
+> npm run typecheck && npm test && npm run conformance && npm run historical && npm run a2a
+
+
+> arpa-typescript-implementation@0.3.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> arpa-typescript-implementation@0.3.0 test
+> npm run build && node --test dist/tests/*.test.js
+
+
+> arpa-typescript-implementation@0.3.0 build
+> tsc -p tsconfig.json
+
+✔ unknown identifiers do not resolve as terminal records (0.356083ms)
+✔ discovery never implies authority (0.108333ms)
+✔ missing status fails closed (0.043417ms)
+✔ registries are consumed from repository sources (0.858625ms)
+✔ normative schema catalog is consumed directly (1.208042ms)
+✔ historical selection uses effective time rather than current state (1.024084ms)
+✔ historical resolution fails closed outside retention (0.121125ms)
+✔ verified authoritative historical state remains distinct from current state (0.077333ms)
+✔ decision receipt captures deterministic request digest and evidence references (6.319625ms)
+✔ event continuity detects sequence gaps (0.137875ms)
+✔ A2A projection never implies authority (0.353ms)
+✔ A2A compatibility is conservative (0.095ms)
+✔ HTTP client and server provide a consumable ARPA surface (48.324792ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.587458
+
+> arpa-typescript-implementation@0.3.0 conformance
+> npm run build && node dist/src/conformance.js
+
+
+> arpa-typescript-implementation@0.3.0 build
+> tsc -p tsconfig.json
+
+TypeScript conformance: 12/12 vectors passed
+
+> arpa-typescript-implementation@0.3.0 historical
+> npm run build && node dist/src/historical-conformance.js
+
+
+> arpa-typescript-implementation@0.3.0 build
+> tsc -p tsconfig.json
+
+TypeScript historical resolution: 15/15 vectors passed
+
+> arpa-typescript-implementation@0.3.0 a2a
+> npm run build && node dist/src/a2a-conformance.js
+
+
+> arpa-typescript-implementation@0.3.0 build
+> tsc -p tsconfig.json
+
+TypeScript A2A adapter checks: 5/5 passed
+python3 scripts/validate_typescript_interoperability.py
+Cross-runtime equivalence: 27/27 checks (12/12 deterministic; 15/15 historical)
+cd typescript && npm run build
+
+> arpa-typescript-implementation@0.3.0 build
+> tsc -p tsconfig.json
+
+python3 scripts/run_typescript_network_interop.py
+TypeScript network interoperability: 7/7 checks passed
