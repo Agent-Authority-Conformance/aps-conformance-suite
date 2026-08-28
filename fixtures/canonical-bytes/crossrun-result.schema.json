@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Agent-Authority-Conformance/aps-conformance-suite/fixtures/canonical-bytes/crossrun-result.schema.json",
+  "title": "Canonical-bytes cross-run result",
+  "description": "One runner's report from the RFC 8785 canonical-byte cross-run. Exactly one of two shapes: a result, or a SKIP. A SKIP carries no summary, because a run that did not happen has no counts, and a zero-count summary would average into a table as though it were a measurement.",
+  "oneOf": [
+    {
+      "title": "Result",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runner",
+        "implementation",
+        "implementation_kind",
+        "implementation_version",
+        "runtime_version",
+        "fixture",
+        "fixture_sha256",
+        "cases",
+        "summary"
+      ],
+      "properties": {
+        "runner": {
+          "description": "Language the runner is written in.",
+          "enum": ["python", "ts", "go", "rust"]
+        },
+        "implementation": {
+          "description": "Exact name of the canonicalizer under test, as a reader would search for it.",
+          "type": "string",
+          "minLength": 1
+        },
+        "implementation_kind": {
+          "description": "rfc8785: an implementation that claims RFC 8785. first_party: an APS-shipped canonicalizer. baseline_json_encoder: a language's standard JSON encoder, which does not claim RFC 8785 and whose divergences are comparative evidence rather than failures.",
+          "enum": ["rfc8785", "first_party", "baseline_json_encoder"]
+        },
+        "implementation_version": {
+          "description": "Exact published version or immutable git sha of the implementation under test.",
+          "type": "string",
+          "minLength": 1
+        },
+        "runtime_version": {
+          "description": "Interpreter or compiler version that executed the runner.",
+          "type": "string",
+          "minLength": 1
+        },
+        "fixture": {
+          "description": "Path to the fixture the runner consumed.",
+          "type": "string",
+          "minLength": 1
+        },
+        "fixture_sha256": {
+          "description": "SHA-256 over the fixture FILE BYTES, so two runners can be shown to have read the same input.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cases": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "byte_match",
+              "sha256_match",
+              "actual_bytes_hex",
+              "actual_sha256",
+              "first_divergent_byte_offset"
+            ],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "byte_match": { "type": "boolean" },
+              "sha256_match": { "type": "boolean" },
+              "actual_bytes_hex": {
+                "description": "Lowercase hex of the canonical bytes this implementation produced.",
+                "type": "string",
+                "pattern": "^([0-9a-f]{2})*$"
+              },
+              "actual_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "first_divergent_byte_offset": {
+                "description": "Zero-based offset of the first differing byte. When one sequence is an exact prefix of the other there is no differing byte, so the offset is the length of the shorter. Null when the bytes match.",
+                "type": ["integer", "null"],
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total", "byte_match", "sha256_match"],
+          "properties": {
+            "total": { "type": "integer", "minimum": 1 },
+            "byte_match": { "type": "integer", "minimum": 0 },
+            "sha256_match": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    {
+      "title": "Skip",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runner", "status", "reason", "orchestrator", "runtime"],
+      "properties": {
+        "runner": { "enum": ["python", "ts", "go", "rust"] },
+        "status": { "const": "SKIP" },
+        "reason": {
+          "description": "Why this runner did not execute, in a form a reader can act on.",
+          "type": "string",
+          "minLength": 1
+        },
+        "orchestrator": {
+          "description": "What was running when the skip was decided.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["node_version", "platform", "arch"],
+          "properties": {
+            "node_version": { "type": "string", "minLength": 1 },
+            "platform": { "type": "string", "minLength": 1 },
+            "arch": { "type": "string", "minLength": 1 }
+          }
+        },
+        "runtime": {
+          "description": "What was probed for and not found.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["probe", "found"],
+          "properties": {
+            "probe": { "type": "string", "minLength": 1 },
+            "found": { "const": false }
+          }
+        }
+      }
+    }
+  ]
+}
