@@ -92,7 +92,7 @@ should be revisited.
 
 Requires the MoltyCel clone (default `/tmp/aae-moltycel`, override `AAE_MOLTYCEL_REPO`);
 needs `cryptography` and `jsonschema`. APS grounding needs the built APS SDK
-(`$HOME/agent-passport-system/dist`, override `APS_SDK_PATH`).
+(the pinned `agent-passport-system` package from `npm ci`; override with `APS_SDK_PATH` for a local build).
 
 ```
 python3 build_constraint_vectors.py   # re-emit A and B (deterministic, MoltyCel public test keys)

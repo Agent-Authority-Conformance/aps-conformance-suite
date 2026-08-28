@@ -21,9 +21,9 @@
     "test": "npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=22"
@@ -32,5 +32,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"
+  },
+  "dependencies": {
+    "agent-passport-system": "4.5.1"
   }
 }

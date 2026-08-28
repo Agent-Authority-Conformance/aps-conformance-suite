@@ -2,7 +2,8 @@
 // Shows what the shipped APS SDK actually does, so the cross-encoded MoltyCel
 // vectors are grounded in real APS behavior (not just a copy of his 08/15).
 //
-// Loads the shipped SDK from APS_SDK_PATH or $HOME/agent-passport-system/dist.
+// Loads the shipped SDK from the pinned `agent-passport-system` package, or from
+// APS_SDK_PATH when set.
 // Run: node aps_grounding.mjs
 //
 // Findings (captured in README.md):
@@ -10,7 +11,7 @@
 //   B currency      : APS core subDelegate does NOT reject a unit change; APS
 //                     enforces currency at the v2 payment-rails layer instead.
 
-const SDK = process.env.APS_SDK_PATH || `${process.env.HOME}/agent-passport-system/dist/src/index.js`
+const SDK = process.env.APS_SDK_PATH || 'agent-passport-system'
 const { generateKeyPair, createDelegation, subDelegate, preAuthorize } = await import(SDK)
 
 const line = (k, v) => console.log(`${k.padEnd(46)} ${v}`)
