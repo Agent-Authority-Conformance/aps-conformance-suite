@@ -25,9 +25,11 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// ── Load the SHIPPED APS SDK verifier (built dist; no source modified) ──
-// SDK path resolves from APS_SDK_PATH when set, else the default local build location.
-const SDK = process.env.APS_SDK_PATH || `${process.env.HOME}/agent-passport-system/dist/src/index.js`
+// ── Load the SHIPPED APS SDK verifier (published package; no source modified) ──
+// Resolves the `agent-passport-system` package pinned at an exact version in
+// package.json, so a clean checkout plus `npm ci` is self-contained. APS_SDK_PATH
+// still overrides it for running against a local build.
+const SDK = process.env.APS_SDK_PATH || 'agent-passport-system'
 const { generateKeyPair, canonicalize, sign, verifyDelegation, scopeCovers } =
   await import(SDK)
 
