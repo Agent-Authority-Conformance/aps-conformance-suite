@@ -1,0 +1,79 @@
+{
+  "profile": "aps-receipt-decision-relation-vector-v1",
+  "name": "substitution.flipped",
+  "description": "Corrected counterpart of substitution: the SAME receipt, byte for byte unmodified, supplied with decision A, the decision it actually references.",
+  "expected": {
+    "verdict": "accept",
+    "failure": "PASS"
+  },
+  "receipt": {
+    "profile": "aps-receipt-v1",
+    "receipt_type": "aps.conformance.receipt-decision-relation",
+    "issuer": "did:aps:conformance:issuer-receipt-decision-relation-v1",
+    "subject_agent": "did:aps:conformance:agent-receipt-decision-relation-v1",
+    "action_ref": "e3be9b7fccc06e6a7309ff6477b36932a8dc8218613150495b763888baad531f",
+    "delegation_ref": "did:aps:conformance:delegation-receipt-decision-relation-v1",
+    "decision_ref": "d87325af2fa1f59b034970ccfa4932d7dcb7801a797e7ec4e2a0c95954bf877c",
+    "issued_at": "2026-08-28T12:00:00.000Z",
+    "evidence_refs": [],
+    "result": {
+      "status": "executed"
+    },
+    "receipt_id": "3fbd8aef736118e2d2680dee7896499c5a60ce6f452f94bf3db33baca5d1327f",
+    "signatures": [
+      {
+        "signer": "did:aps:conformance:issuer-receipt-decision-relation-v1",
+        "key_id": "receipt-decision-relation-v1-k1",
+        "alg": "Ed25519",
+        "value": "7950e2082ef623bc24466565a560191a642c6c2e15846710f18615f2e1aa9e3e0814f6e15aa838e75f740b280e21ace32dae31a3240d70c6f0665ecdc59b6202"
+      }
+    ]
+  },
+  "provided_decision_evidence": {
+    "authority_state": {
+      "profile": "aps-conformance-authority-state-v1",
+      "delegation_ref": "did:aps:conformance:delegation-receipt-decision-relation-v1",
+      "subject_agent": "did:aps:conformance:agent-receipt-decision-relation-v1",
+      "scope": [
+        "read:catalog",
+        "write:order"
+      ]
+    },
+    "policy_input": {
+      "profile": "aps-conformance-policy-input-v1",
+      "policy_id": "conformance.receipt-decision-relation",
+      "policy_version": "1"
+    },
+    "decision_context": {
+      "profile": "aps-conformance-decision-context-v1",
+      "vector": "substitution-correct",
+      "request_id": "3c126c28cd740263208289e1923de8b4528886c4cf0609290754db86c67b8d02"
+    },
+    "decision_output": {
+      "profile": "aps-core-decision-output-v1",
+      "verdict": "permit",
+      "effective_authority_ref": "7c236c83c7025b46df6962a9027e6d0afcd25a5ccb7d0b6a1543bf6a62e8ccc4",
+      "constraints": [
+        "region:us-west-2",
+        "max_spend_usd:25",
+        "egress:deny"
+      ],
+      "valid_until": "2026-08-28T12:30:00.000Z"
+    }
+  },
+  "provenance": {
+    "note": "AUDIT OUTPUTS ONLY. Every digest in this block is a value a reviewer can recompute from the evidence in this file. A conformant verifier MUST NOT read any of them as an input to its own computation: the decision reference is recomputed from the supplied decision evidence and the receipt action_ref, and is compared against receipt.decision_ref, never against anything here.",
+    "sdk_repo": "https://github.com/aeoess/agent-passport-system",
+    "sdk_commit": "79d936c80555679c1d19abaed70da9dfa07fe5ee",
+    "generator_command": "npx tsx fixtures/receipt-decision-relation/generate.ts",
+    "issuer_public_keys": [
+      {
+        "signer": "did:aps:conformance:issuer-receipt-decision-relation-v1",
+        "key_id": "receipt-decision-relation-v1-k1",
+        "alg": "Ed25519",
+        "public_key": "927110fa489262f5ec85558678e5b0d68d6b3813e406e2ba84b5907a29ff80da"
+      }
+    ],
+    "provided_decision_ref": "d87325af2fa1f59b034970ccfa4932d7dcb7801a797e7ec4e2a0c95954bf877c"
+  }
+}
