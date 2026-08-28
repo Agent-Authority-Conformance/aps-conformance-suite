@@ -1,0 +1,13 @@
+# Canonicalizer under test for the Python runner, at an exact published version.
+#
+# Install it and the runner reports implementation_kind "first_party". Without
+# it the runner falls back to the standard library encoder and says so, labeled
+# "baseline_json_encoder", so a missing install can never be mistaken for a
+# passing first-party result.
+#
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+#
+# An editable install of a local checkout (pip install -e) is deliberately NOT
+# accepted by the runner as a first-party implementation: it resolves to a
+# working tree that a person cloning this suite does not have.
+agent-passport-system==2.11.0

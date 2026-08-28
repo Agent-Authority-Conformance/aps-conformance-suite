@@ -4,15 +4,154 @@ Test vectors for the **string-concatenation preimage failure class**: where two 
 
 ## Layout rationale
 
-This directory is taxonomic-by-failure-class, not source-organization-specific. Future canonical-bytes fixtures from any implementation that hits the same class — APS, AgentGraph CTE, MoltyCel, others — land here under the same `canonical-bytes/` prefix. Filename carries source + version (`canonical-bytes-diff-v032.json`); category does not.
+This directory is taxonomic-by-failure-class, not source-organization-specific. Future canonical-bytes fixtures from any implementation that hits the same class (APS, AgentGraph CTE, MoltyCel, others) land here under the same `canonical-bytes/` prefix. Filename carries source + version (`canonical-bytes-diff-v032.json`); category does not.
 
 The class itself is documented under "INVALID_COMPOSITION" in the cross-impl conformance taxonomy (A2A#1786 §A): a chain hash fails to bind field boundaries, allowing two different field assignments to share a preimage.
+
+## Cross-run
+
+A cross-implementation byte diff. Any project can clone this repository, run one
+command, and paste a machine-readable report of where its canonicalizer's bytes and
+SHA-256 agree or differ from RFC 8785 on ten pinned cases.
+
+What a result does NOT mean: it is a byte diff on ten cases, not a verdict on the
+implementation and not a conformance claim of any kind.
+
+### The ten cases
+
+All ten live in `canonical-bytes-jcs-v2.json` (`v1` is the eight-case subset that v2
+carries unchanged). Each names the RFC 8785 rule it exercises.
+
+| case | rule exercised |
+|---|---|
+| `float-tenth` | Number serialization uses ECMAScript `Number::toString`, the shortest decimal that round-trips. `0.1` has no exact binary form. |
+| `float-1e21-boundary` | `1e21` is the threshold where `Number::toString` switches to exponential, emitting `1e+21`. |
+| `negative-zero` | JSON carries no distinct `-0`, and both zeroes render as `0`. |
+| `integer-above-2pow53` | `2^53 + 2` is exactly representable as a double and emits as a plain integer, not exponential. |
+| `small-exponent-vs-decimal` | `1e-7` stays exponential while `1e-6` becomes `0.000001`. Also pins key sorting, `dec` before `exp`. |
+| `astral-key-ordering` | Object keys sort by UTF-16 code UNIT, not code point, so an astral key (lead unit `0xD834`) sorts before a BMP key (`0xFF61`). |
+| `nfd-key-used-as-given` | Keys are emitted exactly as given and are never Unicode-normalized, so an NFD key stays NFD. |
+| `nested-object-and-array` | Nested object keys sort recursively; array order is always preserved. |
+| `integer-2pow60-inside-int64` | `2^60` is inside int64 but above `2^53`, so serialization follows the binary64 value rather than the caller's spelling. |
+| `integer-2pow68-above-int64` | `2^68` is above int64 and exactly representable as a double; `|x| < 1e21` forces decimal notation. |
+
+Four classes account for every real divergence seen so far:
+
+1. **Exponent formatting.** Where a language switches between decimal and
+   exponential notation, and how it spells the exponent.
+2. **Astral and UTF-16 key order.** Sorting by code point instead of code unit
+   reorders keys whenever an astral character meets a high BMP one.
+3. **Non-ASCII output.** An encoder that escapes non-ASCII by default emits
+   different bytes for the same string.
+4. **The number model for large integers.** RFC 8785 serializes from the binary64
+   value. A language that preserves an exact 64-bit integer through parsing
+   diverges before serialization begins.
+
+### Running it
+
+```
+npm ci
+npm run crossrun:canonical-bytes
+```
+
+Node is a prerequisite of the orchestrator, so the TypeScript runner always runs.
+Python, Go and Rust are optional: a missing toolchain produces a SKIP line and a
+schema-valid SKIP result, never a pass. To run against a different fixture:
+
+```
+npm run crossrun:canonical-bytes -- path/to/fixture.json
+```
+
+The command exits non-zero only on a runner error or a schema failure. A byte or
+digest mismatch is a recorded result, not a failed run, because publishing where
+implementations differ is the point.
+
+### Canonicalizers currently under test
+
+| runner | implementation | kind |
+|---|---|---|
+| ts | `canonicalizeJCS` from the `agent-passport-system` npm package | first party |
+| python | `agent_passport.canonical.canonicalize_jcs` from the `agent-passport-system` PyPI distribution | first party |
+| go | `jcs.Canonicalize` from `github.com/aeoess/agent-passport-go` | first party |
+| rust | `agent_passport::jcs::canonicalize` from the `agent-passport-system` crate | first party |
+
+Each is depended on at an exact published version, never a local path, so a clone
+reproduces the run without any sibling checkout.
+
+The Python runner falls back to `json.dumps(sort_keys=True, separators=(",",":"),
+ensure_ascii=False)` when the published distribution is not installed, and labels that
+result `baseline_json_encoder`. It also refuses an editable install of a local checkout
+as a first-party implementation, because that resolves to a working tree a person
+cloning this suite does not have. Install `crossrun/python/requirements.txt` for the
+first-party path.
+
+A standard library encoder is never labeled as JCS or RFC 8785. It does not claim to
+implement either, so its mismatches are comparative evidence about that standard
+library, not a failed conformance run.
+
+### Adding your own canonicalizer
+
+Copy the runner closest to your language and replace one function.
+
+1. `cp -r crossrun/ts crossrun/mylang` (or python, go, rust).
+2. Replace the canonicalizer call. In each runner exactly one line turns a parsed
+   JSON value into a canonical string; everything else is fixture reading,
+   comparison and reporting.
+3. Set `implementation`, `implementation_kind` and `implementation_version` to name
+   what you are testing. Use `baseline_json_encoder` if it is a standard library
+   encoder rather than an RFC 8785 implementation.
+4. Register it in the `RUNNERS` array in `crossrun/run.mjs` with the command that
+   invokes it and the toolchain to probe for.
+
+Two rules the runners follow, and yours should too. Read every expected value from
+the fixture at run time: a runner that embeds a byte string or a digest still agrees
+with itself after the fixture changes. And accept an optional fixture path argument,
+which is what lets the orchestrator point every runner at an alternative corpus.
+
+### Result format
+
+One JSON object per runner, written to `crossrun-results/<lang>.json` and validated
+against [`crossrun-result.schema.json`](crossrun-result.schema.json). Per case the
+report carries `name`, `byte_match`, `sha256_match`, `actual_bytes_hex`,
+`actual_sha256`, and `first_divergent_byte_offset` (zero-based; when one byte sequence
+is an exact prefix of the other it is the length of the shorter; null on a byte match).
+
+```json
+{
+  "runner": "ts",
+  "implementation": "agent-passport-system canonicalizeJCS",
+  "implementation_kind": "first_party",
+  "implementation_version": "4.5.1",
+  "runtime_version": "node 24.11.1",
+  "fixture": "fixtures/canonical-bytes/canonical-bytes-jcs-v2.json",
+  "fixture_sha256": "9502d721...",
+  "cases": [
+    {
+      "name": "float-tenth",
+      "byte_match": true,
+      "sha256_match": true,
+      "actual_bytes_hex": "7b2276616c7565223a302e317d",
+      "actual_sha256": "097a678e...",
+      "first_divergent_byte_offset": null
+    }
+  ],
+  "summary": { "total": 10, "byte_match": 10, "sha256_match": 10 }
+}
+```
+
+A skipped runner produces the schema's other variant, carrying `runner`, `status`,
+`reason`, and the detected orchestrator and runtime metadata. It has no `summary`: a
+run that did not happen has no counts, and a zero-count summary would read as a
+measurement.
+
+`fixture_sha256` is over the fixture file bytes, so two runners can be shown to have
+read the same input.
 
 ## Fixtures
 
 ### `canonical-bytes-diff-v032.json`
 
-**Source:** [corpollc/qntm#15](https://github.com/corpollc/qntm/pull/15) — qntm v0.3.2 canonical-bytes diff fixture for the string-concatenation preimage failure class. Mirrored under the cross-impl reciprocal-reference policy (A2A#1786 §A conformance appendix).
+**Source:** [corpollc/qntm#15](https://github.com/corpollc/qntm/pull/15): qntm v0.3.2 canonical-bytes diff fixture for the string-concatenation preimage failure class. Mirrored under the cross-impl reciprocal-reference policy (A2A#1786 §A conformance appendix).
 
 **Upstream verifier:** `specs/test-vectors/verify_canonical_bytes_diff.py` in the qntm repo. Five-check verifier (pre-fix hash, post-fix hash, divergence, collision, canonical immunity).
 
