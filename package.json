@@ -14,9 +14,11 @@
     "verify:two-wrapper-attribution": "tsx fixtures/attribution/two-wrapper-v0/verify.ts",
     "verify:accountability-record": "tsx fixtures/accountability-record/verify.ts",
     "verify:read-fidelity-receipt": "tsx fixtures/read-fidelity-receipt/verify.ts",
+    "verify:receipt-decision-relation": "tsx fixtures/receipt-decision-relation/verify.ts",
+    "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
     "test:canonical-bytes": "tsx runners/ts/canonical-bytes-qntm-v0.3.2.test.ts",
     "test:fail-loud": "tsx runners/ts/fail-loud-and-wire.test.ts",
-    "test": "npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt"
+    "test": "npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip"
   },
   "devDependencies": {
     "tsx": "^4.0.0",
