@@ -15,10 +15,11 @@
   - `examples/conformance/action-ref-v2/validate.py`
     — `42c606cdae8b6fe4fddf7b00ef9be95ee4b70fa78b6590bbfcb510dced991b55`
   - Reference implementation (vendored here, at `plugins/agt_evidence_anchor/action_ref.py`
-    within this directory, so `validate.py` and each vector's `reproduce_in_python` resolve
-    without cloning `argentum-core`) — `d9dacc0bf3b224788a21b7cfdc000fb88beed78e1b11820e23bb7cb768749b75`.
+    within this directory, so `action-ref-v1-domain-negative/validate.py` resolves without
+    cloning `argentum-core`) — `d9dacc0bf3b224788a21b7cfdc000fb88beed78e1b11820e23bb7cb768749b75`.
     Exposes `compute_action_ref`, `compute_action_ref_v2`, `_validate_domain`,
-    `OutOfProfileDomainError`.
+    `OutOfProfileDomainError`. `action-ref-v2/validate.py` does not import this file — its digest
+    logic and `action_ref_version()` grammar check are self-contained.
   - Normative spec (not vendored, cited): `docs/spec/action-ref.md` — the Domain
     paragraph (in the "Derivation" section) and the "Version negotiation" section.
     The scope-empty-string reversal this family's `av-003`/`av-007` vectors test is
@@ -50,14 +51,24 @@
 - All positive and negative expected outputs in both fixture files are computed with the
   reference implementation at the pinned commit (`compute_action_ref` for v1,
   `compute_action_ref_v2` for the domain-tagged variant), not invented or hand-typed. Each
-  vector's `reproduce_in_python` field is the exact minimal procedure — RFC 8785 JCS
-  canonicalization + SHA-256, with the v2 variant prepending the domain tag
+  fixture file (not each vector — `reproduce_in_python` is a single top-level field per file,
+  present in neither fixture's 13 individual vectors) carries the exact minimal procedure — RFC
+  8785 JCS canonicalization + SHA-256, with the v2 variant prepending the domain tag
   (`mycelium.action-ref:v2:`) before hashing.
 - The 10 domain-negative vectors assert rejection (an exception with a named reason), not a
   digest — the property under test is that the check runs before any digest is computed.
 - The 3 v1/v2 vectors show the two derivations differ for these three pinned preimages;
   `arv2-001`'s preimage is the same worked example published in `docs/spec/action-ref.md`'s
   "Serialization — JCS" section, not a fixture-only value invented for this submission.
+  `validate.py` additionally asserts the two underlying digests are unequal — a defensive
+  invariant check, not a property these (or any normally-constructed) vectors can exercise: see
+  Boundaries in README.md for why the branch can only fire on an actual SHA-256 collision.
+- 2 additional version-marker negative vectors (`version_marker_negative_vectors` in
+  `action-ref-v2.fixture.json`) assert that `action_ref_version()` rejects same-length strings
+  that are not valid lowercase hex — an uppercase-hex string and a non-hex string, both 64
+  characters. Before this submission's review, `action_ref_version()` checked only length and
+  the `v2:` prefix, so both would have been misread as valid v1 action_refs; the grammar is now
+  enforced with a regex requiring lowercase hex, matching `docs/spec/action-ref.md`.
 
 ## Independence
 
