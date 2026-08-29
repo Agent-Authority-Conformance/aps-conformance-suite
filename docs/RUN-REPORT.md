@@ -9,8 +9,10 @@ In order:
 
 1. Clone this repository.
 2. `npm ci --include=dev`. This step needs network access.
-3. `npm test`. After dependencies are installed the conformance run makes no network
-   calls. Exit 0 means every vector passed.
+3. `npm test`. After dependencies are installed the run makes no network calls. Exit 0
+   means every APS-native vector passed. External-system families under
+   `fixtures/cross-stack/` are not executed by `npm test`; to report on one of them, run
+   the command in its README and paste that output instead.
 4. Copy the verbatim output of step 3. Do not summarize it and do not trim it.
 5. File it, either way:
    - Open a Run report issue at
