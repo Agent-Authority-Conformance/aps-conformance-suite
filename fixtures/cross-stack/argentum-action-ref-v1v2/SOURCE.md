@@ -55,7 +55,7 @@
   (`mycelium.action-ref:v2:`) before hashing.
 - The 10 domain-negative vectors assert rejection (an exception with a named reason), not a
   digest — the property under test is that the check runs before any digest is computed.
-- The 3 v1/v2 vectors assert that the two derivations never collide for identical preimages;
+- The 3 v1/v2 vectors show the two derivations differ for these three pinned preimages;
   `arv2-001`'s preimage is the same worked example published in `docs/spec/action-ref.md`'s
   "Serialization — JCS" section, not a fixture-only value invented for this submission.
 

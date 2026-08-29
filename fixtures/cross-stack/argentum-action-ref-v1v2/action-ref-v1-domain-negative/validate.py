@@ -11,10 +11,11 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
-REPO_ROOT = HERE.parent.parent.parent
-sys.path.insert(0, str(REPO_ROOT))
 
-from plugins.agt_evidence_anchor.action_ref import compute_action_ref, OutOfProfileDomainError  # noqa: E402
+# Run with PYTHONPATH=. from fixtures/cross-stack/argentum-action-ref-v1v2/ (see README) —
+# the vendored plugins/agt_evidence_anchor/ package lives there, not at any fixed number of
+# parents above this file, so no sys.path manipulation is attempted here.
+from plugins.agt_evidence_anchor.action_ref import compute_action_ref, OutOfProfileDomainError
 
 
 def main() -> int:
