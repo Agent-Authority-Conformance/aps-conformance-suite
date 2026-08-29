@@ -3,23 +3,34 @@
 ## Upstream
 
 - Repository: `giskard09/argentum-core` (https://github.com/giskard09/argentum-core), Apache 2.0.
-- Pinned commit: `8bdee1feb0cbaa9e1cc0b0bcfa26df802e39ed12`, branch `main`. Verified as
-  `HEAD == origin/main` on 2026-08-28 (no divergence, no local-only commits ahead of the pin).
+- Pinned commit: `586299a73145ef248dd855dde29dd8a079cf418b`, branch `main`. This is a re-pin from
+  the original `8bdee1feb0cbaa9e1cc0b0bcfa26df802e39ed12` — see "Re-pin" below for why. Verified
+  as `HEAD == origin/main` on 2026-08-29 (no divergence, no local-only commits ahead of the pin).
 - Files mirrored at that commit (SHA-256 of the bytes as vendored here):
   - `examples/conformance/action-ref-v1-domain-negative/action-ref-v1-domain-negative.fixture.json`
-    — `5b1549added5b90e2fb53dd6f5514e7472256b3ecc4b1267d7f8f1aaf122aa86`
+    — `5b1549added5b90e2fb53dd6f5514e7472256b3ecc4b1267d7f8f1aaf122aa86` (unchanged since the
+    original pin — this file was not touched by the re-pin's commit)
   - `examples/conformance/action-ref-v1-domain-negative/validate.py`
-    — `901c492da2e5cdce2f4f68e82baf44e9db67f9aafd074638591ff1dd52eb0043`
+    — `c50bb37838bd8ba02e39d23b5daaff7e2212ad8acc233c45239b028b9e46f382`. **Not** byte-identical
+    to argentum-core's copy at this commit (that copy is `901c492da2e5cdce2f4f68e82baf44e9db67f9aafd074638591ff1dd52eb0043`,
+    unchanged since the original pin) — this vendored copy has argentum-core's dead
+    `sys.path.insert` (resolves to the wrong directory given the documented `PYTHONPATH=.`
+    invocation) removed, per aeoess's non-blocking nit from the first review pass (fixed in
+    `b557fca`). Digest table entry corrected here to match; it previously cited
+    argentum-core's unmodified hash by mistake.
   - `examples/conformance/action-ref-v2/action-ref-v2.fixture.json`
-    — `4f16bd1eadc19e1815951d46a75a4e625ad796d7a05d499943bbb0522cee969c`
+    — `10ad46c31892cbb2f45611dcac48438b75c55f6634dae7b8f800fd16d8885f7c` (changed by the re-pin —
+    adds `version_marker_negative_vectors`, narrows the `purpose` field's collision wording)
   - `examples/conformance/action-ref-v2/validate.py`
-    — `42c606cdae8b6fe4fddf7b00ef9be95ee4b70fa78b6590bbfcb510dced991b55`
+    — `34f84244b6fae8c55dcc4957906a6f4d02fab5f105aaf1fd14c33858b33ef3c5` (changed by the re-pin —
+    grammar-enforced `action_ref_version()`, fixed digest-equality comparison, new docstring)
   - Reference implementation (vendored here, at `plugins/agt_evidence_anchor/action_ref.py`
     within this directory, so `action-ref-v1-domain-negative/validate.py` resolves without
-    cloning `argentum-core`) — `d9dacc0bf3b224788a21b7cfdc000fb88beed78e1b11820e23bb7cb768749b75`.
-    Exposes `compute_action_ref`, `compute_action_ref_v2`, `_validate_domain`,
-    `OutOfProfileDomainError`. `action-ref-v2/validate.py` does not import this file — its digest
-    logic and `action_ref_version()` grammar check are self-contained.
+    cloning `argentum-core`) — `281feb31e8d365f21b348ee057d17b4e2ed51657308d32e861f561383e281944`
+    (changed by the re-pin — same `action_ref_version()` grammar fix). Exposes
+    `compute_action_ref`, `compute_action_ref_v2`, `_validate_domain`, `OutOfProfileDomainError`.
+    `action-ref-v2/validate.py` does not import this file — its digest logic and
+    `action_ref_version()` grammar check are self-contained.
   - Normative spec (not vendored, cited): `docs/spec/action-ref.md` — the Domain
     paragraph (in the "Derivation" section) and the "Version negotiation" section.
     The scope-empty-string reversal this family's `av-003`/`av-007` vectors test is
@@ -45,6 +56,25 @@
   the `action-ref-v1-domain-negative` fixture set both came out of that report. This is the
   reason this family was chosen as the representative set over other Argentum corpora: `aeoess`
   already has hands-on history with exactly this failure class.
+
+## Re-pin (2026-08-29)
+
+aeoess's second review pass on this PR found four issues, addressed in commit `30445e1`. One
+of them — `action_ref_version()` checking only length and prefix instead of enforcing lowercase
+hex grammar — turned out not to be specific to this vendored copy: the same function in
+`giskard09/argentum-core`'s production reference implementation
+(`plugins/agt_evidence_anchor/action_ref.py`) had the identical gap. Fixed there too
+(`giskard09/argentum-core#69`, merged as `586299a`, suite 79/79 + 63/63 green before merge), so
+the fix lands in the actual upstream implementation rather than only in a copy pasted into this
+submission.
+
+Re-pinning this PR to `586299a` — rather than leaving it at the original `8bdee1feb0c...` and
+noting the divergence — keeps the claim in "Files mirrored at that commit" literally true: every
+vendored file byte-identical to upstream at the cited commit, not byte-identical to an older
+commit plus a description of what changed since. Only three of the five vendored files actually
+changed between the two commits (`action-ref-v2.fixture.json`, `action-ref-v2/validate.py`,
+`action_ref.py`); the two `action-ref-v1-domain-negative/` files are untouched and keep their
+original digests, noted per-file above.
 
 ## How the digests were produced
 
