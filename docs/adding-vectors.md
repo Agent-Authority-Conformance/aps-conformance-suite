@@ -59,3 +59,10 @@ version is in `fixtures/manifest.json`. Bumping conventions:
   themselves unchanged).
 - Fixture-format major (`v1 → v2`): only when the per-vector schema
   changes incompatibly. Old vectors stay at `v1` until regenerated.
+
+The suite version tracks the APS-native corpus contract. External-system
+families under `fixtures/cross-stack/` are ingestions: each pins its own
+upstream revision in its `SOURCE.md` and does not bump the suite version.
+Note on history: the suite version was not bumped for categories added
+before 2026-08-28; it stays at `0.1.0` and the next APS-native category
+takes it to `0.2.0`.
