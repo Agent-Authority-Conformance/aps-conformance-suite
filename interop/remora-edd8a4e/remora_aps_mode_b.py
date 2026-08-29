@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # Author: Stian Skogbrott
-# SPDX-License-Identifier: BUSL-1.1
+# SPDX-License-Identifier: Apache-2.0
+#
+# This adapter is contributed to aps-conformance-suite under Apache-2.0, the
+# licence of that repository. REMORA itself remains BUSL-1.1 in its own
+# repository and is only imported at run time.
 """Mode B adapter: APS conformance vectors executed against REMORA's own code.
 
 **This is a NEW adapter, not the one described in the 2026-08-28 run report.**
@@ -35,6 +39,7 @@ import hashlib
 import json
 import os
 import sys
+import pathlib
 from pathlib import Path
 from typing import Any
 
@@ -44,21 +49,6 @@ CANONICAL_FIXTURES = (
     "fixtures/canonical-bytes/canonical-bytes-jcs-v1.json",
     "fixtures/canonical-bytes/canonical-bytes-jcs-v2.json",
 )
-#: REMORA failure codes and the APS reason classes they correspond to. Written
-#: down even though the delegation family is not re-run in this pass, because
-#: the earlier run used a mapping and did not publish one, and an unpublished
-#: mapping makes a 4/4 unauditable: a reader cannot tell whether the decisions
-#: matched or whether the mapping was drawn to make them match.
-REASON_MAP: dict[str, str] = {
-    "scope_exceeds_delegation": "SCOPE_WIDENING",
-    "scope_widened_at_link": "SCOPE_WIDENING",
-    "delegation_link_expired": "DELEGATION_EXPIRED",
-    "envelope_expired": "DELEGATION_EXPIRED",
-    "revoked_kid_at_link": "DELEGATION_REVOKED",
-    "unknown_or_revoked_kid_at_link": "DELEGATION_REVOKED",
-}
-
-
 def load(rel: str) -> Any:
     return json.loads((SUITE / rel).read_text(encoding="utf-8"))
 
@@ -86,12 +76,21 @@ def canonical_family() -> dict[str, Any]:
             legacy, _media = _canonical_bytes(vector["input"])
             row["legacy_match"] = legacy == expected
             row["legacy_sha256"] = hashlib.sha256(legacy).hexdigest()
+            if not row["legacy_match"]:
+                # A digest proves the bytes differ and nothing about why. The
+                # observed bytes are what makes the cause column checkable
+                # from the record rather than taken on trust.
+                row["legacy_bytes_hex"] = legacy.hex()
+                row["expected_bytes_hex"] = expected.hex()
 
             try:
                 produced = canonicalise(vector["input"])
                 row["jcs_match"] = produced == expected
                 row["jcs_sha256"] = hashlib.sha256(produced).hexdigest()
                 row["jcs_refused"] = False
+                if not row["jcs_match"]:
+                    row["jcs_bytes_hex"] = produced.hex()
+                    row["expected_bytes_hex"] = expected.hex()
             except NotCanonicalisable as exc:
                 row["jcs_match"] = False
                 row["jcs_refused"] = True
@@ -145,7 +144,11 @@ def main() -> int:
             },
         ],
     }
-    print(json.dumps(report, indent=2, ensure_ascii=False))
+    out = json.dumps(report, indent=2, ensure_ascii=False)
+    print(out)
+    destination = os.environ.get("REMORA_APS_RESULTS")
+    if destination:
+        pathlib.Path(destination).write_text(out + chr(10), encoding="utf-8")
     return 0
 
 
