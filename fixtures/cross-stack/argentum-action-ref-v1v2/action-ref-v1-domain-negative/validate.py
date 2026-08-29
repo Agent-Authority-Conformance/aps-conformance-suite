@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Validator for action-ref-v1-domain-negative vectors.
 
+Modified from the Apache-2.0-licensed original at
+giskard09/argentum-core:examples/conformance/action-ref-v1-domain-negative/validate.py
+(pinned commit in SOURCE.md) -- the sys.path manipulation was removed and the import
+comment below was added so this file resolves standalone from this directory; no
+other logic was changed. See SOURCE.md for the full diff and both files' hashes.
+
 Each vector's `expect_valid` says whether compute_action_ref should accept
 the preimage (raise nothing) or reject it (raise OutOfProfileDomainError,
 per action-ref.md's Domain paragraph). For rejected vectors, `expect_error_field`

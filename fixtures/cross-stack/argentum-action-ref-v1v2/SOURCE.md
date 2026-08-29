@@ -3,7 +3,7 @@
 ## Upstream
 
 - Repository: `giskard09/argentum-core` (https://github.com/giskard09/argentum-core), Apache 2.0.
-- Pinned commit: `a9312c0b0e8a65dd0d8c8f002d55a767b0bf68c4`, branch `main`. This is the second
+- Pinned commit: `4aaa6eeb9748e4bc93d02a001705051938009ef1`, branch `main`. This is the third
   re-pin from the original `8bdee1feb0cbaa9e1cc0b0bcfa26df802e39ed12` — see "Re-pin" below for
   the full history. Verified as `HEAD == origin/main` on 2026-08-29 (no divergence, no
   local-only commits ahead of the pin).
@@ -12,24 +12,31 @@
     — `5b1549added5b90e2fb53dd6f5514e7472256b3ecc4b1267d7f8f1aaf122aa86` (unchanged since the
     original pin — this file has never been touched by any re-pin's commit)
   - `examples/conformance/action-ref-v1-domain-negative/validate.py`
-    — `402510f88dc94b526e6742372bda6155daa8ee02a8816daa6d86850cb554ed88`. **Not** byte-identical
+    — `a55feb385c25fd99fde76a7ac9581094a0d6925ae7dfb04494f570799a6e9f57`. **Not** byte-identical
     to argentum-core's copy at this commit (that copy is
-    `168006446e7cb83750b8e36ea298938d08e1007ad7e6e9fa05f32a2e806a6ea4`, changed at this pin by
-    the same zero-hash assertion added below) — this vendored copy still has argentum-core's
-    dead `sys.path.insert` removed (per aeoess's non-blocking nit from the first review pass,
-    fixed in `b557fca`), the one intentional divergence from upstream, carried forward through
-    both re-pins.
+    `168006446e7cb83750b8e36ea298938d08e1007ad7e6e9fa05f32a2e806a6ea4`) — this vendored copy
+    still has argentum-core's dead `sys.path.insert` removed (per aeoess's non-blocking nit
+    from the first review pass, fixed in `b557fca`), plus a new comment block (round 3, this
+    re-pin) stating the modification per Apache License 2.0 §4(b) — this file is a modified
+    copy of an Apache-2.0-licensed original, and the modification itself was previously
+    undeclared in the file's own text (only in this document). Two intentional divergences
+    from upstream now, both carried forward through every future re-pin.
   - `examples/conformance/action-ref-v2/action-ref-v2.fixture.json`
-    — `ef3287be43ae326e63346797650530591fac8580a06736c05f44b16014635c79` (changed at this pin —
-    narrows the `purpose` field to name the live profile explicitly and rule out aggregating
-    results across profiles, see "Profile boundary" below)
+    — `02d244e205d86dcd24bdbdf5ef5ed1cab224c0d2deb2b8936ec5b910e7bc05c9`. Byte-identical to
+    argentum-core's copy at this commit as of this re-pin (round 3 added the two newline
+    `version_marker_negative_vectors` — `vm-neg-003`/`vm-neg-004` — upstream first, in
+    `giskard09/argentum-core#73`, then re-pinned here rather than vendoring a local-only
+    edit). The narrower `purpose` field from the previous re-pin (naming the live profile
+    explicitly, ruling out aggregating results across profiles — see "Profile boundary"
+    below) is unchanged.
   - `examples/conformance/action-ref-v2/validate.py`
-    — `661195e102bd0839c14ad34e7efc8ad79e49c276a6ab09445176a12f74d4eb9c` (changed at this pin —
-    `fullmatch` instead of `match`, profile-metadata and preimage-shape assertions added)
+    — `661195e102bd0839c14ad34e7efc8ad79e49c276a6ab09445176a12f74d4eb9c` (unchanged since the
+    previous re-pin — `fullmatch` instead of `match`, profile-metadata and preimage-shape
+    assertions)
   - Reference implementation (vendored here, at `plugins/agt_evidence_anchor/action_ref.py`
     within this directory, so `action-ref-v1-domain-negative/validate.py` resolves without
     cloning `argentum-core`) — `0eda0d12be1c6251fb150394c8d682b21b0db6b4344a45068e2f8b924dc45ef0`
-    (changed at this pin — same `fullmatch` fix). Exposes `compute_action_ref`,
+    (unchanged since the previous re-pin). Exposes `compute_action_ref`,
     `compute_action_ref_v2`, `_validate_domain`, `OutOfProfileDomainError`.
     `action-ref-v2/validate.py` does not import this file — its digest logic and
     `action_ref_version()` grammar check are self-contained.
@@ -39,6 +46,14 @@
     dated 2026-08-15 in the spec's changelog; a separate erratum note (dated
     2026-08-25) documents that the immutable `action-ref-v1.0` tag was never
     updated to match.
+  - The fixture's top-level `generated_at: "2026-07-29"` is the date the file (all 10
+    vectors as a set) was assembled — it is not the date each individual vector's
+    expected result was decided. Two vectors have their own, later history: `av-007`
+    (empty `scope`) had its `expect_valid` flipped from `true` to `false` on
+    2026-08-15, and `epoch-ms-001` was added to the set on 2026-08-25. Treat
+    `generated_at` as the family's assembly date, and each vector's own
+    `description` field (which carries its individual date where one applies) as the
+    source for that vector's history.
 
 ## Trigger
 
@@ -102,6 +117,42 @@ each preimage has exactly the four expected string keys, both checked before has
 Re-pinned to `a9312c0` for the same reason as round 1: every vendored file byte-identical to
 upstream at the cited commit, with the one documented, intentional exception noted above.
 
+## Re-pin, round 3 (2026-08-29)
+
+aeoess's fourth review pass (review `5058939119`, `CHANGES_REQUESTED`) confirmed 5 of 6
+independent mutations against the round-2 head still held, then found one still missing: the
+`fullmatch` fix from round 2 landed, but the two vectors that actually exercise the
+newline-vs-`match` failure mode it closes — a bare 64-hex v1 digest and a `v2:`-prefixed
+digest, each with a trailing `\n` — were never added to `version_marker_negative_vectors`.
+Mutating `fullmatch` back to `match` against the round-2 fixture left all 5 existing vectors
+passing, so nothing in the family detected the regression the fix targets.
+
+Added `vm-neg-003`/`vm-neg-004` upstream first (`giskard09/argentum-core#73`, merged as
+`4aaa6ee`, suite green before merge — see the file hash above), then re-pinned this
+submission to that commit, mirroring rounds 1 and 2's pattern of landing every fix in the
+production repository rather than only in this vendored copy. Verified locally: reverting
+`fullmatch` to `match` in this directory's `action-ref-v2/validate.py` makes exactly
+`vm-neg-003`/`vm-neg-004` fail (5/7) while `fullmatch` restored passes all 7 — confirming
+these two vectors, and only these two, anchor the fix.
+
+The same review pass requested four further items, addressed in this re-pin: (1) a
+`Verification split` section in README.md, required by `CONTRIBUTING.md` after `#49`,
+attributing each verification claim to its actual runner and marking domain/grammar claims
+`author-produced` rather than `independent` where aeoess originated the vectors or the
+implementation under test; (2) the PR body, stale since round 2 (still read `Pinned at
+8bdee1f…` and cited the old `reproduce_in_python` claim); (3) the "Profile boundary" section
+below, correcting `0003-empty-scope`'s description — it is a historical fixture result under
+wording the 2026-08-25 erratum has since resolved, not a currently-valid reading of the
+frozen tag; (4) an Apache License 2.0 §4(b) modification notice added directly to
+`action-ref-v1-domain-negative/validate.py` (previously the modification was documented only
+here, not in the file itself), and a sentence separating this fixture's family-level
+`generated_at` date from the later, per-vector history of `av-007` and `epoch-ms-001` (see
+"How the digests were produced" below).
+
+Re-pinned to `4aaa6ee` for the same reason as rounds 1 and 2: every vendored file
+byte-identical to upstream at the cited commit, with the two documented, intentional
+exceptions noted above.
+
 ## How the digests were produced
 
 - All positive and negative expected outputs in both fixture files are computed with the
@@ -122,12 +173,15 @@ upstream at the cited commit, with the one documented, intentional exception not
   `validate.py` additionally asserts the two underlying digests are unequal — a defensive
   invariant check, not a property these (or any normally-constructed) vectors can exercise: see
   Boundaries in README.md for why the branch can only fire on an actual SHA-256 collision.
-- 2 additional version-marker negative vectors (`version_marker_negative_vectors` in
+- 4 additional version-marker negative vectors (`version_marker_negative_vectors` in
   `action-ref-v2.fixture.json`) assert that `action_ref_version()` rejects same-length strings
-  that are not valid lowercase hex — an uppercase-hex string and a non-hex string, both 64
-  characters. Before this submission's review, `action_ref_version()` checked only length and
-  the `v2:` prefix, so both would have been misread as valid v1 action_refs; the grammar is now
-  enforced with a regex requiring lowercase hex (`fullmatch`, not `match` — see below), matching
+  that are not valid lowercase hex, or that carry trailing garbage after an otherwise-valid
+  digest: `vm-neg-001`/`vm-neg-002` are an uppercase-hex string and a non-hex string, both 64
+  characters (before this submission's review, `action_ref_version()` checked only length and
+  the `v2:` prefix, so both would have been misread as valid v1 action_refs); `vm-neg-003`/
+  `vm-neg-004` (added round 3) are a bare 64-hex v1 digest and a `v2:`-prefixed digest, each
+  with a trailing `\n` — see the `fullmatch` note below for why these two specifically. The
+  grammar is enforced with a regex requiring lowercase hex (`fullmatch`, not `match`), matching
   `docs/spec/action-ref.md`.
 - `action-ref-v1-domain-negative/validate.py`'s rejection check is paired with an assertion that
   zero SHA-256 digests were computed during the rejected call (`hashlib.sha256` wrapped for the
@@ -142,14 +196,15 @@ upstream at the cited commit, with the one documented, intentional exception not
   a different tag or a preimage with an extra field would have validated identically. Verified
   both checks fire with two manual mutations (an added 5th preimage field, a wrong `domain_tag`)
   before this was committed.
-- `action_ref_version()`, both here and in the vendored `action_ref.py`, now uses `fullmatch`
+- `action_ref_version()`, both here and in the vendored `action_ref.py`, uses `fullmatch`
   instead of `match`: a regex's trailing `$` matches at end-of-string OR immediately before a
   trailing newline, so `match` alone accepted a valid 64-hex digest with a trailing `\n`
-  appended as though it were clean. Two more negative vectors were not added to the fixture for
-  this specific case (the two already-empty `version_marker_negative_vectors` entries showed the
-  grammar-enforcement mechanism; a third and fourth entry for the newline variant would test the
-  same mechanism again, not a new property) — the fix and its behavior are covered by tests in
-  the upstream repository instead (`plugins/agt_evidence_anchor/tests/test_action_ref.py`).
+  appended as though it were clean. `vm-neg-003`/`vm-neg-004` (round 3, upstream
+  `giskard09/argentum-core#73`) are the vectors that exercise exactly this: reverting
+  `fullmatch` to `match` makes both fail while `vm-neg-001`/`vm-neg-002` (which test the
+  character-class check, not the anchoring) keep passing — confirmed locally before this
+  re-pin. The upstream test suite
+  (`plugins/agt_evidence_anchor/tests/test_action_ref.py`) also covers this fix.
 
 ## Profile boundary
 
@@ -157,12 +212,21 @@ The lab's own corpus already vendors an older Argentum family
 (`runners/ts/sk-function-invocation/test-fixtures/argentum-core/`,
 `recompute-drift-v1-positive`/`-negative`, pinned to `b4e03c2` and labeled
 `spec_stable_ref: action-ref-v1.0`, fetched 2026-06-15) that predates this repository's
-2026-07-29 Domain-paragraph enforcement. That family's `0002-unicode-fields` and
-`0003-empty-scope` are POSITIVE cases: a non-ASCII `agent_id` and an empty `scope` are both
-valid under the frozen `action-ref-v1.0` tag's rules. This submission's `nfc-001`/`nfc-002`
-(non-ASCII/surrogate-pair `agent_id`) and `av-007` (empty `scope`) vectors reject those same
-shapes of input, because they test the **live** profile at the pinned commit, which enforces the
-Domain paragraph the historical tag does not.
+2026-07-29 Domain-paragraph enforcement. That family's `0002-unicode-fields` is a POSITIVE
+case — a non-ASCII `agent_id` — and it stays one: this is a real historical profile
+difference, valid under the frozen `action-ref-v1.0` tag's rules then and now, correctly
+rejected by this submission's `nfc-001`/`nfc-002` only because those test the **live**,
+Domain-enforced profile at the pinned commit.
+
+`0003-empty-scope` is not the same kind of case, and is described differently here on
+purpose. It is not "valid under the frozen tag's rules" — the tag's own 2026-08-25 erratum
+(`docs/spec/action-ref.md`) gives non-empty `scope` with no `""` exception as the effective
+reading for any consumer of `action-ref-v1.0`, including the frozen tag itself. `0003-empty-
+scope`'s recorded PASS is a historical fixture result produced under the wording conflict
+that erratum resolved, not a currently-valid alternate reading of the tag. This submission's
+`av-007` (empty `scope`, rejected) is not in tension with it: both are consistent with the
+tag's erratum-corrected reading, one as a stale artifact of when it was generated, the other
+as a fresh vector against the corrected reading.
 
 This is not a contradiction to reconcile — it is two different, both-correct profiles of the
 same protocol at two different points in its history, and `action-ref-v2.fixture.json`'s
