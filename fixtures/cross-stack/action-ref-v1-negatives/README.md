@@ -1,5 +1,12 @@
 # action-ref-v1 recomputation negatives
 
+> **Provenance, two separate facts.** Ingestion source: `giskard09/argentum-core`,
+> `examples/conformance/recompute-drift-v1/`, whose shape conventions and target spec
+> these vectors follow. Vector authorship: this lab's maintainer (aeoess) authored the
+> fixture content on 2026-06-11 and upstreamed it as argentum-core PR #12 (merge commit
+> `3aea9c6`). "Ingested from Argentum" describes where the canonical copy lives, not who
+> wrote the vectors. See `SOURCE.md` and the Verification split below.
+
 Cross-stack fixtures for the action-ref-v1 **recomputation property**: a
 verifier recomputes `action_ref` from the invocation payload's
 `{action_type, agent_id, scope, timestamp}` tuple and MUST fail closed,
