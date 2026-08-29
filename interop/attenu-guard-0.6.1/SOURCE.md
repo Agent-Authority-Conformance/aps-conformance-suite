@@ -31,9 +31,13 @@ defect / harness or environment defect), each with the observed bytes:
 | case | class | observed |
 |---|---|---|
 | small-exponent-vs-decimal | protocol divergence (the package's canonicalization is a distinct profile, per the author's 2026-08-29 statement) | 1e-06 / 1e-07 vs 0.000001 / 1e-7 |
-| string-escape-unicode, nfd-key-used-as-given, key-ordering-unicode (v1) | protocol divergence | \uXXXX escapes vs UTF-8 |
-| astral-key-ordering | protocol divergence | code-point vs UTF-16 key order, reversed |
+| nfd-key-used-as-given | protocol divergence | \uXXXX escapes vs UTF-8 for the non-ASCII key |
+| astral-key-ordering | protocol divergence | \uXXXX escapes vs UTF-8, and code-point vs UTF-16 key order (reversed) |
 | integer-2pow60-inside-int64, integer-2pow68-above-int64 | protocol divergence | arbitrary-precision integer vs binary64 |
+
+Five divergent cases, four classes; the match set is float-tenth, float-1e21-boundary,
+negative-zero, integer-above-2pow53 and nested-object-and-array, as jcs-byte-diff.py
+asserts.
 
 No implementation defects and no harness defects were observed in this direction. The
 author has confirmed the four classes independently (A2A#1575, 2026-08-29) and states
