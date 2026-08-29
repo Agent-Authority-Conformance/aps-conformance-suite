@@ -2,11 +2,11 @@
 
 This is the Agent Passport System corpus hosted by Agent Authority Conformance, an LF Decentralized Trust lab: byte-level test vectors, verifier adapters and reproducible run reports for identity, delegated authority and signed decision receipts. It is one corpus in the lab; the lab itself is at https://github.com/Agent-Authority-Conformance.
 
-Run it: `npm ci --include=dev && npm test`. After dependencies are installed, the conformance run makes no network calls. Exit 0 on full pass.
+Run it: `npm ci --include=dev && npm test`. After dependencies are installed, the run makes no network calls. Exit 0 means every APS-native vector passed. External-system families under `fixtures/cross-stack/` are not executed by `npm test`; each carries its own reproduction command in its README.
 
 Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 
-> **Status:** v0.1.0. The corpus carries cross-stack fixtures from two outside parties, and a weekly signed-token exchange with one of them (AgentLair) has run since 2026-06-17. That is a seed. It is not independent conformance yet.
+> **Status:** v0.1.0. The corpus carries cross-stack fixtures from outside parties, and a weekly signed-token exchange with one of them (AgentLair) has run since 2026-06-17. That is a seed. It is not independent conformance yet.
 
 ## What this suite is
 
@@ -61,7 +61,7 @@ aps-conformance-suite/
 ├── package.json
 ├── tsconfig.json
 ├── fixtures/
-│   ├── manifest.json                  (top-level index of all fixtures with sha256)
+│   ├── manifest.json                  (index of the APS-native fixtures with sha256; cross-stack families are outside it)
 │   ├── bilateral-delegation/          (10 vectors)
 │   ├── inference-session/             (7 vectors)
 │   ├── instruction-provenance/        (10 vectors)
