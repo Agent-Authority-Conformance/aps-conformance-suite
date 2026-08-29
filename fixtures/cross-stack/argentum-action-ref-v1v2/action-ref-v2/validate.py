@@ -54,7 +54,8 @@ def main() -> int:
         if v2 != vec["action_ref_v2"]:
             errors.append(f"v2 digest mismatch: computed {v2} != expected {vec['action_ref_v2']}")
 
-        if v1 == v2:
+        v2_digest = v2[len("v2:"):]
+        if v1 == v2_digest:
             errors.append("v1 and v2 collided — domain separation failed")
 
         if action_ref_version(v1) != "v1":

@@ -15,8 +15,8 @@ through the lab end to end.
   day.
 - **3 domain-separation vectors** (`action-ref-v2/`) — same preimage, two derivations
   (`action_ref_v1`: bare SHA-256; `action_ref_v2`: domain-tagged, `mycelium.action-ref:v2:`
-  prepended and a `v2:` prefix on the result), confirming the two never collide for identical
-  inputs. `arv2-001`'s preimage is the same worked example already published in
+  prepended and a `v2:` prefix on the result); the three pinned preimages show the two
+  derivations differ. `arv2-001`'s preimage is the same worked example already published in
   `docs/spec/action-ref.md`'s "Serialization — JCS" section.
 
 ## Recompute — no checkout of argentum-core needed
