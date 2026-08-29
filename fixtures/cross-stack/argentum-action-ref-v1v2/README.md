@@ -1,7 +1,7 @@
 # argentum-action-ref-v1v2: external-system vector family
 
 Fifteen vectors from `giskard09/argentum-core`'s `action_ref` conformance corpus, mirrored here
-at commit `8bdee1feb0cbaa9e1cc0b0bcfa26df802e39ed12` (branch `main`), following the invitation in
+at commit `586299a73145ef248dd855dde29dd8a079cf418b` (branch `main`), following the invitation in
 [a2aproject/A2A#1628](https://github.com/a2aproject/A2A/issues/1628) to put the Argentum sets
 through the lab end to end.
 
