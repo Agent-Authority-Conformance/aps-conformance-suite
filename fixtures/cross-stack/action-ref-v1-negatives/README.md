@@ -56,3 +56,10 @@ Recomputation agreement only. Passing this set does not establish:
   to perform the action.
 - **Occurrence.** A matching `action_ref` does not establish that the action
   happened, only that the identifier is consistent with the stated preimage.
+
+## Verification split
+
+- positive `action_ref` digests: computed with the shipping `computeExternalActionRefV1` and byte-checked against a stdlib recompute (node:crypto over a minimal RFC 8785 canonicalization); runner aeoess; Mode B; author-produced, because the vectors were authored by this lab's maintainer (upstreamed as argentum-core PR #12, merge commit `3aea9c6`) and one of the two implementations is the maintainer's SDK; listed in `docs/OPEN-RUNS.md`.
+- nine drifted `claimed_action_ref` digests and their declared failure stages; runner aeoess; Mode B; author-produced, same relationship; listed in `docs/OPEN-RUNS.md`.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.

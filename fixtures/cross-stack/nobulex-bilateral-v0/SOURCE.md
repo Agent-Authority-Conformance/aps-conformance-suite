@@ -31,3 +31,10 @@ provenance lives in this sibling file instead of inside `vectors.json`.
   with the two-profile digest split recorded explicitly.
 - `run.mjs`: recomputation runner (SDK import plus stdlib-only recompute).
 - `results.json`: machine-readable output of the last `run.mjs` run.
+
+## Verification split
+
+- stdlib recompute of each vector's own preimage (nobulex integer-epoch profile: minimal RFC 8785 canonicalization plus SHA-256) against `expected_action_ref`; runner aeoess; Mode B; independent; node:crypto (`run.mjs`); vectors and implementation by Nobulex (arian-gogani).
+- two-profile comparison: the same instant rendered in the APS string-timestamp profile and digested with the shipping `computeExternalActionRefV1`; runner aeoess; Mode B; author-produced, because the implementation this layer exercises is the APS SDK, whose author is the runner; listed in `docs/OPEN-RUNS.md`.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
