@@ -1,7 +1,7 @@
 # argentum-action-ref-v1v2: external-system vector family
 
 Fifteen vectors from `giskard09/argentum-core`'s `action_ref` conformance corpus, mirrored here
-at commit `586299a73145ef248dd855dde29dd8a079cf418b` (branch `main`), following the invitation in
+at commit `a9312c0b0e8a65dd0d8c8f002d55a767b0bf68c4` (branch `main`), following the invitation in
 [a2aproject/A2A#1628](https://github.com/a2aproject/A2A/issues/1628) to put the Argentum sets
 through the lab end to end.
 
@@ -18,10 +18,13 @@ through the lab end to end.
   `mycelium.action-ref:v2:` prepended and a `v2:` prefix on the result); the three pinned
   preimages show the two derivations differ. `arv2-001`'s preimage is the same worked example
   already published in `docs/spec/action-ref.md`'s "Serialization — JCS" section. `validate.py`
-  also enforces `action_ref_version()`'s grammar (lowercase hex only, per spec) against two
-  negative cases — a same-length uppercase-hex string and a same-length non-hex string, neither
-  of which is a valid v1 or v2 action_ref and both of which must raise, not be misread by
-  length/prefix alone.
+  also enforces `action_ref_version()`'s grammar (lowercase hex only, `fullmatch` not `match`,
+  per spec) against two negative cases — a same-length uppercase-hex string and a same-length
+  non-hex string, neither of which is a valid v1 or v2 action_ref and both of which must raise,
+  not be misread by length/prefix alone. Before hashing anything, `validate.py` also checks the
+  fixture's declared `hash_algo`/`preimage_format`/`domain_tag` against what it implements, and
+  each preimage's exact key set — a fixture edited to a different tag or an extra field fails
+  loudly instead of validating silently against the wrong profile.
 
 ## Recompute — no checkout of argentum-core needed
 
@@ -79,12 +82,19 @@ All 5 vectors PASSED
   ordinary or adversarial vector can drive it.
 - No signatures in this family — `action_ref` is a bare content-address, not an attestation.
   Nothing here exercises key resolution or a trust anchor.
-- Only the Domain-rejection and v1/v2-collision slices of the corpus are included, to keep this
-  family small and legible; the full `action_ref` spec has additional fixture sets in the same
-  upstream repository not mirrored here.
+- Only the Domain-rejection and v1/v2-domain-separation slices of the corpus are included, to
+  keep this family small and legible; the full `action_ref` spec has additional fixture sets in
+  the same upstream repository not mirrored here.
 - One known erratum on the historical tag `action-ref-v1.0`: a scope-field wording conflict,
   resolved in the live spec (`docs/spec/action-ref.md`, dated 2026-08-15) but left unedited on
   the tag by policy. See `SOURCE.md`.
+- **Profile boundary, not a contradiction**: the lab's own corpus already vendors an older
+  Argentum family (`runners/ts/sk-function-invocation/test-fixtures/argentum-core/`, pinned to
+  the frozen `action-ref-v1.0` tag, predating this repository's Domain-paragraph enforcement)
+  whose `0002-unicode-fields` and `0003-empty-scope` are POSITIVE cases — this family's
+  `nfc-001`/`nfc-002`/`av-007` reject those same input shapes, correctly, against the live
+  post-Domain profile. Report results against each family separately; do not aggregate into one
+  pass/fail count. Full explanation in `SOURCE.md`'s "Profile boundary" section.
 
 Per the lab charter: this submission does not ask to be listed, endorsed, or described as
 APS-validated. It is a record offered for independent verification, as CONTRIBUTING.md requires
