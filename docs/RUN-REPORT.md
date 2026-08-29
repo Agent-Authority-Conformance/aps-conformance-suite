@@ -10,9 +10,11 @@ In order:
 1. Clone this repository.
 2. `npm ci --include=dev`. This step needs network access.
 3. `npm test`. After dependencies are installed the run makes no network calls. Exit 0
-   means every APS-native vector passed. External-system families under
-   `fixtures/cross-stack/` are not executed by `npm test`; to report on one of them, run
-   the command in its README and paste that output instead.
+   means every APS-native vector passed and every dedicated external-family verifier wired
+   into the gate passed. `npm run verify` is the generic APS corpus runner alone. To report
+   on one external-system family under `fixtures/cross-stack/`, run the command in its
+   README and paste that output instead.
+
 4. Copy the verbatim output of step 3. Do not summarize it and do not trim it.
 5. File it, either way:
    - Open a Run report issue at
@@ -27,15 +29,23 @@ path, and it is the path the six existing directories under `interop/` used.
 
 ## Two run modes
 
-**Mode A, reproduction.** You run this repository's runner in your own environment. The
-result records that the corpus reproduces outside the environment it was built in. This is
-useful and it is not the same as an independent check, because the code computing the
-answer is the same code that produced the published values.
+**Mode A, reproduction.** Run the repository's documented verifier or the implementation
+under test in a separate environment and record its output. Mode A describes reuse of the
+documented verification path; it does not by itself determine whether the record is
+author-produced or independent.
 
-**Mode B, independent recomputation.** Your own implementation recomputes the canonical
-bytes, signatures or verdicts from the fixture inputs, and you compare what you observe
-against the published values, listing every vector as match or diverge and giving your
-observed bytes or verdict wherever it diverges. Mode B is the run the lab exists for.
+**Mode B, alternate recomputation.** Recompute the published bytes, signatures, digests,
+verdicts, or other claimed results using an alternate implementation or primitive and
+compare the observed result with the published claim, listing every vector as match or
+diverge and giving your observed bytes or verdict wherever it diverges. Mode B describes
+the computation path; it does not by itself determine whether the record is
+author-produced or independent.
+
+Mode and authorship are separate axes. `Mode A` / `Mode B` describes how the claim was
+checked; `author-produced` / `independent` describes the runner's relationship to the
+vectors, claim inputs, and implementation, using the definition in `CONTRIBUTING.md`.
+Neither axis determines the other.
+
 
 ## Required fields
 
@@ -46,14 +56,15 @@ runner output; Mode B satisfies it with your own per-vector list.
 |---|---|
 | who ran it | your GitHub handle or name |
 | date | the date of the run |
-| run mode | A reproduction, or B independent recomputation |
+| run mode | A reproduction, or B alternate recomputation |
 | implementation name | what was tested |
 | implementation repo and commit or version | enough to fetch exactly what you ran |
 | corpus reference | the tag or commit sha of this repository you ran against |
 | per-vector result | Mode A: the runner output. Mode B: your per-vector match or diverge list |
 | verbatim command and output | the commands you ran and what they printed, uncut |
 | environment | language, runtime version, operating system |
-| author-produced or independent | independent means you are neither the author of the vectors nor the author of the implementation under test |
+| author-produced or independent | Classify the record using the definition of `independent` in `CONTRIBUTING.md`; if that definition is not met, label the record `author-produced` and state the authorship relationship. |
+
 | suspected defective vectors | optional, any vector you believe is wrong, and why |
 
 The last field is what makes a divergence actionable. If you think the corpus is at fault

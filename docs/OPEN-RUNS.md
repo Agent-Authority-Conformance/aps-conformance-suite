@@ -1,13 +1,16 @@
 # Open independent runs
 
-One line per layer of a merged external-system family that has no independent run record
-yet. Independent means the runner authored neither the family's vectors nor the
-implementation that layer exercises (`docs/RUN-REPORT.md`). An independent run of a listed
-layer merges as a new record under `interop/` or in the family's `SOURCE.md` and removes
-the line here in the same commit; earlier records stay as they were.
+One line per layer of a merged external-system family that policy permits to land with
+author-produced evidence and that does not yet have an independent run record.
+`Independent` has the meaning defined in `CONTRIBUTING.md`. A qualifying independent run
+of a listed layer merges as a new record under `interop/` or in the family's `SOURCE.md`
+and removes the line here in the same commit; earlier records stay as they were.
 
-This file is a work queue, not a status board. It lists what nobody outside the authors
-has recomputed yet, so that a reader can see the corpus's unverified surface in one place.
+This file is a work queue, not a status board. It tracks optional independent follow-up
+for layers that policy permits to land with author-produced evidence. It is not a complete
+inventory of claims awaiting admission, and it is not a deferral mechanism for
+independently recomputable claims whose independent record is required before merge.
+
 
 | family | layer / claim | what an independent run recomputes | command |
 |---|---|---|---|
@@ -21,8 +24,7 @@ recomputation, runner aeoess, stdlib, vectors and implementation by AgentLair);
 `nobulex-bilateral-v0` stdlib recompute of each vector's own preimage (runner aeoess,
 node:crypto, vectors and implementation by Nobulex).
 
-Families under review carry their split at admission; for `oracle-safety-check` (PR #32) the
-EIP-712 layer already has an independent record at
-`interop/ethers-oracle-safety-check-9b4ffee/` and its APS receipt and delegation layer will
-be listed here on merge. Interop records under `interop/` are runs of other projects'
-vectors and carry mode and attribution per run; they are not families and are not listed.
+Families under review carry their verification split at admission and are not listed here.
+Interop records under `interop/` are runs of other projects' vectors and carry mode and
+attribution per run; they are not families and are not listed.
+
