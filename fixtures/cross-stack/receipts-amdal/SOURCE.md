@@ -47,3 +47,12 @@ from the identifier, so a key-absent condition cannot fire on this method; it is
 `did:web` only. And `receipt-2026-07-29-key-order-reversed` is byte-identical content
 transmitted with reversed key order, so it verifies only under serialization-time sorting; it
 would fail any implementation that trusts wire order.
+
+## Verification split
+
+- did:key resolution of the receipt signer; runner aeoess; Mode B; independent; Python stdlib (`runners/receipt_runner.py`); vectors and issuing implementation by AgentLair (Pico Amdal).
+- RFC 8785 JCS canonical bytes of the envelope with `signature` excluded; runner aeoess; Mode B; independent; same runner.
+- Ed25519 signature over the canonical bytes; runner aeoess; Mode B; independent; same runner.
+- `receipt_id` recomputation from `body0` under the issuer's stated formula; runner aeoess; Mode B; independent; same runner.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.

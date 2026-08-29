@@ -73,3 +73,10 @@ fixtures/cross-stack/synthetic/. It replaced a reconstruction of the issuer's 20
 send, which he corrected 57 minutes later; publishing that would have pinned a mistake he had
 already fixed. The synthetic key derives from a fixed published seed and verifies inline, so the
 oracle cannot fail because of a third party's DNS.
+
+## Verification split
+
+- issuer Ed25519 signature over each AAT token against the pinned AgentLair JWKS kid; runner aeoess; Mode B; independent; Python with the `cryptography` library (`runners/aat_runner.py`); vectors and issuing implementation by AgentLair (Pico Amdal).
+- window bounds evaluated against each vector's `verification_time`; runner aeoess; Mode B; independent; same runner; the window rule is the issuer's stated profile, recomputed here without the issuer's code.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
