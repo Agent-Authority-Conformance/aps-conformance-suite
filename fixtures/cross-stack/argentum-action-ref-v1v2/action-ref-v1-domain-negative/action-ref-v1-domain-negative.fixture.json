@@ -1,0 +1,133 @@
+{
+  "fixture_id": "action-ref-v1-domain-negative",
+  "version": "v1",
+  "spec": "docs/spec/action-ref.md",
+  "hash_algo": "sha256",
+  "preimage_format": "jcs-rfc8785-v1",
+  "generated_at": "2026-07-29",
+  "attribution": "Vectors reported by aeoess (Pidlisnyi) in giskard09/argentum-core#35, cross-checked against the APS SDK's 13-vector action-ref-v1 conformance set (github.com/aeoess/agent-passport-system, conformance/action-ref-v1/vectors.json).",
+  "purpose": "Domain-rejection conformance vectors for action-ref-v1. docs/spec/action-ref.md's Domain paragraph requires OUT_OF_PROFILE_DOMAIN and a stop before any digest comparison for malformed timestamp grammar and non-ASCII/surrogate-pair field values. Before this fixture set, the reference implementation (plugins/agt_evidence_anchor/action_ref.py) hashed all of these inputs and returned a normal-looking digest instead of rejecting them -- confirmed and fixed same day, see action_ref.py's _validate_domain / OutOfProfileDomainError.",
+  "reproduce_in_python": "from plugins.agt_evidence_anchor.action_ref import compute_action_ref, OutOfProfileDomainError\ntry:\n    compute_action_ref(agent_id, action_type, scope, timestamp)\n    result = 'ACCEPTED'\nexcept OutOfProfileDomainError as e:\n    result = f'REJECTED: {e.field}: {e.reason}'",
+  "vectors": [
+    {
+      "id": "adn-001",
+      "description": "Malformed timestamp: lowercase 't' separator instead of 'T'. One of the five shapes aeoess listed in #35 that the pre-fix implementation hashed without rejecting.",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24t10:30:00.000Z"
+      }
+    },
+    {
+      "id": "adn-002",
+      "description": "Malformed timestamp: lowercase 'z' suffix instead of 'Z'.",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00.000z"
+      }
+    },
+    {
+      "id": "adn-003",
+      "description": "Malformed timestamp: numeric UTC offset ('+00:00') instead of the 'Z' suffix. This is also the shape Python's datetime.isoformat(timespec='milliseconds') produces by default -- named by aeoess as the most likely accidental source of a rejected input.",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00.000+00:00"
+      }
+    },
+    {
+      "id": "adn-004",
+      "description": "Malformed timestamp: second precision, no fractional component at all.",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00Z"
+      }
+    },
+    {
+      "id": "adn-005",
+      "description": "Malformed timestamp: six fractional digits (microseconds) instead of the required three (milliseconds).",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00.000000Z"
+      }
+    },
+    {
+      "id": "av-003",
+      "description": "aeoess's own vector id (#35). scope = 'scope:\u0437\u0432\u0456\u0442/\ud83d\udcc4' -- non-ASCII (Cyrillic) plus an astral-plane character (U+1F4C4, surrogate pair in UTF-16). The Domain paragraph excludes non-ASCII field values and surrogate-pair scope strings by name.",
+      "expect_valid": false,
+      "expect_error_field": "scope",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "scope:\u0437\u0432\u0456\u0442/\ud83d\udcc4",
+        "timestamp": "2026-05-24T10:30:00.000Z"
+      }
+    },
+    {
+      "id": "av-007",
+      "description": "aeoess's own vector id (#35). REVERSED 2026-08-15: the 2026-07-29 fix resolved the field-table wording conflict ('non-empty' vs 'pass \"\" if not applicable') by picking the permissive reading and marking this vector expect_valid: true. That was wrong -- draft-etcheverry-action-ref-02 Section 6 (the public I-D we already committed to) says scope 'is a free-form non-empty string. Any value is valid as long as it is non-empty', no exception. action-ref.md is corrected to match the published I-D (the I-D is the document we compromised externally; the local spec conforms to it, not the reverse). Empty scope is now OUT_OF_PROFILE_DOMAIN, same family as the other vectors in this fixture. Retroactive impact checked before this change: 0 production trails via /nexus/trail had empty scope, so no existing data is affected. NOTE for cross-implementation parity: this reverses the digest aeoess's APS SDK vector av-007 expects (previously matched, cea68656343a06fad083af9a283329af96fcbc6c5fa183229823070fe635641b) -- their published vector still expects ACCEPT on empty scope. This is a known, deliberate divergence pending outreach to aeoess, not an oversight.",
+      "expect_valid": false,
+      "expect_error_field": "scope",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "",
+        "timestamp": "2026-05-24T10:30:00.000Z"
+      }
+    },
+    {
+      "id": "epoch-ms-001",
+      "description": "FIX 2026-08-25 (aeoess/Pidlisnyi, draft-etcheverry-action-ref#6): a 2026-08-15 unification of _validate_domain (originally to let /nexus/trail accept NEXUS's documented epoch-ms wire format) made epoch-ms acceptance the unconditional default, so compute_action_ref itself hashed a raw all-digit epoch-ms string instead of requiring the RFC 3339 conversion action-ref.md's Conversion note mandates. Reproduced by hand before the fix: compute_action_ref(..., \"1778839200123\") and compute_action_ref(..., \"2026-05-15T10:00:00.123Z\") -- the exact same instant -- returned two different digests. _validate_domain now takes allow_epoch_ms (default False); compute_action_ref/compute_action_ref_v2 use the default and reject epoch-ms here. Only /nexus/trail passes allow_epoch_ms=True.",
+      "expect_valid": false,
+      "expect_error_field": "timestamp",
+      "preimage": {
+        "agent_id": "did:aeoess:example",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "1778839200123"
+      }
+    },
+    {
+      "id": "nfc-001",
+      "description": "Unicode normalization symmetry check, prompted by Henri Sirkkavaara (SCITT list, 2026-08-16) raising NFC-vs-NFD-before-JCS ambiguity in an unrelated ARP/Certisyn thread. agent_id in NFC form: 'agent-café', precomposed U+00E9 (LATIN SMALL LETTER E WITH ACUTE). Non-ASCII, so the Domain paragraph rejects it -- same as its NFD twin below, confirming the ASCII-only profile closes NFC/NFD divergence by rejecting both forms identically rather than accepting one and not the other.",
+      "expect_valid": false,
+      "expect_error_field": "agent_id",
+      "preimage": {
+        "agent_id": "agent-café",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00.000Z"
+      }
+    },
+    {
+      "id": "nfc-002",
+      "description": "Same logical agent_id as nfc-001, NFD form: 'agent-café', base 'e' (U+0065) plus COMBINING ACUTE ACCENT (U+0301). Two code points, byte-different from nfc-001's single precomposed code point, but the same visible identifier. Must be rejected the same way (same field, same error) -- if this vector's outcome ever diverged from nfc-001's, NFC/NFD would silently produce two different treatments for one identity, exactly the gap this profile is designed to close.",
+      "expect_valid": false,
+      "expect_error_field": "agent_id",
+      "preimage": {
+        "agent_id": "agent-café",
+        "action_type": "trail.anchor",
+        "scope": "mycelium:av-neg",
+        "timestamp": "2026-05-24T10:30:00.000Z"
+      }
+    }
+  ]
+}
