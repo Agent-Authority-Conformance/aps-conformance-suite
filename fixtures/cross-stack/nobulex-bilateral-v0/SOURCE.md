@@ -38,3 +38,9 @@ provenance lives in this sibling file instead of inside `vectors.json`.
 - two-profile comparison: the same instant rendered in the APS string-timestamp profile and digested with the shipping `computeExternalActionRefV1`; runner aeoess; Mode B; author-produced, because the implementation this layer exercises is the APS SDK, whose author is the runner; listed in `docs/OPEN-RUNS.md`.
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
+Classification clarification, 2026-08-29: the row(s) above labeled independent on
+2026-08-28 are restated under the single definition. nobulex-bilateral-v0: the canonical
+preimage is produced by a hand-written jcsFlat in run.mjs, author-produced, listed in
+docs/OPEN-RUNS.md; the SHA-256 over each vector's own expected_canonical_preimage stays
+independent. Results and pins are unchanged.

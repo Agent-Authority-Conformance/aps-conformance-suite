@@ -80,3 +80,9 @@ oracle cannot fail because of a third party's DNS.
 - window bounds evaluated against each vector's `verification_time`; runner aeoess; Mode B; independent; same runner; the window rule is the issuer's stated profile, recomputed here without the issuer's code.
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
+Classification clarification, 2026-08-29: the row(s) above labeled independent on
+2026-08-28 are restated under the single definition. aat-amdal: window bounds are
+evaluated by hand-written comparisons in runners/aat_runner.py, so that layer is
+author-produced and is listed in docs/OPEN-RUNS.md; the Ed25519 layer stays independent
+(cryptography library). Results and pins are unchanged.
