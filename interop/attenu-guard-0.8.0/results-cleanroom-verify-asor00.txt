@@ -1,0 +1,21 @@
+ok  valid_chain.json                 want=accept               got=accept
+ok  reject_widened_scope.json        want=not_narrower         got=not_narrower
+ok  reject_exceeded_ceiling.json     want=not_narrower         got=not_narrower
+ok  reject_spliced_parent.json       want=par_hash_mismatch    got=par_hash_mismatch
+ok  reject_depth_exceeded.json       want=depth_invalid        got=depth_invalid
+ok  reject_nonmonotonic_exp.json     want=expired              got=expired
+ok  reject_bad_signature.json        want=signature_invalid    got=signature_invalid
+ok  reject_wildcard_widening.json    want=not_narrower         got=not_narrower
+ok  reject_wildcard_boundary.json    want=not_narrower         got=not_narrower
+FAIL reject_bare_wildcard.json        want=malformed            got=not_narrower
+FAIL reject_nonterminal_wildcard.json want=malformed            got=accept
+ok  valid_jcs_integral_float.json    want=accept               got=accept
+ok  valid_jcs_exponent_form.json     want=accept               got=accept
+ok  valid_jcs_non_ascii.json         want=accept               got=accept
+ok  valid_jcs_utf16_key_order.json   want=accept               got=accept
+ok  valid_jcs_big_integer.json       want=accept               got=accept
+ok  valid_jcs_unmarked_header.json   want=accept               got=accept
+FAIL reject_non_finite.json           want=non_finite           got=accept
+FAIL reject_duplicate_member.json     want=duplicate_member     got=accept
+
+4 MISMATCH

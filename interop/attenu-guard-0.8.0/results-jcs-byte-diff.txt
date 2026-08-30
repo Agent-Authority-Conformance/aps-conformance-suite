@@ -1,0 +1,13 @@
+
+distinct cases: 10  byte-identical: 10
+  match astral-key-ordering
+  match float-1e21-boundary
+  match float-tenth
+  match integer-2pow60-inside-int64
+  match integer-2pow68-above-int64
+  match integer-above-2pow53
+  match negative-zero
+  match nested-object-and-array
+  match nfd-key-used-as-given
+  match small-exponent-vs-decimal
+RESULT DRIFTED from the recorded 5/10 match set

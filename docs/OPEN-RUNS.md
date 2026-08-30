@@ -31,4 +31,5 @@ Nobulex).
 Families under review carry their verification split at admission and are not listed here.
 Interop records under `interop/` are runs of other projects' vectors and carry mode and
 attribution per run; they are not families and are not listed.
-
+| `interop/attenu-guard-0.8.0` | package canonicalization over the corpus canonical-bytes cases at 0.8.0 | the ten canonical byte outputs under attenu-guard 0.8.0, compared byte for byte with fixtures/canonical-bytes | `v/bin/python interop/attenu-guard-0.6.1/jcs-byte-diff.py` with attenu-guard==0.8.0 installed |
+| `interop/attenu-guard-0.8.0` | draft-semantics recomputation over the 19 package vectors at 0.8.0 | the nineteen accept and reject verdicts under an independently authored verifier of the draft rules | `v/bin/python interop/attenu-guard-0.6.1/cleanroom/verify_asor00.py` with attenu-guard==0.8.0 installed |
