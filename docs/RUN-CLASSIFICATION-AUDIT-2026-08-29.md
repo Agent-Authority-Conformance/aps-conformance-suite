@@ -14,6 +14,8 @@ classification, a dated clarification is appended, text given below. Where a cla
 classified from the record without reading the harness source, it is marked INDETERMINATE and
 the source check is named.
 
+Placement of each clarification follows the record's digest set: where the target file is listed in the record's CHECKSUMS.sha256 or SHA256SUMS.txt, the clarification is recorded in CLARIFICATIONS.md beside the record and the target file is unchanged; where it is not listed, the clarification is appended at the end of the target file. The text of a clarification does not depend on its placement.
+
 Reading used for every row: the record's own text at suite main 3feec34. Pins are quoted as
 recorded and are not changed.
 
