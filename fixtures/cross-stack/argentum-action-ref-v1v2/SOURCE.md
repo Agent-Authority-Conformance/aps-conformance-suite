@@ -259,3 +259,5 @@ of this PR's review rather than having been claimed here.
   scope-field wording conflict, resolved in the live spec (`docs/spec/action-ref.md`, dated
   2026-08-15) but the tag itself is left unedited by upstream policy — noted here so a verifier
   reading the tag directly is not surprised.
+
+2026-08-30: outside run of the domain and version-grammar layers by rafaelasor at pull request #42 head 3127776 against Argentum 4aaa6ee (Python 3.14.6, Darwin arm64): action-ref-v1-domain-negative/validate.py rejected all 10 vectors as expected, exit 0; action-ref-v2/validate.py passed 7/7, exit 0; the four version_marker_negative_vectors, passed unchanged through the vendored action_ref_version, each raise ValueError. Classification under CONTRIBUTING.md: Mode A, independent; the runner authored neither the vectors, the claim inputs nor the implementation supplying the recomputation. Record: https://github.com/Agent-Authority-Conformance/aps-conformance-suite/pull/42#issuecomment-5467188281. The family merged from that head; its nine files are byte-identical after the rebase onto 8cf3ed0.
