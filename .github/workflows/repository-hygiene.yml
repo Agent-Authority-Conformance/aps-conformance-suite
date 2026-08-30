@@ -1,0 +1,98 @@
+name: repository hygiene
+
+# Public checks on what this repository commits. The previous drift check
+# enumerated the maintainer's private document names, which told every reader
+# what those documents are called and only worked for one person's setup. Those
+# patterns now live in a local pre-push hook. What remains here is what any
+# contributor to a public evidence repository should be held to.
+#
+# Deliberately not checked here: prose style, file naming, or anything a person
+# reviews. This job derives facts.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: '22'
+
+      - name: Absolute local paths
+        # A home directory path in a tracked file is someone's machine leaking
+        # into the record, and it makes the file unusable on any other machine.
+        #
+        # One exception, and it is a constant rather than a path: the
+        # instruction-provenance vectors pin the synthetic working root
+        # /Users/agent/workspace as vector content. It is covered by a published
+        # digest, so it cannot be edited without invalidating the fixture, and no
+        # such account exists on any machine. The literal is removed from each
+        # line before the check runs, so any OTHER absolute path on the same line
+        # still fails.
+        run: |
+          set -euo pipefail
+          hits=$(git ls-files -z \
+            | grep -zv -E '^\.github/workflows/repository-hygiene\.yml$' \
+            | xargs -0 grep -n -E '/Users/|/home/' /dev/null 2>/dev/null \
+            | sed 's|/Users/agent/workspace||g' \
+            | grep -E '/Users/|/home/' || true)
+          if [ -n "$hits" ]; then
+            echo "::error::Absolute local path in tracked files:"
+            printf '%s\n' "$hits" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "ok: no absolute local paths"
+
+      - name: Secret-shaped files
+        run: |
+          set -euo pipefail
+          hits=$(git ls-files \
+            | grep -E '(^|/)\.env($|\.)|\.(pem|key|p12|pfx|jks|keystore)$|(^|/)id_(rsa|dsa|ecdsa|ed25519)$' \
+            || true)
+          if [ -n "$hits" ]; then
+            echo "::error::Secret-shaped file committed:"
+            printf '%s\n' "$hits" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "ok: no secret-shaped files"
+
+      - name: Committed dependencies or build output
+        run: |
+          set -euo pipefail
+          hits=$(git ls-files | grep -E '(^|/)(node_modules|dist)/' || true)
+          if [ -n "$hits" ]; then
+            echo "::error::node_modules or dist committed:"
+            printf '%s\n' "$hits" | head -50 | sed 's/^/  /'
+            exit 1
+          fi
+          echo "ok: no committed node_modules or dist"
+
+      - name: CRLF in pinned evidence
+        # Pinned bytes are the evidence. A carriage return inside these trees
+        # changes a fixture digest and every claim recorded against it.
+        # .gitattributes is what prevents a checkout from introducing one; this
+        # is what catches one that was committed.
+        run: |
+          set -euo pipefail
+          files=$(git ls-files 'fixtures/**' 'interop/**' 'cross-impl-receipts/**')
+          hits=""
+          if [ -n "$files" ]; then
+            hits=$(printf '%s\n' "$files" | tr '\n' '\0' | xargs -0 -r grep -l -U -P '\r' 2>/dev/null || true)
+          fi
+          if [ -n "$hits" ]; then
+            echo "::error::CRLF inside pinned evidence:"
+            printf '%s\n' "$hits" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "ok: no CRLF in pinned evidence"
