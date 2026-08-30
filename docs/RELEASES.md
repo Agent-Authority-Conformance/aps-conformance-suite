@@ -3,9 +3,11 @@
 A release is an immutable snapshot of this repository at one commit, published so
 a reader can reconstruct exactly what the corpus claimed on a given day.
 
-No release has been cut. This document is the format, so that when one is cut it
-records the things a reader would otherwise have to reconstruct by hand, and so
-that the shape is agreed before there is a release to argue about.
+No release record in this format exists. The repository carries an earlier
+tag, v0.1.0 at commit 4b9dbb0 (2026-07-15); it predates this format and has no release
+record under it, and it is not reinterpreted here. This document is the format, so that when
+a release is cut it records the things a reader would otherwise have to reconstruct by hand,
+and so that the shape is agreed before there is a release to argue about.
 
 ## What a release is
 
