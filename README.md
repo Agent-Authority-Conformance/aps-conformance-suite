@@ -42,9 +42,13 @@ npm run verify
 Or from the repo root:
 
 ```bash
-npm install
-npx tsx runners/ts/verify.ts
+npm ci --include=dev && npm test
 ```
+
+There are two commands and they answer different questions. `npm test` runs the
+repository-wide integrity and verification gate at this commit. `npm run verify` is the
+generic APS-native corpus verifier alone. External-system families under
+`fixtures/cross-stack/` may use dedicated verifiers, documented with the family.
 
 The runner ships a vendored RFC 8785 JCS canonicalizer in `runners/ts/canonicalize.ts` so external implementations can run it standalone, with **no dependency on `agent-passport-system` at runtime**. Implementations under test bring their own canonicalizer; this runner verifies the corpus against the reference.
 
