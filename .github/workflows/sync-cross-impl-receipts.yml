@@ -1,15 +1,24 @@
-# Cross-implementation receipt mirror sync.
-#
-# Polls arian-gogani/nobulex@main once per day. For each of the three receipt
-# files, compares upstream SHA-256 against the mirrored copy in
-# cross-impl-receipts/. If any hash differs, re-fetches the changed files,
-# refreshes the "Last synced" + "Upstream commit" lines in
-# cross-impl-receipts/README.md, and opens a PR. Never auto-merges.
-#
-# Manual dispatch (workflow_dispatch) included for on-demand syncs.
-#
-# Cadence (daily-poll) confirmed in A2A#1786 with @arian-gogani.
+name: sync cross-impl receipts
 
+# Cross-implementation receipt snapshots.
+#
+# Polls arian-gogani/nobulex@main daily. On a change it writes a NEW dated
+# snapshot directory and opens a pull request. It never modifies an existing
+# path, and it never auto-merges.
+#
+# WHY APPEND ONLY. The previous version of this workflow re-fetched the three
+# files over the copies at the root of cross-impl-receipts/ and rewrote the sync
+# metadata in the README. That silently repointed a published record at a later
+# upstream revision, so a citation of it stopped meaning what it meant when it
+# was cited. Snapshots accumulate instead: each one is an observation at one
+# revision, and an earlier observation is never rewritten by a later one.
+#
+# The three files at the root are the frozen legacy snapshot at d68fcee,
+# 2026-05-02. They predate this layout, their paths may already be cited, and
+# this workflow does not touch them.
+#
+# The daily cadence is a public commitment, agreed with @arian-gogani in
+# A2A#1786 and named in CTEF section A as daily-poll synchronization.
 
 on:
   schedule:
@@ -17,76 +26,140 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  sync:
+  snapshot:
     runs-on: ubuntu-latest
+    # Write lives on this job only, because this job is the one that pushes a
+    # branch and opens the pull request. No other job inherits it.
+    permissions:
+      contents: write
+      pull-requests: write
     env:
       UPSTREAM_REPO: arian-gogani/nobulex
       UPSTREAM_BRANCH: main
       FILES: "aps-byte-match-receipt.json ctef-byte-match-receipt.json ctef-vectors.json"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Compare upstream vs mirror
+      - name: Compare upstream against the most recent record
         id: diff
         run: |
           set -euo pipefail
-          changed=()
+          # The baseline is the newest dated snapshot, or the frozen legacy
+          # snapshot at the root when no dated snapshot exists yet.
+          baseline="cross-impl-receipts"
+          newest=$(find cross-impl-receipts/snapshots -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n1 || true)
+          if [ -n "$newest" ]; then baseline="$newest"; fi
+          echo "baseline=$baseline"
+
+          changed=0
           for f in $FILES; do
             upstream_hash=$(curl -fsSL "https://raw.githubusercontent.com/${UPSTREAM_REPO}/${UPSTREAM_BRANCH}/${f}" | shasum -a 256 | cut -d' ' -f1)
-            local_hash=$(shasum -a 256 "cross-impl-receipts/${f}" | cut -d' ' -f1)
-            if [ "$upstream_hash" != "$local_hash" ]; then
-              echo "CHANGED ${f} upstream=${upstream_hash} local=${local_hash}"
-              changed+=("$f")
+            base_hash=$(shasum -a 256 "${baseline}/${f}" | cut -d' ' -f1)
+            if [ "$upstream_hash" != "$base_hash" ]; then
+              echo "CHANGED ${f} upstream=${upstream_hash} baseline=${base_hash}"
+              changed=1
             else
-              echo "OK      ${f}"
+              echo "SAME    ${f}"
             fi
           done
-          if [ ${#changed[@]} -eq 0 ]; then
-            echo "changed=" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=${changed[*]}" >> "$GITHUB_OUTPUT"
-          fi
+          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
 
-      - name: Fetch changed files
-        if: steps.diff.outputs.changed != ''
-        run: |
-          set -euo pipefail
-          for f in ${{ steps.diff.outputs.changed }}; do
-            curl -fsSL "https://raw.githubusercontent.com/${UPSTREAM_REPO}/${UPSTREAM_BRANCH}/${f}" -o "cross-impl-receipts/${f}"
-          done
-
-      - name: Refresh README sync metadata
-        if: steps.diff.outputs.changed != ''
+      - name: Write a new dated snapshot
+        id: snap
+        if: steps.diff.outputs.changed == '1'
         run: |
           set -euo pipefail
           upstream_sha=$(curl -fsSL "https://api.github.com/repos/${UPSTREAM_REPO}/commits/${UPSTREAM_BRANCH}" | jq -r .sha)
+          short=$(printf '%s' "$upstream_sha" | cut -c1-7)
+          day=$(date -u +"%Y-%m-%d")
           ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          # Replace "Upstream commit" and "Last synced" lines in the mirror README.
-          # Hash lines in the README are intentionally not auto-rewritten here —
-          # the PR diff makes them visible for human review.
-          sed -i.bak \
-            -e "s|^- Upstream commit: \`.*\`|- Upstream commit: \`${upstream_sha}\`|" \
-            -e "s|^- Last synced: \`.*\`|- Last synced: \`${ts}\`|" \
-            cross-impl-receipts/README.md
-          rm cross-impl-receipts/README.md.bak
+          dir="cross-impl-receipts/snapshots/${day}-${short}"
 
-      - name: Open PR
-        if: steps.diff.outputs.changed != ''
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: bot/sync-cross-impl-receipts
-          title: "chore(cross-impl-receipts): sync from arian-gogani/nobulex"
-          commit-message: "chore(cross-impl-receipts): sync from arian-gogani/nobulex"
-          body: |
-            Automated mirror sync of cross-implementation verifier receipts.
+          # A snapshot directory is written once. If one already exists for this
+          # day and revision, there is nothing new to record and the run stops
+          # rather than writing over it.
+          if [ -e "$dir" ]; then
+            echo "snapshot ${dir} already exists, nothing to record"
+            echo "created=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
-            Changed files:
-            ```
-            ${{ steps.diff.outputs.changed }}
-            ```
+          mkdir -p "$dir"
+          for f in $FILES; do
+            curl -fsSL "https://raw.githubusercontent.com/${UPSTREAM_REPO}/${upstream_sha}/${f}" -o "${dir}/${f}"
+          done
 
-            Source: `arian-gogani/nobulex@main`. Do not auto-merge — human review required.
+          # FILES is a space separated list and is meant to word split here.
+          # shellcheck disable=SC2086
+          ( cd "$dir" && shasum -a 256 $FILES > CHECKSUMS )
+
+          # The printf formats below are single quoted on purpose: the literal
+          # backticks and %s placeholders must reach printf unexpanded.
+          # shellcheck disable=SC2016
+          {
+            printf '# Provenance\n\n'
+            printf -- '- Upstream repository: `%s`\n' "$UPSTREAM_REPO"
+            printf -- '- Upstream branch polled: `%s`\n' "$UPSTREAM_BRANCH"
+            printf -- '- Upstream commit: `%s`\n' "$upstream_sha"
+            printf -- '- Fetched: `%s`\n' "$ts"
+            printf -- '- Files fetched at that commit, not at branch head. Digests are in `CHECKSUMS`.\n\n'
+            printf 'This snapshot is an observation at one upstream revision. It is never\n'
+            printf 'modified. A later upstream revision becomes a new snapshot directory.\n'
+          } > "${dir}/PROVENANCE.md"
+
+          {
+            echo "created=1"
+            echo "dir=${dir}"
+            echo "short=${short}"
+            echo "sha=${upstream_sha}"
+            echo "day=${day}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Refuse to modify an existing path
+        if: steps.snap.outputs.created == '1'
+        # The claim this workflow makes about itself, checked rather than
+        # asserted: the only paths in the diff are inside the new snapshot
+        # directory. A modification or deletion anywhere else fails the run
+        # before a pull request is opened.
+        run: |
+          set -euo pipefail
+          offending=$(git status --porcelain \
+            | grep -v -E "^\?\? ${{ steps.snap.outputs.dir }}/" || true)
+          if [ -n "$offending" ]; then
+            echo "::error::this workflow may only add files under ${{ steps.snap.outputs.dir }}/"
+            printf '%s\n' "$offending" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "ok: only the new snapshot directory was written"
+
+      - name: Open a pull request
+        if: steps.snap.outputs.created == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIR: ${{ steps.snap.outputs.dir }}
+          SHORT: ${{ steps.snap.outputs.short }}
+          SHA: ${{ steps.snap.outputs.sha }}
+          DAY: ${{ steps.snap.outputs.day }}
+        run: |
+          set -euo pipefail
+          branch="bot/cross-impl-receipts-${DAY}-${SHORT}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add "$DIR"
+          git commit -m "chore(cross-impl-receipts): snapshot ${DAY} at upstream ${SHORT}"
+          git push --set-upstream origin "$branch"
+          gh pr create \
+            --title "chore(cross-impl-receipts): snapshot ${DAY} at upstream ${SHORT}" \
+            --body "Automated snapshot of cross-implementation verifier receipts.
+
+          Upstream: \`${UPSTREAM_REPO}\` at \`${SHA}\`.
+          Written to \`${DIR}/\` with CHECKSUMS and PROVENANCE.md.
+
+          No existing path is modified. The three files at the root of
+          cross-impl-receipts/ are the frozen legacy snapshot and are untouched.
+
+          Do not auto-merge; human review required."
