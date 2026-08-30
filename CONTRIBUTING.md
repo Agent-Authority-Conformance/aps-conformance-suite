@@ -27,6 +27,8 @@ Other layers may land with an author-produced record. Each such record names its
 
 Records append and are never removed. A merged family is a set of attributed run records and asserts nothing beyond them; merge is not an end-to-end verification or a family-level verdict. These requirements state the minimum record for admission, not an obligation to admit. Ask in an issue before building.
 
+Files covered by a record's published digest set are immutable. A later correction to a covered file is recorded in `CLARIFICATIONS.md` in the same record directory; the clarification identifies the affected file and date, and the pinned file remains unchanged. A file not covered by the record's digest set may receive a dated clarification appended at its end. In both cases, earlier text and evidence remain unchanged.
+
 Two commands, two scopes. `npm run verify` is the generic APS corpus runner; it does not treat external-system families as core APS vectors, and a family whose verification contract cannot be expressed by the generic schema may be explicitly allowlisted out of it. `npm test` is the repository-wide gate and may execute external families through dedicated verifiers. Any external family allowlisted out of the generic runner names a dedicated verifier, and that verifier runs in `npm test`; where admission relies on a mutation or falsifiability proof for that verifier, the proof runs in the same gate. Every external family also carries its own documented reproduction command, and its runs are recorded with attribution in its `SOURCE.md` or under `interop/`.
 
 
