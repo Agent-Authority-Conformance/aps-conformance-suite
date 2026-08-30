@@ -261,3 +261,12 @@ private table rather than from the DID. The acceptance rule above rejects that a
 failure and exit 1 with 1 distinct signer DID where 3 are required, and accepts the vectors
 here, 0 failures and exit 0. A harness has to validate the public identity binding an artifact
 asserts, not merely show that some caller-supplied resolver can return a key that verifies.
+
+## Family classification, added 2026-08-29
+
+This family is ours. The vectors, the issuing implementation and the harness were all
+authored by this lab, so no layer of it can be independent under the definition in
+CONTRIBUTING.md, and the Verification split records it as author-produced. It is admitted
+under the external-system family rule anyway, because the artifact it carries is a
+bilateral exchange with a counterparty and belongs beside the other legs of that exchange.
+Admission is not a verdict here any more than it is for a counterparty's family.

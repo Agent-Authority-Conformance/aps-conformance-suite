@@ -38,7 +38,7 @@
       "path": "aivss-scenarios/manifest.json",
       "canonical_sha256": "ecfb3bfabbd1302ae57333ca324ad600080fcb7f8df989e0f7f220fa70aec480",
       "vector_count": 10,
-      "spec_section": "AIVSS §3.6 worked scenarios — OWASP Agentic AI Core risks AAI001–AAI010"
+      "spec_section": "AIVSS §3.6 worked scenarios: OWASP Agentic AI Core risks AAI001 to AAI010"
     },
     {
       "category": "canonical-bytes",
