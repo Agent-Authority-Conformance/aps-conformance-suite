@@ -1,0 +1,17 @@
+{
+  "$comment": "Reviewed semantic declaration, one entry per child directory of fixtures/cross-stack/. A directory's location does not determine its class: this file does, and a person decides what goes in it. tests/cross-stack-registry.test.mjs holds it to the tree.",
+  "version": "v1",
+  "kinds": [
+    "external-system-family",
+    "lab-authored-regression"
+  ],
+  "entries": [
+    { "path": "aat-amdal", "kind": "external-system-family" },
+    { "path": "action-ref-v1-negatives", "kind": "external-system-family" },
+    { "path": "argentum-action-ref-v1v2", "kind": "external-system-family" },
+    { "path": "nobulex-bilateral-v0", "kind": "external-system-family" },
+    { "path": "receipts-aeoess", "kind": "external-system-family" },
+    { "path": "receipts-amdal", "kind": "external-system-family" },
+    { "path": "synthetic", "kind": "lab-authored-regression" }
+  ]
+}
