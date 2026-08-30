@@ -80,3 +80,8 @@ digest match 12/13; signer match 12/13
 
 Once the family merges, replace the pull-request reference with the merge commit; the
 per-file digests above identify the exact bytes either way.
+
+Historical-pin clarification, 2026-08-29: this record remains pinned to PR #32 head
+9b4ffee, the revision actually run. A later family revision or merge receives a new run
+record; this one is not rewritten. The sentence above asking for the pull-request
+reference to be replaced after merge is withdrawn.
