@@ -48,11 +48,10 @@ deliberately does not.
 
 ### 3. External-system families
 
-Under `fixtures/cross-stack/`. These are artifacts produced by another party's
-implementation, ingested under the external-system family admission rule. They
-are not this repository's vectors and are not counted among them, which is why
-`manifest-integrity.test.ts` refuses a `cross-stack` path inside
-`fixtures/manifest.json`.
+Under `fixtures/cross-stack/`. These are families ingested from an external
+system or source. The family document separately records provenance and the
+authorship relationships relevant to each verification claim. They are not
+APS-native vectors and are not counted in `fixtures/manifest.json`.
 
 Every such family carries a `SOURCE.md` with its provenance, the pins it was
 ingested at, and a **Verification split**: one entry per distinct verification
@@ -82,8 +81,8 @@ pinned per upstream revision.
 
 ## Deterministic keypairs
 
-A family that signs derives its Ed25519 keypair from the SHA-256 of its
-`seed_input`:
+An APS-native family that uses this repository's deterministic test-key
+convention derives its Ed25519 keypair from the SHA-256 of its `seed_input`:
 
 ```
 seed        = SHA-256(seed_input)   // 32 bytes
