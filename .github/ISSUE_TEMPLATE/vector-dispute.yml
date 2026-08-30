@@ -1,0 +1,85 @@
+name: Vector dispute
+description: Claim that a vector in this corpus is wrong.
+title: "[dispute] "
+labels: ["dispute"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        docs/DISPUTES.md explains what a dispute is and how one is resolved.
+
+        This is for a claim that a vector is wrong: that its bytes, digest,
+        signature or expected verdict does not follow from the normative target
+        it names. It is not a bug report against an implementation. This lab
+        issues no verdicts about implementations.
+
+        The normative reference is the field that does the work. A dispute that
+        does not name the document and revision it reads the vector against
+        cannot be resolved by anyone, including its author.
+
+  - type: input
+    id: vector
+    attributes:
+      label: Vector or family
+      description: The vector name, or the family and file, that you believe is wrong.
+    validations:
+      required: true
+
+  - type: input
+    id: corpus-sha
+    attributes:
+      label: Corpus commit sha
+      description: The commit of this repository you read the vector at.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What the vector claims
+      description: The recorded bytes, digest, signature or verdict, as published.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What you computed
+      description: Your value, and where it first differs from the published one.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      description: The commands you ran and what they printed, uncut.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: normative
+    attributes:
+      label: Normative reference
+      description: The document, revision and section the vector should follow from. Quote the text you are reading.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why the expectation may be wrong
+      description: What you think the vector should say instead, and what the normative text turns on.
+    validations:
+      required: true
+
+  - type: input
+    id: implementation
+    attributes:
+      label: Implementation and environment
+      description: What you computed with, and the language, runtime version and operating system.
+    validations:
+      required: true
