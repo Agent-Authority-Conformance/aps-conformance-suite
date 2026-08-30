@@ -12,8 +12,9 @@ Read `CONTRIBUTING.md` first for what does not land by pull request at all.
 ## Lane 1: a vector in an existing APS-native family
 
 1. Add or change the vector upstream, in `agent-passport-system`, and regenerate
-   the fixture with that repository's generator. Vectors are generated, never
-   hand written, and `canonical_bytes_hex` and signatures are never hand edited.
+   the fixture with that repository's generator. Where the upstream family has
+   a generator, regenerate the fixture with that generator. Do not hand-edit
+   pinned canonical bytes, digests or signatures.
 2. Confirm it passes upstream before it comes here.
 3. Copy the regenerated file into `fixtures/<category>/`, preserving its bytes.
 4. Update its entry in `fixtures/manifest.json`: the `canonical_sha256` over the
@@ -39,9 +40,11 @@ A new family name is conformance vocabulary. Read the section in
 
 ## Lane 3: an external-system family
 
-Artifacts produced by another party's implementation, landing under
-`fixtures/cross-stack/`. These are not this repository's vectors and are never
-added to `fixtures/manifest.json`.
+A family ingested from an external system or source, landing under
+`fixtures/cross-stack/`. Individual vector, claim-input and implementation
+authorship is recorded separately in the family's provenance and Verification
+split. These are not APS-native vectors and are never added to
+`fixtures/manifest.json`.
 
 Required with the family:
 

@@ -11,9 +11,9 @@ and so that the shape is agreed before there is a release to argue about.
 
 ## What a release is
 
-A commit sha, and a record of what was true at it. Nothing is regenerated at
-release time and no vector is edited to make a release tidy. A release that
-disagrees with its commit is a defect in the release, not in the commit.
+A commit sha, and a record of what was true at it. No fixture, run record or
+pinned evidence byte is regenerated or edited merely to cut a release. A release
+that disagrees with its commit is a defect in the release, not in the commit.
 
 ## What a release is not
 
@@ -95,8 +95,10 @@ authorship label. A merge is not a verdict.
 
 ## Reconstructing a release
 
-Everything above is derivable from the commit, which is the point: given the
-tag, a reader can check the manifest digest, re-read the pins, and re-run the
-gate. If a value in a release record cannot be reproduced from its commit, the
-record is wrong and is corrected by a dated erratum rather than by an edit that
-makes the disagreement disappear.
+The factual fields about corpus contents, pins, counts, run records, queues and
+disputes are traceable to the tagged commit. The release publication date and the
+human-authored Known limitations are recorded in the release record rather than
+inferred from the commit. Given the tag, a reader can check the manifest digest,
+re-read the pins and re-run the gate. If a corpus-derived value in a release
+record cannot be reproduced from its commit, the record is wrong and is corrected
+by a dated erratum rather than by an edit that makes the disagreement disappear.

@@ -17,9 +17,9 @@ implementations, so it has no mechanism for filing one and would not know what t
 do with it. If an implementation diverges from a vector and the vector is right,
 that is a matter between you and that implementation's maintainers.
 
-Not a severity assessment. A dispute is open or resolved. Ranking how bad a
-disputed vector is would be a verdict about the implementations that rely on it,
-which is the thing the lab does not do.
+Not a severity assessment. This dispute process records whether a vector is
+disputed and how that dispute is resolved. It does not assign severity; any
+separate security or incident process is outside this document.
 
 ## Filing one
 
@@ -45,16 +45,18 @@ A dispute stays visible until it is resolved in public. Resolution is one of:
   the next reader of the same normative text finds the answer instead of filing
   again.
 - **The normative text is ambiguous.** Both readings are recorded, the vector says
-  which one it pins, and the ambiguity is taken upstream to whoever owns the
-  document.
+  which reading it pins, and the dispute remains open until a public upstream
+  clarification or other public technical resolution is linked.
 
 Where the clarification comes from a draft revision authored by the lab
 maintainer, the dispute record says so.
 
 That last line is the conflict this lab has to disclose rather than manage. The
 maintainer of this corpus also authors the individual Internet-Draft that several
-of these vectors target. Resolving a dispute by pointing at a revision the same
-person wrote is not neutral, and a reader has to be able to see when it happened.
+of these vectors target. Resolving a dispute by pointing at a revision authored
+by the same maintainer creates a conflict of role that the dispute record must
+disclose. That disclosure does not itself establish independent agreement or
+consensus.
 
 ## Open disputes
 

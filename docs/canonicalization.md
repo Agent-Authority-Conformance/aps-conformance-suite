@@ -23,9 +23,9 @@ that is wrong, and `docs/DISPUTES.md` is where that is argued.
 
 ## RFC 8785, as these vectors pin it
 
-1. `null` is `null`. There is no `undefined` in JSON and none in RFC 8785;
-   a canonicalizer that accepts one and emits `null` is signing a value the
-   caller never wrote, so the input is rejected instead.
+1. `null` is `null`. There is no `undefined` value in JSON or RFC 8785. This
+   family contains no `undefined` input and makes no claim about how an API
+   handles values outside JSON.
 2. Booleans are `true` or `false`.
 3. Numbers use ECMAScript `Number::toString`, the shortest decimal that round
    trips. `Infinity` and `NaN` are rejected. Serialization follows the binary64
@@ -57,8 +57,9 @@ is a byte diff on the pinned cases, not a verdict on the implementation.
 ## Path canonicalization, instruction-provenance only
 
 The `instruction-provenance` family adds path canonicalization on top of JCS.
-This rule belongs to that family and to no other. The algorithm is
-InstructionProvenanceReceipt v0.2 section 5.1:
+This rule belongs to that family and to no other. The instruction-provenance
+vectors pin the following expectations from InstructionProvenanceReceipt v0.2
+section 5.1:
 
 1. Reject an empty path.
 2. Reject percent-encoded paths.
