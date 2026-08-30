@@ -1,68 +1,78 @@
-# Adding new vectors
+# Adding to the corpus
 
-Vectors are added through the upstream `agent-passport-system` repo
-fixture generators. The conformance suite is a packaging — it does not
-host its own vector generators, so every new vector flows from upstream
-to here through a copy step.
+There are four lanes into this repository. They are different kinds of
+contribution with different review, and picking the wrong one is the usual reason
+a pull request stalls. An earlier version of this document described only the
+first lane and said every vector flows from the upstream Agent Passport System
+repository, which was true when the corpus was one family's vectors and is not
+true now.
 
-## Workflow
+Read `CONTRIBUTING.md` first for what does not land by pull request at all.
 
-1. **Upstream first.** Add or modify a vector in
-   `agent-passport-system/fixtures/<category>/`. Run that repo's
-   generator script (`generate-keypair.ts` or
-   `generate-fixtures.ts`) to regenerate the fixture file.
-2. **Run upstream tests.** The vector must pass upstream conformance
-   (`npm test` in `agent-passport-system`). Don't ship a fixture that
-   fails upstream.
-3. **Copy to this suite.** Copy the updated fixture file into
-   `fixtures/<category>/`. Preserve the file shape exactly; do not
-   manually edit `canonical_bytes_hex` or signatures.
-4. **Update top-level manifest.** Recompute the file's SHA-256 and
-   update `fixtures/manifest.json` accordingly.
-5. **Run the suite runner.** `npx tsx runners/ts/verify.ts` from the
-   repo root. Every vector must pass.
-6. **Update `well-known/aps-test-vectors.json`** if the new vector
-   belongs in the canonical reference set (typically: a new spec
-   surface, a new well-named case, or a new AIVSS scenario). The
-   well-known set is selective — it's the published "what to cite"
-   list, not an exhaustive index.
-7. **Single commit, descriptive message.** No PR until the maintainer
-   reviews; this suite ships from `main` after review.
+## Lane 1: a vector in an existing APS-native family
 
-## Adding a new fixture category
+1. Add or change the vector upstream, in `agent-passport-system`, and regenerate
+   the fixture with that repository's generator. Vectors are generated, never
+   hand written, and `canonical_bytes_hex` and signatures are never hand edited.
+2. Confirm it passes upstream before it comes here.
+3. Copy the regenerated file into `fixtures/<category>/`, preserving its bytes.
+4. Update its entry in `fixtures/manifest.json`: the `canonical_sha256` over the
+   file bytes, the `vector_count`, and the `totals` block. Recompute these; do
+   not type them. `npm run test:manifest-integrity` will tell you if the
+   declaration and the files disagree.
+5. Run `npm test` from the repository root.
 
-If you need a new top-level category (sibling to `bilateral-delegation`,
-`inference-session`, `instruction-provenance`, `aivss-scenarios`):
+## Lane 2: a new APS-native family
 
-1. Create `fixtures/<new-category>/` with at minimum a `README.md`
-   explaining what spec surface it covers.
-2. Add fixture files following the fixture-format conventions in
-   `docs/fixture-format.md`.
-3. Append a new entry to `fixtures/manifest.json` with `category`,
-   `path`, `canonical_sha256`, `vector_count`, `spec_section`.
-4. Append a new entry to `well-known/aps-test-vectors.json` under
-   `categories` with description, fixture path, deterministic seed,
-   vector count.
-5. Add the category's representative vectors to the
-   `canonical_reference_set` array.
-6. Update top-level `README.md`.
+Everything in lane 1, plus:
+
+1. A new entry in `fixtures/manifest.json`, and a `vector_count` that matches.
+2. Either the generic runner covers the family, or the family ships its own
+   verifier wired into `npm test` under its own script, with a README saying what
+   the verifier decides and what it does not.
+3. A note in `well-known/aps-test-vectors.json` if the family belongs in the
+   published reference set. That set is selective; it is what to cite, not an
+   index of everything here.
+
+A new family name is conformance vocabulary. Read the section in
+`CONTRIBUTING.md` on what does not land by pull request before proposing one.
+
+## Lane 3: an external-system family
+
+Artifacts produced by another party's implementation, landing under
+`fixtures/cross-stack/`. These are not this repository's vectors and are never
+added to `fixtures/manifest.json`.
+
+Required with the family:
+
+1. A `SOURCE.md` naming the counterparty, how the artifacts were obtained, and
+   the exact revisions they are pinned to.
+2. A **Verification split**: one entry per distinct verification claim, each
+   carrying Mode A or Mode B and author-produced or independent, using the single
+   definition in `CONTRIBUTING.md`, plus the authorship relationship for every
+   author-produced entry.
+3. An entry in `fixtures/cross-stack/index.json` declaring the family's kind.
+   That file is a reviewed declaration; the classification is not inferred from
+   where the directory sits.
+
+Merging an external family admits evidence. It is not a verdict on the
+counterparty's implementation and it is not an end-to-end verification.
+
+## Lane 4: a run record
+
+An observation of some implementation at an exact revision, landing under
+`interop/<implementation>-<target>-<pin>/`. This is not a vector and is never
+counted as one.
+
+`docs/RUN-REPORT.md` has the required fields and the two run modes. The two that
+are most often missing: a named person or handle for who ran it, and the commit
+sha of this repository the run was made against. A record states its Mode and its
+authorship label, and it stays pinned to the revision actually run: a later
+revision becomes a new record rather than an edit to this one.
 
 ## Versioning
 
-Fixture format version is in each fixture's `version` field. Suite
-version is in `fixtures/manifest.json`. Bumping conventions:
-
-- Suite minor (`0.1.0 → 0.2.0`): new fixture category added, or breaking
-  change to an existing category's vector format.
-- Suite patch (`0.1.0 → 0.1.1`): new vector added inside an existing
-  category, or fixture file regenerated with new signatures (vectors
-  themselves unchanged).
-- Fixture-format major (`v1 → v2`): only when the per-vector schema
-  changes incompatibly. Old vectors stay at `v1` until regenerated.
-
-The version in `fixtures/manifest.json` is the APS-native corpus version, not a version of everything in the repository. External-system
-families under `fixtures/cross-stack/` are ingestions: each pins its own
-upstream revision in its `SOURCE.md` and does not bump the APS-native corpus version.
-Note on history: that version was not bumped for categories added
-before 2026-08-28; it stays at `0.1.0` and the next APS-native category
-takes it to `0.2.0`.
+A fixture file's `version` field is the format version of that file, not a
+version of the corpus. Changing pinned bytes in place invalidates every claim
+recorded against them, so a corrected vector is a new vector or a new file, and
+the record that observed the old one keeps saying what it observed.

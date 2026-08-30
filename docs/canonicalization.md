@@ -1,65 +1,74 @@
 # Canonicalization rules
 
-The APS conformance suite uses **JCS canonicalization (RFC 8785)** for
-every fixture vector. Implementations under test must produce
-byte-identical canonical output for every vector's `input`.
+This document is the canonical-byte contract for the `canonical-bytes` fixture
+family. It is not a statement about the corpus as a whole. Most families in this
+repository are not canonicalization vectors: they carry receipts, delegations,
+scenario descriptions or ingested external artifacts, and each family's own
+document says what it pins.
 
-## Reference algorithm
+## The contract
 
-The reference TypeScript implementation lives at
-`runners/ts/canonicalize.ts`. The algorithm:
+`canonical-bytes` vectors pin RFC 8785 JSON Canonicalization Scheme output. Each
+vector carries an `input`, the canonical form as `canonical_bytes_hex`, and the
+SHA-256 of those bytes as `canonical_sha256`.
 
-1. `null` and `undefined` → `"null"`
-2. Booleans → `"true"` or `"false"`
-3. Numbers → `JSON.stringify(n)` (ES2015 number serialization). Reject
-   `Infinity` and `NaN`.
-4. Strings → `JSON.stringify(s)`
-5. Arrays → `"[" + elements.map(canonicalize).join(",") + "]"`
-6. Objects → sort keys by Unicode code-point ascending, emit
-   `"{" + key.JSON.stringify + ":" + value.canonicalize + ","-joined + "}"`
-7. `undefined` object values become `null` (RFC 8785).
-8. `null` object values are **preserved** (RFC 8785; differs from APS's
-   legacy canonicalizer which strips them).
+An implementation reading a vector's `input` and producing canonical bytes whose
+UTF-8 hex differs from `canonical_bytes_hex` diverges from the vector. Where a
+vector also carries `ed25519_signature_over_canonical_hex` and
+`ed25519_pubkey_hex`, a verification that returns false against the canonical
+bytes diverges from the vector.
 
-## AIP-0001 adaptations
+Divergence is a recorded observation, not a verdict. The corpus can be the party
+that is wrong, and `docs/DISPUTES.md` is where that is argued.
 
-The APS SDK's JCS implementation adds these adaptations (also reflected in
-the suite's runner):
+## RFC 8785, as these vectors pin it
 
-- Object keys MUST be ASCII. Non-ASCII keys throw at canonicalization time.
-- Whole-number floats collapse to integers (e.g., `2.0` → `"2"`).
+1. `null` is `null`. There is no `undefined` in JSON and none in RFC 8785;
+   a canonicalizer that accepts one and emits `null` is signing a value the
+   caller never wrote, so the input is rejected instead.
+2. Booleans are `true` or `false`.
+3. Numbers use ECMAScript `Number::toString`, the shortest decimal that round
+   trips. `Infinity` and `NaN` are rejected. Serialization follows the binary64
+   value, not the caller's spelling, so an integer above 2^53 emits the double it
+   parsed to. `2.0` and `2` are the same binary64 value and both emit `2`.
+4. Strings are serialized with the JSON string escaping rules.
+5. Arrays preserve order and are never sorted.
+6. Object member names are sorted by their **UTF-16 code units**, per RFC 8785
+   section 3.2.3. This is not code-point order: an astral character sorts by its
+   lead surrogate, so a key at U+1D306 (lead unit 0xD834) sorts before a key at
+   U+FF61. The `astral-key-ordering` vector pins exactly that case.
+7. Member names are emitted as given and are never Unicode-normalized. An NFD key
+   stays NFD and is a different key from its NFC form. The
+   `nfd-key-used-as-given` vector pins that.
+8. `null` object values are preserved, not stripped.
 
-External implementations targeting cross-implementation byte-parity should
-mirror these adaptations or document where they diverge.
+Keys are not restricted to ASCII. An earlier version of this document said they
+must be, which contradicted the vectors in this family: two of them carry
+non-ASCII keys on purpose, because non-ASCII key ordering and non-ASCII output
+are where implementations most often diverge.
 
-## Path canonicalization (IPR-specific)
+## Cross-implementation runs
 
-The `instruction-provenance/` fixture category adds path canonicalization
-on top of JCS. The algorithm is in InstructionProvenanceReceipt v0.2 §5.1.
-Summary:
+`fixtures/canonical-bytes/crossrun/` holds runners in four languages that report
+where a canonicalizer's bytes and SHA-256 agree or differ from these vectors, and
+`fixtures/canonical-bytes/README.md` documents how to add another. A result there
+is a byte diff on the pinned cases, not a verdict on the implementation.
 
-1. Reject empty path.
+## Path canonicalization, instruction-provenance only
+
+The `instruction-provenance` family adds path canonicalization on top of JCS.
+This rule belongs to that family and to no other. The algorithm is
+InstructionProvenanceReceipt v0.2 section 5.1:
+
+1. Reject an empty path.
 2. Reject percent-encoded paths.
-3. Resolve to absolute, relative to declared `working_root`.
-4. Reject if outside `working_root`.
-5. Strip leading `./` and trailing `/`.
+3. Resolve to absolute, relative to the declared `working_root`.
+4. Reject a path outside `working_root`.
+5. Strip a leading `./` and a trailing `/`.
 6. Reject any `..` segment.
 7. Normalize Unicode to NFC.
-8. Apply case mode (lowercase if `filesystem_mode` is `case-insensitive`).
-9. Replace OS separators with forward slash.
+8. Apply the case mode, lowercasing when `filesystem_mode` is `case-insensitive`.
+9. Replace operating-system separators with a forward slash.
 
-Symlinks are preserved as separate entries with `is_symlink: true`; they
-are NOT dereferenced.
-
-## Determinism contract
-
-Every fixture vector that includes `canonical_bytes_hex` and
-`canonical_sha256` is a binding contract:
-
-- An implementation that reads `vector.input` and produces canonical bytes
-  whose UTF-8 hex differs from `canonical_bytes_hex` is non-conformant.
-- An implementation whose Ed25519 verification of
-  `ed25519_signature_over_canonical_hex` against `ed25519_pubkey_hex` and
-  the canonical bytes returns `false` is non-conformant.
-
-The reference TS runner verifies both for every applicable vector.
+Symlinks are preserved as separate entries carrying `is_symlink: true` and are
+not dereferenced.
