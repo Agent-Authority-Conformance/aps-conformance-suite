@@ -74,3 +74,7 @@ Direction 1: python3 -m venv v; v/bin/pip install attenu-guard==0.6.0; v/bin/pyt
 Direction 2: v/bin/python3 cleanroom/verify_asor00.py
 
 Both scripts exit nonzero on any disagreement with the results recorded above.
+
+Classification, added 2026-08-29: both directions Mode B, author-produced, as the 0.6.1
+successor record states; direction 1 because the runner authored the vectors, direction
+2 because the clean-room verifier that decides the verdicts was written by the runner.
