@@ -34,7 +34,7 @@
   "engines": {
     "node": ">=22"
   },
-  "homepage": "https://aeoess.com",
+  "homepage": "https://github.com/Agent-Authority-Conformance",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"

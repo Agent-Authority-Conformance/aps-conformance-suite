@@ -10,8 +10,8 @@ This repository publishes test vectors, schemas and verifiers. It is not a deplo
 holds no user data, so the reportable classes are narrower than for an application:
 
 - A verifier that reports a pass where the bytes do not match, or otherwise fails open.
-- A vector whose recorded canonical bytes or digest are wrong, since an implementation that matches
-  them would be wrongly certified.
+- A vector whose recorded bytes, digest, signature, or expected verdict is wrong, because
+  downstream implementations may rely on the published value as test evidence.
 - A runner or generation script that executes untrusted input, reaches the network where it claims
   not to, or writes outside its working directory.
 - A dependency or workflow change that could alter published artifacts without review.
