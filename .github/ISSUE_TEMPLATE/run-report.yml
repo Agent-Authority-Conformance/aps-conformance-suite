@@ -32,7 +32,7 @@ body:
       description: Mode A runs this repository's runner. Mode B recomputes with your own implementation.
       options:
         - "A: reproduction, this repository's runner in my environment"
-        - "B: independent recomputation, my own implementation"
+        - "B: alternate recomputation using another implementation or primitive"
     validations:
       required: true
 
@@ -90,7 +90,7 @@ body:
     id: independence
     attributes:
       label: Author-produced or independent
-      description: Independent means you are neither the author of the vectors nor the author of the implementation under test.
+      description: Independent is defined in CONTRIBUTING.md. Mode A or Mode B does not determine this label.
       options:
         - "independent"
         - "author-produced"

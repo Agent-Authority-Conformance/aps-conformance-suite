@@ -34,6 +34,8 @@ Every external family carries a section titled **Verification split** in its REA
 
 A record is `independent` when the runner authored neither the vectors nor any claim inputs being checked, and did not author the implementation whose behavior or output supplies the recomputation. A thin harness that only invokes independently authored implementations or primitives and compares their outputs does not by itself make the record author-produced. If the harness itself decides the claimed semantic result, it is part of the implementation used to recompute that claim.
 
+Independence follows the implementation that supplies the substantive recomputation. A runner-authored harness remains thin only while it transports inputs, invokes independently authored implementations or primitives, and compares outputs; code that constructs or interprets the claimed semantic result is part of the recomputation implementation.
+
 `Mode A` / `Mode B` describes how the claim was checked. `author-produced` / `independent` describes the runner's relationship to the vectors, claim inputs, and implementation. Neither axis determines the other. In Mode A, the relevant implementation is normally the implementation under test. In Mode B, the relevant implementation is the alternate implementation or primitive whose behavior or output supplies the recomputation.
 
 
