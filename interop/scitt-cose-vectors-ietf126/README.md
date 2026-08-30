@@ -25,3 +25,9 @@ and no code from the upstream implementation.
 
 Reference run: sha256(results.json) =
 2ed8738e9529faf5cdae5b51432ec065a6494e0a15b8e6f29733d8c2a7481db8
+
+Erratum, 2026-08-29: this record describes itself as an independent verification run.
+Under the definition adopted in CONTRIBUTING.md on 2026-08-28, a from-scratch verifier
+written by the runner is the runner's implementation, so the classification is Mode B,
+author-produced. The run was not performed by the vectors' authors; that fact stands.
+The six results, the pin and the reference digest are unchanged.
