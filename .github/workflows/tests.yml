@@ -19,3 +19,19 @@ jobs:
           cache: npm
       - run: npm ci --include=dev
       - run: npm test
+
+  # Windows runs the same gate. Its purpose is the pinned bytes: a checkout that
+  # rewrote line endings would change fixture digests and every claim recorded
+  # against them, and .gitattributes is what prevents that. Linux stays the
+  # primary gate. This job becomes a required check only after it has been green
+  # on main for a week.
+  suite-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev
+      - run: npm test

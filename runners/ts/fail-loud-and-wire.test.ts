@@ -23,7 +23,13 @@ import crypto from 'node:crypto'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(__dirname, '..', '..')
 const VERIFY = join(REPO_ROOT, 'runners', 'ts', 'verify.ts')
-const TSX = join(REPO_ROOT, 'node_modules', '.bin', 'tsx')
+// The tsx CLI module, launched with this process's own node binary. The
+// node_modules/.bin/tsx entry is a shell shim, and on Windows it is tsx.cmd,
+// which spawnSync cannot execute without shell: true. Spawning the .mjs with
+// process.execPath removes the shim, the shell and the platform branch at once,
+// so this test runs the same way on every platform.
+// Reported by Stian Skogbrott (@darklordVirtual).
+const TSX_CLI = join(REPO_ROOT, 'node_modules', 'tsx', 'dist', 'cli.mjs')
 
 let failures = 0
 function check(name: string, cond: boolean, detail = ''): void {
@@ -44,7 +50,7 @@ interface Run {
 function runVerify(fixturesDir?: string): Run {
   const env = { ...process.env }
   if (fixturesDir) env.APS_FIXTURES_DIR = fixturesDir
-  const r = spawnSync(TSX, [VERIFY], { encoding: 'utf8', env })
+  const r = spawnSync(process.execPath, [TSX_CLI, VERIFY], { encoding: 'utf8', env, shell: false })
   return { code: r.status ?? -1, stdout: r.stdout ?? '', stderr: r.stderr ?? '' }
 }
 
@@ -84,8 +90,8 @@ function repairManifestSha(fixturesDir: string, fixturePath: string): void {
 }
 
 console.log('fail-loud + wired-vector test')
-if (!existsSync(TSX)) {
-  console.error(`tsx binary not found at ${TSX}`)
+if (!existsSync(TSX_CLI)) {
+  console.error(`tsx cli not found at ${TSX_CLI}`)
   process.exit(2)
 }
 

@@ -1,0 +1,8 @@
+# Pinned bytes are the evidence. A checkout that rewrites line endings changes
+# the digest of a fixture and every claim recorded against it, so these trees
+# are byte-exact on every platform. The scope is deliberate: this is not
+# "* -text", which would also freeze ordinary source and documentation.
+fixtures/**            -text
+interop/**             -text
+cross-impl-receipts/** -text
+fixtures/manifest.json -text
