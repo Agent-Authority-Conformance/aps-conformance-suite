@@ -44,3 +44,5 @@ Classification clarification, 2026-08-29: the row(s) above labeled independent o
 preimage is produced by a hand-written jcsFlat in run.mjs, author-produced, listed in
 docs/OPEN-RUNS.md; the SHA-256 over each vector's own expected_canonical_preimage stays
 independent. Results and pins are unchanged.
+
+2026-08-30: run.mjs resolves agent-passport-system from this repository's pinned dependency (4.5.1 in package.json) instead of a sibling checkout; the APS_SDK_EXTERNAL_ACTION_REF override is kept for a local build. The OPEN-RUNS command now reproduces the recorded claims from a fresh clone after npm ci and compares them with the tracked results.json, excluding the ran_at run-instance stamp; it exits 0 on a match and 1 on any divergence, and it no longer writes results.json, so the recorded observation stays byte-identical. A new observation is written only to a path named with --output. The layer's classification is unchanged.
