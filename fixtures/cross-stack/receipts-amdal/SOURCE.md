@@ -56,3 +56,11 @@ would fail any implementation that trusts wire order.
 - `receipt_id` recomputation from `body0` under the issuer's stated formula; runner aeoess; Mode B; independent; same runner.
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
+Classification clarification, 2026-08-29: the row(s) above labeled independent on
+2026-08-28 are restated under the single definition. receipts-amdal: did:key resolution
+is a hand-written decoder, author-produced, listed in docs/OPEN-RUNS.md; canonical bytes
+(json.dumps primitive with the stated equivalence), Ed25519 (the cryptography library,
+not stdlib as written above; the runner uses Python stdlib for canonicalization and
+hashing and cryptography for Ed25519 verification) and receipt_id (hashlib) stay
+independent. Results and pins are unchanged.
