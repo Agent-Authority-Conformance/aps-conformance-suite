@@ -18,7 +18,7 @@ able to check who decides what, without asking anyone.
 
 | Name | GitHub ID | Scope | LFID | Discord ID | Email | Company Affiliation |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tymofii Pidlisnyi | aeoess | Maintainer | | | signal@aeoess.com | None (independent) |
+| Tymofii Pidlisnyi | aeoess | Maintainer | | | signal@aeoess.com | None |
 
 ## Emeritus maintainers
 

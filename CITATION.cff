@@ -1,0 +1,69 @@
+cff-version: 1.2.0
+title: Agent Passport System conformance corpus
+message: Cite the exact commit you ran
+type: dataset
+license: Apache-2.0
+repository-code: https://github.com/Agent-Authority-Conformance/aps-conformance-suite
+url: https://github.com/Agent-Authority-Conformance
+
+authors:
+  - family-names: Pidlisnyi
+    given-names: Tymofii
+
+abstract: >-
+  Versioned vectors, verifier adapters, external-system fixture families and
+  attributed run records for agent-authority implementations, hosted by the
+  Agent Authority Conformance lab. This repository is the initial corpus and
+  targets Agent Passport System. The lab certifies nothing and issues no
+  implementation-level or family-level conformance verdicts. A result cited from
+  here is an observation at an exact commit, not a status.
+
+references:
+  - type: article
+    title: The Agent Social Contract
+    doi: 10.5281/zenodo.18749779
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Monotonic Narrowing
+    doi: 10.5281/zenodo.18932404
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Faceted Authority Attenuation
+    doi: 10.5281/zenodo.19260073
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Behavioral Derivation Rights
+    doi: 10.5281/zenodo.19476002
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Physics-Enforced Delegation
+    doi: 10.5281/zenodo.19478584
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Governance in the Medium
+    doi: 10.5281/zenodo.19582550
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: Cognitive Attestation
+    doi: 10.5281/zenodo.19646276
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii
+  - type: article
+    title: The Evidence-Safety Gap
+    doi: 10.5281/zenodo.19914628
+    authors:
+      - family-names: Pidlisnyi
+        given-names: Tymofii

@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    ignore:
+      # The conformance target is not a dependency to keep current. Which
+      # revision of agent-passport-system this corpus is checked against is a
+      # reviewed decision that changes with a commit saying why, so an automated
+      # bump would silently move the thing under test.
+      - dependency-name: agent-passport-system
