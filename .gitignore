@@ -4,22 +4,7 @@ dist/
 .DS_Store
 .env
 
-# ─────────────────────────────────────────────────
-# AEOESS drift prevention: never commit these patterns.
-# These complement the pre-commit hook and CI scan.
-# ─────────────────────────────────────────────────
-specs/cc-prompts/
-specs/consilium/
-specs/briefings/
-specs/CONSILIUM-*
-specs/ROME-COMPLETE-*
-specs/DAILY-*
-specs/CC-PROMPT-*
-specs/OPEN-COMMITMENTS*
-specs/MODEL-CITIZEN*
-specs/MUTUAL-MODE*
-specs/THE-SYNTHESIS*
-specs/ERIK-NEWTON*
+# Local scratch files, never part of the record.
 /tmp-*.md
 /scratch-*.md
 *.private.md
