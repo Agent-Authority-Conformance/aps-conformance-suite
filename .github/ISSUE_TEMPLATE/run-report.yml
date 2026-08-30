@@ -29,7 +29,7 @@ body:
     id: run-mode
     attributes:
       label: Run mode
-      description: Mode A runs this repository's runner. Mode B recomputes with your own implementation.
+      description: Mode A reproduces with this repository's runner. Mode B recomputes with another implementation or primitive. Neither says whether the runner is author-produced or independent.
       options:
         - "A: reproduction, this repository's runner in my environment"
         - "B: alternate recomputation using another implementation or primitive"

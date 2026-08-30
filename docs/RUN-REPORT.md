@@ -64,7 +64,6 @@ runner output; Mode B satisfies it with your own per-vector list.
 | verbatim command and output | the commands you ran and what they printed, uncut |
 | environment | language, runtime version, operating system |
 | author-produced or independent | Classify the record using the definition of `independent` in `CONTRIBUTING.md`; if that definition is not met, label the record `author-produced` and state the authorship relationship. |
-
 | suspected defective vectors | optional, any vector you believe is wrong, and why |
 
 The last field is what makes a divergence actionable. If you think the corpus is at fault
