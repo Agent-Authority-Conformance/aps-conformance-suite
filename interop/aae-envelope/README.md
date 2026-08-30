@@ -80,3 +80,7 @@ closing the constraint-monotonicity gap relative to AAE:
   for that documented divergence.
 
 Both are REJECTED by MoltyCel's reference verifier (`crossverify.py`: 2/2).
+
+Classification, added 2026-08-29: Mode A (the shipped APS verifier decided the vectors
+through an adapter); author-produced (the runner authored the implementation under test
+and the adapter). The vectors are MoltyCel's; the decisions recorded above are unchanged.
