@@ -27,7 +27,9 @@ const README = join(__dirname, '..', 'README.md')
 
 console.log('README inventory drift check')
 
-const text = readFileSync(README, 'utf8')
+// A checkout that rewrote line endings (Windows autocrlf) must not read as drift:
+// the comparison is over the text, so both sides are normalized to LF first.
+const text = readFileSync(README, 'utf8').replace(/\r\n/g, '\n')
 const present = text.includes(BEGIN) && text.includes(END)
 if (!present) {
   console.error(`  FAIL README.md is missing the generated inventory markers`)

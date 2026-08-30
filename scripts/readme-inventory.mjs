@@ -137,7 +137,7 @@ function main() {
     console.log(inventory)
     return
   }
-  const text = readFileSync(README, 'utf8')
+  const text = readFileSync(README, 'utf8').replace(/\r\n/g, '\n')
   const i = text.indexOf(BEGIN)
   const j = text.indexOf(END)
   if (i === -1 || j === -1 || j < i) {
