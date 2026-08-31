@@ -51,18 +51,94 @@ remains BUSL-1.1 in its own repository and is only imported at run time.
 
 ## Verbatim commands and output
 
-Mode B, from the root of a clean checkout of this repository:
+Mode B. The run this record was produced by, and the way to check it.
+
+The original run of 2026-08-29 wrote its output straight to `results.json`,
+which is how the record came to exist. Checking the record is a different
+command, and deliberately so: a reproduction that regenerates the evidence in
+place cannot fail. On drifted inputs it replaces the historical answer with the
+new one and still exits 0. The sequence below checks the pins before it runs
+anything, writes to a temporary path, and ends in a comparison that is loud
+about a difference.
 
 ```
-$ REMORA_APS_RESULTS=interop/remora-edd8a4e/results.json \
-  APS_SUITE=. \
-  PYTHONPATH=/path/to/REMORA-research \
-  python interop/remora-edd8a4e/remora_aps_mode_b.py
+$ CORPUS=/tmp/aps-2c3bdef        # conformance suite, at the corpus pin
+$ REMORA=/tmp/remora-edd8a4e     # REMORA, at its pin
+$ RECORD=/path/to/interop/remora-edd8a4e   # this directory, inside its clone
+
+# core.autocrlf=false because there is no .gitattributes at 2c3bdef and a
+# default Git for Windows clone rewrites every fixture, which reads as the
+# suite being broken. See "Two Windows environment defects" below.
+$ git clone -c core.autocrlf=false \
+    https://github.com/Agent-Authority-Conformance/aps-conformance-suite "$CORPUS"
+$ git -C "$CORPUS" checkout --detach 2c3bdef91a70b40d7e9f1a30230be07a3645894b
+
+$ git clone -c core.autocrlf=false \
+    https://github.com/darklordVirtual/REMORA-research "$REMORA"
+$ git -C "$REMORA" checkout --detach edd8a4ece60129ff1d15b03ff9d78af0fd1e1d9d
+
+# 1. The pins, before anything runs. APS_SUITE and PYTHONPATH accept whatever
+#    they are pointed at, so without this a successful-looking result can come
+#    from revisions other than the two this record names.
+$ test "$(git -C "$CORPUS" rev-parse HEAD)" \
+     = 2c3bdef91a70b40d7e9f1a30230be07a3645894b \
+    || { echo 'corpus is not at the pinned revision' >&2; exit 1; }
+$ test "$(git -C "$REMORA" rev-parse HEAD)" \
+     = edd8a4ece60129ff1d15b03ff9d78af0fd1e1d9d \
+    || { echo 'REMORA is not at the pinned revision' >&2; exit 1; }
+
+# 2. Adapter identity, over the bytes git stores rather than the bytes a
+#    checkout produced. On a platform that converts line endings the working
+#    copy hashes differently, and the pin has to hold without the reader
+#    having to know that.
+$ git -C "$RECORD" show HEAD:interop/remora-edd8a4e/remora_aps_mode_b.py \
+    | sha256sum | cut -d' ' -f1
+45028c90b41e76f8245df46c417c8248ceada7997e277f1c01aa9028ffcd5162
+
+# 3. The run. Temporary destination, never the tracked file.
+$ RERUN="$(mktemp -t remora-aps-XXXXXX)"
+$ REMORA_APS_RESULTS="$RERUN" \
+  APS_SUITE="$CORPUS" \
+  PYTHONPATH="$REMORA" \
+  python "$RECORD/remora_aps_mode_b.py" > /dev/null
+
+# 4. The comparison is the check. --strip-trailing-cr because the adapter
+#    writes through Python's text layer, so the rerun carries the platform's
+#    newline while the record stores LF; without it a Windows rerun reports
+#    every line as changed and fails for the wrong reason.
+$ git -C "$RECORD" show HEAD:interop/remora-edd8a4e/results.json \
+    | diff --strip-trailing-cr -u - "$RERUN"
+$ echo $?
+0
 ```
 
-The full output is `results.json` in this directory, uncut. It carries every
-vector, the observed bytes for every divergence, and the refusal text for every
-refusal.
+Exercised in both directions on 2026-08-31, CPython 3.14.0 on Windows, fresh
+clones of both repositories at the two pins.
+
+On the recorded inputs the comparison is empty and exits 0. With one fixture
+drifted, `canonical-bytes-jcs-v1.json` vector `float-tenth`, its
+`canonical_bytes_hex` changed from `7b2276616c7565223a302e317d` to
+`7b2276616c7565223a302e327d`, it exits 1 and names the change:
+
+```
+-      "legacy_byte_identical": 10,
++      "legacy_byte_identical": 9,
+-      "jcs_byte_identical": 16,
++      "jcs_byte_identical": 15,
+-          "legacy_match": true,
++          "legacy_match": false,
++          "legacy_bytes_hex": "7b2276616c7565223a302e317d",
++          "expected_bytes_hex": "7b2276616c7565223a302e327d",
+```
+
+That is the same drift the review demonstrated against the previous command,
+where the tracked file went from 10/16/2 to 9/15/2 with nothing reported and
+exit 0. Here nothing is written to the tracked file, the difference is printed,
+and the exit is non-zero.
+
+The full output of the original run is `results.json` in this directory, uncut.
+It carries every vector, the observed bytes for every divergence, and the
+refusal text for every refusal.
 
 Mode A, same checkout:
 
@@ -257,7 +333,8 @@ And the six under `fixtures/cross-stack/`: `aat-amdal`,
 ## What this record does not establish
 
 Byte agreement on the canonical-bytes vectors that do not turn on the number
-model, from one serialiser, run by the implementation's author. Nothing about
+model, from REMORA's `canonicalise`, on the 16 vectors for which it emitted
+bytes, run by the implementation's author. Nothing about
 DIDs, key resolution, APS envelopes, or any family above. REMORA signs policy
 decision tokens with HMAC against a registry key rather than DID or key-id bound
 Ed25519 at the link level, and has no ActionRef type, so no "REMORA APS
