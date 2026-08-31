@@ -1,0 +1,222 @@
+{
+  "adapter": "remora_aps_mode_b.py",
+  "adapter_note": "New adapter. Not the one described in the 2026-08-28 run report; that file could not be located and its results are not reused.",
+  "mode": "B",
+  "families": [
+    {
+      "family": "canonical-bytes",
+      "n_vectors": 18,
+      "legacy_byte_identical": 10,
+      "jcs_byte_identical": 16,
+      "jcs_refused": 2,
+      "vectors": [
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "float-tenth",
+          "expected_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "legacy_match": true,
+          "legacy_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "jcs_match": true,
+          "jcs_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "float-1e21-boundary",
+          "expected_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "legacy_match": true,
+          "legacy_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "jcs_match": true,
+          "jcs_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "negative-zero",
+          "expected_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "legacy_match": true,
+          "legacy_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "jcs_match": true,
+          "jcs_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "integer-above-2pow53",
+          "expected_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "legacy_match": true,
+          "legacy_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "jcs_match": true,
+          "jcs_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "small-exponent-vs-decimal",
+          "expected_sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1",
+          "legacy_match": false,
+          "legacy_sha256": "99cb29f9a8496c67133f8a37a4462bfdfb1fb8884e1d5b21dcaa1747d7808776",
+          "legacy_bytes_hex": "7b22646563223a31652d30362c22657870223a31652d30377d",
+          "expected_bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+          "jcs_match": true,
+          "jcs_sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "astral-key-ordering",
+          "expected_sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047",
+          "legacy_match": false,
+          "legacy_sha256": "482fdb851f115b8f6eea57250c9ec155315c76de871a76e1f1d7ac7a35c56f71",
+          "legacy_bytes_hex": "7b225c7566663631223a312c225c75643833345c7564663036223a327d",
+          "expected_bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+          "jcs_match": true,
+          "jcs_sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "nfd-key-used-as-given",
+          "expected_sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df",
+          "legacy_match": false,
+          "legacy_sha256": "9de4f707ac7e96b80fe6af388c29261e0917c0dc2d4ba2d3d7d9068601f0e746",
+          "legacy_bytes_hex": "7b22636166655c7530333031223a312c22706c61696e223a327d",
+          "expected_bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+          "jcs_match": true,
+          "jcs_sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v1.json",
+          "vector": "nested-object-and-array",
+          "expected_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "legacy_match": true,
+          "legacy_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "jcs_match": true,
+          "jcs_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "float-tenth",
+          "expected_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "legacy_match": true,
+          "legacy_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "jcs_match": true,
+          "jcs_sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "float-1e21-boundary",
+          "expected_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "legacy_match": true,
+          "legacy_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "jcs_match": true,
+          "jcs_sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "negative-zero",
+          "expected_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "legacy_match": true,
+          "legacy_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "jcs_match": true,
+          "jcs_sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "integer-above-2pow53",
+          "expected_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "legacy_match": true,
+          "legacy_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "jcs_match": true,
+          "jcs_sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "small-exponent-vs-decimal",
+          "expected_sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1",
+          "legacy_match": false,
+          "legacy_sha256": "99cb29f9a8496c67133f8a37a4462bfdfb1fb8884e1d5b21dcaa1747d7808776",
+          "legacy_bytes_hex": "7b22646563223a31652d30362c22657870223a31652d30377d",
+          "expected_bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+          "jcs_match": true,
+          "jcs_sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "astral-key-ordering",
+          "expected_sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047",
+          "legacy_match": false,
+          "legacy_sha256": "482fdb851f115b8f6eea57250c9ec155315c76de871a76e1f1d7ac7a35c56f71",
+          "legacy_bytes_hex": "7b225c7566663631223a312c225c75643833345c7564663036223a327d",
+          "expected_bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+          "jcs_match": true,
+          "jcs_sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "nfd-key-used-as-given",
+          "expected_sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df",
+          "legacy_match": false,
+          "legacy_sha256": "9de4f707ac7e96b80fe6af388c29261e0917c0dc2d4ba2d3d7d9068601f0e746",
+          "legacy_bytes_hex": "7b22636166655c7530333031223a312c22706c61696e223a327d",
+          "expected_bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+          "jcs_match": true,
+          "jcs_sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "nested-object-and-array",
+          "expected_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "legacy_match": true,
+          "legacy_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "jcs_match": true,
+          "jcs_sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3",
+          "jcs_refused": false
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "integer-2pow60-inside-int64",
+          "expected_sha256": "001814306319dfed540de7a22f61e88baf0288ebe916380796e8995d5db5eb00",
+          "legacy_match": false,
+          "legacy_sha256": "4a6dd55aad5394f2bcb6f3d9b304136d773d22411cebc1590540f34e6569d89e",
+          "legacy_bytes_hex": "7b2276616c7565223a313135323932313530343630363834363937367d",
+          "expected_bytes_hex": "7b2276616c7565223a313135323932313530343630363834373030307d",
+          "jcs_match": false,
+          "jcs_refused": true,
+          "jcs_refusal": "integer 1152921504606846976 shares its binary64 representation with a neighbouring integer. RFC 8785 would serialise it as that double, so the canonical bytes would no longer identify which integer produced them. Refusing rather than emitting an aliasing hash."
+        },
+        {
+          "fixture": "canonical-bytes-jcs-v2.json",
+          "vector": "integer-2pow68-above-int64",
+          "expected_sha256": "57c82398dfd8be4a4ac903d1d2d01beee4c1d7179c9a5afc574bdf972646783b",
+          "legacy_match": false,
+          "legacy_sha256": "ddf07dfbafdb059cc27251b827d08421790c56720806f515f85b64fa74e1435b",
+          "legacy_bytes_hex": "7b2276616c7565223a3239353134373930353137393335323832353835367d",
+          "expected_bytes_hex": "7b2276616c7565223a3239353134373930353137393335323833303030307d",
+          "jcs_match": false,
+          "jcs_refused": true,
+          "jcs_refusal": "integer 295147905179352825856 shares its binary64 representation with a neighbouring integer. RFC 8785 would serialise it as that double, so the canonical bytes would no longer identify which integer produced them. Refusing rather than emitting an aliasing hash."
+        }
+      ]
+    }
+  ],
+  "not_rerun": [
+    {
+      "family": "aae-delegation-semantics",
+      "reason": "The 2026-08-28 run reported 4/4 here, but the semantic mapping it used was never published: APS DID-bound links were represented through REMORA's link-key registry and mandate.actions through opaque scope strings. Re-deriving that mapping would produce a different mapping and therefore a result that cannot be compared to the earlier one. A mapping drawn after seeing the expected answers is not evidence."
+    },
+    {
+      "family": "ed25519-kat",
+      "reason": "The report's 29 known-answer tests were not located as a single fixture family at this suite revision, and are not claimed here."
+    }
+  ]
+}
