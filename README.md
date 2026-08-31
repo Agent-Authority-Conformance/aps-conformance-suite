@@ -146,6 +146,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/ethers-oracle-safety-check-9b4ffee` | [`run-report.md`](interop/ethers-oracle-safety-check-9b4ffee/run-report.md) |
 | `interop/hjs-bb6be62` | [`SOURCE.md`](interop/hjs-bb6be62/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
+| `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/x402-receipts-debc94f` | [`RUN.md`](interop/x402-receipts-debc94f/RUN.md) |
 
