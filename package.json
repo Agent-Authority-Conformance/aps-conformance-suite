@@ -23,8 +23,9 @@
     "test:cross-stack-registry": "node tests/cross-stack-registry.test.mjs",
     "test:readme-inventory": "node tests/readme-inventory.test.mjs",
     "readme:inventory": "node scripts/readme-inventory.mjs --write",
-    "test": "npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip",
-    "test:digest-integrity": "node tests/digest-integrity.test.mjs"
+    "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip",
+    "test:digest-integrity": "node tests/digest-integrity.test.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^26.4.0",
