@@ -1,0 +1,196 @@
+{
+  "fixture": "checkpoint/checkpoint.json",
+  "source": "elang2/mcp-audit-gateway v0.6.0 (commit a0f14a0418c2abe6135436f037f6b171735d1e73)",
+  "recomputer": "checkpoint/run.mjs, stdlib-only Node (node:crypto + node:fs)",
+  "ran_at": "2026-09-02T04:43:35.685Z",
+  "node_version": "v22.20.0",
+  "platform": "darwin",
+  "passed": 46,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "checkpoint_canonicalization/checkpoint_basic/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_canonicalization/checkpoint_basic/sha256",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_canonicalization/checkpoint_with_parties/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_canonicalization/checkpoint_with_parties/sha256",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_chain/record[0]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_chain/record[1]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_chain/record[1]/previousHash_links_to_record[0]",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_chain/record[2]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "checkpoint_chain/record[2]/previousHash_links_to_record[1]",
+      "status": "PASS"
+    },
+    {
+      "name": "truncation_detection/full_chain_contains_externalized_checkpoint",
+      "status": "PASS"
+    },
+    {
+      "name": "truncation_detection/truncated_chain_missing_checkpoint (head_missing detected)",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/nested_same_content_different_order/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/nested_same_content_different_order/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/nested_same_content_different_order/both_inputs_same_digest",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/array_order_matters/canonical_a",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/array_order_matters/digest_a",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/array_order_matters/canonical_b",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/array_order_matters/digest_b",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/array_order_matters/digests_differ",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/unicode_keys_sorted/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/unicode_keys_sorted/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/astral_plane_keys_utf16_order/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/astral_plane_keys_utf16_order/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/lone_surrogate_throws/throws_on_invalid_input",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalize_value/float_throws/throws_on_invalid_input",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/simple_integer_map/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/simple_integer_map/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/empty_extension_map/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/empty_extension_map/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/nested_recursive_sort/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/nested_recursive_sort/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/float_as_string/canonical_form",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/float_as_string/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/record_with_extensionsDigest/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/record_with_extensionsDigest/sha256",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/record_without_extensionsDigest/canonical (backward_compat)",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest/record_without_extensionsDigest/sha256",
+      "status": "PASS"
+    },
+    {
+      "name": "rotation_boundary/file1/record[0]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "rotation_boundary/file1/record[1]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "rotation_boundary/file2_first_chains_to_file1_last_hash",
+      "status": "PASS"
+    },
+    {
+      "name": "rotation_boundary/file2/record[0]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "sequence_regression/detected_in_chain",
+      "status": "PASS"
+    },
+    {
+      "name": "sequence_regression/failure_code_is_sequence_regression",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_break/record[0]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_break/record[1]/hash",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_break/successor_chains_from_break_record_hash",
+      "status": "PASS"
+    }
+  ]
+}
