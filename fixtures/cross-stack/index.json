@@ -35,6 +35,13 @@
       }
     },
     {
+      "path": "mcp-audit-gateway-v0.6",
+      "kind": "external-system-family",
+      "verification": {
+        "verify": "cross-stack:mcp-audit-gateway-v0.6:verify"
+      }
+    },
+    {
       "path": "nobulex-bilateral-v0",
       "kind": "external-system-family",
       "verification": {
