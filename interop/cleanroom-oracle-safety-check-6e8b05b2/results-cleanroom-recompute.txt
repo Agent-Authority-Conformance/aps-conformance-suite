@@ -1,0 +1,15 @@
+ok   authority-denied       sha256(file)=168845f7ab0eb897 jcs=True sha=True ed25519=True
+ok   block                  sha256(file)=2ad17cd9b7ccee55 jcs=True sha=True ed25519=True
+ok   caution                sha256(file)=38cf7478e60e60f0 jcs=True sha=True ed25519=True
+ok   danger                 sha256(file)=dfae0aba31d782ba jcs=True sha=True ed25519=True
+ok   delegation-expired     sha256(file)=df622e85642a8078 jcs=True sha=True ed25519=True
+ok   delegation-revoked     sha256(file)=84eb8386db5b7e44 jcs=True sha=True ed25519=True
+ok   digest-mismatch        sha256(file)=ca0a44978239d479 jcs=True sha=True ed25519=True
+ok   evidence-missing       sha256(file)=8c85f3cc2919d875 jcs=True sha=True ed25519=True
+ok   expired-oracle         sha256(file)=fce6558da1e46a0b jcs=True sha=True ed25519=True
+ok   pass                   sha256(file)=9e77e6674d23ee36 jcs=True sha=True ed25519=True
+ok   sig-tampered           sha256(file)=eaa2442fa7b8ca92 jcs=True sha=True ed25519=True
+ok   tampered-oracle        sha256(file)=e0de438760f59271 jcs=True sha=True ed25519=True
+ok   wrong-signer           sha256(file)=a6612e2ee8342408 jcs=True sha=True ed25519=True
+
+13/13 vectors: JCS bytes, SHA-256 and Ed25519 outer witness all reproduce

@@ -1,0 +1,14 @@
+authority-denied.json | 168845f7ab0eb8975cd0d6ce0d307a4ff2f854a6b8b45da6c2869109d8caf89c | halt | digest match | signer match
+block.json | 2ad17cd9b7ccee55f1c166121bbf7f0cd19bcacfa86d51e94fd1c5e8313db506 | halt | digest match | signer match
+caution.json | 38cf7478e60e60f02961305cc6e6238c64389ce91a1abb37436d4aec4926f323 | allowed | digest match | signer match
+danger.json | dfae0aba31d782ba1c696caebb5e42794b8d8aab613557fcaec9d499ff23470a | halt | digest match | signer match
+delegation-expired.json | df622e85642a807883ebc7c4d052f185790c502f5fee850094df1d854d4faa58 | halt | digest match | signer match
+delegation-revoked.json | 84eb8386db5b7e44e7cc6d25fdc8933e4f387d83af96a34c02f2575c7d94dc18 | halt | digest match | signer match
+digest-mismatch.json | ca0a44978239d479cc9fd4d9b72dad5e3f28fccc00ad6fc460c20625bfe65175 | halt | digest match | signer match
+evidence-missing.json | 8c85f3cc2919d8751f6fa531b6536774b7adf732f33119e707cc90011ad2e618 | halt | digest match | signer match
+expired-oracle.json | fce6558da1e46a0bab51e49c6fecd8d5ded059911140a8bf4e8523db5f122d20 | halt | digest match | signer match
+pass.json | 9e77e6674d23ee3616f1d61f3aad97a31507a7f39fd45eafb871f592c1cd4a37 | allowed | digest match | signer match
+sig-tampered.json | eaa2442fa7b8ca928a121f32a42c43e75aad1c1a856f35c49d33aeb76a6775ac | halt | digest match | signer match
+tampered-oracle.json | e0de438760f59271ae0c2e7e46b5b71a83ea4899f8ac7f3c3b4521d64d8bf553 | halt | digest DIVERGE observed=0x2b04c057b9697958fa1c652ddc260a1bf621b78c32837d7f3c4ebbb080eb6e5f | signer match
+wrong-signer.json | a6612e2ee834240864187fc58e26bf69cec3cd2164326bed3d8ccaa186765310 | halt | digest match | signer DIVERGE observed=0xA3AB08be715edD0f3188E6CAF9E9B7DF51E721c5
+digest match 12/13; signer match 12/13
