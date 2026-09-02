@@ -7,11 +7,12 @@
 //      declared allowlist EXACTLY, failing in BOTH directions — an unexpected
 //      skip appearing and a declared skip quietly disappearing are both loud.
 //      Every allowlisted name declares a dedicated verifier that runs in the
-//      same `npm test` invocation. An external-system family such as
-//      cross-stack/oracle-safety-check is not ingested by the generic runner, so
-//      its dedicated verifier (verify:oracle-safety-check) and mutation proof
-//      (verify:oracle-safety-check-flips) run in the test chain directly; this
-//      allowlist governs only the APS-native families the generic runner skips.
+//      same `npm test` invocation. This allowlist governs only the APS-native
+//      families the generic runner skips: a cross-stack family under
+//      fixtures/cross-stack/ is outside the generic runner altogether (it is
+//      declared in fixtures/cross-stack/index.json, not in the manifest) and is
+//      not executed by `npm test` — it carries its own reproduction commands,
+//      which is why no cross-stack verifier is spawned or asserted here.
 //   2. FAIL LOUD: a vector that carries a corrupted expected value, and a vector
 //      of an unrecognized shape, each make the runner EXIT NON-ZERO instead of
 //      being silently downgraded to skip.
@@ -38,7 +39,6 @@ const VERIFY = join(REPO_ROOT, 'runners', 'ts', 'verify.ts')
 // so this test runs the same way on every platform.
 // Reported by Stian Skogbrott (@darklordVirtual).
 const TSX_CLI = join(REPO_ROOT, 'node_modules', 'tsx', 'dist', 'cli.mjs')
-const OSC_VERIFY = join(REPO_ROOT, 'fixtures', 'cross-stack', 'oracle-safety-check', 'verify.ts')
 
 // The named allowlist. A category may be skipped by the generic runner ONLY if
 // its name appears here. The guard (below) asserts the set of actually-skipped
@@ -134,10 +134,8 @@ if (!existsSync(TSX_CLI)) {
 }
 
 // 1. Real fixtures: wired vectors are asserted; the set of skipped names equals
-//    the named allowlist exactly (both directions); every allowlisted name is
-//    deep-verified by a dedicated script inside the same `npm test`; and the
-//    mutation proof for the oracle-safety-check verifier detects every applied
-//    field flip.
+//    the named allowlist exactly (both directions); and every allowlisted name is
+//    deep-verified by a dedicated script inside the same `npm test`.
 {
   const r = runVerify()
   check('real fixtures exit 0', r.code === 0, `exit ${r.code}`)
@@ -182,19 +180,6 @@ if (!existsSync(TSX_CLI)) {
     }
   }
 
-  // A mutation run of the dedicated verifier must fail loudly on every applied
-  // mutation — the allowlist entry is only worth something because the gate can
-  // prove the verifier CAN fail. verify:oracle-safety-check-flips applies each
-  // declared mutation to a copy of the fixture and requires every one to be
-  // detected; if any of them stops being detected, it exits non-zero and the
-  // allowlist entry becomes a rubber stamp, which this check would catch.
-  const flips = spawnSync(TSX_CLI, [OSC_VERIFY, '--flip-check'], { encoding: 'utf8' })
-  check('mutation proof runs: verify:oracle-safety-check-flips exit 0', flips.status === 0, `exit ${flips.status}`)
-  check(
-    'mutation proof runs: every declared mutation detected',
-    /ALL \d+ DECLARED MUTATIONS DETECTED/.test(flips.stdout ?? ''),
-    'expected "ALL <n> DECLARED MUTATIONS DETECTED" in output',
-  )
 }
 
 // 2. Fail loud on a corrupted expected value (wired assertion must reject it).

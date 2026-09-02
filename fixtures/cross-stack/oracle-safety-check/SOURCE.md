@@ -23,9 +23,21 @@ They are copied here per `docs/adding-vectors.md` (upstream first, then
 mirrored) and verified against the **published** SDK package
 (`agent-passport-system`), not deep imports into `src/`.
 
-Regenerating from that pinned commit reproduces the committed family
-**byte-identically**; the reproduction is part of `verify-consistency.ts`
-(56/56) together with the corpus and witness bindings in `verify.ts`.
+Two separate claims live here, and only the second one is exercised by a
+script in this directory:
+
+- **Byte-identical regeneration from the pinned commit** (`ba32424f…`) is
+  **not** performed by any script here. No script in this family clones the SDK
+  repo or re-runs `generate-fixtures.ts`; that regeneration is the suite
+  maintainer's own run from the pinned commit (see *Independence of the
+  verification* below).
+- **`verify-consistency.ts` (56/56)** is a **same-implementation comparison
+  against the committed artifacts**: for each of the 13 vectors it rebuilds the
+  four ABI-keccak commitments from that vector's own `oracle_input` through the
+  vendored pipeline and compares them with the values in the envelope (52), and
+  for the two positive vectors it re-derives the EIP-712 digest and verifies the
+  secp256k1 signature against the declared attester (4). It does not regenerate
+  the family from the pinned commit.
 
 ## Vendored Insight inner layer (`vendor/insight/`)
 
@@ -43,11 +55,12 @@ git diff 8844e8b2f6bb099b8507bb01337f5a79627ae7d7 -- fixtures/vendor/insight/   
 ```
 
 The three files are **byte-identical with the public reference implementation
-above**; every commitment and signature is reproducible from the vectors'
-`oracle_input` by `verify-consistency.ts` (56/56) shipped here. This suite
-makes **no byte-parity claim against any private production system**:
-production Insight is closed-source, so its source layout is out of scope for
-the public evidence this suite can verify.
+above**; by `verify-consistency.ts` (56/56) shipped here, each of the four
+commitments is rebuilt from the vectors' `oracle_input` for all 13 vectors, and
+the inner-layer digest and secp256k1 signature are re-derived for the two
+positive vectors. This suite makes **no byte-parity claim against any private
+production system**: production Insight is closed-source, so its source layout
+is out of scope for the public evidence this suite can verify.
 
 ## Independence of the verification
 
@@ -60,9 +73,17 @@ primitive formulas.
 Independent recomputation lives outside these scripts:
 
 - EIP-712 digests and signer recovery were recomputed from the vectors' own
-  `eip712` data by the suite maintainer during review of PR #32, using ethers
-  rather than viem and without importing the vendored builder. `tampered-oracle`
-  and `wrong-signer` failed exactly where they should.
+  `eip712` data by the suite maintainer, using ethers rather than viem and
+  without importing the vendored builder, as a Mode B independent run recorded
+  at [`interop/ethers-oracle-safety-check-9b4ffee/`](../../../interop/ethers-oracle-safety-check-9b4ffee/run-report.md)
+  (13 vectors: 12 digest match, 12 signer match). `tampered-oracle` and
+  `wrong-signer` failed exactly where they should.
+- The corpus digests were regenerated from the pinned source commit
+  (`ba32424f…`) by the suite maintainer and reported to match on all 14 files.
+  **That regeneration is his run, reported in his review of PR #32
+  (`5092297975`, 2026-09-02) — it is not performed by any script in this
+  directory**, and it is not what produces the 56/56 figure (see *Upstream
+  generator*).
 - The `verify.ts` inner-layer path is deliberately narrow for the same reason:
   it recomputes the digest and recovers the signer with viem primitives and
   compares against values the vector declares, rather than trusting a verdict
@@ -89,6 +110,19 @@ branch.
 - `npm run verify:oracle-safety-check-flips` → 5/5 declared mutations detected.
 - `npm run verify:oracle-safety-check-consistency` → 56/56
   (same-implementation consistency).
-- Full suite: `npm test` (the three verifiers above run in the `test` chain;
-  `verify:oracle-safety-check-flips` is the mutation proof behind this family's
-  named skip-allowlist entry).
+- The three commands above are this family's **reproduction commands**. They
+  are **not** part of the repository-wide `npm test` chain: as a family under
+  `fixtures/cross-stack/` it is declared in `fixtures/cross-stack/index.json`
+  and sits outside the generic runner's manifest, and the root README states
+  that such families are not executed by `npm test`. They are run on request
+  and by whoever is reviewing this family.
+- `npm test` covers the APS-native corpus only; it neither ingests nor ignores
+  this family, because this family is not in its scope at all. Whether
+  cross-stack verifiers join the common gate is a base-suite decision, not one
+  this family makes for itself.
+- This family has **no skip-allowlist entry** in
+  `runners/ts/fail-loud-and-wire.test.ts`. An earlier revision carried one
+  together with a spawn of this family's verifier; both were removed when the
+  family moved to the cross-stack registry, and the flip check above is
+  retained as a standalone reproduction command rather than as proof backing an
+  allowlist entry.
