@@ -1,0 +1,10 @@
+ok   valid_bundle_v2              expect=accept got=accept required=[] reported=[]
+ok   reject_params_mismatch       expect=reject got=reject required=[{"node": "vectors:n0", "reason": "params_mismatch", "seq": 3}] reported=[{"reason": "params_mismatch", "seq": 3, "node": "vectors:n0"}]
+ok   reject_outcome_without_allow expect=reject got=reject required=[{"node": "vectors:n1", "reason": "outcome_without_allow", "seq": 6}] reported=[{"reason": "outcome_without_allow", "seq": 6, "node": "vectors:n1"}]
+ok   reject_outcome_before_allow  expect=reject got=reject required=[{"node": "vectors:n0", "reason": "outcome_before_allow", "seq": 2}] reported=[{"reason": "outcome_before_allow", "seq": 2, "node": "vectors:n0"}]
+ok   reject_duplicate_outcome     expect=reject got=reject required=[{"node": "vectors:n0", "reason": "duplicate_outcome", "seq": 4}] reported=[{"reason": "duplicate_outcome", "seq": 4, "node": "vectors:n0"}]
+ok   reject_duplicate_call_id     expect=reject got=reject required=[{"node": "vectors:n1", "reason": "duplicate_call_id", "seq": 4}] reported=[{"reason": "outcome_without_allow", "seq": 3, "node": "vectors:n0"}, {"reason": "duplicate_call_id", "seq": 4, "node": "vectors:n1"}, {"reason": "params_mismatch", "seq": 6, "node": "vectors:n1"}] extra=[{"reason": "outcome_without_allow", "seq": 3, "node": "vectors:n0"}, {"reason": "params_mismatch", "seq": 6, "node": "vectors:n1"}]
+ok   reject_rehashed_chain        expect=reject got=reject required=[{"node": null, "reason": "integrity(anchor)", "seq": null}] reported=[{"reason": "integrity(anchor)", "seq": null, "node": null}]
+ok   reject_tampered_entry        expect=reject got=reject required=[{"node": "vectors:n0", "reason": "integrity", "seq": 3}] reported=[{"reason": "integrity", "seq": 3, "node": "vectors:n0"}]
+
+8 ok, 0 mismatches, 8 cases
