@@ -1,0 +1,59 @@
+{
+  "generator": "agent-passport-system fixtures/oracle-safety-check/generate-fixtures.ts",
+  "seed_input": "aps-oracle-safety-check-fixture-v1",
+  "baseline": "2026-08-25T00:00:00.000Z",
+  "cases": [
+    {
+      "id": "pass",
+      "file": "pass.json"
+    },
+    {
+      "id": "caution",
+      "file": "caution.json"
+    },
+    {
+      "id": "danger",
+      "file": "danger.json"
+    },
+    {
+      "id": "block",
+      "file": "block.json"
+    },
+    {
+      "id": "expired-oracle",
+      "file": "expired-oracle.json"
+    },
+    {
+      "id": "tampered-oracle",
+      "file": "tampered-oracle.json"
+    },
+    {
+      "id": "wrong-signer",
+      "file": "wrong-signer.json"
+    },
+    {
+      "id": "authority-denied",
+      "file": "authority-denied.json"
+    },
+    {
+      "id": "sig-tampered",
+      "file": "sig-tampered.json"
+    },
+    {
+      "id": "digest-mismatch",
+      "file": "digest-mismatch.json"
+    },
+    {
+      "id": "evidence-missing",
+      "file": "evidence-missing.json"
+    },
+    {
+      "id": "delegation-expired",
+      "file": "delegation-expired.json"
+    },
+    {
+      "id": "delegation-revoked",
+      "file": "delegation-revoked.json"
+    }
+  ]
+}

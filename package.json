@@ -14,6 +14,9 @@
     "verify:two-wrapper-attribution": "tsx fixtures/attribution/two-wrapper-v0/verify.ts",
     "verify:accountability-record": "tsx fixtures/accountability-record/verify.ts",
     "verify:read-fidelity-receipt": "tsx fixtures/read-fidelity-receipt/verify.ts",
+    "verify:oracle-safety-check": "tsx fixtures/cross-stack/oracle-safety-check/verify.ts",
+    "verify:oracle-safety-check-consistency": "tsx fixtures/cross-stack/oracle-safety-check/verify-consistency.ts",
+    "verify:oracle-safety-check-flips": "tsx fixtures/cross-stack/oracle-safety-check/verify.ts --flip-check",
     "verify:receipt-decision-relation": "tsx fixtures/receipt-decision-relation/verify.ts",
     "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
     "crossrun:canonical-bytes": "node fixtures/canonical-bytes/crossrun/run.mjs",
@@ -30,7 +33,8 @@
   "devDependencies": {
     "@types/node": "^26.4.0",
     "tsx": "^4.23.12",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "viem": "2.56.0"
   },
   "engines": {
     "node": ">=22"

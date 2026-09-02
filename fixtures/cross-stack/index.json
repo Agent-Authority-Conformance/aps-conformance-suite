@@ -12,6 +12,7 @@
     { "path": "nobulex-bilateral-v0", "kind": "external-system-family" },
     { "path": "receipts-aeoess", "kind": "external-system-family" },
     { "path": "receipts-amdal", "kind": "external-system-family" },
+    { "path": "oracle-safety-check", "kind": "external-system-family" },
     { "path": "synthetic", "kind": "lab-authored-regression" }
   ]
 }
