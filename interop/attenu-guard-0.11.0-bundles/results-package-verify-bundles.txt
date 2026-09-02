@@ -1,0 +1,12 @@
+attenu_guard 0.11.0 | HS256TestSigner signature: (secret: 'bytes', kid: 'str' = 'test') -> None
+ok   valid_bundle_v2              accepted=True reported=[]
+ok   reject_params_mismatch       accepted=False reported=[{"reason": "params_mismatch", "seq": 3, "node": "vectors:n0"}]
+ok   reject_outcome_without_allow accepted=False reported=[{"reason": "outcome_without_allow", "seq": 6, "node": "vectors:n1"}]
+ok   reject_outcome_before_allow  accepted=False reported=[{"reason": "outcome_before_allow", "seq": 2, "node": "vectors:n0"}]
+ok   reject_duplicate_outcome     accepted=False reported=[{"reason": "duplicate_outcome", "seq": 4, "node": "vectors:n0"}]
+ok   reject_duplicate_call_id     accepted=False reported=[{"reason": "duplicate_call_id", "seq": 4, "node": "vectors:n1"}, {"reason": "outcome_without_allow", "seq": 3, "node": "vectors:n0"}]
+ok   reject_rehashed_chain        accepted=False reported=[{"reason": "integrity(anchor)", "seq": null, "node": null}]
+ok   reject_tampered_entry        accepted=False reported=[{"reason": "integrity", "seq": 3, "node": "vectors:n0"}, {"reason": "integrity(anchor)", "seq": null, "node": null}]
+
+8/8 (Mode A, author's runner, attenu-guard 0.11.0)
+result keys: ['actions_checked', 'chain_id', 'checks', 'execution_binding', 'failure_details', 'failures', 'nodes', 'ok', 'verified_against']
