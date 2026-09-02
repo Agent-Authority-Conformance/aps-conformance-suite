@@ -1,0 +1,7 @@
+{
+  "name": "ethers-oracle-safety-check-6e8b05b2",
+  "private": true,
+  "type": "module",
+  "description": "Mode B recomputation of the oracle-safety-check EIP-712 layer with ethers, pinned exactly",
+  "dependencies": { "ethers": "6.17.0" }
+}
