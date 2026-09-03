@@ -18,8 +18,8 @@ head with different fixture bytes gets a new record, this one is not edited.
 - Implementations that supply the recomputation: `rfc8785==0.1.4` (Trail of Bits) for the
   canonical bytes and digests; `cryptography==49.0.0` for the Ed25519 JWS signatures; the
   contributor's `plugins/ed25519_pure.py` (implementation under test) run against the corpus's
-  published expected results. `recompute.py` transports inputs, invokes those, and compares
-  outputs; it constructs and interprets no claimed result.
+  published expected results. `recompute.py` transports the pinned inputs and compares outputs;
+  it does not implement or evaluate the family's CTEF admissibility semantics.
 
 ## What was run
 
