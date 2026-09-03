@@ -1,0 +1,134 @@
+{
+ "source": "C2SP/wycheproof testvectors_v1/ed25519_test.json",
+ "note": "Known-answer subset. The verifier MUST accept result=valid and reject result=invalid. Covers signature-malleability (S, S+L..S+8L, S above the group order) and non-canonical encoding.",
+ "tests": [
+  {
+   "tcId": 1,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "",
+   "sig": "d4fbdb52bfa726b44d1786a8c0d171c3e62ca83c9e5bbe63de0bb2483f8fd6cc1429ab72cafc41ab56af02ff8fcc43b99bfe4c7ae940f60f38ebaa9d311c4007",
+   "result": "valid",
+   "comment": ""
+  },
+  {
+   "tcId": 2,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "78",
+   "sig": "d80737358ede548acb173ef7e0399f83392fe8125b2ce877de7975d8b726ef5b1e76632280ee38afad12125ea44b961bf92f1178c9fa819d020869975bcbe109",
+   "result": "valid",
+   "comment": ""
+  },
+  {
+   "tcId": 3,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "54657374",
+   "sig": "7c38e026f29e14aabd059a0f2db8b0cd783040609a8be684db12f82a27774ab07a9155711ecfaf7f99f277bad0c6ae7e39d4eef676573336a5c51eb6f946b30d",
+   "result": "valid",
+   "comment": ""
+  },
+  {
+   "tcId": 42,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "647c1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2b1d125e5538f38afbcc1c84e489521083041d24bc6240767029da063271a1ff0c",
+   "result": "invalid",
+   "comment": "modified bit 0 in R. Accepted only by verifiers that ignore this bit when comparing R to t"
+  },
+  {
+   "tcId": 43,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "677c1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2bc108ca4b87a49c9ed2cf383aecad8f54a962b2899da891e12004d7993a627e01",
+   "result": "invalid",
+   "comment": "modified bit 1 in R. Accepted only by verifiers that ignore this bit when comparing R to t"
+  },
+  {
+   "tcId": 44,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "617c1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2b9ce23fc6213ed5b87912e9bbf92f5e2c780eae26d15c50a112d1e97d2ea33c06",
+   "result": "invalid",
+   "comment": "modified bit 2 in R. Accepted only by verifiers that ignore this bit when comparing R to t"
+  },
+  {
+   "tcId": 45,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "e57c1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2bbb3eb51cd98dddb235a5f46f2bded6af184a58d09cce928bda43f41d69118a03",
+   "result": "invalid",
+   "comment": "modified bit 7 in R. Accepted only by verifiers that ignore this bit when comparing R to t"
+  },
+  {
+   "tcId": 46,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657d1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2bcd237dda9a116501f67a5705a854b9adc304f34720803a91b324f2c13e0f5a09",
+   "result": "invalid",
+   "comment": "modified bit 8 in R. Accepted only by verifiers that ignore this bit when comparing R to t"
+  },
+  {
+   "tcId": 47,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1592402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2b6b167bbdc0d881cc04d28905552c1876f3709851abc5007376940cc8a435c300",
+   "result": "invalid",
+   "comment": "modified bit 16 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 48,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1412402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2b7fd2ac7da14afffcceeb13f2a0d6b887941cb1a5eb57a52f3cb131a16cce7b0e",
+   "result": "invalid",
+   "comment": "modified bit 31 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 49,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492412ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2b7373ba13ebbef99cd2a8ead55ce735c987d85a35320925a8e871702dc7c5c40d",
+   "result": "invalid",
+   "comment": "modified bit 32 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 50,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492402ab54e03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2bd35bd331c03f0855504ca1cab87b83c36a028425a3cf007ede4f4254c261cb00",
+   "result": "invalid",
+   "comment": "modified bit 63 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 51,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492402ab5ce02e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281c2bcb35101f73cf467deac8c1a03b6c3dc35af544132734b7e57ab20c89b2e4750d",
+   "result": "invalid",
+   "comment": "modified bit 64 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 52,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492402ab5ce03e2c3a7f2384d051b9cf3570f1207fc78c1bcc98c281c2bb58d2e8878290bff8d3355fdd4ea381924ee578752354eb6dee678ab4011c301",
+   "result": "invalid",
+   "comment": "modified bit 97 in R. Accepted only by verifiers that ignore this bit when comparing R to "
+  },
+  {
+   "tcId": 53,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492402ab5ce03e2c3a7f0384d851b9cf3570f1207fc78c1bcc98c281c2bb978c866187ffb1cc7b29a0b4045aefc08768df65717194ff0c6e63f4dea0d02",
+   "result": "invalid",
+   "comment": "modified bit 127 in R. Accepted only by verifiers that ignore this bit when comparing R to"
+  },
+  {
+   "tcId": 54,
+   "pk": "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa",
+   "msg": "313233343030",
+   "sig": "657c1492402ab5ce03e2c3a7f0384d051b9cf3570f1207fc78c1bcc98c281d2b0576ecf8eaf675f00f3dfbe19f75b83b7607a6c96414f6821af920a2498d0305",
+   "result": "invalid",
+   "comment": "modified bit 240 in R. Accepted only by verifiers that ignore this bit when comparing R to"
+  }
+ ]
+}

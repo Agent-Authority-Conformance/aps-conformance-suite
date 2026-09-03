@@ -1,0 +1,43 @@
+{
+  "note": "Signed CTEF fixture (positive-authority). The signed JWS payload is the RFC 8785 JCS canonicalization of input_object; the adapter decodes the payload, reproduces the bytes, verifies the signature, and admits the object.",
+  "input_object": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://agentgraph.co/ns/trust-evidence/v1"
+    ],
+    "type": "TrustAttestation",
+    "version": "0.3.1",
+    "claim_type": "authority",
+    "provider": {
+      "id": "did:web:agentgraph.co",
+      "name": "AgentGraph Trust Scanner",
+      "category": "static_analysis",
+      "version": "0.3.1"
+    },
+    "subject": {
+      "did": "did:key:z6MkfixtureSelfOwnedConformanceKeyDoNotUse00000",
+      "repo": "agentgraph-co/ctef-conformance-fixture",
+      "ref": "main"
+    },
+    "attestation": {
+      "type": "SecurityAttestation",
+      "confidence": 0.9,
+      "payload": {
+        "trust_score": 88,
+        "grade": "B"
+      }
+    },
+    "issued_at": "2026-09-03T00:00:00Z",
+    "expires_at": "2027-09-03T00:00:00Z",
+    "delegation": {
+      "delegation_chain_root": "4f3d8defea1e82c1705c35d97ee4db046c6313ba83855a7d0de04a44f04c834a",
+      "delegation_depth": 1,
+      "canonicalization": "RFC-8785"
+    }
+  },
+  "verification_time": "2026-09-03T00:00:00Z",
+  "canonical_bytes_utf8": "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://agentgraph.co/ns/trust-evidence/v1\"],\"attestation\":{\"confidence\":0.9,\"payload\":{\"grade\":\"B\",\"trust_score\":88},\"type\":\"SecurityAttestation\"},\"claim_type\":\"authority\",\"delegation\":{\"canonicalization\":\"RFC-8785\",\"delegation_chain_root\":\"4f3d8defea1e82c1705c35d97ee4db046c6313ba83855a7d0de04a44f04c834a\",\"delegation_depth\":1},\"expires_at\":\"2027-09-03T00:00:00Z\",\"issued_at\":\"2026-09-03T00:00:00Z\",\"provider\":{\"category\":\"static_analysis\",\"id\":\"did:web:agentgraph.co\",\"name\":\"AgentGraph Trust Scanner\",\"version\":\"0.3.1\"},\"subject\":{\"did\":\"did:key:z6MkfixtureSelfOwnedConformanceKeyDoNotUse00000\",\"ref\":\"main\",\"repo\":\"agentgraph-co/ctef-conformance-fixture\"},\"type\":\"TrustAttestation\",\"version\":\"0.3.1\"}",
+  "canonical_sha256": "8f419a403536515baac15f4b2e23582375b49ed6d8c3b925ea8449d8a57beaad",
+  "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6ImN0ZWYtZml4dHVyZS12MSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL2FnZW50Z3JhcGguY28vbnMvdHJ1c3QtZXZpZGVuY2UvdjEiXSwiYXR0ZXN0YXRpb24iOnsiY29uZmlkZW5jZSI6MC45LCJwYXlsb2FkIjp7ImdyYWRlIjoiQiIsInRydXN0X3Njb3JlIjo4OH0sInR5cGUiOiJTZWN1cml0eUF0dGVzdGF0aW9uIn0sImNsYWltX3R5cGUiOiJhdXRob3JpdHkiLCJkZWxlZ2F0aW9uIjp7ImNhbm9uaWNhbGl6YXRpb24iOiJSRkMtODc4NSIsImRlbGVnYXRpb25fY2hhaW5fcm9vdCI6IjRmM2Q4ZGVmZWExZTgyYzE3MDVjMzVkOTdlZTRkYjA0NmM2MzEzYmE4Mzg1NWE3ZDBkZTA0YTQ0ZjA0YzgzNGEiLCJkZWxlZ2F0aW9uX2RlcHRoIjoxfSwiZXhwaXJlc19hdCI6IjIwMjctMDktMDNUMDA6MDA6MDBaIiwiaXNzdWVkX2F0IjoiMjAyNi0wOS0wM1QwMDowMDowMFoiLCJwcm92aWRlciI6eyJjYXRlZ29yeSI6InN0YXRpY19hbmFseXNpcyIsImlkIjoiZGlkOndlYjphZ2VudGdyYXBoLmNvIiwibmFtZSI6IkFnZW50R3JhcGggVHJ1c3QgU2Nhbm5lciIsInZlcnNpb24iOiIwLjMuMSJ9LCJzdWJqZWN0Ijp7ImRpZCI6ImRpZDprZXk6ejZNa2ZpeHR1cmVTZWxmT3duZWRDb25mb3JtYW5jZUtleURvTm90VXNlMDAwMDAiLCJyZWYiOiJtYWluIiwicmVwbyI6ImFnZW50Z3JhcGgtY28vY3RlZi1jb25mb3JtYW5jZS1maXh0dXJlIn0sInR5cGUiOiJUcnVzdEF0dGVzdGF0aW9uIiwidmVyc2lvbiI6IjAuMy4xIn0.Sd0NEUMxbbp15GmYkQ1OvN9CndLGE8jnbsTeqZhWWPOTayV-GaRXw9A3h5WTgKvN_SB1moAZtZsptncvVEDCBA",
+  "expected_result": "pass"
+}
