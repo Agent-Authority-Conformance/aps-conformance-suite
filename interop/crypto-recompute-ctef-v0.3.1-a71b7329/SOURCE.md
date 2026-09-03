@@ -37,11 +37,11 @@ known-answer subset (16 entries) is byte-identical to the corpus entries it name
 
 ## Not covered, deliberately
 
-The admissibility outcomes (`INVALID_CLAIM_SCOPE`, `INVALID_COMPOSITION`, `EXPIRED`): the only
-implementation of the claim semantics exercised anywhere is the contributor's, and a lab-written
-one would be author-produced. The family's own header policy, tamper control and canonicalizer
-equivalence claims beyond these five inputs. The review of PR #43 records what the vendored
-known-answer subset does and does not pin.
+The admissibility outcomes (`INVALID_CLAIM_SCOPE`, `INVALID_COMPOSITION`, `EXPIRED`) are not
+covered here: this family exercises only the contributor's implementation of the claim semantics,
+and a lab-written implementation would be author-produced. Also not covered are the family's
+header-policy and tamper-control claims, or canonicalizer-equivalence claims beyond these five
+inputs. The review of PR #43 records what the vendored known-answer subset does and does not pin.
 
 ## Verification split
 
