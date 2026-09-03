@@ -6,11 +6,11 @@ Run it: `npm ci --include=dev && npm test`. After dependencies are installed, th
 
 Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 
-> **Status:** v0.1.0. The corpus carries cross-stack fixtures from outside parties, and a weekly signed-token exchange with one of them (AgentLair) has run since 2026-06-17. That is a seed. It is not independent conformance yet.
+> **Status:** the corpus carries APS-native vectors, cross-stack fixtures from outside parties, and interop records from independently authored implementations, each labelled by who ran what (Mode A, the author's runner; Mode B, an independent runner) and by whether it was author-produced or independent. The inventory below is generated from the tree; nothing here is a conformance verdict about any implementation.
 
 ## What this suite is
 
-A packaged corpus of test vectors that any APS-compatible implementation can run to verify it agrees, byte-for-byte, with the canonical APS reference. Ten fixture categories cover the major spec surfaces:
+A packaged corpus of test vectors that any APS-compatible implementation can run to verify it agrees, byte-for-byte, with the canonical APS reference. The fixture categories below cover the major spec surfaces:
 
 - **bilateral-delegation**: JCS canonicalization (RFC 8785) vectors used in bilateral delegation receipts. 10 vectors, deterministic seed `aps-canonicalize-fixture-v1`.
 - **inference-session**: CTEF v0.3.1 cryptographic agent identity vectors (validity windows, sequence bounds). 7 vectors, deterministic seed `ctef-synthetic-fixture-v1`.
@@ -54,7 +54,7 @@ The runner ships a vendored RFC 8785 JCS canonicalizer in `runners/ts/canonicali
 
 Output: pass/fail per vector + per-category summary. Exit code 0 on full pass, 1 on any failure.
 
-A Python runner stub lives at `runners/python/verify.py`. Full Python port is a follow-up task.
+Runners exist for TypeScript (`runners/ts`), Go (`runners/go`) and Python (`runners/python` plus the receipt and AAT runners under `runners/`).
 
 ## Repository layout
 
@@ -72,7 +72,7 @@ aps-conformance-suite/
 │   └── aivss-scenarios/               (10 scenario files + manifest)
 ├── runners/
 │   ├── ts/                            (TypeScript reference runner)
-│   └── python/                        (Python runner stub)
+│   └── python/                        (Python runner)
 ├── docs/
 │   ├── fixture-format.md
 │   ├── canonicalization.md
