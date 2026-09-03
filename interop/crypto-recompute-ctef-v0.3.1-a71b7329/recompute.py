@@ -69,8 +69,9 @@ def main() -> int:
         h, p, s = fx["jws"].split(".")
         payload = b64u(p)
         canon = rfc8785.dumps(fx["input_object"])
-        rec(f"jcs-bytes:{name}", canon == payload and canon.decode("utf-8") == fx["canonical_bytes_utf8"],
-            "rfc8785 output differs from the signed payload or canonical_bytes_utf8" if canon != payload else "")
+        jcs_ok = canon == payload and canon.decode("utf-8") == fx["canonical_bytes_utf8"]
+        rec(f"jcs-bytes:{name}", jcs_ok,
+            "" if jcs_ok else "rfc8785 output differs from the signed payload or canonical_bytes_utf8")
         rec(f"sha256:{name}", hashlib.sha256(canon).hexdigest() == fx["canonical_sha256"])
         header = json.loads(b64u(h))
         key = keys.get(header.get("kid"))
