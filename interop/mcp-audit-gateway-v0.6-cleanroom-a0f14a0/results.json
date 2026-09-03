@@ -1,0 +1,786 @@
+[
+  {
+    "name": "canonicalization[genesis_all_fields] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[genesis_all_fields] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[genesis_null_optionals] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[genesis_null_optionals] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[error_with_code] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[error_with_code] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[zero_duration] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[zero_duration] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[invalid_params_error] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[invalid_params_error] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[unicode_in_fields] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[unicode_in_fields] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[max_safe_integer_duration] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[max_safe_integer_duration] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[empty_string_tool_name] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalization[empty_string_tool_name] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[0] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[0] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[0] :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[0] :: full_record_json reserialized (diagnostic)",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[1] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[1] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[1] :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[1] :: full_record_json reserialized (diagnostic)",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[2] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[2] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[2] :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain[2] :: full_record_json reserialized (diagnostic)",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain :: record[0] previousHash == genesis_seed",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain :: record[1] previousHash == prior record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain :: record[2] previousHash == prior record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_a :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_a :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_a :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_a :: full_record_json reserialized (diagnostic)",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_b :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_b :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_b :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo.record_b :: full_record_json reserialized (diagnostic)",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo :: canonical hashes match",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "dual_hash_demo :: chain hashes differ",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_gateway_only] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_gateway_only] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_dual_attribution] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_dual_attribution] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[no_parties_backward_compat] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[no_parties_backward_compat] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_empty_array] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[parties_empty_array] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[scope_order_original] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[scope_order_original] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[scope_order_sorted] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution[scope_order_sorted] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[0] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[0] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[0] :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[1] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[1] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain[1] :: record_hash over full_record_json",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain :: record[0] previousHash == genesis_seed",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "party_attribution.chain :: record[1] previousHash == prior record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_full] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_full] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_partial_turnid_only] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_partial_turnid_only] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_with_all_optionals] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing[ai_invocation_with_all_optionals] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "ai_invocation_signing :: mutation changes the digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest_base[extensions_digest_with_parties] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest_base[extensions_digest_with_parties] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_canonicalization[checkpoint_basic] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_canonicalization[checkpoint_basic] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_canonicalization[checkpoint_with_parties] :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_canonicalization[checkpoint_with_parties] :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_chain :: record[0] previousHash",
+    "status": "UNSPECIFIED",
+    "derived": "genesis",
+    "published": null,
+    "note": "no genesis_seed stated in this block"
+  },
+  {
+    "name": "checkpoint_chain :: record[1] previousHash == prior record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "checkpoint_chain :: record[2] previousHash == prior record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest.with_extensions_digest :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest.with_extensions_digest :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest.without_extensions_digest :: canonical bytes",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest.without_extensions_digest :: sha256_canonical",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[nested_same_content_different_order].a :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[nested_same_content_different_order].a :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[nested_same_content_different_order].b :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[nested_same_content_different_order].b :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[array_order_matters].a :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[array_order_matters].a :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[array_order_matters].b :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[array_order_matters].b :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[unicode_keys_sorted] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[unicode_keys_sorted] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[astral_plane_keys_utf16_order] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[astral_plane_keys_utf16_order] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value[lone_surrogate_throws] :: rejects (chr(0xD800) per the vector construct text)",
+    "status": "PASS",
+    "derived": null,
+    "published": "unpaired surrogate",
+    "note": "string contains a lone surrogate"
+  },
+  {
+    "name": "canonicalize_value[float_throws] :: rejects (published input)",
+    "status": "PASS",
+    "derived": null,
+    "published": "unsafe number",
+    "note": "float is not a safe integer: 0.1"
+  },
+  {
+    "name": "extensions_digest[simple_integer_map] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[simple_integer_map] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[empty_extension_map] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[empty_extension_map] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[nested_recursive_sort] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[nested_recursive_sort] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[float_as_string] :: canonical_form",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "extensions_digest[float_as_string] :: digest",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "canonicalize_value :: lone low surrogate U+DC00",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": "string contains a lone surrogate"
+  },
+  {
+    "name": "rotation_boundary :: file 2 first previousHash == file 1 last record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "chain_break :: successor previousHash == break record_hash",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "truncation_detection :: truncation derived",
+    "status": "PASS",
+    "derived": true,
+    "published": "truncated",
+    "note": "checkpoint present=False, later checkpoints=0, delivered=1"
+  },
+  {
+    "name": "truncation_detection :: stated failure code agrees with derivation",
+    "status": "PASS",
+    "derived": "head_missing",
+    "published": "head_missing",
+    "note": null
+  },
+  {
+    "name": "truncation_detection :: complete chain result",
+    "status": "UNSPECIFIED",
+    "derived": null,
+    "published": false,
+    "note": "the complete chain's records are not enumerated in the file, so nothing can be derived for it"
+  },
+  {
+    "name": "sequence_regression :: derived",
+    "status": "PASS",
+    "derived": true,
+    "published": true,
+    "note": "checkpoint sequences [3, 2]"
+  },
+  {
+    "name": "sequence_regression :: stated failure code agrees with derivation",
+    "status": "PASS",
+    "derived": null,
+    "published": null,
+    "note": null
+  },
+  {
+    "name": "count_mismatch",
+    "status": "NOT CHECKED",
+    "derived": null,
+    "published": null,
+    "note": "documented in failure_codes and not exercised by this verifier; out of scope"
+  }
+]
