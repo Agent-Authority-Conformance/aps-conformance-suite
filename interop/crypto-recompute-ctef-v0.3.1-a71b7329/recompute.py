@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Lab recompute of the crypto-layer claims of the ctef-v0.3.1 family at PR #43 head a71b7329.
 
-Thin harness: it transports the pinned inputs, invokes implementations authored by neither the
-contributor nor the lab (rfc8785 by Trail of Bits, cryptography, the C2SP/wycheproof corpus), and
-compares outputs. It decides no semantic result. The admissibility outcomes of the family are NOT
-recomputed here.
+Thin harness. For canonicalization, digests and signatures it invokes implementations authored by
+neither the contributor nor the lab (`rfc8785` and `cryptography`). Separately, it runs the
+contributor's Ed25519 verifier against the pinned C2SP/Wycheproof corpus and compares its outputs
+with the corpus's published expected results.
+
+It does not implement or evaluate the family's CTEF admissibility semantics.
 
 Usage: python3 recompute.py <family dir at a71b7329> <ed25519_test.json at 5722833c> [--json]
 Exit 0 iff every input matches its pinned digest and every check passes; exit 2 on a digest
-mismatch (the record only speaks about these bytes).
+mismatch.
 """
 import base64, hashlib, json, sys, importlib.util
 from pathlib import Path
