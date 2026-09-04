@@ -58,7 +58,7 @@ that does not bind to its digest) and negatives rejected only by JSON Schema (a
 `decision` outside the boundary enum, a non-canonical `sig_alg`), whose records
 are cryptographically coherent and correctly accepted by the crypto layer.
 
-The layers stay orthogonal — no layer is taught another layer's job — and none
+The layers stay orthogonal (no layer is taught another layer's job), and none
 of them emits an overall verdict. Which layers decide a family is declared in
 one place, `fixtures/manifest.json`: the required layers, which `rejection_kind`
 each layer owns, the concrete error each `expected_error_code` must produce,
@@ -68,11 +68,11 @@ computes the per-vector verdict from their results.
 
 A negative passes only when the layer that owns its `rejection_kind` actually
 rejected it with the error it declares. A positive must be accepted by every
-required layer. A required layer that produced no result — schema absent,
+required layer. A required layer that produced no result (schema absent,
 unparseable, not a valid Draft 2020-12 schema, bytes not matching the pin,
-validator not installed — fails every vector in the family rather than skipping
+validator not installed) fails every vector in the family rather than skipping
 it. `npm run test:layered-gate-mutation` proves this by mutating a copy of the
-repository seven ways and asserting `npm test` fails each time, for the stated
+repository eight ways and asserting `npm test` fails each time, for the stated
 reason.
 
 Every JSON Schema under `fixtures/` is inventoried in `fixtures/manifest.json`

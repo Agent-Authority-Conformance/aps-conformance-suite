@@ -323,7 +323,7 @@ async function verifyAccountabilityFile(
       fixture,
       name: verdict.vector,
       status: verdict.pass ? 'pass' : 'fail',
-      details: verdict.pass ? verdict.layerSummary : `${verdict.layerSummary} — ${verdict.problems.join('; ')}`,
+      details: verdict.pass ? verdict.layerSummary : `${verdict.layerSummary}; ${verdict.problems.join('; ')}`,
     })
   }
   return out
