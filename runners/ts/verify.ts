@@ -21,6 +21,8 @@ import { canonicalizeJCS } from './canonicalize.js'
 // fixtures/<cat>/verify.ts scripts use). Namespaced to avoid symbol collisions
 // (both libs export canonicalizeJCS / sha256Hex / utf8Hex / verifyUtf8).
 import * as acctLib from '../../fixtures/accountability-record/lib.js'
+import * as acctLayers from '../../fixtures/accountability-record/layers.js'
+import { readLayeredDecl } from './layered-gate.js'
 import * as rfrLib from '../../fixtures/read-fidelity-receipt/lib.js'
 import * as rfrWordlist from '../../fixtures/read-fidelity-receipt/wordlist.js'
 
@@ -238,50 +240,57 @@ function checkVector(category: string, fixture: string, fixtureData: FixtureFile
   return results
 }
 
-// Real verification for the accountability-record family. Mirrors
-// fixtures/accountability-record/verify.ts: byte-parity of signing input and
-// canonical bytes re-derived from the record, published-signature match, then
-// full crypto verification (Ed25519 over the signing input plus action_digest
-// binding / action_ref recompute when the payload is inline). Schema negatives
-// are rejected by validate.py, not the crypto layer, so their outcome is not
-// asserted here (their bytes are self-consistent) -- byte-parity still runs.
-function verifyAccountabilityFile(category: string, fixture: string, data: FixtureFile): VectorResult[] {
+// Real verification for the accountability-record family.
+//
+// This family is decided by more than one layer, and which layers those are is
+// declared in fixtures/manifest.json, not here. The runner executes every
+// declared required layer through the family's shared evaluator -- the same
+// code path fixtures/accountability-record/verify.ts runs, so the two entry
+// points cannot drift apart -- and takes the per-vector verdict from
+// runners/ts/layered-gate.ts.
+//
+// What changed and why: this function used to skip the outcome assertion for
+// any vector whose rejection_kind was "schema", on the grounds that validate.py
+// enforced the schema. validate.py is not in `npm test`, so those vectors were
+// asserted by nothing and printed PASS regardless. The schema layer now runs
+// here. A layer that cannot run fails the family's vectors; it does not skip
+// them.
+async function verifyAccountabilityFile(
+  category: string,
+  fixture: string,
+  data: FixtureFile,
+  entry: ManifestEntry,
+): Promise<VectorResult[]> {
   const out: VectorResult[] = []
-  for (const v of (data.vectors as unknown as Array<Record<string, any>>)) {
-    const problems: string[] = []
-    const si = acctLib.signingInput(v.record)
-    if (si !== v.signing_input_canonical) problems.push('signing_input_canonical mismatch')
-    if (acctLib.utf8Hex(si) !== v.signing_input_bytes_hex) problems.push('signing_input_bytes_hex mismatch')
-    const canonical = acctLib.canonicalizeJCS(v.record)
-    if (canonical !== v.canonical) problems.push('canonical mismatch')
-    if (acctLib.utf8Hex(canonical) !== v.canonical_bytes_hex) problems.push('canonical_bytes_hex mismatch')
-    if (acctLib.sha256Hex(canonical) !== v.canonical_sha256) problems.push('canonical_sha256 mismatch')
-    if (v.record.sig !== v.ed25519_signature_over_signing_input_hex) problems.push('record.sig != published signature')
 
-    const res = acctLib.verifyRecord(v.record, v.ed25519_pubkey_hex)
-    if (v.rejection_kind !== 'schema') {
-      if (res.ok !== v.expected_verification) {
-        problems.push(`verification ${res.ok} != expected ${v.expected_verification}`)
-      }
-      if (v.expected_verification === false) {
-        if (v.rejection_kind === 'digest_mismatch' && res.checks.action_digest_binds !== false) {
-          problems.push('declared digest_mismatch but action_digest bound')
-        }
-        if (v.rejection_kind === 'signature' && res.checks.signature !== false) {
-          problems.push('declared signature rejection but signature verified')
-        }
-      }
+  let decl
+  try {
+    decl = readLayeredDecl(entry as unknown as Record<string, unknown>)
+  } catch (err) {
+    return [{ category, fixture, name: '<layers>', status: 'fail', details: `manifest layer declaration is malformed: ${(err as Error).message}` }]
+  }
+  if (!decl) {
+    return [{ category, fixture, name: '<layers>', status: 'fail', details: 'manifest entry declares no required_layers; the layers that decide this family are unstated' }]
+  }
+
+  const { verdicts, reports } = await acctLayers.evaluateFamily(
+    FIXTURES_DIR,
+    data as unknown as acctLayers.AccountabilityFixture,
+    decl,
+  )
+  for (const r of reports) {
+    if (!r.available) {
+      out.push({ category, fixture, name: `<layer:${r.layer}>`, status: 'fail', details: `required layer unavailable: ${r.reason}` })
     }
-
-    const status: VectorResult['status'] = problems.length ? 'fail' : 'pass'
-    const detail = problems.length
-      ? problems.join('; ')
-      : v.rejection_kind === 'schema'
-        ? 'byte-parity checked; schema rejection enforced by validate.py'
-        : v.rejection_kind
-          ? `negative confirmed (${v.rejection_kind})`
-          : undefined
-    out.push({ category, fixture, name: v.name, status, details: detail })
+  }
+  for (const verdict of verdicts) {
+    out.push({
+      category,
+      fixture,
+      name: verdict.vector,
+      status: verdict.pass ? 'pass' : 'fail',
+      details: verdict.pass ? verdict.layerSummary : `${verdict.layerSummary} — ${verdict.problems.join('; ')}`,
+    })
   }
   return out
 }
@@ -612,7 +621,7 @@ function verifyMerkleParityFile(category: string, fixture: string, data: Fixture
   return out
 }
 
-function main(): number {
+async function main(): Promise<number> {
   if (!existsSync(MANIFEST_PATH)) {
     console.error(`manifest not found at ${MANIFEST_PATH}`)
     return 1
@@ -650,7 +659,7 @@ function main(): number {
     // their positive vectors are actually checked and their negatives are only
     // marked PASS when the reference genuinely rejects them (no vacuous passes).
     if (entry.category === 'accountability-record') {
-      allResults.push(...verifyAccountabilityFile(entry.category, entry.path, data))
+      allResults.push(...(await verifyAccountabilityFile(entry.category, entry.path, data, entry)))
       continue
     }
     if (entry.category === 'read-fidelity-receipt') {
@@ -736,4 +745,4 @@ function main(): number {
   return 0
 }
 
-process.exit(main())
+process.exit(await main())
