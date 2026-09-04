@@ -20,8 +20,13 @@ is the SHA-256 of the JCS of the `action` object.
 - `accountability-record.schema.json`: JSON Schema (Draft 2020-12) for the record.
 - `accountability-record-fixture-v1.json`: twelve deterministic test vectors.
 - `generate-fixtures.ts`: regenerates the fixture from deterministic seeds.
-- `verify.ts`: cold-clone verifier (byte-parity, Ed25519, digest binding).
-- `validate.py`: schema validation (jsonschema Draft 2020-12) and cross-language byte-parity.
+- `verify.ts`: the family's composite runner. Executes every layer the manifest
+  declares required and prints one verdict per vector.
+- `layers.ts`: the cryptographic layer, plus the shared evaluator both `verify.ts`
+  and the manifest runner call.
+- `validate.py`: independent Python parity implementation (jsonschema Draft
+  2020-12) and cross-language byte-parity. Run by CI's `schema-parity` job, not
+  by `npm test`.
 - `lib.ts`: shared primitives (vendored JCS, `computeActionRef`, digest, Ed25519).
 
 ## Vectors
@@ -41,11 +46,40 @@ is the SHA-256 of the JCS of the `action` object.
 | 11 | `positive-collision-same-second-b` | pair of A; proves `action_ref` is a correlation key, not a unique id | verifies |
 | 12 | `negative-sig-alg-lowercase` | `sig_alg` is `ed25519` (lowercase), violating the `Ed25519` const | fails (schema) |
 
-Two verification layers cover these. `verify.ts` (Ed25519 + digest + byte-parity) is
-authoritative for the signature and digest negatives (5, 6, 8). `validate.py`
-(jsonschema Draft 2020-12) is authoritative for the schema negatives (7, 12); those
-records carry a valid signature over their own bytes and are rejected only by the
-schema. Run both.
+## Layers, and which one decides what
+
+Two layers cover these vectors, and `fixtures/manifest.json` declares both as
+required for this family. The cryptographic layer (Ed25519 + digest binding +
+`action_ref` recomputation) decides the signature and digest negatives (5, 6, 8).
+The JSON Schema Draft 2020-12 layer decides the schema negatives (7, 12); those
+records carry a valid signature over their own bytes, so no cryptographic check
+can reject them, and none is asked to.
+
+Both layers run inside `npm test`. The schema layer runs in Node against a
+pinned ajv, and the per-vector verdict is computed from both layers'
+results by `runners/ts/layered-gate.ts`. A schema negative passes only when the
+schema actually rejected the record with the error the vector declares:
+`DECISION_NOT_IN_ENUM` as `/decision` + `enum`, `SIG_ALG_NOT_CANONICAL` as
+`/sig_alg` + `const`. A required layer that cannot run -- schema missing,
+unparseable, not a valid Draft 2020-12 schema, bytes not matching the digest
+pinned in the manifest, validator not installed -- fails every vector in the
+family. It does not skip them.
+
+Each layer still reports its own result for every vector, including the
+cryptographic layer's accept on the schema negatives. That accept is correct.
+What used to be wrong was printing it as an overall PASS: `verify.ts` exempted
+`rejection_kind === "schema"` from outcome assertion and deferred to
+`validate.py`, which `npm test` never ran. The schema could be deleted and the
+suite stayed green.
+
+`validate.py` remains as an independent Python parity implementation of the
+same rules, reading the same manifest declaration. **It is not run by
+`npm test`.** It runs in the `schema-parity` job in
+`.github/workflows/tests.yml`, and is not a required check. The default command
+stays hermetic (no pip) and runs unchanged on the Windows job; the Node
+validator is the authoritative gate. Python's value here is disagreement: if
+jsonschema and ajv reach different verdicts on the same vectors and schema, one
+of them is wrong.
 
 Vectors use synthetic test DIDs and deterministic test keypairs derived from a
 published seed. No real agent identities and no private key material are in the
@@ -59,11 +93,13 @@ git clone https://github.com/Agent-Authority-Conformance/aps-conformance-suite
 cd aps-conformance-suite
 npm install
 
-# TS verifier: byte-parity, Ed25519 signatures, digest binding; confirms the signature and digest negatives fail
+# The family gate: runs both required layers and prints one verdict per vector.
+# This is what `npm test` runs.
 npx tsx fixtures/accountability-record/verify.ts
 
-# Python: schema validation (jsonschema Draft 2020-12) + cross-language JCS byte-parity; confirms the schema negatives fail
-pip install jsonschema cryptography
+# Optional: the independent Python parity implementation. Not part of the gate;
+# it is the second opinion, in another language with another JSON Schema library.
+pip install jsonschema==4.26.0 cryptography==49.0.0
 python3 fixtures/accountability-record/validate.py
 
 # Regenerate (deterministic; byte-stable across runs)
@@ -71,10 +107,11 @@ npx tsx fixtures/accountability-record/generate-fixtures.ts
 ```
 
 `verify.ts` re-derives the signing input and canonical bytes from each record and
-checks them against the stored bytes, verifies each Ed25519 signature, and checks
-`action_digest` binding when the payload is inline. `validate.py` validates every
-record against the schema and reproduces the canonical bytes in Python, which
-confirms that two independent implementations agree on the RFC 8785 bytes.
+checks them against the stored bytes, runs both required layers, and computes the
+verdict. `validate.py` validates every record against the schema under Python
+jsonschema and reproduces the canonical bytes in Python, which confirms that two
+independent implementations agree on both the RFC 8785 bytes and the schema
+verdicts.
 
 ## What the record proves, and what it does not
 
@@ -111,10 +148,13 @@ holds one. That is the whole surface.
   Resolving `signer_did` to the Ed25519 verification key (DID resolution, a key
   registry, or the fixture's published `keypair.publicKeyHex` here) happens outside
   the record. The signature says nothing until the resolver binds the DID to a key.
-- **Which verifier is authoritative.** The dedicated `verify.ts` and `validate.py`
-  are authoritative. The generic suite runner (`runners/ts/verify.ts`) skips these
-  vectors by design (they are `record`-shaped, not canonicalization `input`
-  vectors); its per-file SHA-256 gate still detects any tampering of the fixture.
+- **Which verifier is authoritative.** The composite verdict is authoritative,
+  and it is computed identically by the dedicated `verify.ts` and by the generic
+  suite runner (`runners/ts/verify.ts`) -- both call the same evaluator in
+  `layers.ts`, so the two cannot drift. The generic runner does not skip these
+  vectors: it dispatches them to that evaluator, and its per-file SHA-256 gate
+  additionally detects any tampering of the fixture. `validate.py` is parity,
+  not authority.
 
 ## Non-goals
 
