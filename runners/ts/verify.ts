@@ -51,6 +51,13 @@ interface ManifestEntry {
   // explicit skip with this reason instead of failing loud. Anything else with
   // no assertable shape is a FAILURE, not a silent skip.
   skip_in_runner?: string
+  // Negatives whose declared rejection is POLICY, not bytes: nothing in this
+  // repository evaluates the policy, so the rejection is asserted by nothing.
+  // Naming them here is not permission to ignore them, it is the record that
+  // they are unasserted: a named one is reported as SKIP with the declared
+  // reason and is not counted as passing, and an unnamed negative reaching the
+  // same branch is a FAILURE.
+  unasserted_negatives?: { reason: string; vectors: string[] }
 }
 
 interface Manifest {
@@ -128,7 +135,7 @@ interface VectorResult {
   details?: string
 }
 
-function checkVector(category: string, fixture: string, fixtureData: FixtureFile, v: Vector): VectorResult[] {
+function checkVector(category: string, fixture: string, fixtureData: FixtureFile, v: Vector, entry: ManifestEntry): VectorResult[] {
   const results: VectorResult[] = []
   const declaredPub = fixtureData.keypair?.publicKeyHex ?? v.ed25519_pubkey_hex
 
@@ -167,9 +174,18 @@ function checkVector(category: string, fixture: string, fixtureData: FixtureFile
   }
 
   // Bilateral-delegation / inference-session style: input + canonical_bytes_hex.
-  // For these vectors `expected_verification: false` indicates POLICY-level
-  // rejection (expired window, out-of-scope action) — not signature failure.
-  // The signature itself is valid by construction; we only verify byte parity.
+  //
+  // For these vectors `expected_verification: false` means a POLICY rejection --
+  // an expired validity window, a sequence gap, a replayed sequence number --
+  // and nothing in this repository evaluates those semantics. Their canonical
+  // bytes and signatures are valid by construction, so byte parity says nothing
+  // about the rejection they declare.
+  //
+  // This branch used to report such a vector as a clean pass. It no longer does.
+  // Byte parity is still asserted, and then a declared negative is either named
+  // in the manifest's unasserted_negatives -- reported as SKIP with the declared
+  // reason, not counted as passing -- or it is a FAILURE. A negative nothing
+  // asserts must not be indistinguishable from one that was checked.
   if (v.canonical_bytes_hex !== undefined && v.canonical_sha256 !== undefined && v.input !== undefined) {
     const canonical = canonicalizeJCS(v.input)
     const canonicalHex = Buffer.from(canonical, 'utf8').toString('hex')
@@ -189,6 +205,24 @@ function checkVector(category: string, fixture: string, fixtureData: FixtureFile
         results.push({ category, fixture, name: v.name, status: 'fail', details: `Ed25519 signature verification failed (signature inconsistent with declared keypair)` })
         return results
       }
+    }
+    if (v.expected_verification === false) {
+      const declared = entry.unasserted_negatives
+      if (declared && declared.vectors.includes(v.name)) {
+        results.push({ category, fixture, name: v.name, status: 'skip', details: `declared unasserted negative: ${declared.reason}` })
+      } else {
+        results.push({
+          category,
+          fixture,
+          name: v.name,
+          status: 'fail',
+          details:
+            'declared negative, but this branch only asserts byte parity and the signature, both valid by construction; ' +
+            'nothing here evaluates the policy it declares. Give it a rejection_kind the family owns, or name it in the ' +
+            "manifest entry's unasserted_negatives with a reason.",
+        })
+      }
+      return results
     }
     results.push({ category, fixture, name: v.name, status: 'pass' })
     return results
@@ -714,7 +748,7 @@ async function main(): Promise<number> {
     }
 
     for (const v of data.vectors) {
-      allResults.push(...checkVector(entry.category, entry.path, data, v))
+      allResults.push(...checkVector(entry.category, entry.path, data, v, entry))
     }
   }
 

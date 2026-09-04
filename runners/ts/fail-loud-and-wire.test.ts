@@ -47,8 +47,12 @@ const TSX_CLI = join(REPO_ROOT, 'node_modules', 'tsx', 'dist', 'cli.mjs')
 // runs inside the same `npm test` invocation.
 interface AllowlistEntry {
   category: string
-  verifier: string
+  // The dedicated verifier that deep-verifies the category inside the same
+  // `npm test`. Omitted only when there is none, in which case `debt` must say
+  // so: an entry with neither is an unexplained hole and fails below.
+  verifier?: string
   mutation?: string
+  debt?: string
 }
 const SKIP_ALLOWLIST: AllowlistEntry[] = [
   {
@@ -57,6 +61,23 @@ const SKIP_ALLOWLIST: AllowlistEntry[] = [
     // No mutation script yet: canonical-bytes predates the allowlist rule and
     // its falsifiability proof is the suite maintainers' outstanding debt, not
     // a condition of this PR (stated by the reviewer).
+  },
+  {
+    category: 'inference-session',
+    // Deliberately no verifier. Three of this family's vectors declare
+    // expected_verification:false for a POLICY rejection -- expired validity
+    // window, sequence gap, replayed sequence number -- and NOTHING in this
+    // repository evaluates validity windows or sequence continuity. Their
+    // canonical bytes and signatures are valid by construction, so the generic
+    // runner used to report them as clean passes; it now reports them as skips
+    // against the manifest's unasserted_negatives declaration.
+    //
+    // They carry neither rejection_kind nor expected_error_code, so there is
+    // nothing for a gate to assert the rejection against, and supplying those
+    // fields would change published vector expectations. Writing the missing
+    // verifier is the fix; naming the debt here is what keeps it visible until
+    // someone does.
+    debt: 'no verifier evaluates inference-session validity windows or sequence continuity; three declared negatives are unasserted (fixtures/manifest.json unasserted_negatives)',
   },
 ]
 
@@ -174,7 +195,15 @@ if (!existsSync(TSX_CLI)) {
   const pkg = JSON.parse(readFileSync(join(REPO_ROOT, 'package.json'), 'utf8')) as { scripts: Record<string, string> }
   const testScript = pkg.scripts?.test ?? ''
   for (const e of SKIP_ALLOWLIST) {
-    check(`allowlist ${e.category}: dedicated verifier ${e.verifier} runs in npm test`, testScript.includes(`npm run ${e.verifier}`), 'missing from scripts.test')
+    if (e.verifier) {
+      check(`allowlist ${e.category}: dedicated verifier ${e.verifier} runs in npm test`, testScript.includes(`npm run ${e.verifier}`), 'missing from scripts.test')
+    } else {
+      // No verifier is allowed only when the entry states the debt. Silence
+      // here would be the same hole the allowlist exists to close.
+      check(`allowlist ${e.category}: has no verifier, and says why`,
+        typeof e.debt === 'string' && e.debt.length > 0,
+        'an allowlisted category with no verifier must declare `debt`')
+    }
     if (e.mutation) {
       check(`allowlist ${e.category}: mutation proof ${e.mutation} runs in npm test`, testScript.includes(`npm run ${e.mutation}`), 'missing from scripts.test')
     }
