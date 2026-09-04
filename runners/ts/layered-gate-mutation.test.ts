@@ -15,9 +15,18 @@
 // node_modules is a symlink to the real one (a junction on Windows), so a case
 // costs a few megabytes and one npm test, not an install.
 //
-// Recursion: the inner `npm test` runs this file too. APS_MUTATION_INNER makes
-// the inner invocation a no-op, so the inner run still executes every other
-// gate step -- which is where the mutation must surface.
+// Recursion. The inner `npm test` would otherwise run this file again. The copy
+// is what changes, not the code: each scratch copy's package.json test chain has
+// the single `npm run test:layered-gate-mutation` step removed before the inner
+// run, so the inner run executes every other gate step, which is where the
+// mutation must surface.
+//
+// There is deliberately no environment variable and no flag doing this. A guard
+// the outside world can set is a way to switch the gate off, which is the shape
+// of defect this file exists to catch. The only thing that can disable the step
+// is editing a throwaway copy of package.json, and removeSelfFromTestChain
+// below asserts that the edit removed that one step and left every other
+// command in place and in order.
 //
 // The cases, and what each one distinguishes:
 //
@@ -64,12 +73,8 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(__dirname, '..', '..')
 const CATEGORY = 'accountability-record'
-const INNER_GUARD = 'APS_MUTATION_INNER'
-
-if (process.env[INNER_GUARD] === '1') {
-  console.log('layered-gate mutation test: inner invocation, skipped (recursion guard)')
-  process.exit(0)
-}
+const SELF_STEP = 'npm run test:layered-gate-mutation'
+const BANNER = 'layered-gate mutation test:'
 
 let failures = 0
 function check(name: string, cond: boolean, detail = ''): void {
@@ -95,11 +100,38 @@ interface Run {
 }
 
 function runNpmTest(cwd: string): Run {
-  const env = { ...process.env, [INNER_GUARD]: '1' }
   const r = NPM_CLI && NPM_CLI.endsWith('.js')
-    ? spawnSync(process.execPath, [NPM_CLI, 'test'], { cwd, encoding: 'utf8', env, shell: false })
-    : spawnSync('npm', ['test'], { cwd, encoding: 'utf8', env, shell: process.platform === 'win32' })
+    ? spawnSync(process.execPath, [NPM_CLI, 'test'], { cwd, encoding: 'utf8', shell: false })
+    : spawnSync('npm', ['test'], { cwd, encoding: 'utf8', shell: process.platform === 'win32' })
   return { code: r.status ?? -1, out: `${r.stdout ?? ''}${r.stderr ?? ''}` }
+}
+
+/**
+ * Remove this file's own step from a scratch copy's `npm test` chain, and prove
+ * the removal took out that step and nothing else.
+ *
+ * The chain is a `&&` list of commands. Splitting on `&&` and dropping the one
+ * element that is exactly SELF_STEP leaves every other command untouched and in
+ * its original order, which is asserted here rather than assumed: a rewrite that
+ * quietly dropped a second step would make every mutation case below prove less
+ * than it claims, and would do it silently.
+ */
+function removeSelfFromTestChain(repo: string, label: string): void {
+  const pkgPath = join(repo, 'package.json')
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as { scripts: Record<string, string> }
+  const before = (pkg.scripts?.test ?? '').split('&&').map((c) => c.trim())
+  const after = before.filter((c) => c !== SELF_STEP)
+
+  check(`${label}: scratch chain drops exactly one step`,
+    before.length - after.length === 1,
+    `before ${before.length} steps, after ${after.length}`)
+  check(`${label}: scratch chain no longer runs ${SELF_STEP}`, !after.includes(SELF_STEP))
+  check(`${label}: every other step survives, in order`,
+    JSON.stringify(before.filter((c) => c !== SELF_STEP)) === JSON.stringify(after),
+    `before=${JSON.stringify(before)} after=${JSON.stringify(after)}`)
+
+  pkg.scripts.test = after.join(' && ')
+  writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
 }
 
 const tempRoots: string[] = []
@@ -297,16 +329,20 @@ console.log('layered-gate mutation test: `npm test` must fail for each mutation\
 // nothing about the mutation.
 {
   const repo = copyRepo()
+  removeSelfFromTestChain(repo, 'control')
   const r = runNpmTest(repo)
   check('control: unmutated copy passes npm test', r.code === 0, `exit ${r.code}\n${r.out.slice(-2000)}`)
+  check('control: inner run did not re-enter this file', !r.out.includes(BANNER), r.out.slice(-500))
 }
 
 for (const c of CASES) {
   const repo = copyRepo()
+  removeSelfFromTestChain(repo, c.name)
   c.mutate(repo)
   if (c.repair !== false) repairSchemaDigest(repo)
   const r = runNpmTest(repo)
   check(`${c.name}: npm test exits non-zero`, r.code !== 0, `exit ${r.code}`)
+  check(`${c.name}: inner run did not re-enter this file`, !r.out.includes(BANNER), r.out.slice(-500))
   check(
     `${c.name}: fails for a stated reason (${c.because.map((b) => JSON.stringify(b)).join(' | ')})`,
     c.because.some((b) => r.out.includes(b)),
