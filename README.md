@@ -172,6 +172,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
 | `interop/arpa-v0.9.5-1ec3008` | [`RUN.md`](interop/arpa-v0.9.5-1ec3008/RUN.md) |
 | `interop/attenu-guard-0.11.0-bundles` | [`SOURCE.md`](interop/attenu-guard-0.11.0-bundles/SOURCE.md) |
+| `interop/attenu-guard-0.13.0-envelopes` | [`SOURCE.md`](interop/attenu-guard-0.13.0-envelopes/SOURCE.md) |
 | `interop/attenu-guard-0.6.0` | [`SOURCE.md`](interop/attenu-guard-0.6.0/SOURCE.md) |
 | `interop/attenu-guard-0.6.1` | [`SOURCE.md`](interop/attenu-guard-0.6.1/SOURCE.md) |
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
