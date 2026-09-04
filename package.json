@@ -47,6 +47,6 @@
     "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"
   },
   "dependencies": {
-    "agent-passport-system": "4.5.1"
+    "agent-passport-system": "5.0.3"
   }
 }
