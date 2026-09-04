@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/node": "^26.4.0",
     "ajv": "8.20.0",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "^5.0.0",
     "viem": "2.56.0"
   },
