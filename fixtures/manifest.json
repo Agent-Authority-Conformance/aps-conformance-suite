@@ -107,7 +107,7 @@
       "path": "read-fidelity-receipt/read-fidelity-receipt-fixture-v1.json",
       "canonical_sha256": "bbfeae178efc947ebd7d6642048b6ba069409d5152be54a40b83e52e1c26f2e3",
       "vector_count": 8,
-      "spec_section": "read_fidelity_receipt v0.1: sampled readback challenge over perceived content; Ed25519 over JCS; seed = sha256(JCS of content_digest, presentation_digest, nonce, version); word_digest_handle checksum. Deep verification in fixtures/read-fidelity-receipt/verify.ts and validate.py. Includes replayed-nonce, presentation-mismatch, tampered-digest, out-of-lexicon, and transposition negatives."
+      "spec_section": "read_fidelity_receipt v0.1: sampled readback challenge over perceived content; Ed25519 over JCS; seed = sha256(JCS of content_digest, presentation_digest, nonce, version); word_digest_handle checksum. Deep verification in fixtures/read-fidelity-receipt/verify.ts, which decides every vector inside npm test; fixtures/read-fidelity-receipt/validate.py is an independent Python reimplementation run by the schema-parity CI job, not by npm test. Includes replayed-nonce, presentation-mismatch, tampered-digest, out-of-lexicon, and transposition negatives."
     },
     {
       "category": "actionref-canonical",
