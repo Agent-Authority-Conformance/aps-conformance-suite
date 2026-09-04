@@ -26,6 +26,8 @@
 //     the version package.json pins
 //   error bindings: every expected_error_code any vector declares is bound to a
 //     concrete error on the layer that owns its rejection_kind
+//   unasserted_negatives: the declaration states a reason and names vectors
+//     that exist in the fixture and really are declared negatives
 //   layered_families names exactly the categories that carry a layer
 //     declaration, checked in BOTH directions
 //   schemas inventories every *.schema.json under fixtures/ -- checked in BOTH
@@ -79,6 +81,7 @@ interface Entry {
   vector_count: number
   required_layers?: unknown
   layers?: Record<string, LayerDecl>
+  unasserted_negatives?: { reason?: unknown; vectors?: unknown }
 }
 interface SchemaInventoryEntry {
   path?: unknown
@@ -165,6 +168,41 @@ for (const entry of entries) {
     `declared ${String(entry.canonical_sha256).slice(0, 16)}, actual ${actual.slice(0, 16)}`)
 
   checkLayerDeclaration(label, entry, abs)
+  checkUnassertedNegatives(label, entry, abs)
+}
+
+// A negative nobody asserts is debt. Declaring it is how it stays visible, so
+// the declaration itself has to be true: a stale name left behind by a rename
+// would silently re-open the hole it was written to close, because the runner
+// would stop matching it and the vector would fail loudly -- or worse, a name
+// pointing at a positive would launder a vector that was never a negative.
+function checkUnassertedNegatives(label: string, entry: Entry, fixtureAbs: string): void {
+  const decl = entry.unasserted_negatives
+  if (decl === undefined) return
+  check(`${label}: unasserted_negatives states a reason`,
+    typeof decl.reason === 'string' && decl.reason.length > 0)
+  const names = decl.vectors
+  check(`${label}: unasserted_negatives.vectors is a non-empty array of names`,
+    Array.isArray(names) && names.length > 0 && names.every((n) => typeof n === 'string'),
+    JSON.stringify(names))
+  if (!Array.isArray(names)) return
+  let vectors: Array<Record<string, unknown>> = []
+  try {
+    const fx = JSON.parse(readFileSync(fixtureAbs, 'utf8')) as { vectors?: Array<Record<string, unknown>> }
+    vectors = fx.vectors ?? []
+  } catch {
+    check(`${label}: fixture parses for the unasserted_negatives check`, false)
+    return
+  }
+  for (const name of names as string[]) {
+    const v = vectors.find((x) => x.name === name)
+    check(`${label}: unasserted_negatives names an existing vector "${name}"`, v !== undefined)
+    if (v) {
+      check(`${label}: "${name}" really is a declared negative`,
+        v.expected_verification === false,
+        `expected_verification is ${JSON.stringify(v.expected_verification)}`)
+    }
+  }
 }
 
 // A family decided by more than one validation layer declares those layers

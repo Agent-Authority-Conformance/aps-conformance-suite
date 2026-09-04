@@ -24,7 +24,15 @@
       "path": "inference-session/inference-session-fixtures.json",
       "canonical_sha256": "3221809b13ac12203bdb9d31556eb570b77d0d092b6bc811fff3af15bf41ddf5",
       "vector_count": 7,
-      "spec_section": "CTEF v0.3.1 cryptographic agent identity; inference-session validity windows + sequence bounds"
+      "spec_section": "CTEF v0.3.1 cryptographic agent identity; inference-session validity windows + sequence bounds",
+      "unasserted_negatives": {
+        "reason": "These three vectors declare expected_verification:false for a POLICY rejection -- an expired validity window, a gap in the sequence chain, a replayed sequence number -- and no verifier in this repository evaluates validity windows or sequence continuity. The generic runner checks their canonical bytes and their signature, both of which are valid by construction, so a negative reaching that branch would otherwise be reported as a clean pass. They carry neither rejection_kind nor expected_error_code, so the gate has nothing to assert the rejection against; supplying those fields would change published vector expectations. Until a verifier for these semantics exists, these vectors are reported as SKIP with this reason and are not counted as passing. A negative of this shape that is not named here is a FAILURE, so a fourth one cannot appear silently.",
+        "vectors": [
+          "expired-validity-window",
+          "sequence-gap",
+          "replay-same-sequence"
+        ]
+      }
     },
     {
       "category": "instruction-provenance",

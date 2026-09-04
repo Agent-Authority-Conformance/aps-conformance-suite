@@ -39,6 +39,12 @@
 //   undeclared     the manifest's required_layers declaration is removed, so
 //                  the family would fall back to whatever layers happened to
 //                  run
+//   undebted       inference-session's unasserted_negatives declaration is
+//                  removed. Those three vectors declare a policy rejection
+//                  nothing in the repository evaluates; without the
+//                  declaration they are negatives no layer asserts, and the
+//                  runner must refuse them rather than pass them on byte
+//                  parity
 //
 // The parser, meta-schema, weakened and wrong-error cases REPAIR the manifest's
 // schema digest after mutating, so the gate reaches the layer it is being tested
@@ -127,6 +133,7 @@ interface Entry {
   category: string
   required_layers?: string[]
   layers?: Record<string, LayerDecl>
+  unasserted_negatives?: unknown
 }
 interface SchemaInventoryEntry {
   path?: string
@@ -257,6 +264,17 @@ const CASES: Case[] = [
     },
     repair: false,
     because: ['schema_sha256 matches the schema bytes', 'sha256 matches the file bytes', 'digest mismatch'],
+  },
+  {
+    name: 'a negative nothing asserts loses its declared-debt entry',
+    mutate: (repo) => {
+      const m = readManifest(repo)
+      const e = m.fixtures.find((x) => x.category === 'inference-session')
+      if (!e) throw new Error('no manifest entry for inference-session')
+      delete e.unasserted_negatives
+      writeManifest(repo, m)
+    },
+    because: ['nothing here evaluates the policy it declares'],
   },
   {
     name: 'the family stops declaring its required layers',
