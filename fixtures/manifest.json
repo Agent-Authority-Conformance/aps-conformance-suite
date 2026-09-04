@@ -53,7 +53,54 @@
       "path": "accountability-record/accountability-record-fixture-v1.json",
       "canonical_sha256": "536a952ebade9c8bfc7e0437d943e5157361cd8bcde83c1983cc8d7d4c865d14",
       "vector_count": 12,
-      "spec_section": "Accountability record v0.1: boundary decision (allow/deny/halt) plus execution status; shape derived from decisionReceipt/execution-envelope and action_ref; detached-payload digest; Ed25519 over JCS. Includes tampered-payload and wrong-key negatives."
+      "spec_section": "Accountability record v0.1: boundary decision (allow/deny/halt) plus execution status; shape derived from decisionReceipt/execution-envelope and action_ref; detached-payload digest; Ed25519 over JCS. Includes tampered-payload and wrong-key negatives.",
+      "required_layers": [
+        "crypto",
+        "schema"
+      ],
+      "layers": {
+        "crypto": {
+          "kind": "crypto",
+          "description": "Ed25519 over the JCS signing input, action_digest binding, and action_ref recomputation. Implemented in fixtures/accountability-record/layers.ts and run by both npm run verify and npm run verify:accountability-record.",
+          "owns_rejection_kinds": [
+            "signature",
+            "digest_mismatch"
+          ],
+          "error_bindings": {
+            "SIGNATURE_INVALID": {
+              "instance_path": "/sig",
+              "keyword": "ed25519"
+            },
+            "ACTION_DIGEST_MISMATCH": {
+              "instance_path": "/action_digest/sha256",
+              "keyword": "digest-binding"
+            }
+          }
+        },
+        "schema": {
+          "kind": "json-schema",
+          "description": "JSON Schema Draft 2020-12 validation of each vector record. Meta-validated against the dialect before use; the schema file bytes are pinned by schema_sha256.",
+          "owns_rejection_kinds": [
+            "schema"
+          ],
+          "dialect": "https://json-schema.org/draft/2020-12/schema",
+          "validator": "ajv@8.20.0",
+          "schema_path": "accountability-record/accountability-record.schema.json",
+          "schema_sha256": "38c3c397627376c4b752309ee83777616efd66891aa6096291b7a7dc518bfc80",
+          "instance_pointer": "/record",
+          "error_bindings": {
+            "DECISION_NOT_IN_ENUM": {
+              "instance_path": "/decision",
+              "keyword": "enum"
+            },
+            "SIG_ALG_NOT_CANONICAL": {
+              "instance_path": "/sig_alg",
+              "keyword": "const"
+            }
+          },
+          "parity_implementation": "fixtures/accountability-record/validate.py (Python jsonschema). Independent reimplementation, run by the schema-parity CI job, NOT by npm test."
+        }
+      }
     },
     {
       "category": "read-fidelity-receipt",
