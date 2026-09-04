@@ -50,6 +50,37 @@ repository-wide integrity and verification gate at this commit. `npm run verify`
 generic APS-native corpus verifier alone. External-system families under
 `fixtures/cross-stack/` may use dedicated verifiers, documented with the family.
 
+### Families decided by more than one layer
+
+Some families are not decided by a single check. `accountability-record` has
+negatives rejected by cryptography (a signature that does not verify, a payload
+that does not bind to its digest) and negatives rejected only by JSON Schema (a
+`decision` outside the boundary enum, a non-canonical `sig_alg`), whose records
+are cryptographically coherent and correctly accepted by the crypto layer.
+
+The layers stay orthogonal — no layer is taught another layer's job — and none
+of them emits an overall verdict. Which layers decide a family is declared in
+one place, `fixtures/manifest.json`: the required layers, which `rejection_kind`
+each layer owns, the concrete error each `expected_error_code` must produce,
+and, for a schema layer, the dialect, the pinned validator, the schema path and
+the schema's SHA-256. `runners/ts/layered-gate.ts` runs every required layer and
+computes the per-vector verdict from their results.
+
+A negative passes only when the layer that owns its `rejection_kind` actually
+rejected it with the error it declares. A positive must be accepted by every
+required layer. A required layer that produced no result — schema absent,
+unparseable, not a valid Draft 2020-12 schema, bytes not matching the pin,
+validator not installed — fails every vector in the family rather than skipping
+it. `npm run test:layered-gate-mutation` proves this by mutating a copy of the
+repository seven ways and asserting `npm test` fails each time, for the stated
+reason.
+
+Every JSON Schema under `fixtures/` is inventoried in `fixtures/manifest.json`
+with its digest and a statement of what enforces it, compared against the files
+on disk in both directions. That makes a schema change explicit; it is not
+tamper-proofing, since a change to a schema can update its digest in the same
+commit.
+
 The runner ships a vendored RFC 8785 JCS canonicalizer in `runners/ts/canonicalize.ts` so external implementations can run it standalone, with **no dependency on `agent-passport-system` at runtime**. Implementations under test bring their own canonicalizer; this runner verifies the corpus against the reference.
 
 Output: pass/fail per vector + per-category summary. Exit code 0 on full pass, 1 on any failure.
@@ -94,7 +125,7 @@ aps-conformance-suite/
 | `aivss-scenarios/manifest.json` | AIVSS §3.6 worked scenarios: OWASP Agentic AI Core risks AAI001 to AAI010 | 10 |
 | `canonical-bytes/canonical-bytes-diff-v032.json` | String-concatenation preimage failure class. Mirrored from corpollc/qntm#15. Deep verification in runners/ts/canonical-bytes-qntm-v0.3.2.test.ts. | 1 |
 | `accountability-record/accountability-record-fixture-v1.json` | Accountability record v0.1: boundary decision (allow/deny/halt) plus execution status; shape derived from decisionReceipt/execution-envelope and action_ref; detached-payload digest; Ed25519 over JCS. Includes tampered-payload and wrong-key negatives. | 12 |
-| `read-fidelity-receipt/read-fidelity-receipt-fixture-v1.json` | read_fidelity_receipt v0.1: sampled readback challenge over perceived content; Ed25519 over JCS; seed = sha256(JCS of content_digest, presentation_digest, nonce, version); word_digest_handle checksum. Deep verification in fixtures/read-fidelity-receipt/verify.ts and validate.py. Includes replayed-nonce, presentation-mismatch, tampered-digest, out-of-lexicon, and transposition negatives. | 8 |
+| `read-fidelity-receipt/read-fidelity-receipt-fixture-v1.json` | read_fidelity_receipt v0.1: sampled readback challenge over perceived content; Ed25519 over JCS; seed = sha256(JCS of content_digest, presentation_digest, nonce, version); word_digest_handle checksum. Deep verification in fixtures/read-fidelity-receipt/verify.ts, which decides every vector inside npm test; fixtures/read-fidelity-receipt/validate.py is an independent Python reimplementation run by the schema-parity CI job, not by npm test. Includes replayed-nonce, presentation-mismatch, tampered-digest, out-of-lexicon, and transposition negatives. | 8 |
 | `actionref-canonical/actionref-canonical-fixture-v1.json` | Native action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1) | 6 |
 | `bilateral-pair/bilateral-pair-fixture-v1.json` | Bilateral pair reconciliation verdicts: one reconciled pair plus one vector per mismatch class | 6 |
 | `bilateral-golden/bilateral-golden-fixture-v1.json` | BilateralReceipt canonical signable bytes with aud and action_ref; independently derived and cross-verified (TypeScript reference plus from-scratch Python RFC 8785) | 2 |
