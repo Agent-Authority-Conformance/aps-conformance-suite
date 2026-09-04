@@ -152,6 +152,9 @@
       "spec_section": "Attribution Merkle root, domain-separated construction (receipt format v1.2, Day-145 audit): cross-language root byte-parity for TS, Go, Python"
     }
   ],
+  "layered_families": [
+    "accountability-record"
+  ],
   "totals": {
     "fixtures": 13,
     "vectors": 96

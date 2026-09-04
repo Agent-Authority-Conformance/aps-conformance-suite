@@ -19,6 +19,22 @@
 //   no duplicate (category, path) pair
 //   vector_count is a positive integer
 //   no fixtures/cross-stack path appears in the APS-native manifest
+//   layer declarations: every required layer is declared, owns at least one
+//     rejection_kind, and no rejection_kind is owned twice
+//   schema layers: the dialect is Draft 2020-12, the schema file exists, its
+//     bytes match the pinned schema_sha256, and the declared validator matches
+//     the version package.json pins
+//   error bindings: every expected_error_code any vector declares is bound to a
+//     concrete error on the layer that owns its rejection_kind
+//   layered_families names exactly the categories that carry a layer
+//     declaration, checked in BOTH directions
+//
+// What the schema pin is and is not. It makes a schema change explicit and
+// reviewable: the digest is in the manifest, so editing the schema without
+// editing the manifest fails the gate, and editing both shows up as two
+// changes in one diff. It is NOT tamper-proofing. A PR that changes the schema
+// can update the digest in the same commit. Base-owned protection is
+// governance work, not something this file provides.
 //
 // The last check is a boundary, not a formality. fixtures/cross-stack/ holds
 // external-system families, which are admitted and classified per family and
@@ -37,15 +53,33 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(__dirname, '..', '..')
 const FIXTURES_DIR = join(REPO_ROOT, 'fixtures')
 const MANIFEST_PATH = join(FIXTURES_DIR, 'manifest.json')
+const DRAFT_2020_12 = 'https://json-schema.org/draft/2020-12/schema'
 
+interface ErrorBinding {
+  instance_path?: unknown
+  keyword?: unknown
+}
+interface LayerDecl {
+  kind?: unknown
+  owns_rejection_kinds?: unknown
+  error_bindings?: Record<string, ErrorBinding>
+  dialect?: unknown
+  validator?: unknown
+  schema_path?: unknown
+  schema_sha256?: unknown
+  instance_pointer?: unknown
+}
 interface Entry {
   category: string
   path: string
   canonical_sha256: string
   vector_count: number
+  required_layers?: unknown
+  layers?: Record<string, LayerDecl>
 }
 interface Manifest {
   totals?: { fixtures: number; vectors: number }
+  layered_families?: unknown
   fixtures: Entry[]
 }
 
@@ -108,6 +142,139 @@ for (const entry of entries) {
   check(`${label}: canonical_sha256 matches the file bytes`,
     actual === entry.canonical_sha256,
     `declared ${String(entry.canonical_sha256).slice(0, 16)}, actual ${actual.slice(0, 16)}`)
+
+  checkLayerDeclaration(label, entry, abs)
+}
+
+// A family decided by more than one validation layer declares those layers
+// here. This block checks the declaration is complete and internally
+// consistent, because the declaration is what the gate reads to decide which
+// layers must run: a family that silently stops declaring a layer would stop
+// running it, and every vector that layer decided would go unasserted.
+function checkLayerDeclaration(label: string, entry: Entry, fixtureAbs: string): void {
+  if (entry.required_layers === undefined && entry.layers === undefined) return
+
+  const required = entry.required_layers
+  check(`${label}: required_layers is a non-empty array`,
+    Array.isArray(required) && required.length > 0 && required.every((n) => typeof n === 'string'),
+    JSON.stringify(required))
+  const layers = entry.layers
+  check(`${label}: layers is an object`, layers !== undefined && layers !== null && typeof layers === 'object')
+  if (!Array.isArray(required) || !layers) return
+
+  // Every rejection_kind is owned by exactly one required layer. Unowned means
+  // no layer is accountable for the rejection; owned twice means the verdict
+  // has no single accountable layer.
+  const ownerOf = new Map<string, string>()
+  for (const name of required as string[]) {
+    const decl = layers[name]
+    check(`${label}: required layer "${name}" is declared`, decl !== undefined)
+    if (!decl) continue
+
+    const owns = decl.owns_rejection_kinds
+    check(`${label}: layer "${name}" declares owns_rejection_kinds`,
+      Array.isArray(owns) && owns.length > 0 && owns.every((k) => typeof k === 'string'),
+      JSON.stringify(owns))
+    if (Array.isArray(owns)) {
+      for (const kind of owns as string[]) {
+        check(`${label}: rejection_kind "${kind}" is owned by exactly one layer`,
+          !ownerOf.has(kind),
+          ownerOf.has(kind) ? `also owned by "${ownerOf.get(kind)}"` : '')
+        ownerOf.set(kind, name)
+      }
+    }
+
+    for (const [code, binding] of Object.entries(decl.error_bindings ?? {})) {
+      check(`${label}: layer "${name}" error_binding ${code} names an instance path and keyword`,
+        typeof binding?.instance_path === 'string' && typeof binding?.keyword === 'string',
+        JSON.stringify(binding))
+    }
+
+    if (decl.kind === 'json-schema') checkSchemaLayer(label, name, decl)
+  }
+
+  // Every expected_error_code the fixture declares is bound on the layer that
+  // owns its rejection_kind. An unbound code is a negative whose expected error
+  // the gate cannot check -- it would pass on the bare fact of a rejection.
+  let vectors: Array<Record<string, unknown>> = []
+  try {
+    const fx = JSON.parse(readFileSync(fixtureAbs, 'utf8')) as { vectors?: Array<Record<string, unknown>> }
+    vectors = fx.vectors ?? []
+  } catch {
+    check(`${label}: fixture parses for the error-binding check`, false)
+    return
+  }
+  for (const v of vectors) {
+    const kind = v.rejection_kind
+    const code = v.expected_error_code
+    if (typeof kind !== 'string' || typeof code !== 'string') continue
+    const owner = ownerOf.get(kind)
+    check(`${label}: vector "${String(v.name)}" rejection_kind "${kind}" is owned by a required layer`,
+      owner !== undefined)
+    if (!owner) continue
+    check(`${label}: vector "${String(v.name)}" expected_error_code ${code} is bound on layer "${owner}"`,
+      layers[owner]?.error_bindings?.[code] !== undefined)
+  }
+}
+
+function checkSchemaLayer(label: string, name: string, decl: LayerDecl): void {
+  check(`${label}: schema layer "${name}" declares the Draft 2020-12 dialect`,
+    decl.dialect === DRAFT_2020_12, String(decl.dialect))
+  check(`${label}: schema layer "${name}" declares an instance_pointer`,
+    typeof decl.instance_pointer === 'string')
+
+  // The declared validator must be the one package.json actually pins, so a
+  // dependency bump cannot silently change what the gate proves.
+  const validator = decl.validator
+  check(`${label}: schema layer "${name}" names its validator as name@version`,
+    typeof validator === 'string' && /^[^@]+@[^@]+$/.test(validator), String(validator))
+  if (typeof validator === 'string') {
+    const [pkgName, version] = validator.split('@')
+    const pkg = JSON.parse(readFileSync(join(REPO_ROOT, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, string>
+      devDependencies?: Record<string, string>
+    }
+    const pinned = pkg.devDependencies?.[pkgName] ?? pkg.dependencies?.[pkgName]
+    check(`${label}: schema layer "${name}" validator ${validator} matches the version package.json pins`,
+      pinned === version, `package.json pins ${String(pinned)}`)
+  }
+
+  const schemaPath = decl.schema_path
+  check(`${label}: schema layer "${name}" declares a schema_path`, typeof schemaPath === 'string')
+  if (typeof schemaPath !== 'string') return
+  const schemaAbs = join(FIXTURES_DIR, schemaPath)
+  const present = existsSync(schemaAbs) && statSync(schemaAbs).isFile()
+  check(`${label}: schema layer "${name}" schema file exists`, present, present ? '' : schemaAbs)
+  if (!present) return
+  const actual = createHash('sha256').update(readFileSync(schemaAbs)).digest('hex')
+  check(`${label}: schema layer "${name}" schema_sha256 matches the schema bytes`,
+    actual === decl.schema_sha256,
+    `declared ${String(decl.schema_sha256).slice(0, 16)}, actual ${actual.slice(0, 16)}`)
+}
+
+// layered_families is the named index of which categories are decided by more
+// than one layer. A count cannot see identity, so this compares names and fails
+// in BOTH directions: a listed family that stopped declaring its layers would
+// otherwise stop running them silently, and a family that grew a declaration
+// without being listed is a change nobody was asked to review.
+{
+  const listed = manifest.layered_families
+  check('layered_families is an array of category names',
+    Array.isArray(listed) && listed.every((n) => typeof n === 'string'),
+    JSON.stringify(listed))
+  if (Array.isArray(listed)) {
+    const declaring = entries
+      .filter((e) => e.required_layers !== undefined || e.layers !== undefined)
+      .map((e) => e.category)
+    const missing = (listed as string[]).filter((c) => !declaring.includes(c))
+    const unlisted = declaring.filter((c) => !(listed as string[]).includes(c))
+    check('every category in layered_families declares a layer declaration',
+      missing.length === 0,
+      `listed but not declaring: [${missing.join(', ')}]`)
+    check('every category that declares layers is named in layered_families',
+      unlisted.length === 0,
+      `declaring but not listed: [${unlisted.join(', ')}]`)
+  }
 }
 
 console.log()
