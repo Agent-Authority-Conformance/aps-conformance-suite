@@ -128,7 +128,12 @@ interface Entry {
   required_layers?: string[]
   layers?: Record<string, LayerDecl>
 }
+interface SchemaInventoryEntry {
+  path?: string
+  sha256?: string
+}
 interface Manifest {
+  schemas?: SchemaInventoryEntry[]
   fixtures: Entry[]
 }
 
@@ -150,14 +155,21 @@ function schemaAbsPath(repo: string): string {
 }
 
 /**
- * Re-pin the manifest's schema digest to the mutated bytes, so the gate is
- * tested on the layer under examination rather than stopping at the pin.
+ * Re-pin BOTH of the manifest's digests for the schema -- the layer's
+ * schema_sha256 and the schema inventory's sha256 -- to the mutated bytes, so
+ * the gate is tested on the layer under examination rather than stopping at a
+ * pin. Missing either one would make every case below pass for the wrong
+ * reason.
  */
 function repairSchemaDigest(repo: string): void {
   const m = readManifest(repo)
   const decl = entryOf(m).layers?.schema
   if (!decl?.schema_path) throw new Error('manifest declares no schema layer schema_path')
-  decl.schema_sha256 = createHash('sha256').update(readFileSync(join(repo, 'fixtures', decl.schema_path))).digest('hex')
+  const digest = createHash('sha256').update(readFileSync(join(repo, 'fixtures', decl.schema_path))).digest('hex')
+  decl.schema_sha256 = digest
+  for (const s of m.schemas ?? []) {
+    if (s.path === decl.schema_path) s.sha256 = digest
+  }
   writeManifest(repo, m)
 }
 
@@ -187,7 +199,7 @@ const CASES: Case[] = [
   {
     name: 'schema is not parseable JSON',
     mutate: (repo) => writeFileSync(schemaAbsPath(repo), '{ "type": "object",, '),
-    because: ['not parseable JSON'],
+    because: ['is parseable JSON', 'not parseable JSON'],
   },
   {
     name: 'schema is valid JSON but not a valid Draft 2020-12 schema',
@@ -233,7 +245,7 @@ const CASES: Case[] = [
     mutate: (repo) => unlinkSync(schemaAbsPath(repo)),
     // Nothing to re-pin: the file the digest covers no longer exists.
     repair: false,
-    because: ['schema file exists', 'missing or unreadable'],
+    because: ['schema file exists', 'inventoried schema exists on disk', 'missing or unreadable'],
   },
   {
     name: 'schema is edited without re-pinning the manifest digest',
@@ -244,7 +256,7 @@ const CASES: Case[] = [
       writeSchema(repo, s)
     },
     repair: false,
-    because: ['schema_sha256 matches the schema bytes', 'digest mismatch'],
+    because: ['schema_sha256 matches the schema bytes', 'sha256 matches the file bytes', 'digest mismatch'],
   },
   {
     name: 'the family stops declaring its required layers',
@@ -257,7 +269,7 @@ const CASES: Case[] = [
     },
     // The declaration that names the schema, and so the digest, is gone.
     repair: false,
-    because: ['layered_families', 'declares no required_layers'],
+    because: ['layered_families', 'declares no required_layers', 'inventory digest agrees'],
   },
 ]
 

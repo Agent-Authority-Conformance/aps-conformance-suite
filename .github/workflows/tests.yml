@@ -20,14 +20,20 @@ jobs:
       - run: npm ci --include=dev
       - run: npm test
 
-  # Independent second implementation of the schema layer, in Python with
-  # jsonschema instead of Node with ajv, over the same vectors and the same
-  # manifest layer declaration. Its value is disagreement: if the two libraries
-  # reach different verdicts, one of them is wrong.
+  # The suite's Python schema validators. Independent second implementations, in
+  # Python with jsonschema instead of Node with ajv. Their value is
+  # disagreement: if the two libraries reach different verdicts on the same
+  # vectors and the same schema, one of them is wrong.
   #
-  # It is deliberately NOT in `npm test`. The default gate has to stay hermetic
-  # and has to run on the Windows job; adding a pip install to it would cost
-  # both. The Node validator is the authoritative gate, this is parity.
+  # accountability-record's validate.py reads the same manifest layer
+  # declaration the Node gate reads and applies the same verdict rules, so the
+  # two are comparable rather than merely adjacent. read-fidelity-receipt's is
+  # the only thing in the repository that validates that family's schema at all;
+  # no vector's outcome depends on it, and fixtures/manifest.json records that.
+  #
+  # Deliberately NOT in `npm test`. The default gate has to stay hermetic and
+  # has to run on the Windows job; a pip install would cost both. The Node
+  # validator is the authoritative gate; this is parity.
   #
   # This job is not a required check. Making it one is branch-protection
   # configuration, tracked separately.
@@ -42,6 +48,7 @@ jobs:
       # is made against; they are recorded here rather than left to resolve.
       - run: python -m pip install jsonschema==4.26.0 cryptography==49.0.0
       - run: python3 fixtures/accountability-record/validate.py
+      - run: python3 fixtures/read-fidelity-receipt/validate.py
 
   # Windows runs the same gate. Its purpose is the pinned bytes: a checkout that
   # rewrote line endings would change fixture digests and every claim recorded

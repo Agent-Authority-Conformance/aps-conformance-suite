@@ -82,12 +82,24 @@ are rejected only by the seed derivation recompute, which is the replay
 binding doing its job. The tampered negative (4) is rejected by the
 signature. The handle negatives (2, 3, 8) are rejected by the codec.
 
-Both verifiers cover the family. `verify.ts` is authoritative for the
-Ed25519 signatures, the span commitment recompute against the source text,
-and the word-to-index mapping of the vendored lexicon. `validate.py` is
-authoritative for the schema and independently reproduces the JCS bytes, the
-seed derivation, and the handle checksum math in Python, which confirms that
-two implementations agree. Run both.
+`verify.ts` decides every vector in this family, and it runs inside
+`npm test` -- both as `npm run verify:read-fidelity-receipt` and through the
+manifest runner. Every negative here is rejected by the signature, the seed
+derivation, or the handle codec, and each must fail for its stated reason. No
+vector's expected outcome depends on the schema, so unlike
+[accountability-record](../accountability-record/README.md) this family has no
+schema layer in the composite gate.
+
+`validate.py` is an independent Python reimplementation: it reproduces the JCS
+bytes, the seed derivation and the handle checksum math, and it is the only
+thing in the repository that validates `read-fidelity-receipt.schema.json`
+against the records at all. It is **not** run by `npm test`; it runs in the
+`schema-parity` job in `.github/workflows/tests.yml`. Its value is
+disagreement between two implementations, not authority.
+
+`read-fidelity-receipt.schema.json` is inventoried and digest-pinned in
+`fixtures/manifest.json`, which also records what does and does not enforce
+it, so a change to it is explicit rather than silent.
 
 The signing key is FIXTURE-ONLY: the private key is sha256 of the published
 `seed_input` string, reproducible by anyone, and must never be used outside
@@ -104,8 +116,9 @@ npm install
 # TS verifier: byte-parity, Ed25519, seed derivation, span commitments, handle codec
 npx tsx fixtures/read-fidelity-receipt/verify.ts
 
-# Python: schema validation + cross-language JCS byte-parity + seed and checksum math
-pip install jsonschema cryptography
+# Optional: the independent Python reimplementation (schema validation,
+# cross-language JCS byte-parity, seed and checksum math). Not part of the gate.
+pip install jsonschema==4.26.0 cryptography==49.0.0
 python3 fixtures/read-fidelity-receipt/validate.py
 
 # Regenerate (deterministic; byte-stable across runs)

@@ -152,6 +152,26 @@
       "spec_section": "Attribution Merkle root, domain-separated construction (receipt format v1.2, Day-145 audit): cross-language root byte-parity for TS, Go, Python"
     }
   ],
+  "schemas": [
+    {
+      "path": "accountability-record/accountability-record.schema.json",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "enforced_by": "required `schema` layer of the accountability-record family. Runs in npm test (ajv, pinned); meta-validated before use. Independently reproduced by fixtures/accountability-record/validate.py in the schema-parity CI job.",
+      "sha256": "38c3c397627376c4b752309ee83777616efd66891aa6096291b7a7dc518bfc80"
+    },
+    {
+      "path": "read-fidelity-receipt/read-fidelity-receipt.schema.json",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "enforced_by": "fixtures/read-fidelity-receipt/validate.py (Python jsonschema) in the schema-parity CI job. NOT a verdict layer: no vector in this family declares a schema rejection_kind, so no vector outcome depends on it. It is pinned here so a change to it is explicit.",
+      "sha256": "6535544e2112d5dadb0b1ff33bb7a883b79fd7c2c1bbc9071988d7085c9f8bcb"
+    },
+    {
+      "path": "canonical-bytes/crossrun-result.schema.json",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "enforced_by": "fixtures/canonical-bytes/crossrun/run.mjs, using a documented keyword subset implemented in that file. Validates cross-run REPORTS, not corpus vectors. npm run crossrun:canonical-bytes is not part of npm test.",
+      "sha256": "5ad0f56f89f99fbd5e08d3897c5d0b47680328417db0caeffe44c545e4a39857"
+    }
+  ],
   "layered_families": [
     "accountability-record"
   ],

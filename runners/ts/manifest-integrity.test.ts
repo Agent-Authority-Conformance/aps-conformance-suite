@@ -28,6 +28,9 @@
 //     concrete error on the layer that owns its rejection_kind
 //   layered_families names exactly the categories that carry a layer
 //     declaration, checked in BOTH directions
+//   schemas inventories every *.schema.json under fixtures/ -- checked in BOTH
+//     directions against the files on disk -- with each one's dialect, its
+//     pinned digest, and a statement of what enforces it
 //
 // What the schema pin is and is not. It makes a schema change explicit and
 // reviewable: the digest is in the manifest, so editing the schema without
@@ -45,7 +48,7 @@
 // Exit 0 on full pass, 1 on any failure.
 
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -77,10 +80,28 @@ interface Entry {
   required_layers?: unknown
   layers?: Record<string, LayerDecl>
 }
+interface SchemaInventoryEntry {
+  path?: unknown
+  dialect?: unknown
+  sha256?: unknown
+  enforced_by?: unknown
+}
 interface Manifest {
   totals?: { fixtures: number; vectors: number }
   layered_families?: unknown
+  schemas?: unknown
   fixtures: Entry[]
+}
+
+/** Every *.schema.json under fixtures/, as forward-slash paths relative to it. */
+function findSchemaFiles(dir: string, prefix = ''): string[] {
+  const out: string[] = []
+  for (const e of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    const rel = prefix ? `${prefix}/${e.name}` : e.name
+    if (e.isDirectory()) out.push(...findSchemaFiles(join(dir, e.name), rel))
+    else if (e.isFile() && e.name.endsWith('.schema.json')) out.push(rel)
+  }
+  return out
 }
 
 let failures = 0
@@ -274,6 +295,68 @@ function checkSchemaLayer(label: string, name: string, decl: LayerDecl): void {
     check('every category that declares layers is named in layered_families',
       unlisted.length === 0,
       `declaring but not listed: [${unlisted.join(', ')}]`)
+  }
+}
+
+// The schema inventory. Every JSON Schema under fixtures/ is listed here with
+// its dialect, its digest, and a statement of what enforces it. The
+// both-directions check is the point: a schema landing in the tree unlisted
+// fails, and a listed schema disappearing fails. `enforced_by` is prose and
+// nothing verifies its truth -- what it buys is that an unenforced schema has
+// to say so in the manifest instead of sitting there looking authoritative.
+//
+// This is inventory, not tamper-proofing. A PR that edits a schema can update
+// its digest in the same commit. What the pin buys is that the change is
+// explicit and shows up in the diff.
+{
+  const listed = manifest.schemas
+  check('schemas is an array', Array.isArray(listed), JSON.stringify(listed))
+  if (Array.isArray(listed)) {
+    const onDisk = findSchemaFiles(FIXTURES_DIR).sort()
+    const listedPaths = (listed as SchemaInventoryEntry[]).map((s) => String(s.path))
+    for (const rel of onDisk) {
+      check(`schema on disk is inventoried: ${rel}`, listedPaths.includes(rel))
+    }
+    for (const rel of listedPaths) {
+      check(`inventoried schema exists on disk: ${rel}`, onDisk.includes(rel))
+    }
+    for (const s of listed as SchemaInventoryEntry[]) {
+      const rel = String(s.path)
+      check(`schema ${rel}: declares a dialect`, typeof s.dialect === 'string' && s.dialect.length > 0)
+      check(`schema ${rel}: states what enforces it`,
+        typeof s.enforced_by === 'string' && s.enforced_by.length > 0)
+      const abs = join(FIXTURES_DIR, rel)
+      if (!existsSync(abs)) continue
+      // Parsed defensively: an unparseable schema is a check failure with a
+      // name, not an exception that takes the whole gate down with a stack
+      // trace and no verdict.
+      let doc: { $schema?: unknown } | undefined
+      try {
+        doc = JSON.parse(readFileSync(abs, 'utf8')) as { $schema?: unknown }
+      } catch (err) {
+        check(`schema ${rel}: is parseable JSON`, false, (err as Error).message)
+      }
+      if (doc) {
+        check(`schema ${rel}: $schema matches the declared dialect`,
+          doc.$schema === s.dialect,
+          `file says ${JSON.stringify(doc.$schema)}`)
+      }
+      const actual = createHash('sha256').update(readFileSync(abs)).digest('hex')
+      check(`schema ${rel}: sha256 matches the file bytes`,
+        actual === s.sha256,
+        `declared ${String(s.sha256).slice(0, 16)}, actual ${actual.slice(0, 16)}`)
+
+      // A schema that is also a layer's schema_path is pinned in two places.
+      // They must agree, otherwise the gate and the inventory describe
+      // different bytes.
+      for (const entry of entries) {
+        for (const [layerName, decl] of Object.entries(entry.layers ?? {})) {
+          if (decl.schema_path !== rel) continue
+          check(`schema ${rel}: inventory digest agrees with layer "${layerName}" of ${entry.category}`,
+            decl.schema_sha256 === s.sha256)
+        }
+      }
+    }
   }
 }
 
