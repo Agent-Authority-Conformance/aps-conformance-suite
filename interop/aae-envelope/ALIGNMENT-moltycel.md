@@ -89,7 +89,7 @@ captures the APS-primitive behavior. The currency caveat is detailed in
 
 ## Reproduce
 
-Prerequisite: `verify.ts` loads the shipped APS SDK from `$HOME/agent-passport-system/dist/src/index.js` by default. Build the SDK there, or set `APS_SDK_PATH` to your built `dist/src/index.js`. The cross-encoding steps expect MoltyCel's repo at `/tmp/aae-moltycel` (override with `AAE_MOLTYCEL_REPO`).
+Prerequisite: none beyond `npm ci`. `verify.ts` resolves `agent-passport-system` from the version pinned in this repository's package.json, so a clean checkout is self-contained. Set `APS_SDK_PATH` to point at a different build.
 
 ```
 # APS canonical (source of truth)

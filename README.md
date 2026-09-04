@@ -27,7 +27,7 @@ A `.well-known/aps-test-vectors.json` mirrors the agentgraph.co `.well-known` sh
 
 ## What this suite isn't
 
-- **Not a normative spec.** The spec lives in the eight APS papers (Zenodo) and the IETF Internet-Draft `draft-pidlisnyi-aps`. This suite is the conformance corpus that says "does your implementation match the canonical reference at the byte level."
+- **Not a normative spec.** The spec lives in the nine APS papers (Zenodo) and the IETF Internet-Draft `draft-pidlisnyi-aps`. This suite is the conformance corpus that says "does your implementation match the canonical reference at the byte level."
 - **Not the live test suite.** For full APS adversarial testing, run `agent-passport-system` `npm test` upstream. This suite extracts the byte-canonical reference set; it does not replace dynamic test execution.
 - **Not a validator.** The runner verifies your canonicalizer against the corpus. It does not validate that your implementation's API surface matches APS; that is an integration question, not a canonicalization one.
 
