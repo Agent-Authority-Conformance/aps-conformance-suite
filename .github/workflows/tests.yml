@@ -20,6 +20,29 @@ jobs:
       - run: npm ci --include=dev
       - run: npm test
 
+  # Independent second implementation of the schema layer, in Python with
+  # jsonschema instead of Node with ajv, over the same vectors and the same
+  # manifest layer declaration. Its value is disagreement: if the two libraries
+  # reach different verdicts, one of them is wrong.
+  #
+  # It is deliberately NOT in `npm test`. The default gate has to stay hermetic
+  # and has to run on the Windows job; adding a pip install to it would cost
+  # both. The Node validator is the authoritative gate, this is parity.
+  #
+  # This job is not a required check. Making it one is branch-protection
+  # configuration, tracked separately.
+  schema-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      # Version-pinned, not hash-pinned. The versions are what the parity claim
+      # is made against; they are recorded here rather than left to resolve.
+      - run: python -m pip install jsonschema==4.26.0 cryptography==49.0.0
+      - run: python3 fixtures/accountability-record/validate.py
+
   # Windows runs the same gate. Its purpose is the pinned bytes: a checkout that
   # rewrote line endings would change fixture digests and every claim recorded
   # against them, and .gitattributes is what prevents that. Linux stays the

@@ -1,15 +1,37 @@
 #!/usr/bin/env python3
-"""Schema + cross-language validation for the accountability-record family.
+"""Independent Python parity implementation for the accountability-record family.
 
 Run as:  python3 fixtures/accountability-record/validate.py
 Requires: jsonschema  (pip install jsonschema); Ed25519 signature checks also use
 `cryptography` if present, otherwise they are deferred to verify.ts.
 
+WHAT THIS IS, AND WHAT RUNS IT. This script is NOT the gate. The authoritative
+hermetic gate is `npm test`, which runs the Node schema layer (ajv, pinned) and
+computes the per-vector verdict in runners/ts/layered-gate.ts. This script is a
+second, independent implementation of the same checks, in a different language
+with a different JSON Schema library, run by the `schema-parity` job in
+.github/workflows/tests.yml. It is not run by `npm test` -- adding a pip install
+to the default command would make the gate non-hermetic and break the Windows
+job -- and it is not a required check in this session.
+
+Its value is disagreement: if ajv and Python jsonschema reach different verdicts
+on the same vectors and the same schema, one of them is wrong, and the parity
+job is what surfaces that.
+
+The layer declaration is read from fixtures/manifest.json, the same single place
+the Node gate reads, so the two implementations cannot be asserting different
+things about the same family.
+
 Checks, printed verbatim:
+  0. Read the family's layer declaration from fixtures/manifest.json and confirm
+     the schema file's bytes match the digest the manifest pins.
   1. Meta-validate the schema (Draft 2020-12).
-  2. Validate every vector record against the schema. All four positives MUST
-     pass. The two negatives are well-formed records (they fail at verification,
-     not schema), so they are expected to pass schema validation too.
+  2. Validate every vector record against the schema, and apply the same verdict
+     rules the Node gate applies: positives MUST be schema-valid; a vector whose
+     rejection_kind the schema layer owns MUST be rejected, with an error whose
+     instance path and keyword match the manifest's error_binding for its
+     expected_error_code; for crypto/digest negatives the schema result is
+     reported and not decisive.
   3. Cross-language JCS byte-parity: a Python canonicalizer reproduces
      signing_input_canonical and canonical byte-for-byte (proves the TS
      generator and an independent Python impl agree on RFC 8785 bytes).
@@ -26,10 +48,23 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEMA_PATH = os.path.join(HERE, "accountability-record.schema.json")
+FIXTURES_DIR = os.path.dirname(HERE)
+MANIFEST_PATH = os.path.join(FIXTURES_DIR, "manifest.json")
 FIXTURE_PATH = os.path.join(HERE, "accountability-record-fixture-v1.json")
+CATEGORY = "accountability-record"
+DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 
 from jsonschema import Draft202012Validator
+
+
+def sha256_file(path: str) -> str:
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
+
+
+def instance_path(err) -> str:
+    """RFC 6901 pointer for a jsonschema error, matching ajv's instancePath."""
+    return "".join("/" + str(part).replace("~", "~0").replace("/", "~1") for part in err.absolute_path)
 
 
 def jcs(value) -> str:
@@ -44,12 +79,50 @@ def sha256_hex(s: str) -> str:
 
 
 def main() -> int:
-    schema = json.load(open(SCHEMA_PATH))
     fx = json.load(open(FIXTURE_PATH))
     vectors = fx["vectors"]
     failures = 0
 
-    print("== 1. meta-validate schema (Draft 2020-12) ==")
+    print("== 0. layer declaration (fixtures/manifest.json) ==")
+    manifest = json.load(open(MANIFEST_PATH))
+    entry = next((e for e in manifest["fixtures"] if e.get("category") == CATEGORY), None)
+    if entry is None:
+        print(f"  FAIL no manifest entry for category {CATEGORY}")
+        return 1
+    required_layers = entry.get("required_layers")
+    layers = entry.get("layers") or {}
+    if not required_layers:
+        print("  FAIL manifest entry declares no required_layers; the layers that decide this family are unstated")
+        return 1
+    decl = layers.get("schema")
+    if not decl or not decl.get("schema_path"):
+        print("  FAIL manifest declares no schema layer with a schema_path")
+        return 1
+    owned = set(decl.get("owns_rejection_kinds") or [])
+    bindings = decl.get("error_bindings") or {}
+    schema_path = os.path.join(FIXTURES_DIR, decl["schema_path"])
+    print(f"  required layers: {', '.join(required_layers)}")
+    print(f"  schema layer owns rejection_kind: {', '.join(sorted(owned)) or '<none>'}")
+
+    if decl.get("dialect") != DRAFT_2020_12:
+        failures += 1
+        print(f"  FAIL schema layer declares dialect {decl.get('dialect')!r}, expected {DRAFT_2020_12}")
+    if not os.path.isfile(schema_path):
+        print(f"  FAIL schema file missing at {schema_path}")
+        return 1
+    actual_digest = sha256_file(schema_path)
+    if decl.get("schema_sha256") != actual_digest:
+        failures += 1
+        print(f"  FAIL schema digest: manifest pins {str(decl.get('schema_sha256'))[:16]}…, file is {actual_digest[:16]}…")
+    else:
+        print(f"  OK   schema bytes match the manifest pin ({actual_digest[:16]}…)")
+
+    schema = json.load(open(schema_path))
+
+    print("\n== 1. meta-validate schema (Draft 2020-12) ==")
+    if schema.get("$schema") != DRAFT_2020_12:
+        print(f"  schema does not declare the {DRAFT_2020_12} dialect (found {schema.get('$schema')!r})")
+        return 1
     try:
         Draft202012Validator.check_schema(schema)
         print("  schema is a valid Draft 2020-12 schema: OK")
@@ -59,25 +132,47 @@ def main() -> int:
     validator = Draft202012Validator(schema)
 
     print("\n== 2. schema-validate each vector record ==")
+    # Same verdict rules as runners/ts/layered-gate.ts. A negative owned by this
+    # layer passes only when the schema actually produced the error the vector
+    # declares -- not merely when it rejected. Weakening the constraint the
+    # vector exercises therefore fails here too, exactly as it fails the Node
+    # gate, which is what makes this an implementation of the same rules rather
+    # than a looser cousin.
     for v in vectors:
         errs = sorted(validator.iter_errors(v["record"]), key=lambda e: list(e.path))
+        observed = [(instance_path(e), e.validator) for e in errs]
+        shown = ", ".join(f"{p or '<root>'} {k}" for p, k in observed) or "accept"
         rk = v.get("rejection_kind")
-        if rk == "schema":
-            # schema negative MUST be rejected by the schema.
-            if errs:
-                print(f"  OK   {v['name']:34} schema-INVALID as required ({errs[0].message[:56]})")
+        code = v.get("expected_error_code")
+        if rk in owned:
+            if not errs:
+                failures += 1
+                print(f"  FAIL {v['name']:34} expected schema rejection ({rk}) was NOT observed; record is schema-valid")
+                continue
+            if code is None:
+                print(f"  OK   {v['name']:34} schema-INVALID as required ({shown})")
+                continue
+            binding = bindings.get(code)
+            if binding is None:
+                failures += 1
+                print(f"  FAIL {v['name']:34} expected_error_code {code} has no error_binding in the manifest")
+                continue
+            want = (binding.get("instance_path"), binding.get("keyword"))
+            if want in observed:
+                print(f"  OK   {v['name']:34} rejected with {code} ({want[0]} {want[1]})")
             else:
                 failures += 1
-                print(f"  FAIL {v['name']:34} expected schema rejection but record is schema-valid")
-        elif rk in ("signature", "digest_mismatch"):
-            # crypto/digest negatives; schema validity is incidental, not asserted here.
-            state = "schema-valid" if not errs else f"schema-invalid ({errs[0].message[:36]})"
-            print(f"  --   {v['name']:34} {state} (crypto/digest negative; schema not decisive)")
+                print(f"  FAIL {v['name']:34} rejected, but not with {code} ({want[0]} {want[1]}); observed: {shown}")
+        elif v.get("expected_verification") is False:
+            # A negative another layer owns. The schema result is reported and
+            # is not decisive: negative-type-relabel is schema-invalid too, and
+            # that is incidental to the signature rejection it declares.
+            print(f"  --   {v['name']:34} {shown} ({rk} negative; schema not decisive)")
         else:
             # positive: MUST be schema-valid.
             if errs:
                 failures += 1
-                print(f"  FAIL {v['name']:34} schema errors: {errs[0].message}")
+                print(f"  FAIL {v['name']:34} positive is schema-invalid: {shown}")
             else:
                 print(f"  OK   {v['name']:34} schema-valid (positive)")
 
