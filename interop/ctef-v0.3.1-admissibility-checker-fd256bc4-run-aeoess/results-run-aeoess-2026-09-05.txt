@@ -1,0 +1,50 @@
+# stdout of `python3 checker.py` in giskard09/ctef-admissibility-independent-checker-giskard09 at tag v1 (fd256bc41b3fbf2f2d70ee159822c712a89d2fcb), run by aeoess on 2026-09-05; exit 0; cryptography 49.0.0, Python 3.14.6, macOS 26.5 arm64
+positive-authority: expected=pass -> actual=pass  MATCH
+negative-scope-violation: expected=fail-closed/INVALID_CLAIM_SCOPE -> actual=fail-closed/INVALID_CLAIM_SCOPE  MATCH
+negative-composition-failure: expected=fail-closed/INVALID_COMPOSITION -> actual=fail-closed/INVALID_COMPOSITION  MATCH
+negative-missing-claim-type: expected=fail-closed/INVALID_CLAIM_SCOPE -> actual=fail-closed/INVALID_CLAIM_SCOPE  MATCH
+negative-expired: expected=fail-closed/EXPIRED -> actual=fail-closed/EXPIRED  MATCH
+
+5/5 fixtures match expected outcome
+[
+  {
+    "fixture": "positive-authority",
+    "expected_result": "pass",
+    "expected_error_code": null,
+    "actual_result": "pass",
+    "actual_error_code": null,
+    "match": true
+  },
+  {
+    "fixture": "negative-scope-violation",
+    "expected_result": "fail-closed",
+    "expected_error_code": "INVALID_CLAIM_SCOPE",
+    "actual_result": "fail-closed",
+    "actual_error_code": "INVALID_CLAIM_SCOPE",
+    "match": true
+  },
+  {
+    "fixture": "negative-composition-failure",
+    "expected_result": "fail-closed",
+    "expected_error_code": "INVALID_COMPOSITION",
+    "actual_result": "fail-closed",
+    "actual_error_code": "INVALID_COMPOSITION",
+    "match": true
+  },
+  {
+    "fixture": "negative-missing-claim-type",
+    "expected_result": "fail-closed",
+    "expected_error_code": "INVALID_CLAIM_SCOPE",
+    "actual_result": "fail-closed",
+    "actual_error_code": "INVALID_CLAIM_SCOPE",
+    "match": true
+  },
+  {
+    "fixture": "negative-expired",
+    "expected_result": "fail-closed",
+    "expected_error_code": "EXPIRED",
+    "actual_result": "fail-closed",
+    "actual_error_code": "EXPIRED",
+    "match": true
+  }
+]
