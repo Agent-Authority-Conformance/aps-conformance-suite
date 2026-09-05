@@ -182,6 +182,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/ethers-oracle-safety-check-9b4ffee` | [`run-report.md`](interop/ethers-oracle-safety-check-9b4ffee/run-report.md) |
 | `interop/hjs-bb6be62` | [`SOURCE.md`](interop/hjs-bb6be62/SOURCE.md) |
 | `interop/insight-oracle-safety-check-13bd3ed` | [`run-report.md`](interop/insight-oracle-safety-check-13bd3ed/run-report.md) |
+| `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0` | [`SOURCE.md`](interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
