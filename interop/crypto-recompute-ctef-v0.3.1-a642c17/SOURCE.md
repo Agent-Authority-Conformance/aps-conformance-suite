@@ -1,14 +1,21 @@
-# Lab recompute of the crypto-layer claims of the ctef-v0.3.1 family at PR #43 head a71b7329
+# Lab recompute of the crypto-layer claims of the ctef-v0.3.1 family at PR #43 head a642c17f
 
 Family under review: `fixtures/cross-stack/ctef-v0.3.1/` as proposed in
 [PR #43](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/pull/43) at head
-`a71b7329ff34e92523281a1cf98a00a80c0237ef` (family tree `4194397b654d088c38f57c3f3644b6ae05f12b2d`).
+`a642c17f2b5b003d403d7d0faec4b72910afb787` (family tree `db0467d0e96df365350f92723cf9b16a5fb6bb63`).
 The family is not on `main` at the time of this run. This record is pinned to those bytes; a later
 head with different fixture bytes gets a new record, this one is not edited.
 
+This record supersedes `interop/crypto-recompute-ctef-v0.3.1-a71b7329`, which speaks about head
+`a71b7329ff34e92523281a1cf98a00a80c0237ef`. Between the two heads the fixture signing key was
+rotated (`jwks.json` `x` moves to `KE3Lgb85eyrk3AWSgJwqI-3sJOiehqTPFuvmrUogK2Q`, `kid` unchanged)
+and all five fixtures were re-signed, so seven of the eight input pins moved;
+`plugins/ed25519_pure.py` is byte-identical at both heads. The vendored known-answer subset went
+from 16 entries to 9.
+
 ## Provenance of this run, stated exactly
 
-- Executed 2026-09-03 by aeoess (lab maintainer) on macOS arm64, Python 3.14.6, against the eight
+- Executed 2026-09-05 by aeoess (lab maintainer) on macOS arm64, Python 3.14.6, against the eight
   family inputs and the corpus file whose SHA-256 digests are pinned in `recompute.py`. The
   script refuses (exit 2) if any input differs from its pin, so the record speaks only about
   these bytes.
@@ -24,7 +31,7 @@ head with different fixture bytes gets a new record, this one is not edited.
 ## What was run
 
 `pip install -r requirements.txt`, then
-`python3 recompute.py <family dir at a71b7329> <ed25519_test.json at 5722833c>`.
+`python3 recompute.py <family dir at a642c17f> <ed25519_test.json at 5722833c>`.
 
 ## Result (`results-recompute.txt`, verbatim)
 
@@ -33,7 +40,7 @@ RFC 8785 canonicalization of `input_object` under rfc8785 equals the signed JWS 
 and `canonical_bytes_utf8`, its SHA-256 equals `canonical_sha256`, and the JWS signature
 verifies under cryptography against the `kid` in the vendored JWKS; the contributor's verifier
 accepts 88/88 valid and rejects 63/63 invalid corpus cases with no mismatches; the vendored
-known-answer subset (16 entries) is byte-identical to the corpus entries it names.
+known-answer subset (9 entries) is byte-identical to the corpus entries it names.
 
 ## Not covered, deliberately
 
@@ -50,7 +57,7 @@ inputs. The review of PR #43 records what the vendored known-answer subset does 
 - Ed25519 JWS signature over the signing input, 5 fixtures; runner aeoess; Mode B; independent;
   cryptography 49.0.0 (the runner authored neither the fixtures nor cryptography).
 - Verifier behaviour against the full Wycheproof Ed25519 set, 151 cases; runner aeoess; Mode A;
-  independent; implementation under test `plugins/ed25519_pure.py` at a71b7329, expected results
+  independent; implementation under test `plugins/ed25519_pure.py` at a642c17f, expected results
   from C2SP/wycheproof at 5722833c (the runner authored neither the verifier nor the corpus).
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification

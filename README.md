@@ -146,7 +146,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
-| `interop/crypto-recompute-ctef-v0.3.1-a71b7329` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a71b7329/SOURCE.md) |
+| `interop/crypto-recompute-ctef-v0.3.1-a642c17` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a642c17/SOURCE.md) |
 | `interop/ethers-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/ethers-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/ethers-oracle-safety-check-9b4ffee` | [`run-report.md`](interop/ethers-oracle-safety-check-9b4ffee/run-report.md) |
 | `interop/hjs-bb6be62` | [`SOURCE.md`](interop/hjs-bb6be62/SOURCE.md) |
