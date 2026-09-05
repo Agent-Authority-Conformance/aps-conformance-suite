@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lab recompute of the crypto-layer claims of the ctef-v0.3.1 family at PR #43 head a71b7329.
+"""Lab recompute of the crypto-layer claims of the ctef-v0.3.1 family at PR #43 head a642c17f.
 
 Thin harness. For canonicalization, digests and signatures it invokes implementations authored by
 neither the contributor nor the lab (`rfc8785` and `cryptography`). Separately, it runs the
@@ -8,7 +8,7 @@ with the corpus's published expected results.
 
 It does not implement or evaluate the family's CTEF admissibility semantics.
 
-Usage: python3 recompute.py <family dir at a71b7329> <ed25519_test.json at 5722833c> [--json]
+Usage: python3 recompute.py <family dir at a642c17f> <ed25519_test.json at 5722833c> [--json]
 Exit 0 iff every input matches its pinned digest and every check passes; exit 2 on a digest
 mismatch.
 """
@@ -16,13 +16,13 @@ import base64, hashlib, json, sys, importlib.util
 from pathlib import Path
 
 PINS = {
-    "fixtures/positive-authority.json": "b7ee419793a4839515fc2c4a2fd8b471d59f85d055f85950665e74b4f530a5bb",
-    "fixtures/negative-scope-violation.json": "1dff00c8b9237486011e878ca88afb85a3bb17200f890071928bce44bf82c9da",
-    "fixtures/negative-composition-failure.json": "adc129a291b9f447083bdcc325404402f5e6f210467586fdd045532bbf038d19",
-    "fixtures/negative-missing-claim-type.json": "1b49ad3913ef70178f626634c06fec26a23fe7f5c9c8b01e08df117999d4c193",
-    "fixtures/negative-expired.json": "d433b10fb5b42412bb27149555cd0131dd13f4fdb7c4e459159dde92735d5e25",
-    "jwks.json": "51c05b4a10d12568f2d233eac43866b0797918e5585e1d8a7ac945541c9b5426",
-    "fixtures/wycheproof-kat.json": "c582b89a7b0a4054fe07169248b5a8377c99084d23f6544515c80ebba96333dc",
+    "fixtures/positive-authority.json": "d01c38aecf3c46e168c744277c00c361406fb8f116ced7d13d3c91e5069b8a2e",
+    "fixtures/negative-scope-violation.json": "c583bdfdedf4dcaa620581e54c1df270659595499b6dfaf65e9abd64699c6fcf",
+    "fixtures/negative-composition-failure.json": "d414707b7346ddbdf0ba9adc7cf5fde11a268a12eb688fe3a14ecc6475e4cadd",
+    "fixtures/negative-missing-claim-type.json": "c7770bc1846b6a392238f186c148636a6b80e1e189334a6ec036a8944f74a787",
+    "fixtures/negative-expired.json": "581a54c1ce2cf8f6b7c27199ce54547de2a2d34f5be7475dc8f6769d9072352f",
+    "jwks.json": "adedee5926d5eb4388fc482798563dd907f8c38086a92952740d717bea36753d",
+    "fixtures/wycheproof-kat.json": "57cd4759d62cc0f212b920681913df8bf16cc3642914c47b3fd6d1956ea46a11",
     "plugins/ed25519_pure.py": "25bd6238fd5eba2cba4e1e290bcf04043dbf472cf90368b66c14ff57d59a8fcf",
 }
 CORPUS_PIN = "752d2ea7d7c6cf4736381b6cbacb61f8182b126ab7cd9b058f00c50084975536"
@@ -105,7 +105,7 @@ def main() -> int:
     rec("kat-subset:byte-match", not bad, f"{len(kat['tests'])} entries; mismatched {bad}")
 
     passed = sum(1 for r in out if r["pass"])
-    summary = {"record": "crypto-recompute-ctef-v0.3.1-a71b7329", "total": len(out), "passed": passed,
+    summary = {"record": "crypto-recompute-ctef-v0.3.1-a642c17", "total": len(out), "passed": passed,
                "failed": len(out) - passed, "all_pass": passed == len(out), "checks": out}
     if "--json" in sys.argv:
         print(json.dumps(summary, indent=2))
