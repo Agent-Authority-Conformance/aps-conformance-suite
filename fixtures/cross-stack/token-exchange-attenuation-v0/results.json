@@ -1,0 +1,262 @@
+{
+  "family": "token-exchange-attenuation-v0",
+  "runner": "runners/ts/token-exchange-attenuation.test.ts",
+  "mode": "A",
+  "attribution": "author-produced",
+  "sdk": "agent-passport-system 6.0.0, the version this suite pins",
+  "total": 27,
+  "passed": 27,
+  "failed": 0,
+  "all_pass": true,
+  "checks": [
+    {
+      "case": "base-pair-attenuated",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "base-pair-attenuated",
+      "request": "needs-write",
+      "t2": "deny",
+      "t2_reason": "scope_not_granted",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "scope_not_granted",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "base-pair-attenuated",
+      "request": "needs-groups",
+      "t2": "deny",
+      "t2_reason": "attribute_not_carried",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "attribute_not_carried",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "base-pair-attenuated",
+      "request": "needs-read",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "transcription-permitted",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "transcription-permitted",
+      "request": "read-needs-groups",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "transcription-creates-no-authority",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "transcription-creates-no-authority",
+      "request": "write-needs-groups",
+      "t2": "deny",
+      "t2_reason": "scope_not_granted",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "scope_not_granted",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "widening-scope-invalid",
+      "check": "vector-validity",
+      "computed_valid": false,
+      "declared_valid": false,
+      "pass": true
+    },
+    {
+      "case": "widening-scope-invalid-single-token",
+      "check": "vector-validity",
+      "computed_valid": false,
+      "declared_valid": false,
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-2",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-2",
+      "request": "needs-delete",
+      "t2": "deny",
+      "t2_reason": "scope_not_granted",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "scope_not_granted",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-2",
+      "request": "needs-read",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-3",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-3",
+      "request": "needs-department",
+      "t2": "deny",
+      "t2_reason": "attribute_not_carried",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "attribute_not_carried",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "act-chain-depth-3",
+      "request": "needs-read",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "audience-mismatch",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "audience-mismatch",
+      "request": "read-at-billing",
+      "t2": "deny",
+      "t2_reason": "audience_mismatch",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "audience_mismatch",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "actor-not-permitted",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "actor-not-permitted",
+      "request": "read-as-approved",
+      "t2": "deny",
+      "t2_reason": "actor_not_permitted",
+      "t1": "deny",
+      "expected_t2": "deny",
+      "expected_t2_reason": "actor_not_permitted",
+      "expected_t1": "deny",
+      "pass": true
+    },
+    {
+      "case": "equality-permitted",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "equality-permitted",
+      "request": "needs-write",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "equality-permitted",
+      "request": "needs-groups",
+      "t2": "permit",
+      "t2_reason": null,
+      "t1": "permit",
+      "expected_t2": "permit",
+      "expected_t2_reason": null,
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "transcribed-attribute-wrong-value",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "transcribed-attribute-wrong-value",
+      "request": "needs-platform",
+      "t2": "deny",
+      "t2_reason": "attribute_not_carried",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "attribute_not_carried",
+      "expected_t1": "permit",
+      "pass": true
+    },
+    {
+      "case": "scope-dropped-entirely",
+      "check": "vector-validity",
+      "computed_valid": true,
+      "declared_valid": true,
+      "pass": true
+    },
+    {
+      "case": "scope-dropped-entirely",
+      "request": "needs-read",
+      "t2": "deny",
+      "t2_reason": "scope_not_granted",
+      "t1": "permit",
+      "expected_t2": "deny",
+      "expected_t2_reason": "scope_not_granted",
+      "expected_t1": "permit",
+      "pass": true
+    }
+  ]
+}
