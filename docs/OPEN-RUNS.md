@@ -27,6 +27,8 @@ Python stdlib for canonicalization and hashing and `cryptography` for Ed25519, v
 implementation by AgentLair); `nobulex-bilateral-v0` SHA-256 over each vector's own
 `expected_canonical_preimage` (runner aeoess, node:crypto, vectors and implementation by
 Nobulex).
+| `fixtures/cross-stack/token-exchange-attenuation-v0` | scope and chain axis over the 12 attenuation cases | the 12 vector-validity findings and the 15 per-request decisions under the oauth-rfc8693 bridge of agent-passport-system 6.0.0 | `npx tsx runners/ts/token-exchange-attenuation.test.ts` |
+| `fixtures/cross-stack/token-exchange-attenuation-v0` | clean-room recompute of the same 12 cases | the same findings and decisions under an independently authored stdlib implementation of the published rules | `python3 fixtures/cross-stack/token-exchange-attenuation-v0/recompute.py` |
 
 Families under review carry their verification split at admission and are not listed here.
 Interop records under `interop/` are runs of other projects' vectors and carry mode and

@@ -1,0 +1,417 @@
+{
+  "family": "token-exchange-attenuation-v0",
+  "version": "v0",
+  "runner": "recompute.py",
+  "mode": "clean-room recompute from SOURCE.md and vectors.json",
+  "totals": {
+    "cases": 12,
+    "cases_rejected": 2,
+    "checks": 27,
+    "pass": 27,
+    "fail": 0,
+    "requests_skipped": 2
+  },
+  "summary": "SUMMARY  cases=12  rejected=2  checks=27  pass=27  fail=0  requests_skipped=2",
+  "cases": [
+    {
+      "id": "base-pair-attenuated",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-write",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "scope_not_granted",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-write",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "scope_not_granted"
+          },
+          "result": "pass",
+          "mismatches": []
+        },
+        {
+          "id": "needs-groups",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "attribute_not_carried",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-groups",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "attribute_not_carried"
+          },
+          "result": "pass",
+          "mismatches": []
+        },
+        {
+          "id": "needs-read",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-read",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "transcription-permitted",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "read-needs-groups",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "read-needs-groups",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "transcription-creates-no-authority",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "write-needs-groups",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "scope_not_granted",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "write-needs-groups",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "scope_not_granted"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "widening-scope-invalid",
+      "vector_valid_expected": false,
+      "vector_valid_computed": false,
+      "t2_scope_tokens_not_in_t1": [
+        "admin",
+        "write"
+      ],
+      "validity_check": "pass",
+      "evaluated": false,
+      "requests": [
+        {
+          "id": "needs-admin",
+          "evaluated": false,
+          "result": "skipped"
+        }
+      ]
+    },
+    {
+      "id": "widening-scope-invalid-single-token",
+      "vector_valid_expected": false,
+      "vector_valid_computed": false,
+      "t2_scope_tokens_not_in_t1": [
+        "write"
+      ],
+      "validity_check": "pass",
+      "evaluated": false,
+      "requests": [
+        {
+          "id": "needs-write",
+          "evaluated": false,
+          "result": "skipped"
+        }
+      ]
+    },
+    {
+      "id": "act-chain-depth-2",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-delete",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "scope_not_granted",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-delete",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "scope_not_granted"
+          },
+          "result": "pass",
+          "mismatches": []
+        },
+        {
+          "id": "needs-read",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-read",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "act-chain-depth-3",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-department",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "attribute_not_carried",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-department",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "attribute_not_carried"
+          },
+          "result": "pass",
+          "mismatches": []
+        },
+        {
+          "id": "needs-read",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-read",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "audience-mismatch",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "read-at-billing",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "audience_mismatch",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "read-at-billing",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "audience_mismatch"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "actor-not-permitted",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "read-as-approved",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "actor_not_permitted",
+            "against_t1": "deny",
+            "against_t1_deny_reason": "actor_not_permitted"
+          },
+          "expected": {
+            "request": "read-as-approved",
+            "against_t2": "deny",
+            "deny_reason": "actor_not_permitted",
+            "against_t1": "deny",
+            "t1_deny_reason": "actor_not_permitted"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "equality-permitted",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-write",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-write",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        },
+        {
+          "id": "needs-groups",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "permit",
+            "deny_reason": null,
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-groups",
+            "against_t2": "permit",
+            "against_t1": "permit"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "transcribed-attribute-wrong-value",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-platform",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "attribute_not_carried",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-platform",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "attribute_not_carried"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    },
+    {
+      "id": "scope-dropped-entirely",
+      "vector_valid_expected": true,
+      "vector_valid_computed": true,
+      "t2_scope_tokens_not_in_t1": [],
+      "validity_check": "pass",
+      "evaluated": true,
+      "requests": [
+        {
+          "id": "needs-read",
+          "evaluated": true,
+          "computed": {
+            "against_t2": "deny",
+            "deny_reason": "scope_not_granted",
+            "against_t1": "permit",
+            "against_t1_deny_reason": null
+          },
+          "expected": {
+            "request": "needs-read",
+            "against_t2": "deny",
+            "against_t1": "permit",
+            "deny_reason": "scope_not_granted"
+          },
+          "result": "pass",
+          "mismatches": []
+        }
+      ]
+    }
+  ]
+}

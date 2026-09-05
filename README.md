@@ -159,6 +159,7 @@ under that rule.
 | path | evidence document |
 |---|---|
 | `fixtures/cross-stack/synthetic` | [`SOURCE.md`](fixtures/cross-stack/synthetic/SOURCE.md) |
+| `fixtures/cross-stack/token-exchange-attenuation-v0` | [`SOURCE.md`](fixtures/cross-stack/token-exchange-attenuation-v0/SOURCE.md) |
 
 ### Interop run records
 

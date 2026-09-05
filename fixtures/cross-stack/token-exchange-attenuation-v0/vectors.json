@@ -1,0 +1,717 @@
+{
+  "family": "token-exchange-attenuation-v0",
+  "version": "v0",
+  "description": "Engine-neutral vectors for the token-exchange attenuation invariant: a subject token T1 with broader upstream authority, exchanged for T2, must not let a policy evaluation of T2 reach authority available only in T1.",
+  "deny_reasons": [
+    "scope_not_granted",
+    "attribute_not_carried",
+    "actor_not_permitted",
+    "audience_mismatch"
+  ],
+  "properties": {
+    "P1": "Scope monotonicity: T2 scope is a subset of T1 scope; a widening vector is INVALID and is rejected before any policy evaluation.",
+    "P2": "Claim locality: evaluating T2 uses only claims present on T2; the evaluator never reads T1.",
+    "P3": "Transcription creates no authority: a T1 attribute carried onto T2 satisfies an attribute predicate only when T2's own scope, audience and actor conditions independently permit the action."
+  },
+  "evaluation_order": [
+    "audience",
+    "actor",
+    "scope",
+    "attribute"
+  ],
+  "cases": [
+    {
+      "id": "base-pair-attenuated",
+      "properties": [
+        "P1",
+        "P2"
+      ],
+      "note": "Stian's base pair: T1 broader, T2 attenuated to read with no attributes carried.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-write",
+          "action": "write",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "write"
+          },
+          "audience": "mcp-gateway"
+        },
+        {
+          "id": "needs-groups",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "attribute": {
+              "name": "groups",
+              "contains": "platform"
+            }
+          },
+          "audience": "mcp-gateway"
+        },
+        {
+          "id": "needs-read",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-write",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "scope_not_granted"
+        },
+        {
+          "request": "needs-groups",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "attribute_not_carried"
+        },
+        {
+          "request": "needs-read",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        }
+      ]
+    },
+    {
+      "id": "transcription-permitted",
+      "properties": [
+        "P3"
+      ],
+      "note": "The #6511 proposal: a namespaced upstream_claims object carried onto T2. Permit only because T2's own scope also covers the action.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {
+          "groups": [
+            "platform"
+          ]
+        }
+      },
+      "requests": [
+        {
+          "id": "read-needs-groups",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read",
+            "attribute": {
+              "name": "groups",
+              "contains": "platform"
+            }
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "read-needs-groups",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        }
+      ]
+    },
+    {
+      "id": "transcription-creates-no-authority",
+      "properties": [
+        "P3"
+      ],
+      "note": "The same transcribed attribute, but T2's scope does not cover the action. The attribute must not supply the missing scope.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {
+          "groups": [
+            "platform"
+          ]
+        }
+      },
+      "requests": [
+        {
+          "id": "write-needs-groups",
+          "action": "write",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "write",
+            "attribute": {
+              "name": "groups",
+              "contains": "platform"
+            }
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "write-needs-groups",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "scope_not_granted"
+        }
+      ]
+    },
+    {
+      "id": "widening-scope-invalid",
+      "properties": [
+        "P1"
+      ],
+      "note": "T2 claims a scope token T1 never held. The vector is invalid and must be rejected before any evaluation.",
+      "vector_valid": false,
+      "invalid_reason": "t2_scope_not_subset_of_t1",
+      "subject_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:alice",
+        "scope": "mcp:tools read write admin",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-admin",
+          "action": "admin",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "admin"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "id": "widening-scope-invalid-single-token",
+      "properties": [
+        "P1"
+      ],
+      "note": "A subtler widening: every T1 token is kept and exactly one new token is added.",
+      "vector_valid": false,
+      "invalid_reason": "t2_scope_not_subset_of_t1",
+      "subject_token_claims": {
+        "sub": "user:bob",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "eng"
+          ]
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:bob",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-write",
+          "action": "write",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "write"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "id": "act-chain-depth-2",
+      "properties": [
+        "P1",
+        "P2"
+      ],
+      "note": "Two exchanges deep. The rules do not change with chain depth.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:carol",
+        "scope": "mcp:tools read write delete",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:carol",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:b",
+          "act": {
+            "sub": "svc:a"
+          }
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-delete",
+          "action": "delete",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "delete"
+          },
+          "audience": "mcp-gateway"
+        },
+        {
+          "id": "needs-read",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-delete",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "scope_not_granted"
+        },
+        {
+          "request": "needs-read",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        }
+      ]
+    },
+    {
+      "id": "act-chain-depth-3",
+      "properties": [
+        "P1",
+        "P2"
+      ],
+      "note": "Three exchanges deep, attributes dropped at the first hop and never recovered.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:carol",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:carol",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:c",
+          "act": {
+            "sub": "svc:b",
+            "act": {
+              "sub": "svc:a"
+            }
+          }
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-department",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "attribute": {
+              "name": "department",
+              "equals": "infrastructure"
+            }
+          },
+          "audience": "mcp-gateway"
+        },
+        {
+          "id": "needs-read",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-department",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "attribute_not_carried"
+        },
+        {
+          "request": "needs-read",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        }
+      ]
+    },
+    {
+      "id": "audience-mismatch",
+      "properties": [
+        "P3"
+      ],
+      "note": "T2 is minted for one audience and presented to another. Scope alone does not carry across audiences.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:dave",
+        "scope": "mcp:tools read write",
+        "aud": [
+          "mcp-gateway",
+          "billing-api"
+        ],
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:dave",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "read-at-billing",
+          "action": "read",
+          "resource": "billing:invoices",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "billing-api"
+        }
+      ],
+      "expected": [
+        {
+          "request": "read-at-billing",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "audience_mismatch"
+        }
+      ]
+    },
+    {
+      "id": "actor-not-permitted",
+      "properties": [
+        "P3"
+      ],
+      "note": "The resource admits one actor. T2's current actor is a different party, so the scope it holds does not help. Both tokens deny here, and that is the point: the contrast is not 'T1 would have permitted' but 'T2 holds the scope and still cannot act'. A subject token has no service actor either, so an actor-gated request denies against T1 for the same reason.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:erin",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "may_act": {
+          "sub": "svc:approved"
+        },
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:erin",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:other"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "read-as-approved",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "mcp-gateway",
+          "required_actor": "svc:approved"
+        }
+      ],
+      "expected": [
+        {
+          "request": "read-as-approved",
+          "against_t2": "deny",
+          "deny_reason": "actor_not_permitted",
+          "against_t1": "deny",
+          "t1_deny_reason": "actor_not_permitted"
+        }
+      ]
+    },
+    {
+      "id": "equality-permitted",
+      "properties": [
+        "P1",
+        "P3"
+      ],
+      "note": "T2 carries the same scope and every policy-relevant attribute, the same audience, and its act names exactly the party T1's may_act permits, so its decisions equal T1's. Equality is permitted; widening is not. Equal scope alone would not be enough. The requests do not gate on actor: a subject token names no service actor, so an actor-gated request would deny against T1 for a reason that has nothing to do with equality. See actor-not-permitted for that axis.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:frank",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "may_act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:frank",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "requests": [
+        {
+          "id": "needs-write",
+          "action": "write",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "write"
+          },
+          "audience": "mcp-gateway"
+        },
+        {
+          "id": "needs-groups",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "attribute": {
+              "name": "groups",
+              "contains": "platform"
+            }
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-write",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        },
+        {
+          "request": "needs-groups",
+          "against_t2": "permit",
+          "against_t1": "permit"
+        }
+      ]
+    },
+    {
+      "id": "transcribed-attribute-wrong-value",
+      "properties": [
+        "P3"
+      ],
+      "note": "The attribute name is carried but its value does not satisfy the predicate. Presence is not satisfaction.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:gina",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:gina",
+        "scope": "mcp:tools read",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {
+          "groups": [
+            "contractors"
+          ]
+        }
+      },
+      "requests": [
+        {
+          "id": "needs-platform",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "attribute": {
+              "name": "groups",
+              "contains": "platform"
+            }
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-platform",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "attribute_not_carried"
+        }
+      ]
+    },
+    {
+      "id": "scope-dropped-entirely",
+      "properties": [
+        "P1",
+        "P2"
+      ],
+      "note": "T2 carries no scope member at all. The empty set is a subset of anything, so the vector is valid and every scope request denies.",
+      "vector_valid": true,
+      "subject_token_claims": {
+        "sub": "user:hank",
+        "scope": "mcp:tools read write",
+        "aud": "mcp-gateway",
+        "upstream_claims": {
+          "groups": [
+            "platform",
+            "eng"
+          ],
+          "department": "infrastructure"
+        }
+      },
+      "exchanged_token_claims": {
+        "sub": "user:hank",
+        "aud": "mcp-gateway",
+        "act": {
+          "sub": "svc:exchange"
+        },
+        "upstream_claims": {}
+      },
+      "requests": [
+        {
+          "id": "needs-read",
+          "action": "read",
+          "resource": "repo:docs",
+          "requires": {
+            "scope": "read"
+          },
+          "audience": "mcp-gateway"
+        }
+      ],
+      "expected": [
+        {
+          "request": "needs-read",
+          "against_t2": "deny",
+          "against_t1": "permit",
+          "deny_reason": "scope_not_granted"
+        }
+      ]
+    }
+  ]
+}
