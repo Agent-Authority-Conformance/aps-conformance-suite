@@ -1,6 +1,7 @@
 """RFC 8785 (JCS) canonicalizer — CTEF reference implementation.
 
-Copied VERBATIM from `src/signing.py` (`canonicalize_jcs_strict` +
+Function bodies copied verbatim (docstrings adapted) from `src/signing.py`
+(`canonicalize_jcs_strict` +
 `_normalize_for_jcs_strict`) in the AgentAvow repo, the CTEF reference
 implementation cited by the vector file's `contract.reference_implementation`
 field ("src.signing.canonicalize_jcs_strict"). Vendored here so the recompute

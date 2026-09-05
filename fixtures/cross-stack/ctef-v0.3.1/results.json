@@ -1,8 +1,8 @@
 {
   "family": "ctef-v0.3.1",
   "mode": "cold recompute, stdlib-only, no network; signed CTEF fixtures",
-  "total": 32,
-  "passed": 32,
+  "total": 25,
+  "passed": 25,
   "failed": 0,
   "all_pass": true,
   "checks": [
@@ -22,67 +22,32 @@
       "detail": ""
     },
     {
-      "check": "wycheproof:tc42",
+      "check": "wycheproof:tc63",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "wycheproof:tc43",
+      "check": "wycheproof:tc64",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "wycheproof:tc44",
+      "check": "wycheproof:tc65",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "wycheproof:tc45",
+      "check": "wycheproof:tc66",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "wycheproof:tc46",
+      "check": "wycheproof:tc85",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "wycheproof:tc47",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc48",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc49",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc50",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc51",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc52",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc53",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "wycheproof:tc54",
+      "check": "wycheproof:tc151",
       "pass": true,
       "detail": ""
     },

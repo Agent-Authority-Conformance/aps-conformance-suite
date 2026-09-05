@@ -41,9 +41,11 @@ here depends on AgentAvow's production signing key or on any live endpoint.
   in the AgentAvow repo (the CTEF reference implementation). **Label caveat:** it
   is byte-identical to RFC 8785 JCS **on the subset these fixtures exercise**; it
   sorts keys by Unicode code point and formats numbers Python-style, which is not
-  the full RFC 8785 number grammar. It does not diverge on these inputs (which use
-  strings, ints, bools, and null only). MIT notice for the AgentAvow-derived code
-  is in `NOTICE`.
+  the full RFC 8785 number grammar. It does not diverge on these inputs: they are
+  strings, ints, bools, and null, plus one float (`attestation.confidence` = 0.9),
+  which serializes identically (`0.9`) under both this canonicalizer and RFC 8785,
+  so the number-grammar difference does not bite here. MIT notice for the
+  AgentAvow-derived code is in `NOTICE`.
 - **`ed25519_pure.py`** — verification-only Ed25519, public-domain base from
   **ed25519.cr.yp.to** (not RFC 8032 Appendix A), **hardened to pass the full
   Wycheproof Ed25519 set**: canonical-encoding check (rejects `y >= p` and the
@@ -73,11 +75,23 @@ EOL/encoding normalization perturbs the signed bytes on any checkout.
   verifier, header policy, `claim_type`/expiry admissibility, corrected
   attribution and canonicalizer labeling, and no third-party verdict.
 
+## Verification split
+One entry per verification claim, attributed to its runner (required by CONTRIBUTING).
+
+- Canonical bytes + `canonical_sha256` reproduce; runner `validate.py`; Mode A; **author-produced** (both the fixtures and the `jcs.py` implementation are AgentAvow's); implementation: vendored `plugins/jcs.py`. An independent recompute (rfc8785 0.1.4, runner aeoess) is recorded lab-side (#71 / `interop/`).
+- JWS signatures verify against the vendored JWKS; runner `validate.py`; Mode A; **author-produced** (the fixtures are signed by AgentAvow's fixture key); implementation: vendored `plugins/ed25519_pure.py`. Independent verify (cryptography 49.0.0, runner aeoess) recorded lab-side (#71).
+- Ed25519 verifier is Wycheproof-conformant; runner `validate.py` (KAT); Mode A; **author-produced** (the verifier supplying the recomputation is AgentAvow's, though the Wycheproof vectors are independent); implementation: `plugins/ed25519_pure.py` against C2SP/wycheproof vectors. Independent full-corpus run through this verifier (runner aeoess) recorded lab-side (#71).
+- Admissibility outcomes (claim model + expiry); runner `validate.py`; Mode A; **author-produced** (the only implementation of the CTEF claim semantics exercised here is AgentAvow's `admissibility.py`); implementation: `plugins/admissibility.py`. An independent implementation and run is pending, tracked at #72.
+- Tamper rejection; runner `validate.py`; Mode A; **author-produced** (AgentAvow's verifier + JWS decoder); implementation: `plugins/jws.py` + `plugins/ed25519_pure.py`.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
 ## Boundaries
 - CTEF ingestion. `INVALID_CLAIM_SCOPE`, `INVALID_COMPOSITION`, and the `EXPIRED`
   validity code are CTEF's, presented as an external system's vocabulary — not a
-  proposal to add names to this suite's taxonomy. No suite schema/README/verifier
-  is touched.
+  proposal to add names to this suite's taxonomy. This PR touches no suite verifier
+  or schema; it does modify the root README inventory table and
+  `fixtures/cross-stack/index.json`, as family registration requires.
 - Per CONTRIBUTING, a merge means the fixtures verified as deterministic, in
   scope, and correctly labeled — **not** an endorsement, adoption, or partnership
   by APS or the lab.

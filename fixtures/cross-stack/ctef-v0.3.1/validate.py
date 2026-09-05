@@ -97,8 +97,12 @@ def run() -> dict:
     try:
         decode_and_verify(tampered, jwks)
         rec("tamper-rejected", False, "tampered JWS verified (must not)")
-    except JwsError:
-        rec("tamper-rejected", True)
+    except JwsError as e:
+        # Isolate signature detection: a header-policy rejection must NOT satisfy
+        # this control (only the signature check should catch a payload tamper).
+        is_sig = "signature does not verify" in str(e)
+        rec("tamper-rejected", is_sig,
+            "" if is_sig else f"rejected for the wrong reason ({e}); does not isolate signature tampering")
 
     passed = sum(1 for r in results if r["pass"])
     return {
