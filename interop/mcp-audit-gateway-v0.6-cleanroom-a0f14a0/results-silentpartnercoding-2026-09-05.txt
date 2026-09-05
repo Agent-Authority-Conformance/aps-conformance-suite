@@ -1,0 +1,123 @@
+# stdout of `python3 recompute.py canonicalization.json checkpoint.json` as reported by Silentpartnercoding on issue #68, comment 5549228266, 2026-09-05; copied verbatim from the comment
+input canonicalization.json sha256 34f8261aacb666c4bff9e48a2fe7cbda6647a3fb295d371a1a7e8bd5e3826a32
+input checkpoint.json sha256 1eadd73cef1910c91e911eb57a496bc8e4c373c9c33820233c8b654714877d70
+python 3.14.6
+
+PASS        canonicalization[genesis_all_fields] :: canonical bytes
+PASS        canonicalization[genesis_all_fields] :: sha256_canonical
+PASS        canonicalization[genesis_null_optionals] :: canonical bytes
+PASS        canonicalization[genesis_null_optionals] :: sha256_canonical
+PASS        canonicalization[error_with_code] :: canonical bytes
+PASS        canonicalization[error_with_code] :: sha256_canonical
+PASS        canonicalization[zero_duration] :: canonical bytes
+PASS        canonicalization[zero_duration] :: sha256_canonical
+PASS        canonicalization[invalid_params_error] :: canonical bytes
+PASS        canonicalization[invalid_params_error] :: sha256_canonical
+PASS        canonicalization[unicode_in_fields] :: canonical bytes
+PASS        canonicalization[unicode_in_fields] :: sha256_canonical
+PASS        canonicalization[max_safe_integer_duration] :: canonical bytes
+PASS        canonicalization[max_safe_integer_duration] :: sha256_canonical
+PASS        canonicalization[empty_string_tool_name] :: canonical bytes
+PASS        canonicalization[empty_string_tool_name] :: sha256_canonical
+PASS        chain[0] :: canonical bytes
+PASS        chain[0] :: sha256_canonical
+PASS        chain[0] :: record_hash over full_record_json
+PASS        chain[0] :: full_record_json reserialized (diagnostic)
+PASS        chain[1] :: canonical bytes
+PASS        chain[1] :: sha256_canonical
+PASS        chain[1] :: record_hash over full_record_json
+PASS        chain[1] :: full_record_json reserialized (diagnostic)
+PASS        chain[2] :: canonical bytes
+PASS        chain[2] :: sha256_canonical
+PASS        chain[2] :: record_hash over full_record_json
+PASS        chain[2] :: full_record_json reserialized (diagnostic)
+PASS        chain :: record[0] previousHash == genesis_seed
+PASS        chain :: record[1] previousHash == prior record_hash
+PASS        chain :: record[2] previousHash == prior record_hash
+PASS        dual_hash_demo.record_a :: canonical bytes
+PASS        dual_hash_demo.record_a :: sha256_canonical
+PASS        dual_hash_demo.record_a :: record_hash over full_record_json
+PASS        dual_hash_demo.record_a :: full_record_json reserialized (diagnostic)
+PASS        dual_hash_demo.record_b :: canonical bytes
+PASS        dual_hash_demo.record_b :: sha256_canonical
+PASS        dual_hash_demo.record_b :: record_hash over full_record_json
+PASS        dual_hash_demo.record_b :: full_record_json reserialized (diagnostic)
+PASS        dual_hash_demo :: canonical hashes match
+PASS        dual_hash_demo :: chain hashes differ
+PASS        party_attribution[parties_gateway_only] :: canonical bytes
+PASS        party_attribution[parties_gateway_only] :: sha256_canonical
+PASS        party_attribution[parties_dual_attribution] :: canonical bytes
+PASS        party_attribution[parties_dual_attribution] :: sha256_canonical
+PASS        party_attribution[no_parties_backward_compat] :: canonical bytes
+PASS        party_attribution[no_parties_backward_compat] :: sha256_canonical
+PASS        party_attribution[parties_empty_array] :: canonical bytes
+PASS        party_attribution[parties_empty_array] :: sha256_canonical
+PASS        party_attribution[scope_order_original] :: canonical bytes
+PASS        party_attribution[scope_order_original] :: sha256_canonical
+PASS        party_attribution[scope_order_sorted] :: canonical bytes
+PASS        party_attribution[scope_order_sorted] :: sha256_canonical
+PASS        party_attribution.chain[0] :: canonical bytes
+PASS        party_attribution.chain[0] :: sha256_canonical
+PASS        party_attribution.chain[0] :: record_hash over full_record_json
+PASS        party_attribution.chain[1] :: canonical bytes
+PASS        party_attribution.chain[1] :: sha256_canonical
+PASS        party_attribution.chain[1] :: record_hash over full_record_json
+PASS        party_attribution.chain :: record[0] previousHash == genesis_seed
+PASS        party_attribution.chain :: record[1] previousHash == prior record_hash
+PASS        ai_invocation_signing[ai_invocation_full] :: canonical bytes
+PASS        ai_invocation_signing[ai_invocation_full] :: sha256_canonical
+PASS        ai_invocation_signing[ai_invocation_partial_turnid_only] :: canonical bytes
+PASS        ai_invocation_signing[ai_invocation_partial_turnid_only] :: sha256_canonical
+PASS        ai_invocation_signing[ai_invocation_with_all_optionals] :: canonical bytes
+PASS        ai_invocation_signing[ai_invocation_with_all_optionals] :: sha256_canonical
+PASS        ai_invocation_signing :: mutation changes the digest
+PASS        extensions_digest_base[extensions_digest_with_parties] :: canonical bytes
+PASS        extensions_digest_base[extensions_digest_with_parties] :: sha256_canonical
+PASS        checkpoint_canonicalization[checkpoint_basic] :: canonical bytes
+PASS        checkpoint_canonicalization[checkpoint_basic] :: sha256_canonical
+PASS        checkpoint_canonicalization[checkpoint_with_parties] :: canonical bytes
+PASS        checkpoint_canonicalization[checkpoint_with_parties] :: sha256_canonical
+UNSPECIFIED checkpoint_chain :: record[0] previousHash  (no genesis_seed stated in this block)
+PASS        checkpoint_chain :: record[1] previousHash == prior record_hash
+PASS        checkpoint_chain :: record[2] previousHash == prior record_hash
+PASS        extensions_digest.with_extensions_digest :: canonical bytes
+PASS        extensions_digest.with_extensions_digest :: sha256_canonical
+PASS        extensions_digest.without_extensions_digest :: canonical bytes
+PASS        extensions_digest.without_extensions_digest :: sha256_canonical
+PASS        canonicalize_value[nested_same_content_different_order].a :: canonical_form
+PASS        canonicalize_value[nested_same_content_different_order].a :: digest
+PASS        canonicalize_value[nested_same_content_different_order].b :: canonical_form
+PASS        canonicalize_value[nested_same_content_different_order].b :: digest
+PASS        canonicalize_value[array_order_matters].a :: canonical_form
+PASS        canonicalize_value[array_order_matters].a :: digest
+PASS        canonicalize_value[array_order_matters].b :: canonical_form
+PASS        canonicalize_value[array_order_matters].b :: digest
+PASS        canonicalize_value[unicode_keys_sorted] :: canonical_form
+PASS        canonicalize_value[unicode_keys_sorted] :: digest
+PASS        canonicalize_value[astral_plane_keys_utf16_order] :: canonical_form
+PASS        canonicalize_value[astral_plane_keys_utf16_order] :: digest
+PASS        canonicalize_value[lone_surrogate_throws] :: rejects (chr(0xD800) per the vector construct text)  (string contains a lone surrogate)
+PASS        canonicalize_value[float_throws] :: rejects (published input)  (float is not a safe integer: 0.1)
+PASS        extensions_digest[simple_integer_map] :: canonical_form
+PASS        extensions_digest[simple_integer_map] :: digest
+PASS        extensions_digest[empty_extension_map] :: canonical_form
+PASS        extensions_digest[empty_extension_map] :: digest
+PASS        extensions_digest[nested_recursive_sort] :: canonical_form
+PASS        extensions_digest[nested_recursive_sort] :: digest
+PASS        extensions_digest[float_as_string] :: canonical_form
+PASS        extensions_digest[float_as_string] :: digest
+PASS        canonicalize_value :: lone low surrogate U+DC00  (string contains a lone surrogate)
+PASS        rotation_boundary :: file 2 first previousHash == file 1 last record_hash
+PASS        chain_break :: successor previousHash == break record_hash
+PASS        truncation_detection :: truncation derived  (checkpoint present=False, later checkpoints=0, delivered=1)
+PASS        truncation_detection :: stated failure code agrees with derivation
+UNSPECIFIED truncation_detection :: complete chain result  (the complete chain's records are not enumerated in the file, so nothing can be derived for it)
+PASS        sequence_regression :: derived  (checkpoint sequences [3, 2])
+PASS        sequence_regression :: stated failure code agrees with derivation
+NOT CHECKED count_mismatch  (documented in failure_codes and not exercised by this verifier; out of scope)
+
+checks: 112
+  PASS        109
+  UNSPECIFIED 2
+  NOT CHECKED 1
+wrote results.json
