@@ -145,6 +145,7 @@ document for provenance, pins and the verification split.
 | `fixtures/cross-stack/aat-amdal` | [`SOURCE.md`](fixtures/cross-stack/aat-amdal/SOURCE.md) |
 | `fixtures/cross-stack/action-ref-v1-negatives` | [`SOURCE.md`](fixtures/cross-stack/action-ref-v1-negatives/SOURCE.md) |
 | `fixtures/cross-stack/argentum-action-ref-v1v2` | [`SOURCE.md`](fixtures/cross-stack/argentum-action-ref-v1v2/SOURCE.md) |
+| `fixtures/cross-stack/mcp-audit-gateway-v0.6` | [`SOURCE.md`](fixtures/cross-stack/mcp-audit-gateway-v0.6/SOURCE.md) |
 | `fixtures/cross-stack/nobulex-bilateral-v0` | [`SOURCE.md`](fixtures/cross-stack/nobulex-bilateral-v0/SOURCE.md) |
 | `fixtures/cross-stack/oracle-safety-check` | [`SOURCE.md`](fixtures/cross-stack/oracle-safety-check/SOURCE.md) |
 | `fixtures/cross-stack/receipts-aeoess` | [`SOURCE.md`](fixtures/cross-stack/receipts-aeoess/SOURCE.md) |

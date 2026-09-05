@@ -1,0 +1,200 @@
+{
+  "fixture": "canonicalization/canonicalization.json",
+  "source": "elang2/mcp-audit-gateway v0.6.0 (commit a0f14a0418c2abe6135436f037f6b171735d1e73)",
+  "recomputer": "canonicalization/run.mjs, stdlib-only Node (node:crypto + node:fs)",
+  "ran_at": "2026-09-02T04:43:35.639Z",
+  "node_version": "v22.20.0",
+  "platform": "darwin",
+  "passed": 47,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "canonicalization/genesis_all_fields",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/genesis_null_optionals",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/error_with_code",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/zero_duration",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/invalid_params_error",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/unicode_in_fields",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/max_safe_integer_duration",
+      "status": "PASS"
+    },
+    {
+      "name": "canonicalization/empty_string_tool_name",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[0]/canonical (search)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[0]/record_hash (search)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[0]/native_stringify_match (search)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[0]/linkage (search)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[1]/canonical (summarize)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[1]/record_hash (summarize)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[1]/native_stringify_match (summarize)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[1]/linkage (summarize)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[2]/canonical (store_result)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[2]/record_hash (store_result)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[2]/native_stringify_match (store_result)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain[2]/linkage (store_result)",
+      "status": "PASS"
+    },
+    {
+      "name": "dual_hash/canonical_hashes_match (attestation excluded)",
+      "status": "PASS"
+    },
+    {
+      "name": "dual_hash/chain_hashes_differ (attestation included)",
+      "status": "PASS"
+    },
+    {
+      "name": "dual_hash/assertions.canonical_hashes_match",
+      "status": "PASS"
+    },
+    {
+      "name": "dual_hash/assertions.chain_hashes_differ",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/parties_gateway_only",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/parties_dual_attribution",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/no_parties_backward_compat",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/parties_empty_array",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/scope_order_original",
+      "status": "PASS"
+    },
+    {
+      "name": "party_attribution/scope_order_sorted",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[0]/canonical (fetch_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[0]/record_hash (fetch_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[0]/linkage (fetch_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[1]/canonical (transform_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[1]/record_hash (transform_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "chain_with_parties[1]/linkage (transform_data)",
+      "status": "PASS"
+    },
+    {
+      "name": "scope_order/different_order_different_hash",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_full/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_full/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_partial_turnid_only/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_partial_turnid_only/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_with_all_optionals/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/ai_invocation_with_all_optionals/digest",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/mutation_pair_digests_reproduce",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_invocation_signing/mutation_changes_digest",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest_base/extensions_digest_with_parties/canonical",
+      "status": "PASS"
+    },
+    {
+      "name": "extensions_digest_base/extensions_digest_with_parties/digest",
+      "status": "PASS"
+    }
+  ]
+}
