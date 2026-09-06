@@ -1,0 +1,85 @@
+Independent run: the lab executing safal207's published verifier over the released v1.2 bytes.
+
+checker      : safal207/ContractGraph-QA, proofs/attenu-envelope-v1.2-independent/
+               verify_envelope_vectors.py
+git blob     : 194a68e4c89653e7c819f1ed12156f758bfd7de9
+file sha256  : e814afb84f7e9ecaff4183a3a685f249ca6065309e293e4a224ec9afbba64a8d
+repo commit  : 3747cd2518ecee4051246c08ef24114f5fea432e
+vectors      : envelope_vectors_v1 revision envelope_vectors_v1.2, 19 cases,
+               sha256 a8be5ff764a86122ca09e94340416b7169531bf5d0cc76a0b1fc87f8272eb16e,
+               197346 bytes, the copy fetched from attenu-io/attenu-guard at
+               8a8d598e2036d6815b50df01b776a13777c1d72b, tests/vectors/envelopes/
+runner       : aeoess. Mode B, independent: the runner authored neither the vectors nor
+               this checker.
+environment  : fresh venv, cryptography==46.0.4 and nothing else, the single dependency
+               its own workflow installs. Python 3.14.6 here; its hosted workflow pins
+               3.12.13.
+imports      : no attenu_guard code. The checker loads one further file from its own
+               repository, proofs/attenu-guard-v0.12.1-independent/
+               independent_bundle_verifier.py, which is Python standard library only.
+               The independence gate in the job brief is therefore satisfied and the run
+               proceeded.
+
+--- run A: the pinned blob invoked directly ---
+
+$ python verify_envelope_vectors.py --vectors envelope_vectors_v1.json \
+      --json-out report.json
+
+stdout:
+{"accept_cases": 5, "agree": 19, "cases": 19, "disagree": 0, "failure_vocabulary_covered": 7, "overall": "DISAGREE", "reject_cases": 14}
+
+stderr:
+DISAGREE: source vector SHA-256 mismatch: expected 6a57d75ebec881d39d5a1805793a20f9a6d7bff021b70782dcb57c43b276df64, got a8be5ff764a86122ca09e94340416b7169531bf5d0cc76a0b1fc87f8272eb16e
+DISAGREE: vector revision is 'envelope_vectors_v1.2'
+DISAGREE: case order/name set differs: ['valid_spawn_envelope', 'valid_allow_envelope', 'valid_jcs_reorder', 'absent_envelope', 'indeterminate_result', 'reject_rehashed_chain_sparse', 'reject_subject_mismatch', 'reject_bad_signature', 'reject_unknown_version', 'reject_non_canonical', 'reject_member_without_bump', 'reject_masked_bundle_mutation', 'reject_rehashed_chain_anchored', 'reject_rehashed_chain_unanchored', 'reject_unknown_witness', 'reject_locator_mismatch', 'reject_duplicate_subject', 'reject_unknown_alg', 'reject_duplicate_subject_defective_second']
+exit 1
+
+All three stderr lines are assertions about the pinned subject, not about a verdict. The
+blob is pinned to v1.1: it carries the v1.1 digest, the v1.1 revision string and an
+18-name case list, so a 19-case file trips each of them. On the verdicts themselves the
+same run reports agree 19, disagree 0, accept 5, reject 14. The overall field reads
+DISAGREE because the blob computes it as agree == len(CASE_NAMES) and CASE_NAMES still
+has 18 entries.
+
+--- run B: run_pinned_proof.py, the reproduction its own README documents ---
+
+$ python run_pinned_proof.py \
+      --vectors        <attenu-guard@8a8d598e tests/vectors/envelopes/envelope_vectors_v1.json> \
+      --python-vector  <attenu_guard-0.15.0-py3-none-any.whl attenu_guard/vectors/envelopes/envelope_vectors_v1.json> \
+      --typescript-vector <attenu-guard-ts@ae055c92 test/fixtures/vectors/envelopes/envelope_vectors_v1.json> \
+      --json-out       report.json
+
+stdout:
+{"accept_cases": 5, "agree": 19, "cases": 19, "disagree": 0, "failure_vocabulary_covered": 7, "overall": "AGREE", "reject_cases": 14}
+stderr: (empty)
+exit 0
+
+run_pinned_proof.py is pinned in the same proof directory. It rebinds the subject
+constants and appends the row-19 name to CASE_NAMES; it changes no envelope rule and no
+ordering. With the subject pins corrected the same 19 verdicts read AGREE overall.
+
+--- report byte identity against the author's committed proof ---
+
+generated report.json : sha256 4328c5a38e647b601b73fa5ff4a8b8f9f5375296318ba1a5d440372c9edbbd6b, 9272 bytes
+committed report.json : sha256 4328c5a38e647b601b73fa5ff4a8b8f9f5375296318ba1a5d440372c9edbbd6b, 9272 bytes
+announced in comment 5559145070 : 4328c5a38e647b601b73fa5ff4a8b8f9f5375296318ba1a5d440372c9edbbd6b
+
+diff of the two files: empty. The lab's run of his pinned code reproduces the report he
+committed, byte for byte.
+
+--- row 19 as this checker records it ---
+
+{
+  "assertions": {
+    "entry_states": true,
+    "failure_position_rule": true,
+    "minimal_failures": true,
+    "verdict": true
+  },
+  "expected": "reject",
+  "name": "reject_duplicate_subject_defective_second",
+  "observed": "reject",
+  "status": "AGREE"
+}
+
+19 of 19 agree (Mode B, independent, safal207's verifier at blob 194a68e4)
