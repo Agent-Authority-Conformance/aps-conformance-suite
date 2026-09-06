@@ -128,3 +128,42 @@ is agreement between two implementations by one author, not an independent recom
 The bundle-level record at `interop/attenu-guard-0.11.0-bundles/` was not re-run against 0.13.0;
 whether the eight bundle cases still score as they did is a separate successor observation. The
 token vectors were not re-run either.
+
+## Independent runs recorded after merge (dated append, 2026-09-06)
+
+This section is a dated append, permitted here because this record publishes no digest set: the
+directory carries no `CHECKSUMS.sha256` and no `SHA256SUMS.txt`, so no file in it is covered by
+the immutability rule in CONTRIBUTING, and `tests/digest-integrity.test.mjs`, which enumerates
+every published digest set in the repository, finds none for this record. No results file in this
+directory changed, and nothing above this line was edited.
+
+Two runs of the 18-case corpus by a verifier written outside this lab and outside attenu-io have
+appeared since merge.
+
+Xuebin Ma (@XuebinMa), a2aproject/A2A#1575 comment 5556849470, 2026-09-06T04:19:06Z: 18 of 18,
+five accepting and thirteen rejecting, every entry state matching `expect_states` and every
+required {reason, seq, node} at its declared position, against the same file this record pins at
+sha256 6a57d75ebec881d39d5a1805793a20f9a6d7bff021b70782dcb57c43b276df64. His verifier is the
+Rust crate `guard-verify` in XuebinMa/agent-guard, pinned at
+e7eaba2c14a87cc7d0fb672f7a997e303df18d8c, written from the vectors README without reading either
+reference implementation. Mode B, author-produced: he wrote the implementation that supplies the
+recomputation. He reports the same two permitted extras this record reports.
+
+The lab running that same pinned verifier, 2026-09-06: 18 of 18 conformant, exit 0, cargo 1.95.0
+and rustc 1.95.0, his published command unmodified, over his vendored copy of the file at
+sha256 6a57d75e. Mode B, independent: the runner authored neither the vectors nor the checker.
+Both permitted extras land where this record's three runners put them,
+`envelope_bad_signature` at seq 1 on `reject_non_canonical` and a second
+`envelope_subject_mismatch` at seq 2 on `reject_rehashed_chain_anchored`. The verbatim output is
+in `interop/attenu-guard-0.15.0-envelopes/results-independent-xuebinma-verify-envelopes.txt`
+under "run A", recorded there rather than here so that no file in this directory changes.
+
+That independent run closes the third row this record had in docs/OPEN-RUNS.md, the
+README-derived-verifier layer: an independently authored verifier of the published rules,
+executed by a runner who wrote neither it nor the vectors, recomputing the same 18 verdicts,
+failure sets and entry states. It is removed from docs/OPEN-RUNS.md in the same commit that adds
+this append. The Python-package and TypeScript-package rows stay open: an alternate checker
+recomputing the semantics observes neither of those implementations.
+
+The successor record for revision `envelope_vectors_v1.2` and its 19 cases is
+`interop/attenu-guard-0.15.0-envelopes/`.

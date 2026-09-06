@@ -1,0 +1,113 @@
+Independent run: the lab executing XuebinMa's published Rust verifier over both vector
+revisions.
+
+checker      : XuebinMa/agent-guard, crate guard-verify (src/attenu/), Rust
+pin          : e7eaba2c14a87cc7d0fb672f7a997e303df18d8c
+               "feat(guard-verify): score the attenu-guard observer-envelope corpus (#148)"
+               committed 2026-09-06T04:00:05Z, which is before row 19 was published
+               (rafaelasor's release comment 5557848990 is 2026-09-06T07:51:08Z)
+runner       : aeoess. Mode B, independent: the runner authored neither the vectors nor
+               this checker.
+toolchain    : cargo 1.95.0 (f2d3ce0bd 2026-03-21), rustc 1.95.0 (59807616e 2026-04-14),
+               already present on the machine, dev profile, 32.62s cold build
+command      : the one his comment publishes, unmodified
+               cargo run -p guard-verify -- attenu-envelope-vectors \
+                 --vectors crates/guard-verify/fixtures/attenu/envelope_vectors_v1.json
+code changes : none. Only the bytes at that fixture path were swapped between the two
+               runs, and the vendored v1.1 file was restored afterwards; git status is
+               empty and HEAD is still e7eaba2c.
+
+--- run A: his vendored fixture as cloned, revision v1.1 ---
+
+fixture sha256 6a57d75ebec881d39d5a1805793a20f9a6d7bff021b70782dcb57c43b276df64, 185227 bytes
+
+corpus:   envelope_vectors_v1
+revision: envelope_vectors_v1.1
+cases:    18
+
+PASS  valid_spawn_envelope
+        entries: 1 witness-signed (matched)
+PASS  valid_allow_envelope
+        entries: 2 witness-signed (matched)
+PASS  valid_jcs_reorder
+        entries: 1 witness-signed (matched)
+PASS  absent_envelope
+PASS  indeterminate_result
+        entries: 1 witness-signed (indeterminate)
+PASS  reject_rehashed_chain_sparse
+PASS  reject_subject_mismatch
+PASS  reject_bad_signature
+PASS  reject_unknown_version
+PASS  reject_non_canonical
+        additional (permitted): envelope_bad_signature seq=Some(1) node=Some("vectors:n1")
+PASS  reject_member_without_bump
+PASS  reject_masked_bundle_mutation
+PASS  reject_rehashed_chain_anchored
+        additional (permitted): envelope_subject_mismatch seq=Some(2) node=Some("vectors:n0")
+PASS  reject_rehashed_chain_unanchored
+PASS  reject_unknown_witness
+PASS  reject_locator_mismatch
+PASS  reject_duplicate_subject
+PASS  reject_unknown_alg
+
+18/18 conformant
+exit 0
+
+This is the run pinned into the 0.13.0 record: an independently authored checker,
+executed by the lab, recomputing the 18 verdicts, their failure sets and the permitted
+extras. Both extras land exactly where the other three runners put them.
+
+--- run B: the same unchanged pin over the released v1.2 bytes ---
+
+fixture replaced with sha256 a8be5ff764a86122ca09e94340416b7169531bf5d0cc76a0b1fc87f8272eb16e, 197346 bytes
+
+corpus:   envelope_vectors_v1
+revision: envelope_vectors_v1.2
+cases:    19
+
+PASS  valid_spawn_envelope
+        entries: 1 witness-signed (matched)
+PASS  valid_allow_envelope
+        entries: 2 witness-signed (matched)
+PASS  valid_jcs_reorder
+        entries: 1 witness-signed (matched)
+PASS  absent_envelope
+PASS  indeterminate_result
+        entries: 1 witness-signed (indeterminate)
+PASS  reject_rehashed_chain_sparse
+PASS  reject_subject_mismatch
+PASS  reject_bad_signature
+PASS  reject_unknown_version
+PASS  reject_non_canonical
+        additional (permitted): envelope_bad_signature seq=Some(1) node=Some("vectors:n1")
+PASS  reject_member_without_bump
+PASS  reject_masked_bundle_mutation
+PASS  reject_rehashed_chain_anchored
+        additional (permitted): envelope_subject_mismatch seq=Some(2) node=Some("vectors:n0")
+PASS  reject_rehashed_chain_unanchored
+PASS  reject_unknown_witness
+PASS  reject_locator_mismatch
+PASS  reject_duplicate_subject
+PASS  reject_unknown_alg
+PASS  reject_duplicate_subject_defective_second
+
+19/19 conformant
+exit 0
+
+A pin predating row 19 scores row 19. The verifier neither refuses the unfamiliar
+revision string nor mismatches on the new case: it reads revision envelope_vectors_v1.2,
+19 cases, and passes all of them. That is the claim-first ordering already implemented,
+not a rule added after the row was published. It is also why nothing here needed a
+post-row-19 pin of his to close.
+
+--- tree left as cloned ---
+
+$ git checkout -- crates/guard-verify/fixtures/attenu/envelope_vectors_v1.json
+$ shasum -a 256 crates/guard-verify/fixtures/attenu/envelope_vectors_v1.json
+6a57d75ebec881d39d5a1805793a20f9a6d7bff021b70782dcb57c43b276df64
+$ git status --short
+(no output)
+$ git rev-parse HEAD
+e7eaba2c14a87cc7d0fb672f7a997e303df18d8c
+
+18 of 18 over v1.1, 19 of 19 over v1.2 (Mode B, independent, XuebinMa's verifier at e7eaba2c)
