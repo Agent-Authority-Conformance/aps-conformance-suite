@@ -281,6 +281,8 @@ are still unseparated by any vector in this file. Row 19 does not touch either.
   docs/OPEN-RUNS.md. The semantic-verdict and entry-state layer does have one, twice over, and is
   not listed.
 
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
 ## What this record does not show
 
 No live A2A traffic was exercised, and no message crossed a network on behalf of any agent here.
