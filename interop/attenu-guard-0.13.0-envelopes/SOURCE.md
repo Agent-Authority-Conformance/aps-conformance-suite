@@ -167,3 +167,5 @@ recomputing the semantics observes neither of those implementations.
 
 The successor record for revision `envelope_vectors_v1.2` and its 19 cases is
 `interop/attenu-guard-0.15.0-envelopes/`.
+
+These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
