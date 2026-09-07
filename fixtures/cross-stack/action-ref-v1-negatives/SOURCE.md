@@ -51,3 +51,5 @@ the local branch.
 - `README.md`: property under test, drift-family map, not-covered list.
 - `run.mjs`: recomputation runner (SDK import plus stdlib-only recompute).
 - `results.json`: machine-readable output of the last `run.mjs` run.
+
+2026-09-07: run.mjs resolves agent-passport-system from this repository's pinned dependency (6.0.0 in package.json) instead of a sibling checkout; the APS_SDK_EXTERNAL_ACTION_REF override is kept for a local build. The documented reproduction command now runs from a fresh clone after npm ci and compares the recomputation with the tracked results.json, excluding the ran_at run-instance stamp; it exits 0 on a match and 1 on any divergence, and it no longer writes results.json, so the recorded observation stays byte-identical. A new observation is written only to a path named with --output. The vectors, the digests and the verdicts are unchanged, and so is the layer's classification. This is the same repair nobulex-bilateral-v0 took on 2026-08-30; the sdk_module label is left as recorded because it names the same module, reached through the package entry rather than through a filesystem path.
