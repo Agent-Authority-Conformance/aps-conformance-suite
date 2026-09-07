@@ -17,6 +17,14 @@
     "verify:oracle-safety-check": "tsx fixtures/cross-stack/oracle-safety-check/verify.ts",
     "verify:oracle-safety-check-consistency": "tsx fixtures/cross-stack/oracle-safety-check/verify-consistency.ts",
     "verify:oracle-safety-check-flips": "tsx fixtures/cross-stack/oracle-safety-check/verify.ts --flip-check",
+    "cross-stack:aat-amdal:verify": "python3 runners/aat_runner.py fixtures/cross-stack/aat-amdal/aat-amdal-2026-08-26.json",
+    "cross-stack:argentum-action-ref-v1v2:verify": "PYTHONPATH=fixtures/cross-stack/argentum-action-ref-v1v2 python3 fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v2/validate.py && PYTHONPATH=fixtures/cross-stack/argentum-action-ref-v1v2 python3 fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v1-domain-negative/validate.py",
+    "cross-stack:nobulex-bilateral-v0:verify": "node fixtures/cross-stack/nobulex-bilateral-v0/run.mjs",
+    "cross-stack:oracle-safety-check:verify": "npm run verify:oracle-safety-check && npm run verify:oracle-safety-check-consistency",
+    "cross-stack:oracle-safety-check:falsify": "npm run verify:oracle-safety-check-flips",
+    "cross-stack:receipts-aeoess:verify": "node fixtures/cross-stack/receipts-aeoess/agentlair-run.mjs && python3 runners/aeoess_receipt_runner.py fixtures/cross-stack/receipts-aeoess/receipts-aeoess-2026-08-27.json",
+    "cross-stack:receipts-amdal:verify": "python3 runners/receipt_runner.py fixtures/cross-stack/receipts-amdal/receipts-amdal-2026-07-29.json",
+    "cross-stack:token-exchange-attenuation-v0:verify": "npx tsx runners/ts/token-exchange-attenuation.test.ts && python3 fixtures/cross-stack/token-exchange-attenuation-v0/recompute.py",
     "verify:receipt-decision-relation": "tsx fixtures/receipt-decision-relation/verify.ts",
     "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
     "crossrun:canonical-bytes": "node fixtures/canonical-bytes/crossrun/run.mjs",
@@ -29,7 +37,10 @@
     "readme:inventory": "node scripts/readme-inventory.mjs --write",
     "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip && npm run test:layered-gate-mutation",
     "test:digest-integrity": "node tests/digest-integrity.test.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:cross-stack-wiring": "node scripts/check-cross-stack-wiring.mjs",
+    "typecheck:cross-stack": "tsc -p tsconfig.cross-stack.json --noEmit",
+    "verify:cross-stack": "npm run test:cross-stack-wiring && npm run typecheck:cross-stack && node scripts/run-cross-stack.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.4.0",

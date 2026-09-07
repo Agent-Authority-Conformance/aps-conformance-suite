@@ -50,6 +50,48 @@ jobs:
       - run: python3 fixtures/accountability-record/validate.py
       - run: python3 fixtures/read-fidelity-receipt/validate.py
 
+  # Cross-stack families. These are ingested from counterparties and this job
+  # executes code contributed under them, so its privilege boundary is stated
+  # rather than inherited: read-only contents, no secrets, no token beyond the
+  # default read one, and a checkout that does not persist credentials. It is
+  # triggered by `pull_request` and `push` only, never `pull_request_target`, so
+  # a fork's code never runs with a writable token.
+  #
+  # Deliberately NOT in `npm test`. The default gate stays APS-native and
+  # hermetic and has to run on Windows; these families need Python and a
+  # third-party pip install, and running contributed code inside the hermetic
+  # gate is the thing the split exists to avoid. CONTRIBUTING says the dedicated
+  # verifier runs in CI, and this is that CI.
+  #
+  # The job names no family. `npm run verify:cross-stack` derives its work from
+  # fixtures/cross-stack/index.json, and scripts/check-cross-stack-wiring.mjs
+  # fails the job if this file ever grows a hand-kept list, if a family on disk
+  # is unclassified, or if a declared script does not exist.
+  #
+  # This job is not a required check. Making it one is branch-protection
+  # configuration, tracked separately.
+  cross-stack:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      # Version-pinned, not hash-pinned, matching schema-parity. cryptography is
+      # what the three Ed25519 receipt runners verify signatures with; the other
+      # cross-stack Python runners are standard library only.
+      - run: python -m pip install cryptography==49.0.0
+      - run: npm ci --include=dev
+      - run: npm run verify:cross-stack
+
   # Windows runs the same gate. Its purpose is the pinned bytes: a checkout that
   # rewrote line endings would change fixture digests and every claim recorded
   # against them, and .gitattributes is what prevents that. Linux stays the
