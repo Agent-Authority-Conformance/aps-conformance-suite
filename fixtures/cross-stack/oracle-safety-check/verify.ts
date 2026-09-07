@@ -61,8 +61,10 @@ import {
 import type { AuthorityFailureCode } from 'agent-passport-system'
 
 import { loadCorpus } from './corpus.js'
+import type { CorpusEntry } from './corpus.js'
 import { buildOracleSafetyCheck, verifyOracleSafetyCheck } from './vendor/insight/oracleSafetyCheck.js'
 import { OSC_ARTIFACT_TYPE, OSC_DOMAIN, OSC_PRIMARY_TYPE, OSC_TYPES } from './vendor/insight/types.js'
+import type { OracleSafetyCheckData } from './vendor/insight/types.js'
 import { AGENT_DID, BASELINE_MS, GATEWAY_DID, PRINCIPAL_DID, deriveEd25519, evmAttesterAddress } from './keys.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -253,7 +255,8 @@ function checkInputFaithfulness(doc: Record<string, any>): { failures: Failure[]
       observed.push('rebuild_digest_equals_declared')
     }
   } else {
-    const diffKeys = Object.keys(envelopeData).filter((k) => JSON.stringify(rebuilt[k]) !== JSON.stringify(envelopeData[k]))
+    const dataKeys = Object.keys(envelopeData) as (keyof OracleSafetyCheckData)[]
+    const diffKeys = dataKeys.filter((k) => JSON.stringify(rebuilt[k]) !== JSON.stringify(envelopeData[k]))
     if (diffKeys.length > 0) {
       failures.push({
         fixture: id,
