@@ -57,6 +57,13 @@ Required with the family:
 3. An entry in `fixtures/cross-stack/index.json` declaring the family's kind.
    That file is a reviewed declaration; the classification is not inferred from
    where the directory sits.
+4. In that same entry, a `verification` block saying what CI runs for the family:
+   `verify`, and `falsify` if admission relied on a mutation or falsifiability
+   proof, each naming an npm script under the `cross-stack:<family>:` namespace.
+   A family with no verifier declares `executable: "none"` instead, and one whose
+   verifier does not run from a clean checkout declares `executable: "blocked"`,
+   each with a one-line reason. `npm run verify:cross-stack` runs the whole set
+   locally and is what the `cross-stack` CI job runs.
 
 Merging an external family admits evidence. It is not a verdict on the
 counterparty's implementation and it is not an end-to-end verification.
