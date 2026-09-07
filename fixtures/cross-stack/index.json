@@ -14,10 +14,7 @@
     {
       "path": "action-ref-v1-negatives",
       "kind": "external-system-family",
-      "verification": {
-        "executable": "blocked",
-        "reason": "run.mjs resolves the SDK from a sibling checkout path outside the repository and rewrites the recorded results.json, so it neither runs from a fresh clone nor leaves the tree clean; nobulex-bilateral-v0 took the corresponding fix on 2026-08-30 and this family did not"
-      }
+      "verification": { "verify": "cross-stack:action-ref-v1-negatives:verify" }
     },
     {
       "path": "argentum-action-ref-v1v2",
