@@ -114,9 +114,18 @@ check(`${RUNNER_SCRIPT} runs the registry-driven runner`, runner.includes('run-c
 // statement that nothing else can be smuggled into the run.
 const declared = declaredScripts(index).map((s) => s.script).sort()
 const wrappers = Object.keys(scripts).filter((s) => s.startsWith('cross-stack:')).sort()
-const unused = wrappers.filter((s) => !declared.includes(s))
-check('every cross-stack: script in package.json is declared by a family', unused.length === 0,
-  unused.length ? `${unused.join(', ')} would never run` : '')
+// A blocked family keeps its wrapper. Blocking says the reproduction cannot be
+// executed here, not that the command should be deleted, and deleting it would
+// throw away the thing a repair has to restore. So a wrapper whose family is
+// currently blocked is not an orphan.
+const blockedPaths = new Set(index.entries.filter((e) => e.verification?.executable === 'blocked').map((e) => e.path))
+const orphaned = wrappers.filter((s) => {
+  if (declared.includes(s)) return false
+  const family = s.split(':')[1]
+  return !blockedPaths.has(family)
+})
+check('every cross-stack: script in package.json is declared, or belongs to a blocked family',
+  orphaned.length === 0, orphaned.length ? `${orphaned.join(', ')} would never run` : '')
 
 console.log('')
 const executable = index.entries.filter((e) => typeof e.verification?.verify === 'string').length
