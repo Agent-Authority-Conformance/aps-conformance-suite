@@ -14,12 +14,9 @@
 //   1. Recompute JCS canonical bytes + SHA-256 → canonical_bytes_hex / canonical_sha256.
 //   2. Verify the Ed25519 witness over canonical bytes (agent key, derived
 //      deterministically from seed_input).
-//   3. Verify the outer receipts (computeReceiptIdV1 + verifyReceiptV1) and,
-//      for the delegation chain via the SDK package: each delegation's Ed25519
-//      signature, its parent_delegation_id linkage, and issuer/subject
-//      continuity across the chain. This is NOT the SDK's full chain
-//      verification — authority attenuation (facet and spend-limit narrowing)
-//      is out of scope here; see README.md.
+//   3. Verify the outer receipts (computeReceiptIdV1 + verifyReceiptV1) and run
+//      the SDK's full delegation-chain verifier: content addresses, signatures,
+//      linkage, continuity, all seven attenuation facets, time and revocation.
 //   4. Truly verify the inner layer: recompute the 26-field EIP-712 digest and
 //      recover the secp256k1 signer, which must equal
 //      roles.evm_attester.address.
@@ -38,8 +35,9 @@
 // expectReasons, or flipping expected on any vector FAILS the run.
 //
 // Run: npm run verify:oracle-safety-check            (semantic 13/13)
-//      npm run verify:oracle-safety-check-flips     (--flip-check: 5 declared
-//           mutations, each of which must FAIL)
+//      npm run verify:oracle-safety-check-flips     (--flip-check: 12 declared
+//           mutations, each of which must FAIL, including all 7 attenuation
+//           facets)
 //
 // APS_FIXTURES_DIR overrides the fixture directory (same convention as
 // runners/ts/verify.ts) so a harness can point the runner at a
@@ -54,10 +52,13 @@ import { hashTypedData, recoverTypedDataAddress } from 'viem'
 
 import {
   canonicalizeJCS,
+  computeAuthorityDelegationId,
   computeReceiptIdV1,
+  signAuthorityDelegation,
+  verifyAuthorityDelegationChain,
   verifyReceiptV1,
-  verifyAuthorityDelegationSignature,
 } from 'agent-passport-system'
+import type { AuthorityFailureCode } from 'agent-passport-system'
 
 import { loadCorpus } from './corpus.js'
 import { buildOracleSafetyCheck, verifyOracleSafetyCheck } from './vendor/insight/oracleSafetyCheck.js'
@@ -106,6 +107,42 @@ function resolveKey(signer: string): string | undefined {
     [GATEWAY_DID, deriveEd25519('gateway').publicKeyHex],
   ])
   return dids.get(signer)
+}
+
+function authorityChainOptions(doc: Record<string, any>) {
+  const revoked = new Set(
+    Array.isArray(doc.revocation)
+      ? doc.revocation.filter((r: any) => r.status === 'revoked').map((r: any) => r.delegation_id)
+      : [],
+  )
+  return {
+    now: typeof doc.verification_time === 'string'
+      ? doc.verification_time
+      : new Date(BASELINE_MS).toISOString(),
+    resolveVerificationKey: (issuer: string) => resolveKey(issuer) ?? null,
+    trustRoot: (root: Record<string, any>) =>
+      root.parent_delegation_id === null && root.issuer === PRINCIPAL_DID,
+    resolveRevocation: (delegation: Record<string, any>) =>
+      revoked.has(delegation.delegation_id) ? 'revoked' as const : 'active' as const,
+  }
+}
+
+function resignDelegation(delegation: Record<string, any>, privateKeyHex: string): Record<string, any> {
+  const { delegation_id: _delegationId, signature: _signature, ...body } = delegation
+  const delegationId = computeAuthorityDelegationId(body as any)
+  const unsigned = { ...body, delegation_id: delegationId }
+  return {
+    ...unsigned,
+    signature: signAuthorityDelegation(unsigned as any, privateKeyHex),
+  }
+}
+
+function resignChain(doc: Record<string, any>): void {
+  const [root, child] = doc.envelope.delegations
+  const signedRoot = resignDelegation(root, deriveEd25519('principal').privateKeyHex)
+  child.parent_delegation_id = signedRoot.delegation_id
+  const signedChild = resignDelegation(child, deriveEd25519('agent').privateKeyHex)
+  doc.envelope.delegations = [signedRoot, signedChild]
 }
 
 interface Failure { fixture: string; check: string; expected: string; actual: string }
@@ -316,24 +353,33 @@ async function checkFixture(doc: Record<string, any>): Promise<{ failures: Failu
     failures.push({ fixture: id, check: 'decision.delegation_ref', expected: leaf.delegation_id, actual: env.decision.delegation_ref })
   }
 
-  // 3. delegation chain — via the published SDK this covers each delegation's
-  //    Ed25519 signature, its parent_delegation_id linkage, and issuer/subject
-  //    continuity. Authority attenuation (facet and spend-limit narrowing) is
-  //    NOT checked here: `verifyAuthorityDelegationChain` is not exported by
-  //    the published agent-passport-system package, and deep imports into
-  //    dist/src/** are blocked by the package `exports` map — see README.md.
-  for (let i = 0; i < env.delegations.length; i++) {
-    const d = env.delegations[i]
-    if (i > 0 && d.parent_delegation_id !== env.delegations[i - 1].delegation_id) {
-      failures.push({ fixture: id, check: `delegation[${i}].parent`, expected: env.delegations[i - 1].delegation_id, actual: d.parent_delegation_id })
+  // 3. full delegation chain — the published SDK verifies content addresses,
+  //    Ed25519 signatures, parent linkage, issuer/subject continuity, all seven
+  //    attenuation facets, time windows and revocation status.
+  const chain = verifyAuthorityDelegationChain(env.delegations, authorityChainOptions(doc) as any)
+  const expectedChainFailure: AuthorityFailureCode | undefined =
+    doc.expectReasons?.includes('AUTH_DELEGATION_EXPIRED')
+      ? 'EXPIRED'
+      : doc.expectReasons?.includes('AUTH_DELEGATION_REVOKED')
+        ? 'REVOKED'
+        : undefined
+  const chainCodes = chain.failures.map((failure) => failure.code)
+  if (expectedChainFailure) {
+    if (chain.valid || !chainCodes.includes(expectedChainFailure)) {
+      failures.push({
+        fixture: id,
+        check: 'delegation_chain(expected failure)',
+        expected: expectedChainFailure,
+        actual: chain.valid ? 'valid' : `${chain.state}: ${chainCodes.join(', ')}`,
+      })
     }
-    if (i > 0 && d.issuer !== env.delegations[i - 1].subject) {
-      failures.push({ fixture: id, check: `delegation[${i}].continuity`, expected: env.delegations[i - 1].subject, actual: d.issuer })
-    }
-    const key = resolveKey(d.issuer)
-    if (!key || !verifyAuthorityDelegationSignature(d, key)) {
-      failures.push({ fixture: id, check: `delegation[${i}].signature`, expected: 'valid', actual: 'invalid' })
-    }
+  } else if (!chain.valid) {
+    failures.push({
+      fixture: id,
+      check: 'delegation_chain',
+      expected: 'valid',
+      actual: `${chain.state}: ${chainCodes.join(', ')}`,
+    })
   }
 
   // 4. inner layer — truly verified (digest + secp256k1), plus witness fields
@@ -502,11 +548,12 @@ async function main() {
 // --flip-check: reproduce the review's field-flip experiments on a COPY of the
 // fixture tree. Each flip MUST produce at least one failure — proving the
 // declared fields (expectReasons / verdict / revocation / expected /
-// oracle_input) actually affect verification.
+// oracle_input) actually affect verification. Seven additional, re-signed
+// in-memory chain mutations exercise every authority attenuation facet.
 async function mainFlipCheck() {
   const tmp = mkdtempSync(join(tmpdir(), 'osc-flip-'))
-  // These five mutations are the whole set. The claim below is scoped to them
-  // — it is not a general "every field affects the verdict" proof.
+  // These five vector mutations are the whole persisted-field set. The claim
+  // below is scoped to them and the seven attenuation mutations declared next.
   const cases: Array<[string, string, (d: Record<string, any>) => void]> = [
     ['empty revocation block on delegation-revoked', 'delegation-revoked', (d) => { d.revocation = [] }],
     ['replace expectReasons with a bogus code on authority-denied', 'authority-denied', (d) => { d.expectReasons = ['BOGUS_CODE'] }],
@@ -540,6 +587,54 @@ async function mainFlipCheck() {
       console.log(`${detected ? 'DETECTED' : 'MISSED  '}  ${label}`)
       if (!detected) allDetected = false
     }
+
+    const pass = baseline.entries.find((entry) => entry.id === 'pass')?.doc
+    if (!pass) throw new Error('pass vector is missing from copied corpus')
+    const attenuationCases: Array<[
+      string,
+      AuthorityFailureCode,
+      (d: Record<string, any>) => void,
+    ]> = [
+      ['scope widening', 'SCOPE_WIDENING', (d) => {
+        d.envelope.delegations[1].authority.scope.grants.push('action:transfer')
+        d.envelope.delegations[1].authority.scope.grants.sort()
+      }],
+      ['spend widening', 'SPEND_WIDENING', (d) => {
+        d.envelope.delegations[1].authority.spend.per_action = '2000001'
+        d.envelope.delegations[1].authority.spend.cumulative = '2000001'
+      }],
+      ['depth widening', 'DEPTH_WIDENING', (d) => {
+        d.envelope.delegations[1].authority.depth.remaining = 1
+      }],
+      ['time widening', 'TIME_WIDENING', (d) => {
+        d.envelope.delegations[1].authority.time.not_after = '2026-08-27T00:00:00.000Z'
+      }],
+      ['reputation widening', 'REPUTATION_WIDENING', (d) => {
+        d.envelope.delegations[0].authority.reputation.ceiling = 50
+      }],
+      ['values weakening', 'VALUES_WEAKENING', (d) => {
+        d.envelope.delegations[1].authority.values.required = []
+      }],
+      ['reversibility widening', 'REVERSIBILITY_WIDENING', (d) => {
+        d.envelope.delegations[1].authority.reversibility.ceiling = 'irreversible'
+      }],
+    ]
+    for (const [label, expectedCode, mutate] of attenuationCases) {
+      const doc = structuredClone(pass)
+      mutate(doc)
+      resignChain(doc)
+      const result = verifyAuthorityDelegationChain(
+        doc.envelope.delegations,
+        authorityChainOptions(doc) as any,
+      )
+      const codes = result.failures.map((failure) => failure.code)
+      const detected = !result.valid && codes.includes(expectedCode)
+      console.log(
+        `${detected ? 'DETECTED' : 'MISSED  '}  ${label} ` +
+        `(expected ${expectedCode}; observed ${codes.join(', ') || result.state})`,
+      )
+      if (!detected) allDetected = false
+    }
   } finally {
     rmSync(tmp, { recursive: true, force: true })
     delete process.env.APS_FIXTURES_DIR
@@ -547,7 +642,7 @@ async function mainFlipCheck() {
   console.log('')
   console.log(
     allDetected
-      ? `ALL ${cases.length} DECLARED MUTATIONS DETECTED`
+      ? `ALL ${cases.length + 7} DECLARED MUTATIONS DETECTED`
       : 'SOME MUTATIONS WERE MISSED',
   )
   process.exit(allDetected ? 0 : 1)

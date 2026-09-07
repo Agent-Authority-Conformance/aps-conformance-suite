@@ -13,11 +13,10 @@ current and permitted. Any missing / expired / denied / unverifiable half is a
 HALT.
 
 **What this family checks on the authority half is enumerated, not assumed.**
-The runner verifies each delegation's Ed25519 signature, its
-`parent_delegation_id` linkage and issuer/subject continuity across the chain,
-plus the leaf expiry (`not_after`) and declared revocation. It does **not** run
-the SDK's full delegation-chain verification — authority attenuation (facet and
-spend-limit narrowing, e.g. `SPEND_WIDENING`) is out of scope here.
+The runner calls the published SDK's full delegation-chain verifier. It checks
+content addresses and Ed25519 signatures, `parent_delegation_id` linkage,
+issuer/subject continuity, all seven authority-attenuation facets, every
+delegation's validity window, root trust and declared revocation.
 
 Coverage is stated here in prose rather than in a `verification_mode` field:
 that field already carries a different axis in this suite (its existing value
@@ -63,21 +62,20 @@ from `seed_input`.
 ## Vector contract
 
 The runner checks exactly the items listed below, plus the sub-results each
-vector declares for itself. Nothing here claims to be the SDK's full
-verification:
+vector declares for itself:
 
-- **Checked:** each delegation signature, parent linkage and issuer/subject
-  continuity; leaf expiry (`not_after`) and declared revocation; the inner
-  EIP-712 digest, signer recovery against `roles.evm_attester.address`, and the
-  rebuild of the oracle data from `oracle_input`; the composite-gate reason set.
-- **Not checked:** authority attenuation (facet and spend-limit narrowing, e.g.
-  `SPEND_WIDENING`). The SDK's full delegation-chain verifier
-  (`verifyAuthorityDelegationChain`, which is what reports it) is not reachable
-  from the published package: `agent-passport-system` 4.5.1 exports only `.` and
-  `./core`, neither of which re-exports it, and `dist/src/**` is blocked by the
-  package `exports` map. Deep-importing `src/` was ruled out in review #119.
+- **Checked:** full published-SDK delegation-chain verification: content
+  addresses, signatures, root trust, parent linkage, issuer/subject continuity,
+  scope, spend, depth, time, reputation, values and reversibility attenuation,
+  every delegation's `not_before` / `not_after`, and declared revocation; the
+  inner EIP-712 digest, signer recovery against
+  `roles.evm_attester.address`, the rebuild of the oracle data from
+  `oracle_input`, and the composite-gate reason set.
 - **Not exercised:** replay and single-use enforcement, which are stateful.
-- `not_before` is not enforced, so there is no not-yet-valid negative vector.
+- No persisted not-yet-valid or attenuation-negative vectors are added to this
+  already-published v1 corpus. Instead, `--flip-check` re-signs temporary
+  mutations of the positive chain and demonstrates all seven attenuation
+  failure codes without changing any vector bytes.
 
 The runner (`verify.ts`) enforces:
 
@@ -133,24 +131,28 @@ family at all: dispatch-time enforcement is out of scope here.
 ```bash
 npm run verify:oracle-safety-check              # semantic verification, 13/13
 npm run verify:oracle-safety-check-consistency  # same-implementation 56/56
-npm run verify:oracle-safety-check-flips        # --flip-check: 5 declared
+npm run verify:oracle-safety-check-flips        # --flip-check: 12 declared
                                                 # mutations, each of which must
                                                 # FAIL (revocation emptied,
                                                 # expectReasons bogus, expected
                                                 # flipped, oracle_input.verdict
                                                 # changed, expectReasons
-                                                # emptied) — 5/5 detected
+                                                # emptied, plus one re-signed
+                                                # widening for each of scope,
+                                                # spend, depth, time, reputation,
+                                                # values and reversibility)
+                                                # — 12/12 detected
 ```
 
-The flip check is scoped to those five mutations. It is not a claim that every
-field in every vector affects the verdict.
+The flip check is scoped to those twelve mutations. It is not a claim that
+every field in every vector affects the verdict.
 
 All exit non-zero on any failure.
 
 ## Verification split
 
 - EIP-712 digest and secp256k1 signer, 13 vectors; imokokok; Mode A; author-produced (author of the vectors and of the vendored Insight implementation); `verify.ts` in this directory, 13/13
-- APS receipt layer (Ed25519 decision and intent signatures, canonical witness, delegation signature, linkage, continuity, leaf expiry, declared revocation) and composite-gate reasons, 13 vectors; imokokok; Mode A; author-produced (author of the vectors); `verify.ts` through agent-passport-system 4.5.1, 13/13
+- APS receipt layer (Ed25519 decision and intent signatures, canonical witness, full delegation-chain validation including all seven attenuation facets, time, root trust and declared revocation) and composite-gate reasons, 13 vectors plus 7 re-signed dynamic attenuation mutations; imokokok; Mode A; author-produced (author of the vectors); `verify.ts` through agent-passport-system 6.0.0, 13/13 vectors and 7/7 attenuation mutations
 - same-implementation consistency, 56 values; imokokok; Mode A; author-produced (author of the vectors and of the vendored implementation); `verify-consistency.ts` in this directory, 56/56
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
