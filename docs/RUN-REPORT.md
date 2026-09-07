@@ -10,10 +10,12 @@ In order:
 1. Clone this repository.
 2. `npm ci --include=dev`. This step needs network access.
 3. `npm test`. After dependencies are installed the run makes no network calls. Exit 0
-   means every APS-native vector passed and every dedicated external-family verifier wired
-   into the gate passed. `npm run verify` is the generic APS corpus runner alone. To report
-   on one external-system family under `fixtures/cross-stack/`, run the command in its
-   README and paste that output instead.
+   means every APS-native vector passed. External-system families under
+   `fixtures/cross-stack/` are not executed by `npm test`; their dedicated verifiers run
+   in the `cross-stack` CI job, and `npm run verify:cross-stack` runs the same set
+   locally. `npm run verify` is the generic APS corpus runner alone. To report on one
+   external-system family, run the script its entry in `fixtures/cross-stack/index.json`
+   declares and paste that output instead.
 
 4. Copy the verbatim output of step 3. Do not summarize it and do not trim it.
 5. File it, either way:
