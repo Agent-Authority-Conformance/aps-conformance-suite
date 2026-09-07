@@ -57,17 +57,16 @@ Required with the family:
 3. An entry in `fixtures/cross-stack/index.json` declaring the family's kind.
    That file is a reviewed declaration; the classification is not inferred from
    where the directory sits.
-4. In that same entry, a `verification` block saying what CI runs for the family:
-   `verify`, and `falsify` if admission relied on a mutation or falsifiability
-   proof, each naming an npm script under the `cross-stack:<family>:` namespace.
-   A family with no verifier declares `executable: "none"` instead, which is a
-   legitimate absence and passes. One whose verifier exists but cannot currently
-   be executed here declares `executable: "blocked"`, which FAILS the job until
-   the runner is repaired: a blocked verifier has not run and is never counted as
-   having run. `blocked` is not a verdict on the family's evidence, only on
-   whether its declared reproduction can be executed here. Both states carry a
-   one-line reason, and for `blocked` that reason is the exact blockage. `npm run verify:cross-stack` runs the whole set
-   locally and is what the `cross-stack` CI job runs.
+4. In that same entry, a `verification` block declaring what CI runs for the
+   family: `verify`, and `falsify` where admission relied on a mutation or
+   falsifiability proof. Each names an npm script under the
+   `cross-stack:<family>:` namespace. A family with no executable verifier
+   declares `executable: "none"` with a reason; this is a legitimate absence and
+   passes. If a verifier exists but cannot currently run in CI, declare
+   `executable: "blocked"` with the exact reason. `blocked` fails the job until
+   repaired and means no verifier run occurred; it is not a verdict on the
+   family's evidence. `npm run verify:cross-stack` runs the same set locally as
+   the `cross-stack` CI job.
 
 Merging an external family admits evidence. It is not a verdict on the
 counterparty's implementation and it is not an end-to-end verification.
