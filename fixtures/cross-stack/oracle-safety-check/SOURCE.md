@@ -96,18 +96,21 @@ this directory is overclaiming.
 
 `verify.ts` consumes the SDK as the **published package** (`agent-passport-system`)
 — no deep imports into `src/`. The v2 receipt-core / authority-delegation
-primitives it needs became public API in **4.5.0**, so upstream PR #119 no
-longer carries an `src/index.ts` export hunk. The suite resolves the SDK from
-the repository-level pin in `dependencies` (exact released version, currently
-`4.5.1`); the earlier fork-branch git URL has been dropped, because a lab corpus
-dependency has to sit on a released first-party artifact rather than a moving
-branch.
+primitives it needs became public API in **4.5.0**, and the full
+`verifyAuthorityDelegationChain` API is exported by the package version pinned
+by this suite. The suite resolves the SDK from the repository-level pin in
+`dependencies` (exact released version, currently `6.0.0`); the earlier
+fork-branch git URL has been dropped, because a lab corpus dependency has to
+sit on a released first-party artifact rather than a moving branch.
 
 ## Acceptance
 
 - `npm run verify:oracle-safety-check` → 13/13 (semantic; coverage is
   enumerated in README — checked, not checked, and not exercised).
-- `npm run verify:oracle-safety-check-flips` → 5/5 declared mutations detected.
+- `npm run verify:oracle-safety-check-flips` → 12/12 declared mutations
+  detected: five persisted-field checks plus seven temporary, re-signed chain
+  mutations covering scope, spend, depth, time, reputation, values and
+  reversibility attenuation. The committed 13-vector v1 corpus is unchanged.
 - `npm run verify:oracle-safety-check-consistency` → 56/56
   (same-implementation consistency).
 - The three commands above are this family's **reproduction commands**. They
