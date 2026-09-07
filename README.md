@@ -2,7 +2,7 @@
 
 This is the Agent Passport System corpus hosted by Agent Authority Conformance, an LF Decentralized Trust lab: byte-level test vectors, verifier adapters and reproducible run reports for identity, delegated authority and signed decision receipts. It is one corpus in the lab; the lab itself is at https://github.com/Agent-Authority-Conformance.
 
-Run it: `npm ci --include=dev && npm test`. After dependencies are installed, the run makes no network calls. Exit 0 means every APS-native vector passed. External-system families under `fixtures/cross-stack/` are not executed by `npm test`; each carries its own reproduction command in its README.
+Run it: `npm ci --include=dev && npm test`. After dependencies are installed, the run makes no network calls. Exit 0 means every APS-native vector passed. External-system families under `fixtures/cross-stack/` are not executed by `npm test`; each executable family declares its reproduction commands in `fixtures/cross-stack/index.json`.
 
 Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 

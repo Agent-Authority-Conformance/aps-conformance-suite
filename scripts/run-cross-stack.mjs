@@ -17,8 +17,14 @@
 // checked by scripts/check-cross-stack-wiring.mjs and is the reason the two
 // files are separate: the check is a gate, this is an executor.
 //
+// A family declared `executable: "blocked"` FAILS this run. `none` is a
+// legitimate absence and passes; `blocked` says a verifier exists and cannot
+// currently be executed here, which is a defect with a reason attached, and a
+// defect that passes CI is a defect nobody fixes. The distinction is the whole
+// reason the two states are separate.
+//
 // Run: node scripts/run-cross-stack.mjs
-// Exit 0 when every declared script exits 0.
+// Exit 0 when every declared script exits 0 and no family is blocked.
 
 import { spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
@@ -39,8 +45,14 @@ export function declaredScripts(registry) {
   return out
 }
 
+/** Families whose declared reproduction cannot currently be executed here. */
+export function blockedFamilies(registry) {
+  return registry.entries.filter((e) => e.verification?.executable === 'blocked')
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const scripts = declaredScripts(index)
+  const blocked = blockedFamilies(index)
   console.log(`cross-stack: ${scripts.length} declared script(s) from fixtures/cross-stack/index.json`)
   console.log('')
   let failed = 0
@@ -55,5 +67,21 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log('')
   }
   if (failed > 0) process.exit(1)
-  console.log(`cross-stack OK: ${scripts.length}/${scripts.length} declared scripts passed`)
+  console.log(`cross-stack: ${scripts.length}/${scripts.length} declared scripts passed`)
+
+  if (blocked.length > 0) {
+    console.error('')
+    for (const e of blocked) {
+      console.error(`cross-stack BLOCKED: ${e.path}`)
+      console.error(`  ${e.verification.reason}`)
+    }
+    console.error('')
+    const n = blocked.length
+    console.error(`${n} ${n === 1 ? 'family is' : 'families are'} blocked. A blocked family has a declared`)
+    console.error('reproduction that this environment cannot execute; it is not a verdict on the')
+    console.error('family\'s evidence. Repair the runner, or change the declaration to `none` with')
+    console.error('a reason if there is genuinely nothing to run.')
+    process.exit(1)
+  }
+  console.log('cross-stack OK')
 }
