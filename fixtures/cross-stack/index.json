@@ -9,32 +9,34 @@
     {
       "path": "aat-amdal",
       "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:aat-amdal:verify" }
+      "verification": {
+        "verify": "cross-stack:aat-amdal:verify"
+      }
     },
     {
       "path": "action-ref-v1-negatives",
       "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:action-ref-v1-negatives:verify" }
+      "verification": {
+        "verify": "cross-stack:action-ref-v1-negatives:verify"
+      }
     },
     {
       "path": "argentum-action-ref-v1v2",
       "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:argentum-action-ref-v1v2:verify" }
+      "verification": {
+        "verify": "cross-stack:argentum-action-ref-v1v2:verify"
+      }
+    },
+    {
+      "path": "ctef-v0.3.1",
+      "kind": "external-system-family"
     },
     {
       "path": "nobulex-bilateral-v0",
       "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:nobulex-bilateral-v0:verify" }
-    },
-    {
-      "path": "receipts-aeoess",
-      "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:receipts-aeoess:verify" }
-    },
-    {
-      "path": "receipts-amdal",
-      "kind": "external-system-family",
-      "verification": { "verify": "cross-stack:receipts-amdal:verify" }
+      "verification": {
+        "verify": "cross-stack:nobulex-bilateral-v0:verify"
+      }
     },
     {
       "path": "oracle-safety-check",
@@ -42,6 +44,20 @@
       "verification": {
         "verify": "cross-stack:oracle-safety-check:verify",
         "falsify": "cross-stack:oracle-safety-check:falsify"
+      }
+    },
+    {
+      "path": "receipts-aeoess",
+      "kind": "external-system-family",
+      "verification": {
+        "verify": "cross-stack:receipts-aeoess:verify"
+      }
+    },
+    {
+      "path": "receipts-amdal",
+      "kind": "external-system-family",
+      "verification": {
+        "verify": "cross-stack:receipts-amdal:verify"
       }
     },
     {
