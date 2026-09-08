@@ -25,6 +25,7 @@
     "cross-stack:oracle-safety-check:falsify": "npm run verify:oracle-safety-check-flips",
     "cross-stack:receipts-aeoess:verify": "node fixtures/cross-stack/receipts-aeoess/agentlair-run.mjs && python3 runners/aeoess_receipt_runner.py fixtures/cross-stack/receipts-aeoess/receipts-aeoess-2026-08-27.json",
     "cross-stack:receipts-amdal:verify": "python3 runners/receipt_runner.py fixtures/cross-stack/receipts-amdal/receipts-amdal-2026-07-29.json",
+    "cross-stack:ctef-v0.3.1:verify": "python3 fixtures/cross-stack/ctef-v0.3.1/validate.py",
     "cross-stack:token-exchange-attenuation-v0:verify": "npx tsx runners/ts/token-exchange-attenuation.test.ts && python3 fixtures/cross-stack/token-exchange-attenuation-v0/recompute.py",
     "verify:receipt-decision-relation": "tsx fixtures/receipt-decision-relation/verify.ts",
     "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
