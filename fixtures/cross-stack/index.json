@@ -29,7 +29,10 @@
     },
     {
       "path": "ctef-v0.3.1",
-      "kind": "external-system-family"
+      "kind": "external-system-family",
+      "verification": {
+        "verify": "cross-stack:ctef-v0.3.1:verify"
+      }
     },
     {
       "path": "nobulex-bilateral-v0",
