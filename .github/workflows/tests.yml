@@ -20,6 +20,24 @@ jobs:
       - run: npm ci --include=dev
       - run: npm test
 
+      # Python is set up explicitly rather than inherited. This job otherwise
+      # sets up Node only, so the regression below would run against whatever
+      # python3 ubuntu-latest happens to ship that week, which is the one thing
+      # a determinism regression must not depend on. setup-python is CI
+      # environment setup; the test itself reaches no network and no index.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+
+      # Regression for the two identity checks in scripts/run-all.sh. It is a
+      # step of its own and deliberately NOT part of `npm test`: that gate also
+      # runs on the Windows job and is kept APS-native and hermetic, and this is
+      # a test of lab-owned runner machinery rather than of a vector family. It
+      # is not in the cross-stack job either, which exists to execute external
+      # implementations. It builds a synthetic distribution under a temporary
+      # directory and needs no attenu_guard on the runner.
+      - run: bash tests/identity-guards.test.sh
+
   # The suite's Python schema validators. Independent second implementations, in
   # Python with jsonschema instead of Node with ajv. Their value is
   # disagreement: if the two libraries reach different verdicts on the same

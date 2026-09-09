@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 # Copyright 2026 Tymofii Pidlisnyi. Apache-2.0 license. See LICENSE.
 #
-# Runs every documented entrypoint of this repository in one pass and prints one
-# line per runner.
+# Runs every documented conformance and reproduction entrypoint of this
+# repository in one pass and prints one line per runner.
+#
+# NOT counted here: tests/identity-guards.test.sh, which is a regression test of
+# this script's own identity checks rather than a conformance or reproduction
+# entrypoint. It runs as its own step in the Ubuntu suite job. Counting a
+# harness self-test as a runner would inflate the summary with something that
+# exercises no protocol requirement and reproduces no external result.
 #
 # WHY THIS EXISTS. No single documented command runs the whole set. `npm test`
 # is the hermetic default gate and .github/workflows/tests.yml says
@@ -308,7 +314,6 @@ if r="$(check_py_mod pytest)"; then
 else
   skip "tests/test_aat_runner.py (pytest)" "$r"
 fi
-
 # ------------------------- 3. workflow-only commands (repository-hygiene.yml)
 echo "================ 3. .github/workflows/repository-hygiene.yml ================"
 # The absolute-path pattern is ASSEMBLED AT RUNTIME rather than written out.
@@ -383,6 +388,10 @@ fi
 # the PREREQUISITE IDENTITY header for why it differs by family.
 PREREQS="$REPO_ROOT/scripts/run-all-prereqs.json"
 
+# BEGIN IDENTITY HELPERS
+# Everything from here to the END marker is the identity logic and nothing
+# else: no invocation, no repository path, no state. It is sourced verbatim by
+# tests/identity-guards.test.sh against a synthetic distribution.
 # ag_resolve FAMILY_ID -> prints the absolute path of the resolved vectors file,
 # or nothing. Resolution is through the installed package, which is where the
 # file lives; identity is decided by the digest check that follows, not by this.
@@ -470,10 +479,6 @@ ag_fixture_case() {
   run "$label (vectors sha256 $got)" python3 "$script" "$vec"
 }
 
-ag_fixture_case attenu-guard-0.11.0-bundles
-ag_fixture_case attenu-guard-0.13.0-envelopes
-ag_fixture_case attenu-guard-0.15.0-envelopes
-
 # ag_version_case FAMILY_ID -- identity is the installed distribution version.
 ag_version_case() {
   local fam="$1" want dist mod r n
@@ -506,6 +511,15 @@ print('\n'.join(f.get('scripts', [])))
   done <<< "$scripts"
 }
 
+# END IDENTITY HELPERS. tests/identity-guards.test.sh extracts everything between
+# the two markers out of THIS file and sources it, so the logic it exercises is
+# the production logic by construction and cannot drift into a lookalike. The
+# markers are the only contract; moving a helper outside them silently removes it
+# from the regression, which the test's own marker check reports as a failure.
+
+ag_fixture_case attenu-guard-0.11.0-bundles
+ag_fixture_case attenu-guard-0.13.0-envelopes
+ag_fixture_case attenu-guard-0.15.0-envelopes
 ag_version_case attenu-guard-0.6.0
 ag_version_case attenu-guard-0.6.1
 
