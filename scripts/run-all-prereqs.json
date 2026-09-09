@@ -1,0 +1,86 @@
+{
+  "$comment": "Prerequisite identity for the interop families scripts/run-all.sh executes. It exists because two different things can be missing and only one of them is a version number. Package availability or version says WHICH DISTRIBUTION is installed. A fixture digest says WHICH INPUT BYTES are being exercised. Neither substitutes for the other, and a family named for a version needs whichever of the two actually identifies what it claims. Before this file existed, run-all.sh checked that attenu_guard imported and that a relative vectors path resolved inside it, and called that a uniform version pin. It was neither: there was no attenu_guard version check at all, and attenu-guard-0.13.0-envelopes and attenu-guard-0.15.0-envelopes read the SAME path from the same distribution at different revisions, 18 cases against 19, so with either version installed one family's verifier would have run against the other family's vectors and the runner would have printed PASS. This file is metadata passed to the runner, not documentation parsed by it: SOURCE.md is provenance for a human and is never a machine interface.",
+  "version": 1,
+  "identity_kinds": {
+    "fixture_digest": "The package under the vectors is only a delivery vehicle. The script imports none of its code and reads the vectors from a path. What must be identified is the file, so the check is sha256 over the resolved file against the digest the family recorded.",
+    "package_version": "The package supplies the implementation under test, or supplies the vectors through an API with no file path to hash. What must be identified is the distribution, so the check is the installed version against the version the family names.",
+    "both": "The package supplies code under test AND the vectors are read from a path with a recorded digest. Both checks apply and both must pass.",
+    "none": "Neither identity is recorded, or no runnable command exists. Stated per family with the reason; never silently treated as satisfied."
+  },
+  "families": [
+    {
+      "id": "attenu-guard-0.11.0-bundles",
+      "label": "interop:attenu-guard-0.11.0-bundles cleanroom",
+      "script": "interop/attenu-guard-0.11.0-bundles/cleanroom/verify_bundle_v1.py",
+      "identity": "fixture_digest",
+      "why": "cleanroom/verify_bundle_v1.py imports no attenu_guard code (checked: its imports are hashlib, hmac, json, sys, rfc8785) and takes the vectors file as sys.argv[1]. SOURCE.md calls it a clean-room verifier written from the README with no attenu_guard code read or imported. The installed distribution is only where the file lives.",
+      "vectors": {
+        "package": "attenu_guard",
+        "relpath": "vectors/bundles/bundle_vectors_v1.json",
+        "sha256": "90d7fa70eabe92cbfa4df04bad50ac78995b57e83812cc5671e1ba9de01619ce",
+        "recorded_in": "interop/attenu-guard-0.11.0-bundles/SOURCE.md, byte-identity table, PyPI wheel row: file sha256 over attenu_guard/vectors/bundles/bundle_vectors_v1.json inside attenu_guard-0.11.0-py3-none-any.whl"
+      },
+      "python_pins": [{ "module": "rfc8785", "version": "0.1.4" }]
+    },
+    {
+      "id": "attenu-guard-0.13.0-envelopes",
+      "label": "interop:attenu-guard-0.13.0-envelopes cleanroom",
+      "script": "interop/attenu-guard-0.13.0-envelopes/cleanroom/verify_envelope_v1.py",
+      "identity": "fixture_digest",
+      "why": "Same shape as 0.11.0: no attenu_guard import, vectors file as sys.argv[1]. This is the family the old check could not tell apart from 0.15.0, because both read the same relative path.",
+      "vectors": {
+        "package": "attenu_guard",
+        "relpath": "vectors/envelopes/envelope_vectors_v1.json",
+        "sha256": "6a57d75ebec881d39d5a1805793a20f9a6d7bff021b70782dcb57c43b276df64",
+        "bytes": 185227,
+        "revision": "envelope_vectors_v1.1",
+        "recorded_in": "interop/attenu-guard-0.13.0-envelopes/SOURCE.md, byte-identity table, PyPI wheel row: file sha256 over attenu_guard/vectors/envelopes/envelope_vectors_v1.json inside attenu_guard-0.13.0-py3-none-any.whl"
+      },
+      "python_pins": [{ "module": "rfc8785", "version": "0.1.4" }, { "module": "cryptography" }]
+    },
+    {
+      "id": "attenu-guard-0.15.0-envelopes",
+      "label": "interop:attenu-guard-0.15.0-envelopes cleanroom",
+      "script": "interop/attenu-guard-0.15.0-envelopes/cleanroom/verify_envelope_v1.py",
+      "identity": "fixture_digest",
+      "why": "Same shape again, one revision later: 19 cases at envelope_vectors_v1.2 against 0.13.0's 18 at v1.1, at the same relative path.",
+      "vectors": {
+        "package": "attenu_guard",
+        "relpath": "vectors/envelopes/envelope_vectors_v1.json",
+        "sha256": "a8be5ff764a86122ca09e94340416b7169531bf5d0cc76a0b1fc87f8272eb16e",
+        "bytes": 197346,
+        "revision": "envelope_vectors_v1.2",
+        "recorded_in": "interop/attenu-guard-0.15.0-envelopes/SOURCE.md, byte-identity table, PyPI wheel row: file sha256 over attenu_guard/vectors/envelopes/envelope_vectors_v1.json inside attenu_guard-0.15.0-py3-none-any.whl"
+      },
+      "python_pins": [{ "module": "rfc8785", "version": "0.1.4" }, { "module": "cryptography" }]
+    },
+    {
+      "id": "attenu-guard-0.6.0",
+      "label": "interop:attenu-guard-0.6.0",
+      "scripts": [
+        "interop/attenu-guard-0.6.0/jcs-byte-diff.py",
+        "interop/attenu-guard-0.6.0/cleanroom/verify_asor00.py"
+      ],
+      "identity": "package_version",
+      "why": "jcs-byte-diff.py imports attenu_guard.wire._canonical_json at module scope, which IS the implementation under test. cleanroom/verify_asor00.py is clean-room code but loads its vectors through attenu_guard.vectors.load_vectors(), an API call with no file path to hash. A fixture digest would not even distinguish this family from 0.6.1: the seven vectors are eight separate JSON files, and the seven that both versions ship are byte-identical; only the presence of an eighth file, reject_wildcard_widening.json, separates them. The distribution version is the identity that matters here.",
+      "package": { "module": "attenu_guard", "distribution": "attenu-guard", "version": "0.6.0" }
+    },
+    {
+      "id": "attenu-guard-0.6.1",
+      "label": "interop:attenu-guard-0.6.1",
+      "scripts": [
+        "interop/attenu-guard-0.6.1/jcs-byte-diff.py",
+        "interop/attenu-guard-0.6.1/cleanroom/verify_asor00.py"
+      ],
+      "identity": "package_version",
+      "why": "Same as 0.6.0. This is the release that carries the eighth vector, reject_wildcard_widening, which is the only thing distinguishing its vector set from 0.6.0's.",
+      "package": { "module": "attenu_guard", "distribution": "attenu-guard", "version": "0.6.1" }
+    },
+    {
+      "id": "attenu-guard-0.8.0",
+      "label": "interop:attenu-guard-0.8.0",
+      "identity": "none",
+      "why": "The family directory holds SOURCE.md and two results files. No script exists in this tree, so there is nothing to gate and nothing to run."
+    }
+  ]
+}
