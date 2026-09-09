@@ -33,18 +33,61 @@
 # a run carrying either prints "PASS WITH SKIPS (not a clean run)".
 #
 # ---------------------------------------------------------------------------
-# VERSION PIN POLICY, uniform and without exception. A version named in a
-# family's SOURCE.md, RUN.md or README.md is part of that reproduction's
-# identity, so it is a prerequisite like any other. If the installed version
-# differs from the pinned one, the runner is SKIPPED and BOTH versions appear on
-# the line. Running under a different version produces a different reproduction,
-# and labelling it PASS would attach the family's recorded result to bytes that
-# never produced it.
+# PREREQUISITE IDENTITY. There is no single uniform pin rule, and the earlier
+# revision of this header claimed one. It said "VERSION PIN POLICY, uniform and
+# without exception", which was false in both directions: the attenu-guard cases
+# performed no attenu_guard version check at all, and a version check would not
+# have been the right check for most of them anyway.
 #
-# The earlier revision of this file applied that rule to
-# agent-passport-system (pinned 4.5.1, installed 6.0.0, skipped) and not to
-# cryptography (pinned 50.0.1, installed 49.0.0, run and reported PASS). One
-# rule now, applied to both.
+# Two different things can be missing and only one of them is a version number:
+#
+#   package availability or version  says WHICH DISTRIBUTION is installed
+#   a fixture digest                 says WHICH INPUT BYTES are exercised
+#
+# Neither substitutes for the other. A family named for a version needs whichever
+# of the two actually identifies what it claims, and the answer is decided per
+# case rather than assumed. scripts/run-all-prereqs.json carries that decision as
+# structured metadata, with the reason and the provenance pointer per family.
+# SOURCE.md is provenance for a human and is never parsed here.
+#
+# By class of runner:
+#
+#   fixture_digest   attenu-guard 0.11.0-bundles, 0.13.0-envelopes,
+#                    0.15.0-envelopes. The cleanroom verifiers import no
+#                    attenu_guard code and take the vectors file as argv[1], so
+#                    the installed distribution is only where the file lives.
+#                    Checked: sha256 over the resolved file against the digest
+#                    the family recorded. NOT checked: the attenu_guard version,
+#                    because it does not identify the input. The 0.13.0 and
+#                    0.15.0 families read the SAME relative path at different
+#                    revisions, 18 cases against 19, which is exactly the case a
+#                    version check cannot separate and a digest can.
+#
+#   package_version  attenu-guard 0.6.0 and 0.6.1. jcs-byte-diff.py imports
+#                    attenu_guard.wire._canonical_json, the implementation under
+#                    test; cleanroom/verify_asor00.py loads vectors through
+#                    attenu_guard.vectors.load_vectors(), an API with no path to
+#                    hash. Checked: the installed distribution version against
+#                    the one the family names. NOT checked: a fixture digest,
+#                    because there is no single vectors file and the seven files
+#                    both versions ship are byte-identical; only the presence of
+#                    an eighth separates them.
+#
+#   both             no family currently falls here. The class exists in the
+#                    metadata because a family that ran the package's own
+#                    verifier over a path-supplied vector file would need it.
+#
+#   none             attenu-guard 0.8.0, and every family whose directory holds a
+#                    counterparty run record and no script. Reported NOT_RUN with
+#                    the reason, never treated as satisfied.
+#
+# Other families keep the pins they already had, each named on its line: rfc8785
+# 0.1.4, jcs 0.2.1, jsonschema 4.26.0 and cryptography 49.0.0 for the tests.yml
+# schema-parity job, cryptography 50.0.1 for the cleanroom oracle-safety-check,
+# agent-passport-system 4.5.1 for the hjs witness, and each ethers family's own
+# package.json pin. Where a pin is checked, installed different from pinned is
+# SKIPPED with both versions on the line, because a reproduction under a
+# different dependency version is a different reproduction.
 #
 # ---------------------------------------------------------------------------
 # EXIT CODES AND VECTOR TALLIES ARE DIFFERENT THINGS, and this file never prints
@@ -336,58 +379,137 @@ else
   skip "interop:hjs-bb6be62 run-aps-witness.mjs" "$r"
 fi
 
-# attenu-guard. The cleanroom verifiers are stdlib plus rfc8785 (and cryptography
-# for the envelope ones) and take the vectors JSON as argv[1]. That file ships
-# inside the attenu_guard distribution, not in this tree, so the prerequisite
-# that is actually checked is the module and the vectors path resolved from it.
-ag_vectors() { # relative path inside the package
-  python3 - "$1" <<'PY' 2>/dev/null
-import importlib.util, os, sys
-spec = importlib.util.find_spec('attenu_guard')
+# attenu-guard. Identity per family comes from scripts/run-all-prereqs.json; see
+# the PREREQUISITE IDENTITY header for why it differs by family.
+PREREQS="$REPO_ROOT/scripts/run-all-prereqs.json"
+
+# ag_resolve FAMILY_ID -> prints the absolute path of the resolved vectors file,
+# or nothing. Resolution is through the installed package, which is where the
+# file lives; identity is decided by the digest check that follows, not by this.
+ag_resolve() {
+  python3 - "$PREREQS" "$1" <<'PY' 2>/dev/null
+import importlib.util, json, os, sys
+fam = next((f for f in json.load(open(sys.argv[1]))['families'] if f['id'] == sys.argv[2]), None)
+if not fam or 'vectors' not in fam:
+    sys.exit(1)
+spec = importlib.util.find_spec(fam['vectors']['package'])
 if not spec or not spec.submodule_search_locations:
     sys.exit(1)
-p = os.path.join(list(spec.submodule_search_locations)[0], sys.argv[1])
-print(p if os.path.exists(p) else '', end='')
+p = os.path.join(list(spec.submodule_search_locations)[0], fam['vectors']['relpath'])
+sys.stdout.write(p if os.path.exists(p) else '')
 PY
 }
-ag_case() { # label relpath script needs_crypto
-  local label="$1" rel="$2" script="$3" needs_crypto="$4" r vec
-  if ! r="$(check_py_pin rfc8785 0.1.4)"; then skip "$label" "$r"; return; fi
-  if [ "$needs_crypto" = "yes" ] && ! r="$(check_py_mod cryptography)"; then skip "$label" "$r"; return; fi
-  if ! r="$(check_py_mod attenu_guard)"; then
-    skip "$label" "$r; the vectors file \`$rel\` ships inside that distribution"
-    return
-  fi
-  vec="$(ag_vectors "$rel")"
-  if [ -z "$vec" ]; then
-    skip "$label" "attenu_guard is importable but carries no \`$rel\` (checked by resolving the package path)"
-    return
-  fi
-  run "$label" python3 "$script" "$vec"
+
+# ag_expected FAMILY_ID FIELD -> prints one metadata field.
+ag_expected() {
+  python3 - "$PREREQS" "$1" "$2" <<'PY' 2>/dev/null
+import json, sys
+fam = next((f for f in json.load(open(sys.argv[1]))['families'] if f['id'] == sys.argv[2]), None)
+if not fam:
+    sys.exit(1)
+node, key = fam, sys.argv[3]
+for part in key.split('.'):
+    node = (node or {}).get(part) if isinstance(node, dict) else None
+sys.stdout.write('' if node is None else str(node))
+PY
 }
-ag_case "interop:attenu-guard-0.11.0-bundles cleanroom" \
-        "vectors/bundles/bundle_vectors_v1.json" \
-        "interop/attenu-guard-0.11.0-bundles/cleanroom/verify_bundle_v1.py" no
-ag_case "interop:attenu-guard-0.13.0-envelopes cleanroom" \
-        "vectors/envelopes/envelope_vectors_v1.json" \
-        "interop/attenu-guard-0.13.0-envelopes/cleanroom/verify_envelope_v1.py" yes
-ag_case "interop:attenu-guard-0.15.0-envelopes cleanroom" \
-        "vectors/envelopes/envelope_vectors_v1.json" \
-        "interop/attenu-guard-0.15.0-envelopes/cleanroom/verify_envelope_v1.py" yes
-for v in 0.6.0 0.6.1; do
-  for s in jcs-byte-diff.py cleanroom/verify_asor00.py; do
-    lbl="interop:attenu-guard-$v $s"
-    if [ ! -f "interop/attenu-guard-$v/$s" ]; then
-      not_run "$lbl" "no such file in this tree"
-    elif r="$(check_py_mod attenu_guard)"; then
-      run "$lbl" python3 "interop/attenu-guard-$v/$s"
+
+# check_pkg_version MODULE DISTRIBUTION EXPECTED
+# The distribution version is read from installed metadata, which is what pip
+# resolved, rather than from a module __version__ attribute a package may not
+# define or may not keep in step with its release.
+check_pkg_version() {
+  local mod="$1" dist="$2" want="$3" got
+  got="$(python3 - "$mod" "$dist" <<'PY' 2>/dev/null
+import importlib.metadata as md, importlib.util, sys
+mod, dist = sys.argv[1], sys.argv[2]
+if importlib.util.find_spec(mod) is None:
+    sys.stdout.write('absent'); raise SystemExit
+try:
+    sys.stdout.write(md.version(dist))
+except Exception:
+    try:
+        m = __import__(mod)
+        sys.stdout.write(getattr(m, '__version__', 'unknown'))
+    except Exception:
+        sys.stdout.write('unknown')
+PY
+)"
+  if [ "$got" = "absent" ]; then
+    echo "python distribution \`$dist\` not installed; the family names $dist==$want"; return 1
+  fi
+  if [ "$got" = "$want" ]; then return 0; fi
+  echo "version identity: the family names $dist==$want, installed is $dist==$got"; return 1
+}
+
+# ag_fixture_case FAMILY_ID -- identity is the digest of the resolved file.
+ag_fixture_case() {
+  local fam="$1" label script relpath want got vec r
+  label="$(ag_expected "$fam" label)"
+  script="$(ag_expected "$fam" script)"
+  relpath="$(ag_expected "$fam" vectors.relpath)"
+  want="$(ag_expected "$fam" vectors.sha256)"
+  if ! r="$(check_py_pin rfc8785 0.1.4)"; then skip "$label" "$r"; return; fi
+  if [ "$fam" != "attenu-guard-0.11.0-bundles" ] && ! r="$(check_py_mod cryptography)"; then
+    skip "$label" "$r"; return
+  fi
+  if ! r="$(check_py_mod attenu_guard)"; then
+    skip "$label" "$r; it is where the vectors file \`$relpath\` is delivered"
+    return
+  fi
+  vec="$(ag_resolve "$fam")"
+  if [ -z "$vec" ]; then
+    skip "$label" "attenu_guard is importable but carries no \`$relpath\` (checked by resolving the package path)"
+    return
+  fi
+  got="$(shasum -a 256 "$vec" | awk '{print $1}')"
+  if [ "$got" != "$want" ]; then
+    skip "$label" "fixture identity: sha256 over the resolved \`$relpath\` is not the file this family recorded. expected $want observed $got"
+    return
+  fi
+  run "$label (vectors sha256 $got)" python3 "$script" "$vec"
+}
+
+ag_fixture_case attenu-guard-0.11.0-bundles
+ag_fixture_case attenu-guard-0.13.0-envelopes
+ag_fixture_case attenu-guard-0.15.0-envelopes
+
+# ag_version_case FAMILY_ID -- identity is the installed distribution version.
+ag_version_case() {
+  local fam="$1" want dist mod r n
+  want="$(ag_expected "$fam" package.version)"
+  dist="$(ag_expected "$fam" package.distribution)"
+  mod="$(ag_expected "$fam" package.module)"
+  local scripts
+  scripts="$(python3 -c "
+import json,sys
+d=json.load(open('$PREREQS'))
+f=[x for x in d['families'] if x['id']=='$fam'][0]
+print('\n'.join(f.get('scripts', [])))
+")"
+  while IFS= read -r sc; do
+    [ -n "$sc" ] || continue
+    # Label matches the previous revision's so a status comparison lines up:
+    # "interop:<family> jcs-byte-diff.py" and
+    # "interop:<family> cleanroom/verify_asor00.py".
+    case "$sc" in
+      */cleanroom/*) n="interop:$fam cleanroom/$(basename "$sc")" ;;
+      *)             n="interop:$fam $(basename "$sc")" ;;
+    esac
+    if [ ! -f "$sc" ]; then
+      not_run "$n" "no such file in this tree"
+    elif r="$(check_pkg_version "$mod" "$dist" "$want")"; then
+      run "$n (attenu-guard $want)" python3 "$sc"
     else
-      skip "$lbl" "$r (the script imports it at module scope)"
+      skip "$n" "$r"
     fi
-  done
-done
-# 0.8.0 carries SOURCE.md and two results files and no script at all.
-not_run "interop:attenu-guard-0.8.0" "the family directory holds SOURCE.md and two results files; no script exists in this tree (checked with find)"
+  done <<< "$scripts"
+}
+
+ag_version_case attenu-guard-0.6.0
+ag_version_case attenu-guard-0.6.1
+
+not_run "interop:attenu-guard-0.8.0" "$(ag_expected attenu-guard-0.8.0 why)"
 
 # remora
 if r="$(check_py_mod remora)"; then

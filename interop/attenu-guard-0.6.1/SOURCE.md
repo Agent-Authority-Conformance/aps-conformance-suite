@@ -67,3 +67,35 @@ under the independent label.
     pip install attenu-guard==0.6.1
     python3 interop/attenu-guard-0.6.1/jcs-byte-diff.py
     python3 interop/attenu-guard-0.6.1/cleanroom/verify_asor00.py
+
+## Artifact identity, added 2026-09-09 (Day 205)
+
+This record named no artifact digest of any kind when it was written: the runs of
+2026-08-28 and 2026-08-29 pinned the release by version and did not hash the wheel
+or the vector files. That gap was found while adding prerequisite identity checks to
+`scripts/run-all.sh`. The values below were derived on 2026-09-09 by downloading the
+release from PyPI with `pip download --no-deps attenu-guard==0.6.1` and hashing the
+wheel and each vector member inside it. They are therefore evidence about the
+published release as PyPI serves it today, recorded now; they are NOT a restatement
+of anything the original runs checked, and nothing above this heading changes.
+
+    wheel attenu_guard-0.6.1-py3-none-any.whl
+    sha256 50ffb686627c13e0be88601eccb73ca05216025373f7849a8239f61f55601fe6
+
+| vector file, path inside the wheel | bytes | sha256 |
+|---|---|---|
+| `attenu_guard/vectors/reject_bad_signature.json` | 1981 | `18e1b5edbadbc354beba5adeabe1b9b742245030db7d36714ad7123b6ef09400` |
+| `attenu_guard/vectors/reject_depth_exceeded.json` | 2149 | `1a052d933256fd5af7578fa2e6e73183fe84361f2daeb9135388097a650300e1` |
+| `attenu_guard/vectors/reject_exceeded_ceiling.json` | 2050 | `11902c6680e9ef0c714e49c5964a681ddecad979a372801698a3d1f520b490d5` |
+| `attenu_guard/vectors/reject_nonmonotonic_exp.json` | 2206 | `1f41a0bbded4a5546985bee43b616fbee87c51d29652f9cfdbd9f61ab14a8c70` |
+| `attenu_guard/vectors/reject_spliced_parent.json` | 1922 | `25e4f90a39400e9e1165209165096099594147af50aa5f11a8ec8b089e015287` |
+| `attenu_guard/vectors/reject_widened_scope.json` | 2077 | `e5fe880824e48a6b4180966200e8c685b382735980f8343d040708e46201d257` |
+| `attenu_guard/vectors/reject_wildcard_widening.json` | 2596 | `90a99490ce7a8c5dcc46fdd5bc1fe03ee44d10278cbde72e935f7d9d6b016961` |
+| `attenu_guard/vectors/valid_chain.json` | 2109 | `c5c896d9c8bf0aa09c9a3b60435260a6727277cde025ca6870d1f3c64e42cd11` |
+
+Why the runner gates this family on the installed version rather than on one of these
+digests: the vectors are eight separate files reached through `attenu_guard.vectors.
+load_vectors()`, an API call with no single path to hash, and seven of the eight are
+byte-identical to the 0.6.0 files. The eighth, `reject_wildcard_widening.json`, is the only
+file that distinguishes the two vector sets, and it is the vector this record exists for.
+Only the version, and the presence of that file, tell the releases apart.
