@@ -45,7 +45,7 @@
     "verify:cross-stack": "npm run test:cross-stack-wiring && npm run typecheck:cross-stack && node scripts/run-cross-stack.mjs"
   },
   "devDependencies": {
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.5.0",
     "ajv": "8.20.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
