@@ -1,0 +1,93 @@
+{
+ "child": {
+  "actor": "urn:agent:worker",
+  "attenuation_profile_ref": {
+   "digest": "sha256:1599572629fa89237a67b8c301f31736eba791dcc437f275bc2ec321e46394aa",
+   "uri": "urn:lab:attenuation-profile:set-subset:v1"
+  },
+  "constraints": {
+   "max_amount": 50,
+   "max_depth": 3
+  },
+  "delegation_chain": [
+   {
+    "delegation_id": "2f5c7a9e-1b3d-4e6f-8a0c-1d2e3f4a5b6c",
+    "issuer": "https://l2.lab.example",
+    "record_digest": "sha256:e711fdbde57b936330fe8db5f30a591110296bcb1b3e8c24473b7ae6a9f04d40"
+   }
+  ],
+  "delegation_id": "7e1a4c2b-9d8f-4b3e-a6c5-0f1e2d3c4b5a",
+  "expires_at": "2026-09-11T22:00:00Z",
+  "granted_authorizations": [
+   "calendar.read"
+  ],
+  "issued_at": "2026-09-11T20:05:00Z",
+  "issuer": "https://l2.lab.example",
+  "originating_authorization_ref": {
+   "audience": "https://l2.lab.example",
+   "expires_at": "2026-09-12T19:00:00Z",
+   "grant_id": "urn:grant:9b2e1c7a-4d3f-4a8e-9f1b-2c6d8e0a1b3c",
+   "issued_at": "2026-09-11T19:00:00Z",
+   "issuer": "https://idp.lab.example",
+   "subject": "urn:principal:alice"
+  },
+  "originating_principal": "urn:principal:alice",
+  "parent_delegation_ref": {
+   "delegation_id": "2f5c7a9e-1b3d-4e6f-8a0c-1d2e3f4a5b6c",
+   "issuer": "https://l2.lab.example",
+   "record_digest": "sha256:e711fdbde57b936330fe8db5f30a591110296bcb1b3e8c24473b7ae6a9f04d40"
+  },
+  "resource_indicators": [
+   "https://cal.example"
+  ],
+  "task_id": "task-0001"
+ },
+ "expected": {
+  "check": "expiry",
+  "result": "fail_closed"
+ },
+ "id": "ODIS-ATT-02",
+ "mutation": "child expires 22:00, parent 21:00",
+ "normative": [
+  "6.3: expires_at <= parent.expires_at (child delegations cannot outlive parents)",
+  "6.3 Delegation Record table: expires_at MUST NOT exceed the parent delegation's expiry"
+ ],
+ "parents": [
+  {
+   "actor": "urn:agent:coordinator",
+   "attenuation_profile_ref": {
+    "digest": "sha256:1599572629fa89237a67b8c301f31736eba791dcc437f275bc2ec321e46394aa",
+    "uri": "urn:lab:attenuation-profile:set-subset:v1"
+   },
+   "constraints": {
+    "max_amount": 100,
+    "max_depth": 3
+   },
+   "delegation_chain": [],
+   "delegation_id": "2f5c7a9e-1b3d-4e6f-8a0c-1d2e3f4a5b6c",
+   "expires_at": "2026-09-11T21:00:00Z",
+   "granted_authorizations": [
+    "calendar.read",
+    "calendar.write",
+    "mail.send"
+   ],
+   "issued_at": "2026-09-11T20:00:00Z",
+   "issuer": "https://l2.lab.example",
+   "originating_authorization_ref": {
+    "audience": "https://l2.lab.example",
+    "expires_at": "2026-09-12T19:00:00Z",
+    "grant_id": "urn:grant:9b2e1c7a-4d3f-4a8e-9f1b-2c6d8e0a1b3c",
+    "issued_at": "2026-09-11T19:00:00Z",
+    "issuer": "https://idp.lab.example",
+    "subject": "urn:principal:alice"
+   },
+   "originating_principal": "urn:principal:alice",
+   "resource_indicators": [
+    "https://cal.example",
+    "https://mail.example"
+   ],
+   "task_id": "task-0001"
+  }
+ ],
+ "variant": "negative"
+}

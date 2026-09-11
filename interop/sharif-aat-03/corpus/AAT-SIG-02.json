@@ -1,0 +1,35 @@
+{
+ "expected": {
+  "ok": false,
+  "primary": "6.3 step 3"
+ },
+ "id": "AAT-SIG-02",
+ "mutation": "signature was computed over JCS(record with signature:\"\" present); cryptographically valid over the wrong preimage",
+ "normative": [
+  "6.2: the signing preimage omits the signature member; when verifying, the verifier MUST remove the \"signature\" field before computing the hash"
+ ],
+ "records": [
+  {
+   "action_detail": {
+    "event": "session_start",
+    "new_state": "active",
+    "recording_mode": "self",
+    "trigger": "fixture"
+   },
+   "action_type": "lifecycle",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "outcome": "success",
+   "parent_record_id": null,
+   "prev_hash": null,
+   "record_id": "a1000000-0000-4000-8000-000000000001",
+   "record_phase": "concurrent",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "signature": "zZ7phgKGo2OS_qjZEQDrRoFVKQisx4xsZG6oYqGbdL9zgMnK3cDl92O71EoOvxayVycrjzafJYE4YnjgmaHUgQ==",
+   "timestamp": "2026-09-11T20:00:00.000Z",
+   "trust_level": "L1"
+  }
+ ],
+ "variant": "negative",
+ "verification_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAhfmF/C2RDkoJ4+WmZ5pojpPLBUr\n321s32bluAKC1O0ZSn3ry5dxLS3aPKhaqHZaVvRfx1hZllLyiXxlMG5XlA==\n-----END PUBLIC KEY-----\n"
+}

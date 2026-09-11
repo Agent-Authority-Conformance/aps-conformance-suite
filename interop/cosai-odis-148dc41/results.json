@@ -1,0 +1,76 @@
+[
+ {
+  "expected": {
+   "result": "pass"
+  },
+  "fixture_sha256": "41976691fda30be36d4c73fae7e70e8d7666a782de0db2cf58a4f1756e33614f",
+  "id": "ODIS-ATT-00",
+  "observed": {
+   "check": null,
+   "reason": "equal to or narrower than parent under attenuation_profile_ref",
+   "result": "pass"
+  },
+  "status": "reproduced",
+  "variant": "positive"
+ },
+ {
+  "expected": {
+   "check": "attenuation",
+   "result": "fail_closed"
+  },
+  "fixture_sha256": "4a80964c219ac28f312549fb72b7218a9117d83ad69ee9cbfd68efbba58ed893",
+  "id": "ODIS-ATT-01",
+  "observed": {
+   "check": "attenuation",
+   "reason": "6.3 / L2-06: granted_authorizations is not a subset of parent",
+   "result": "fail_closed"
+  },
+  "status": "reproduced",
+  "variant": "negative"
+ },
+ {
+  "expected": {
+   "check": "expiry",
+   "result": "fail_closed"
+  },
+  "fixture_sha256": "1fbddce42b90ab5e94d80ff5f09df6867af614930c68c44846e4928e09f95906",
+  "id": "ODIS-ATT-02",
+  "observed": {
+   "check": "expiry",
+   "reason": "6.3: expires_at exceeds parent.expires_at (child delegations cannot outlive parents)",
+   "result": "fail_closed"
+  },
+  "status": "reproduced",
+  "variant": "negative"
+ },
+ {
+  "expected": {
+   "check": "parent_digest",
+   "result": "fail_closed"
+  },
+  "fixture_sha256": "0af888a84b440ba4beb770ad374bd8b6d0eeafaa593ef7851d2cacf62115dbd0",
+  "id": "ODIS-ATT-03",
+  "observed": {
+   "check": "parent_digest",
+   "reason": "6.3: parent_delegation_ref.record_digest does not match resolved parent (mismatched record)",
+   "result": "fail_closed"
+  },
+  "status": "reproduced",
+  "variant": "negative"
+ },
+ {
+  "expected": {
+   "check": "profile",
+   "result": "fail_closed"
+  },
+  "fixture_sha256": "711df128342c159ced3a7c99836b0a708a25f14b8cea50878ea85e834c202e08",
+  "id": "ODIS-ATT-04",
+  "observed": {
+   "check": "profile",
+   "reason": "L2-06: attenuation_profile_ref unknown or unsupported by this verifier; comparison indeterminate",
+   "result": "fail_closed"
+  },
+  "status": "reproduced",
+  "variant": "negative"
+ }
+]
