@@ -1,0 +1,56 @@
+{
+ "expected": {
+  "ok": false,
+  "primary": "6.3 step 2c"
+ },
+ "id": "AAT-CHAIN-02",
+ "mutation": "records[0].action_detail.trigger changed and records[0] re-signed after records[1] was written; records[1].prev_hash unchanged. Isolates 6.3 step 2c: every signature still verifies.",
+ "normative": [
+  "6.3 step 2c: if the values differ, the chain is broken at record N and the trail MUST be flagged as tampered"
+ ],
+ "records": [
+  {
+   "action_detail": {
+    "event": "session_start",
+    "new_state": "active",
+    "recording_mode": "self",
+    "trigger": "fixture-mutated-after-child-written"
+   },
+   "action_type": "lifecycle",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "outcome": "success",
+   "parent_record_id": null,
+   "prev_hash": null,
+   "record_id": "a1000000-0000-4000-8000-000000000001",
+   "record_phase": "concurrent",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "signature": "ARjhaMACLNCj4Bh2K7-wsdyqN0nbR78_PIH__qMLmr91y9mx-AdrPBu8PHlV1nYRHkS8DGQnGb_o2-K7j52Ajg==",
+   "timestamp": "2026-09-11T20:00:00.000Z",
+   "trust_level": "L1"
+  },
+  {
+   "action_detail": {
+    "decision_type": "reject",
+    "policy_ref": "fixture-policy-v1"
+   },
+   "action_type": "decision",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "deny_reasons": [
+    "CAPABILITY_NOT_GRANTED"
+   ],
+   "outcome": "denied",
+   "parent_record_id": "a1000000-0000-4000-8000-000000000001",
+   "prev_hash": "5fabd7efe04589652cc7955aea2e8369c9798189e93f0e3f45c49d69bfdab428",
+   "record_id": "a1000000-0000-4000-8000-000000000002",
+   "record_phase": "pre_execution",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "signature": "pb_VakSoMyZo4LP1qRZx0ZLhnLBrXMrcnUOLEamZG9m6Cs-EI3TzOnwA-fzW_QDtI0Z2Nezu-NjO5BQ5fJq_Pg==",
+   "timestamp": "2026-09-11T20:00:00.100Z",
+   "trust_level": "L1"
+  }
+ ],
+ "variant": "negative",
+ "verification_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAhfmF/C2RDkoJ4+WmZ5pojpPLBUr\n321s32bluAKC1O0ZSn3ry5dxLS3aPKhaqHZaVvRfx1hZllLyiXxlMG5XlA==\n-----END PUBLIC KEY-----\n"
+}

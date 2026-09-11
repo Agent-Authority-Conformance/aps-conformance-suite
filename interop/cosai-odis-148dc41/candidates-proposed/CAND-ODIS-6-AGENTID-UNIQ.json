@@ -1,0 +1,26 @@
+{
+ "current_normative_status": "Not required by ODIS.md at the pinned revision. 6.1 defines agent_id as a stable logical agent identifier with no uniqueness constraint.",
+ "expected_if_adopted": {
+  "check": "agent_id_resolution",
+  "result": "fail_closed"
+ },
+ "id": "CAND-ODIS-6-AGENTID-UNIQ",
+ "input": {
+  "agent_id": "arn:aws:iam::123456789012:role/SharedRole",
+  "registration_records": [
+   {
+    "agent_id": "arn:aws:iam::123456789012:role/SharedRole",
+    "record_id": "reg-1",
+    "status": "active"
+   },
+   {
+    "agent_id": "arn:aws:iam::123456789012:role/SharedRole",
+    "record_id": "reg-2",
+    "status": "active"
+   }
+  ]
+ },
+ "proposed_text": "The issuer MUST verify that agent_id resolves to exactly one active Agent Registration Record within the trust domain. If resolution returns more than one record ... issuance MUST fail closed.",
+ "source": "cosai-oasis/ws4-odis#6 (open, author szh, 2026-08-04)",
+ "status": "candidate_against_proposed"
+}
