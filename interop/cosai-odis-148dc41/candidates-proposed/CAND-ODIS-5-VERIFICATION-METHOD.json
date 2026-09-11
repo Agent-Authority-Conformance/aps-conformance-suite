@@ -1,0 +1,21 @@
+{
+ "current_normative_status": "Not required by ODIS.md at the pinned revision. 6.2 defines no verification_method field.",
+ "expected_if_adopted": {
+  "check": "verification_method_absent",
+  "result": "fail_closed"
+ },
+ "id": "CAND-ODIS-5-VERIFICATION-METHOD",
+ "input": {
+  "attestation_evidence": [
+   {
+    "platform": "example-cloud",
+    "token_ref": "opaque",
+    "type": "platform_provisioned"
+   }
+  ],
+  "verification_method": null
+ },
+ "proposed_text": "When attestation_evidence includes a platform-provisioned credential, the descriptor MUST carry verification_method",
+ "source": "cosai-oasis/ws4-odis#5 (open, author szh, 2026-08-04)",
+ "status": "candidate_against_proposed"
+}
