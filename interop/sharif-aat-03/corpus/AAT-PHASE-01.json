@@ -1,0 +1,54 @@
+{
+ "expected": {
+  "ok": true,
+  "primary": "phase consistent"
+ },
+ "id": "AAT-PHASE-01",
+ "normative": [
+  "4.2: when action_type is \"decision\" and outcome is \"denied\", the record MUST have record_phase set to \"pre_execution\"",
+  "6.3 step 6",
+  "C.5 check 7"
+ ],
+ "records": [
+  {
+   "action_detail": {
+    "event": "session_start",
+    "new_state": "active",
+    "recording_mode": "self",
+    "trigger": "fixture"
+   },
+   "action_type": "lifecycle",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "outcome": "success",
+   "parent_record_id": null,
+   "prev_hash": null,
+   "record_id": "a1000000-0000-4000-8000-000000000001",
+   "record_phase": "concurrent",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "timestamp": "2026-09-11T20:00:00.000Z",
+   "trust_level": "L1"
+  },
+  {
+   "action_detail": {
+    "decision_type": "reject",
+    "policy_ref": "fixture-policy-v1"
+   },
+   "action_type": "decision",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "deny_reasons": [
+    "CAPABILITY_NOT_GRANTED"
+   ],
+   "outcome": "denied",
+   "parent_record_id": "a1000000-0000-4000-8000-000000000001",
+   "prev_hash": "24f7b3b76af81ddabbc27874a182a819d0ba2d09130b532d25554d4aa1aa69e8",
+   "record_id": "a1000000-0000-4000-8000-000000000002",
+   "record_phase": "pre_execution",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "timestamp": "2026-09-11T20:00:00.100Z",
+   "trust_level": "L1"
+  }
+ ],
+ "variant": "positive"
+}

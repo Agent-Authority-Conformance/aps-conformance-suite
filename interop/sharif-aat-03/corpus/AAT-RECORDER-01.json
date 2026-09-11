@@ -1,0 +1,39 @@
+{
+ "agent_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAhfmF/C2RDkoJ4+WmZ5pojpPLBUr\n321s32bluAKC1O0ZSn3ry5dxLS3aPKhaqHZaVvRfx1hZllLyiXxlMG5XlA==\n-----END PUBLIC KEY-----\n",
+ "expected": null,
+ "expected_note": "No expected result is assigned. Assigning one would decide the signer-key inconsistency on the author's behalf.",
+ "id": "AAT-RECORDER-01",
+ "normative": [
+  "5.2: the independent component SHOULD sign records using its own key, distinct from the agent's key",
+  "6.2 step 4: sign the hash using ECDSA P-256 with the agent's private key",
+  "6.3 step 3: if signatures are present, verify each signature using the agent's public key",
+  "3.2 recording_component: a URI; no signer key reference is defined on the record"
+ ],
+ "observation": "Signer-key inconsistency. The record is signed per 5.2 with the recorder key. Applying 6.3 step 3 literally (agent public key) fails. Applying the recorder key succeeds. The draft does not say which key a verifier applies when recording_component is present, and defines no field from which to resolve it.",
+ "recorder_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1lqTl3yqPRsIGFL/V6eeRl8WYFdz\nBLrq1QXdOkhYnPNQGF6JU3LfYiHqOhN1V+Rz/dtnVfBb1QfDxTP86ckShQ==\n-----END PUBLIC KEY-----\n",
+ "records": [
+  {
+   "action_detail": {
+    "event": "session_start",
+    "new_state": "active",
+    "recording_component_id": "urn:gateway:recorder.lab.example",
+    "recording_mode": "independent",
+    "trigger": "fixture"
+   },
+   "action_type": "lifecycle",
+   "agent_id": "urn:agent:fixture-bot.lab.example",
+   "agent_version": "1.0.0",
+   "outcome": "success",
+   "parent_record_id": null,
+   "prev_hash": null,
+   "record_id": "a1000000-0000-4000-8000-000000000001",
+   "record_phase": "concurrent",
+   "recording_component": "urn:gateway:recorder.lab.example",
+   "session_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+   "signature": "ze5JCHxRBkfMIj1jtea1-EhBXTLDzhNv1kcNxcZBuRl1Ihpo3lUyP8qn3NiIzxfZd1PlaFk9AgAu8i7rmwTJuw==",
+   "timestamp": "2026-09-11T20:00:00.000Z",
+   "trust_level": "L2"
+  }
+ ],
+ "variant": "unresolved"
+}
