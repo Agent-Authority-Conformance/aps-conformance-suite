@@ -182,6 +182,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
+| `interop/cosai-odis-148dc41` | [`README.md`](interop/cosai-odis-148dc41/README.md) |
 | `interop/cosai-ws4-189-evidence-sufficiency` | [`README.md`](interop/cosai-ws4-189-evidence-sufficiency/README.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a642c17` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a642c17/SOURCE.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a71b7329` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a71b7329/SOURCE.md) |
@@ -195,6 +196,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
+| `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
 | `interop/wasmagent-aep-2026-09-13-03` | [`RUN.md`](interop/wasmagent-aep-2026-09-13-03/RUN.md) |
 | `interop/x402-receipts-debc94f` | [`RUN.md`](interop/x402-receipts-debc94f/RUN.md) |
 
