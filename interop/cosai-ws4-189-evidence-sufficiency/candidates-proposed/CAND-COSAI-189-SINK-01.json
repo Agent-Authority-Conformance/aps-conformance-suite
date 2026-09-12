@@ -1,0 +1,59 @@
+{
+ "author_rationale": "The declared-capabilities state establishes that production coverage for delegation was never established, so the absent block is absence of evidence, not evidence of absence.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "single sink, single session",
+   "producer_declared_capabilities": []
+  },
+  "evidence": {
+   "agent": {
+    "gated_on": "read_agent",
+    "present": false
+   },
+   "completion": {
+    "gated_on": null,
+    "present": true
+   },
+   "delegation": {
+    "gated_on": "read_delegation",
+    "present": false
+   },
+   "labels": {
+    "gated_on": "read_labels",
+    "present": false
+   },
+   "mcp": {
+    "gated_on": null,
+    "present": true
+   },
+   "request": {
+    "gated_on": null,
+    "present": true
+   }
+  },
+  "property": {
+   "kind": "narrow_absence",
+   "name": "no_delegation_occurred",
+   "statement": "the audited session contains no delegation event"
+  },
+  "runtime_outcome": {
+   "carried_as": "evidence that the records are intact, never a verdict on the property",
+   "hash_chain": "intact",
+   "signature": "valid"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": "producer_capability_coverage",
+  "verdict": "not_established"
+ },
+ "id": "CAND-COSAI-189-SINK-01",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#189 freeze candidate (aeoess comment 2026-09-11T17:57Z); not normative",
+ "provenance": {
+  "authored_by": "Levaj2000 on cosai-oasis/ws4-secure-design-agentic-systems#189, 2026-09-11T18:15Z",
+  "note": "pre-fix behavior; PR head has since moved. No prior-art source vector, new case.",
+  "observed_at": "5b76fa6f6cd64ff54d7237c2fe3166ba397d6999",
+  "observed_on": "2026-09-10",
+  "source": "praxis-proxy/policy PR #84 (feat(audit): decision and effect auditing)"
+ },
+ "status": "candidate_against_proposed"
+}

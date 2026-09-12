@@ -182,6 +182,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
+| `interop/cosai-ws4-189-evidence-sufficiency` | [`README.md`](interop/cosai-ws4-189-evidence-sufficiency/README.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a642c17` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a642c17/SOURCE.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a71b7329` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a71b7329/SOURCE.md) |
 | `interop/ctef-v0.3.1-admissibility-checker-fd256bc4-run-aeoess` | [`SOURCE.md`](interop/ctef-v0.3.1-admissibility-checker-fd256bc4-run-aeoess/SOURCE.md) |
