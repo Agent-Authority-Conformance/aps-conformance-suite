@@ -29,6 +29,8 @@ def evaluate(checker_input: dict) -> dict:
     # declaration. Both fail to establish coverage for a gated field, but they
     # are recorded distinctly because the author drew the distinction.
     declared = ctx.get('producer_declared_capabilities')
+    if not (declared is None or isinstance(declared, list)):
+        raise ValueError('producer_declared_capabilities must be a list or null')
 
     if prop['name'] != 'no_delegation_occurred':
         return {'verdict': 'not_established', 'unmet_obligation': 'checker_supports_property',
@@ -38,11 +40,21 @@ def evaluate(checker_input: dict) -> dict:
     if field is None:
         return {'verdict': 'not_established', 'unmet_obligation': 'evidence_field_declared',
                 'reason': 'evidence carries no delegation field descriptor'}
+    if not isinstance(field.get('present'), bool):
+        raise ValueError('evidence.delegation.present must be a bool')
 
     if field['present']:
         # A delegation block is present. The narrow property asks whether any
-        # delegation event occurred in the session.
-        events = field.get('value', {}).get('events', [])
+        # delegation event occurred in the session. Malformed present evidence
+        # is a checker input error, never a verdict: #189 keeps not_established
+        # apart from parser and malformed-input failures, and a missing events
+        # member cannot prove zero events.
+        value = field.get('value')
+        if not isinstance(value, dict):
+            raise ValueError('present delegation evidence requires an object value')
+        if 'events' not in value or not isinstance(value['events'], list):
+            raise ValueError('present delegation evidence requires value.events list')
+        events = value['events']
         return {'verdict': 'fail' if events else 'pass',
                 'unmet_obligation': None,
                 'reason': 'delegation block present; events=%d' % len(events)}
