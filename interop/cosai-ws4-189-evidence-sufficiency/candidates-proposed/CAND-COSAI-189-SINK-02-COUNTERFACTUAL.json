@@ -1,0 +1,59 @@
+{
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "single sink, single session",
+   "producer_declared_capabilities": [
+    "read_delegation"
+   ]
+  },
+  "evidence": {
+   "agent": {
+    "gated_on": "read_agent",
+    "present": false
+   },
+   "completion": {
+    "gated_on": null,
+    "present": true
+   },
+   "delegation": {
+    "gated_on": "read_delegation",
+    "present": false
+   },
+   "labels": {
+    "gated_on": "read_labels",
+    "present": false
+   },
+   "mcp": {
+    "gated_on": null,
+    "present": true
+   },
+   "request": {
+    "gated_on": null,
+    "present": true
+   }
+  },
+  "property": {
+   "kind": "narrow_absence",
+   "name": "no_delegation_occurred",
+   "statement": "the audited session contains no delegation event"
+  },
+  "runtime_outcome": {
+   "hash_chain": "intact",
+   "signature": "valid"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": null,
+  "verdict": "pass"
+ },
+ "id": "CAND-COSAI-189-SINK-02-COUNTERFACTUAL",
+ "proposed_rule": "same as SINK-01",
+ "provenance": {
+  "authored_by": "Levaj2000 on cosai-oasis/ws4-secure-design-agentic-systems#189, 2026-09-11T18:15Z",
+  "note": "Counterfactual stated by the author in the same comment: had the sink declared read_delegation and the block still been absent, the absence is evidence of absence and can support the narrow property. Hypothetical, not observed.",
+  "observed_at": "5b76fa6f6cd64ff54d7237c2fe3166ba397d6999",
+  "observed_on": "2026-09-10",
+  "source": "praxis-proxy/policy PR #84 (feat(audit): decision and effect auditing)"
+ },
+ "status": "candidate_against_proposed"
+}

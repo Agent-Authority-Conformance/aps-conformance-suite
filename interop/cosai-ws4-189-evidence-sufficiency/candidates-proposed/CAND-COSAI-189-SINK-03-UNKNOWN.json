@@ -1,0 +1,56 @@
+{
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "single sink, single session",
+   "producer_declared_capabilities": null
+  },
+  "evidence": {
+   "agent": {
+    "gated_on": "read_agent",
+    "present": false
+   },
+   "completion": {
+    "gated_on": null,
+    "present": true
+   },
+   "delegation": {
+    "gated_on": "read_delegation",
+    "present": false
+   },
+   "labels": {
+    "gated_on": "read_labels",
+    "present": false
+   },
+   "mcp": {
+    "gated_on": null,
+    "present": true
+   },
+   "request": {
+    "gated_on": null,
+    "present": true
+   }
+  },
+  "property": {
+   "kind": "narrow_absence",
+   "name": "no_delegation_occurred"
+  },
+  "runtime_outcome": {
+   "hash_chain": "intact",
+   "signature": "valid"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": "producer_capability_coverage",
+  "verdict": "not_established"
+ },
+ "id": "CAND-COSAI-189-SINK-03-UNKNOWN",
+ "proposed_rule": "same as SINK-01; exercises the explicit-empty versus unknown distinction the author drew",
+ "provenance": {
+  "authored_by": "Levaj2000 on cosai-oasis/ws4-secure-design-agentic-systems#189, 2026-09-11T18:15Z",
+  "note": "Lab-authored variant. The author distinguished explicit empty declaration from unknown; this case fixes that an unknown declaration also fails to establish coverage. Not from the source comment.",
+  "observed_at": "5b76fa6f6cd64ff54d7237c2fe3166ba397d6999",
+  "observed_on": "2026-09-10",
+  "source": "praxis-proxy/policy PR #84 (feat(audit): decision and effect auditing)"
+ },
+ "status": "candidate_against_proposed"
+}
