@@ -1,0 +1,47 @@
+[
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "producer_capability_coverage",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "36c1c585cf776a371e5085fc19d1aa5b00041d804b0afc456ca457edc4cae0b7",
+  "id": "CAND-COSAI-189-SINK-01",
+  "observed": {
+   "reason": "field gated on 'read_delegation', producer declared nothing: absence of evidence, not evidence of absence",
+   "unmet_obligation": "producer_capability_coverage",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "fixture_sha256": "062a736b2c55298fca99795642bd0a348d2d701024655046f73d4cb6339695d8",
+  "id": "CAND-COSAI-189-SINK-02-COUNTERFACTUAL",
+  "observed": {
+   "reason": "production coverage established (read_delegation declared), absent field is evidence of absence",
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "producer_capability_coverage",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "e6b9f89bbdf359a6df5c2b4af7d06a094ae36e85d16042a1c76b1854674072d8",
+  "id": "CAND-COSAI-189-SINK-03-UNKNOWN",
+  "observed": {
+   "reason": "field gated on 'read_delegation', producer declared nothing: absence of evidence, not evidence of absence",
+   "unmet_obligation": "producer_capability_coverage",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ }
+]
