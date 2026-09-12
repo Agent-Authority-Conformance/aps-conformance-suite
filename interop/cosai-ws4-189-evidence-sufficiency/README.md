@@ -39,6 +39,7 @@ schema settles they should be renamed to match it.
 
     cd interop/cosai-ws4-189-evidence-sufficiency
     python3 adapter/py/run.py
+    python3 adapter/py/test_checker.py
 
 ## Lab operating constraints
 
