@@ -62,3 +62,12 @@ inputs. The review of PR #43 records what the vendored known-answer subset does 
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification
 or a family-level verdict.
+
+## Dependency re-pin, 2026-09-11
+
+`requirements.txt` moved `cryptography` from 49.0.0 to 50.0.0 for GHSA-g6cj-pr64-35w5
+(PKCS#7 EnvelopedData decryption oracle; this harness uses only Ed25519 verification and
+never touches PKCS#7). The recompute was re-run against the same pinned family bytes and the
+same pinned Wycheproof corpus under both 49.0.0 and 50.0.0 on 2026-09-11: exit 0 both times,
+output byte-identical to each other and to `results-recompute.txt`. The version references in
+the sections above describe the original run and are left as written.
