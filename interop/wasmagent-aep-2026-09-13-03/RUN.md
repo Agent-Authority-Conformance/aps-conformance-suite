@@ -59,11 +59,15 @@ family-level verdict.
 Clones the three component repos at the pinned SHAs, aborts on any pin mismatch, installs the two
 JS dependencies, places the lab-owned adapters, runs all four surfaces and preserves exit codes.
 Requires `git`, `bun`, `cargo`, `python3`. Depends on no state outside this directory.
+`adapter/build-matrix.py` then joins the three layer outputs into `consolidated-matrix.json`. It is
+aggregation only, makes no verification decision and introduces no semantic rule, so it carries no
+authorship classification of its own.
 
 Environment of the recorded run: bun 1.3.11, cargo 1.95.0 (f2d3ce0bd 2026-03-21), python 3.14.6.
 Exit codes: `js-driver.ts` 0, `cargo test -p aep-core --test lab_driver` 0, `lab-semantic.py` 0,
-`run.sh` 0. Re-executed from a clean scratch clone, the three result files reproduced
-byte-identically to the copies in `results/`.
+`build-matrix.py` 0, `run.sh` 0. Re-executed from a clean scratch clone, all four files in
+`results/` reproduced byte-identically, including `consolidated-matrix.json` at
+`bdd55cb9f05fc9279b9558ddd22435107a090fdbfe833a597a4f7f2f056675cd`.
 
 ## Surfaces and what each can establish
 
@@ -175,6 +179,7 @@ fact.
     adapter/js-driver.ts              JS-NATIVE-RECORD, JS-NATIVE-CHAIN
     adapter/lab-driver.rs             RUST-NATIVE-DSSE, placed into the pinned crate by run.sh
     adapter/lab-semantic.py           LAB-SEMANTIC
+    adapter/build-matrix.py           joins the three layer outputs into the matrix
     run.sh                            reproduction
     CHECKSUMS.sha256                  sha256 of every file in this directory
 
