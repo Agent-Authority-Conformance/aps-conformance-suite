@@ -7,4 +7,4 @@ bdd55cb9f05fc9279b9558ddd22435107a090fdbfe833a597a4f7f2f056675cd  ./results/cons
 8a92eff8a7e35fb65d1d290adfaefd8fd294d8e5e88f04a9e7a75053324a70d8  ./results/lab-semantic.json
 66a5129c436cd4df351d38cbb2dc953adda253192fcb13bf1713c0a1cec7be9d  ./results/native-js.json
 5f2878f1027b88fc6488500a0d518b23f29e7aa41228620999d53f8dd0199309  ./results/native-rust.json
-1a43fcecfb84f2efcd9c9da09b4f51ef05861403e6e53c97af281e8642aed6f2  ./run.sh
+24b9ace62efe66bb00fc2560a2c6d591a19022ec3b3ecb0984514c20f16bfd33  ./run.sh
