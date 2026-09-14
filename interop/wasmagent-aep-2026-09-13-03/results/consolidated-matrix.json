@@ -1,0 +1,526 @@
+[
+ {
+  "fixture": "valid/unsigned-v05.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "valid/minimal-v05.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "valid/proto-key-preserved.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "invalid-semantic/floor-roundup.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_FLOOR_NOT_WEAKEST"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/floor-not-observed.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_FLOOR_NOT_OBSERVED",
+    "SEM_FLOOR_NOT_WEAKEST"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/unknown-attribution-grade.json",
+  "manifest": {
+   "structural": "invalid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_UNKNOWN_GRADE"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/duplicate-observed-grade.json",
+  "manifest": {
+   "structural": "invalid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_DUPLICATE_OBSERVED"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/negative-authorization-evidence-count.json",
+  "manifest": {
+   "structural": "invalid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_NEGATIVE_AUTH_EVIDENCE_COUNT"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/floor-without-observed.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_FLOOR_WITHOUT_OBSERVED"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/floor-with-empty-observed.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_EMPTY_OBSERVED"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/observed-without-floor.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_OBSERVED_WITHOUT_FLOOR"
+   ]
+  }
+ },
+ {
+  "fixture": "invalid-semantic/empty-observed.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "invalid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "unsigned",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": false,
+   "violations": [
+    "SEM_OBSERVED_WITHOUT_FLOOR",
+    "SEM_EMPTY_OBSERVED"
+   ]
+  }
+ },
+ {
+  "fixture": "dsse/js-signed-v05.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": true,
+   "authenticity": "dsse-valid",
+   "binding": "exact"
+  },
+  "RUST_NATIVE_DSSE": "OK",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/rust-signed-v05.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": true,
+   "authenticity": "dsse-valid",
+   "binding": "exact"
+  },
+  "RUST_NATIVE_DSSE": "OK",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/tampered-run-id.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "invalid"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse subject digest does not bind the record",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/wrong-payload-type-resigned.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse payload type mismatch",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/wrong-predicate-type-resigned.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "invalid"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse predicateType mismatch",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/wrong-statement-type-resigned.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "invalid"
+  },
+  "RUST_NATIVE_DSSE": "ERR: in-toto statement _type mismatch",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/missing-subject-name-resigned.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "invalid"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse statement subject has no name",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/wrong-subject-name-resigned.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "invalid"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse subject name does not match the run_id",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "dsse/multiple-signatures.json",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": {
+   "valid": false,
+   "authenticity": "invalid",
+   "binding": "not-applicable"
+  },
+  "RUST_NATIVE_DSSE": "ERR: dsse envelope must carry exactly one signature",
+  "JS_NATIVE_CHAIN": null,
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/intact-dsse-3.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "intact",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/intact-3.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "intact",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/missing-all.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "not-present",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/partial-last.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "partial",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/partial-middle.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "partial",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/broken-middle.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": false,
+   "status": "broken",
+   "brokenAt": 1
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ },
+ {
+  "fixture": "chain/singleton-with-prev.jsonl",
+  "manifest": {
+   "structural": "valid",
+   "semantic": "valid"
+  },
+  "JS_NATIVE_RECORD": null,
+  "RUST_NATIVE_DSSE": null,
+  "JS_NATIVE_CHAIN": {
+   "valid": true,
+   "status": "orphaned",
+   "brokenAt": null
+  },
+  "LAB_SEMANTIC": {
+   "semantic_valid": true,
+   "violations": []
+  }
+ }
+]
