@@ -2,6 +2,11 @@
  "checker_input": {
   "context": {
    "evaluation_scope": "single sink, single session",
+   "observation_coverage": {
+    "basis": "assumed by this counterfactual; establishment belongs to a separate verifier surface",
+    "scope": "single sink, single session",
+    "status": "established"
+   },
    "producer_declared_capabilities": [
     "read_delegation"
    ]
@@ -50,7 +55,7 @@
  "proposed_rule": "same as SINK-01",
  "provenance": {
   "authored_by": "Levaj2000 on cosai-oasis/ws4-secure-design-agentic-systems#189, 2026-09-11T18:15Z",
-  "note": "Counterfactual stated by the author in the same comment: had the sink declared read_delegation and the block still been absent, the absence is evidence of absence and can support the narrow property. Hypothetical, not observed.",
+  "note": "Counterfactual stated by the author in the same comment: had the sink declared read_delegation and the block still been absent, the absence is evidence of absence and can support the narrow property. Hypothetical, not observed. Carries the session observation-coverage premise as ASSUMED after imran-siddique and Levaj2000 established on #189 that a declared capability is field visibility and not interval completeness.",
   "observed_at": "5b76fa6f6cd64ff54d7237c2fe3166ba397d6999",
   "observed_on": "2026-09-10",
   "source": "praxis-proxy/policy PR #84 (feat(audit): decision and effect auditing)"
