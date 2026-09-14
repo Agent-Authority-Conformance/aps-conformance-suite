@@ -129,9 +129,14 @@ writes to the committed tree**.
     cd interop/cosai-ws4-189-evidence-sufficiency
     python3 adapter/py/run.py              # VERIFY, read-only, nonzero exit on any mismatch
     python3 adapter/py/test_checker.py     # checker regressions
+    python3 adapter/py/test_harness.py     # harness regressions, run.py as an artifact
     python3 adapter/py/run.py --generate   # rewrite the fixtures and results.json
 
-Verify performs three independent checks: it regenerates each case into a
+Verify first requires the candidate set to be exactly the three declared cases,
+so a missing case fails and an unverified extra file dropped into
+`candidates-proposed/` cannot go unexamined. That invariant comes from the
+proposed `check.py` imran-siddique posted on #91. It then performs three
+independent checks: it regenerates each case into a
 scratch directory and diffs against the committed bytes, it runs the checker
 over the committed fixtures and compares against their committed
 expectations, and it compares `results.json` against what the committed
@@ -142,6 +147,12 @@ altering a committed expectation was silently overwritten and the run still
 exited 0. Imran demonstrated this by changing a committed expectation to
 `fail`. Under the current harness that same edit fails three ways and the
 altered file is left on disk rather than repaired.
+
+`adapter/py/test_harness.py` pins that property rather than leaving it to a
+manual check. It copies the record to a scratch directory, mutates it, and
+asserts that verification exits nonzero AND that the mutated bytes are
+unchanged afterwards, across a mutated expectation, a mutated checker input, an
+extra candidate file and a missing one.
 
 ## Lab operating constraints
 
