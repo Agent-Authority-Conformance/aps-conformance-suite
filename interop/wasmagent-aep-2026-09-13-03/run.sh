@@ -12,7 +12,7 @@ JS_SHA=bb71077cbd13051c05e17195d11d16efd0d1c572
 PROXY_SHA=4b4bde3b2e06eb62b7910cb3f379d75288cc4db1
 
 echo "scratch: $WORK"
-mkdir -p "$WORK/out"
+mkdir -p "$WORK/out" "$WORK/evidence"
 
 clone_at() { # repo sha dir
   git clone -q "https://github.com/WasmAgent/$1.git" "$WORK/$3" || return 1
@@ -31,8 +31,9 @@ cp "$HERE/adapter/js-driver.ts" "$WORK/adapter/"
 printf '{ "name": "aep-lab-adapter", "private": true, "type": "module" }\n' > "$WORK/adapter/package.json"
 ( cd "$WORK/adapter" && bun add @noble/ed25519@^3.1.0 zod@^3.23.0 >/dev/null 2>&1 )
 ln -sfn "$WORK/adapter/node_modules" "$WORK/wasmagent-js/node_modules"
-( cd "$WORK/adapter" && bun run js-driver.ts > "$WORK/out/native-js.json" )
+( cd "$WORK/adapter" && bun run js-driver.ts > "$WORK/evidence/native-js.json" )
 JS_EXIT=$?; echo "JS_DRIVER_EXIT=$JS_EXIT"
+cp "$WORK/evidence/native-js.json" "$WORK/out/" 2>/dev/null
 
 # --- RUST-NATIVE-DSSE ---
 cp "$HERE/adapter/lab-driver.rs" "$WORK/wasmagent-proxy/crates/aep-core/tests/lab_driver.rs"
@@ -48,6 +49,12 @@ mkdir -p "$WORK/evidence"
 SEM_EXIT=$?; echo "LAB_SEMANTIC_EXIT=$SEM_EXIT"
 [ -f "$WORK/evidence/lab-semantic.json" ] && cp "$WORK/evidence/lab-semantic.json" "$WORK/out/"
 
+# --- consolidated matrix (aggregation only, no verification decision) ---
+cp "$HERE/adapter/build-matrix.py" "$WORK/adapter/"
+( cd "$WORK/adapter" && python3 build-matrix.py )
+MATRIX_EXIT=$?; echo "BUILD_MATRIX_EXIT=$MATRIX_EXIT"
+[ -f "$WORK/evidence/consolidated-matrix.json" ] && cp "$WORK/evidence/consolidated-matrix.json" "$WORK/out/"
+
 echo "outputs in $WORK/out"
-echo "EXITS js=$JS_EXIT rust=$RUST_EXIT lab_semantic=$SEM_EXIT"
-[ "$JS_EXIT" -eq 0 ] && [ "$RUST_EXIT" -eq 0 ] && [ "$SEM_EXIT" -eq 0 ]
+echo "EXITS js=$JS_EXIT rust=$RUST_EXIT lab_semantic=$SEM_EXIT matrix=$MATRIX_EXIT"
+[ "$JS_EXIT" -eq 0 ] && [ "$RUST_EXIT" -eq 0 ] && [ "$SEM_EXIT" -eq 0 ] && [ "$MATRIX_EXIT" -eq 0 ]
