@@ -55,6 +55,23 @@ cp "$HERE/adapter/build-matrix.py" "$WORK/adapter/"
 MATRIX_EXIT=$?; echo "BUILD_MATRIX_EXIT=$MATRIX_EXIT"
 [ -f "$WORK/evidence/consolidated-matrix.json" ] && cp "$WORK/evidence/consolidated-matrix.json" "$WORK/out/"
 
+# --- verify the regenerated artifacts equal the committed evidence ---
+# One gate, one purpose: a reproduction that silently differs from the record is a
+# failure, never a repair. run.sh never writes into results/.
+DIFF_EXIT=0
+for f in native-js.json native-rust.json lab-semantic.json consolidated-matrix.json; do
+  if [ ! -f "$WORK/out/$f" ]; then echo "MISSING regenerated $f"; DIFF_EXIT=1; continue; fi
+  if ! cmp -s "$HERE/results/$f" "$WORK/out/$f"; then
+    echo "DIFFERS from committed evidence: $f"
+    echo "  committed   $(shasum -a 256 "$HERE/results/$f" | cut -d' ' -f1)"
+    echo "  regenerated $(shasum -a 256 "$WORK/out/$f" | cut -d' ' -f1)"
+    DIFF_EXIT=1
+  else
+    echo "matches committed evidence: $f"
+  fi
+done
+echo "REGEN_DIFF_EXIT=$DIFF_EXIT"
+
 echo "outputs in $WORK/out"
-echo "EXITS js=$JS_EXIT rust=$RUST_EXIT lab_semantic=$SEM_EXIT matrix=$MATRIX_EXIT"
-[ "$JS_EXIT" -eq 0 ] && [ "$RUST_EXIT" -eq 0 ] && [ "$SEM_EXIT" -eq 0 ] && [ "$MATRIX_EXIT" -eq 0 ]
+echo "EXITS js=$JS_EXIT rust=$RUST_EXIT lab_semantic=$SEM_EXIT matrix=$MATRIX_EXIT diff=$DIFF_EXIT"
+[ "$JS_EXIT" -eq 0 ] && [ "$RUST_EXIT" -eq 0 ] && [ "$SEM_EXIT" -eq 0 ] && [ "$MATRIX_EXIT" -eq 0 ] && [ "$DIFF_EXIT" -eq 0 ]
