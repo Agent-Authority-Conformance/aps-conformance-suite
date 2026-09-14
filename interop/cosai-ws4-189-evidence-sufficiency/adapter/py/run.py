@@ -146,6 +146,18 @@ if MODE == '--generate':
 # ---- verify mode: READ-ONLY over the committed tree ----
 failures = []
 
+# (0) the candidate set must be EXACTLY the expected ids. Checking only that the
+#     known cases are present lets an unverified fixture be dropped into the
+#     directory and go unexamined, which is the invariant imran-siddique's
+#     proposed check.py enforces on #91.
+expected_ids = {c['id'] for c in cases}
+present_ids = {os.path.splitext(f)[0] for f in os.listdir(CAND) if f.endswith('.json')}
+for extra in sorted(present_ids - expected_ids):
+    failures.append(f'{extra}: unexpected candidate file in candidates-proposed/, '
+                    'not one of the declared cases')
+for missing in sorted(expected_ids - present_ids):
+    failures.append(f'{missing}: declared candidate file is missing')
+
 # (a) regenerate into scratch and diff against the committed bytes. A committed fixture
 #     that differs from what the generator would produce is a failure, never a repair.
 scratch = tempfile.mkdtemp(prefix='cosai189-')
