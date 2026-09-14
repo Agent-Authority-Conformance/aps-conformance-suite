@@ -22,6 +22,8 @@ independently recomputable claims whose independent record is required before me
 | `fixtures/cross-stack/ctef-v0.3.1` | JWS header-policy enforcement (`alg=EdDSA`, key `kty=OKP`/`crv=Ed25519`, unique `kid`), decided by the author-written `plugins/jws.py`, so the layer is author-produced | decode each fixture's JWS header and resolve its key under an implementation the runner did not write; confirm the five fixtures pass and that `alg`/`kty`/`crv`/`kid` violations are refused | `python3 fixtures/cross-stack/ctef-v0.3.1/validate.py` |
 | `fixtures/cross-stack/ctef-v0.3.1` | tamper rejection: a mutated signing input is refused at the signature check, decided by the author-written `plugins/jws.py` + `plugins/ed25519_pure.py`, so the layer is author-produced | flip a byte of a fixture's signed payload and confirm the signature check refuses it (not a header rejection) under an implementation the runner did not write | `python3 fixtures/cross-stack/ctef-v0.3.1/validate.py` |
 
+| `interop/wasmagent-aep-2026-09-13-03` | `LAB-SEMANTIC`: record-semantic verdict over the upstream AEP fixtures, decided by the runner-authored `adapter/lab-semantic.py`, so the layer is author-produced | recompute each fixture's attribution-backing floor and observed semantics from the published records under an implementation the runner did not write, and compare the per-fixture verdict to the corpus `semantic` target | `interop/wasmagent-aep-2026-09-13-03/run.sh` |
+
 Layers with an independent record and therefore not listed: `aat-amdal` (issuer signature,
 runner aeoess, `cryptography` library, vectors and implementation by AgentLair);
 `receipts-amdal` (JCS bytes, Ed25519 signature, `receipt_id` recomputation, runner aeoess,

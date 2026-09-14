@@ -1,0 +1,246 @@
+[
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "valid/unsigned-v05.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "valid/minimal-v05.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "valid/proto-key-preserved.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/floor-roundup.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_FLOOR_NOT_WEAKEST"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/floor-not-observed.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_FLOOR_NOT_OBSERVED",
+   "SEM_FLOOR_NOT_WEAKEST"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/unknown-attribution-grade.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_UNKNOWN_GRADE"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "invalid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/duplicate-observed-grade.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_DUPLICATE_OBSERVED"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "invalid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/negative-authorization-evidence-count.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_NEGATIVE_AUTH_EVIDENCE_COUNT"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "invalid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/floor-without-observed.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_FLOOR_WITHOUT_OBSERVED"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/floor-with-empty-observed.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_EMPTY_OBSERVED"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/observed-without-floor.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_OBSERVED_WITHOUT_FLOOR"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "invalid-semantic/empty-observed.json",
+  "semantic_valid": false,
+  "violations": [
+   "SEM_OBSERVED_WITHOUT_FLOOR",
+   "SEM_EMPTY_OBSERVED"
+  ],
+  "manifest_semantic": "invalid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/js-signed-v05.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/rust-signed-v05.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/tampered-run-id.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/wrong-payload-type-resigned.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/wrong-predicate-type-resigned.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/wrong-statement-type-resigned.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/missing-subject-name-resigned.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/wrong-subject-name-resigned.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "dsse/multiple-signatures.json",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/intact-dsse-3.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/intact-3.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/missing-all.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/partial-last.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/partial-middle.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/broken-middle.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ },
+ {
+  "layer": "LAB-SEMANTIC",
+  "fixture": "chain/singleton-with-prev.jsonl",
+  "semantic_valid": true,
+  "violations": [],
+  "manifest_semantic": "valid",
+  "manifest_structural": "valid"
+ }
+]

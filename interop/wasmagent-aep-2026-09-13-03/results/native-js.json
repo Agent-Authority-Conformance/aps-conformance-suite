@@ -1,0 +1,272 @@
+[
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "valid/minimal-v05.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "valid/proto-key-preserved.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "valid/unsigned-v05.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/duplicate-observed-grade.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/empty-observed.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/floor-not-observed.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/floor-roundup.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/floor-with-empty-observed.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/floor-without-observed.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/negative-authorization-evidence-count.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/observed-without-floor.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "invalid-semantic/unknown-attribution-grade.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "unsigned",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/js-signed-v05.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": true,
+  "authenticity": "dsse-valid",
+  "binding": "exact",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/missing-subject-name-resigned.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "invalid",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/multiple-signatures.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/rust-signed-v05.json",
+  "keyid": "ci-sample-key",
+  "valid": true,
+  "authenticity": "dsse-valid",
+  "binding": "exact",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/tampered-run-id.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "invalid",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/wrong-payload-type-resigned.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/wrong-predicate-type-resigned.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "invalid",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/wrong-statement-type-resigned.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "invalid",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "dsse/wrong-subject-name-resigned.json",
+  "keyid": "conformance-seed-key-01",
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "invalid",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "historical/js-canonical-ed25519.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-RECORD",
+  "fixture": "historical/rust-sha256-ed25519.json",
+  "keyid": null,
+  "valid": false,
+  "authenticity": "invalid",
+  "binding": "not-applicable",
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/broken-middle.jsonl",
+  "n": 2,
+  "valid": false,
+  "status": "broken",
+  "brokenAt": 1,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/intact-3.jsonl",
+  "n": 3,
+  "valid": true,
+  "status": "intact",
+  "brokenAt": null,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/intact-dsse-3.jsonl",
+  "n": 3,
+  "valid": true,
+  "status": "intact",
+  "brokenAt": null,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/missing-all.jsonl",
+  "n": 3,
+  "valid": true,
+  "status": "not-present",
+  "brokenAt": null,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/partial-last.jsonl",
+  "n": 3,
+  "valid": true,
+  "status": "partial",
+  "brokenAt": null,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/partial-middle.jsonl",
+  "n": 3,
+  "valid": true,
+  "status": "partial",
+  "brokenAt": null,
+  "threw": null
+ },
+ {
+  "layer": "JS-NATIVE-CHAIN",
+  "fixture": "chain/singleton-with-prev.jsonl",
+  "n": 1,
+  "valid": true,
+  "status": "orphaned",
+  "brokenAt": null,
+  "threw": null
+ }
+]
