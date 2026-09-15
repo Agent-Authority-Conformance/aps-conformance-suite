@@ -17,17 +17,24 @@ Component pins, read from `conformance/aep/certified-target.json` on `WasmAgent/
     trace              5820bf811302a1e202b762792cac6ef44e833ad6
     signing_profile_id aep-dsse-ed25519-decoded-body-v1
 
-The provenance anchor is unresolved and this record makes no reproduction claim. At the pinned
-protocol SHA `35320c56`, `conformance/aep/certified-target.json` still contains the `-02` record,
-naming a different protocol SHA, trace SHA and Gate C run. The `-03` manifest appears only on a
-later protocol commit. The open question on #92 is whether the intended anchor is the `-03` tuple
-plus the commit that publishes that manifest. Until that is answered this is a run against the
-component tuple published for `-03`. That is why this directory is named
-`wasmagent-aep-2026-09-13-03` rather than after the certification id.
+Component identity and publication identity are two different things and are recorded separately.
+`35320c56` is the protocol component SHA inside the certified tuple. `228db753` is the publication
+commit on protected `wasmagent-protocol/main` that carries the `-03` manifest, merged from
+`639a6117` (PR #227). Both are needed, because the component commit cannot contain a manifest that
+names itself. Committing the manifest changes the repository SHA. At `35320c56`,
+`conformance/aep/certified-target.json` therefore still holds the `-02` record, naming a different
+protocol SHA, trace SHA and Gate C run, and a reader holding only the component SHA reads this run
+as pinned to the wrong target.
+
+Confirmed by the AEP maintainer on #92, comment 5672808428. This record is still scoped to the
+component tuple published for `-03` and makes no claim to have reproduced the `-03` certification,
+which is why this directory is named `wasmagent-aep-2026-09-13-03` rather than after the
+certification id.
 
 Corpus identity was checked rather than assumed. `git diff 35320c56 origin/main -- conformance/aep/`
 touches only `README.md` and `certified-target.json`. Every fixture and `manifest.json` are
-byte-identical at the pinned SHA and on `origin/main`.
+byte-identical at the pinned SHA and on `origin/main`. The AEP maintainer reports the same delta
+from his side on #92, comment 5672808428, checked before he answered.
 
 Scope: native verifier execution is JS and Rust only. `trace-pipeline` is recorded as the current
 Python consumer and is not treated as a third native verifier. The pinned `manifest.json` states the
@@ -186,9 +193,10 @@ fact.
 ## What this record does not establish
 
 No broad AEP conformant or non-conformant verdict. No Python native verifier was exercised and none
-is claimed. No capture-completeness claim. No claim that the `-03` certification was reproduced,
-pending the provenance-anchor question on #92. The `LAB-SEMANTIC` layer is author-produced and is
-not an independent record. Findings are scoped to the fixtures and failure paths actually exercised.
+is claimed. No capture-completeness claim. No claim that the `-03` certification was reproduced. The
+provenance anchor is now recorded, and this run still exercises the component tuple rather than the
+certification. The `LAB-SEMANTIC` layer is author-produced and is not an independent record.
+Findings are scoped to the fixtures and failure paths actually exercised.
 
 The run did not produce a single pass or fail verdict for AEP, and that is the useful result. Across
 the pinned target, cryptographic authenticity, semantic conformance and chain assurance are
