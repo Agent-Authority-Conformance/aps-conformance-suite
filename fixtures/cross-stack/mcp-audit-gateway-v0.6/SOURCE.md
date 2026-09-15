@@ -2,7 +2,7 @@
 
 ## Upstream
 
-Repository: [`elang2/mcp-audit-gateway`](https://github.com/elang2/mcp-audit-gateway), Apache 2.0.
+Repository: [`elang2/mcp-audit-gateway`](https://github.com/elang2/mcp-audit-gateway), MIT.
 
 Pinned tag: `v0.6.0` (release [`v0.6.0: Cross-SDK Differential Testing`](https://github.com/elang2/mcp-audit-gateway/releases/tag/v0.6.0), 2026-08-24T03:12:22Z).
 
@@ -32,7 +32,7 @@ The two vector files are byte-identical across every released tag of `mcp-audit-
 | v0.8.0 | 2026-08-26 | `8580dff7…` | `4c805e72…` |
 | v0.8.1 | 2026-08-29 | `8580dff7…` | `4c805e72…` |
 
-`mcp-audit-gateway`'s versioning rule is that any change touching the canonical form is a version bump, so a pinned tag stays byte-stable and additive vectors land in later tags without invalidating existing pins. The v0.6 pin was chosen because [docker/mcp-gateway#559](https://github.com/docker/mcp-gateway/pull/559) already landed on v0.6 in its own PR body, keeping the citation consistent across the two homes.
+`mcp-audit-gateway`'s versioning rule is that any change touching the canonical form is a version bump, so a pinned tag stays byte-stable and additive vectors land in later tags without invalidating existing pins. The v0.6 pin was chosen because [docker/mcp-gateway#559](https://github.com/docker/mcp-gateway/pull/559) already uses v0.6, keeping the citation consistent across the two homes.
 
 ## Trigger
 
@@ -54,7 +54,7 @@ The canonical form deliberately isn't RFC 8785 JCS. The reasoning lives at [test
 
 ## Independence
 
-This family was assembled and submitted by the author of `mcp-audit-gateway`. It is the author submitting their own vectors for the lab's independent verification, not a third-party recomputation. Per `CONTRIBUTING.md` (revised 2026-08-29 in PR #49), the independent recompute is arranged by the lab rather than by the contributor. Every layer of this family is `author-produced` in the Verification split until an independent recompute lands as a separate run report. On merge the family joins [`docs/OPEN-RUNS.md`](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/blob/main/docs/OPEN-RUNS.md), alongside the current entries for `nobulex-bilateral-v0` and `action-ref-v1-negatives`.
+This family was assembled and submitted by the author of `mcp-audit-gateway`. It is the author submitting their own vectors for the lab's independent verification, not a third-party recomputation. Per `CONTRIBUTING.md` (revised 2026-08-29 in PR #49), the independent recompute is arranged by the lab rather than by the contributor. Every run recorded in the Verification split is author-produced. The independently recomputable claims in this family land only with an independent record per CONTRIBUTING; the lab arranges that record and assigns independence per layer when it lands. Any layer admitted on the author-produced allowance is listed in [`docs/OPEN-RUNS.md`](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/blob/main/docs/OPEN-RUNS.md) at merge.
 
 The upstream repository at [`elang2/mcp-audit-gateway`](https://github.com/elang2/mcp-audit-gateway) is the source of truth for these vectors. If a post-v0.6.0 change touches either pinned file's bytes, that change supersedes the mirror here rather than the other way around.
 
