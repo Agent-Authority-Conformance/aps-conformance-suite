@@ -86,3 +86,12 @@ the family's `chain_continuity_violation` class or about `count_mismatch`, which
 exercises. It is not an adoption or endorsement claim by or about either project. The run by
 Silentpartnercoding is a run of the lab's reading of the header rules; a second reading of the
 same rules by another author would be a different record and is not claimed here.
+
+## Later clarification, 2026-09-15
+
+Nothing above is revised. `ATTRIBUTION-2026-09-15.md` in this directory assigns two further
+layers, the `head_missing` and `sequence_regression` completeness outcomes, to checks the
+Silentpartnercoding run recorded here already executed. The Verification split above was a
+narrower scope than that run, not a limit of its evidence. `count_mismatch` remains NOT
+CHECKED and the `chain_continuity_violation` class is still not independently established as
+a whole.
