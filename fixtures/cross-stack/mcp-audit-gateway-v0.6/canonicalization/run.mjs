@@ -6,23 +6,54 @@
  * `canonical` bytes and `sha256_canonical` digests, using only Node's stdlib.
  *
  * Adapted from:
- *   https://github.com/elang2/mcp-audit-gateway (Apache-2.0),
+ *   https://github.com/elang2/mcp-audit-gateway (MIT),
  *   test/vectors/verify.mjs at tag v0.6.0 (commit a0f14a0418c2abe6135436f037f6b171735d1e73).
  *
  * Stdlib-only: node:crypto, node:fs, node:path, node:url. No dependency on
  * mcp-audit-gateway at runtime; the canonicalization logic is inlined here.
  *
- * The canonicalizeValue implementation below is duplicated verbatim in the
+ * The canonicalizeValue implementation below is duplicated in the
  * sibling concern's checkpoint/run.mjs. Any patch to either must land in
  * both, or the two concerns will silently diverge on the same input.
+ *
+ * Usage: node run.mjs [--output <path>]
+ *
+ * The recorded run is results.json beside this script and it is never rewritten.
+ * An ordinary run recomputes everything and compares it with that file, ignoring
+ * the ran_at, node_version and platform run-instance stamps. Exits 0 when every
+ * check passes and the comparison matches, 1 otherwise. A new observation is
+ * written only to --output.
  */
 
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const USAGE = "usage: node run.mjs [--output <path>]";
+
+let outputPath = null;
+{
+  const args = process.argv.slice(2);
+  for (let i = 0; i < args.length; i += 1) {
+    if (args[i] === "--output") {
+      if (i + 1 >= args.length) {
+        console.error("--output requires a path");
+        console.error(USAGE);
+        process.exit(2);
+      }
+      outputPath = args[i + 1];
+      i += 1;
+    } else {
+      console.error(`unknown argument: ${args[i]}`);
+      console.error(USAGE);
+      process.exit(2);
+    }
+  }
+}
+
 const vectors = JSON.parse(
   readFileSync(join(__dirname, "canonicalization.json"), "utf-8"),
 );
@@ -296,10 +327,73 @@ if (vectors.extensions_digest_base) {
 
 console.log(`\n=== Results: ${results.passed} passed, ${results.failed} failed ===`);
 
-writeFileSync(
-  join(__dirname, "results.json"),
-  JSON.stringify(results, null, 2) + "\n",
-);
-console.log(`\nWrote ${join(__dirname, "results.json")}`);
+// A new observation is written only where the caller asks for it. The tracked
+// results.json beside this script is the recorded run and is never rewritten.
+if (outputPath !== null) {
+  const target = resolve(process.cwd(), outputPath);
+  writeFileSync(target, JSON.stringify(results, null, 2) + "\n");
+  console.log(`\nWrote ${target}`);
+}
 
-process.exit(results.failed > 0 ? 1 : 0);
+// ran_at, node_version and platform are run-instance stamps: they change on
+// every run and on every machine, so they are excluded from the comparison.
+const strip = (o) => {
+  const copy = { ...o };
+  delete copy.ran_at;
+  delete copy.node_version;
+  delete copy.platform;
+  return copy;
+};
+
+let tracked = null;
+try {
+  tracked = JSON.parse(readFileSync(join(__dirname, "results.json"), "utf8"));
+} catch (err) {
+  if (err && err.code !== "ENOENT") throw err;
+}
+
+if (tracked === null) {
+  console.log(JSON.stringify(results, null, 2));
+  process.exit(results.failed > 0 ? 1 : 0);
+}
+
+const trackedText = JSON.stringify(strip(tracked), null, 2);
+const resultsText = JSON.stringify(strip(results), null, 2);
+
+if (trackedText === resultsText) {
+  console.log(
+    `reproduction matches results.json (all fields except ran_at, node_version, platform); ` +
+      `this run ran_at ${results.ran_at} on ${results.node_version} ${results.platform}`,
+  );
+  if (results.failed > 0) {
+    console.error(`\n${results.failed} check(s) failed.`);
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
+console.log("reproduction DIFFERS from results.json");
+const keys = [];
+for (const k of [...Object.keys(strip(tracked)), ...Object.keys(strip(results))]) {
+  if (!keys.includes(k)) keys.push(k);
+}
+for (const k of keys) {
+  if (JSON.stringify(tracked[k]) === JSON.stringify(results[k])) continue;
+  console.log(`differs: ${k}`);
+  if (k !== "checks") continue;
+  const trackedChecks = Array.isArray(tracked.checks) ? tracked.checks : [];
+  const freshChecks = Array.isArray(results.checks) ? results.checks : [];
+  const trackedByName = new Map(trackedChecks.map((c) => [c.name, c]));
+  const freshByName = new Map(freshChecks.map((c) => [c.name, c]));
+  const names = trackedChecks.map((c) => c.name);
+  for (const c of freshChecks) if (!trackedByName.has(c.name)) names.push(c.name);
+  for (const name of names) {
+    const a = trackedByName.get(name);
+    const b = freshByName.get(name);
+    if (JSON.stringify(a) === JSON.stringify(b)) continue;
+    const av = a ? a.status : "(absent)";
+    const bv = b ? b.status : "(absent)";
+    console.log(`  check ${name}: tracked ${av}, recomputed ${bv}`);
+  }
+}
+process.exit(1);
