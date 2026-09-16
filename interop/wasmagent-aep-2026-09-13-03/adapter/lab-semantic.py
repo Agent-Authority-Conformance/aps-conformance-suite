@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LAB-SEMANTIC. Independent recomputation of AEP record-semantic rules.
+"""LAB-SEMANTIC. Lab-authored recomputation of AEP record-semantic rules.
 
 Shares no code with wasmagent-js or aep-core. Rules are taken from the pinned
 schema's normative text, not from either implementation's behaviour.

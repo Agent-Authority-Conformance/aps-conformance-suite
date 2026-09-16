@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 # Reproduction script for the wasmagent AEP layered run.
-# Self-contained: clones the three component repos at the pinned SHAs into a scratch
-# directory, places the lab-owned adapters, executes all four surfaces, preserves exit codes.
-# Depends on no state outside this directory. Requires: git, bun, cargo, python3.
+# Clones the three component repos at the pinned SHAs into a scratch directory, places the
+# lab-owned adapters, executes all four surfaces, preserves exit codes.
+# Requires no pre-existing local checkout or state. Requires network access for
+# repository, package, Rust crate and toolchain fetches not already available locally.
+# Requires: git, bun, rustup, cargo, python3. The Rust surface is pinned by the proxy
+# repository's rust-toolchain.toml, which only takes effect when cargo is a rustup proxy,
+# so the run asserts the active toolchain rather than reporting it.
 set -u
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -29,7 +33,7 @@ clone_at wasmagent-proxy    "$PROXY_SHA"    wasmagent-proxy    || exit 2
 mkdir -p "$WORK/adapter"
 cp "$HERE/adapter/js-driver.ts" "$WORK/adapter/"
 printf '{ "name": "aep-lab-adapter", "private": true, "type": "module" }\n' > "$WORK/adapter/package.json"
-( cd "$WORK/adapter" && bun add @noble/ed25519@^3.1.0 zod@^3.23.0 >/dev/null 2>&1 )
+( cd "$WORK/adapter" && bun add --exact @noble/ed25519@3.1.0 zod@3.25.76 >/dev/null 2>&1 )
 ln -sfn "$WORK/adapter/node_modules" "$WORK/wasmagent-js/node_modules"
 ( cd "$WORK/adapter" && bun run js-driver.ts > "$WORK/evidence/native-js.json" )
 JS_EXIT=$?; echo "JS_DRIVER_EXIT=$JS_EXIT"
@@ -38,7 +42,19 @@ cp "$WORK/evidence/native-js.json" "$WORK/out/" 2>/dev/null
 # --- RUST-NATIVE-DSSE ---
 cp "$HERE/adapter/lab-driver.rs" "$WORK/wasmagent-proxy/crates/aep-core/tests/lab_driver.rs"
 mkdir -p "$WORK/evidence"
-( cd "$WORK/wasmagent-proxy" && cargo test -p aep-core --test lab_driver -- --nocapture >"$WORK/out/rust.log" 2>&1 )
+PROXY_CARGO="$(cd "$WORK/wasmagent-proxy" && cargo --version 2>&1)"
+PROXY_RUSTC="$(cd "$WORK/wasmagent-proxy" && rustc --version 2>&1)"
+echo "proxy cargo: $PROXY_CARGO"
+echo "proxy rustc: $PROXY_RUSTC"
+case "$PROXY_CARGO" in
+  "cargo 1.96.1 "*) ;;
+  *) echo "RUST TOOLCHAIN MISMATCH: $PROXY_CARGO"; exit 2 ;;
+esac
+case "$PROXY_RUSTC" in
+  "rustc 1.96.1 "*) ;;
+  *) echo "RUST TOOLCHAIN MISMATCH: $PROXY_RUSTC"; exit 2 ;;
+esac
+( cd "$WORK/wasmagent-proxy" && cargo test --locked -p aep-core --test lab_driver -- --nocapture >"$WORK/out/rust.log" 2>&1 )
 RUST_EXIT=$?; echo "CARGO_EXIT=$RUST_EXIT"
 [ -f "$WORK/evidence/native-rust.json" ] && cp "$WORK/evidence/native-rust.json" "$WORK/out/native-rust.json"
 
