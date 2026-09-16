@@ -1,12 +1,13 @@
 # wasmagent AEP, layered run against the component tuple published for `aep-certified-2026-09-13-03`
 
 A layered run record with independent native-verifier observations and a lab-authored semantic
-recomputation. Date 2026-09-14. Context `Agent-Authority-Conformance/aps-conformance-suite#92`.
+recomputation. Date 2026-09-16 UTC. Context `Agent-Authority-Conformance/aps-conformance-suite#92`.
 
 ## Target and provenance
 
-Component pins, read from `conformance/aep/certified-target.json` on `WasmAgent/wasmagent-protocol`
-`origin/main` at commit `639a6117` (merged as `228db753`), not from an issue comment:
+Component pins, read from `conformance/aep/certified-target.json` at source commit `639a6117`
+and confirmed at publication commit `228db753` on protected `wasmagent-protocol/main`, not from
+an issue comment:
 
     target_id          aep-certified-2026-09-13-03
     certified_at       2026-09-13T13:33:08Z
@@ -31,9 +32,11 @@ component tuple published for `-03` and makes no claim to have reproduced the `-
 which is why this directory is named `wasmagent-aep-2026-09-13-03` rather than after the
 certification id.
 
-Corpus identity was checked rather than assumed. `git diff 35320c56 origin/main -- conformance/aep/`
-touches only `README.md` and `certified-target.json`. Every fixture and `manifest.json` are
-byte-identical at the pinned SHA and on `origin/main`. The AEP maintainer reports the same delta
+Corpus identity was checked rather than assumed against an immutable ref.
+`git diff 35320c56 228db753 -- conformance/aep/` touches only `README.md` and
+`certified-target.json`. Every fixture and `manifest.json` are byte-identical between the
+component commit and the publication commit. Upstream `main` is deliberately not used here,
+because a moving branch cannot anchor an immutable record. The AEP maintainer reports the same delta
 from his side on #92, comment 5672808428, checked before he answered.
 
 Scope: native verifier execution is JS and Rust only. `trace-pipeline` is recorded as the current
@@ -54,7 +57,7 @@ no such SDK exists.
   relationship preventing an independent label: the harness itself decides the claimed semantic
   result, so under `CONTRIBUTING.md` it is part of the recomputation implementation rather than a
   thin transport.
-- No independent record exists for `LAB-SEMANTIC`. It is author-produced and labelled as such.
+- No independent record is claimed for `LAB-SEMANTIC`. It is author-produced and labelled as such.
 
 These observations are attributed per layer. Merge of this interop record is not an
 end-to-end verification or a conformance verdict.
@@ -72,6 +75,11 @@ not already available locally.
 `adapter/build-matrix.py` then joins the three layer outputs into `consolidated-matrix.json`. It is
 aggregation only, makes no verification decision and introduces no semantic rule, so it carries no
 authorship classification of its own.
+
+Lab repository reference for this recorded run:
+`Agent-Authority-Conformance/aps-conformance-suite@67ecc0b096ec6d6101dc9c9b33774a64514f3170`.
+The run was executed from a clean worktree at that commit, and the harness, adapters and the
+four committed result files it exercised are the bytes at that commit.
 
 Environment of the recorded run: macOS 26.5 (build 25F71), Darwin 25.5.0 arm64, bun 1.3.11,
 python 3.14.6, git 2.50.1 (Apple Git-155).
@@ -94,18 +102,20 @@ Command and output of the recorded run, uncut:
 
 ```
 ### environment
-uname -srm : Darwin 25.5.0 arm64
-sw_vers    : macOS 26.5 (build 25F71)
-bun        : 1.3.11
-rustup     : rustup 1.29.0 (28d1352db 2026-03-05)
-python3    : Python 3.14.6
-git        : git version 2.50.1 (Apple Git-155)
+date -u     : 2026-09-16T06:26:20Z
+uname -srm  : Darwin 25.5.0 arm64
+sw_vers     : macOS 26.5 (build 25F71)
+bun         : 1.3.11
+rustup      : rustup 1.29.0 (28d1352db 2026-03-05)
+python3     : Python 3.14.6
+git         : git version 2.50.1 (Apple Git-155)
 
 ### command
-$ ./run.sh /tmp/p94-scratch4
+$ ( set +e; ./run.sh /tmp/p94-run-final; rc=$?; printf 'RUN_EXIT=%d
+' "$rc"; exit "$rc" )
 
 ### output
-scratch: /tmp/p94-scratch4
+scratch: /tmp/p94-run-final
 pinned wasmagent-protocol @ 35320c567ba02ae30ba441f488952954dd66a4cc
 pinned wasmagent-js @ bb71077cbd13051c05e17195d11d16efd0d1c572
 pinned wasmagent-proxy @ 4b4bde3b2e06eb62b7910cb3f379d75288cc4db1
@@ -150,11 +160,12 @@ matches committed evidence: native-rust.json
 matches committed evidence: lab-semantic.json
 matches committed evidence: consolidated-matrix.json
 REGEN_DIFF_EXIT=0
-outputs in /tmp/p94-scratch4/out
+outputs in /tmp/p94-run-final/out
 EXITS js=0 rust=0 lab_semantic=0 matrix=0 diff=0
 RUN_EXIT=0
 ```
-Exit codes: `js-driver.ts` 0, `cargo test -p aep-core --test lab_driver` 0, `lab-semantic.py` 0,
+Exit codes: `js-driver.ts` 0, `cargo test --locked -p aep-core --test lab_driver` 0,
+`lab-semantic.py` 0,
 `build-matrix.py` 0, `run.sh` 0. Re-executed from a clean scratch clone, all four files in
 `results/` reproduced byte-identically, including `consolidated-matrix.json` at
 `bdd55cb9f05fc9279b9558ddd22435107a090fdbfe833a597a4f7f2f056675cd`.
@@ -271,7 +282,7 @@ fact.
     adapter/lab-semantic.py           LAB-SEMANTIC
     adapter/build-matrix.py           joins the three layer outputs into the matrix
     run.sh                            reproduction
-    CHECKSUMS.sha256                  sha256 of every file in this directory
+    CHECKSUMS.sha256                  SHA-256 digests of the ten covered files in this record
 
 ## What this record does not establish
 
