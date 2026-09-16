@@ -54,10 +54,10 @@ no such SDK exists.
   relationship preventing an independent label: the harness itself decides the claimed semantic
   result, so under `CONTRIBUTING.md` it is part of the recomputation implementation rather than a
   thin transport.
-- No independent record exists for `LAB-SEMANTIC`; that layer is queued in `docs/OPEN-RUNS.md`.
+- No independent record exists for `LAB-SEMANTIC`. It is author-produced and labelled as such.
 
-These records are attributed per layer. Merge of this family is not an end-to-end verification or a
-family-level verdict.
+These observations are attributed per layer. Merge of this interop record is not an
+end-to-end verification or a conformance verdict.
 
 ## Reproduction
 
@@ -65,12 +65,95 @@ family-level verdict.
 
 Clones the three component repos at the pinned SHAs, aborts on any pin mismatch, installs the two
 JS dependencies, places the lab-owned adapters, runs all four surfaces and preserves exit codes.
-Requires `git`, `bun`, `cargo`, `python3`. Depends on no state outside this directory.
+Requires `git`, `bun`, `rustup`, `cargo`, `python3`. Requires no pre-existing local checkout or
+state. Requires network access for repository, package, Rust crate and toolchain fetches
+not already available locally.
+
 `adapter/build-matrix.py` then joins the three layer outputs into `consolidated-matrix.json`. It is
 aggregation only, makes no verification decision and introduces no semantic rule, so it carries no
 authorship classification of its own.
 
-Environment of the recorded run: bun 1.3.11, cargo 1.95.0 (f2d3ce0bd 2026-03-21), python 3.14.6.
+Environment of the recorded run: macOS 26.5 (build 25F71), Darwin 25.5.0 arm64, bun 1.3.11,
+python 3.14.6, git 2.50.1 (Apple Git-155).
+
+The Rust surface does not run under the shell's default cargo. `wasmagent-proxy` pins its
+own toolchain at the pinned revision, so the recorded run compiled and executed the Rust
+verifier under cargo 1.96.1 and rustc 1.96.1. That pin is a rustup override mechanism and
+takes effect only when `cargo` is a rustup proxy, so `run.sh` asserts both versions from
+the execution directory and exits 2 on a mismatch rather than reporting and continuing.
+The Rust test runs under `--locked` against the proxy's tracked `Cargo.lock`, so a
+resolution change fails the run instead of being silently absorbed.
+
+The lab harness installs the two direct dependencies declared by the pinned `@wasmagent/aep`
+package and pins them to that revision's lockfile resolutions: `@noble/ed25519@3.1.0` and
+`zod@3.25.76`. At `bb71077c`, `packages/aep/package.json` declares `^3.1.0` and `^3.23.0`
+respectively, and `bun.lock` resolves those package entries to the exact versions above. The
+recorded artifacts reproduce byte-identically under these pins.
+
+Command and output of the recorded run, uncut:
+
+```
+### environment
+uname -srm : Darwin 25.5.0 arm64
+sw_vers    : macOS 26.5 (build 25F71)
+bun        : 1.3.11
+rustup     : rustup 1.29.0 (28d1352db 2026-03-05)
+python3    : Python 3.14.6
+git        : git version 2.50.1 (Apple Git-155)
+
+### command
+$ ./run.sh /tmp/p94-scratch4
+
+### output
+scratch: /tmp/p94-scratch4
+pinned wasmagent-protocol @ 35320c567ba02ae30ba441f488952954dd66a4cc
+pinned wasmagent-js @ bb71077cbd13051c05e17195d11d16efd0d1c572
+pinned wasmagent-proxy @ 4b4bde3b2e06eb62b7910cb3f379d75288cc4db1
+JS_DRIVER_EXIT=0
+proxy cargo: cargo 1.96.1 (356927216 2026-06-26)
+proxy rustc: rustc 1.96.1 (31fca3adb 2026-06-26)
+CARGO_EXIT=0
+fixtures=28 agree_with_manifest=28/28
+  valid/unsigned-v05.json                              lab_valid=True  manifest=valid    struct=valid    
+  valid/minimal-v05.json                               lab_valid=True  manifest=valid    struct=valid    
+  valid/proto-key-preserved.json                       lab_valid=True  manifest=valid    struct=valid    
+  invalid-semantic/floor-roundup.json                  lab_valid=False manifest=invalid  struct=valid    SEM_FLOOR_NOT_WEAKEST
+  invalid-semantic/floor-not-observed.json             lab_valid=False manifest=invalid  struct=valid    SEM_FLOOR_NOT_OBSERVED,SEM_FLOOR_NOT_WEAKEST
+  invalid-semantic/unknown-attribution-grade.json      lab_valid=False manifest=invalid  struct=invalid  SEM_UNKNOWN_GRADE
+  invalid-semantic/duplicate-observed-grade.json       lab_valid=False manifest=invalid  struct=invalid  SEM_DUPLICATE_OBSERVED
+  invalid-semantic/negative-authorization-evidence-count.json lab_valid=False manifest=invalid  struct=invalid  SEM_NEGATIVE_AUTH_EVIDENCE_COUNT
+  invalid-semantic/floor-without-observed.json         lab_valid=False manifest=invalid  struct=valid    SEM_FLOOR_WITHOUT_OBSERVED
+  invalid-semantic/floor-with-empty-observed.json      lab_valid=False manifest=invalid  struct=valid    SEM_EMPTY_OBSERVED
+  invalid-semantic/observed-without-floor.json         lab_valid=False manifest=invalid  struct=valid    SEM_OBSERVED_WITHOUT_FLOOR
+  invalid-semantic/empty-observed.json                 lab_valid=False manifest=invalid  struct=valid    SEM_OBSERVED_WITHOUT_FLOOR,SEM_EMPTY_OBSERVED
+  dsse/js-signed-v05.json                              lab_valid=True  manifest=valid    struct=valid    
+  dsse/rust-signed-v05.json                            lab_valid=True  manifest=valid    struct=valid    
+  dsse/tampered-run-id.json                            lab_valid=True  manifest=valid    struct=valid    
+  dsse/wrong-payload-type-resigned.json                lab_valid=True  manifest=valid    struct=valid    
+  dsse/wrong-predicate-type-resigned.json              lab_valid=True  manifest=valid    struct=valid    
+  dsse/wrong-statement-type-resigned.json              lab_valid=True  manifest=valid    struct=valid    
+  dsse/missing-subject-name-resigned.json              lab_valid=True  manifest=valid    struct=valid    
+  dsse/wrong-subject-name-resigned.json                lab_valid=True  manifest=valid    struct=valid    
+  dsse/multiple-signatures.json                        lab_valid=True  manifest=valid    struct=valid    
+  chain/intact-dsse-3.jsonl                            lab_valid=True  manifest=valid    struct=valid    
+  chain/intact-3.jsonl                                 lab_valid=True  manifest=valid    struct=valid    
+  chain/missing-all.jsonl                              lab_valid=True  manifest=valid    struct=valid    
+  chain/partial-last.jsonl                             lab_valid=True  manifest=valid    struct=valid    
+  chain/partial-middle.jsonl                           lab_valid=True  manifest=valid    struct=valid    
+  chain/broken-middle.jsonl                            lab_valid=True  manifest=valid    struct=valid    
+  chain/singleton-with-prev.jsonl                      lab_valid=True  manifest=valid    struct=valid    
+LAB_SEMANTIC_EXIT=0
+matrix rows=28
+BUILD_MATRIX_EXIT=0
+matches committed evidence: native-js.json
+matches committed evidence: native-rust.json
+matches committed evidence: lab-semantic.json
+matches committed evidence: consolidated-matrix.json
+REGEN_DIFF_EXIT=0
+outputs in /tmp/p94-scratch4/out
+EXITS js=0 rust=0 lab_semantic=0 matrix=0 diff=0
+RUN_EXIT=0
+```
 Exit codes: `js-driver.ts` 0, `cargo test -p aep-core --test lab_driver` 0, `lab-semantic.py` 0,
 `build-matrix.py` 0, `run.sh` 0. Re-executed from a clean scratch clone, all four files in
 `results/` reproduced byte-identically, including `consolidated-matrix.json` at
