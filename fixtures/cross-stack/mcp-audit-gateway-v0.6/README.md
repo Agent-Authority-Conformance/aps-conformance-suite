@@ -187,10 +187,20 @@ One entry per verification claim: layer / claim; runner; Mode A | Mode B; author
 - checkpoint/ checkpoint record canonical form, 2 sub-vectors (basic, with-parties) × 2 checks each for canonical form and sha256 (`checkpoint_canonicalization` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); `checkpoint/run.mjs`, a transplant of upstream `test/vectors/verify-checkpoint.mjs` at commit a0f14a0…, 4/4
 - checkpoint/ three-record checkpoint chain with the checkpoint in the middle, per-record hash and previousHash linkage across the sequence (`checkpoint_chain` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 5/5
 - checkpoint/ truncation-detection scenario for `head_missing`, asserts the fixture's full chain contains the externalized checkpoint and its truncated chain is missing that checkpoint with no descendant checkpoint present (`truncation_detection` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 2/2
+- checkpoint/ same layer, the `head_missing` completeness outcome derived from the record
+  data and compared to the published failure code; Silentpartnercoding; Mode B; independent;
+  `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/recompute.py` pinned at `8b5b0f39`
+  (lab-authored, runner-independent), recorded in that directory's
+  `ATTRIBUTION-2026-09-15.md`, 2/2
 - checkpoint/ injective type-tagged nested-value canonicalization (M/L tags, UTF-16 key sort, lone-surrogate reject, float reject), 6 sub-vectors covering nested-same-content-different-order, array-order-matters, unicode-keys-sorted, astral-plane-keys, lone-surrogate-throws, float-throws (`canonicalize_value` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 14/14
 - checkpoint/ extensionsDigest across 4 nested-value sub-vectors plus record-level canonicalization with and without an `extensionsDigest` field (`extensions_digest` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 12/12
 - checkpoint/ rotation-boundary chain continuity, `lastHash` vs `rotationBoundaryHash` split, file-2 first record chains to file-1 last hash across a log rotation (`rotation_boundary` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 4/4
 - checkpoint/ sequence-regression detection, non-monotonic checkpoint sequence numbers indicating rotation laundering with `failureCode: sequence_regression` (`sequence_regression` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 2/2
+- checkpoint/ same layer, the `sequence_regression` completeness outcome derived from the
+  checkpoint sequences and compared to the published failure code; Silentpartnercoding;
+  Mode B; independent; `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/recompute.py`
+  pinned at `8b5b0f39` (lab-authored, runner-independent), recorded in that directory's
+  `ATTRIBUTION-2026-09-15.md`, 2/2
 - checkpoint/ chain_break record semantics, per-record hash on 2 records plus the invariant that the successor chains from the break-record's hash rather than genesis (`chain_break` block); elang2; Mode A; author-produced (author of the vectors and of the checkpoint implementation under test); same runner, 3/3
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
