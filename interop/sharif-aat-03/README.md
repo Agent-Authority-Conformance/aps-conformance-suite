@@ -33,6 +33,13 @@ observations: under the agent key the signature fails 6.3 step 3, under the
 recorder key it verifies. The draft does not say which key applies or how a
 verifier obtains it. The lab does not decide that on the author's behalf.
 
+Subsequent revision. `draft-sharif-agent-audit-trail-04`, dated 2026-09-15,
+resolves this -03 ambiguity by adding `signer_kid` and defining the signing
+principal as the agent for self-recording and the independent recording
+component for independent recording. `AAT-RECORDER-01` remains unresolved
+against the pinned -03 revision only. The fixture and its recorded -03
+observation are unchanged.
+
 ## From-scratch
 
 `adapter/py/aat.py` implements JCS (RFC 8785) for the value domain the
