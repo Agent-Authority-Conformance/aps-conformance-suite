@@ -17,6 +17,20 @@ a processed invocation. `observation_coverage` is completeness of the evaluated
 interval, required for a negative quantified over a session, supplied as context
 by a separate verifier surface and never verified recursively here.
 
+Per-claim binding, added 2026-09-19 after chernistry and imran-siddique on #189.
+Observation coverage must be verifiably bound to the claim or invocation it
+covers. Coverage established for one invocation cannot establish completeness for
+another, even within the same evaluated scope. Coverage bound to a different
+claim leaves the verdict `not_established`.
+
+`claim_ref` identifies the claim INSTANCE for this candidate, not the property
+name, so two invocations asserting the same property stay distinct. Matching
+values let this checker reject coverage supplied for another claim. They do not
+establish the provenance or correctness of that binding. That remains an input
+from the verifier surface supplying observation coverage, exactly as
+`status: established` is, and per the freeze candidate it is not verified
+recursively here. Equality of two supplied strings is not evidence.
+
 Checker input is {property, evidence, context, runtime_outcome}. Harness
 expectations (expected_verdict, expected_unmet_obligation) are NOT visible to
 this function; the runner compares them afterwards.
@@ -106,10 +120,20 @@ def _validate(checker_input: dict) -> None:
     if coverage is not None:
         if not isinstance(coverage, dict):
             raise CandidateInputError('observation_coverage must be an object')
-        for k in ('status', 'scope'):
+        for k in ('status', 'scope', 'claim_ref'):
             if not isinstance(coverage.get(k), str) or not coverage[k]:
                 raise CandidateInputError(f'observation_coverage requires a non-empty '
                                           f'string {k!r}')
+        # A coverage premise has to be about one claim instance, so the evaluated
+        # claim must be named whenever coverage is offered. Without it the
+        # comparison below has nothing to compare against, and a missing key must
+        # never be what lets a premise through.
+        if not isinstance(ctx.get('claim_ref'), str) or not ctx['claim_ref']:
+            raise CandidateInputError('context requires a non-empty string claim_ref when '
+                                      'observation_coverage is supplied: coverage is bound '
+                                      'to a claim instance, so the evaluated one must be named')
+    elif 'claim_ref' in ctx and (not isinstance(ctx['claim_ref'], str) or not ctx['claim_ref']):
+        raise CandidateInputError('context claim_ref, when present, must be a non-empty string')
 
 
 def evaluate(checker_input: dict) -> dict:
@@ -194,6 +218,17 @@ def evaluate(checker_input: dict) -> dict:
                 'reason': 'observation coverage is established for scope %r, which is not the '
                           'evaluated interval %r: the negative over the evaluated interval '
                           'remains absence of evidence' % (coverage['scope'], scope)}
+    # Established for WHICH CLAIM. Two invocations can share an interval and a
+    # property. A complete record for one of them says nothing about the other, so
+    # a matching scope is not enough. Same verdict and obligation as a scope
+    # mismatch: the premise exists, it is just not about this claim.
+    if coverage['claim_ref'] != ctx['claim_ref']:
+        return {'verdict': 'not_established', 'unmet_obligation': 'observation_coverage',
+                'reason': 'observation coverage is bound to claim %r, which is not the '
+                          'evaluated claim %r: coverage for one claim cannot establish '
+                          'completeness for another, even within the same evaluated scope'
+                          % (coverage['claim_ref'], ctx['claim_ref'])}
     return {'verdict': 'pass', 'unmet_obligation': None,
             'reason': '%s, and observation coverage is established for the evaluated interval '
-                      '%r; absence is evidence of absence' % (visibility, scope)}
+                      '%r and bound to the evaluated claim %r; absence is evidence of absence'
+                      % (visibility, scope, ctx['claim_ref'])}

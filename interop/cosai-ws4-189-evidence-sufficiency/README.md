@@ -97,6 +97,40 @@ so both are closed here.
 `evaluation_scope` was decorative while capability was the only premise. It is
 load-bearing now, because a completeness premise has to be about something.
 
+**Per-claim binding, added 2026-09-19.** chernistry raised it on the issue from
+the Bernstein implementation and imran-siddique asked for it to be explicit in
+the rule text. The rule under test now also says:
+
+> Observation coverage must be verifiably bound to the claim or invocation it
+> covers. Coverage established for one invocation cannot establish completeness
+> for another, even within the same evaluated scope. Coverage bound to a
+> different claim leaves the verdict `not_established`.
+
+In this candidate the evaluated claim instance is `context.claim_ref` and the
+coverage descriptor carries its own `claim_ref`. A negative `pass` requires
+`observation_coverage.scope == evaluation_scope` and
+`observation_coverage.claim_ref == context.claim_ref`. A mismatch on either is
+`not_established` / `observation_coverage`. One observed event still settles
+`fail` whatever the coverage is bound to.
+
+`claim_ref` identifies the claim instance for this candidate, not the property,
+so two invocations asserting `no_delegation_occurred` stay distinct. Matching
+values let this checker reject coverage supplied for another claim. They do not
+establish the provenance or correctness of that binding. That remains an input
+from the verifier surface supplying observation coverage, the same way
+`status: established` does, and consistent with the no recursion rule on the
+issue. Equality of two supplied strings is not evidence. How a producer makes
+the binding checkable is left open. Bernstein's content-addressed coverage
+record is one way.
+
+`claim_ref` is required in both places whenever `observation_coverage` is
+supplied, and a missing half raises `CandidateInputError`. With no coverage
+supplied the verdict is `not_established` regardless, so SINK-01 and SINK-03 are
+byte-unchanged. SINK-02 gains the two `claim_ref` members, assumed by the
+counterfactual like the rest of its coverage premise. The regression is in
+`adapter/py/test_checker.py`: identical scope, different `claim_ref`, verdict
+`not_established`.
+
 Field names here are this candidate's vocabulary. WS4 has frozen none of them,
 and like the rest of the shape they follow whatever the corpus settles on.
 

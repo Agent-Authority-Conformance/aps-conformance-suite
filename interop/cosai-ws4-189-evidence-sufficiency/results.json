@@ -19,10 +19,10 @@
    "unmet_obligation": null,
    "verdict": "pass"
   },
-  "fixture_sha256": "a4c7def15bac025bc826ed613c4ae9f0403d65934af47c86ec774ba2bce5dcce",
+  "fixture_sha256": "730a4e645a528b8620622fde0101aee3f0763e144c3afb42254a2726d60fed84",
   "id": "CAND-COSAI-189-SINK-02-COUNTERFACTUAL",
   "observed": {
-   "reason": "absent field, capability read_delegation declared, and observation coverage is established for the evaluated interval 'single sink, single session'; absence is evidence of absence",
+   "reason": "absent field, capability read_delegation declared, and observation coverage is established for the evaluated interval 'single sink, single session' and bound to the evaluated claim 'counterfactual-claim-1'; absence is evidence of absence",
    "unmet_obligation": null,
    "verdict": "pass"
   },
