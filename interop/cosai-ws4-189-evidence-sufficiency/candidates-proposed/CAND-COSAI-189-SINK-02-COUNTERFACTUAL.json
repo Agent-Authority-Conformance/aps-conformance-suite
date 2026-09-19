@@ -1,9 +1,11 @@
 {
  "checker_input": {
   "context": {
+   "claim_ref": "counterfactual-claim-1",
    "evaluation_scope": "single sink, single session",
    "observation_coverage": {
-    "basis": "assumed by this counterfactual; establishment belongs to a separate verifier surface",
+    "basis": "assumed by this counterfactual; establishment of coverage and of its binding to this claim belongs to a separate verifier surface",
+    "claim_ref": "counterfactual-claim-1",
     "scope": "single sink, single session",
     "status": "established"
    },
