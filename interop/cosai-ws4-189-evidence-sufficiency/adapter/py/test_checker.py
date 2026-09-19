@@ -5,12 +5,15 @@ import checker
 from checker import CandidateInputError, UnsupportedVerification
 
 SCOPE = 'single sink, single session'
-COVERAGE = {'scope': SCOPE, 'status': 'established', 'basis': 'test fixture'}
+CLAIM = 'claim-a'
+COVERAGE = {'scope': SCOPE, 'claim_ref': CLAIM, 'status': 'established', 'basis': 'test fixture'}
 
 
 def inp(delegation, declared=None, coverage=COVERAGE, prop='no_delegation_occurred',
-        scope=SCOPE):
+        scope=SCOPE, claim=CLAIM):
     ctx = {'producer_declared_capabilities': declared}
+    if claim is not None:
+        ctx['claim_ref'] = claim
     if scope is not None:
         ctx['evaluation_scope'] = scope
     if coverage is not None:
@@ -79,7 +82,7 @@ for bad in [{}, {'status': 'assumed'}, {'status': None}, {'established': True},
 for status in ['assumed', 'established_later', 'pending', 'unknown']:
     r = checker.evaluate(inp({'present': False, 'gated_on': 'read_delegation'},
                              declared=['read_delegation'],
-                             coverage={'scope': SCOPE, 'status': status}))
+                             coverage={'scope': SCOPE, 'claim_ref': CLAIM, 'status': status}))
     assert r['unmet_obligation'] == 'observation_coverage', (status, r)
 # an ungated absent field still needs interval completeness
 assert checker.evaluate(inp({'present': False, 'gated_on': None}, declared=[],
@@ -125,18 +128,19 @@ assert checker.evaluate(inp({'present': True, 'gated_on': None, 'value': {'event
 # B. The completeness premise must be bound to the evaluated interval.
 raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
                                 declared=['read_delegation'],
-                                coverage={'status': 'established'}),
+                                coverage={'claim_ref': CLAIM, 'status': 'established'}),
        'coverage without scope')
 raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
                                 declared=['read_delegation'],
-                                coverage={'scope': SCOPE}),
+                                coverage={'scope': SCOPE, 'claim_ref': CLAIM}),
        'coverage without status')
 raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
                                 declared=['read_delegation'], coverage='established'),
        'coverage not an object')
 r = checker.evaluate(inp({'present': False, 'gated_on': 'read_delegation'},
                          declared=['read_delegation'],
-                         coverage={'scope': 'one invocation', 'status': 'established'}))
+                         coverage={'scope': 'one invocation', 'claim_ref': CLAIM,
+                                   'status': 'established'}))
 assert r['verdict'] == 'not_established' and r['unmet_obligation'] == 'observation_coverage', r
 
 # C. The evaluated interval itself must be declared, or the premise is unbound.
@@ -147,9 +151,45 @@ raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'
                                 declared=['read_delegation'], scope=''),
        'empty evaluation_scope')
 
-# D. Matching scope reaches pass.
+# D. Matching scope and matching claim reach pass.
 assert checker.evaluate(inp({'present': False, 'gated_on': 'read_delegation'},
                             declared=['read_delegation'],
-                            coverage={'scope': SCOPE, 'status': 'established'}))['verdict'] == 'pass'
+                            coverage={'scope': SCOPE, 'claim_ref': CLAIM,
+                                      'status': 'established'}))['verdict'] == 'pass'
 
-print('test_checker: ok (second adversarial pass: no-event paths and scope binding)')
+# --- per-claim binding (chernistry and imran-siddique on #189, 2026-09-17 and 09-19) ---
+# E. IDENTICAL scope, different claim instance. Coverage established for one
+#    invocation cannot establish completeness for another, even within the same
+#    evaluated scope. Same verdict and obligation as a scope mismatch, never fail.
+for delegation in ({'present': False, 'gated_on': 'read_delegation'},
+                   {'present': True, 'gated_on': None, 'value': {'events': []}}):
+    r = checker.evaluate(inp(delegation, declared=['read_delegation'],
+                             coverage={'scope': SCOPE, 'claim_ref': 'claim-b',
+                                       'status': 'established'}))
+    assert r['verdict'] == 'not_established' and r['unmet_obligation'] == 'observation_coverage', r
+    assert 'claim-b' in r['reason'] and CLAIM in r['reason'], r
+
+# F. The binding is structural input, so a missing half raises and never reaches pass.
+raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
+                                declared=['read_delegation'],
+                                coverage={'scope': SCOPE, 'status': 'established'}),
+       'coverage without claim_ref')
+raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
+                                declared=['read_delegation'], claim=None),
+       'coverage supplied but the evaluated claim is not named')
+raises(CandidateInputError, inp({'present': False, 'gated_on': 'read_delegation'},
+                                declared=['read_delegation'], claim=''),
+       'empty context claim_ref')
+
+# G. The asymmetry survives: one observed event settles fail whatever the coverage is bound to.
+r = checker.evaluate(inp({'present': True, 'gated_on': None, 'value': {'events': [{'id': 1}]}},
+                         declared=['read_delegation'],
+                         coverage={'scope': SCOPE, 'claim_ref': 'claim-b', 'status': 'established'}))
+assert r['verdict'] == 'fail' and r['unmet_obligation'] is None, r
+
+# H. Without coverage the claim need not be named, which keeps SINK-01 and SINK-03 byte-stable.
+r = checker.evaluate(inp({'present': False, 'gated_on': 'read_delegation'},
+                         declared=['read_delegation'], coverage=None, claim=None))
+assert r['verdict'] == 'not_established' and r['unmet_obligation'] == 'observation_coverage', r
+
+print('test_checker: ok (no-event paths, scope binding, per-claim binding)')

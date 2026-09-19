@@ -70,6 +70,9 @@ cases = [
             'evidence': SINK_EVIDENCE,
             'context': {'producer_declared_capabilities': ['read_delegation'],
                         'evaluation_scope': 'single sink, single session',
+                        # The claim INSTANCE under evaluation. Not the property
+                        # name: two invocations can assert the same property.
+                        'claim_ref': 'counterfactual-claim-1',
                         # The second premise. Field visibility is not interval
                         # completeness, and the session-wide negative needs both.
                         # ASSUMED by this counterfactual, not observed in the
@@ -78,10 +81,16 @@ cases = [
                         # `scope` must equal `evaluation_scope`: a completeness
                         # premise that names a different interval cannot
                         # authorise a negative over the evaluated one.
+                        # `claim_ref` must equal the context `claim_ref`:
+                        # coverage for one claim cannot establish completeness
+                        # for another, even within the same scope. The string
+                        # proves nothing by itself; like the rest of this
+                        # premise the binding is ASSUMED here.
                         'observation_coverage': {
                             'scope': 'single sink, single session',
+                            'claim_ref': 'counterfactual-claim-1',
                             'status': 'established',
-                            'basis': 'assumed by this counterfactual; establishment belongs to a separate verifier surface'}},
+                            'basis': 'assumed by this counterfactual; establishment of coverage and of its binding to this claim belongs to a separate verifier surface'}},
             'runtime_outcome': {'hash_chain': 'intact', 'signature': 'valid'},
         },
         'expected_if_adopted': {'verdict': 'pass', 'unmet_obligation': None},
