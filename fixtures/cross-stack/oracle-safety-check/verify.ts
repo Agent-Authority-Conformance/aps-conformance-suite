@@ -170,8 +170,14 @@ async function deriveGateReasons(doc: Record<string, any>): Promise<string[]> {
   }
 
   // 3. decision receipt signature
+  // Ask the question this gate is actually asking: did the signature fail? A
+  // coded `signature_invalid` answers it. The aggregate `valid` does not: a
+  // verifier may report indeterminate for an axis it was given no input for,
+  // such as an expected enforcement-boundary identity, and that says nothing
+  // about the signature. Reading the aggregate here would report a conforming
+  // receipt as forged.
   const dVer = verifyReceiptV1(env.decision, (_s, _k, _i) => resolveKey(env.decision.issuer))
-  if (!dVer.valid) {
+  if (dVer.errors.includes('signature_invalid')) {
     reasons.push('HALT_AUTHORITY', 'SIGNATURE_INVALID')
   }
 
@@ -337,7 +343,11 @@ async function checkFixture(doc: Record<string, any>): Promise<{ failures: Failu
       failures.push({ fixture: id, check: `${name}.receipt_id`, expected: receipt.receipt_id, actual: computeReceiptIdV1(receipt) })
     }
     const vr = verifyReceiptV1(receipt, (_s, _k, _i) => resolveKey(receipt.issuer))
-    if (!vr.valid) {
+    // Same distinction as the semantic gate: `decision_signature_invalid` is a
+    // claim about the signature, so it is read from the coded error. The intent
+    // receipt is expected to verify outright, so the aggregate is right there.
+    const failed = name === 'decision' ? vr.errors.includes('signature_invalid') : !vr.valid
+    if (failed) {
       if (name === 'decision') {
         // Whether an invalid decision signature is EXPECTED is declared by the
         // vector, not by its id.
