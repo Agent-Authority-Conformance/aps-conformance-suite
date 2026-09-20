@@ -109,7 +109,7 @@ this directory is overclaiming.
 primitives it needs became public API in **4.5.0**, and the full
 `verifyAuthorityDelegationChain` API is exported by the package version pinned
 by this suite. The suite resolves the SDK from the repository-level pin in
-`dependencies` (exact released version, currently `6.0.0`); the earlier
+`dependencies` (exact released version, currently `7.0.0`); the earlier
 fork-branch git URL has been dropped, because a lab corpus dependency has to
 sit on a released first-party artifact rather than a moving branch.
 
