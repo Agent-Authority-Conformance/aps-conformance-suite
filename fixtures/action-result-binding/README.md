@@ -137,7 +137,7 @@ equality relation and names no verifier step that compares them. Case 6 only.
 ## Cases
 
 The `replay` column is not a result this suite obtained. `derived` is this suite's
-reading of the author's stated rules; `reported` is the author's own run at
+reading of the author's stated rules. `reported` is the author's own run at
 `1f4db7a12e8ddf8853c2533f08f8252f7efbe326`, reported in issue #99 comment `5767384166`.
 Where the column says `derived, confirmed`, the author's run reported the same outcome
 this suite had derived. The Replay status string in the column is the author's. See the
