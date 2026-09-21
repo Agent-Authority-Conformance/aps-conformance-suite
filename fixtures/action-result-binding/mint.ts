@@ -61,9 +61,9 @@ const BOUNDARY_KEY_ID = `${BOUNDARY}#key-1`
 
 const actingAgentPrivate = seed('acting-agent:v1')
 const boundaryPrivate = seed('boundary:v1')
-const secondAgentPrivate = seed('second-agent:v1')
 
-// delegation_ref is the "sha256:<64 hex>" form of a delegation_id (section 5.1 line 982).
+// The "sha256:<64 hex>" form of delegation_ref is the one the section 5.1 envelope example
+// shows at line 964; lines 982-983 say what the value identifies, not what shape it takes.
 // This family never binds it to a chain, so a pinned digest of a published label is the
 // honest stand-in: the structural form is real, the leaf resolution is out of scope.
 const DELEGATION_REF = `sha256:${seed('delegation-ref:v1')}`
@@ -82,9 +82,11 @@ const DENY_DECISION_ISSUED_AT = '2026-09-21T12:00:01.500Z'
 const RESULT_ISSUED_AT = '2026-09-21T12:00:05.000Z'
 
 // ---------------------------------------------------------------------------
-// The two actions. The alternate keeps the same agent_id and changes only the
-// operation, so case 5 carries an action_ref mismatch and nothing else. Changing
-// agent_id here would have folded the case 6 actor conflict into case 5.
+// The two actions. The alternate keeps the same agent_id, the same action_type and
+// the same scope_required, and changes only the target, so case 5 carries an
+// action_ref mismatch and nothing else. Changing agent_id here would have folded the
+// case 6 actor conflict into case 5, and changing action_type would have left the
+// alternate asking for a scope its own operation does not describe.
 // ---------------------------------------------------------------------------
 
 const PAYLOAD = {
@@ -106,7 +108,7 @@ const primaryActionInput = createActionReferenceInputV2({
 
 const alternateActionInput = createActionReferenceInputV2({
   ...primaryActionInput,
-  action_type: 'calendar.delete',
+  target: 'https://calendar.example/api/v1/archive/events',
 })
 
 const primaryActionRef = computeActionRefV2(primaryActionInput)
@@ -150,7 +152,7 @@ const effectRef = computeEffectRef(EFFECT)
 // composite check from the files alone.
 // ---------------------------------------------------------------------------
 
-const AUTHORITY_STATE = {
+const PERMIT_AUTHORITY_STATE = {
   profile: 'aps-conformance-suite:action-result-binding:authority-state-v0',
   selected_chain: [DELEGATION_REF],
   authority_basis: 'delegation',
@@ -158,6 +160,19 @@ const AUTHORITY_STATE = {
   spend_state: { mode: 'unbounded' },
 }
 
+// The deny is a second decision over the same intent, not the permit's inputs with the
+// verdict flipped. It is evaluated half a second later, at which point the same
+// delegation is observed revoked, and that observation is what a deny follows from.
+const DENY_AUTHORITY_STATE = {
+  profile: 'aps-conformance-suite:action-result-binding:authority-state-v0',
+  selected_chain: [DELEGATION_REF],
+  authority_basis: 'delegation',
+  revocation_observations: [{ delegation_ref: DELEGATION_REF, resolution: 'revoked' }],
+  spend_state: { mode: 'unbounded' },
+}
+
+// The same policy evaluated the same request in both decisions. It is the authority
+// state and the instant that differ, which is what makes the two verdicts differ.
 const POLICY_INPUT = {
   policy_id: 'calendar-write-v1',
   policy_version: '1.0.0',
@@ -165,9 +180,15 @@ const POLICY_INPUT = {
   target: 'https://calendar.example/api/v1/events',
 }
 
-const DECISION_CONTEXT = {
+// Each decision's evaluated_at is its own issued_at, the same relation on both.
+const PERMIT_DECISION_CONTEXT = {
   enforcement_boundary: BOUNDARY,
   evaluated_at: DECISION_ISSUED_AT,
+}
+
+const DENY_DECISION_CONTEXT = {
+  enforcement_boundary: BOUNDARY,
+  evaluated_at: DENY_DECISION_ISSUED_AT,
 }
 
 const PERMIT_OUTPUT = {
@@ -187,16 +208,16 @@ const DENY_OUTPUT = {
 }
 
 const permitEvidence = {
-  authority_state: AUTHORITY_STATE,
+  authority_state: PERMIT_AUTHORITY_STATE,
   policy_input: POLICY_INPUT,
-  decision_context: DECISION_CONTEXT,
+  decision_context: PERMIT_DECISION_CONTEXT,
   decision_output: PERMIT_OUTPUT,
 }
 
 const denyEvidence = {
-  authority_state: AUTHORITY_STATE,
+  authority_state: DENY_AUTHORITY_STATE,
   policy_input: POLICY_INPUT,
-  decision_context: DECISION_CONTEXT,
+  decision_context: DENY_DECISION_CONTEXT,
   decision_output: DENY_OUTPUT,
 }
 
@@ -373,6 +394,31 @@ assert(
   primaryActionInput.agent_id === alternateActionInput.agent_id,
   'the alternate action changed agent_id, which would fold case 6 into case 5',
 )
+
+// The alternate action differs from the accepted one in target and in nothing else.
+assert(
+  primaryActionInput.action_type === alternateActionInput.action_type &&
+    canonicalizeJCS(primaryActionInput.scope_required) ===
+      canonicalizeJCS(alternateActionInput.scope_required),
+  'the alternate action changed more than its target',
+)
+assert(
+  primaryActionInput.target !== alternateActionInput.target,
+  'the alternate action did not change its target',
+)
+
+// The deny decision stands on its own evidence rather than the permit's inputs under one
+// instant, and its evaluated_at sits against its own issued_at the way the permit's does.
+assert(
+  canonicalizeJCS(denyEvidence.authority_state) !== canonicalizeJCS(permitEvidence.authority_state) &&
+    canonicalizeJCS(denyEvidence.decision_context) !== canonicalizeJCS(permitEvidence.decision_context),
+  'the deny evidence is a byte copy of the permit evidence with a flipped verdict',
+)
+assert(
+  PERMIT_DECISION_CONTEXT.evaluated_at === DECISION_ISSUED_AT &&
+    DENY_DECISION_CONTEXT.evaluated_at === DENY_DECISION_ISSUED_AT,
+  'a decision names an evaluated_at that is not its own issued_at',
+)
 assert(
   intent.receipt_id !== decisionPermit.receipt_id,
   'the intent and the decision share a receipt_id',
@@ -407,10 +453,12 @@ const chain = {
     enforcement_boundary: BOUNDARY,
     second_agent: SECOND_AGENT,
   },
+  // Only the keys that sign something in this chain. The second agent is named by case 6
+  // as a subject_agent and signs nothing, so publishing a verification key for it would
+  // be material no runner resolves and no record needs.
   verification_keys: {
     [ACTING_AGENT_KEY_ID]: publicKeyFromPrivate(actingAgentPrivate),
     [BOUNDARY_KEY_ID]: publicKeyFromPrivate(boundaryPrivate),
-    [`${SECOND_AGENT}#key-1`]: publicKeyFromPrivate(secondAgentPrivate),
   },
   actions: {
     primary: { input: primaryActionInput, action_ref: primaryActionRef },

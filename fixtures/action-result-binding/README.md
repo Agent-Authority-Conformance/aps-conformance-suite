@@ -21,12 +21,27 @@ merges them.
    formula over a small fixed effect object
 
 A second policy-decision for the same intent, verdict `deny`, is also minted. It exists
-only to supply a well-formed real `decision_ref` for case 4. It is never consumed as an
+to supply a well-formed real `decision_ref` for case 4. It is never consumed as an
 approval, which line 1098 forbids for a deny record in any case.
+
+The deny is a coherent second decision rather than the permit's inputs with the verdict
+flipped. It is evaluated half a second later, its `decision_context.evaluated_at` is its
+own `issued_at` just as the permit's is, and its `authority_state` observes the same
+delegation as revoked, which is what the deny follows from. The two decisions share the
+policy input, because the same policy evaluated the same request both times.
 
 `chain.json` also carries the `DecisionEvidenceV1` material the composite verifier
 needs (`authority_state`, `policy_input`, `decision_context`, `decision_output`), so a
 third party can run the composite check from the committed files alone.
+
+`verification_keys` carries only the keys that sign something here, the acting agent's
+and the enforcement boundary's. The second agent DID is named by case 6 as a
+`subject_agent` and signs nothing, so no verification key is published for it.
+
+Both runners validate the three chain receipts as well as the six cases: `receipt_id`
+recomputed from the record, every signature verified over the section 5.2 signature
+payload, and the section 5.3 stage rules applied, each held to what `vectors.json`
+records under `chain_receipts`.
 
 Every key is an Ed25519 seed derived from a published label of the form
 `aps-conformance-suite:action-result-binding:<label>`, the same pattern C19 uses. The
@@ -58,43 +73,71 @@ invalid outcome is the failure this family exists to prevent.
 **`sdk_py`** is what `agent-passport-system` 4.0.0 for Python actually returns from
 `validate_receipt_stage_v1`, recorded from real runs, plus an entry stating that the
 pinned release has no counterpart to `verifyReceiptWithDecisionV1`. That absence is
-checked executably by `validate.py` rather than asserted in prose, so a future Python
-release that adds a composite verifier makes the runner fail instead of leaving a stale
-record on disk.
+checked executably by `validate.py` rather than asserted in prose. The probe imports
+every module in the installed `agent_passport` package and looks for any callable whose
+name contains both `receipt` and `decision` together with `verify` or `check`. A future
+release that adds a composite verifier under a name of that shape makes the runner fail
+instead of leaving a stale record on disk. A release that adds one under a name outside
+that shape is not covered, and the probe claims no more than that.
 
-**`replay_policy`** is Agent Replay's stated outcome for the case, cited in every case as
-reported by the Agent Replay author at revision
+**`replay_policy`** is what Agent Replay's binding rules, as stated by its author, imply
+for the record. This suite derived each value by applying those stated rules. It did not
+run Agent Replay and did not submit these records to it, and no outcome in the block was
+reported for them. The stated rules are quoted in `vectors.json` under
+`replay_policy_stated_rules`, cited to the Agent Replay author at revision
 `08b3146097977db565a202c7a8f34d350da00fd0` in
-`Agent-Authority-Conformance/aps-conformance-suite#99`, not run by this suite.
+`Agent-Authority-Conformance/aps-conformance-suite#99`. Each derived value names the
+stated rule that determines it. Where the stated rules do not settle a record the block
+says `unresolved_until_run` rather than guessing, which is cases 2 and 6.
 
 ## The three classifications
 
 **`aps_conformance`** means the SDK outcome matches the `draft03` block. Cases 1, 2, 4
-and 5. Where Python cannot exercise the surface a case turns on, the case stays
-`aps_conformance` and `sdk_py` is marked `not_implemented`.
+and 5. For cases 4 and 5 the surface the case turns on is the TypeScript composite one,
+which Python has no counterpart to, so only the `composite_decision_verifier` sub-block
+of `sdk_py` is marked `not_implemented`. The Python stage result for those two cases is
+recorded as what it is, `valid`, which is not the `draft03` outcome and is not presented
+as one: the stage surface does not recompute `decision_ref` or `action_ref`, and its own
+docstring says so.
 
-**`aps_draft_requirement_not_enforced`** means the draft states a requirement and neither
-reference SDK enforces it today. Case 3 only.
+**`draft03_stated_relation_not_enforced`** means draft-03 states a relation between two
+members and lists the check among its verifier steps, without a BCP 14 keyword on either
+statement, and the current reference SDKs do not enforce that relation. Case 3 only.
 
 **`draft03_semantic_relation_not_explicitly_enforced`** means two draft-03 definitions
 describe the same role, the record makes them disagree, and the draft states no explicit
-equality requirement and names no verifier step that compares them. Case 6 only.
+equality relation and names no verifier step that compares them. Case 6 only.
 
 ## Cases
 
-| id | defect | draft03 | sdk_ts stage | sdk_ts composite | sdk_py stage | replay | classification |
+The `replay` column is this suite's derivation from the stated rules, not a reported
+result. See the `replay_policy` block above.
+
+| id | defect | draft03 | sdk_ts stage | sdk_ts composite | sdk_py stage | replay (derived) | classification |
 |---|---|---|---|---|---|---|---|
 | ARB-01-positive | none | satisfies | valid | valid | valid | fully bound | `aps_conformance` |
-| ARB-02-subject-agent-absent | `subject_agent` removed | invalid | invalid, `SCHEMA_INVALID` | invalid, `receipt_invalid` | invalid, `SCHEMA_INVALID` | partially bound | `aps_conformance` |
-| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | invalid | valid | valid | valid | partially bound | `aps_draft_requirement_not_enforced` |
+| ARB-02-subject-agent-absent | `subject_agent` removed | invalid | invalid, `SCHEMA_INVALID` | invalid, `receipt_invalid` | invalid, `SCHEMA_INVALID` | `unresolved_until_run` | `aps_conformance` |
+| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | invalid | valid | valid | valid | partially bound | `draft03_stated_relation_not_enforced` |
 | ARB-04-decision-ref-mismatch | `decision_ref` set to the deny decision's | invalid | valid | invalid, `decision_ref_mismatch` | valid | partially bound | `aps_conformance` |
 | ARB-05-action-ref-mismatch | `action_ref` set to a different action's | invalid | valid | invalid, `decision_ref_mismatch` | valid | unbound | `aps_conformance` |
-| ARB-06-subject-agent-changed | `subject_agent` set to a second agent DID | semantic conflict, no explicit rule | valid | valid | valid | partially bound (actor does not match) | `draft03_semantic_relation_not_explicitly_enforced` |
+| ARB-06-subject-agent-changed | `subject_agent` set to a second agent DID | semantic conflict, no explicit rule | valid | valid | valid | `unresolved_until_run` | `draft03_semantic_relation_not_explicitly_enforced` |
 
 Every mutated record is re-derived so the named defect is the only defect it carries.
 The `receipt_id` is recomputed and the boundary signature is redone over the mutated
-body. The case 5 action keeps the same `agent_id` and changes only the operation, so
-case 5 does not also carry the case 6 actor conflict.
+body. The case 5 action keeps the same `agent_id`, the same `action_type` and the same
+`scope_required`, and changes only the `target`, so case 5 does not also carry the case
+6 actor conflict and does not ask for a scope its own operation fails to describe.
+
+### Which decision each case was checked against
+
+`vectors.json` pins, per case, the `decision_ref` recomputed through
+`buildDecisionRefV1` from the supplied decision evidence and that record's own
+`action_ref`. That is the value the composite verifier compares with `decision_ref`, and
+`verify.ts` asserts it. The composite result alone does not always identify the evidence:
+in case 5 both decisions mismatch and the composite returns the same field values either
+way, so without this assertion the case would still report agreement with the permit
+evidence replaced by the deny evidence. The pinned digest differs for every case under
+that substitution, so the runner exits nonzero when the evidence is swapped.
 
 ### How case 2 is sealed
 
@@ -107,21 +150,33 @@ mint time that this path reproduces `createReceiptV1` byte for byte on a body bo
 accept, and that `createReceiptV1` really does refuse the case 2 body. Case 2 is
 therefore a re-derived record, not a hand-edited one.
 
+Both SDK entrypoints fail case 2 on its schema before any signature is verified, so the
+one thing that sealing path exists to produce would otherwise go unexercised. Both
+runners therefore recompute case 2's `receipt_id` and verify its boundary signature over
+the section 5.2 signature payload directly, with the SDK primitives, and hold both to
+what `vectors.json` records under `sealed_signature_check`.
+
 ### Case 3, stated plainly
 
-draft-03 section 5.3.3 line 1104 requires the action-result `prev` to be the consumed
-decision's `receipt_id`, and section 5.6 line 1219 has a verifier validate `prev` and
-stage transitions. The current reference SDKs do not resolve `prev`. Both say so in
-their own documentation: the TypeScript stage validator's doc comment says it "does not
-resolve prev against the receipt it names", and the Python module docstring says "no
-resolution of prev against the record it names". Both therefore accept this record.
+draft-03 section 5.3.3 lines 1104 to 1105 state that the action-result `prev` is the
+consumed decision's `receipt_id`, and section 5.6 line 1219 lists validating `prev` and
+stage transitions among the verifier steps. Neither statement carries a BCP 14 keyword.
+Section 1.1 lines 175 to 179 confine BCP 14 force to keywords that appear in all
+capitals, and the `MUST` in the same sentence at line 1105 governs `decision_ref`, not
+`prev`.
 
-This is an open SDK gap against section 5.6. It is not a lab pass, and it is not a
-defect in the draft.
+The current reference SDKs do not resolve `prev`. Both say so in their own
+documentation: the TypeScript stage validator's doc comment says it "does not resolve
+prev against the receipt it names", and the Python module docstring says "no resolution
+of prev against the record it names". Both therefore accept this record.
+
+So the relation draft-03 states is not enforced by the current reference SDKs. That is
+neither a lab pass nor a normative conformance failure, and it is not a defect in the
+draft.
 
 `verify.ts` prints one line for case 3 labelled `draft03 text check (harness, not SDK)`.
-That line is this family's own reading of line 1104, computed by the runner, kept
-visibly apart from every SDK result, and never recorded in an `sdk_ts` or `sdk_py`
+That line is this family's own reading of lines 1104 to 1105, computed by the runner,
+kept visibly apart from every SDK result, and never recorded in an `sdk_ts` or `sdk_py`
 block. The runner does not implement the `prev` comparison anywhere else and never
 reports it as SDK behaviour.
 
@@ -133,11 +188,15 @@ line 981 as the acting agent. In case 6 the `action_ref` is unchanged and `subje
 names a different DID, so one record names two different acting agents. That is
 semantically inconsistent.
 
-draft-03 states no explicit equality requirement between the two, and section 5.6 lines
+draft-03 states no explicit equality relation between the two, and section 5.6 lines
 1213 to 1221 name no verifier step that compares them. The reference SDKs accept the
 record on every surface, including the composite one, because the decision reference
-still binds. Agent Replay enforces that correlation explicitly and its author reports
-the case as partially bound, actor does not match.
+still binds.
+
+Agent Replay's stated rules require an explicit matching actor for full binding, and
+name a missing actor among the conditions that leave a result partially bound. This
+record's actor is present and mismatched, which is neither, so those stated rules do not
+settle it and the `replay_policy` block says `unresolved_until_run`.
 
 The case is not an APS negative vector and not evidence of an APS violation. It marks a
 relation the draft leaves implicit.
@@ -153,8 +212,11 @@ It does not establish single-use consumption or freshness at dispatch. Lines 109
 1099 put those obligations on the enforcement boundary, and no record in this family can
 carry them.
 
-It does not establish anything about Agent Replay beyond what its author reported at the
-cited revision. This suite did not run Agent Replay.
+It does not establish anything about Agent Replay. The `replay_policy` values are this
+suite's derivation from rules its author stated at the cited revision, applied to these
+records here. This suite did not run Agent Replay, did not submit these records to it,
+and holds no reported outcome for any of them. What Agent Replay does when it is run on
+them is unestablished, including for the four cases the stated rules do settle.
 
 It does not establish independent verification of any kind. The `sdk_ts` and `sdk_py`
 blocks are two implementations of the same protocol by the same author, run here at two
@@ -183,7 +245,17 @@ TypeScript, wired into `npm test` as its last step:
 
 Expected final line:
 
-    action-result-binding TypeScript: 6/6 passed
+    action-result-binding TypeScript: 9/9 matched
+
+The nine are the six cases and the three chain receipts. `MATCH` means the observed SDK
+behaviour equals the recorded expectation. It is not a conformance verdict, and both
+runners say so on their first line of output.
+
+The runner refuses to report at all unless the resolved `agent-passport-system` is
+exactly 7.0.0, read from the installed package's own `package.json` by absolute path.
+`package.json` pins the dependency, but a local override or a changed resolution would
+otherwise redefine what `sdk_ts` means while the runner still printed a match. This
+mirrors `validate.py`'s guard on the Python side and exists for the same reason.
 
 Python is a manual run and is deliberately not part of `npm test`, for the same reason
 C19's `validate.py` is not: the Python CI job keeps SDK dependencies out. Run it against
@@ -200,14 +272,23 @@ Confirm the interpreter before trusting its output:
 
 Expected final line:
 
-    action-result-binding Python: 7/7 passed
+    action-result-binding Python: 10/10 matched
 
-The seventh is the executable check that this Python release exposes no composite
-receipt and decision verifier.
+The ten are the six cases, the three chain receipts, and the executable check that this
+Python release exposes no composite receipt and decision verifier.
 
 Either runner exits nonzero when a recorded SDK result disagrees with what the pinned
 SDK actually returns, when a case named in `vectors.json` is missing from `chain.json`,
-or, for case 3, when the harness reading of `prev` disagrees with what is recorded.
+when a chain receipt fails to recompute its `receipt_id`, fails a signature or returns a
+stage result other than the recorded one, or when case 2's own `receipt_id` or boundary
+signature does not check out.
+
+`verify.ts` additionally exits nonzero when the resolved SDK is not 7.0.0, when a case
+names decision evidence `chain.json` does not carry, when the recomputed `decision_ref`
+for a case does not match the digest `vectors.json` pins for it, and, for case 3, when
+the harness reading of `prev` disagrees with what is recorded. The `prev` comparison and
+the `decision_ref` recomputation are implemented in `verify.ts` only. `validate.py`
+implements neither, and its own docstring says so.
 
 ## Relation to fixtures/receipt-decision-relation
 
@@ -225,8 +306,10 @@ specific to an `aps:action-result:v1` record: `subject_agent` presence, `prev` a
 consumed decision, `decision_ref` equality with that decision, `action_ref` binding, and
 the implicit relation between `subject_agent` and the `action_ref` `agent_id`. Its
 runners call the pinned SDKs directly and report what those SDKs return on named
-entrypoints, rather than recomputing the protocol independently. Each case carries four
-separate blocks, not one verdict.
+entrypoints. Where they recompute anything, `receipt_id`, a signature payload or a
+`decision_ref`, they do it through the SDK's own primitives rather than through a second
+implementation, so agreement there is a statement about the records and not evidence
+about the construction. Each case carries four separate blocks, not one verdict.
 
 Case 4 is the nearest point of contact and is still a different construction.
 `receipt-decision-relation`'s substitution vector supplies a decision built for a
