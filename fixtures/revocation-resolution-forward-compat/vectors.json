@@ -1,6 +1,6 @@
 {
   "profile": "aps-c19-revocation-resolution-forward-compat-v0",
-  "description": "A draft-03 verifier must not treat an unrecognized or unusable revocation resolver result as active. These vectors exercise the current TypeScript and Python SDK behavior before a future suspension representation is selected.",
+  "description": "Exercises whether a draft-03 verifier treats an unrecognized or unusable revocation resolver result as active. A candidate forward-compatibility property, not yet required by current draft text. Records the behavior of the TypeScript and Python SDKs before a future suspension representation is selected.",
   "cases": [
     {
       "id": "C19-01-active-control",
