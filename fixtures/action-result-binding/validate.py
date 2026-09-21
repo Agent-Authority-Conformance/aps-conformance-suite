@@ -6,16 +6,30 @@ It runs the pinned agent-passport-system 4.0.0 for Python over each case on the 
 receipt surface that release has, `validate_receipt_stage_v1`, and holds it to what
 vectors.json records under `sdk_py.validate_receipt_stage_v1`.
 
-It also checks the second half of the sdk_py block: that this release really has no
-counterpart to the TypeScript `verifyReceiptWithDecisionV1`. That claim is executable
-here rather than asserted in prose, so a future Python release that adds a composite
-verifier makes this runner fail instead of leaving a stale `not_implemented` on disk.
+It also exercises three things that surface does not reach on its own:
+
+  the three chain receipts (intent, permit decision, deny decision), each with its
+  receipt_id recomputed, its signatures verified over the section 5.2 signature payload
+  and its stage validated, held to what vectors.json records under `chain_receipts`
+
+  case 2's own receipt_id and boundary signature, which the stage surface skips because
+  it fails that record on its schema first
+
+  the second half of the sdk_py block: that this release really has no counterpart to
+  the TypeScript `verifyReceiptWithDecisionV1`. That claim is executable here rather
+  than asserted in prose. The probe imports every module in the installed
+  `agent_passport` package and looks for any callable whose name contains both "receipt"
+  and "decision" together with "verify" or "check". A release that adds a composite
+  verifier under a name of that shape makes this runner fail instead of leaving a stale
+  `not_implemented` on disk; a release that adds one under a name outside that shape
+  would not be caught here.
 
 The `draft03` and `replay_policy` blocks are printed for the reader and are not
-asserted: they come from the published text and from a third party's report.
+asserted: one comes from the published text, the other is this suite's own derivation
+from a third party's stated rules.
 
-The prev comparison of section 5.3.3 line 1104 is not implemented here and is not an
-SDK result on either side. See verify.ts for the one labelled harness line.
+The prev comparison of section 5.3.3 lines 1104 to 1105 is not implemented here and is
+not an SDK result on either side. See verify.ts for the one labelled harness line.
 
 This is a MANUAL run, not part of `npm test`, for the same reason C19's validate.py is:
 the Python CI job keeps SDK dependencies out. Run it against an interpreter that has the
@@ -34,10 +48,17 @@ from __future__ import annotations
 import importlib
 import importlib.metadata
 import json
+import pkgutil
 import sys
 from pathlib import Path
 
-from agent_passport.receipt_core import validate_receipt_stage_v1
+import agent_passport
+from agent_passport import verify
+from agent_passport.receipt_core import (
+    compute_receipt_id_v1,
+    receipt_signature_payload_v1,
+    validate_receipt_stage_v1,
+)
 
 HERE = Path(__file__).resolve().parent
 
@@ -55,38 +76,144 @@ if _installed != PINNED_PYTHON_SDK:
     )
     sys.exit(2)
 
-# The names a composite receipt/decision verifier would plausibly carry in this SDK.
-# If any of them ever resolves, the not_implemented record in vectors.json is stale.
-COMPOSITE_CANDIDATE_NAMES = (
-    "verify_receipt_with_decision_v1",
-    "verify_receipt_with_decision",
-    "VerifyReceiptWithDecisionV1",
-)
-
 
 def read_json(name: str):
     with (HERE / name).open("r", encoding="utf-8") as handle:
         return json.load(handle)
 
 
+def canonical(value) -> str:
+    return json.dumps(value, sort_keys=True)
+
+
 def composite_verifier_present() -> list[str]:
-    """Names of any composite receipt/decision verifier this release exposes."""
-    found = []
-    for module_name in ("agent_passport", "agent_passport.receipt_core"):
-        module = importlib.import_module(module_name)
-        for candidate in COMPOSITE_CANDIDATE_NAMES:
-            if hasattr(module, candidate):
-                found.append(f"{module_name}.{candidate}")
-    return found
+    """Names of any composite receipt/decision verifier this release exposes.
+
+    Every module in the installed agent_passport package is imported and every callable
+    it binds is considered. A name qualifies when it contains "receipt" and "decision"
+    and either "verify" or "check". That shape, not a fixed list of names, is what this
+    probe covers; a verifier named outside it is not found here.
+    """
+    modules = [agent_passport]
+    for info in pkgutil.walk_packages(agent_passport.__path__, agent_passport.__name__ + "."):
+        try:
+            modules.append(importlib.import_module(info.name))
+        except Exception as exc:  # a module this release cannot import cannot expose one
+            print(f"  note: {info.name} did not import ({exc})", file=sys.stderr)
+
+    found: list[str] = []
+    for module in modules:
+        for name, obj in vars(module).items():
+            if not callable(obj):
+                continue
+            low = name.lower()
+            if "receipt" in low and "decision" in low and ("verify" in low or "check" in low):
+                qualified = f"{module.__name__}.{name}"
+                if qualified not in found:
+                    found.append(qualified)
+    return sorted(found)
+
+
+def observed_signatures(record, keys) -> list[dict]:
+    out = []
+    for signature in record["signatures"]:
+        descriptor = {
+            "signer": signature["signer"],
+            "key_id": signature["key_id"],
+            "alg": signature["alg"],
+        }
+        key = keys.get(signature["key_id"])
+        out.append(
+            {
+                "signer": signature["signer"],
+                "key_id": signature["key_id"],
+                "verified": bool(
+                    key is not None
+                    and verify(receipt_signature_payload_v1(record, descriptor), signature["value"], key)
+                ),
+            }
+        )
+    return out
 
 
 chain = read_json("chain.json")
 vectors = read_json("vectors.json")
 
 boundary = chain["identities"]["enforcement_boundary"]
+keys = chain["verification_keys"]
+
+print(
+    "MATCH means observed SDK behavior equals the recorded expectation. "
+    "It is not a conformance verdict."
+)
 
 passed = 0
 failed_ids: list[str] = []
+
+# ---------------------------------------------------------------------------
+# The three chain receipts. The cases below are all action-result records; the intent
+# and the two decisions they hang off are exercised here, on the same three surfaces,
+# so a regression in them fails this runner rather than passing unnoticed.
+# ---------------------------------------------------------------------------
+
+receipt_checks = len(vectors["chain_receipts"]["expected"])
+receipts_matched = 0
+
+for expected in vectors["chain_receipts"]["expected"]:
+    record = chain["receipts"].get(expected["receipt"])
+    problems: list[str] = []
+
+    if record is None:
+        problems.append(f"chain.json has no receipt named {expected['receipt']}")
+    else:
+        if record["receipt_type"] != expected["receipt_type"]:
+            problems.append(
+                f"receipt_type: recorded {expected['receipt_type']!r}, "
+                f"observed {record['receipt_type']!r}"
+            )
+
+        id_recomputed = compute_receipt_id_v1(record) == record["receipt_id"]
+        if id_recomputed != expected["receipt_id_recomputed"]:
+            problems.append(
+                f"receipt_id_recomputed: recorded {expected['receipt_id_recomputed']}, "
+                f"observed {id_recomputed}"
+            )
+
+        signatures = observed_signatures(record, keys)
+        if canonical(signatures) != canonical(expected["signatures"]):
+            problems.append(
+                f"signatures: recorded {canonical(expected['signatures'])}, "
+                f"observed {canonical(signatures)}"
+            )
+
+        stage = validate_receipt_stage_v1(record, boundary_identity=boundary)
+        stage_observed = {
+            "status": stage["status"],
+            "boundary_identity": stage["boundary_identity"],
+            "stage": stage["stage"],
+            "failures": stage["failures"],
+        }
+        problems.extend(
+            f"stage {key}: recorded {canonical(expected['stage'][key])}, "
+            f"observed {canonical(stage_observed[key])}"
+            for key in stage_observed
+            if canonical(expected["stage"][key]) != canonical(stage_observed[key])
+        )
+
+    if problems:
+        print(f"FAIL chain receipt {expected['receipt']}", file=sys.stderr)
+        for problem in problems:
+            print(f"  {problem}", file=sys.stderr)
+        failed_ids.append(f"chain receipt {expected['receipt']}")
+    else:
+        receipts_matched += 1
+        print(f"MATCH chain receipt {expected['receipt']}")
+
+print(f"action-result-binding Python chain receipts: {receipts_matched}/{receipt_checks} matched")
+
+# ---------------------------------------------------------------------------
+# The cases.
+# ---------------------------------------------------------------------------
 
 for vector in vectors["cases"]:
     record = chain["cases"].get(vector["case"])
@@ -105,10 +232,9 @@ for vector in vectors["cases"]:
 
     recorded = vector["sdk_py"]["validate_receipt_stage_v1"]
     problems = [
-        f"{key}: recorded {json.dumps(recorded[key], sort_keys=True)}, "
-        f"observed {json.dumps(observed[key], sort_keys=True)}"
+        f"{key}: recorded {canonical(recorded[key])}, observed {canonical(observed[key])}"
         for key in observed
-        if json.dumps(recorded[key], sort_keys=True) != json.dumps(observed[key], sort_keys=True)
+        if canonical(recorded[key]) != canonical(observed[key])
     ]
 
     composite_record = vector["sdk_py"]["composite_decision_verifier"]
@@ -119,6 +245,24 @@ for vector in vectors["cases"]:
             "not_implemented"
         )
 
+    # Case 2's own sealing. The stage surface fails that record on its schema before any
+    # signature is verified, so without this the one thing the section 5.2 sealing path
+    # exists to produce would never be exercised by either runner.
+    sealed = vector.get("sealed_signature_check")
+    if sealed is not None:
+        id_recomputed = compute_receipt_id_v1(record) == record["receipt_id"]
+        if id_recomputed != sealed["receipt_id_recomputed"]:
+            problems.append(
+                f"sealed_signature_check receipt_id_recomputed: recorded "
+                f"{sealed['receipt_id_recomputed']}, observed {id_recomputed}"
+            )
+        signatures = observed_signatures(record, keys)
+        if canonical(signatures) != canonical(sealed["signatures"]):
+            problems.append(
+                f"sealed_signature_check signatures: recorded {canonical(sealed['signatures'])}, "
+                f"observed {canonical(signatures)}"
+            )
+
     if problems:
         print(f"FAIL {vector['id']}", file=sys.stderr)
         for problem in problems:
@@ -126,11 +270,12 @@ for vector in vectors["cases"]:
         failed_ids.append(vector["id"])
     else:
         passed += 1
-        print(f"PASS {vector['id']}")
+        print(f"MATCH {vector['id']}")
 
     codes = [failure["code"] for failure in observed["failures"]]
     sections = "; ".join(vector["draft03"]["sections"])
-    note = vector["replay_policy"]["note"]
+    replay = vector["replay_policy"]
+    replay_value = replay["outcome"] if replay["status"] == "derived" else replay["status"]
     print(f"  draft03                              {vector['draft03']['outcome']}  [{sections}]")
     print(
         f"  sdk_py validate_receipt_stage_v1     status={observed['status']} "
@@ -142,10 +287,7 @@ for vector in vectors["cases"]:
         f"  sdk_ts                               run npm run verify:action-result-binding "
         f"separately; two TypeScript surfaces are recorded there"
     )
-    print(
-        f"  replay_policy (reported, not run)    {vector['replay_policy']['outcome']}"
-        + (f" ({note})" if note else "")
-    )
+    print(f"  replay_policy (derived from stated rules, not run) {replay_value}")
     print(f"  classification                       {vector['classification']}")
 
 present = composite_verifier_present()
@@ -158,8 +300,12 @@ if present:
     )
     failed_ids.append("composite-verifier-absence")
 else:
-    print("PASS composite-verifier-absence: no verify_receipt_with_decision counterpart in this release")
+    print(
+        "MATCH composite-verifier-absence: no callable in the installed agent_passport "
+        "package names a receipt and a decision together with verify or check"
+    )
 
-total = len(vectors["cases"]) + 1
-print(f"action-result-binding Python: {passed + (0 if present else 1)}/{total} passed")
+total = len(vectors["cases"]) + receipt_checks + 1
+matched = passed + receipts_matched + (0 if present else 1)
+print(f"action-result-binding Python: {matched}/{total} matched")
 sys.exit(1 if failed_ids else 0)
