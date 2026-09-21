@@ -82,15 +82,39 @@ release that adds a composite verifier under a name of that shape makes the runn
 instead of leaving a stale record on disk. A release that adds one under a name outside
 that shape is not covered, and the probe claims no more than that.
 
-**`replay_policy`** is what Agent Replay's binding rules, as stated by its author, imply
-for the record. This suite derived each value by applying those stated rules. It did not
-run Agent Replay and did not submit these records to it, and no outcome in the block was
-reported for them. The stated rules are quoted in `vectors.json` under
-`replay_policy_stated_rules`, cited to the Agent Replay author at revision
-`08b3146097977db565a202c7a8f34d350da00fd0` in
+**`replay_policy`** holds two kinds of value, kept apart by a `status` member, and this
+suite did not run Agent Replay for either of them.
+
+`status: derived` is what Agent Replay's binding rules, as stated by its author, imply
+for the record. This suite derived each of those values by applying those stated rules.
+The stated rules are quoted in `vectors.json` under `replay_policy_stated_rules`, cited
+to the Agent Replay author at revision `08b3146097977db565a202c7a8f34d350da00fd0` in
 `Agent-Authority-Conformance/aps-conformance-suite#99`. Each derived value names the
-stated rule that determines it. Where the stated rules do not settle a record the block
-says `unresolved_until_run` rather than guessing, which is cases 2 and 6.
+stated rule that determines it. Cases 1, 3, 4 and 5.
+
+`status: reported` is an outcome the Agent Replay author obtained from a run and
+reported. Cases 2 and 6, the two the stated rules did not settle. Their earlier
+`unresolved_until_run` explanation is kept under `stated_rules_did_not_settle` as
+history, and it is the reported outcome, not that explanation, that the `outcome` member
+now carries.
+
+The author ran the fixture pinned at this suite's commit
+`b64cc8dfa889b493bbf285fbb115a988ac54566b` and this path, against Agent Replay at
+revision `1f4db7a12e8ddf8853c2533f08f8252f7efbe326`, and reported all six outcomes in
+`Agent-Authority-Conformance/aps-conformance-suite#99` comment `5767384166`. Every case
+records the author's exact Replay status string and cites that revision and comment.
+Cases 1, 3, 4 and 5 carry it under `author_run_confirmation`: the author's run reported
+the outcome this suite had already derived. Cases 2 and 6 take their outcome from it.
+
+This suite did not run Agent Replay, did not submit these records to it, and is not
+reporting a result of its own for any case. What is recorded is a third party's report,
+attributed to that third party, at a pinned revision.
+
+For case 2 the author states that Agent Replay marks APS `ReceiptV1` schema validation
+`NOT_PERFORMED`. That statement is recorded inside `replay_policy` only, under
+`aps_schema_validation_note`, as the author's statement about Agent Replay. It does not
+replace or soften case 2's own APS result: the record is schema-invalid, the `draft03`,
+`sdk_ts` and `sdk_py` blocks say so, and none of them changed.
 
 ## The three classifications
 
@@ -112,17 +136,21 @@ equality relation and names no verifier step that compares them. Case 6 only.
 
 ## Cases
 
-The `replay` column is this suite's derivation from the stated rules, not a reported
-result. See the `replay_policy` block above.
+The `replay` column is not a result this suite obtained. `derived` is this suite's
+reading of the author's stated rules; `reported` is the author's own run at
+`1f4db7a12e8ddf8853c2533f08f8252f7efbe326`, reported in issue #99 comment `5767384166`.
+Where the column says `derived, confirmed`, the author's run reported the same outcome
+this suite had derived. The Replay status string in the column is the author's. See the
+`replay_policy` block above.
 
-| id | defect | draft03 | sdk_ts stage | sdk_ts composite | sdk_py stage | replay (derived) | classification |
+| id | defect | draft03 | sdk_ts stage | sdk_ts composite | sdk_py stage | replay (not run here) | classification |
 |---|---|---|---|---|---|---|---|
-| ARB-01-positive | none | satisfies | valid | valid | valid | fully bound | `aps_conformance` |
-| ARB-02-subject-agent-absent | `subject_agent` removed | invalid | invalid, `SCHEMA_INVALID` | invalid, `receipt_invalid` | invalid, `SCHEMA_INVALID` | `unresolved_until_run` | `aps_conformance` |
-| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | stated_relation_not_met | valid | valid | valid | partially bound | `draft03_stated_relation_not_enforced` |
-| ARB-04-decision-ref-mismatch | `decision_ref` set to the deny decision's | invalid | valid | invalid, `decision_ref_mismatch` | valid | partially bound | `aps_conformance` |
-| ARB-05-action-ref-mismatch | `action_ref` set to a different action's | invalid | valid | invalid, `decision_ref_mismatch` | valid | unbound | `aps_conformance` |
-| ARB-06-subject-agent-changed | `subject_agent` set to a second agent DID | semantic conflict, no explicit rule | valid | valid | valid | `unresolved_until_run` | `draft03_semantic_relation_not_explicitly_enforced` |
+| ARB-01-positive | none | satisfies | valid | valid | valid | derived, confirmed: fully bound, `EXECUTION_EVIDENCE_BOUND_TO_ACTION` | `aps_conformance` |
+| ARB-02-subject-agent-absent | `subject_agent` removed | invalid | invalid, `SCHEMA_INVALID` | invalid, `receipt_invalid` | invalid, `SCHEMA_INVALID` | reported: partially bound, `EXECUTION_EVIDENCE_PARTIALLY_BOUND` | `aps_conformance` |
+| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | stated_relation_not_met | valid | valid | valid | derived, confirmed: partially bound, `EXECUTION_EVIDENCE_PARTIALLY_BOUND` | `draft03_stated_relation_not_enforced` |
+| ARB-04-decision-ref-mismatch | `decision_ref` set to the deny decision's | invalid | valid | invalid, `decision_ref_mismatch` | valid | derived, confirmed: partially bound, `EXECUTION_EVIDENCE_PARTIALLY_BOUND` | `aps_conformance` |
+| ARB-05-action-ref-mismatch | `action_ref` set to a different action's | invalid | valid | invalid, `decision_ref_mismatch` | valid | derived, confirmed: unbound, `EXECUTION_EVIDENCE_UNBOUND` | `aps_conformance` |
+| ARB-06-subject-agent-changed | `subject_agent` set to a second agent DID | semantic conflict, no explicit rule | valid | valid | valid | reported: unbound, `EXECUTION_EVIDENCE_UNBOUND` | `draft03_semantic_relation_not_explicitly_enforced` |
 
 Every mutated record is re-derived so the named defect is the only defect it carries.
 The `receipt_id` is recomputed and the boundary signature is redone over the mutated
@@ -208,8 +236,11 @@ still binds.
 
 Agent Replay's stated rules require an explicit matching actor for full binding, and
 name a missing actor among the conditions that leave a result partially bound. This
-record's actor is present and mismatched, which is neither, so those stated rules do not
-settle it and the `replay_policy` block says `unresolved_until_run`.
+record's actor is present and mismatched, which is neither, so those stated rules did not
+settle it and this suite derived no outcome from them. The author has since run the
+pinned record and reported `EXECUTION_EVIDENCE_UNBOUND`, so the `replay_policy` block
+carries `status: reported` and `unbound`, attributed to that run, with the earlier
+explanation kept as history.
 
 The case is not an APS negative vector and not evidence of an APS violation. It marks a
 relation the draft leaves implicit.
@@ -225,11 +256,12 @@ It does not establish single-use consumption or freshness at dispatch. Lines 109
 1099 put those obligations on the enforcement boundary, and no record in this family can
 carry them.
 
-It does not establish anything about Agent Replay. The `replay_policy` values are this
-suite's derivation from rules its author stated at the cited revision, applied to these
-records here. This suite did not run Agent Replay, did not submit these records to it,
-and holds no reported outcome for any of them. What Agent Replay does when it is run on
-them is unestablished, including for the four cases the stated rules do settle.
+It does not establish anything about Agent Replay on this suite's own authority. The
+`replay_policy` values are either this suite's derivation from rules the Agent Replay
+author stated at the cited revision, or outcomes that author reported from a run at the
+cited revision and comment. This suite did not run Agent Replay and did not submit these
+records to it. Nothing here is independent verification of Agent Replay by this suite,
+and the reported outcomes are held as a third party's report, not reproduced here.
 
 It does not establish independent verification of any kind. The `sdk_ts` and `sdk_py`
 blocks are two implementations of the same protocol by the same author, run here at two

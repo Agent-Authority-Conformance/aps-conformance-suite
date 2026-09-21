@@ -25,9 +25,11 @@
 //
 // The draft03 and replay_policy blocks are printed for the reader and are NOT asserted
 // against the SDK: one comes from the published text, the other is this suite's own
-// derivation from a third party's stated rules, and a runner that asserted one against
-// the other would be deciding which of them is authoritative. That is the whole point
-// of keeping the blocks apart.
+// derivation from a third party's stated rules plus that third party's own reported run
+// of this fixture, and a runner that asserted one against the other would be deciding
+// which of them is authoritative. That is the whole point of keeping the blocks apart.
+// This suite did not run Agent Replay; the replay line says per case whether the value
+// was derived here, derived here and confirmed by the author's run, or reported by it.
 //
 // The prev comparison of section 5.3.3 lines 1104 to 1105 is NOT an SDK result. Neither
 // SDK resolves prev. Case 3 prints one harness line, labelled as such, and nothing in
@@ -364,13 +366,23 @@ for (const vector of vectors.cases) {
   }
 
   const replay = vector.replay_policy
-  const replayValue = replay.status === 'derived' ? replay.outcome : replay.status
+  // The provenance of the replay outcome is printed, never collapsed into the outcome
+  // alone: `derived` is this suite applying the author's stated rules, `reported` is the
+  // author's own run. Neither is a result this suite obtained from Agent Replay.
+  const replayValue =
+    replay.status === 'derived'
+      ? replay.author_run_confirmation
+        ? `derived, confirmed by author run: ${replay.outcome} (${replay.author_run_confirmation.replay_status})`
+        : `derived: ${replay.outcome}`
+      : replay.status === 'reported'
+        ? `reported by author run: ${replay.outcome} (${replay.replay_status})`
+        : replay.status
 
   console.log(`  draft03                              ${vector.draft03.outcome}  [${vector.draft03.sections.join('; ')}]`)
   console.log(`  sdk_ts validateReceiptStageV1        status=${stageObserved.status} boundary_identity=${stageObserved.boundary_identity} stage=${json(stageObserved.stage)} failures=${json(stageObserved.failures.map((f: any) => f.code))}`)
   console.log(`  sdk_ts verifyReceiptWithDecisionV1   status=${compositeObserved.status} decision_ref_bound=${compositeObserved.decision_ref_bound} errors=${json(compositeObserved.errors)}`)
   console.log(`  sdk_py                               run fixtures/action-result-binding/validate.py separately; composite verifier ${vector.sdk_py.composite_decision_verifier.result}`)
-  console.log(`  replay_policy (derived from stated rules, not run) ${replayValue}`)
+  console.log(`  replay_policy (not run by this suite)  ${replayValue}`)
   console.log(`  classification                       ${vector.classification}`)
   if (harnessLine !== null) {
     console.log(`  draft03 text check (harness, not SDK) ${harnessLine}`)
