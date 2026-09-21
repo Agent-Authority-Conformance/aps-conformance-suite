@@ -5,7 +5,7 @@
     "draft03": "The expectation derived from the published draft-pidlisnyi-aps-03 text, with the section and line. Authored from the text, not from any implementation.",
     "sdk_ts": "What agent-passport-system 7.0.0 actually returns, recorded from real runs, on two separate entrypoints: validateReceiptStageV1 (section 5.3 stage rules for one record) and verifyReceiptWithDecisionV1 (the section 5.6 composite check against supplied decision evidence).",
     "sdk_py": "What agent-passport-system 4.0.0 for Python actually returns from validate_receipt_stage_v1, recorded from real runs, plus an explicit statement that the pinned release has no counterpart to verifyReceiptWithDecisionV1.",
-    "replay_policy": "What Agent Replay's binding rules, as stated by its author, imply for this record. Derived by this suite by applying those stated rules to the record. Agent Replay was not run here, these records were not submitted to it, and no outcome in this block was reported for them. Where the stated rules do not settle a record, the block says unresolved_until_run rather than guessing."
+    "replay_policy": "What Agent Replay's binding rules, as stated by its author, imply for this record, together with what the author's own run of this pinned fixture reported for it. status derived means this suite derived the outcome by applying the stated rules, and author_run_confirmation records that the author's run reported the same outcome. status reported means the stated rules did not settle the record and the outcome is the author's reported one instead, with the earlier explanation kept under stated_rules_did_not_settle as history. This suite did not run Agent Replay and did not submit these records to it; every outcome attributed to a run is the author's report at the revision and comment each case cites."
   },
   "replay_policy_stated_rules": {
     "source": "stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99",
@@ -146,7 +146,13 @@
         "status": "derived",
         "outcome": "fully bound",
         "rule": "All four conditions the stated rules give for full binding hold: action_ref matches the decision's, subject_agent is present and matches, prev equals the consumed decision's receipt_id, and decision_ref matches the decision the chain names.",
-        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it."
+        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it.",
+        "author_run_confirmation": {
+          "outcome": "fully bound",
+          "replay_status": "EXECUTION_EVIDENCE_BOUND_TO_ACTION",
+          "statement": "The author's run at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326 reported the same outcome this suite derived for this case.",
+          "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
+        }
       },
       "classification": "aps_conformance"
     },
@@ -222,10 +228,14 @@
         "record_decision_ref_is_deny": false
       },
       "replay_policy": {
-        "status": "unresolved_until_run",
-        "outcome": null,
-        "rule": "The stated rules make a missing actor leave a result partially bound, but they describe a missing actor on an input Agent Replay accepted. This record is not a valid ReceiptV1: subject_agent is a REQUIRED member and it is absent, so the record fails the APS schema before any binding rule is known to apply. The stated rules say nothing about that case, so this suite does not assign one.",
-        "source": "the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99 do not settle this record. Agent Replay was not run here and this record was not submitted to it."
+        "status": "reported",
+        "outcome": "partially bound",
+        "replay_status": "EXECUTION_EVIDENCE_PARTIALLY_BOUND",
+        "rule": "Not derived here. The outcome above is what the Agent Replay author reported from a run of this pinned record, and this suite records it as that author's report.",
+        "stated_rules_did_not_settle": "Kept as history, and superseded as the source of the outcome above. The stated rules make a missing actor leave a result partially bound, but they describe a missing actor on an input Agent Replay accepted. This record is not a valid ReceiptV1: subject_agent is a REQUIRED member and it is absent, so the record fails the APS schema before any binding rule is known to apply. The stated rules say nothing about that case, so this suite did not assign one.",
+        "stated_rules_source": "the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99 do not settle this record.",
+        "aps_schema_validation_note": "The author states that Agent Replay marks APS ReceiptV1 schema validation NOT_PERFORMED; that statement is recorded here inside replay_policy only, as the author's statement about Agent Replay, and it neither replaces nor softens this case's own APS schema-invalid result recorded in the draft03, sdk_ts and sdk_py blocks.",
+        "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
       },
       "classification": "aps_conformance"
     },
@@ -294,7 +304,13 @@
         "status": "derived",
         "outcome": "partially bound",
         "rule": "The stated rules make a wrong prev leave the result only partially bound. This record's prev names the action-intent rather than the consumed decision, so prev == decision.receipt_id does not hold while the other three conditions for full binding do.",
-        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it."
+        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it.",
+        "author_run_confirmation": {
+          "outcome": "partially bound",
+          "replay_status": "EXECUTION_EVIDENCE_PARTIALLY_BOUND",
+          "statement": "The author's run at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326 reported the same outcome this suite derived for this case.",
+          "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
+        }
       },
       "classification": "draft03_stated_relation_not_enforced",
       "classification_note": "Draft-03 states the prev relation at section 5.3.3 lines 1104-1105 and lists prev validation among the section 5.6 verifier steps at line 1219. Neither statement carries a BCP 14 keyword. Neither reference SDK resolves prev today: the TypeScript stage validator says so in its own doc comment (src/v2/receipt-core/stage.ts, 'does not resolve prev against the receipt it names') and the Python module docstring says the same ('no resolution of prev against the record it names'). Both therefore accept this record. The stated relation is not enforced by the current reference SDKs. That is neither a lab pass nor a normative conformance failure."
@@ -359,7 +375,13 @@
         "status": "derived",
         "outcome": "partially bound",
         "rule": "The stated rules make a wrong decision_ref leave the result only partially bound, and they scope that condition to a decision that carries one, which the consumed permit decision does. This record's decision_ref names the deny decision instead.",
-        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it."
+        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it.",
+        "author_run_confirmation": {
+          "outcome": "partially bound",
+          "replay_status": "EXECUTION_EVIDENCE_PARTIALLY_BOUND",
+          "statement": "The author's run at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326 reported the same outcome this suite derived for this case.",
+          "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
+        }
       },
       "classification": "aps_conformance",
       "classification_note": "The TypeScript composite surface rejects the record with decision_ref_mismatch, which matches the draft-03 expectation. The record is stage-valid and composite-invalid at the same time, and the two outcomes are recorded separately above."
@@ -425,7 +447,13 @@
         "status": "derived",
         "outcome": "unbound",
         "rule": "The stated rules make a wrong action_ref remain unbound, and that condition is stated on its own rather than among the three that leave a result partially bound. This record's action_ref names the alternate action.",
-        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it."
+        "source": "derived by this suite from the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99. Agent Replay was not run here and this record was not submitted to it.",
+        "author_run_confirmation": {
+          "outcome": "unbound",
+          "replay_status": "EXECUTION_EVIDENCE_UNBOUND",
+          "statement": "The author's run at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326 reported the same outcome this suite derived for this case.",
+          "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
+        }
       },
       "classification": "aps_conformance",
       "classification_note": "The TypeScript composite surface rejects the record. The error code is decision_ref_mismatch, the same code as case 4, because the reference is recomputed with action_ref taken from the receipt; the cause differs and is recorded in the draft03 block above."
@@ -488,10 +516,13 @@
         "record_decision_ref_is_deny": false
       },
       "replay_policy": {
-        "status": "unresolved_until_run",
-        "outcome": null,
-        "rule": "The stated rules require an explicit matching actor for full binding and name a missing actor among the conditions that leave a result partially bound. This record's actor is present and mismatched, which is neither. The stated rules do not name that case, so this suite does not assign one.",
-        "source": "the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99 do not settle this record. Agent Replay was not run here and this record was not submitted to it."
+        "status": "reported",
+        "outcome": "unbound",
+        "replay_status": "EXECUTION_EVIDENCE_UNBOUND",
+        "rule": "Not derived here. The outcome above is what the Agent Replay author reported from a run of this pinned record, and this suite records it as that author's report.",
+        "stated_rules_did_not_settle": "Kept as history, and superseded as the source of the outcome above. The stated rules require an explicit matching actor for full binding and name a missing actor among the conditions that leave a result partially bound. This record's actor is present and mismatched, which is neither. The stated rules do not name that case, so this suite did not assign one.",
+        "stated_rules_source": "the binding rules stated by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99 do not settle this record.",
+        "source": "run by the Agent Replay author at revision 1f4db7a12e8ddf8853c2533f08f8252f7efbe326, reported in Agent-Authority-Conformance/aps-conformance-suite#99 comment 5767384166, not run by this suite"
       },
       "classification": "draft03_semantic_relation_not_explicitly_enforced",
       "classification_note": "Both reference SDKs accept the record, and so does the composite surface, because the decision reference still binds: action_ref is unchanged. This is not an APS violation, not an APS negative vector and not a Replay-only artifact. It marks a relation draft-03 leaves implicit."

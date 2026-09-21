@@ -34,7 +34,10 @@ It also exercises three things that surface does not reach on its own:
 
 The `draft03` and `replay_policy` blocks are printed for the reader and are not
 asserted: one comes from the published text, the other is this suite's own derivation
-from a third party's stated rules.
+from a third party's stated rules plus that third party's own reported run of this
+fixture. This suite did not run Agent Replay; the replay line says per case whether the
+value was derived here, derived here and confirmed by the author's run, or reported by
+it.
 
 The prev comparison of section 5.3.3 lines 1104 to 1105 is not implemented here and is
 not an SDK result on either side. See verify.ts for the one labelled harness line. The
@@ -333,7 +336,24 @@ for vector in vectors["cases"]:
     codes = [failure["code"] for failure in observed["failures"]]
     sections = "; ".join(vector["draft03"]["sections"])
     replay = vector["replay_policy"]
-    replay_value = replay["outcome"] if replay["status"] == "derived" else replay["status"]
+    # The provenance of the replay outcome is printed, never collapsed into the outcome
+    # alone: "derived" is this suite applying the author's stated rules, "reported" is the
+    # author's own run. Neither is a result this suite obtained from Agent Replay.
+    if replay["status"] == "derived":
+        confirmation = replay.get("author_run_confirmation")
+        if confirmation is not None:
+            replay_value = (
+                f"derived, confirmed by author run: {replay['outcome']} "
+                f"({confirmation['replay_status']})"
+            )
+        else:
+            replay_value = f"derived: {replay['outcome']}"
+    elif replay["status"] == "reported":
+        replay_value = (
+            f"reported by author run: {replay['outcome']} ({replay['replay_status']})"
+        )
+    else:
+        replay_value = replay["status"]
     print(f"  draft03                              {vector['draft03']['outcome']}  [{sections}]")
     print(
         f"  sdk_py validate_receipt_stage_v1     status={observed['status']} "
@@ -347,7 +367,7 @@ for vector in vectors["cases"]:
         f"  sdk_ts                               run npm run verify:action-result-binding "
         f"separately; two TypeScript surfaces are recorded there"
     )
-    print(f"  replay_policy (derived from stated rules, not run) {replay_value}")
+    print(f"  replay_policy (not run by this suite)  {replay_value}")
     print(f"  classification                       {vector['classification']}")
 
 present = composite_verifier_present()
