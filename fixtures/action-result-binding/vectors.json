@@ -137,7 +137,7 @@
       "decision_ref_binding": {
         "note": "Which decision this case was checked against, pinned so the composite result above cannot be reproduced with the other decision's evidence substituted. The digest is buildDecisionRefV1 over decision_evidence.permit and this record's own action_ref, which is the value verifyReceiptWithDecisionV1 compares with record.decision_ref.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+        "recomputed_from_permit_evidence": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
         "equals_record_decision_ref": true,
         "equals_permit_decision_ref": true,
         "record_decision_ref_is_deny": false
@@ -216,7 +216,7 @@
       "decision_ref_binding": {
         "note": "Recorded for completeness. The composite verifier returns on the schema failure before it dereferences the decision at all, so this case cannot discriminate its evidence through the composite result; the digest below is what the builder gives for this record and is checked directly.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+        "recomputed_from_permit_evidence": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
         "equals_record_decision_ref": true,
         "equals_permit_decision_ref": true,
         "record_decision_ref_is_deny": false
@@ -236,7 +236,7 @@
       "decision_evidence": "permit",
       "defect": "prev set to the action-intent receipt_id, a real receipt that is not the consumed policy-decision; receipt_id recomputed and the boundary signature redone over the mutated body",
       "draft03": {
-        "outcome": "invalid",
+        "outcome": "stated_relation_not_met",
         "statement": "Section 5.3.3 lines 1104-1105 say prev is the consumed policy-decision receipt_id. This record names the action-intent receipt_id instead. Section 5.6 line 1219 lists validate prev and stage transitions among the verifier steps, so the relation is named on the verifier side as well as the producer side. Neither statement carries a BCP 14 keyword, which section 1.1 lines 175-179 confine to words that appear in all capitals; the MUST in the same sentence at line 1105 governs decision_ref, not prev.",
         "sections": [
           "5.3.3 lines 1104-1105",
@@ -285,7 +285,7 @@
       "decision_ref_binding": {
         "note": "Which decision this case was checked against, pinned so the composite result above cannot be reproduced with the other decision's evidence substituted. The digest is buildDecisionRefV1 over decision_evidence.permit and this record's own action_ref, which is the value verifyReceiptWithDecisionV1 compares with record.decision_ref.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+        "recomputed_from_permit_evidence": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
         "equals_record_decision_ref": true,
         "equals_permit_decision_ref": true,
         "record_decision_ref_is_deny": false
@@ -350,7 +350,7 @@
       "decision_ref_binding": {
         "note": "Which decision this case was checked against, pinned so the composite result above cannot be reproduced with the other decision's evidence substituted. The reference recomputed over the permit evidence is the permit's own decision_ref, and it does not equal the decision_ref this record carries, which is the deny decision's. That pair is what decision_ref_mismatch reports here.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+        "recomputed_from_permit_evidence": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
         "equals_record_decision_ref": false,
         "equals_permit_decision_ref": true,
         "record_decision_ref_is_deny": true
@@ -416,7 +416,7 @@
       "decision_ref_binding": {
         "note": "Which decision this case was checked against, pinned because the composite result alone cannot say. Both decisions' evidence mismatch here, and with either one the composite returns decision_ref_mismatch with byte-identical fields, so the sdk_ts block above does not by itself establish which decision the check ran against. The digest below does: it is buildDecisionRefV1 over decision_evidence.permit and this record's alternate action_ref, and substituting the deny evidence changes it.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "1345c09355b318c7322c3b0bcf3c71b8987079a7d100eaf81ff558257369b13a",
+        "recomputed_from_permit_evidence": "911ece7f7ed1dea3b8f1c8f9932c4caecb479f6612ec3ab87c64754ad6f6e703",
         "equals_record_decision_ref": false,
         "equals_permit_decision_ref": false,
         "record_decision_ref_is_deny": false
@@ -438,7 +438,7 @@
       "defect": "subject_agent set to a second agent DID while action_ref is left unchanged; receipt_id recomputed and the boundary signature redone over the mutated body",
       "draft03": {
         "outcome": "semantic_conflict_no_explicit_rule",
-        "statement": "aps-action-ref-v2 commits to agent_id, which draft-03 defines as the acting agent's identifier (4.1, line 789), and ReceiptV1 defines subject_agent as the acting agent (5.1, line 981). action_ref is unchanged in this case, so the record names two different acting agents. Draft-03 states no explicit requirement that subject_agent equal the action_ref agent_id, and section 5.6 lines 1213-1221 name no verifier comparison between them.",
+        "statement": "aps-action-ref-v2 commits to agent_id, which draft-03 defines as the acting agent's identifier (4.1, line 789), and ReceiptV1 defines subject_agent as the acting agent (5.1, line 981). action_ref is unchanged in this case, so the record names two different acting agents. Draft-03 states no explicit equality relation between subject_agent and the action_ref agent_id, and section 5.6 lines 1213-1221 name no verifier comparison between them.",
         "sections": [
           "4.1 line 789",
           "5.1 line 981",
@@ -482,7 +482,7 @@
       "decision_ref_binding": {
         "note": "Which decision this case was checked against, pinned so the composite result above cannot be reproduced with the other decision's evidence substituted. The digest is buildDecisionRefV1 over decision_evidence.permit and this record's own action_ref, which is the value verifyReceiptWithDecisionV1 compares with record.decision_ref.",
         "evidence": "permit",
-        "recomputed_from_permit_evidence": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+        "recomputed_from_permit_evidence": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
         "equals_record_decision_ref": true,
         "equals_permit_decision_ref": true,
         "record_decision_ref_is_deny": false

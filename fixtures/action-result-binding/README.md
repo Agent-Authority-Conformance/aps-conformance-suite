@@ -21,14 +21,16 @@ merges them.
    formula over a small fixed effect object
 
 A second policy-decision for the same intent, verdict `deny`, is also minted. It exists
-to supply a well-formed real `decision_ref` for case 4. It is never consumed as an
-approval, which line 1098 forbids for a deny record in any case.
+for one reason: case 4 needs a real, well-formed `decision_ref` that is not the permit's
+to put on an action-result record. It is never consumed as an approval, which line 1098
+forbids for a deny record in any case.
 
-The deny is a coherent second decision rather than the permit's inputs with the verdict
-flipped. It is evaluated half a second later, its `decision_context.evaluated_at` is its
-own `issued_at` just as the permit's is, and its `authority_state` observes the same
-delegation as revoked, which is what the deny follows from. The two decisions share the
-policy input, because the same policy evaluated the same request both times.
+The deny's evidence reuses the permit's `authority_state` and `policy_input` byte for
+byte. Its only input of its own is `decision_context.evaluated_at`, half a second later,
+which is its own `issued_at` just as the permit's is. Nothing in this family tracks a
+delegation's status changing between the two decisions, and no case turns on any such
+change. The deny is not a worked example of why a boundary would deny, and nothing here
+reads it as one.
 
 `chain.json` also carries the `DecisionEvidenceV1` material the composite verifier
 needs (`authority_state`, `policy_input`, `decision_context`, `decision_output`), so a
@@ -117,7 +119,7 @@ result. See the `replay_policy` block above.
 |---|---|---|---|---|---|---|---|
 | ARB-01-positive | none | satisfies | valid | valid | valid | fully bound | `aps_conformance` |
 | ARB-02-subject-agent-absent | `subject_agent` removed | invalid | invalid, `SCHEMA_INVALID` | invalid, `receipt_invalid` | invalid, `SCHEMA_INVALID` | `unresolved_until_run` | `aps_conformance` |
-| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | invalid | valid | valid | valid | partially bound | `draft03_stated_relation_not_enforced` |
+| ARB-03-prev-not-the-decision | `prev` set to the intent's `receipt_id` | stated_relation_not_met | valid | valid | valid | partially bound | `draft03_stated_relation_not_enforced` |
 | ARB-04-decision-ref-mismatch | `decision_ref` set to the deny decision's | invalid | valid | invalid, `decision_ref_mismatch` | valid | partially bound | `aps_conformance` |
 | ARB-05-action-ref-mismatch | `action_ref` set to a different action's | invalid | valid | invalid, `decision_ref_mismatch` | valid | unbound | `aps_conformance` |
 | ARB-06-subject-agent-changed | `subject_agent` set to a second agent DID | semantic conflict, no explicit rule | valid | valid | valid | `unresolved_until_run` | `draft03_semantic_relation_not_explicitly_enforced` |
@@ -130,14 +132,25 @@ body. The case 5 action keeps the same `agent_id`, the same `action_type` and th
 
 ### Which decision each case was checked against
 
-`vectors.json` pins, per case, the `decision_ref` recomputed through
-`buildDecisionRefV1` from the supplied decision evidence and that record's own
-`action_ref`. That is the value the composite verifier compares with `decision_ref`, and
-`verify.ts` asserts it. The composite result alone does not always identify the evidence:
-in case 5 both decisions mismatch and the composite returns the same field values either
-way, so without this assertion the case would still report agreement with the permit
-evidence replaced by the deny evidence. The pinned digest differs for every case under
-that substitution, so the runner exits nonzero when the evidence is swapped.
+`vectors.json` pins, per case, the `decision_ref` recomputed from the supplied decision
+evidence and that record's own `action_ref`. That is the value the composite verifier
+compares with `decision_ref`. The composite result alone does not always identify the
+evidence: in case 5 both decisions mismatch and the composite returns the same field
+values either way, so without this assertion the case would still report agreement with
+the permit evidence replaced by the deny evidence. The pinned digest differs for every
+case under that substitution, so a runner exits nonzero when the evidence is swapped.
+
+Both runners assert it, each through its own SDK's digest builder: `verify.ts` through
+`buildDecisionRefV1`, `validate.py` through `build_decision_ref_v1`. The two agree on
+every case, so the pinned digests are not the statement of one implementation alone.
+
+This is **harness evidence on both sides, not an SDK verdict**, and on the Python side
+specifically it is not a composite verifier result. The pinned Python release exposes no
+counterpart to `verifyReceiptWithDecisionV1`; the `composite_decision_verifier` sub-block
+of `sdk_py` still records `not_implemented`, and `validate.py` still checks that absence
+executably. What `validate.py` adds is the digest builder run directly on the same
+inputs. `validate.py` prints it on a line labelled
+`decision_ref binding (harness, not SDK verdict)`.
 
 ### How case 2 is sealed
 
@@ -283,12 +296,14 @@ when a chain receipt fails to recompute its `receipt_id`, fails a signature or r
 stage result other than the recorded one, or when case 2's own `receipt_id` or boundary
 signature does not check out.
 
-`verify.ts` additionally exits nonzero when the resolved SDK is not 7.0.0, when a case
-names decision evidence `chain.json` does not carry, when the recomputed `decision_ref`
-for a case does not match the digest `vectors.json` pins for it, and, for case 3, when
-the harness reading of `prev` disagrees with what is recorded. The `prev` comparison and
-the `decision_ref` recomputation are implemented in `verify.ts` only. `validate.py`
-implements neither, and its own docstring says so.
+Either runner also exits nonzero when a case names decision evidence `chain.json` does
+not carry, or when the `decision_ref` it recomputes for a case does not match the digest
+`vectors.json` pins for it.
+
+`verify.ts` additionally exits nonzero when the resolved SDK is not 7.0.0 and, for case
+3, when the harness reading of `prev` disagrees with what is recorded. The `prev`
+comparison is implemented in `verify.ts` only. `validate.py` does not implement it, and
+its own docstring says so.
 
 ## Relation to fixtures/receipt-decision-relation
 
