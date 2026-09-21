@@ -39,14 +39,14 @@
   "cases": {
     "action-ref-mismatch": {
       "action_ref": "c840871bff8e7ae9760a9b0fe9df2243049efbd5051dc837cb4f892174fee346",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
-      "prev": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "prev": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "profile": "aps-receipt-v1",
-      "receipt_id": "9cf0badb2383a543858cae1239b8d8e06ab387e7dfcd384c7abff76786fe8219",
+      "receipt_id": "7eab4acabee608ca8d8b5aee5eecc3467c632d83d548b2baf009212c9e7ffc71",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -59,21 +59,21 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "7fd8f68e06528e299474327af90d49ecd828dec034ec0217a2949d75dce89fa0ef449335e7e096d6c0169d6e243caaa368c183a2c3065ccba74c318f4dd0a50a"
+          "value": "9b293f318b2dfe5b495bffc7fd2d8cbf3372a783b71ae9dbdd8c82ee9bfa2f45bdc8dec2fe5315b139fc2b30959def93b97d51eb72721b0dba9641ea5703fb03"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"
     },
     "decision-ref-mismatch": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "86cb2a2945104d4bb2313f7fb57daf5926d9f8ace0649300b1c7c4a8bfe9b2b3",
+      "decision_ref": "2fc67caf85daa5123a83f8e6b603c8c4f4374cac2159556f04dc27387d9012cf",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
-      "prev": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "prev": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "profile": "aps-receipt-v1",
-      "receipt_id": "7fb9b030e340fb4ab58a1d49fb5189f6a729d759a02652e4eeef6a62e1863dee",
+      "receipt_id": "a1f27e82625d2845b32554830b5316bd9dfffe7ce613b53d13b5af38b3886014",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -86,21 +86,21 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "5ebfeee6533c7ebc6df4187d367716e94c3478907767c9bd336ba88b89399e1c8cce11969bbb7b43ae75b03c411c446ce23af34c6e3b047c763c057b4a5c310e"
+          "value": "b9b7b18f648ba258d08bda6392c73d198bdaedde07dc104f5b91a0a8ca3db9393c89c5ff6c95692b4793d6c3deef729ffe09383af8e8e7f8b99c839d3ff04c04"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"
     },
     "positive": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
-      "prev": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "prev": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "profile": "aps-receipt-v1",
-      "receipt_id": "4f9065e8c668ce4d4a7ab60dc3edc1242eeb142b627d6fd50bf4b061683fa698",
+      "receipt_id": "3a86d7f0765e55762815b8c0afbe6def54f81baa9720590b32afd6f9d6cc0d23",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -113,21 +113,21 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "636bf42b30895af44d35b92f648065722b16aa5b53560d12f20f197081b4adf52d768b85d46f62543103f40868101ac31a95bc0cdf45c2dedab366e6cc8b020d"
+          "value": "b540c00fed3e4fc44a820e8ddbdf12ff65fd2a70d967ddad24d16e3bf27dd87edfd5855d3138987d56221b7f24919edd04b528840cee6754ebf2a68f0d6cf709"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"
     },
     "prev-not-the-decision": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
       "prev": "f0323f19a47e46e58e66a0f3d65ea72b4e9c6b42a0414df25c479a598fe70b3e",
       "profile": "aps-receipt-v1",
-      "receipt_id": "7c7f9f9ed5c60f2ffd13d7a758cfe81d62e71a377f8c8b0bfcd8ee29003c9b7f",
+      "receipt_id": "441ef1f533beabf1f297f42d46666df363bfb9d4d99eefdcbe648fbe7c7b24d4",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -140,21 +140,21 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "f01c2b891e3d112b81a7112d45f96b3f026204609526afffb3dd783380f3331201ddcaefa7f906340e37a96aecb29fc27bc56010290b2a33c805d3dd9a55d800"
+          "value": "8d7918f91862ef17ae5c2410ef3c83a73579c6850789bc8c21ba91de7816367bcbe5c0607ff0ecabab8e60275265acf0f90d5c3b0aa86ae59ad05a82fb34ad0e"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"
     },
     "subject-agent-absent": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
-      "prev": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "prev": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "profile": "aps-receipt-v1",
-      "receipt_id": "4e489a6415b7f9696761f5a0b71aced5fe7257ba0fb6f6f860e9fad4ad0d2aac",
+      "receipt_id": "e8c83c5a4e92f6a65c9dd66ff921a6a094adcafb732d5b44745fb5e4f3844f41",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -167,20 +167,20 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "daab7136b1f2dfd30137b88c8ddee3bcab2aa0a34657cfd8ea2910ef3bf9dd4890095b012f1e64a8aa0507d783e205d216c87f053832300668af5b637aeaf206"
+          "value": "6669ca0dda45e5d572d75abaf6e7621fae08426e338e48eafef5dbd0e169f4c88343e2e3651a6fea2601831327ae82cc87b1dc1c23a3bfb63e5ee6838a9ac40e"
         }
       ]
     },
     "subject-agent-changed": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:05.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
-      "prev": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "prev": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "profile": "aps-receipt-v1",
-      "receipt_id": "edb89a601da252c7ddb787a6d2b2f7dd64281e99710f4e80c2860e9681dea3ae",
+      "receipt_id": "8aad7e5009181a8dba44e69f77bc52ebc6cdd5c13f42a7eb2918b156ea54b5b7",
       "receipt_type": "aps:action-result:v1",
       "result": {
         "effect_ref": "5360c22b4be9db0329067d846be156c6b7f16d49455f52d3c3c7448e7532ccbe",
@@ -193,24 +193,18 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "0b95d3d5323466f1af343f46fe653381f0d393cc55b9dd5b56190e32536dfeacbea40da67f80bc4c050cf34f822c18bda1c25e6d029d8f54e8fd0ae44d98a102"
+          "value": "c188059ca944f269c46e34116bd7f6f55f6c3007d7de081be774fd12917aa2b62964e61ffec46937d339ec2eeeb5c6e9bb207961338b689d4c2be0f012abf00b"
         }
       ],
       "subject_agent": "did:aps:example:arb-second-agent"
     }
   },
-  "consumed_decision_receipt_id": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+  "consumed_decision_receipt_id": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
   "decision_evidence": {
     "deny": {
       "authority_state": {
         "authority_basis": "delegation",
         "profile": "aps-conformance-suite:action-result-binding:authority-state-v0",
-        "revocation_observations": [
-          {
-            "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
-            "resolution": "revoked"
-          }
-        ],
         "selected_chain": [
           "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726"
         ],
@@ -242,12 +236,6 @@
       "authority_state": {
         "authority_basis": "delegation",
         "profile": "aps-conformance-suite:action-result-binding:authority-state-v0",
-        "revocation_observations": [
-          {
-            "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
-            "resolution": "active"
-          }
-        ],
         "selected_chain": [
           "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726"
         ],
@@ -277,8 +265,8 @@
     }
   },
   "decision_refs": {
-    "deny": "86cb2a2945104d4bb2313f7fb57daf5926d9f8ace0649300b1c7c4a8bfe9b2b3",
-    "permit": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9"
+    "deny": "2fc67caf85daa5123a83f8e6b603c8c4f4374cac2159556f04dc27387d9012cf",
+    "permit": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771"
   },
   "description": "One draft-03 section 5.3 chain (action-intent, policy-decision permit, action-result) plus the decision evidence a composite verifier needs, and six action-result records differing from the positive one by exactly one named defect.",
   "effect": {
@@ -301,14 +289,14 @@
   "receipts": {
     "decision_deny": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "86cb2a2945104d4bb2313f7fb57daf5926d9f8ace0649300b1c7c4a8bfe9b2b3",
+      "decision_ref": "2fc67caf85daa5123a83f8e6b603c8c4f4374cac2159556f04dc27387d9012cf",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:01.500Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
       "prev": "f0323f19a47e46e58e66a0f3d65ea72b4e9c6b42a0414df25c479a598fe70b3e",
       "profile": "aps-receipt-v1",
-      "receipt_id": "50afc796c9f36a75f8625cda4f9fdd19fc7c463fd4dd3fa657dcafe829641df8",
+      "receipt_id": "80cb14bce53d2f75b0730c024dfb3a442b8fabe5a5a1e4052ebc9e28fecb0412",
       "receipt_type": "aps:policy-decision:v1",
       "result": {
         "constraints": [],
@@ -322,21 +310,21 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "5987c6053a612961eddffc611ee33e7c2173ebac12fb2d71108a0db6716acf8ca9ef506978c45595acd7e0d7cade783d14f3e5335f15d106244a036829e4c202"
+          "value": "b2d28adfd8c1b5f39686234b29cf470e06c933032e2acb27ad25c62e94cf5b52ba7a12827a75f19e4f3aa01a1b5561e2395290c999878116df508d894d3f1e09"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"
     },
     "decision_permit": {
       "action_ref": "273a245d3aff0cfffc390a26ed200396bbc64f76c5282d6f167ef95c740526cd",
-      "decision_ref": "5e852b0cff876990dd88ee64f055112c29afcecb13b2307536bffc270f6526b9",
+      "decision_ref": "12d285993f53a94783def52d3dd6ebc730781b7e04245d655ab7cd4acd958771",
       "delegation_ref": "sha256:3fae1b16c3b6504f1f26c923bc7df06db7ffacff28a0386a64d2f53c7c90b726",
       "evidence_refs": [],
       "issued_at": "2026-09-21T12:00:01.000Z",
       "issuer": "did:aps:example:arb-enforcement-boundary",
       "prev": "f0323f19a47e46e58e66a0f3d65ea72b4e9c6b42a0414df25c479a598fe70b3e",
       "profile": "aps-receipt-v1",
-      "receipt_id": "79a3a2b74b0dc997d610d918799e52b9d75da3f3f71db3a12bba131b20e8dbde",
+      "receipt_id": "fb46f47305d9d3c5bf296ed87081af534077f2f5e380211f3875f2e20966fc49",
       "receipt_type": "aps:policy-decision:v1",
       "result": {
         "constraints": [],
@@ -350,7 +338,7 @@
           "alg": "Ed25519",
           "key_id": "did:aps:example:arb-enforcement-boundary#key-1",
           "signer": "did:aps:example:arb-enforcement-boundary",
-          "value": "0128e258b4738735f6f5aa1969c23d46bc80d56799e63e59d11a5480d378c86f38897e7f0fcee04c190a9c8ffb0b9b9898b3bd4f0645d87dc5571614dd3bfa0c"
+          "value": "4bbe197214fcd575db51d5b46a701c3464e5483c1cc4af1550afca9497582f7fca594e38d154fff002be956903e2d1634d879e93bf89428ea4e662af248fe105"
         }
       ],
       "subject_agent": "did:aps:example:arb-acting-agent"

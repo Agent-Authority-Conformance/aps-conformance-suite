@@ -152,27 +152,22 @@ const effectRef = computeEffectRef(EFFECT)
 // composite check from the files alone.
 // ---------------------------------------------------------------------------
 
-const PERMIT_AUTHORITY_STATE = {
+// One authority state, shared by both decisions. This family is about the action-result
+// binding surfaces, so the authority state carries no lifecycle of its own: nothing here
+// tracks a delegation's status changing between the two decisions, and no case turns on
+// any such change.
+const AUTHORITY_STATE = {
   profile: 'aps-conformance-suite:action-result-binding:authority-state-v0',
   selected_chain: [DELEGATION_REF],
   authority_basis: 'delegation',
-  revocation_observations: [{ delegation_ref: DELEGATION_REF, resolution: 'active' }],
   spend_state: { mode: 'unbounded' },
 }
 
-// The deny is a second decision over the same intent, not the permit's inputs with the
-// verdict flipped. It is evaluated half a second later, at which point the same
-// delegation is observed revoked, and that observation is what a deny follows from.
-const DENY_AUTHORITY_STATE = {
-  profile: 'aps-conformance-suite:action-result-binding:authority-state-v0',
-  selected_chain: [DELEGATION_REF],
-  authority_basis: 'delegation',
-  revocation_observations: [{ delegation_ref: DELEGATION_REF, resolution: 'revoked' }],
-  spend_state: { mode: 'unbounded' },
-}
-
-// The same policy evaluated the same request in both decisions. It is the authority
-// state and the instant that differ, which is what makes the two verdicts differ.
+// The same policy evaluated the same request in both decisions, so the policy input is
+// shared too. The deny exists for one reason only: case 4 needs a real, well-formed
+// decision_ref that is not the permit's to put on an action-result record. It is not a
+// worked example of why a boundary would deny, and nothing in this family reads it as
+// one.
 const POLICY_INPUT = {
   policy_id: 'calendar-write-v1',
   policy_version: '1.0.0',
@@ -180,7 +175,8 @@ const POLICY_INPUT = {
   target: 'https://calendar.example/api/v1/events',
 }
 
-// Each decision's evaluated_at is its own issued_at, the same relation on both.
+// Each decision's evaluated_at is its own issued_at, the same relation on both. The deny's
+// evaluated_at is the one input it does not share with the permit.
 const PERMIT_DECISION_CONTEXT = {
   enforcement_boundary: BOUNDARY,
   evaluated_at: DECISION_ISSUED_AT,
@@ -208,14 +204,14 @@ const DENY_OUTPUT = {
 }
 
 const permitEvidence = {
-  authority_state: PERMIT_AUTHORITY_STATE,
+  authority_state: AUTHORITY_STATE,
   policy_input: POLICY_INPUT,
   decision_context: PERMIT_DECISION_CONTEXT,
   decision_output: PERMIT_OUTPUT,
 }
 
 const denyEvidence = {
-  authority_state: DENY_AUTHORITY_STATE,
+  authority_state: AUTHORITY_STATE,
   policy_input: POLICY_INPUT,
   decision_context: DENY_DECISION_CONTEXT,
   decision_output: DENY_OUTPUT,
@@ -407,12 +403,19 @@ assert(
   'the alternate action did not change its target',
 )
 
-// The deny decision stands on its own evidence rather than the permit's inputs under one
-// instant, and its evaluated_at sits against its own issued_at the way the permit's does.
+// The deny reuses the permit's authority state and policy input byte for byte. Its only
+// input of its own is decision_context.evaluated_at, which sits against its own issued_at
+// the way the permit's does. Anything else differing here would be a second story this
+// family does not tell.
 assert(
-  canonicalizeJCS(denyEvidence.authority_state) !== canonicalizeJCS(permitEvidence.authority_state) &&
-    canonicalizeJCS(denyEvidence.decision_context) !== canonicalizeJCS(permitEvidence.decision_context),
-  'the deny evidence is a byte copy of the permit evidence with a flipped verdict',
+  canonicalizeJCS(denyEvidence.authority_state) === canonicalizeJCS(permitEvidence.authority_state) &&
+    canonicalizeJCS(denyEvidence.policy_input) === canonicalizeJCS(permitEvidence.policy_input),
+  'the deny evidence does not reuse the permit authority state and policy input',
+)
+assert(
+  DENY_DECISION_CONTEXT.enforcement_boundary === PERMIT_DECISION_CONTEXT.enforcement_boundary &&
+    DENY_DECISION_CONTEXT.evaluated_at !== PERMIT_DECISION_CONTEXT.evaluated_at,
+  'the deny decision_context differs from the permit in something other than evaluated_at',
 )
 assert(
   PERMIT_DECISION_CONTEXT.evaluated_at === DECISION_ISSUED_AT &&
