@@ -1,0 +1,76 @@
+{
+  "profile": "aps-c19-revocation-resolution-forward-compat-v0",
+  "description": "A draft-03 verifier must not treat an unrecognized or unusable revocation resolver result as active. These vectors exercise the current TypeScript and Python SDK behavior before a future suspension representation is selected.",
+  "cases": [
+    {
+      "id": "C19-01-active-control",
+      "resolver": { "mode": "constant", "value": "active" },
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null }
+    },
+    {
+      "id": "C19-02-revoked-control",
+      "resolver": { "mode": "constant", "value": "revoked" },
+      "expected": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 }
+    },
+    {
+      "id": "C19-03-future-suspended",
+      "resolver": { "mode": "constant", "value": "suspended" },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-04-future-suspended-uppercase",
+      "resolver": { "mode": "constant", "value": "SUSPENDED" },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-05-future-suspended-whitespace",
+      "resolver": { "mode": "constant", "value": " suspended " },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-06-null",
+      "resolver": { "mode": "constant", "value": null },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-07-number-zero",
+      "resolver": { "mode": "constant", "value": 0 },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-08-number-one",
+      "resolver": { "mode": "constant", "value": 1 },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-09-boolean-false",
+      "resolver": { "mode": "constant", "value": false },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-10-boolean-true",
+      "resolver": { "mode": "constant", "value": true },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-11-object",
+      "resolver": { "mode": "constant", "value": {} },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-12-array",
+      "resolver": { "mode": "constant", "value": [] },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-13-resolver-throws",
+      "resolver": { "mode": "throw" },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    },
+    {
+      "id": "C19-14-root-only-future-suspended",
+      "resolver": { "mode": "by_index", "values": ["suspended", "active"] },
+      "expected": { "state": "indeterminate", "failure_code": "REVOCATION_UNKNOWN", "failure_index": 0 }
+    }
+  ]
+}
