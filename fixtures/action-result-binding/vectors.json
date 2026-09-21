@@ -1,0 +1,363 @@
+{
+  "profile": "aps-action-result-binding-v0",
+  "description": "A pinned input for independent evidence consumers of aps:action-result:v1. Each case keeps four sources of expectation apart: what the published draft-03 text says, what the pinned TypeScript SDK returns on two separate surfaces, what the pinned Python SDK returns and which surface it does not implement, and what the Agent Replay author reported. Nothing here merges those into a single verdict, and a case may be stage-valid and composite-invalid at the same time.",
+  "blocks": {
+    "draft03": "The expectation derived from the published draft-pidlisnyi-aps-03 text, with the section and line. Authored from the text, not from any implementation.",
+    "sdk_ts": "What agent-passport-system 7.0.0 actually returns, recorded from real runs, on two separate entrypoints: validateReceiptStageV1 (section 5.3 stage rules for one record) and verifyReceiptWithDecisionV1 (the section 5.6 composite check against supplied decision evidence).",
+    "sdk_py": "What agent-passport-system 4.0.0 for Python actually returns from validate_receipt_stage_v1, recorded from real runs, plus an explicit statement that the pinned release has no counterpart to verifyReceiptWithDecisionV1.",
+    "replay_policy": "Agent Replay's stated outcome for the case, as reported by its author. Not run by this suite and not verified here."
+  },
+  "classifications": {
+    "aps_conformance": "The SDK outcome matches the draft-03 expectation. Where Python cannot exercise the surface the case turns on, the case stays aps_conformance and sdk_py is marked not_implemented.",
+    "aps_draft_requirement_not_enforced": "The draft states a requirement and neither reference SDK enforces it today. A known SDK gap against section 5.6, not a lab pass and not a draft defect.",
+    "draft03_semantic_relation_not_explicitly_enforced": "Two draft-03 definitions describe the same role, the record makes them disagree, and the draft states no explicit equality requirement and names no verifier step that compares them. Not an APS violation, not an APS negative vector, and not Replay-only."
+  },
+  "cases": [
+    {
+      "id": "ARB-01-positive",
+      "case": "positive",
+      "record": "cases.positive",
+      "decision_evidence": "permit",
+      "defect": null,
+      "draft03": {
+        "outcome": "satisfies",
+        "statement": "The record is the action-result stage section 5.3.3 describes: issuer is the enforcement boundary, prev is the consumed policy-decision receipt_id, decision_ref equals that decision's decision_ref, and result carries exactly profile, status, effect_ref and error_code with status succeeded and a non-null effect_ref. The decision it follows carries a valid_until later than its own issued_at.",
+        "sections": [
+          "5.1 lines 979-999",
+          "5.3.1 lines 1052-1058",
+          "5.3.2 lines 1071-1091",
+          "5.3.3 lines 1103-1130"
+        ]
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "valid": true,
+          "receipt_status": "valid",
+          "decision_ref_present": true,
+          "decision_ref_bound": true,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": "not_applicable",
+          "errors": []
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1. agent_passport.receipt_core exposes build_decision_ref_v1 and compute_decision_ref_v1 but no entrypoint that verifies a receipt together with the decision it references."
+        }
+      },
+      "replay_policy": {
+        "outcome": "fully bound",
+        "note": null,
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "aps_conformance"
+    },
+    {
+      "id": "ARB-02-subject-agent-absent",
+      "case": "subject-agent-absent",
+      "record": "cases.subject-agent-absent",
+      "decision_evidence": "permit",
+      "defect": "subject_agent removed from the action-result record, receipt_id recomputed and the boundary signature redone over the mutated body",
+      "draft03": {
+        "outcome": "invalid",
+        "statement": "subject_agent is a REQUIRED member of the closed ReceiptV1 object. It appears in the envelope at line 962 and is defined at line 981 as the acting agent; lines 984-988 name decision_ref and prev as the only conditional members, and lines 988-989 say a member that is not applicable is absent, not null. subject_agent is always applicable, so its absence is a structural failure, which section 5.6 line 1225 makes invalid.",
+        "sections": [
+          "5.1 lines 957-989",
+          "5.6 lines 1213-1225"
+        ]
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "invalid",
+          "boundary_identity": "not_applicable",
+          "stage": null,
+          "failures": [
+            { "code": "SCHEMA_INVALID", "detail": "ReceiptV1: missing field subject_agent" }
+          ]
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "invalid",
+          "valid": false,
+          "receipt_status": "invalid",
+          "decision_ref_present": false,
+          "decision_ref_bound": false,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": false,
+          "errors": ["receipt_invalid", "ReceiptV1: missing field subject_agent"]
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "invalid",
+          "boundary_identity": "not_applicable",
+          "stage": null,
+          "failures": [
+            { "code": "SCHEMA_INVALID", "detail": "ReceiptV1: missing field subject_agent" }
+          ]
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1."
+        }
+      },
+      "replay_policy": {
+        "outcome": "partially bound",
+        "note": null,
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "aps_conformance"
+    },
+    {
+      "id": "ARB-03-prev-not-the-decision",
+      "case": "prev-not-the-decision",
+      "record": "cases.prev-not-the-decision",
+      "decision_evidence": "permit",
+      "defect": "prev set to the action-intent receipt_id, a real receipt that is not the consumed policy-decision; receipt_id recomputed and the boundary signature redone over the mutated body",
+      "draft03": {
+        "outcome": "invalid",
+        "statement": "Section 5.3.3 line 1104 says prev is the consumed policy-decision receipt_id. This record names the action-intent receipt_id instead. Section 5.6 line 1219 has a verifier validate prev and stage transitions, so the requirement is a verifier step and not only a producer rule.",
+        "sections": [
+          "5.3.3 line 1104",
+          "5.6 line 1219"
+        ]
+      },
+      "harness_prev_check": {
+        "note": "Computed by this family's own runner, not by any SDK. Printed on its own line, labelled draft03 text check (harness, not SDK), and never recorded as an SDK result.",
+        "expected": "prev_is_not_the_consumed_decision"
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "valid": true,
+          "receipt_status": "valid",
+          "decision_ref_present": true,
+          "decision_ref_bound": true,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": "not_applicable",
+          "errors": []
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1."
+        }
+      },
+      "replay_policy": {
+        "outcome": "partially bound",
+        "note": null,
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "aps_draft_requirement_not_enforced",
+      "classification_note": "The draft requires predecessor resolution. Neither reference SDK resolves prev today: the TypeScript stage validator says so in its own doc comment (src/v2/receipt-core/stage.ts, 'does not resolve prev against the receipt it names') and the Python module docstring says the same ('no resolution of prev against the record it names'). Both therefore accept this record. This is a known SDK gap against section 5.6, not a lab pass."
+    },
+    {
+      "id": "ARB-04-decision-ref-mismatch",
+      "case": "decision-ref-mismatch",
+      "record": "cases.decision-ref-mismatch",
+      "decision_evidence": "permit",
+      "defect": "decision_ref set to the decision_ref of a second policy-decision minted for the same intent with verdict deny, so the value is a well-formed real digest; receipt_id recomputed and the boundary signature redone over the mutated body",
+      "draft03": {
+        "outcome": "invalid",
+        "statement": "Section 5.3.3 lines 1105-1106 say decision_ref MUST equal that decision's decision_ref, where that decision is the consumed policy-decision named by prev. This record's prev still names the permit decision while its decision_ref names the deny decision, so the two disagree. Section 5.6 line 1218 has a verifier recompute decision_ref where required.",
+        "sections": [
+          "5.3.3 lines 1104-1106",
+          "5.6 line 1218"
+        ]
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "invalid",
+          "valid": false,
+          "receipt_status": "valid",
+          "decision_ref_present": true,
+          "decision_ref_bound": false,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": false,
+          "errors": ["decision_ref_mismatch"]
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1, so Python cannot exercise the surface this case turns on. The stage result above is valid because the stage surface does not recompute decision_ref, which its own docstring states."
+        }
+      },
+      "replay_policy": {
+        "outcome": "partially bound",
+        "note": null,
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "aps_conformance",
+      "classification_note": "The TypeScript composite surface rejects the record with decision_ref_mismatch, which matches the draft-03 expectation. The record is stage-valid and composite-invalid at the same time, and the two outcomes are recorded separately above."
+    },
+    {
+      "id": "ARB-05-action-ref-mismatch",
+      "case": "action-ref-mismatch",
+      "record": "cases.action-ref-mismatch",
+      "decision_evidence": "permit",
+      "defect": "action_ref set to the action_ref of a different fixed action that keeps the same agent_id and changes only the operation, decision_ref left unchanged; receipt_id recomputed and the boundary signature redone over the mutated body",
+      "draft03": {
+        "outcome": "invalid",
+        "statement": "Decision binding fails. decision_ref is computed over a closed input whose first member is action_ref (5.4 lines 1155-1168), and a policy-decision approves its own action_ref (5.3.2 lines 1071-1074). This record carries the decision_ref of a decision made over the primary action while naming a different action_ref, so the reference cannot be recomputed from the decision the boundary made. Section 5.6 lines 1216-1218 have a verifier recompute action_ref from the independently supplied action and recompute decision_ref where required.",
+        "sections": [
+          "5.3.2 lines 1071-1074",
+          "5.4 lines 1155-1168",
+          "5.6 lines 1216-1218"
+        ]
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "invalid",
+          "valid": false,
+          "receipt_status": "valid",
+          "decision_ref_present": true,
+          "decision_ref_bound": false,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": false,
+          "errors": ["decision_ref_mismatch"]
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1, so Python cannot exercise the surface this case turns on. The stage result above is valid because the stage surface neither recomputes action_ref from a supplied action nor recomputes decision_ref, which its own docstring states."
+        }
+      },
+      "replay_policy": {
+        "outcome": "unbound",
+        "note": null,
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "aps_conformance",
+      "classification_note": "The TypeScript composite surface rejects the record. The error code is decision_ref_mismatch, the same code as case 4, because the reference is recomputed with action_ref taken from the receipt; the cause differs and is recorded in the draft03 block above."
+    },
+    {
+      "id": "ARB-06-subject-agent-changed",
+      "case": "subject-agent-changed",
+      "record": "cases.subject-agent-changed",
+      "decision_evidence": "permit",
+      "defect": "subject_agent set to a second agent DID while action_ref is left unchanged; receipt_id recomputed and the boundary signature redone over the mutated body",
+      "draft03": {
+        "outcome": "semantic_conflict_no_explicit_rule",
+        "statement": "aps-action-ref-v2 commits to agent_id, which draft-03 defines as the acting agent's identifier (4.1, line 789), and ReceiptV1 defines subject_agent as the acting agent (5.1, line 981). action_ref is unchanged in this case, so the record names two different acting agents. Draft-03 states no explicit requirement that subject_agent equal the action_ref agent_id, and section 5.6 lines 1213-1221 name no verifier comparison between them.",
+        "sections": [
+          "4.1 line 789",
+          "5.1 line 981",
+          "5.6 lines 1213-1221"
+        ]
+      },
+      "sdk_ts": {
+        "validateReceiptStageV1": {
+          "entrypoint": "validateReceiptStageV1(record, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "verifyReceiptWithDecisionV1": {
+          "entrypoint": "verifyReceiptWithDecisionV1(record, decision_evidence.permit, resolveKey, { boundaryIdentity: <enforcement boundary DID> })",
+          "status": "valid",
+          "valid": true,
+          "receipt_status": "valid",
+          "decision_ref_present": true,
+          "decision_ref_bound": true,
+          "decision_output_bound": "not_applicable",
+          "temporal_relation_valid": "not_applicable",
+          "errors": []
+        }
+      },
+      "sdk_py": {
+        "validate_receipt_stage_v1": {
+          "entrypoint": "agent_passport.receipt_core.validate_receipt_stage_v1(record, boundary_identity=<enforcement boundary DID>)",
+          "status": "valid",
+          "boundary_identity": "verified",
+          "stage": "action-result",
+          "failures": []
+        },
+        "composite_decision_verifier": {
+          "entrypoint": null,
+          "result": "not_implemented",
+          "note": "agent-passport-system 4.0.0 for Python exports no counterpart to verifyReceiptWithDecisionV1."
+        }
+      },
+      "replay_policy": {
+        "outcome": "partially bound",
+        "note": "actor does not match",
+        "citation": "reported by the Agent Replay author at revision 08b3146097977db565a202c7a8f34d350da00fd0 in Agent-Authority-Conformance/aps-conformance-suite#99, not run by this suite"
+      },
+      "classification": "draft03_semantic_relation_not_explicitly_enforced",
+      "classification_note": "Both reference SDKs accept the record, and so does the composite surface, because the decision reference still binds: action_ref is unchanged. This is not an APS violation, not an APS negative vector and not a Replay-only artifact. It marks a relation draft-03 leaves implicit."
+    }
+  ]
+}
