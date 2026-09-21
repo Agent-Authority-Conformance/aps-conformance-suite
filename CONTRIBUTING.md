@@ -53,4 +53,4 @@ A merge means the vectors verified as deterministic, in scope, and correctly lab
 
 ## Mechanics
 
-Fork, branch from `main`, PR against `main`. Both verifiers must pass locally before you open the PR; paste the verbatim output in the PR body. License is Apache 2.0 and contributions are accepted under the same terms.
+Fork, branch from `main`, PR against `main`. Every commit in a pull request needs a DCO sign-off (`git commit -s`). The required DCO check gates merges to `main`. Both verifiers must pass locally before you open the PR; paste the verbatim output in the PR body. License is Apache 2.0 and contributions are accepted under the same terms.
