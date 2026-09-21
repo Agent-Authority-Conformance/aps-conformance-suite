@@ -1,4 +1,4 @@
-# C19: unrecognized revocation resolution fails closed
+# C19: fail-closed handling of unrecognized revocation resolutions
 
 This fixture exercises one narrow forward-compatibility property at the
 `AuthorityDelegationV1` revocation-resolver boundary.
