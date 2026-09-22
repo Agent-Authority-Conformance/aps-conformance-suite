@@ -1,0 +1,226 @@
+{
+  "_placeholder": false,
+  "agent_a_priv": "0849febb5b49fae6b65e859dc7396c5ee32fb1a12853b0b3345eb7c961c9bb94",
+  "chain": [
+    {
+      "authority": {
+        "depth": {
+          "remaining": 2
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-20T20:00:00.000Z",
+          "not_before": "2026-09-20T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:b40f03cb0319d5d59b89d32c409c28de6cf13d2557285b32a4b8f0cbd7b01890",
+      "issued_at": "2026-09-20T09:00:00.000Z",
+      "issuer": "did:aps:example:irx-principal",
+      "nonce": "18def7aa71ff95fe9b4b8bb481720bcc",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "25829bc346d0480c31f38d2ef635c4a8dafc413191944b226090ab51e44f14ee618de8a52dff20ba0766e69ada64955c60083bbc9e64e8f60d8b3a94e059cc07",
+      "subject": "did:aps:example:irx-agent-a",
+      "verification_method": "did:aps:example:irx-principal#key-1",
+      "version": "1.0"
+    },
+    {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-20T14:00:00.000Z",
+          "not_before": "2026-09-20T12:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:4e9157b1b9a4ea6ad346e3d1a80b95539d6dd36e15f66cbc66a722323ac5d26b",
+      "issued_at": "2026-09-20T12:00:00.000Z",
+      "issuer": "did:aps:example:irx-agent-a",
+      "nonce": "fb198ea821cb1d82e047f50a49289c7b",
+      "parent_delegation_id": "sha256:b40f03cb0319d5d59b89d32c409c28de6cf13d2557285b32a4b8f0cbd7b01890",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "0e6d3e25e95ffcb57822e61434b8cfaf6aaeeb8d46cf8106f78b39ee865262faa92d47bf77499ad4dbf36b79dfd8afa16a4259a1f300f955e510946a7bd79a0d",
+      "subject": "did:aps:example:irx-agent-l",
+      "verification_method": "did:aps:example:irx-agent-a#key-1",
+      "version": "1.0"
+    }
+  ],
+  "child_body": {
+    "authority": {
+      "depth": {
+        "remaining": 1
+      },
+      "reputation": {
+        "ceiling": 100,
+        "profile": "aps-score-0-100-v1"
+      },
+      "reversibility": {
+        "ceiling": "irreversible",
+        "profile": "aps-tci-v1"
+      },
+      "scope": {
+        "grants": [
+          "calendar:write"
+        ],
+        "profile": "aps-hierarchical-v1"
+      },
+      "spend": {
+        "mode": "unbounded"
+      },
+      "time": {
+        "not_after": "2026-09-20T14:00:00.000Z",
+        "not_before": "2026-09-20T12:00:00.000Z"
+      },
+      "values": {
+        "profile": "aps-values-identifiers-v1",
+        "required": []
+      }
+    },
+    "issued_at": "2026-09-20T12:00:00.000Z",
+    "issuer": "did:aps:example:irx-agent-a",
+    "nonce": "fb198ea821cb1d82e047f50a49289c7b",
+    "parent_delegation_id": "sha256:b40f03cb0319d5d59b89d32c409c28de6cf13d2557285b32a4b8f0cbd7b01890",
+    "record_type": "aps:authority-delegation:v1",
+    "subject": "did:aps:example:irx-agent-l",
+    "verification_method": "did:aps:example:irx-agent-a#key-1",
+    "version": "1.0"
+  },
+  "now": {
+    "expired": "2026-09-20T21:00:00.000Z",
+    "leaf_active": "2026-09-20T13:00:00.000Z",
+    "leaf_expired": "2026-09-20T15:00:00.000Z",
+    "not_yet_valid": "2026-09-20T09:00:00.000Z",
+    "valid": "2026-09-20T12:00:00.000Z"
+  },
+  "parent": {
+    "authority": {
+      "depth": {
+        "remaining": 2
+      },
+      "reputation": {
+        "ceiling": 100,
+        "profile": "aps-score-0-100-v1"
+      },
+      "reversibility": {
+        "ceiling": "irreversible",
+        "profile": "aps-tci-v1"
+      },
+      "scope": {
+        "grants": [
+          "calendar:write"
+        ],
+        "profile": "aps-hierarchical-v1"
+      },
+      "spend": {
+        "mode": "unbounded"
+      },
+      "time": {
+        "not_after": "2026-09-20T20:00:00.000Z",
+        "not_before": "2026-09-20T10:00:00.000Z"
+      },
+      "values": {
+        "profile": "aps-values-identifiers-v1",
+        "required": []
+      }
+    },
+    "delegation_id": "sha256:b40f03cb0319d5d59b89d32c409c28de6cf13d2557285b32a4b8f0cbd7b01890",
+    "issued_at": "2026-09-20T09:00:00.000Z",
+    "issuer": "did:aps:example:irx-principal",
+    "nonce": "18def7aa71ff95fe9b4b8bb481720bcc",
+    "parent_delegation_id": null,
+    "record_type": "aps:authority-delegation:v1",
+    "signature": "25829bc346d0480c31f38d2ef635c4a8dafc413191944b226090ab51e44f14ee618de8a52dff20ba0766e69ada64955c60083bbc9e64e8f60d8b3a94e059cc07",
+    "subject": "did:aps:example:irx-agent-a",
+    "verification_method": "did:aps:example:irx-principal#key-1",
+    "version": "1.0"
+  },
+  "parent_signature_tampered": {
+    "authority": {
+      "depth": {
+        "remaining": 2
+      },
+      "reputation": {
+        "ceiling": 100,
+        "profile": "aps-score-0-100-v1"
+      },
+      "reversibility": {
+        "ceiling": "irreversible",
+        "profile": "aps-tci-v1"
+      },
+      "scope": {
+        "grants": [
+          "calendar:write"
+        ],
+        "profile": "aps-hierarchical-v1"
+      },
+      "spend": {
+        "mode": "unbounded"
+      },
+      "time": {
+        "not_after": "2026-09-20T20:00:00.000Z",
+        "not_before": "2026-09-20T10:00:00.000Z"
+      },
+      "values": {
+        "profile": "aps-values-identifiers-v1",
+        "required": []
+      }
+    },
+    "delegation_id": "sha256:b40f03cb0319d5d59b89d32c409c28de6cf13d2557285b32a4b8f0cbd7b01890",
+    "issued_at": "2026-09-20T09:00:00.000Z",
+    "issuer": "did:aps:example:irx-principal",
+    "nonce": "18def7aa71ff95fe9b4b8bb481720bcc",
+    "parent_delegation_id": null,
+    "record_type": "aps:authority-delegation:v1",
+    "signature": "05829bc346d0480c31f38d2ef635c4a8dafc413191944b226090ab51e44f14ee618de8a52dff20ba0766e69ada64955c60083bbc9e64e8f60d8b3a94e059cc07",
+    "subject": "did:aps:example:irx-agent-a",
+    "verification_method": "did:aps:example:irx-principal#key-1",
+    "version": "1.0"
+  },
+  "principal_priv": "bc56be54a04d7923713c97239a1e404ef4f3e24de4730a6baa1f77c517cc948c",
+  "verification_keys": {
+    "did:aps:example:irx-agent-a#key-1": "62414807a474acd961327fc6fe8f63b986c7b91f0582378ce4196aa35a41706c",
+    "did:aps:example:irx-principal#key-1": "84bd0f291d5f803f3d155e7a775eb8a48957595595a11dfc547f846ceb532cd7"
+  }
+}

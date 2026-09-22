@@ -36,6 +36,10 @@
     "verify:arap-binding": "tsx fixtures/arap-binding/verify.ts",
     "verify:sponsor-handover": "tsx fixtures/sponsor-handover/verify.ts",
     "verify:ancestor-revocation-chain": "tsx fixtures/ancestor-revocation-chain/verify.ts",
+    "verify:issuance-refusal-expiry": "tsx fixtures/issuance-refusal-expiry/verify.ts",
+    "verify:single-chain-selection": "tsx fixtures/single-chain-selection/verify.ts",
+    "verify:key-rotation-historical": "tsx fixtures/key-rotation-historical/verify.ts",
+    "verify:approval-single-use": "tsx fixtures/approval-single-use/verify.ts",
     "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
     "crossrun:canonical-bytes": "node fixtures/canonical-bytes/crossrun/run.mjs",
     "test:canonical-bytes": "tsx runners/ts/canonical-bytes-qntm-v0.3.2.test.ts",
@@ -45,7 +49,7 @@
     "test:cross-stack-registry": "node tests/cross-stack-registry.test.mjs",
     "test:readme-inventory": "node tests/readme-inventory.test.mjs",
     "readme:inventory": "node scripts/readme-inventory.mjs --write",
-    "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip && npm run test:layered-gate-mutation && npm run verify:revocation-resolution-forward-compat && npm run verify:action-result-binding && npm run verify:ancestor-revocation-chain && npm run verify:sponsor-handover && npm run verify:cached-authorization-revocation && npm run verify:runtime-authority-denial-continuity && npm run verify:arap-binding && npm run test:runtime-authority-n1",
+    "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip && npm run test:layered-gate-mutation && npm run verify:revocation-resolution-forward-compat && npm run verify:action-result-binding && npm run verify:ancestor-revocation-chain && npm run verify:issuance-refusal-expiry && npm run verify:single-chain-selection && npm run verify:key-rotation-historical && npm run verify:sponsor-handover && npm run verify:cached-authorization-revocation && npm run verify:runtime-authority-denial-continuity && npm run verify:arap-binding && npm run test:runtime-authority-n1 && npm run verify:approval-single-use",
     "test:runtime-authority-n1": "tsx runners/ts/runtime-authority-n1-live-records-regression.test.ts",
     "test:digest-integrity": "node tests/digest-integrity.test.mjs",
     "typecheck": "tsc --noEmit",
@@ -69,6 +73,6 @@
     "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"
   },
   "dependencies": {
-    "agent-passport-system": "7.0.0"
+    "agent-passport-system": "7.1.0"
   }
 }

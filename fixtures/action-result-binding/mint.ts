@@ -122,7 +122,7 @@ const alternateActionRef = computeActionRefV2(alternateActionInput)
 //       ASCII("APS-ACTION-EFFECT-V1") || 0x00 || JCS(effect)))
 //
 // The pinned SDK exposes no helper for this tag (grep for APS-ACTION-EFFECT-V1 over
-// the published 7.0.0 package returns nothing), so the formula is written out here
+// the published 7.1.0 package returns nothing), so the formula is written out here
 // against the SDK's own RFC 8785 canonicalizer rather than a second JCS implementation.
 // ---------------------------------------------------------------------------
 
