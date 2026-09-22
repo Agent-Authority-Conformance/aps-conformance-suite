@@ -1,0 +1,255 @@
+# Sponsor handover: the agent keeps its identity, the old authority does not survive revocation
+
+This fixture exercises plain draft-03 `AuthorityDelegationV1` chain
+verification (Section 3.3, "Chain Verification", including revocation state
+for every chain member) across three related chains. It tests three
+properties directly:
+
+1. the same agent identity, `agent_x`, can appear as the subject of a valid
+   chain issued under one root delegation and, separately, as the subject of
+   a valid chain issued under a different, independently issued root
+   delegation
+2. revoking the shared ancestor of the first chain invalidates that chain,
+   at that ancestor's own index, per plain Section 3.3 revocation checking
+3. the second, independently issued chain is unaffected by that revocation
+   and remains valid
+
+Nothing here is a new draft-03 succession rule. Every case is one ordinary
+call to `verifyAuthorityDelegationChain` / `verify_authority_delegation_chain`
+over one already-defined chain. The prose below then reads those three
+properties together as an operational scenario, a sponsor handover, where an
+organization (`org`) replaces a departing employee (`employee`) with a
+successor (`successor`) as the party responsible for a bookkeeping agent
+(`agent_x`), and asks what chain verification alone says about that
+situation. That framing is descriptive, not a claim about a new protocol
+concept.
+
+## Source
+
+draft-pidlisnyi-aps-03 as published
+(https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/03/), Section 3.3,
+"Chain Verification", lines 578-592 of the plain-text rendering:
+
+    578 3.3.  Chain Verification
+    579
+    580    A verifier processes a root-to-leaf chain in this order: closed
+    581    schema and canonical values; delegation_id; historical signing-key
+    582    resolution and signature; duplicate identifiers; root trust;
+    583    parent_delegation_id; issuer-to-subject continuity; child issuance
+    584    time; the seven facet comparisons in Section 3.2; current validity;
+    585    and revocation state for every member.  A cycle, repeated identifier,
+    586    broken parent link, or issuer discontinuity invalidates the chain.
+    587
+    588    Verification returns one of valid, invalid, indeterminate, or
+    589    unsupported with a stable failure code.  An unavailable or stale
+    590    revocation result is indeterminate.  An unsupported facet profile is
+    591    unsupported.  Cryptographic or attenuation failure is invalid.  A
+    592    caller MUST NOT collapse indeterminate or unsupported into valid.
+
+The load-bearing phrase is "revocation state for every member": each of the
+three chains here (`OLD`, `NEW`, `OTHER`, defined below) is checked on its
+own as a complete root-to-leaf chain, and the ancestor named `org -> employee`
+is one member of both `OLD` and `OTHER`. Nothing in Section 3.3 scopes the
+revocation check to one chain's private view of that delegation, or lets a
+chain skip the check because a different, independently issued chain for the
+same subject happens to still be active.
+
+The section immediately following this quoted text, `REQ-3.3-2` at line 594
+in this repository's `docs/ID-COVERAGE.md`, states "A verifier MUST NOT union
+scopes or budgets from multiple chains." This fixture stays on the near side
+of that line on purpose. It never asks a verifier to combine `OLD` and `NEW`
+into one authority. Each chain is verified alone, and vector 6's "no shared
+delegation id" check exists to keep that boundary structural, not just
+narrative.
+
+## Principals and chains
+
+Five identities, minted deterministically from published seed labels the
+same way as
+[C19](../revocation-resolution-forward-compat/README.md) and the sibling
+ancestor-revocation fixture:
+
+- `org`, the organization root.
+- `employee`, the departing employee.
+- `successor`, the successor.
+- `agent_x`, a bookkeeping agent. The same subject DID and the same
+  generated key for `agent_x` appear under both `OLD` and `NEW`.
+- `agent_y`, a second agent that only `employee` ever delegated to.
+
+Three two-hop chains, each independently verified:
+
+- **`OLD`**: `org -> employee`, `employee -> agent_x`.
+- **`NEW`**: `org -> successor`, `successor -> agent_x`. Minted from a
+  separate root delegation. No delegation in `NEW` names any delegation in
+  `OLD` as its parent, and no delegation id is shared between the two chains.
+- **`OTHER`**: `org -> employee`, `employee -> agent_y`. The `org ->
+  employee` record here is the exact same signed record used in `OLD`,
+  reused as the parent for a second, independent child.
+
+`chains.json` also carries a `roles` map from a stable role name
+(`ORG_TO_EMPLOYEE`, `EMPLOYEE_TO_X`, `EMPLOYEE_TO_Y`, `ORG_TO_SUCCESSOR`,
+`SUCCESSOR_TO_X`) to the delegation id computed for it, so both runners can
+key a revocation-resolver answer by role instead of by chain-local index.
+`ORG_TO_EMPLOYEE` resolves to one delegation id, shared by `OLD` and `OTHER`.
+
+It is generated by `mint.py` from published seed labels, so it carries no
+secret material and regenerates byte for byte:
+
+    python3 fixtures/sponsor-handover/mint.py
+
+After regeneration `git diff` on `chains.json` should be empty. This was
+checked while authoring the fixture by re-running `mint.py` and diffing the
+output against the committed file.
+
+## Vectors
+
+There are 6 cases in `vectors.json`, run against `chains.json`. Every case
+names which chains it presents (`available_chains`) and gives a revocation
+resolver answer for every role that appears in those chains.
+
+1. **`SH-01-before-handover`.** Only `OLD` is presented, every role answers
+   `active`. Expected: `OLD` valid. This is the positive control: it shows
+   the minted chain, key resolution, root trust, signatures, time window,
+   attenuation and linkage are all valid before any revocation is
+   introduced.
+2. **`SH-02-overlap-before-cutover`.** Both `OLD` and `NEW` are presented,
+   every role answers `active`. Expected: both valid. This shows overlap
+   between an old and a new chain for the same subject is possible under
+   plain chain verification. It does not show that overlap is required, or
+   that overlap is safe for every departure. It is one state among several,
+   not a preferred one.
+3. **`SH-03-after-cutover`.** Both are presented, `ORG_TO_EMPLOYEE` answers
+   `revoked`. Expected: `OLD` invalid, `REVOKED`, at index 0 (the ancestor's
+   own index). `NEW` valid, because `NEW` shares no member with `OLD`.
+4. **`SH-04-revoke-before-replacement`.** `ORG_TO_EMPLOYEE` is revoked and
+   `NEW` has not been minted for this vector's purposes: `available_chains`
+   holds only `OLD`, so there is no second chain to fall back on, not even
+   one this vector declines to present. Expected: `OLD` invalid, `REVOKED`,
+   at index 0, and the vector additionally asserts that no chain among
+   `available_chains` verifies as valid.
+5. **`SH-05-no-inheritance`.** All three chains are presented,
+   `ORG_TO_EMPLOYEE` is revoked, every other role answers `active`. Expected:
+   `OLD` invalid `REVOKED` at index 0, `NEW` valid, and `OTHER` also invalid
+   `REVOKED` at index 0. `agent_y` has no replacement chain in this fixture:
+   `successor` never delegated to `agent_y`, only to `agent_x`, so `OTHER`'s
+   only path back to a root goes through the now-revoked `org -> employee`
+   delegation.
+6. **`SH-06-independence`.** Same setup as vector 3 (both chains presented,
+   `ORG_TO_EMPLOYEE` revoked), with the same expected per-chain results,
+   plus a structural assertion, checked directly against the chain data and
+   not derived from any resolver answer: no delegation id in `NEW` appears in
+   `OLD`, and no member of `NEW` names any member of `OLD` as its
+   `parent_delegation_id`. This restates vector 3's finding that revoking a
+   member of `OLD` does not change `NEW`'s result, and pins down structurally
+   why: the two chains do not share any record for the revocation check to
+   reach through.
+
+## What the vectors are, and are not
+
+`SH-01`, `SH-02` and `SH-03` are three separate calls to the chain verifier
+at three separate scenario states, described here as "before", "overlap" and
+"after" for readability. They are not steps of a simulated transaction, and
+nothing in this fixture models a cutover event, a lock, or an atomic switch
+between `OLD` and `NEW`. Each vector's resolver answers are given directly,
+not derived from any other vector or from an ordering between vectors.
+
+## TypeScript
+
+The repository root currently pins the published `agent-passport-system`
+package.
+
+From the conformance-suite root:
+
+    npm ci --include=dev
+    npm run verify:sponsor-handover
+
+It also runs as part of `npm test`.
+
+Expected final line:
+
+    sponsor-handover TypeScript: 6/6 passed
+
+## Python
+
+Run against the actual Python SDK under test, for example:
+
+    PYTHONPATH=/path/to/agent-passport-python/src \
+      python3 fixtures/sponsor-handover/validate.py
+
+Expected final line:
+
+    sponsor-handover Python: 6/6 passed
+
+## Provenance
+
+`chains.json`, `mint.py`, `vectors.json`, `verify.ts` and `validate.py` are
+authored for this suite, adapting the minting, key-resolution and
+role-keyed resolver pattern already established by
+[`fixtures/revocation-resolution-forward-compat/`](../revocation-resolution-forward-compat/)
+(C19), extended here to three related chains sharing one delegation and one
+subject identity instead of one chain.
+
+Both runners were executed locally, on one machine, against the pinned
+TypeScript SDK (`agent-passport-system` 7.0.0, `package.json`) and the Python
+SDK checkout at `agent-passport-python` (revision `fb54e66`) on that same
+machine. This is an author-produced record, not an independent one, per
+`CONTRIBUTING.md`'s admission rules for run records: the author of this
+fixture is also the person who ran both verifiers.
+
+## What a pass establishes
+
+For the exact SDK revision that was run, on one machine, a pass establishes
+that:
+
+- a subject can hold a valid chain under one root delegation while an
+  independently issued chain for the same subject also exists, and plain
+  chain verification does not reject either chain for that reason alone
+- revoking a delegation invalidates every presented chain that includes it,
+  at that delegation's own index, per Section 3.3
+- an independently issued chain that shares no member with a revoked chain
+  is unaffected by that revocation
+- when the only chain available for a subject depends on a revoked
+  delegation, and no other chain is presented, no presented chain for that
+  subject verifies as valid
+- a chain built from a shared ancestor delegation is invalidated by that
+  ancestor's revocation the same way regardless of which child subject is
+  being checked
+
+## Does not claim
+
+A pass does **not** establish, and this fixture does not test:
+
+- which cutover order between `OLD` and `NEW` is correct or required.
+  Vector 2 shows overlap is possible. Vector 4 shows the gap where neither
+  chain verifies. Neither is prescribed, and the fixture takes no position
+  on which a real deployment should choose or how long either state should
+  last
+- anything about work already in flight, in progress, or committed under
+  `OLD` at the moment of any vector's `now`
+- completeness of any teardown, offboarding, or credential-revocation
+  process for `employee`. Revoking `ORG_TO_EMPLOYEE` here is a resolver
+  answer supplied to the vector, not a claim that any real revocation record
+  or workflow exists or is complete
+- any succession record type, succession protocol, or handover artifact.
+  No such record is minted, checked, or required anywhere in this fixture
+- that the vectors are steps of one transaction. "Before", "overlap" and
+  "after" name three independent scenario states, each checked by its own
+  call to the chain verifier with its own resolver answers, not a simulated
+  or atomic cutover between them
+- that no other valid authority for `agent_x` or `agent_y` exists outside
+  the chains this fixture supplies. `OLD`, `NEW` and `OTHER` are the
+  complete universe of chains this fixture defines, not a claim about every
+  chain that could exist for these subjects in a real deployment
+- combining or unioning authority from `OLD` and `NEW`. Every vector
+  verifies each chain independently. `REQ-3.3-2` (Section 3.3, line 594 in
+  `docs/ID-COVERAGE.md`'s numbering) already states a verifier MUST NOT
+  union scopes or budgets from multiple chains, and this fixture never asks
+  the verifier to do so
+- that this behavior is unique to the SDKs run here, or that every
+  independent draft-03 implementation has been checked
+- anything about execution-time re-checking (Section 3.5): this fixture
+  calls the chain verifier once per vector, at one fixed `now`
+
+This fixture is evidence about plain chain-verification revocation checking,
+read across three related chains, not a conformance verdict about sponsor
+handover, succession, or offboarding as protocol features.
