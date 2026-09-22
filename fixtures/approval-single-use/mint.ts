@@ -11,7 +11,7 @@
 //
 // Neither reference SDK exposes a consume-once boundary API for a policy-decision record
 // (see README "What exists"). This mint script produces real, signed section 5.3 records
-// with the pinned TypeScript SDK, agent-passport-system 7.0.0: one action-intent and six
+// with the pinned TypeScript SDK, agent-passport-system 7.1.0: one action-intent and six
 // policy-decision receipts bound to action A, one action-intent and one policy-decision
 // receipt bound to narrowed action C, and two one-hop AuthorityDelegationV1 records. The
 // family's own harness.ts, not the SDK, supplies the single-use consumption and
@@ -413,7 +413,7 @@ const chain = {
     'draft-pidlisnyi-aps-03 section 5.3.2 lines 1093-1099: a permit or narrow policy-decision ' +
     'record is a bounded single-use approval. Two action-intents, seven policy-decision ' +
     'receipts (five permit, one deny, one narrow), and two one-hop AuthorityDelegationV1 ' +
-    'records, minted and signature-verified with agent-passport-system 7.0.0.',
+    'records, minted and signature-verified with agent-passport-system 7.1.0.',
   minted_by: 'fixtures/approval-single-use/mint.ts',
   seed_label_prefix: SEED_PREFIX,
   identities: { principal: PRINCIPAL, acting_agent: ACTING_AGENT, enforcement_boundary: BOUNDARY },

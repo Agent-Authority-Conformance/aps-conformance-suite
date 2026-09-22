@@ -360,7 +360,7 @@
       "version": "1.0"
     }
   },
-  "description": "draft-pidlisnyi-aps-03 section 5.3.2 lines 1093-1099: a permit or narrow policy-decision record is a bounded single-use approval. Two action-intents, seven policy-decision receipts (five permit, one deny, one narrow), and two one-hop AuthorityDelegationV1 records, minted and signature-verified with agent-passport-system 7.0.0.",
+  "description": "draft-pidlisnyi-aps-03 section 5.3.2 lines 1093-1099: a permit or narrow policy-decision record is a bounded single-use approval. Two action-intents, seven policy-decision receipts (five permit, one deny, one narrow), and two one-hop AuthorityDelegationV1 records, minted and signature-verified with agent-passport-system 7.1.0.",
   "identities": {
     "acting_agent": "did:aps:example:asu-acting-agent",
     "enforcement_boundary": "did:aps:example:asu-enforcement-boundary",

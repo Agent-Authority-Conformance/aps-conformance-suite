@@ -70,23 +70,32 @@ section 5.3 stage validity (`verifyReceiptV1`), and the backing
 the action_ref binding check and the deny-is-terminal rule itself, because no SDK
 function produces or checks any of those four.
 
-### SDK finding
+### SDK finding (superseded in 7.1.0)
 
 `verifyAuthorityDelegation`, a single-delegation verifier, is declared in
 `node_modules/agent-passport-system/dist/src/v2/authority-delegation/verify.d.ts` line
-31, but the published `agent-passport-system` 7.0.0 package does not export it at
-runtime: `import { verifyAuthorityDelegation } from 'agent-passport-system'` fails with
+31. In `agent-passport-system` 7.0.0 the published package did not export it at
+runtime: `import { verifyAuthorityDelegation } from 'agent-passport-system'` failed with
 `SyntaxError: The requested module 'agent-passport-system' does not provide an export
-named 'verifyAuthorityDelegation'`. This family works around it the way
+named 'verifyAuthorityDelegation'`. This family worked around it the way
 `fixtures/ancestor-revocation-chain/` already does, by calling
-`verifyAuthorityDelegationChain` with a single-element array, which is exported and
-behaves correctly for a one-hop chain (`mint.ts` asserts this at mint time). This is
-recorded here as a finding, not as a vector: the workaround changes nothing this family
-tests, and no vector exists to test the missing export itself.
+`verifyAuthorityDelegationChain` with a single-element array, which was exported and
+behaved correctly for a one-hop chain (`mint.ts` asserts this at mint time).
+
+In `agent-passport-system` 7.1.0 the package now exports `verifyAuthorityDelegation`
+at runtime, and it is a thin wrapper around exactly the same call this family already
+made: `verifyAuthorityDelegation(delegation, options)` calls
+`verifyAuthorityDelegationChain([delegation], options)` internally. This family keeps
+calling `verifyAuthorityDelegationChain` directly rather than switching to the new
+wrapper, since the two are behaviorally identical and switching is a fixture-design
+change outside the scope of this re-recording. This is recorded here as a finding, not
+as a vector: the workaround, and the fact that the underlying export gap has since
+closed, changes nothing this family tests, and no vector exists to test either the
+missing export or its addition.
 
 ## What the family does
 
-`mint.ts` mints, with the pinned TypeScript SDK, `agent-passport-system` 7.0.0:
+`mint.ts` mints, with the pinned TypeScript SDK, `agent-passport-system` 7.1.0:
 
 - two one-hop `AuthorityDelegationV1` records, principal to acting agent, identical
   except for their nonce: `DELEGATION_MAIN` backs every decision except one,
@@ -210,7 +219,7 @@ Expected final line:
 ## Results
 
 Both runners were executed locally against the pinned TypeScript SDK
-(`agent-passport-system` 7.0.0, `package.json`). `reference-boundary` matched all 9/9
+(`agent-passport-system` 7.1.0, `package.json`). `reference-boundary` matched all 9/9
 presentations under both runners. `defective-boundary-never-consumes-never-rechecks`
 failed exactly the declared set of 3 under both runners, and matched the remaining 6
 under both. This is an author-produced record, not an independent one, per
@@ -225,6 +234,15 @@ The reference-boundary-plus-declared-defective-control pattern follows
 `fixtures/runtime-authority-denial-continuity/harness.ts`. All code was written in this
 lab. Neither runner was reviewed by anyone outside it, and no independent third party
 has run either of them.
+
+This family was last re-recorded against `agent-passport-system` 7.1.0. Relative to
+7.0.0, 7.1.0 adds public APIs and one opt-in receipt result field. The family's
+normative expectations are unchanged: `chain.json` re-minted with only its recorded SDK
+version string changed, every signed byte stayed identical, and both runners still
+matched all 9 presentations and failed exactly the declared 3 under the defective
+boundary. This family does not call `verifyReceiptWithDecisionV1`, so it records no
+`predecessor_bound` value. See "SDK finding (superseded in 7.1.0)" above for the one
+other 7.1.0 change this family's own testing surfaced.
 
 ## What a pass establishes
 
