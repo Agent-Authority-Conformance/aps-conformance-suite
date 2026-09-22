@@ -1,0 +1,83 @@
+{
+  "profile": "aps-issuance-refusal-expiry-v0",
+  "description": "Exercises draft-pidlisnyi-aps-03 section 3.6's issuer-refusal requirement (an issuer minting a child MUST refuse to issue under an expired, not-yet-valid, or revoked parent, or with an invalid parent signature) and section 3.3's requirement that expiry and revocation are reported under distinct, stable failure codes at verification time.",
+  "part_a_issuance": {
+    "description": "Each vector calls the SDK's child-delegation issuance function with the fixture's fixed parent and child_body, varying exactly one input from IRX-01's accepted baseline: the issuance-time clock, the parent's revocation answer, or the parent record's signature.",
+    "cases": [
+      {
+        "id": "IRX-01-accept-parent-valid-active",
+        "role": "control",
+        "now": "valid",
+        "parent": "parent",
+        "resolver": "active",
+        "changed_from_baseline": null,
+        "expected": { "outcome": "issued" }
+      },
+      {
+        "id": "IRX-02-reject-parent-expired",
+        "role": "reject",
+        "now": "expired",
+        "parent": "parent",
+        "resolver": "active",
+        "changed_from_baseline": "now",
+        "expected": { "outcome": "refused", "code": "EXPIRED" }
+      },
+      {
+        "id": "IRX-03-reject-parent-not-yet-valid",
+        "role": "reject",
+        "now": "not_yet_valid",
+        "parent": "parent",
+        "resolver": "active",
+        "changed_from_baseline": "now",
+        "expected": { "outcome": "refused", "code": "NOT_YET_VALID" }
+      },
+      {
+        "id": "IRX-04-reject-parent-revoked",
+        "role": "reject",
+        "now": "valid",
+        "parent": "parent",
+        "resolver": "revoked",
+        "changed_from_baseline": "resolver",
+        "expected": { "outcome": "refused", "code": "REVOKED" }
+      },
+      {
+        "id": "IRX-05-reject-parent-signature-invalid",
+        "role": "reject",
+        "now": "valid",
+        "parent": "parent_signature_tampered",
+        "resolver": "active",
+        "changed_from_baseline": "parent",
+        "expected": { "outcome": "refused", "code": "SIGNATURE_INVALID" }
+      }
+    ]
+  },
+  "part_b_verification": {
+    "description": "Chain verification of the same fixed two-record chain (fixture.json's chain: parent, leaf), varying only the verifier's clock and the leaf's revocation answer, to show expiry and revocation are reported under different, stable failure codes.",
+    "cases": [
+      {
+        "id": "IRX-06-control-chain-valid",
+        "role": "control",
+        "now": "leaf_active",
+        "resolver": { "mode": "constant", "value": "active" },
+        "changed_from_baseline": null,
+        "expected": { "state": "valid", "failure_code": null, "failure_index": null }
+      },
+      {
+        "id": "IRX-07-verify-leaf-expired",
+        "role": "reject",
+        "now": "leaf_expired",
+        "resolver": { "mode": "constant", "value": "active" },
+        "changed_from_baseline": "now",
+        "expected": { "state": "invalid", "failure_code": "EXPIRED", "failure_index": 1 }
+      },
+      {
+        "id": "IRX-08-verify-leaf-revoked-chain-not-expired",
+        "role": "reject",
+        "now": "leaf_active",
+        "resolver": { "mode": "by_index", "values": ["active", "revoked"] },
+        "changed_from_baseline": "resolver",
+        "expected": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 1 }
+      }
+    ]
+  }
+}
