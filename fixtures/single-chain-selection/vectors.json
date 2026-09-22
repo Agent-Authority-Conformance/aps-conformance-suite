@@ -1,0 +1,52 @@
+{
+  "profile": "aps-single-chain-selection-v0",
+  "description": "Exercises draft-pidlisnyi-aps-03 section 3.3's rule that each action selects one root-to-leaf authority chain and a verifier MUST NOT union scopes or budgets from multiple chains. Leaf agent L holds two independent single-hop chains from two different roots, P1 and P2, granting disjoint scopes and equal, non-additive spend ceilings in the same unit. Each vector's action requirement is baked into chains.json as a second delegation hop appended to the presented chain (see mint.py and the README); this file records the requirement each hop encodes and the expected chain-verification result for the presented array named by presented_chain.",
+  "cases": [
+    {
+      "id": "SCS-01-accept-chain-1-in-scope-in-budget",
+      "presented_chain": "SCS-01",
+      "primary_chain": "chain_1",
+      "action": { "chain": "chain_1", "scope_needed": ["calendar:write"], "unit": "iso4217:USD:minor", "amount": "50" },
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null },
+      "primary_expected": { "state": "valid", "reason": "RESERVED" }
+    },
+    {
+      "id": "SCS-02-accept-chain-2-in-scope-in-budget",
+      "presented_chain": "SCS-02",
+      "primary_chain": "chain_2",
+      "action": { "chain": "chain_2", "scope_needed": ["payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null },
+      "primary_expected": { "state": "valid", "reason": "RESERVED" }
+    },
+    {
+      "id": "SCS-03-reject-needs-both-scopes-presented-chain-1",
+      "presented_chain": "SCS-03",
+      "primary_chain": "chain_1",
+      "action": { "chain": "chain_1", "scope_needed": ["calendar:write", "payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
+      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "scope_not_covered" }
+    },
+    {
+      "id": "SCS-04-reject-needs-both-scopes-presented-chain-2",
+      "presented_chain": "SCS-04",
+      "primary_chain": "chain_2",
+      "action": { "chain": "chain_2", "scope_needed": ["calendar:write", "payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
+      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "scope_not_covered" }
+    },
+    {
+      "id": "SCS-05-reject-amount-exceeds-chain-1-ceiling-chain-2-must-not-count",
+      "presented_chain": "SCS-05",
+      "primary_chain": "chain_1",
+      "action": { "chain": "chain_1", "scope_needed": ["calendar:write"], "unit": "iso4217:USD:minor", "amount": "100" },
+      "expected": { "state": "invalid", "failure_code": "SPEND_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED" }
+    },
+    {
+      "id": "SCS-06-reject-concatenated-chain-is-malformed-not-unioned",
+      "presented_chain": "SCS-06",
+      "action": { "chain": "concat(chain_1, chain_2)", "scope_needed": ["calendar:write"], "unit": "iso4217:USD:minor", "amount": "50" },
+      "expected": { "state": "invalid", "failure_code": "PARENT_MISMATCH", "failure_index": 1 }
+    }
+  ]
+}
