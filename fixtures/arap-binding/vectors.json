@@ -78,7 +78,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "accepted"
+      "expected_outcome": "accepted",
+      "arap_issue": null
     },
     {
       "id": "D2",
@@ -138,7 +139,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": null
     },
     {
       "id": "D3",
@@ -198,7 +200,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": null
     },
     {
       "id": "D4",
@@ -266,7 +269,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "accepted"
+      "expected_outcome": "accepted",
+      "arap_issue": null
     },
     {
       "id": "D5",
@@ -326,7 +330,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": null
     },
     {
       "id": "D6",
@@ -386,7 +391,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "accepted"
+      "expected_outcome": "accepted",
+      "arap_issue": null
     },
     {
       "id": "D7",
@@ -447,7 +453,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": null
     },
     {
       "id": "D8",
@@ -507,7 +514,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:45:00Z",
-      "expected_outcome": "expired_denial"
+      "expected_outcome": "expired_denial",
+      "arap_issue": "openid/authzen#660"
     },
     {
       "id": "D9",
@@ -567,7 +575,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": "openid/authzen#660"
     },
     {
       "id": "D10",
@@ -628,7 +637,8 @@
       },
       "now": "2026-04-30T20:43:00Z",
       "expected_outcome": "invalid_audience",
-      "outcome_note": "The profile's Error Responses section defines a problem type for a step-4 binding mismatch (invalid_denial_binding) and a step-5 freshness failure (expired_denial), but assigns none specifically to a step-2 aud failure. The harness keeps a distinct internal outcome so the case is traceable; this is not a claim that the profile defines an invalid_audience wire error."
+      "outcome_note": "The profile's Error Responses section defines a problem type for a step-4 binding mismatch (invalid_denial_binding) and a step-5 freshness failure (expired_denial), but assigns none specifically to a step-2 aud failure. The harness keeps a distinct internal outcome so the case is traceable; this is not a claim that the profile defines an invalid_audience wire error.",
+      "arap_issue": null
     },
     {
       "id": "D11a",
@@ -677,7 +687,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "invalid_denial_binding"
+      "expected_outcome": "invalid_denial_binding",
+      "arap_issue": "openid/authzen#660"
     },
     {
       "id": "D11b",
@@ -734,7 +745,8 @@
         "denial_expires_at": "2026-04-30T20:47:00Z"
       },
       "now": "2026-04-30T20:43:00Z",
-      "expected_outcome": "accepted"
+      "expected_outcome": "accepted",
+      "arap_issue": "openid/authzen#660"
     }
   ],
   "denial_binding_finding_case": {
@@ -760,7 +772,8 @@
       "region": "us-east",
       "time": "2026-04-30T20:42:00Z"
     },
-    "note": "1179 says binding covers only Subject, Resource, and Action when binding_context_members is absent, which reads naturally as no context key in the hash object at all. The object literal at 1190-1197 always shows a literal context key. Both readings are computed; they must diverge, and the case is excluded from both tallies rather than resolved either way."
+    "note": "1179 says binding covers only Subject, Resource, and Action when binding_context_members is absent, which reads naturally as no context key in the hash object at all. The object literal at 1190-1197 always shows a literal context key. Both readings are computed; they must diverge, and the case is excluded from both tallies rather than resolved either way.",
+    "arap_issue": null
   },
   "approval_cases": [
     {
@@ -826,7 +839,8 @@
           "expected_outcome": "approval_applies",
           "expected_next_action": null
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A2",
@@ -891,7 +905,8 @@
           "expected_outcome": "out_of_scope",
           "expected_next_action": "request"
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A3",
@@ -956,7 +971,8 @@
           "expected_outcome": "approval_expired",
           "expected_next_action": "request"
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A4",
@@ -1021,7 +1037,8 @@
           "expected_outcome": "approval_expired",
           "expected_next_action": "request"
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A5",
@@ -1086,7 +1103,8 @@
           "expected_outcome": "approval_unverifiable",
           "expected_next_action": "none"
         }
-      ]
+      ],
+      "arap_issue": "openid/authzen#659"
     },
     {
       "id": "A6",
@@ -1151,7 +1169,8 @@
           "expected_outcome": "approval_unverifiable",
           "expected_next_action": "none"
         }
-      ]
+      ],
+      "arap_issue": "openid/authzen#659"
     },
     {
       "id": "A7",
@@ -1216,7 +1235,8 @@
           "expected_outcome": "policy_denied",
           "expected_next_action": "none"
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A8",
@@ -1305,7 +1325,8 @@
           "expected_outcome": "approval_applies",
           "expected_next_action": null
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A9",
@@ -1370,7 +1391,8 @@
           "expected_outcome": "approval_applies",
           "expected_next_action": null
         }
-      ]
+      ],
+      "arap_issue": null
     },
     {
       "id": "A10",
@@ -1435,7 +1457,8 @@
           "expected_outcome": "out_of_scope",
           "expected_next_action": "request"
         }
-      ]
+      ],
+      "arap_issue": "openid/authzen#663"
     }
   ],
   "pep_fallback_cases": [
@@ -1448,7 +1471,8 @@
         "reason": "policy_denied",
         "access_request_present": false
       },
-      "expected": "retry"
+      "expected": "retry",
+      "arap_issue": null
     },
     {
       "id": "P2",
@@ -1458,7 +1482,8 @@
         "reason": "grant_pending",
         "access_request_present": true
       },
-      "expected": "retry"
+      "expected": "retry",
+      "arap_issue": null
     },
     {
       "id": "P3",
@@ -1469,7 +1494,8 @@
         "reason": "unrecognized-reason",
         "access_request_present": true
       },
-      "expected": "request"
+      "expected": "request",
+      "arap_issue": null
     },
     {
       "id": "P4",
@@ -1478,7 +1504,8 @@
       "input": {
         "access_request_present": false
       },
-      "expected": "none"
+      "expected": "none",
+      "arap_issue": null
     },
     {
       "id": "P5",
@@ -1488,7 +1515,8 @@
         "next_action": "request",
         "access_request_present": false
       },
-      "expected": "none"
+      "expected": "none",
+      "arap_issue": null
     }
   ],
   "negative_controls": {

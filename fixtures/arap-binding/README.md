@@ -192,6 +192,25 @@ line 829: a recognized `next_action` of `request` still falls back to `none`
 without `context.access_request`, the one case where a recognized
 `next_action` does not simply win outright.
 
+## Which ARAP issue each vector bears on
+
+Every vector in `vectors.json` carries an `arap_issue` field. It names the open
+issue against the same pull request that the vector bears on, or is null when no
+filed issue covers it. The vectors are grouped by issue so that results are read
+issue by issue, not as one pass count for the profile.
+
+| issue | vectors |
+|---|---|
+| openid/authzen#660, the denial-binding form and the expiry claims | D8, D9, D11a, D11b |
+| openid/authzen#659, signed approval state | A5, A6 |
+| openid/authzen#663, the re-evaluation round trip | A10 |
+| none filed | D1 to D7, D10, D12, A1 to A4, A7 to A9, P1 to P5 |
+
+D12 records an ambiguity in the hash construction that no filed issue covers yet.
+A pass on the other vectors says the reference harness agrees with the proposed
+text as written at the pinned head. It says nothing about which reading the
+editor intends where an issue is open.
+
 ## Negative controls
 
 Failing sets are declared here and checked in both directions by
