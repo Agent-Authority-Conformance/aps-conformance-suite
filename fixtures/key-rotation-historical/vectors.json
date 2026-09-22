@@ -1,59 +1,66 @@
 {
   "profile": "aps-key-rotation-historical-v0",
-  "description": "Exercises draft-pidlisnyi-aps-03 section 2.4's requirement that a resolver select the key version authorized at a delegation's issued_at, not the key current at verification time. Same identifier and verification_method throughout; K1 is authorized for issued_at before rotation_boundary, K2 for issued_at at or after it. Every vector is verified at now, which is after rotation_boundary, so every vector exercises resolution across the rotation, not resolution before it happened.",
+  "description": "Exercises draft-pidlisnyi-aps-03 section 2.4's requirement that a resolver select the key version authorized at a delegation's issued_at, not the key current at verification time, and its second paragraph's requirement that a before-boundary issued_at claim for a retired key is only accepted with boundary_evidence corroborating it. Same identifier and verification_method throughout; K1 is authorized for issued_at before rotation_boundary and only with boundary_evidence, K2 for issued_at at or after it unconditionally. Every vector is verified at now, which is after rotation_boundary, so every vector exercises resolution across the rotation, not resolution before it happened.",
   "policies": {
     "historical": {
       "name": "historical-key-resolution",
-      "description": "Resolves the key authorized at the delegation's own issued_at against rotation_boundary. This is the correct draft-03 section 2.4 behavior and is the fixture's positive control.",
-      "runs_against": ["KRH-01-accept-before-rotation-signed-k1", "KRH-02-accept-after-rotation-signed-k2", "KRH-03-reject-after-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2"],
+      "description": "Resolves the key authorized at the delegation's own issued_at against rotation_boundary, and for a before-boundary claim additionally requires boundary_evidence. This is the correct draft-03 section 2.4 behavior and is the fixture's positive control.",
+      "runs_against": ["KRH-01-accept-before-rotation-signed-k1", "KRH-02-accept-after-rotation-signed-k2", "KRH-03-reject-after-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2", "KRH-05-indeterminate-boundary-no-evidence"],
       "expected_fail_ids": []
     },
     "current_key_only": {
       "name": "current-key-only",
-      "description": "Negative control. Ignores issued_at and always resolves to the key that is current at verification time (K2, since every vector here is verified after rotation_boundary). This is exactly the insufficient behavior draft-03 section 2.4 names: 'selecting the key that is current at verification time is insufficient.'",
-      "runs_against": ["KRH-01-accept-before-rotation-signed-k1", "KRH-02-accept-after-rotation-signed-k2", "KRH-03-reject-after-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2"],
-      "expected_fail_ids": ["KRH-01-accept-before-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2"]
+      "description": "Negative control. Ignores issued_at and always resolves to the key that is current at verification time (K2, since every vector here is verified after rotation_boundary). This is exactly the insufficient behavior draft-03 section 2.4 names: 'selecting the key that is current at verification time is insufficient.' It fails every vector whose correct key is K1, the retired key: KRH-01 and KRH-04 on the accept/reject pair, and KRH-05 because resolving K2 against a K1 signature reports invalid, not the indeterminate this policy's own evidence blindness would otherwise still owe it.",
+      "runs_against": ["KRH-01-accept-before-rotation-signed-k1", "KRH-02-accept-after-rotation-signed-k2", "KRH-03-reject-after-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2", "KRH-05-indeterminate-boundary-no-evidence"],
+      "expected_fail_ids": ["KRH-01-accept-before-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2", "KRH-05-indeterminate-boundary-no-evidence"]
+    },
+    "claim_trusting": {
+      "name": "claim-trusting",
+      "description": "Negative control. Selects K1 or K2 from the issued_at claim alone, exactly like historical-key-resolution's before/after split, but never consults boundary_evidence. This is what this fixture's own resolver used to do before this correction, and it is exactly the gap draft-03 section 2.4's second paragraph identifies: it treats an issuer's unverified issued_at claim as sufficient on its own to authorize the retired key. It matches historical-key-resolution on every vector except KRH-05, the one vector whose correct result depends on evidence this resolver never looks at.",
+      "runs_against": ["KRH-01-accept-before-rotation-signed-k1", "KRH-02-accept-after-rotation-signed-k2", "KRH-03-reject-after-rotation-signed-k1", "KRH-04-reject-before-rotation-signed-k2", "KRH-05-indeterminate-boundary-no-evidence"],
+      "expected_fail_ids": ["KRH-05-indeterminate-boundary-no-evidence"]
     }
   },
   "cases": [
     {
       "id": "KRH-01-accept-before-rotation-signed-k1",
-      "description": "issued_at before rotation_boundary, signed with K1, verified after rotation_boundary. K1 is the key authorized at issued_at, so this is valid. A verifier that instead resolves the key current at verification time (K2) fails this vector, which is what current-key-only does.",
+      "description": "issued_at before rotation_boundary, signed with K1, boundary_evidence present and corroborating. K1 is the key authorized at issued_at, and evidence establishes the claim is honest, so this is valid. A verifier that instead resolves the key current at verification time (K2) fails this vector, which is what current-key-only does.",
       "record": "KRH-01-accept-before-rotation-signed-k1",
       "signed_with": "K1",
+      "boundary_evidence": "present",
       "expected": { "state": "valid", "failure_code": null, "failure_index": null }
     },
     {
       "id": "KRH-02-accept-after-rotation-signed-k2",
-      "description": "issued_at after rotation_boundary, signed with K2. K2 is the key authorized at issued_at, so this is valid.",
+      "description": "issued_at after rotation_boundary, signed with K2. K2 is the key authorized at issued_at, unconditionally: K2's validity window does not close, so no boundary_evidence question arises for it. Valid.",
       "record": "KRH-02-accept-after-rotation-signed-k2",
       "signed_with": "K2",
+      "boundary_evidence": "not_applicable",
       "expected": { "state": "valid", "failure_code": null, "failure_index": null }
     },
     {
       "id": "KRH-03-reject-after-rotation-signed-k1",
-      "description": "issued_at after rotation_boundary, but the signature was actually produced with K1, the retired key. A resolver correctly picks K2 for this issued_at, so K2's public key is checked against a signature K1 produced, and the signature check fails. K1 is not authorized at this issued_at.",
+      "description": "issued_at after rotation_boundary, but the signature was actually produced with K1, the retired key. A resolver correctly picks K2 for this issued_at (K2 needs no boundary_evidence), so K2's public key is checked against a signature K1 produced, and the signature check fails. K1 is not authorized at this issued_at.",
       "record": "KRH-03-reject-after-rotation-signed-k1",
       "signed_with": "K1",
+      "boundary_evidence": "not_applicable",
       "expected": { "state": "invalid", "failure_code": "SIGNATURE_INVALID", "failure_index": 0 }
     },
     {
       "id": "KRH-04-reject-before-rotation-signed-k2",
-      "description": "issued_at before rotation_boundary, but the signature was actually produced with K2, a key not yet authorized then. A resolver correctly picks K1 for this issued_at, so K1's public key is checked against a signature K2 produced, and the signature check fails.",
+      "description": "issued_at before rotation_boundary, boundary_evidence present (the same claimed issued_at as KRH-01, corroborated the same way), but the signature was actually produced with K2, a key not yet authorized then. A resolver correctly picks K1 for this issued_at, so K1's public key is checked against a signature K2 produced, and the signature check fails. This isolates the reject on the signing key alone: the only stated change from KRH-01 is which key signed it, not the evidence.",
       "record": "KRH-04-reject-before-rotation-signed-k2",
       "signed_with": "K2",
+      "boundary_evidence": "present",
       "expected": { "state": "invalid", "failure_code": "SIGNATURE_INVALID", "failure_index": 0 }
     },
     {
       "id": "KRH-05-indeterminate-boundary-no-evidence",
-      "description": "issued_at one second before rotation_boundary, signed with K1, same key/time relationship as KRH-01 but adjacent to the boundary. The vector's profile records that no timestamp or transparency-log evidence anchors this issued_at claim against the boundary. Per draft-03 section 2.4's second paragraph, when key retirement makes the result depend on whether an artifact was signed before a boundary and no acceptable timestamp or log evidence is identified, the key-authority result is indeterminate, even when the signature is cryptographically valid. See README 'Known SDK gap'.",
+      "description": "issued_at before rotation_boundary, signed with K1: the same key/time relationship as KRH-01. boundary_evidence is absent. Per draft-03 section 2.4's second paragraph, issued_at is only an issuer claim, and without a timestamp, transparency-log, or equivalent evidence source establishing that signing fell before the boundary, the key-authority result is indeterminate, even though the signature is cryptographically valid. KRH-05's issued_at differs from KRH-01's only because the resolver is called with (issuer, verification_method, issued_at) and nothing else, so two records claiming the identical triple could not be given different results by any resolver; the size of that difference carries no significance of its own. This is the same input class as KRH-01, not a distinct boundary-adjacency test.",
       "record": "KRH-05-indeterminate-boundary-no-evidence",
       "signed_with": "K1",
-      "boundary_evidence": null,
-      "draft_required": { "state": "indeterminate", "failure_code": null, "failure_index": null },
-      "known_sdk_gap": true,
-      "known_sdk_gap_reason": "resolveVerificationKey / resolve_verification_key in both reference SDKs is called with (issuer, verification_method, issued_at) only. Neither SDK's key-resolution surface carries a timestamp-evidence or transparency-log input, and neither treats a boundary-adjacent issued_at differently from one with a wide margin. Both SDKs resolve this vector identically to KRH-01 and return valid, not indeterminate.",
-      "observed": { "state": "valid", "failure_code": null, "failure_index": null }
+      "boundary_evidence": "absent",
+      "expected": { "state": "indeterminate", "failure_code": "KEY_AMBIGUOUS", "failure_index": 0 }
     }
   ]
 }

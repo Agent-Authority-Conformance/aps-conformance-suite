@@ -73,110 +73,178 @@ since rotation.
 single stable `verification_method`,
 `did:aps:example:krh-principal#key-1`, held across a key rotation from K1 to
 K2 at `rotation_boundary` (`2026-09-20T12:00:00.000Z`). K1 is the key
-authorized for `issued_at` before `rotation_boundary`; K2 is authorized for
-`issued_at` at or after it. This models Section 2.2's "one stable agent
-identifier across key rotation... resolve the verification method at the
-artifact's signing time": the identifier does not change at rotation, only
-which key material a resolver returns for a given `issued_at` does. Every
-vector is an independent root `AuthorityDelegationV1` (`parent_delegation_id:
-null`), verified at `now` = `2026-09-20T14:00:00.000Z`, which is after
-`rotation_boundary` in every case, so every vector resolves a key across the
-rotation rather than before it happened.
+authorized for `issued_at` before `rotation_boundary`, and only when
+`boundary_evidence` corroborates that claim; K2 is authorized for
+`issued_at` at or after it, unconditionally. This models Section 2.2's "one
+stable agent identifier across key rotation... resolve the verification
+method at the artifact's signing time": the identifier does not change at
+rotation, only which key material a resolver returns for a given `issued_at`
+does. Every vector is an independent root `AuthorityDelegationV1`
+(`parent_delegation_id: null`), verified at `now` = `2026-09-20T14:00:00.000Z`,
+which is after `rotation_boundary` in every case, so every vector resolves a
+key across the rotation rather than before it happened.
+
+**boundary_evidence.** Section 2.4's second paragraph (lines 317-323) says
+`issued_at` is an issuer claim, that the draft defines no trusted
+timestamping service, and that when key retirement makes a result depend on
+whether an artifact was signed before a boundary, a profile MUST identify an
+acceptable timestamp, transparency-log, or equivalent evidence source;
+without it the result is indeterminate. `delegations.json` carries a
+`boundary_evidence` map, keyed by `issued_at`, of a minimal, deterministic
+test-only evidence record: `{"source":
+"aps-conformance-suite-test-timestamp-v0", "attests_before_boundary": true}`.
+This is this fixture's own stand-in profile for that evidence source, built
+only so Section 2.4's requirement is executable here. It is not a proposed
+addition to the draft, and no claim is made that
+`aps-conformance-suite-test-timestamp-v0` is an acceptable evidence source
+for any real deployment. K2's window needs no entry: K2 does not retire, so
+no claim about its `issued_at` relative to a closing window needs
+corroborating.
 
 **Vectors 1-4, from `mint.py` / `delegations.json`:**
 
 1. **KRH-01-accept-before-rotation-signed-k1.** `issued_at` before
-   `rotation_boundary`, signed with K1. Expected: `valid`. A resolver that
-   returns whichever key is current at verification time (K2, since
-   verification always happens after rotation here) fails this vector.
+   `rotation_boundary`, signed with K1, `boundary_evidence` present. K1 is
+   the key authorized at `issued_at`, and evidence corroborates the claim,
+   so this is valid. A resolver that returns whichever key is current at
+   verification time (K2, since verification always happens after rotation
+   here) fails this vector.
 2. **KRH-02-accept-after-rotation-signed-k2.** `issued_at` after
-   `rotation_boundary`, signed with K2. Expected: `valid`.
+   `rotation_boundary`, signed with K2. Expected: `valid`. K2's window is
+   unconditional, so `boundary_evidence` does not apply.
 3. **KRH-03-reject-after-rotation-signed-k1.** `issued_at` after
    `rotation_boundary`, but the signature was produced with K1, the retired
    key. Expected: `invalid`, `SIGNATURE_INVALID`. A correct resolver picks
-   K2 for this `issued_at`; K2's public key does not verify a signature K1
-   produced.
+   K2 for this `issued_at` (no evidence needed); K2's public key does not
+   verify a signature K1 produced.
 4. **KRH-04-reject-before-rotation-signed-k2.** `issued_at` before
-   `rotation_boundary`, but the signature was produced with K2, a key not
-   yet authorized then. Expected: `invalid`, `SIGNATURE_INVALID`. A correct
-   resolver picks K1 for this `issued_at`; K1's public key does not verify a
-   signature K2 produced.
+   `rotation_boundary`, `boundary_evidence` present (the same claimed
+   `issued_at` as KRH-01, corroborated the same way), but the signature was
+   produced with K2, a key not yet authorized then. Expected: `invalid`,
+   `SIGNATURE_INVALID`. A correct resolver picks K1 for this `issued_at`;
+   K1's public key does not verify a signature K2 produced. The only stated
+   change from KRH-01 is the signing key, not the evidence, which isolates
+   this reject on the signature check alone.
 
 Every reject vector differs from an accept vector by exactly one change:
 KRH-03 is KRH-02's `issued_at` with KRH-01's signing key; KRH-04 is KRH-01's
-`issued_at` with KRH-02's signing key.
+`issued_at` and evidence with KRH-02's signing key.
 
-**Vector 5, boundary evidence:**
+**Vector 5, no evidence:**
 
-5. **KRH-05-indeterminate-boundary-no-evidence.** `issued_at` one second
-   before `rotation_boundary`, signed with K1: the same key/time
-   relationship as KRH-01, adjacent to the boundary instead of an hour away
-   from it. The vector's `boundary_evidence` field is `null`: no timestamp
-   or transparency-log evidence anchors this `issued_at` claim. Per Section
-   2.4's second paragraph, this is exactly the case where "key retirement
-   makes the result depend on whether an artifact was signed before a
-   boundary" without "an acceptable timestamp, transparency-log, or
-   equivalent evidence source": the required result is `indeterminate`, not
-   `valid`, even though the signature is cryptographically valid. See
-   "Known SDK gap" below.
+5. **KRH-05-indeterminate-boundary-no-evidence.** `issued_at` before
+   `rotation_boundary`, signed with K1: the same key/time relationship as
+   KRH-01. `boundary_evidence` is absent. Expected: `indeterminate`,
+   `KEY_AMBIGUOUS`. Per Section 2.4's second paragraph, this is exactly the
+   case where "key retirement makes the result depend on whether an artifact
+   was signed before a boundary" without "an acceptable timestamp,
+   transparency-log, or equivalent evidence source": the required result is
+   `indeterminate`, not `valid`, even though the signature is
+   cryptographically valid.
 
-## Two policies, checked in both directions
+   KRH-05's `issued_at` is not identical to KRH-01's: both reference SDKs'
+   `resolveVerificationKey` / `resolve_verification_key` are called as
+   `(issuer, verification_method, issued_at)` only, so a resolver has no way
+   to tell apart two records that share all three; giving them different
+   results requires a different `issued_at`. That value is thirty minutes
+   before `rotation_boundary`, exactly as far from it as KRH-01's own
+   `issued_at`, so nothing about its distance from the boundary is doing any
+   work. An earlier version of this fixture used an `issued_at` one second
+   before `rotation_boundary` and described KRH-05 as testing boundary
+   adjacency specifically. That framing had no basis in Section 2.4: the
+   draft conditions the indeterminate result on the presence or absence of
+   evidence, not on how close the claimed signing time sits to the boundary.
+   KRH-01 and KRH-05 are the same input class, before-rotation-boundary and
+   signed-with-K1; the only substantive difference between them is
+   `boundary_evidence`.
 
-`verify.ts` and `validate.py` each run two resolver policies against vectors
-1-4, matching the pattern
+## Three policies, checked in both directions
+
+`verify.ts` and `validate.py` each run three resolver policies against all
+five vectors, matching the pattern
 [runtime-authority-denial-continuity](../runtime-authority-denial-continuity/README.md)
 uses for its N1 and N2 negative controls:
 
 - **historical-key-resolution.** The positive control. Resolves
   `verification_method` against `rotation_boundary` and the record's own
-  `issued_at`: K1 before the boundary, K2 at or after it. Must match every
-  vector.
+  `issued_at`: K2 at or after the boundary unconditionally; K1 before it,
+  but only when `boundary_evidence` corroborates the claim, otherwise an
+  `ambiguous` resolution outcome. Must match every vector.
 - **current-key-only.** A deliberately wrong resolver. Ignores `issued_at`
-  entirely and always returns K2, the key current at verification time.
-  This is exactly Section 2.4's named insufficient behavior. Declared to
-  fail exactly `KRH-01-accept-before-rotation-signed-k1` and
-  `KRH-04-reject-before-rotation-signed-k2`, and to pass
+  and `boundary_evidence` entirely and always returns K2, the key current at
+  verification time. This is exactly Section 2.4's named insufficient
+  behavior. Declared to fail exactly `KRH-01-accept-before-rotation-signed-k1`,
+  `KRH-04-reject-before-rotation-signed-k2`, and
+  `KRH-05-indeterminate-boundary-no-evidence`, and to pass
   `KRH-02-accept-after-rotation-signed-k2` and
   `KRH-03-reject-after-rotation-signed-k1`.
+- **claim-trusting.** A second deliberately wrong resolver. Performs the
+  same before/after split on `issued_at` that `historical-key-resolution`
+  does, but never consults `boundary_evidence`: this is what this fixture's
+  own resolver did before this correction. It is exactly the gap Section
+  2.4's second paragraph identifies, an issuer's unverified `issued_at`
+  claim treated as sufficient on its own to authorize the retired key.
+  Declared to fail exactly `KRH-05-indeterminate-boundary-no-evidence`: it
+  matches `historical-key-resolution` on every other vector, and diverges
+  only where the correct result depends on evidence it never looks at.
 
 `current-key-only` passes KRH-02 and KRH-03 not because it is doing
 historical resolution, but because both of those vectors' correct key
-happens to equal the key current at verification time (K2). The two
-vectors it fails are exactly the two whose correct key is K1, the retired
-one. Both runners check the observed fail set against the declared one, not
-only that the declared failures fail: an undeclared failure or a declared
-failure that quietly starts passing would be visible in either runner's
-output.
+happens to equal the key current at verification time (K2); it fails
+KRH-01 and KRH-04 for the reason Section 2.4 names, and it fails KRH-05
+because resolving K2 against a K1 signature reports `invalid` /
+`SIGNATURE_INVALID`, not the `indeterminate` this vector requires, for an
+unrelated reason. Both runners check the observed fail set against the
+declared one, not only that the declared failures fail: an undeclared
+failure or a declared failure that quietly starts passing would be visible
+in either runner's output.
 
-KRH-05 is run once, against `historical-key-resolution` only, and its
-result is recorded rather than scored pass or fail against either policy.
-See below.
+## Findings
 
-## Known SDK gap
+Both reference SDKs leave Section 2.4's evidence handling entirely to the
+caller's resolver. `verifyAuthorityDelegationChain` /
+`verify_authority_delegation_chain` never inspect `issued_at` against a
+boundary or against any evidence source themselves; they call the
+caller-supplied `resolveVerificationKey` / `resolve_verification_key` with
+`(issuer, verification_method, issued_at)` and check the signature against
+whatever key material that call returns, or report the state the call's
+`KeyResolutionFailure` outcome maps to. Neither SDK ships a Section
+2.4-aware resolver for authority delegations; `historicalResolver` /
+`historical_resolver` in this fixture's own `verify.ts` and `validate.py`
+are this fixture's resolvers, not SDK code.
 
-`resolveVerificationKey` (TypeScript) and `resolve_verification_key`
-(Python) are called as `(issuer, verification_method, issued_at)` and return
-key material or one of a fixed set of resolution-failure outcomes (`not
-found`, `ambiguous`, `malformed`, `unreachable`, `unsupported scheme`; see
-`node_modules/agent-passport-system/dist/src/v2/authority-delegation/types.d.ts`
-lines 96-108, and
-`agent_passport/v2/authority_delegation/types.py`'s
-`KEY_RESOLUTION_OUTCOME_CODES`). Nothing in that surface carries a
-timestamp, transparency-log reference, or any other evidence source, and
-neither SDK's chain verifier treats a boundary-adjacent `issued_at`
-differently from one with a wide safety margin: both resolve
-`KRH-05-indeterminate-boundary-no-evidence` exactly as they resolve
-`KRH-01-accept-before-rotation-signed-k1`, and return `valid`.
+That resolver call's outcome vocabulary is fixed by Section 2.5, lines
+360-364:
 
-`fixtures/key-rotation-historical/vectors.json` records this vector with
-`known_sdk_gap: true`, the exact reason, a `draft_required` field
-(`indeterminate`) and an `observed` field (`valid`) that both runners check
-their live result against. This is not a bug report against either SDK: a
-resolver taking no evidence input has no way to distinguish this vector from
-KRH-01 in the first place. It is a gap between what Section 2.4 requires a
-profile to identify (an evidence source for boundary-dependent results) and
-what either SDK's current resolver interface can express, recorded as the
-batch-1 common instructions ask.
+    360    Resolution outcomes preserve failure structure.  At minimum a
+    361    resolver distinguishes: resolved; subject or key not found; ambiguous
+    362    (including duplicate key identifiers); structurally malformed key
+    363    material; transport unreachability; and an unsupported identifier
+    364    scheme.
+
+Both SDKs implement exactly these five non-resolved outcomes plus the
+unspecified case a raw `null` (or a `KeyResolutionFailure` object with an
+unrecognized `outcome`) produces:
+`node_modules/agent-passport-system/dist/src/v2/authority-delegation/verify.js`
+lines 23-46 (`keyResolutionFailure`), and
+`agent_passport/v2/authority_delegation/verify.py` lines 74-97
+(`_key_resolution_failure`) together with
+`agent_passport/v2/authority_delegation/types.py` lines 30-35
+(`KEY_RESOLUTION_OUTCOME_CODES`). None of the five outcomes means "the
+claimed signing time could not be established against a key-validity
+boundary." This fixture's corrected `historicalResolver` /
+`historical_resolver` reports `ambiguous` (`KEY_AMBIGUOUS`) for
+`KRH-05-indeterminate-boundary-no-evidence`, chosen as the least-bad
+existing fit: which key epoch governs is exactly what is unresolved without
+evidence. `not_found`, `malformed`, `unreachable`, and `unsupported_scheme`
+each name a more specific and less applicable failure. This is a finding
+about the resolver contract, not a bug: the contract has no outcome for
+"signing time not established," so a resolver implementing Section 2.4's
+evidentiary requirement has no way to report that specific reason. It
+reports one of the five fixed Section 2.5 codes instead, none of them
+written with this reason in mind, and the specific reason a caller might
+want to see collapses into whichever of those five generic, borrowed codes
+fits least badly.
 
 ## mint.py and delegations.json
 
@@ -203,7 +271,7 @@ It also runs as part of `npm test`.
 
 Expected final line:
 
-    PASSED: historical-key-resolution matched every vector, current-key-only failed exactly the declared set
+    PASSED: historical-key-resolution matched every vector, both negative controls failed exactly their declared sets
 
 ## Python
 
@@ -220,9 +288,11 @@ Both SDKs implement historical key resolution the same way: the chain
 verifier calls the caller-supplied resolver with the record's own
 `issued_at`, not with the verification clock, and neither SDK maintains any
 key-version table of its own. Selecting the correct key for a rotated
-identifier is entirely the resolver's responsibility, which is why this
-fixture's `historical-key-resolution` and `current-key-only` policies live in
-`verify.ts` and `validate.py`, not in the SDKs.
+identifier, and deciding whether `boundary_evidence` corroborates a
+before-boundary claim, is entirely the resolver's responsibility, which is
+why this fixture's `historical-key-resolution`, `current-key-only`, and
+`claim-trusting` policies live in `verify.ts` and `validate.py`, not in the
+SDKs. See "Findings" above.
 
 - TypeScript:
   `node_modules/agent-passport-system/dist/src/v2/authority-delegation/verify.js`,
@@ -254,33 +324,43 @@ For the exact SDK revision that was run, a pass establishes that:
   names: it wrongly rejects a still-valid pre-rotation delegation, and it
   wrongly accepts a delegation signed with a not-yet-authorized key, in both
   cases only for the vectors whose correct key is not the current one
-- neither SDK's resolver interface can express "boundary-dependent, no
-  timestamp or log evidence" as anything other than ordinary key resolution,
-  for the one vector this fixture uses to probe that
+- a resolver that trusts the `issued_at` claim alone, with no evidence
+  check, produces exactly the same result as one that implements Section
+  2.4's evidentiary requirement, for every vector except the one whose
+  correct result depends on evidence being absent
+- for `KRH-01-accept-before-rotation-signed-k1` and
+  `KRH-05-indeterminate-boundary-no-evidence`, two records of the same input
+  class (before `rotation_boundary`, signed with K1, differing only in the
+  specific `issued_at` value a resolver needs to tell them apart), a
+  resolver that checks `boundary_evidence` produces `valid` for the one
+  evidence corroborates and `indeterminate` for the one it does not, which
+  is the whole of what distinguishes them
 
 ## Does not claim
 
 A pass does **not** establish:
 
-- that any trusted timestamping service, transparency log, or other
-  evidence source is defined or implemented anywhere in this fixture. None
-  is. Section 2.4 says a profile MUST identify one when the result is
-  boundary-dependent; this fixture does not define that profile
+- that `aps-conformance-suite-test-timestamp-v0` is an acceptable timestamp,
+  transparency-log, or equivalent evidence source under Section 2.4 for any
+  real deployment. It is this fixture's own minimal, deterministic stand-in,
+  built only to make Section 2.4's evidence requirement executable here
+- that Section 2.4's evidentiary requirement applies uniformly to every
+  boundary-dependent case in the same way, or what "acceptable" timestamp or
+  log evidence looks like in general. The draft leaves that to a profile;
+  this fixture's profile is a test fixture, not a proposal
 - anything about delegation revocation. Rotating a key does not revoke what
   the key signed, and this family does not test revocation: every vector's
   `resolveRevocation` / `resolve_revocation` callback always returns
   `active`
-- that `KRH-05`'s `valid` result from either SDK is wrong for that SDK's own
-  documented resolver contract. It is right for that contract; the gap is
-  that the contract has no evidence input at all, not that the SDK misused
-  the input it has
-- that Section 2.4's evidentiary requirement applies uniformly to every
-  boundary-adjacent case in the same way, or what "acceptable" timestamp or
-  log evidence looks like. The draft leaves that to a profile
+- that `KEY_AMBIGUOUS` is the only defensible code for "boundary-dependent,
+  no evidence." It is this fixture's own choice among Section 2.5's five
+  fixed outcomes, recorded as a finding, not a claim that the taxonomy
+  itself settles the question
 - that this behavior is unique to the SDKs run here, or that every
-  independent draft-03 implementation resolves keys this way
+  independent draft-03 implementation resolves keys, or reports resolution
+  failures, this way
 - anything about Section 2.5's resolution-outcome taxonomy for external or
-  evidence signers beyond the two line ranges quoted above; this fixture's
+  evidence signers beyond the line ranges quoted above; this fixture's
   identifier is the issuer's own signing key, not an external or evidence
   signer
 

@@ -1,5 +1,11 @@
 {
   "_placeholder": false,
+  "boundary_evidence": {
+    "2026-09-20T11:00:00.000Z": {
+      "attests_before_boundary": true,
+      "source": "aps-conformance-suite-test-timestamp-v0"
+    }
+  },
   "issuer": "did:aps:example:krh-principal",
   "keys": {
     "K1": "0b00ee93711de6012552141b92c437e1a9234d6665c3cee981acea33d50c06f0",
@@ -199,20 +205,20 @@
         },
         "time": {
           "not_after": "2026-09-21T00:00:00.000Z",
-          "not_before": "2026-09-20T11:59:59.000Z"
+          "not_before": "2026-09-20T11:30:00.000Z"
         },
         "values": {
           "profile": "aps-values-identifiers-v1",
           "required": []
         }
       },
-      "delegation_id": "sha256:6e6c4f4f48d3b437d2a6d257e73a404c925f088990a6868d810b69198322e3dd",
-      "issued_at": "2026-09-20T11:59:59.000Z",
+      "delegation_id": "sha256:2c2e063eb7daac7a9339253a1472753819724078df3cc9a4676f53e3975ba55c",
+      "issued_at": "2026-09-20T11:30:00.000Z",
       "issuer": "did:aps:example:krh-principal",
       "nonce": "e01e601055af3f9145db52a55b03ff13",
       "parent_delegation_id": null,
       "record_type": "aps:authority-delegation:v1",
-      "signature": "b2d47e1037fbbd5b52c534169789c90537be01d0d8ce4074ccbdbefae575eb673b989c2b8455fff5123b2d7af7cc3a5f86d6e021e6149df378b95c6bf1204706",
+      "signature": "cee1ad9ce8d6246a0bd697f8cfa6340a1af0a029cc097fbaa50a39cf5333f59f7cbbf1f075292b1dcbb46d221ae4a5993b698d8129d5a027ec8ebeafaa7df200",
       "subject": "did:aps:example:krh-agent",
       "verification_method": "did:aps:example:krh-principal#key-1",
       "version": "1.0"

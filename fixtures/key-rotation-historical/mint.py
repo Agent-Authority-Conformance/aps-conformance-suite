@@ -15,11 +15,19 @@ verification rule: the identifier does not change across rotation, and a
 resolver must pick the key version authorized at issued_at, not the version
 current when verification runs.
 
-K1 is authorized for issued_at < ROTATION_BOUNDARY. K2 is authorized for
-issued_at >= ROTATION_BOUNDARY. Delegation nonces are supplied, not
-generated, which the Python SDK documents as the path that keeps issuance
-deterministic. This mirrors fixtures/ancestor-revocation-chain/mint.py's
-seed-derivation pattern.
+K1 is authorized for issued_at < ROTATION_BOUNDARY, but only when evidence
+establishes that the claimed issued_at is honest: section 2.4's second
+paragraph makes K1's eligibility depend on the artifact's signing time, and
+issued_at is only an issuer claim about that time. K2 is authorized for
+issued_at >= ROTATION_BOUNDARY unconditionally: K2 is the identifier's
+current key going forward, so nothing about its validity window depends on
+whether a given issued_at claim can be corroborated. `boundary_evidence`
+below models the "timestamp, transparency-log, or equivalent evidence
+source" section 2.4 requires a profile to identify; it is this fixture's own
+test-only profile, not a proposed addition to the draft. Delegation nonces
+are supplied, not generated, which the Python SDK documents as the path that
+keeps issuance deterministic. This mirrors
+fixtures/ancestor-revocation-chain/mint.py's seed-derivation pattern.
 
 Run from the suite root with agent-passport-system 4.0.0 or later installed:
 
@@ -41,13 +49,34 @@ HERE = Path(__file__).resolve().parent
 ROTATION_BOUNDARY = "2026-09-20T12:00:00.000Z"
 ISSUED_BEFORE = "2026-09-20T11:00:00.000Z"
 ISSUED_AFTER = "2026-09-20T13:00:00.000Z"
-ISSUED_NEAR_BOUNDARY = "2026-09-20T11:59:59.000Z"
+# KRH-05 needs its own issued_at, distinct from ISSUED_BEFORE: the resolver
+# in verify.ts / validate.py is called as (issuer, verification_method,
+# issued_at) only, the same three arguments the real SDKs pass it, so two
+# records sharing all three could not be told apart by any resolver and
+# could not be given different results. Thirty minutes before the boundary,
+# as far from it as ISSUED_BEFORE itself, so nothing about this value's
+# distance from ROTATION_BOUNDARY is doing any work; only the presence or
+# absence of boundary_evidence distinguishes KRH-05 from KRH-01.
+ISSUED_BEFORE_NO_EVIDENCE = "2026-09-20T11:30:00.000Z"
 VERIFY_NOW = "2026-09-20T14:00:00.000Z"
 AUTHORITY_NOT_AFTER = "2026-09-21T00:00:00.000Z"
+
+# This fixture's own test-only evidence profile: section 2.4 (lines 317-321)
+# requires a profile to identify an acceptable timestamp, transparency-log,
+# or equivalent evidence source when a result depends on whether signing
+# fell before a key-retirement boundary. The draft defines no such service
+# itself. This is not a proposal for one; it is the minimal, deterministic
+# stand-in this fixture needs to make section 2.4's evidence requirement
+# executable at all.
+BOUNDARY_EVIDENCE_SOURCE = "aps-conformance-suite-test-timestamp-v0"
 
 ISSUER = "did:aps:example:krh-principal"
 SUBJECT = "did:aps:example:krh-agent"
 VERIFICATION_METHOD = ISSUER + "#key-1"
+
+
+def _evidence() -> dict:
+    return {"source": BOUNDARY_EVIDENCE_SOURCE, "attests_before_boundary": True}
 
 
 def _seed(label: str) -> str:
@@ -103,7 +132,7 @@ def main() -> None:
             "krh-04", ISSUED_BEFORE, k2_priv
         ),
         "KRH-05-indeterminate-boundary-no-evidence": _record(
-            "krh-05", ISSUED_NEAR_BOUNDARY, k1_priv
+            "krh-05", ISSUED_BEFORE_NO_EVIDENCE, k1_priv
         ),
     }
 
@@ -115,6 +144,15 @@ def main() -> None:
         "issuer": ISSUER,
         "keys": {"K1": k1_pub, "K2": k2_pub},
         "records": records,
+        # Keyed by issued_at, the only temporal argument the resolver
+        # receives. ISSUED_BEFORE carries evidence (KRH-01 and KRH-04 both
+        # claim it); ISSUED_BEFORE_NO_EVIDENCE does not (KRH-05). Records
+        # claiming issued_at >= rotation_boundary never consult this map:
+        # K2's validity window does not close, so no boundary-dependent
+        # evidence question arises for them.
+        "boundary_evidence": {
+            ISSUED_BEFORE: _evidence(),
+        },
     }
     (HERE / "delegations.json").write_text(
         json.dumps(fixture, indent=2, sort_keys=True) + "\n", encoding="utf-8"

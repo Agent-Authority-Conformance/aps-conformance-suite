@@ -4,9 +4,11 @@
 # Reference runner for the key-rotation-historical fixture, Python side.
 # Exercises draft-pidlisnyi-aps-03 section 2.4: a resolver MUST select the
 # key version authorized at the artifact's issued_at, not the key current at
-# verification time. See verify.ts for the full model description; this
-# runner follows the same two-policy, both-directions pattern as
-# fixtures/runtime-authority-denial-continuity.
+# verification time, and (second paragraph, lines 317-323) must not treat a
+# before-boundary issued_at claim as authoritative for the retired key
+# without boundary_evidence corroborating it. See verify.ts for the full
+# model description; this runner follows the same three-policy,
+# both-directions pattern as fixtures/runtime-authority-denial-continuity.
 
 import json
 import sys
@@ -33,6 +35,7 @@ if (
     or "K1" not in fixture["keys"]
     or "K2" not in fixture["keys"]
     or not isinstance(fixture.get("records"), dict)
+    or not isinstance(fixture.get("boundary_evidence"), dict)
 ):
     print(
         "key-rotation-historical delegations.json is still a placeholder. Mint the five "
@@ -42,16 +45,43 @@ if (
     sys.exit(2)
 
 
+# The correct resolver: pick the key authorized at the record's own
+# issued_at against rotation_boundary (draft lines 313-315), and for K1's
+# window additionally require boundary_evidence before trusting a
+# before-boundary issued_at claim (draft lines 317-323). K2's window is not
+# gated: K2 is the identifier's current key with no retirement boundary
+# ahead of it. Section 2.5 lines 360-364 fixes the resolver's outcome
+# vocabulary at five entries, none of which means "the claimed signing time
+# could not be established"; "ambiguous" is the least-bad existing fit used
+# here. See README "Findings".
 def historical_resolver(_issuer, verification_method, issued_at):
     if verification_method != fixture["verification_method"]:
         return {"outcome": "not_found"}
-    return fixture["keys"]["K1"] if issued_at < fixture["rotation_boundary"] else fixture["keys"]["K2"]
+    if issued_at >= fixture["rotation_boundary"]:
+        return fixture["keys"]["K2"]
+    if fixture["boundary_evidence"].get(issued_at):
+        return fixture["keys"]["K1"]
+    return {"outcome": "ambiguous"}
 
 
+# The deliberately wrong resolver: ignores issued_at entirely and always
+# answers with the key current at verification time. Draft lines 313-315:
+# "selecting the key that is current at verification time is insufficient."
 def current_key_only_resolver(_issuer, verification_method, _issued_at):
     if verification_method != fixture["verification_method"]:
         return {"outcome": "not_found"}
     return fixture["keys"]["K2"]
+
+
+# The other deliberately wrong resolver: selects by the issued_at claim
+# alone, same as historical_resolver before this correction, never
+# consulting boundary_evidence. Exactly the gap draft-03 section 2.4's
+# second paragraph identifies: an issuer claim about signing time, accepted
+# with no evidence behind it.
+def claim_trusting_resolver(_issuer, verification_method, issued_at):
+    if verification_method != fixture["verification_method"]:
+        return {"outcome": "not_found"}
+    return fixture["keys"]["K1"] if issued_at < fixture["rotation_boundary"] else fixture["keys"]["K2"]
 
 
 def actual_failure(result):
@@ -120,42 +150,26 @@ if historical_matched != historical_total:
 else:
     print(f"ok   historical-key-resolution matched all {historical_total} cases")
 
-current_matched, current_total, observed_current_fail = run_policy(
-    vectors["policies"]["current_key_only"], current_key_only_resolver
-)
-declared_current_fail = sorted(vectors["policies"]["current_key_only"]["expected_fail_ids"])
-observed_current_fail = sorted(observed_current_fail)
-if declared_current_fail != observed_current_fail:
-    ok = False
-    print(
-        f"FAIL current-key-only declared fail set {declared_current_fail}, observed {observed_current_fail}",
-        file=sys.stderr,
-    )
-else:
-    print(f"ok   current-key-only failed exactly the declared set: {declared_current_fail}")
+def run_negative_control(policy, resolve_verification_key):
+    global ok
+    _matched, _total, observed_fail = run_policy(policy, resolve_verification_key)
+    declared_fail = sorted(policy["expected_fail_ids"])
+    observed_fail = sorted(observed_fail)
+    if declared_fail != observed_fail:
+        ok = False
+        print(
+            f"FAIL {policy['name']} declared fail set {declared_fail}, observed {observed_fail}",
+            file=sys.stderr,
+        )
+    else:
+        print(f"ok   {policy['name']} failed exactly the declared set: {declared_fail}")
 
-# KRH-05: run and record the observed result. Not scored pass/fail: this
-# vector documents a gap between draft-03 section 2.4's evidentiary
-# requirement and what the reference SDKs' resolver surface can express.
-gap_vector = next(c for c in vectors["cases"] if c["id"] == "KRH-05-indeterminate-boundary-no-evidence")
-gap_result = run_one(gap_vector["id"], historical_resolver)
-gap_failure = actual_failure(gap_result)
-gap_observed = {"state": gap_result.state, "failure_code": gap_failure["code"], "failure_index": gap_failure["index"]}
-gap_observed_matches_recorded = gap_observed == gap_vector["observed"]
-gap_diverges_from_draft = gap_observed != gap_vector["draft_required"]
-print(f"gap  {gap_vector['id']}  observed={json.dumps(gap_observed, sort_keys=True)} draft_required={json.dumps(gap_vector['draft_required'], sort_keys=True)}")
-if not gap_vector.get("known_sdk_gap") or not gap_observed_matches_recorded or not gap_diverges_from_draft:
-    ok = False
-    print(
-        "FAIL KRH-05 gap bookkeeping: expected known_sdk_gap true, observed result matching the recorded "
-        "observed field, and observed diverging from draft_required",
-        file=sys.stderr,
-    )
-else:
-    print("ok   KRH-05 observed result matches the recorded known_sdk_gap, and diverges from draft_required as documented")
+
+run_negative_control(vectors["policies"]["current_key_only"], current_key_only_resolver)
+run_negative_control(vectors["policies"]["claim_trusting"], claim_trusting_resolver)
 
 print(
-    "PASSED: historical-key-resolution matched every vector, current-key-only failed exactly the declared set"
+    "PASSED: historical-key-resolution matched every vector, both negative controls failed exactly their declared sets"
     if ok
     else "FAILED"
 )

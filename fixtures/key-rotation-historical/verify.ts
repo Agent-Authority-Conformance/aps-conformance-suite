@@ -7,15 +7,22 @@
 // verification_method across a rotation from K1 to K2 at rotation_boundary;
 // what changes per record is issued_at and which key actually signed it.
 //
-// Two resolver policies are run against the four determinate vectors
-// (KRH-01 through KRH-04), in both directions, the same way
-// runtime-authority-denial-continuity checks its N1 and N2 negative
-// controls: historical-key-resolution is the positive control and must
-// match every vector; current-key-only is a deliberately wrong resolver that
-// ignores issued_at and must fail exactly its declared set.
+// Three resolver policies are run against all five vectors, in both
+// directions, the same way runtime-authority-denial-continuity checks its N1
+// and N2 negative controls: historical-key-resolution is the positive
+// control and must match every vector. current-key-only and claim-trusting
+// are deliberately wrong resolvers, each declared to fail exactly its own
+// set.
 //
-// KRH-05 is run separately. It is not scored pass/fail against either
-// policy: see README "Known SDK gap".
+// KRH-05 depends on the same issued_at-before-boundary, signed-with-K1
+// relationship as KRH-01, with one difference: no boundary_evidence. Per
+// draft-03 section 2.4's second paragraph (lines 317-323), issued_at is only
+// an issuer claim, and without evidence placing signing before the boundary
+// the key-authority result is indeterminate, even though the signature is
+// cryptographically valid. historical-key-resolution reports that; the
+// claim-trusting resolver below, which selects a key from the issued_at
+// claim alone and never consults evidence, does not, and that is exactly
+// the one vector it is declared to fail.
 
 import fs from 'node:fs'
 import path from 'node:path'
@@ -44,12 +51,8 @@ type VectorCase = {
   description: string
   record: string
   signed_with: 'K1' | 'K2'
-  expected?: Expected
-  boundary_evidence?: null
-  draft_required?: Expected
-  known_sdk_gap?: boolean
-  known_sdk_gap_reason?: string
-  observed?: Expected
+  expected: Expected
+  boundary_evidence: 'present' | 'absent' | 'not_applicable'
 }
 
 type PolicySpec = {
@@ -62,7 +65,7 @@ type PolicySpec = {
 type Vectors = {
   profile: string
   description: string
-  policies: { historical: PolicySpec; current_key_only: PolicySpec }
+  policies: { historical: PolicySpec; current_key_only: PolicySpec; claim_trusting: PolicySpec }
   cases: VectorCase[]
 }
 
@@ -74,6 +77,7 @@ type Fixture = {
   issuer: string
   keys: { K1: string; K2: string }
   records: Record<string, any>
+  boundary_evidence: Record<string, unknown>
 }
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -92,7 +96,8 @@ if (
   !fixture.keys ||
   typeof fixture.keys.K1 !== 'string' ||
   typeof fixture.keys.K2 !== 'string' ||
-  !fixture.records
+  !fixture.records ||
+  !fixture.boundary_evidence
 ) {
   console.error(
     'key-rotation-historical delegations.json is still a placeholder. Mint the five ' +
@@ -102,12 +107,27 @@ if (
 }
 
 // The correct resolver: pick the key authorized at the record's own
-// issued_at against rotation_boundary. Draft lines 313-315: "A resolver MUST
-// select the key version authorized at the artifact's issued_at."
+// issued_at against rotation_boundary (draft lines 313-315: "A resolver MUST
+// select the key version authorized at the artifact's issued_at"), and for
+// K1's window additionally require boundary_evidence before trusting a
+// before-boundary issued_at claim (draft lines 317-323: without evidence
+// placing signing before the boundary, "the key-authority result is
+// indeterminate, even when the artifact signature is cryptographically
+// valid"). K2's window is not gated: K2 is the identifier's current key with
+// no retirement boundary ahead of it, so no claim about issued_at relative
+// to a closing window needs corroborating.
+//
+// Section 2.5 lines 360-364 fixes the resolver's outcome vocabulary at five
+// entries (not_found, ambiguous, malformed, unreachable, unsupported_scheme)
+// plus the unspecified case a raw null produces, and none of the five means
+// "the claimed signing time could not be established." 'ambiguous' is the
+// least-bad existing fit used here: which key epoch governs is exactly what
+// is unresolved. See README "Findings".
 function historicalResolver(): VerificationKeyResolver {
   return (_issuer, verificationMethod, issuedAt) => {
     if (verificationMethod !== fixture.verification_method) return { outcome: 'not_found' }
-    return issuedAt < fixture.rotation_boundary ? fixture.keys.K1 : fixture.keys.K2
+    if (issuedAt >= fixture.rotation_boundary) return fixture.keys.K2
+    return fixture.boundary_evidence[issuedAt] ? fixture.keys.K1 : { outcome: 'ambiguous' }
   }
 }
 
@@ -120,6 +140,19 @@ function currentKeyOnlyResolver(): VerificationKeyResolver {
   return (_issuer, verificationMethod) => {
     if (verificationMethod !== fixture.verification_method) return { outcome: 'not_found' }
     return fixture.keys.K2
+  }
+}
+
+// The other deliberately wrong resolver: performs the same before/after
+// selection historicalResolver does, but never consults boundary_evidence,
+// trusting the issued_at claim on its own. This is what historicalResolver
+// used to do before this correction, and it is exactly the gap draft-03
+// section 2.4's second paragraph identifies: an issuer claim about signing
+// time, accepted with no evidence behind it.
+function claimTrustingResolver(): VerificationKeyResolver {
+  return (_issuer, verificationMethod, issuedAt) => {
+    if (verificationMethod !== fixture.verification_method) return { outcome: 'not_found' }
+    return issuedAt < fixture.rotation_boundary ? fixture.keys.K1 : fixture.keys.K2
   }
 }
 
@@ -189,41 +222,21 @@ if (historical.matched !== historical.total) {
   console.log(`ok   historical-key-resolution matched all ${historical.total} cases`)
 }
 
-const currentOnly = runPolicy(vectors.policies.current_key_only, currentKeyOnlyResolver())
-const declaredCurrentOnly = [...vectors.policies.current_key_only.expected_fail_ids].sort()
-const observedCurrentOnly = [...currentOnly.observedFailIds].sort()
-const currentOnlyMatches = JSON.stringify(declaredCurrentOnly) === JSON.stringify(observedCurrentOnly)
-if (!currentOnlyMatches) {
-  ok = false
-  console.error(`FAIL current-key-only declared fail set ${JSON.stringify(declaredCurrentOnly)}, observed ${JSON.stringify(observedCurrentOnly)}`)
-} else {
-  console.log(`ok   current-key-only failed exactly the declared set: [${declaredCurrentOnly.join(', ')}]`)
+function runNegativeControl(policy: PolicySpec, resolveVerificationKey: VerificationKeyResolver) {
+  const observed = runPolicy(policy, resolveVerificationKey)
+  const declared = [...policy.expected_fail_ids].sort()
+  const actual = [...observed.observedFailIds].sort()
+  const setsMatch = JSON.stringify(declared) === JSON.stringify(actual)
+  if (!setsMatch) {
+    ok = false
+    console.error(`FAIL ${policy.name} declared fail set ${JSON.stringify(declared)}, observed ${JSON.stringify(actual)}`)
+  } else {
+    console.log(`ok   ${policy.name} failed exactly the declared set: [${declared.join(', ')}]`)
+  }
 }
 
-// KRH-05: run and record the observed result. Not scored pass/fail: this
-// vector documents a gap between draft-03 section 2.4's evidentiary
-// requirement and what the reference SDKs' resolver surface can express.
-// See README "Known SDK gap".
-const gapVector = vectors.cases.find(c => c.id === 'KRH-05-indeterminate-boundary-no-evidence')!
-const gapResult = runOne(gapVector.id, historicalResolver())
-const gapFailure = actualFailure(gapResult)
-const gapObserved: Expected = {
-  state: gapResult.state,
-  failure_code: gapFailure.code,
-  failure_index: gapFailure.index,
-}
-const gapObservedMatchesRecorded = JSON.stringify(gapObserved) === JSON.stringify(gapVector.observed)
-const gapDivergesFromDraft = JSON.stringify(gapObserved) !== JSON.stringify(gapVector.draft_required)
-console.log(`gap  ${gapVector.id}  observed=${JSON.stringify(gapObserved)} draft_required=${JSON.stringify(gapVector.draft_required)}`)
-if (!gapVector.known_sdk_gap || !gapObservedMatchesRecorded || !gapDivergesFromDraft) {
-  ok = false
-  console.error(
-    'FAIL KRH-05 gap bookkeeping: expected known_sdk_gap true, observed result matching the recorded ' +
-    'observed field, and observed diverging from draft_required'
-  )
-} else {
-  console.log('ok   KRH-05 observed result matches the recorded known_sdk_gap, and diverges from draft_required as documented')
-}
+runNegativeControl(vectors.policies.current_key_only, currentKeyOnlyResolver())
+runNegativeControl(vectors.policies.claim_trusting, claimTrustingResolver())
 
-console.log(ok ? 'PASSED: historical-key-resolution matched every vector, current-key-only failed exactly the declared set' : 'FAILED')
+console.log(ok ? 'PASSED: historical-key-resolution matched every vector, both negative controls failed exactly their declared sets' : 'FAILED')
 process.exit(ok ? 0 : 1)
