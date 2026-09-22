@@ -11,8 +11,11 @@
     "sections": [
       "Mitigation bullets under Token Handling",
       "Scenario 5 – Revocation Bypassed by Cached Authorization",
-      "Validating Revocation Enforcement, checks 1 to 5"
+      "Validating Revocation Enforcement, checks 1 to 5",
+      "Validating Revocation Enforcement, check 6, added at head 87ce9bb"
     ],
+    "later_head_sha": "87ce9bb",
+    "later_head_note": "Check 6 was added to the pull request after this family was written. CAR-09 was relabelled to cite it at that head. The other cases still cite the text read at head_sha.",
     "note": "Every case here is a candidate against proposed text. Nothing in this family is a conformance claim, and the source may change or never merge."
   },
   "parameters": {
@@ -454,14 +457,15 @@
     },
     {
       "id": "CAR-09-unresolvable-grant-state-is-denied",
-      "covers": { "kind": "stated-principle", "check": null },
+      "covers": { "kind": "numbered-check", "check": 6 },
       "role": "negative",
-      "description": "A grant the authority has no usable state for is denied, both on a cold path and after the enforcement point had a cached allow for it. Not one of the numbered checks; the source states this as a principle in its mitigation text.",
+      "description": "The authority stays reachable but has no usable state for the tested grant. A request with no cached decision is denied, a previously allowed request is denied once its cached decision is past the freshness limit, and the independent grant still performs its operation. Check 6 at head 87ce9bb. Before that head the source stated this only as a principle in its mitigation text.",
       "stale_cache_expected_to_fail": true,
       "counts_as_revocation_enforcement_evidence": true,
       "principle_note": "The source says an unexpired token or an existing session is not proof that access is still authorized, and that a protected operation is denied rather than continuing on an old allow decision when authorization freshness cannot be established. A grant state that cannot be resolved is therefore a denial, never an allow by default. The suite's own brief says the same thing from the other side: missing evidence for a claim is not a pass for that claim.",
       "timeline": [
         { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        { "event": "issue_grant", "grant": "g-independent", "client": "client-b", "credential": "synthetic-access-token-7ab204", "refresh_credential": null },
         {
           "event": "call",
           "request": "CAR-09-r1",
@@ -490,6 +494,15 @@
           "worker": "w1",
           "operation": "document.export",
           "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_state_unresolvable", "note": "Cached decision is past the freshness limit and the authority has no usable state. The cached allow must not be the answer." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-09-r4",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Check 6's independent grant. The unresolvable state belongs to g-primary only." }
         }
       ]
     }
