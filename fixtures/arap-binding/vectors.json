@@ -1,0 +1,1516 @@
+{
+  "family": "arap-binding",
+  "version": "1",
+  "status": "candidate",
+  "source": {
+    "kind": "proposed text, not merged",
+    "repository": "openid/authzen",
+    "pull_request": 658,
+    "head_sha": "2e9412c943d77c3a1ec82de59f8903b45c5bec14",
+    "file": "profiles/authzen-access-request-approval/authzen-access-request-approval-profile-1_0.md",
+    "note": "Every case here is a candidate against proposed text. Nothing in this family is a conformance claim, about any AuthZEN implementation or about APS, and the source may change or never merge."
+  },
+  "keys": {
+    "pdp_binding_seed_label": "pdp-denial-binding-key",
+    "ars_state_seed_label": "ars-approval-state-key",
+    "ars_identifier": "https://ars.example.com",
+    "pdp_id": "https://pdp.example.com",
+    "other_pdp_id": "https://other-pdp.example.com",
+    "ars_state_iss": "https://ars.example.com",
+    "ars_state_kid": "ars-state-key-1"
+  },
+  "denial_binding_cases": [
+    {
+      "id": "D1",
+      "letter": "D1",
+      "label": "accept: submission matches binding_hash",
+      "section": "verifying-denial-binding (1205-1220)",
+      "form": "hashed",
+      "change_from_baseline": "none, positive control",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d1-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "accepted"
+    },
+    {
+      "id": "D2",
+      "letter": "D2",
+      "label": "resource changed",
+      "section": "verifying-denial-binding, step 4 (1212)",
+      "form": "hashed",
+      "change_from_baseline": "submission.resource.id differs from the bound resource",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d2-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan-v2"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D3",
+      "letter": "D3",
+      "label": "action changed",
+      "section": "verifying-denial-binding, step 4 (1212)",
+      "form": "hashed",
+      "change_from_baseline": "submission.action.name differs from the bound action",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d3-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_write"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D4",
+      "letter": "D4",
+      "label": "only subject.properties.act differs",
+      "section": "structural-comparison, the act exclusion (712-733, 724)",
+      "form": "hashed",
+      "change_from_baseline": "submission.subject.properties.act names a different actor; department is unchanged",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance",
+            "act": {
+              "type": "agent",
+              "id": "agent-42"
+            }
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d4-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance",
+            "act": {
+              "type": "agent",
+              "id": "agent-99"
+            }
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "accepted"
+    },
+    {
+      "id": "D5",
+      "letter": "D5",
+      "label": "a member listed in binding_context_members changed",
+      "section": "denial-request-binding (1179), verifying-denial-binding step 4 (1212)",
+      "form": "hashed",
+      "change_from_baseline": "submission.context.region differs; region is a bound member",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d5-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-west",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D6",
+      "letter": "D6",
+      "label": "context.time changed, not listed",
+      "section": "structural-comparison, authorization-relevant Context set (726-731)",
+      "form": "hashed",
+      "change_from_baseline": "submission.context.time differs; time is not a bound member",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d6-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:50:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "accepted"
+    },
+    {
+      "id": "D7",
+      "letter": "D7",
+      "label": "a listed member absent in one and null in the other",
+      "section": "structural-comparison, absent distinct from null (712-720)",
+      "form": "hashed",
+      "change_from_baseline": "bound context carries cost_center: null; submission omits cost_center entirely",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z",
+          "cost_center": null
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d7-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D8",
+      "letter": "D8",
+      "label": "token past exp, earlier than denial.expires_at",
+      "section": "verifying-denial-binding, freshness rules (1215-1220)",
+      "form": "hashed",
+      "change_from_baseline": "now is past claims.exp but before the echoed denial.expires_at",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:44:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d8-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:45:00Z",
+      "expected_outcome": "expired_denial"
+    },
+    {
+      "id": "D9",
+      "letter": "D9",
+      "label": "no denial_expires_at claim, exp later than the echoed denial.expires_at",
+      "section": "verifying-denial-binding, freshness rules (1215-1220)",
+      "form": "hashed",
+      "change_from_baseline": "claims omit denial_expires_at; claims.exp is later than submission.denial_expires_at, so the binding material cannot prove the freshness window",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:52:00Z",
+        "denial_expires_at": null,
+        "aud": "https://ars.example.com",
+        "jti": "d9-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D10",
+      "letter": "D10",
+      "label": "aud missing",
+      "section": "denial-jwt-claims, aud REQUIRED; verifying-denial-binding step 2 (1210)",
+      "form": "hashed",
+      "change_from_baseline": "claims omit aud entirely",
+      "binding_context_members": [
+        "region",
+        "cost_center"
+      ],
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": null,
+        "jti": "d10-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_audience",
+      "outcome_note": "The profile's Error Responses section defines a problem type for a step-4 binding mismatch (invalid_denial_binding) and a step-5 freshness failure (expired_denial), but assigns none specifically to a step-2 aud failure. The harness keeps a distinct internal outcome so the case is traceable; this is not a claim that the profile defines an invalid_audience wire error."
+    },
+    {
+      "id": "D11a",
+      "letter": "D11",
+      "label": "inline form, resource changed",
+      "section": "denial-request-binding, inline form (1181-1183)",
+      "form": "inline",
+      "change_from_baseline": "same mutation as D2, carried in the inline form",
+      "binding_context_members": null,
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d11a-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan-v2"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "invalid_denial_binding"
+    },
+    {
+      "id": "D11b",
+      "letter": "D11",
+      "label": "inline form, act differs",
+      "section": "structural-comparison, the act exclusion (724); denial-request-binding, inline form (1181-1183)",
+      "form": "inline",
+      "change_from_baseline": "same mutation as D4, carried in the inline form",
+      "binding_context_members": null,
+      "claims": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance",
+            "act": {
+              "type": "agent",
+              "id": "agent-42"
+            }
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "iat": "2026-04-30T20:42:00Z",
+        "exp": "2026-04-30T20:47:00Z",
+        "denial_expires_at": "2026-04-30T20:47:00Z",
+        "aud": "https://ars.example.com",
+        "jti": "d11b-jti"
+      },
+      "submission": {
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance",
+            "act": {
+              "type": "agent",
+              "id": "agent-99"
+            }
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "denial_expires_at": "2026-04-30T20:47:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected_outcome": "accepted"
+    }
+  ],
+  "denial_binding_finding_case": {
+    "id": "D12",
+    "label": "indeterminate: binding_context_members absent, two readings of the hash object diverge",
+    "section": "denial-request-binding (1179), denial-binding-hash (1186-1203)",
+    "status": "indeterminate",
+    "subject": {
+      "type": "user",
+      "id": "alice@example.com",
+      "properties": {
+        "department": "finance"
+      }
+    },
+    "resource": {
+      "type": "document",
+      "id": "q4-plan"
+    },
+    "action": {
+      "name": "can_read"
+    },
+    "context": {
+      "region": "us-east",
+      "time": "2026-04-30T20:42:00Z"
+    },
+    "note": "1179 says binding covers only Subject, Resource, and Action when binding_context_members is absent, which reads naturally as no context key in the hash object at all. The object literal at 1190-1197 always shows a literal context key. Both readings are computed; they must diverge, and the case is excluded from both tallies rather than resolved either way."
+  },
+  "approval_cases": [
+    {
+      "id": "A1",
+      "label": "accept: exact-match evaluation, before approved_until, status active",
+      "section": "approval-verification (936-954), approval-current-status (960-962), approval-scope (964-972)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "approval_applies",
+          "expected_next_action": null
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "label": "known approval.id presented for a different resource",
+      "section": "approval-scope (964-972)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "other-doc"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "out_of_scope",
+          "expected_next_action": "request"
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "label": "approval revoked before approved_until",
+      "section": "approval-current-status (960-962)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "revoked"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "approval_expired",
+          "expected_next_action": "request"
+        }
+      ]
+    },
+    {
+      "id": "A4",
+      "label": "past approved_until",
+      "section": "approval-current-status (960-962)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-05-02T00:00:00Z",
+          "expected_outcome": "approval_expired",
+          "expected_next_action": "request"
+        }
+      ]
+    },
+    {
+      "id": "A5",
+      "label": "approval.id and the id inside approval.state differ",
+      "section": "approval-verification (942)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_99"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "approval_unverifiable",
+          "expected_next_action": "none"
+        }
+      ]
+    },
+    {
+      "id": "A6",
+      "label": "approval.state aud names another PDP",
+      "section": "approval-state (1230-1246)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://other-pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "approval_unverifiable",
+          "expected_next_action": "none"
+        }
+      ]
+    },
+    {
+      "id": "A7",
+      "label": "mandatory policy now denies (subject disabled)",
+      "section": "decision-and-binding-integrity; reevaluation-denials, policy_denied (618)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": "alice@example.com",
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "policy_denied",
+          "expected_next_action": "none"
+        }
+      ]
+    },
+    {
+      "id": "A8",
+      "label": "accept: the same exact-match evaluation a second time is still within scope",
+      "section": "approval-reuse (851-859)",
+      "note": "ARAP permits reuse within scope. This is stated plainly against this profile's own text and is not a comparison to any other protocol.",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "approval_applies",
+          "expected_next_action": null
+        },
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T20:42:00Z"
+          },
+          "now": "2026-04-30T22:00:00Z",
+          "expected_outcome": "approval_applies",
+          "expected_next_action": null
+        }
+      ]
+    },
+    {
+      "id": "A9",
+      "label": "accept: only context.time differs",
+      "section": "approval-scope (964-972); structural-comparison, authorization-relevant Context set (726-731)",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "region": "us-east",
+            "time": "2026-04-30T23:00:00Z"
+          },
+          "now": "2026-04-30T23:05:00Z",
+          "expected_outcome": "approval_applies",
+          "expected_next_action": null
+        }
+      ]
+    },
+    {
+      "id": "A10",
+      "label": "finding: PEP resends only time and approval, as the profile's own example shows",
+      "section": "approval-scope (964-972); lookup-reevaluation-example (623-666); openid/authzen#663",
+      "note": "The original denial and approval carry an authorization-relevant context member (region). The profile's non-normative re-evaluation example at lines 630-665 sends only context.approval and context.time. A PEP that follows that example, as issue #663 reports, omits region and is denied out_of_scope under this profile's own exact-match rule. This is a finding about the text, not about any implementation.",
+      "record": {
+        "id": "apr_01",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com",
+          "properties": {
+            "department": "finance"
+          }
+        },
+        "resource": {
+          "type": "document",
+          "id": "q4-plan"
+        },
+        "action": {
+          "name": "can_read"
+        },
+        "context": {
+          "region": "us-east",
+          "time": "2026-04-30T20:42:00Z"
+        },
+        "boundContextMembers": [
+          "region"
+        ],
+        "approvedAt": "2026-04-30T20:42:30Z",
+        "approvedUntil": "2026-05-01T20:42:30Z",
+        "status": "active"
+      },
+      "presented": {
+        "id": "apr_01",
+        "include_state": true,
+        "state_aud": "https://pdp.example.com",
+        "state_approval_id": "apr_01"
+      },
+      "policy_disable_subject": null,
+      "evaluations": [
+        {
+          "subject": {
+            "type": "user",
+            "id": "alice@example.com",
+            "properties": {
+              "department": "finance"
+            }
+          },
+          "resource": {
+            "type": "document",
+            "id": "q4-plan"
+          },
+          "action": {
+            "name": "can_read"
+          },
+          "context": {
+            "time": "2026-04-30T20:43:00Z"
+          },
+          "now": "2026-04-30T21:00:00Z",
+          "expected_outcome": "out_of_scope",
+          "expected_next_action": "request"
+        }
+      ]
+    }
+  ],
+  "pep_fallback_cases": [
+    {
+      "id": "P1",
+      "label": "recognized next_action wins over a reason with a different default",
+      "section": "pep-reevaluation-handling (828, 841)",
+      "input": {
+        "next_action": "retry",
+        "reason": "policy_denied",
+        "access_request_present": false
+      },
+      "expected": "retry"
+    },
+    {
+      "id": "P2",
+      "label": "no next_action, recognized reason: reason default",
+      "section": "pep-reevaluation-handling (830, 835, 842)",
+      "input": {
+        "reason": "grant_pending",
+        "access_request_present": true
+      },
+      "expected": "retry"
+    },
+    {
+      "id": "P3",
+      "label": "neither recognized, access_request present",
+      "section": "pep-reevaluation-handling (830, 843)",
+      "input": {
+        "next_action": "unrecognized-value",
+        "reason": "unrecognized-reason",
+        "access_request_present": true
+      },
+      "expected": "request"
+    },
+    {
+      "id": "P4",
+      "label": "neither recognized, access_request absent",
+      "section": "pep-reevaluation-handling (830, 843)",
+      "input": {
+        "access_request_present": false
+      },
+      "expected": "none"
+    },
+    {
+      "id": "P5",
+      "label": "next_action request without access_request",
+      "section": "pep-reevaluation-handling (829)",
+      "input": {
+        "next_action": "request",
+        "access_request_present": false
+      },
+      "expected": "none"
+    }
+  ],
+  "negative_controls": {
+    "byte_compare_ars": {
+      "applies_to": "denial_binding_cases",
+      "declared_to_fail": [
+        "D4",
+        "D11b"
+      ],
+      "defect": "Compares submission bytes directly instead of applying structural comparison, so it never removes subject.properties.act before comparing or hashing."
+    },
+    "trusting_pdp": {
+      "applies_to": "approval_cases",
+      "declared_to_fail": [
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A10"
+      ],
+      "defect": "Applies any approval.id it recognizes in its ledger with no scope check, no current-status check, and no aud check on approval.state. Still enforces the mandatory policy gate, which is a separate check this defect does not claim to bypass."
+    }
+  }
+}
