@@ -1,0 +1,223 @@
+{
+  "_placeholder": false,
+  "issuer": "did:aps:example:krh-principal",
+  "keys": {
+    "K1": "0b00ee93711de6012552141b92c437e1a9234d6665c3cee981acea33d50c06f0",
+    "K2": "bb33dae70fc831314db533ca3adf5ebbda09d392f5e75b223822dfd957dd3644"
+  },
+  "now": "2026-09-20T14:00:00.000Z",
+  "records": {
+    "KRH-01-accept-before-rotation-signed-k1": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:6e9a122e68b9fb43cea993bc31c0b048d868d446143c0b6d8d577f7736481bcd",
+      "issued_at": "2026-09-20T11:00:00.000Z",
+      "issuer": "did:aps:example:krh-principal",
+      "nonce": "88ee05be3a0878b1a5e4920055ec9212",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "c0b46559b94082d749723d3f73b089b739cc23b3dea939c45c1213c43808d73f3530d016c768efc8094151cdccfdfd02fbde878f731986ba00a5e78c37c5cb0b",
+      "subject": "did:aps:example:krh-agent",
+      "verification_method": "did:aps:example:krh-principal#key-1",
+      "version": "1.0"
+    },
+    "KRH-02-accept-after-rotation-signed-k2": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T13:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:549672e200b0d3d2b08284f283eea5b5686a7f04b33531b738045c94c6e9a087",
+      "issued_at": "2026-09-20T13:00:00.000Z",
+      "issuer": "did:aps:example:krh-principal",
+      "nonce": "08af43dc264e095348d3403666804c24",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "b765661d8ec2ae7eb792d9b07abc6a90866437275bce0f4f3e3d0eae0943d601a055b4c0b679d56dea2f20a570f9f8eb74a2048c66b456e6960f27165ec86e0d",
+      "subject": "did:aps:example:krh-agent",
+      "verification_method": "did:aps:example:krh-principal#key-1",
+      "version": "1.0"
+    },
+    "KRH-03-reject-after-rotation-signed-k1": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T13:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:beb59b31713f25f93fa183fbb5380ad96c1fd84b0969b35cf22493c1d1f175d0",
+      "issued_at": "2026-09-20T13:00:00.000Z",
+      "issuer": "did:aps:example:krh-principal",
+      "nonce": "e96681ce932eb737d00b77ed25604e31",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "a104ed65cea690ef50650a8a70fbc476b79f01f97087aa82ee45727e2463ec39d1539806dcc69cccb63e914473f88198574ee0cad2f4c888c5a082896da68101",
+      "subject": "did:aps:example:krh-agent",
+      "verification_method": "did:aps:example:krh-principal#key-1",
+      "version": "1.0"
+    },
+    "KRH-04-reject-before-rotation-signed-k2": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:389b5241c03bb13c041c5b8b70b3a21e50048e5027b539ae6ea44f13abff0721",
+      "issued_at": "2026-09-20T11:00:00.000Z",
+      "issuer": "did:aps:example:krh-principal",
+      "nonce": "8ddcf40f7065d78cd0619e510d985afa",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "7601390e7dae25a9fbec9ddc9f2397ab9dbd531c1fd5f7f52f6c1e2e16e9b37963d286152a4e748de26da4af2422209d1e938a1eef6f9b63e344422cda78cb05",
+      "subject": "did:aps:example:krh-agent",
+      "verification_method": "did:aps:example:krh-principal#key-1",
+      "version": "1.0"
+    },
+    "KRH-05-indeterminate-boundary-no-evidence": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:59:59.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:6e6c4f4f48d3b437d2a6d257e73a404c925f088990a6868d810b69198322e3dd",
+      "issued_at": "2026-09-20T11:59:59.000Z",
+      "issuer": "did:aps:example:krh-principal",
+      "nonce": "e01e601055af3f9145db52a55b03ff13",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "b2d47e1037fbbd5b52c534169789c90537be01d0d8ce4074ccbdbefae575eb673b989c2b8455fff5123b2d7af7cc3a5f86d6e021e6149df378b95c6bf1204706",
+      "subject": "did:aps:example:krh-agent",
+      "verification_method": "did:aps:example:krh-principal#key-1",
+      "version": "1.0"
+    }
+  },
+  "rotation_boundary": "2026-09-20T12:00:00.000Z",
+  "verification_method": "did:aps:example:krh-principal#key-1"
+}
