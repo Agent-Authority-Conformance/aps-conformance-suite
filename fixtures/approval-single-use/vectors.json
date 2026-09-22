@@ -1,0 +1,101 @@
+{
+  "profile": "aps-approval-single-use-v0",
+  "description": "draft-pidlisnyi-aps-03 section 5.3.2 lines 1093-1099. A permit or narrow policy-decision record is a bounded single-use approval bound to its action_ref. Nine ordered presentations (case 7 is two back-to-back presentations of one permit) against one shared DispatchBoundary instance and one shared clock, run through both a reference boundary and a deliberately defective negative control. Presentation order matters: the single-use ledger a boundary instance holds is shared across every presentation in this list, in this order.",
+  "declared_defective_fail_set": [
+    "ASU-02-reject-already-consumed",
+    "ASU-05-reject-revoked-at-consumption",
+    "ASU-07b-reject-race-second-consumption"
+  ],
+  "presentations": [
+    {
+      "id": "ASU-01-accept-permit-before-expiry",
+      "differs_from": null,
+      "decision": "decision_permit_1",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:05.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": true, "reason": "dispatch_admitted" }
+    },
+    {
+      "id": "ASU-02-reject-already-consumed",
+      "differs_from": "ASU-01: the same permit presented a second time",
+      "decision": "decision_permit_1",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:05.500Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": false, "reason": "already_consumed" }
+    },
+    {
+      "id": "ASU-03-reject-expired",
+      "differs_from": "ASU-01: presented after its own valid_until instead of before",
+      "decision": "decision_permit_expired",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:10.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": false, "reason": "expired" }
+    },
+    {
+      "id": "ASU-04-reject-action-binding-mismatch",
+      "differs_from": "ASU-01: presented for action B, a different action_ref than the one the permit names",
+      "decision": "decision_permit_for_binding",
+      "requested_action": "b",
+      "now": "2026-09-22T09:00:11.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": false, "reason": "action_binding_mismatch" }
+    },
+    {
+      "id": "ASU-05-reject-revoked-at-consumption",
+      "differs_from": "ASU-01: the backing authority chain is revoked by the time the boundary rechecks it at consumption",
+      "decision": "decision_permit_for_revocation",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:12.000Z",
+      "chain": "for_revocation_case",
+      "revocation": "revoked",
+      "expected": { "admitted": false, "reason": "authority_chain_not_valid_at_consumption", "detail": "invalid/REVOKED" }
+    },
+    {
+      "id": "ASU-06-reject-deny-not-consumed-as-approval",
+      "differs_from": "ASU-01: the presented record is a deny, not a permit",
+      "decision": "decision_deny",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:13.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": false, "reason": "deny_terminal_not_approval" }
+    },
+    {
+      "id": "ASU-07a-accept-race-first-consumption",
+      "differs_from": "ASU-01: same permit as ASU-07b, presented once so far",
+      "decision": "decision_permit_for_race",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:14.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": true, "reason": "dispatch_admitted" }
+    },
+    {
+      "id": "ASU-07b-reject-race-second-consumption",
+      "differs_from": "ASU-07a: the same permit, presented again immediately, at the same instant, with no dispatch between the two presentations",
+      "decision": "decision_permit_for_race",
+      "requested_action": "a",
+      "now": "2026-09-22T09:00:14.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": false, "reason": "already_consumed" }
+    },
+    {
+      "id": "ASU-08-accept-narrow-for-narrowed-action",
+      "differs_from": "ASU-01: verdict is narrow, not permit, and the action presented is the narrowed action C the decision names",
+      "decision": "decision_narrow",
+      "requested_action": "c",
+      "now": "2026-09-22T09:00:15.000Z",
+      "chain": "main",
+      "revocation": "active",
+      "expected": { "admitted": true, "reason": "dispatch_admitted" }
+    }
+  ]
+}
