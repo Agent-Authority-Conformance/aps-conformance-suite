@@ -14,6 +14,7 @@ closed the cases go with it.
 | repository | `OWASP/www-project-mcp-top-10` |
 | pull request | #63 |
 | head SHA read | `89fd8d9d` |
+| later head, check 6 | `87ce9bb` |
 | file | `2025/MCP07-2025–Insufficient-Authentication&Authorization.md` |
 | status | **proposed, not merged** |
 
@@ -60,14 +61,14 @@ those two determinate instead of a matter of taste.
 | `CAR-06-revocation-acknowledged-after-tool-executed` | check 3 | a denial returned to the caller after the downstream double already recorded the operation |
 | `CAR-07-authority-unavailable-beyond-freshness-limit` | check 4 | the authority taken offline after warming, served inside the freshness limit, denied past it, downstream never reached |
 | `CAR-08-audit-correlation-without-credentials` | check 5 | correlation fields per call, and no credential values in the trail |
-| `CAR-09-unresolvable-grant-state-is-denied` | stated principle | a grant with no usable state is denied, cold and after a cached allow existed |
+| `CAR-09-unresolvable-grant-state-is-denied` | check 6 | with the authority reachable, a grant with no usable state is denied, cold and after a cached allow expired, while the independent grant still works |
 
-`CAR-09` is not one of the five numbered checks. The source states it as a
-principle in its mitigation text: an unexpired token or an existing session is
-not proof that access is still authorized, and a protected operation is denied
-rather than continued on an old allow decision when freshness cannot be
-established. A grant state that cannot be resolved is therefore a denial, never
-an allow by default.
+`CAR-09` was first written against a principle in the mitigation text, since
+the head read above has five numbered checks. The pull request added check 6
+at `87ce9bb` for exactly this case, an authority that is reachable but cannot
+resolve the grant, and `CAR-09` now cites it. The other eight cases still cite
+the text at `89fd8d9d`. Following check 6, the case also confirms that the
+independent grant still works after the tested grant becomes unresolvable.
 
 ### Where the source does not determine an outcome
 
