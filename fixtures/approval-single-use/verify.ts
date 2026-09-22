@@ -2,7 +2,7 @@
 //
 // Runs the nine approval-single-use presentations against harness.ts's reference boundary
 // and its declared defective negative control, both over chain.json's real,
-// agent-passport-system 7.0.0-signed decision and delegation records.
+// agent-passport-system 7.1.0-signed decision and delegation records.
 //
 // This is evidence about this family's own reference boundary, not an SDK conformance
 // result. See README "What this establishes" and "Does not claim".
