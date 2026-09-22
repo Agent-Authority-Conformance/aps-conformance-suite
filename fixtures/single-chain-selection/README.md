@@ -7,7 +7,7 @@ ceilings of a second, independently held chain into that evaluation, even
 when the same leaf agent holds both chains and could present either one.
 
 This is plain draft-03 conformance, not a proposal. draft-pidlisnyi-aps-03
-already states this rule for a verifier evaluating one presented chain; this
+already states this rule for a verifier evaluating one presented chain. This
 fixture makes that existing required behavior executable and reviewable, the
 same way [C19](../revocation-resolution-forward-compat/README.md) and
 [AAC](../ancestor-revocation-chain/README.md) did for two other verifier
@@ -202,7 +202,7 @@ enforced.
 ### SCS-06 is not a union either
 
 SCS-06 does not test what a union of the two chains would decide once
-formed; it tests that the SDK never gets that far. `parent_delegation_id` is
+formed. It tests that the SDK never gets that far. `parent_delegation_id` is
 null on both records (each is a root), so `verifyAuthorityDelegationChain`'s
 existing phase 6 check (parent_delegation_id, draft lines 580 and 582) fails
 at index 1 before phase 9's facet comparisons, where a scope or spend union
@@ -316,7 +316,7 @@ For the exact SDK revision that was run, a pass establishes that:
 A pass does **not** establish:
 
 - anything about cross-principal composition. Line 596 states explicitly
-  that cross-principal composition requires a separate profile; this fixture
+  that cross-principal composition requires a separate profile. This fixture
   does not define, approximate, or test that profile. P1 and P2 here are two
   separate roots delegating to the same leaf, not a composition of two
   principals' authority into one grant
@@ -330,7 +330,7 @@ A pass does **not** establish:
   dispatch, commit, or cancellation
 - which chain an implementation should choose when a leaf holds several
   chains that would each independently authorize an action. Every vector
-  here presents the runner with exactly one chain already selected; this
+  here presents the runner with exactly one chain already selected. This
   fixture says nothing about how that selection is made or whether a
   particular selection policy is required
 - that the synthetic action-as-delegation-hop technique the cross-check path
