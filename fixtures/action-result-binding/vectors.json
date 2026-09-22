@@ -3,7 +3,7 @@
   "description": "A pinned input for independent evidence consumers of aps:action-result:v1. Each case keeps four sources of expectation apart: what the published draft-03 text says, what the pinned TypeScript SDK returns on two separate surfaces, what the pinned Python SDK returns and which surface it does not implement, and what Agent Replay's stated binding rules imply for the record. Nothing here merges those into a single verdict, and a case may be stage-valid and composite-invalid at the same time.",
   "blocks": {
     "draft03": "The expectation derived from the published draft-pidlisnyi-aps-03 text, with the section and line. Authored from the text, not from any implementation.",
-    "sdk_ts": "What agent-passport-system 7.0.0 actually returns, recorded from real runs, on two separate entrypoints: validateReceiptStageV1 (section 5.3 stage rules for one record) and verifyReceiptWithDecisionV1 (the section 5.6 composite check against supplied decision evidence).",
+    "sdk_ts": "What agent-passport-system 7.1.0 actually returns, recorded from real runs, on two separate entrypoints: validateReceiptStageV1 (section 5.3 stage rules for one record) and verifyReceiptWithDecisionV1 (the section 5.6 composite check against supplied decision evidence).",
     "sdk_py": "What agent-passport-system 4.0.0 for Python actually returns from validate_receipt_stage_v1, recorded from real runs, plus an explicit statement that the pinned release has no counterpart to verifyReceiptWithDecisionV1.",
     "replay_policy": "What Agent Replay's binding rules, as stated by its author, imply for this record, together with what the author's own run of this pinned fixture reported for it. status derived means this suite derived the outcome by applying the stated rules, and author_run_confirmation records that the author's run reported the same outcome. status reported means the stated rules did not settle the record and the outcome is the author's reported one instead, with the earlier explanation kept under stated_rules_did_not_settle as history. This suite did not run Agent Replay and did not submit these records to it. Every outcome attributed to a run is the author's report at the revision and comment each case cites."
   },
@@ -25,7 +25,7 @@
     "draft03_semantic_relation_not_explicitly_enforced": "Two draft-03 definitions describe the same role, the record makes them disagree, and the draft states no explicit equality relation and names no verifier step that compares them. Not an APS violation, not an APS negative vector, and not Replay-only."
   },
   "chain_receipts": {
-    "note": "The three chain receipts, exercised by both runners on the same three surfaces: receipt_id recomputed from the record, every boundary signature verified over the section 5.2 signature payload, and the section 5.3 stage rules applied. Recorded from real runs of agent-passport-system 7.0.0 and 4.0.0 for Python, which agree on all three.",
+    "note": "The three chain receipts, exercised by both runners on the same three surfaces: receipt_id recomputed from the record, every boundary signature verified over the section 5.2 signature payload, and the section 5.3 stage rules applied. Recorded from real runs of agent-passport-system 7.1.0 and 4.0.0 for Python, which agree on all three.",
     "expected": [
       {
         "receipt": "intent",
@@ -117,6 +117,7 @@
           "decision_ref_bound": true,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": "not_applicable",
+          "predecessor_bound": "not_checked",
           "errors": []
         }
       },
@@ -189,6 +190,7 @@
           "decision_ref_bound": false,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": false,
+          "predecessor_bound": "not_checked",
           "errors": ["receipt_invalid", "ReceiptV1: missing field subject_agent"]
         }
       },
@@ -275,6 +277,7 @@
           "decision_ref_bound": true,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": "not_applicable",
+          "predecessor_bound": "not_checked",
           "errors": []
         }
       },
@@ -346,6 +349,7 @@
           "decision_ref_bound": false,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": false,
+          "predecessor_bound": "not_checked",
           "errors": ["decision_ref_mismatch"]
         }
       },
@@ -418,6 +422,7 @@
           "decision_ref_bound": false,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": false,
+          "predecessor_bound": "not_checked",
           "errors": ["decision_ref_mismatch"]
         }
       },
@@ -490,6 +495,7 @@
           "decision_ref_bound": true,
           "decision_output_bound": "not_applicable",
           "temporal_relation_valid": "not_applicable",
+          "predecessor_bound": "not_checked",
           "errors": []
         }
       },

@@ -59,13 +59,19 @@ field.
 and line. It is authored from the text, not from any implementation, and no runner
 asserts an SDK result against it.
 
-**`sdk_ts`** is what `agent-passport-system` 7.0.0 actually returns, recorded from real
+**`sdk_ts`** is what `agent-passport-system` 7.1.0 actually returns, recorded from real
 runs, on two separate entrypoints:
 
 - `validateReceiptStageV1(record, { boundaryIdentity })`, the section 5.3 stage rules
   for one record on its own
 - `verifyReceiptWithDecisionV1(record, evidence, resolveKey, { boundaryIdentity })`, the
   section 5.6 composite check of a receipt together with the decision it references
+
+`verifyReceiptWithDecisionV1`'s recorded block also carries `predecessor_bound`. 7.1.0
+added this field as an opt-in axis, reported `not_checked` unless the caller's options
+object carries a `predecessor` property. None of the six cases here supply one, so every
+case records `predecessor_bound: "not_checked"` and every other recorded field is
+unchanged from what 7.0.0 returned.
 
 A case may be stage-valid and composite-invalid. Cases 4 and 5 are exactly that. The
 distinction survives into `vectors.json`, into this README and into the runner output,
@@ -273,7 +279,7 @@ chain, which matches what both stage validators check.
 
 ## Regenerating
 
-From the suite root, with the pinned `agent-passport-system` 7.0.0 installed:
+From the suite root, with the pinned `agent-passport-system` 7.1.0 installed:
 
     npm ci --include=dev
     npx tsx fixtures/action-result-binding/mint.ts
@@ -281,6 +287,12 @@ From the suite root, with the pinned `agent-passport-system` 7.0.0 installed:
 Regeneration is byte for byte. After a second run, `git diff` on `chain.json` is empty.
 Minting is in TypeScript rather than Python because `verifyReceiptWithDecisionV1`, the
 composite surface this family records, exists only in the TypeScript SDK.
+
+This family was last re-recorded against `agent-passport-system` 7.1.0. Relative to
+7.0.0, 7.1.0 adds public APIs and one opt-in receipt result field. The family's
+normative expectations are unchanged: `chain.json` minted byte-identically, and every
+recorded field this family already checked still matches. The only new recorded content
+is `predecessor_bound`, described above.
 
 ## Running the runners
 
@@ -297,7 +309,7 @@ behaviour equals the recorded expectation. It is not a conformance verdict, and 
 runners say so on their first line of output.
 
 The runner refuses to report at all unless the resolved `agent-passport-system` is
-exactly 7.0.0, read from the installed package's own `package.json` by absolute path.
+exactly 7.1.0, read from the installed package's own `package.json` by absolute path.
 `package.json` pins the dependency, but a local override or a changed resolution would
 otherwise redefine what `sdk_ts` means while the runner still printed a match. This
 mirrors `validate.py`'s guard on the Python side and exists for the same reason.
@@ -332,7 +344,7 @@ Either runner also exits nonzero when a case names decision evidence `chain.json
 not carry, or when the `decision_ref` it recomputes for a case does not match the digest
 `vectors.json` pins for it.
 
-`verify.ts` additionally exits nonzero when the resolved SDK is not 7.0.0 and, for case
+`verify.ts` additionally exits nonzero when the resolved SDK is not 7.1.0 and, for case
 3, when the harness reading of `prev` disagrees with what is recorded. The `prev`
 comparison is implemented in `verify.ts` only. `validate.py` does not implement it, and
 its own docstring says so.

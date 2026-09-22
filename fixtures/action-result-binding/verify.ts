@@ -2,7 +2,7 @@
 //
 // TypeScript runner for the action-result-binding family.
 //
-// It runs the pinned agent-passport-system 7.0.0 over each case on TWO separate
+// It runs the pinned agent-passport-system 7.1.0 over each case on TWO separate
 // surfaces and holds each one to what vectors.json records for it:
 //
 //   validateReceiptStageV1        the section 5.3 stage rules for one record
@@ -65,7 +65,7 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 // otherwise silently redefine what sdk_ts means while this runner still printed a match.
 // ---------------------------------------------------------------------------
 
-const PINNED_TS_SDK = '7.0.0'
+const PINNED_TS_SDK = '7.1.0'
 
 function resolvedSdkPackageJson(): { path: string; version: string } {
   let dir = path.dirname(fileURLToPath(import.meta.resolve('agent-passport-system')))
@@ -254,6 +254,7 @@ for (const vector of vectors.cases) {
     decision_ref_bound: composite.decision_ref_bound,
     decision_output_bound: composite.decision_output_bound,
     temporal_relation_valid: composite.temporal_relation_valid,
+    predecessor_bound: composite.predecessor_bound,
     errors: composite.errors,
   }
 
