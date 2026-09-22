@@ -1,0 +1,278 @@
+{
+  "_placeholder": false,
+  "chains": {
+    "NEW": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:17dbfb0d19f07e3a478d93a43922ad20b638458c2fd5731424e69c2ef3e59417",
+        "issued_at": "2026-09-20T10:00:00.000Z",
+        "issuer": "did:aps:example:shp-org",
+        "nonce": "c8a122a68b12349cb12b4fe1bc9410bd",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d1254ed27f4e382bac0e077c76d88e411ddfdcea22975bafd59b4368951f9fe6d3ea3ea69e3b651377e634cdc200f9201b49e2c58583ad4defd5a9efdd710906",
+        "subject": "did:aps:example:shp-successor",
+        "verification_method": "did:aps:example:shp-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T10:30:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:538a6045d8e8db7d2785dbde57a83caacfe5163c735a0cc38e6c0fd4d21e3ea5",
+        "issued_at": "2026-09-20T10:30:00.000Z",
+        "issuer": "did:aps:example:shp-successor",
+        "nonce": "618df126c581dc1ac4772dd3f559ebbe",
+        "parent_delegation_id": "sha256:17dbfb0d19f07e3a478d93a43922ad20b638458c2fd5731424e69c2ef3e59417",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d5774f2df8418f0592972de31567f71bd39a81634303b1daadf4c00c783913454ea8e0f87abf371a91ef9e490254fe9a4b1f64fb858cdfa839f3258d3ba41201",
+        "subject": "did:aps:example:shp-agent-x",
+        "verification_method": "did:aps:example:shp-successor#key-1",
+        "version": "1.0"
+      }
+    ],
+    "OLD": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:273e55e1a77e94cca8fa7d00bc0e0a5309c8532cbc2e9a5311b6e0da7a24feb8",
+        "issued_at": "2026-09-20T09:00:00.000Z",
+        "issuer": "did:aps:example:shp-org",
+        "nonce": "28a1a35f23f7f5b7bd918c75c1f1ff27",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "3e4b8fbb4cc9befc18208f34e681788ec3c39279374b65ad8386d4d00e4c0574c241d3b53c5128a325ff669210f9c01802c277bab0d9c8a3ffee8a3d86fb8a0e",
+        "subject": "did:aps:example:shp-employee",
+        "verification_method": "did:aps:example:shp-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T09:30:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:11169eb66630f469cdd7fba4ae047f81358f3845177763101ff5bdaf1d28b948",
+        "issued_at": "2026-09-20T09:30:00.000Z",
+        "issuer": "did:aps:example:shp-employee",
+        "nonce": "821bb8a59f3f0ff976baf403ec7d8d84",
+        "parent_delegation_id": "sha256:273e55e1a77e94cca8fa7d00bc0e0a5309c8532cbc2e9a5311b6e0da7a24feb8",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d01ec0c89bf6a4894de8f619d939568dffa54da01fc9c86c31778c1ee5061750eebe5804dbb9e39083202187ed5309e36a56cead9e50b3e336c15167aab56e04",
+        "subject": "did:aps:example:shp-agent-x",
+        "verification_method": "did:aps:example:shp-employee#key-1",
+        "version": "1.0"
+      }
+    ],
+    "OTHER": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:273e55e1a77e94cca8fa7d00bc0e0a5309c8532cbc2e9a5311b6e0da7a24feb8",
+        "issued_at": "2026-09-20T09:00:00.000Z",
+        "issuer": "did:aps:example:shp-org",
+        "nonce": "28a1a35f23f7f5b7bd918c75c1f1ff27",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "3e4b8fbb4cc9befc18208f34e681788ec3c39279374b65ad8386d4d00e4c0574c241d3b53c5128a325ff669210f9c01802c277bab0d9c8a3ffee8a3d86fb8a0e",
+        "subject": "did:aps:example:shp-employee",
+        "verification_method": "did:aps:example:shp-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-21T00:00:00.000Z",
+            "not_before": "2026-09-20T09:35:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:313e6663d5fa568e374d46b5d6f813753610e122d78fb747a1076bda7dc3ee14",
+        "issued_at": "2026-09-20T09:35:00.000Z",
+        "issuer": "did:aps:example:shp-employee",
+        "nonce": "2dcd4340e249872cfd200a2883fdac1b",
+        "parent_delegation_id": "sha256:273e55e1a77e94cca8fa7d00bc0e0a5309c8532cbc2e9a5311b6e0da7a24feb8",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "a6e01db064b4009e077828c7306ee32a3c34a75cf133fad87db4b498596b0ad11fe10c2b534db9e4f63df86c07af9c1db9f7a6adcf21ae5f368e353134a58f0f",
+        "subject": "did:aps:example:shp-agent-y",
+        "verification_method": "did:aps:example:shp-employee#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "now": "2026-09-20T12:00:00.000Z",
+  "roles": {
+    "EMPLOYEE_TO_X": "sha256:11169eb66630f469cdd7fba4ae047f81358f3845177763101ff5bdaf1d28b948",
+    "EMPLOYEE_TO_Y": "sha256:313e6663d5fa568e374d46b5d6f813753610e122d78fb747a1076bda7dc3ee14",
+    "ORG_TO_EMPLOYEE": "sha256:273e55e1a77e94cca8fa7d00bc0e0a5309c8532cbc2e9a5311b6e0da7a24feb8",
+    "ORG_TO_SUCCESSOR": "sha256:17dbfb0d19f07e3a478d93a43922ad20b638458c2fd5731424e69c2ef3e59417",
+    "SUCCESSOR_TO_X": "sha256:538a6045d8e8db7d2785dbde57a83caacfe5163c735a0cc38e6c0fd4d21e3ea5"
+  },
+  "verification_keys": {
+    "did:aps:example:shp-agent-x#key-1": "7bd23dee169db900972af167bbdd7fab3b0134f56b0031b5c2d3010c83890258",
+    "did:aps:example:shp-agent-y#key-1": "179bc85531326b9c16ad30dded85470217fd3bd8f7ea84a194717230a4409c93",
+    "did:aps:example:shp-employee#key-1": "6d96935457972c58b5f1da13fbd3753b51773e8970f8121a0a6a99c1984cf18e",
+    "did:aps:example:shp-org#key-1": "8f88fd30c66ad5b31b389c3bda0645510ae094445565968b009d3eabae549800",
+    "did:aps:example:shp-successor#key-1": "644e2efa22d6c543c4e63c92cc67698890ca96d90ea4060eb473b9ce8feb1f18"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "profile": "aps-sponsor-handover-v0",
+  "description": "Exercises plain draft-03 chain verification (Section 3.3, revocation state for every member) across three related AuthorityDelegationV1 chains that model an operational sponsor-handover scenario: the same agent identity, agent_x, holds one chain under a departing employee's authority (OLD) and an independently issued chain under a successor's authority (NEW), while a second agent, agent_y, was only ever delegated to by the departing employee (OTHER, sharing OLD's root delegation). No new succession rule or draft text is proposed; each case is one ordinary call to the chain verifier.",
+  "cases": [
+    {
+      "id": "SH-01-before-handover",
+      "available_chains": ["OLD"],
+      "resolver": {
+        "mode": "by_role",
+        "values": { "ORG_TO_EMPLOYEE": "active", "EMPLOYEE_TO_X": "active" }
+      },
+      "expected": {
+        "OLD": { "state": "valid", "failure_code": null, "failure_index": null }
+      }
+    },
+    {
+      "id": "SH-02-overlap-before-cutover",
+      "available_chains": ["OLD", "NEW"],
+      "resolver": {
+        "mode": "by_role",
+        "values": {
+          "ORG_TO_EMPLOYEE": "active",
+          "EMPLOYEE_TO_X": "active",
+          "ORG_TO_SUCCESSOR": "active",
+          "SUCCESSOR_TO_X": "active"
+        }
+      },
+      "expected": {
+        "OLD": { "state": "valid", "failure_code": null, "failure_index": null },
+        "NEW": { "state": "valid", "failure_code": null, "failure_index": null }
+      }
+    },
+    {
+      "id": "SH-03-after-cutover",
+      "available_chains": ["OLD", "NEW"],
+      "resolver": {
+        "mode": "by_role",
+        "values": {
+          "ORG_TO_EMPLOYEE": "revoked",
+          "EMPLOYEE_TO_X": "active",
+          "ORG_TO_SUCCESSOR": "active",
+          "SUCCESSOR_TO_X": "active"
+        }
+      },
+      "expected": {
+        "OLD": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 },
+        "NEW": { "state": "valid", "failure_code": null, "failure_index": null }
+      }
+    },
+    {
+      "id": "SH-04-revoke-before-replacement",
+      "available_chains": ["OLD"],
+      "resolver": {
+        "mode": "by_role",
+        "values": { "ORG_TO_EMPLOYEE": "revoked", "EMPLOYEE_TO_X": "active" }
+      },
+      "expected": {
+        "OLD": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 }
+      },
+      "assert_no_valid_chain": true
+    },
+    {
+      "id": "SH-05-no-inheritance",
+      "available_chains": ["OLD", "NEW", "OTHER"],
+      "resolver": {
+        "mode": "by_role",
+        "values": {
+          "ORG_TO_EMPLOYEE": "revoked",
+          "EMPLOYEE_TO_X": "active",
+          "ORG_TO_SUCCESSOR": "active",
+          "SUCCESSOR_TO_X": "active",
+          "EMPLOYEE_TO_Y": "active"
+        }
+      },
+      "expected": {
+        "OLD": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 },
+        "NEW": { "state": "valid", "failure_code": null, "failure_index": null },
+        "OTHER": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 }
+      }
+    },
+    {
+      "id": "SH-06-independence",
+      "available_chains": ["OLD", "NEW"],
+      "resolver": {
+        "mode": "by_role",
+        "values": {
+          "ORG_TO_EMPLOYEE": "revoked",
+          "EMPLOYEE_TO_X": "active",
+          "ORG_TO_SUCCESSOR": "active",
+          "SUCCESSOR_TO_X": "active"
+        }
+      },
+      "expected": {
+        "OLD": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 },
+        "NEW": { "state": "valid", "failure_code": null, "failure_index": null }
+      },
+      "structural_independence_check": true
+    }
+  ]
+}
