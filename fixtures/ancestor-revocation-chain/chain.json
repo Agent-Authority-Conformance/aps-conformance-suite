@@ -1,0 +1,137 @@
+{
+  "_placeholder": false,
+  "chain": [
+    {
+      "authority": {
+        "depth": {
+          "remaining": 2
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:5bae4956be297c8a6c72bb0a3860050b23713becd910ed7ea784d7c2b45e4a79",
+      "issued_at": "2026-09-20T10:00:00.000Z",
+      "issuer": "did:aps:example:aac-principal",
+      "nonce": "e24bdc79dc9d81757af1daad19e09cb9",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "c40a6d1ed92f620d859ecae4e972bb51e56da96e22f5b26a70e944d6e240d5a8772fc956fab25fa4af36938a86a74adccf7395247f30b8ad8fb5dad3f6b02f08",
+      "subject": "did:aps:example:aac-agent-a",
+      "verification_method": "did:aps:example:aac-principal#key-1",
+      "version": "1.0"
+    },
+    {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:00d8e046fcb357598749b437e983c44040bb7c2e72309a04a9e3d73cdf4cae06",
+      "issued_at": "2026-09-20T11:00:00.000Z",
+      "issuer": "did:aps:example:aac-agent-a",
+      "nonce": "b08c5dee25cf02b2b1806f56d38142e0",
+      "parent_delegation_id": "sha256:5bae4956be297c8a6c72bb0a3860050b23713becd910ed7ea784d7c2b45e4a79",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "601665ea203f5c990110289bf77e860384f6831e6c3735711ccb24ee2df93659f77f3caabf40656f8fb1d2659accb431f2c8af640bfad1be0b7c6bb86ca68403",
+      "subject": "did:aps:example:aac-agent-b",
+      "verification_method": "did:aps:example:aac-agent-a#key-1",
+      "version": "1.0"
+    },
+    {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T12:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:e086a4413843d66dc6636bc83a7152eb6c90a518ce6a650ef31179b803ec8573",
+      "issued_at": "2026-09-20T12:00:00.000Z",
+      "issuer": "did:aps:example:aac-agent-b",
+      "nonce": "516270cad54eb65f91b8910abdb29c8e",
+      "parent_delegation_id": "sha256:00d8e046fcb357598749b437e983c44040bb7c2e72309a04a9e3d73cdf4cae06",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "b3550061ffe408a27d83bdfb14366d05831d6641c61e5e6d745c72c2ed44bf6646ccba61c26a84b3c29b48736255341a1059296ed3313a45d1a31e124869540d",
+      "subject": "did:aps:example:aac-agent-l",
+      "verification_method": "did:aps:example:aac-agent-b#key-1",
+      "version": "1.0"
+    }
+  ],
+  "now": "2026-09-20T13:00:00.000Z",
+  "verification_keys": {
+    "did:aps:example:aac-agent-a#key-1": "83424a9ac64b661554aff72b01f6c2d03d999e34daa5ded77b83ce897f986ff1",
+    "did:aps:example:aac-agent-b#key-1": "b06f6ec4520c9dd61beb98da304e739f123b46e5d63d35d8ae2effc734668ce8",
+    "did:aps:example:aac-principal#key-1": "52f386652c6a76746c642a2b22c5eba3547eb46ae08df8bbef2eb6ed9c85e03c"
+  }
+}

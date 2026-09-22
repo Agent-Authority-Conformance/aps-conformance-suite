@@ -1,0 +1,31 @@
+{
+  "profile": "aps-ancestor-revocation-chain-v0",
+  "description": "Exercises draft-pidlisnyi-aps-03 section 3.3's requirement that a verifier check revocation state for every chain member. A revoked ancestor (root, or a middle delegation) invalidates a root-to-leaf chain presented for a deeper descendant, even when no descendant delegation is itself revoked and no cascade or derived-revocation record exists for any descendant.",
+  "cases": [
+    {
+      "id": "AAC-01-active-control",
+      "resolver": { "mode": "constant", "value": "active" },
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null }
+    },
+    {
+      "id": "AAC-02-root-revoked-full-chain",
+      "resolver": { "mode": "by_index", "values": ["revoked", "active", "active"] },
+      "expected": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 }
+    },
+    {
+      "id": "AAC-03-root-revoked-leaf-not-in-recorded-children",
+      "resolver": { "mode": "by_index", "values": ["revoked", "active", "active"] },
+      "context": {
+        "note": "recorded_children is documentation only. It is never read by verify.ts or validate.py and must not influence the expected result. See README 'Vector 3' section.",
+        "recorded_children": ["did:aps:example:aac-agent-a", "did:aps:example:aac-agent-b"],
+        "presented_for_subject": "did:aps:example:aac-agent-l"
+      },
+      "expected": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 0 }
+    },
+    {
+      "id": "AAC-04-middle-delegation-revoked",
+      "resolver": { "mode": "by_index", "values": ["active", "revoked", "active"] },
+      "expected": { "state": "invalid", "failure_code": "REVOKED", "failure_index": 1 }
+    }
+  ]
+}
