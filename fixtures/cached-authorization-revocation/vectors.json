@@ -1,0 +1,497 @@
+{
+  "family": "cached-authorization-revocation",
+  "version": "1",
+  "status": "candidate",
+  "source": {
+    "kind": "proposed text, not merged",
+    "repository": "OWASP/www-project-mcp-top-10",
+    "pull_request": 63,
+    "head_sha": "89fd8d9d",
+    "file": "2025/MCP07-2025–Insufficient-Authentication&Authorization.md",
+    "sections": [
+      "Mitigation bullets under Token Handling",
+      "Scenario 5 – Revocation Bypassed by Cached Authorization",
+      "Validating Revocation Enforcement, checks 1 to 5"
+    ],
+    "note": "Every case here is a candidate against proposed text. Nothing in this family is a conformance claim, and the source may change or never merge."
+  },
+  "parameters": {
+    "clock_start_ms": 0,
+    "propagation_limit_ms": 5000,
+    "freshness_limit_ms": 2000,
+    "downstream_credential": "synthetic-downstream-credential-c07d55",
+    "propagation_limit_meaning": "Maximum delay between a revocation being acknowledged and the enforcement point denying subsequent protected operations. A call made more than this many milliseconds after acknowledgement must be denied.",
+    "freshness_limit_meaning": "Maximum age of a cached authorization decision that may be used without consulting the authority. Beyond it the authority must be consulted, and if freshness cannot be established the protected operation is denied.",
+    "modelled_design": "These parameters pin a bounded-cache-lifetime enforcement point. The source permits at least one other compliant design (invalidate cached decisions on revocation, with a longer cache lifetime for grants that were never revoked). That design is not modelled here and would not match the reason values on cache-served allows. See README, Boundary."
+  },
+  "reasons": {
+    "authority_confirmed_active": "allow; the authority was consulted for this call and answered active",
+    "cached_authorization_decision": "allow; a cached decision was used without consulting the authority",
+    "grant_revoked": "deny; the authority was consulted and answered revoked",
+    "freshness_not_establishable": "deny; the cached decision was beyond the freshness limit and the authority could not be reached",
+    "grant_state_unresolvable": "deny; the authority returned no usable state for the grant",
+    "revoked_after_downstream_execution": "deny returned to the caller at response time, after the downstream test double had already recorded the operation"
+  },
+  "audit_requirements": {
+    "applies_to": "every call in every case",
+    "fields_present_per_call": [
+      "request_id",
+      "grant_id",
+      "client_id",
+      "session_id",
+      "worker_id",
+      "operation",
+      "decision",
+      "reason",
+      "downstream_outcome",
+      "revocation_event_id",
+      "decided_at_ms"
+    ],
+    "fields_non_empty_per_call": [
+      "request_id",
+      "grant_id",
+      "session_id",
+      "worker_id",
+      "operation",
+      "decision",
+      "reason",
+      "downstream_outcome",
+      "decided_at_ms"
+    ],
+    "nullable_fields": {
+      "client_id": "null when the timeline never issued the grant the call presented",
+      "revocation_event_id": "null when no revocation for that grant had been acknowledged at decided_at_ms"
+    },
+    "revocation_correlation": "revocation_event_id equals the identifier of the acknowledged revocation for the record's grant at decided_at_ms, and is null when there is none",
+    "must_not_appear": [
+      "synthetic-access-token-3f9c1d",
+      "synthetic-access-token-7ab204",
+      "synthetic-refresh-token-8b21e0",
+      "synthetic-downstream-credential-c07d55"
+    ],
+    "must_not_appear_note": "Every literal above is held by the harness at run time: the grant credentials and refresh credential sit in the enforcement point's grant registry, and the downstream credential is passed to the test double on every allowed call. The check is over the serialized audit trail only."
+  },
+  "cases": [
+    {
+      "id": "CAR-01-warm-cache-and-independent-grant",
+      "covers": { "kind": "numbered-check", "check": 1 },
+      "role": "positive control",
+      "description": "An authorized call completes and populates the session and authorization caches, a second call is served while the cached decision is inside the freshness limit, and an independent grant performs its own operation. No revocation occurs.",
+      "stale_cache_expected_to_fail": false,
+      "counts_as_revocation_enforcement_evidence": false,
+      "evidence_note": "Control. The timeline contains no revocation, so a pass says nothing about revocation enforcement; it says the fixture's allow path works before anything is revoked.",
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        { "event": "issue_grant", "grant": "g-independent", "client": "client-b", "credential": "synthetic-access-token-7ab204", "refresh_credential": null },
+        {
+          "event": "call",
+          "request": "CAR-01-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Cache is empty, so the authority is the only source of the decision." }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        {
+          "event": "call",
+          "request": "CAR-01-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason_any_of": ["cached_authorization_decision", "authority_confirmed_active"], "note": "Cached decision is 100 ms old, inside the freshness limit. Serving it and re-consulting the authority are both permitted, so the reason is not determined." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-01-r3",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Check 1's independent grant. No cache entry exists for this key." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-02-revoked-credential-across-reuse-surfaces",
+      "covers": { "kind": "numbered-check", "check": 2 },
+      "role": "negative",
+      "description": "Both workers are warmed with the same grant and session before revocation. After the grant is revoked and the propagation limit has elapsed, the same credential is retried on the retained session, after reconnecting, and on the second worker. The independent grant is retried as the control.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        { "event": "issue_grant", "grant": "g-independent", "client": "client-b", "credential": "synthetic-access-token-7ab204", "refresh_credential": null },
+        {
+          "event": "call",
+          "request": "CAR-02-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Warms worker 1." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-02-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w2",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Warms worker 2. Each worker holds its own cache, which is what makes the second-worker retry below a distinct surface." }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-02-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 5001 },
+        {
+          "event": "call",
+          "request": "CAR-02-r3",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "Retained session, 5001 ms after acknowledgement." }
+        },
+        { "event": "reconnect", "client": "client-a", "from_session": "s1", "to_session": "s3" },
+        {
+          "event": "call",
+          "request": "CAR-02-r4",
+          "grant": "g-primary",
+          "session": "s3",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "After reconnecting. A session-scoped cache holds nothing for a new session, so this call alone does not separate a correct enforcement point from one that serves stale cached decisions." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-02-r5",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w2",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "Second worker, retained session. This is the surface the reconnect retry misses." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-02-r6",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Control. Revoking one grant must not deny an unrelated one." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-03-denied-before-downstream-after-propagation-limit",
+      "covers": { "kind": "numbered-check", "check": 3 },
+      "role": "negative",
+      "description": "After revocation, a call beyond the freshness limit and a later call beyond the propagation limit must both be denied, and the downstream test double must record no attempt for either.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        {
+          "event": "call",
+          "request": "CAR-03-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active" }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-03-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 2001 },
+        {
+          "event": "call",
+          "request": "CAR-03-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "Cached decision is 2101 ms old, past the declared freshness limit, so the authority must be consulted. Still inside the propagation limit: the source does not require denial this early, but the declared freshness limit does." }
+        },
+        { "event": "advance_clock", "ms": 3001 },
+        {
+          "event": "call",
+          "request": "CAR-03-r3",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "5002 ms after acknowledgement, past the propagation limit. This is the call the source requires to be denied before downstream execution." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-04-independent-grant-unaffected-by-revocation",
+      "covers": { "kind": "numbered-check", "check": 3 },
+      "role": "control",
+      "description": "The independent grant, warmed before the revocation, still performs its operation after the first grant is revoked and the propagation limit has elapsed.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        { "event": "issue_grant", "grant": "g-independent", "client": "client-b", "credential": "synthetic-access-token-7ab204", "refresh_credential": null },
+        {
+          "event": "call",
+          "request": "CAR-04-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active" }
+        },
+        {
+          "event": "call",
+          "request": "CAR-04-r2",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Warms the independent grant, so its later retry exercises a cached path rather than a cold one." }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-04-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 5001 },
+        {
+          "event": "call",
+          "request": "CAR-04-r3",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked" }
+        },
+        {
+          "event": "call",
+          "request": "CAR-04-r4",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Cached decision is 5101 ms old, past the declared freshness limit, so the authority must be consulted even though this grant was never revoked. An unbounded cache lifetime is visible here on a grant that is still valid." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-05-inside-propagation-window-residual-exposure",
+      "covers": { "kind": "numbered-check", "check": 3 },
+      "role": "indeterminate",
+      "description": "A call made 400 ms after revocation is acknowledged, inside the propagation limit. The source does not require this call to be denied. If it succeeds it is recorded as residual exposure, not as revocation enforcement.",
+      "stale_cache_expected_to_fail": false,
+      "counts_as_revocation_enforcement_evidence": false,
+      "evidence_note": "The source leaves the outcome open inside the propagation window, so this case cannot separate a correct enforcement point from one that serves stale cached decisions. It is here to make the residual exposure recording executable, not to discriminate.",
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        {
+          "event": "call",
+          "request": "CAR-05-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active" }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-05-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 400 },
+        {
+          "event": "call",
+          "request": "CAR-05-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": {
+            "outcome": "unconstrained_by_source",
+            "downstream_reached": "unconstrained_by_source",
+            "reason_any_of": ["cached_authorization_decision", "authority_confirmed_active", "grant_revoked"],
+            "record_as": "residual_exposure",
+            "note": "400 ms after acknowledgement, inside the 5000 ms propagation limit and inside the 2000 ms freshness limit. Allowing is permitted by the source and denying early is permitted too. If the call succeeds the runner records residual exposure."
+          }
+        }
+      ]
+    },
+    {
+      "id": "CAR-06-revocation-acknowledged-after-tool-executed",
+      "covers": { "kind": "numbered-check", "check": 3 },
+      "role": "insufficient evidence",
+      "description": "A call is authorized and the downstream test double records the operation. The grant is then revoked, and the enforcement point returns a revocation error to the caller at response time. The caller sees a denial; the tool already ran.",
+      "stale_cache_expected_to_fail": false,
+      "counts_as_revocation_enforcement_evidence": false,
+      "evidence_note": "The source states that an error returned after the tool has already executed is insufficient evidence of revocation enforcement. Both implementations produce this outcome, because the late denial comes from the response path and not from the cache policy. That is the point: matching this case proves nothing about revocation enforcement, so it is excluded from the enforcement tally rather than counted as a pass.",
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        {
+          "event": "call",
+          "request": "CAR-06-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active" }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        {
+          "event": "call_begin",
+          "request": "CAR-06-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason_any_of": ["cached_authorization_decision", "authority_confirmed_active"], "note": "Authorization succeeds and the operation is dispatched. The grant is still active at this instant." }
+        },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-06-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 10 },
+        {
+          "event": "call_end",
+          "request": "CAR-06-r2",
+          "expected": {
+            "outcome": "denied",
+            "downstream_reached": true,
+            "reason": "revoked_after_downstream_execution",
+            "evidence_value": "insufficient",
+            "note": "The caller receives a denial and the downstream test double still holds the recorded attempt. downstream_reached stays true, which is what makes the denial insufficient."
+          }
+        }
+      ]
+    },
+    {
+      "id": "CAR-07-authority-unavailable-beyond-freshness-limit",
+      "covers": { "kind": "numbered-check", "check": 4 },
+      "role": "negative",
+      "description": "The authority is made unavailable after the cache is warmed. Inside the freshness limit the cached decision is served. Beyond it, protected calls are denied and the downstream test double records no attempt. No revocation occurs in this case.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        {
+          "event": "call",
+          "request": "CAR-07-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Warms the cache while the authority is still reachable." }
+        },
+        { "event": "set_authority_available", "available": false },
+        { "event": "advance_clock", "ms": 1000 },
+        {
+          "event": "call",
+          "request": "CAR-07-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "cached_authorization_decision", "note": "Cached decision is 1000 ms old, inside the freshness limit. Paired with r3, this isolates the freshness limit as the cause of the denial below rather than the authority being unreachable. An implementation that never serves a cached decision would deny here and is not non-compliant with the source; this family models the bounded-cache design." }
+        },
+        { "event": "advance_clock", "ms": 1001 },
+        {
+          "event": "call",
+          "request": "CAR-07-r3",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "freshness_not_establishable", "note": "Cached decision is 2001 ms old, past the freshness limit, and the authority cannot be reached. Freshness cannot be established, so the protected operation is denied." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-07-r4",
+          "grant": "g-primary",
+          "session": "s4",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "freshness_not_establishable", "note": "Cold path on a session with no cached decision at all, same denial." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-08-audit-correlation-without-credentials",
+      "covers": { "kind": "numbered-check", "check": 5 },
+      "role": "negative",
+      "description": "A warmed grant is revoked and retried past the propagation limit, alongside an independent grant. The audit trail is read for the correlation fields and scanned for credential values.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "audit_note": "The audit assertions in this family run on every case. This case cites check 5 because its timeline is the one built to exercise correlation: a record before the revocation is acknowledged, a record after it, and a record for a grant with no revocation at all.",
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        { "event": "issue_grant", "grant": "g-independent", "client": "client-b", "credential": "synthetic-access-token-7ab204", "refresh_credential": null },
+        {
+          "event": "call",
+          "request": "CAR-08-r1",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Decided before the revocation is acknowledged, so its record must carry no revocation identifier." }
+        },
+        { "event": "advance_clock", "ms": 100 },
+        { "event": "revoke_grant", "grant": "g-primary", "revocation_event": "rev-car-08-1", "acknowledged_at_ms": 100 },
+        { "event": "advance_clock", "ms": 5001 },
+        {
+          "event": "call",
+          "request": "CAR-08-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_revoked", "note": "Its record must correlate rev-car-08-1 with the request, the grant, the decision and reason, and the downstream outcome." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-08-r3",
+          "grant": "g-independent",
+          "session": "s2",
+          "worker": "w1",
+          "operation": "report.render",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "No revocation for this grant, so its record must carry no revocation identifier." }
+        }
+      ]
+    },
+    {
+      "id": "CAR-09-unresolvable-grant-state-is-denied",
+      "covers": { "kind": "stated-principle", "check": null },
+      "role": "negative",
+      "description": "A grant the authority has no usable state for is denied, both on a cold path and after the enforcement point had a cached allow for it. Not one of the numbered checks; the source states this as a principle in its mitigation text.",
+      "stale_cache_expected_to_fail": true,
+      "counts_as_revocation_enforcement_evidence": true,
+      "principle_note": "The source says an unexpired token or an existing session is not proof that access is still authorized, and that a protected operation is denied rather than continuing on an old allow decision when authorization freshness cannot be established. A grant state that cannot be resolved is therefore a denial, never an allow by default. The suite's own brief says the same thing from the other side: missing evidence for a claim is not a pass for that claim.",
+      "timeline": [
+        { "event": "issue_grant", "grant": "g-primary", "client": "client-a", "credential": "synthetic-access-token-3f9c1d", "refresh_credential": "synthetic-refresh-token-8b21e0" },
+        {
+          "event": "call",
+          "request": "CAR-09-r1",
+          "grant": "g-absent",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_state_unresolvable", "note": "A grant the timeline never issued. Its audit record carries a null client_id because there is no client to name." }
+        },
+        {
+          "event": "call",
+          "request": "CAR-09-r2",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "allowed", "downstream_reached": true, "reason": "authority_confirmed_active", "note": "Warms a cached allow so the next call has something stale to fall back on." }
+        },
+        { "event": "make_grant_state_unresolvable", "grant": "g-primary" },
+        { "event": "advance_clock", "ms": 2001 },
+        {
+          "event": "call",
+          "request": "CAR-09-r3",
+          "grant": "g-primary",
+          "session": "s1",
+          "worker": "w1",
+          "operation": "document.export",
+          "expected": { "outcome": "denied", "downstream_reached": false, "reason": "grant_state_unresolvable", "note": "Cached decision is past the freshness limit and the authority has no usable state. The cached allow must not be the answer." }
+        }
+      ]
+    }
+  ]
+}
