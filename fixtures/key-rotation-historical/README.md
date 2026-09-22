@@ -6,7 +6,7 @@ delegation's `issued_at`, not the key that is current when verification
 runs.
 
 This is plain draft-03 conformance, not a proposal. draft-pidlisnyi-aps-03
-already requires this behavior; this fixture makes it executable and
+already requires this behavior. This fixture makes it executable and
 reviewable, the same way
 [C19](../revocation-resolution-forward-compat/README.md) did for the
 unrecognized-resolver-answer boundary and
@@ -74,7 +74,7 @@ single stable `verification_method`,
 `did:aps:example:krh-principal#key-1`, held across a key rotation from K1 to
 K2 at `rotation_boundary` (`2026-09-20T12:00:00.000Z`). K1 is the key
 authorized for `issued_at` before `rotation_boundary`, and only when
-`boundary_evidence` corroborates that claim; K2 is authorized for
+`boundary_evidence` corroborates that claim. K2 is authorized for
 `issued_at` at or after it, unconditionally. This models Section 2.2's "one
 stable agent identifier across key rotation... resolve the verification
 method at the artifact's signing time": the identifier does not change at
@@ -88,16 +88,13 @@ key across the rotation rather than before it happened.
 `issued_at` is an issuer claim, that the draft defines no trusted
 timestamping service, and that when key retirement makes a result depend on
 whether an artifact was signed before a boundary, a profile MUST identify an
-acceptable timestamp, transparency-log, or equivalent evidence source;
-without it the result is indeterminate. `delegations.json` carries a
-`boundary_evidence` map, keyed by `issued_at`, of a minimal, deterministic
-test-only evidence record: `{"source":
-"aps-conformance-suite-test-timestamp-v0", "attests_before_boundary": true}`.
-This is this fixture's own stand-in profile for that evidence source, built
-only so Section 2.4's requirement is executable here. It is not a proposed
-addition to the draft, and no claim is made that
-`aps-conformance-suite-test-timestamp-v0` is an acceptable evidence source
-for any real deployment. K2's window needs no entry: K2 does not retire, so
+acceptable timestamp, transparency-log, or equivalent evidence source.
+Without it the result is indeterminate. `delegations.json` carries a `boundary_evidence` map, keyed by `issued_at`, holding one
+record: `{"source": "aps-conformance-suite-test-timestamp-v0", "attests_before_boundary": true}`.
+For this fixture, the test profile treats this record as acceptable signing-time evidence.
+Draft-03 requires acceptable timestamp or log evidence but does not define this record
+format. The record is not an APS object and not a proposal for one, and no claim is made
+that it would be acceptable evidence in any real deployment. K2's window needs no entry: K2 does not retire, so
 no claim about its `issued_at` relative to a closing window needs
 corroborating.
 
@@ -115,19 +112,19 @@ corroborating.
 3. **KRH-03-reject-after-rotation-signed-k1.** `issued_at` after
    `rotation_boundary`, but the signature was produced with K1, the retired
    key. Expected: `invalid`, `SIGNATURE_INVALID`. A correct resolver picks
-   K2 for this `issued_at` (no evidence needed); K2's public key does not
+   K2 for this `issued_at` (no evidence needed). K2's public key does not
    verify a signature K1 produced.
 4. **KRH-04-reject-before-rotation-signed-k2.** `issued_at` before
    `rotation_boundary`, `boundary_evidence` present (the same claimed
    `issued_at` as KRH-01, corroborated the same way), but the signature was
    produced with K2, a key not yet authorized then. Expected: `invalid`,
-   `SIGNATURE_INVALID`. A correct resolver picks K1 for this `issued_at`;
-   K1's public key does not verify a signature K2 produced. The only stated
+   `SIGNATURE_INVALID`. A correct resolver picks K1 for this `issued_at`,
+   and K1's public key does not verify a signature K2 produced. The only stated
    change from KRH-01 is the signing key, not the evidence, which isolates
    this reject on the signature check alone.
 
 Every reject vector differs from an accept vector by exactly one change:
-KRH-03 is KRH-02's `issued_at` with KRH-01's signing key; KRH-04 is KRH-01's
+KRH-03 is KRH-02's `issued_at` with KRH-01's signing key. KRH-04 is KRH-01's
 `issued_at` and evidence with KRH-02's signing key.
 
 **Vector 5, no evidence:**
@@ -145,7 +142,7 @@ KRH-03 is KRH-02's `issued_at` with KRH-01's signing key; KRH-04 is KRH-01's
    KRH-05's `issued_at` is not identical to KRH-01's: both reference SDKs'
    `resolveVerificationKey` / `resolve_verification_key` are called as
    `(issuer, verification_method, issued_at)` only, so a resolver has no way
-   to tell apart two records that share all three; giving them different
+   to tell apart two records that share all three. Giving them different
    results requires a different `issued_at`. That value is thirty minutes
    before `rotation_boundary`, exactly as far from it as KRH-01's own
    `issued_at`, so nothing about its distance from the boundary is doing any
@@ -155,7 +152,7 @@ KRH-03 is KRH-02's `issued_at` with KRH-01's signing key; KRH-04 is KRH-01's
    draft conditions the indeterminate result on the presence or absence of
    evidence, not on how close the claimed signing time sits to the boundary.
    KRH-01 and KRH-05 are the same input class, before-rotation-boundary and
-   signed-with-K1; the only substantive difference between them is
+   signed-with-K1. The only substantive difference between them is
    `boundary_evidence`.
 
 ## Three policies, checked in both directions
@@ -167,7 +164,7 @@ uses for its N1 and N2 negative controls:
 
 - **historical-key-resolution.** The positive control. Resolves
   `verification_method` against `rotation_boundary` and the record's own
-  `issued_at`: K2 at or after the boundary unconditionally; K1 before it,
+  `issued_at`: K2 at or after the boundary unconditionally. K1 before it,
   but only when `boundary_evidence` corroborates the claim, otherwise an
   `ambiguous` resolution outcome. Must match every vector.
 - **current-key-only.** A deliberately wrong resolver. Ignores `issued_at`
@@ -190,7 +187,7 @@ uses for its N1 and N2 negative controls:
 
 `current-key-only` passes KRH-02 and KRH-03 not because it is doing
 historical resolution, but because both of those vectors' correct key
-happens to equal the key current at verification time (K2); it fails
+happens to equal the key current at verification time (K2). It fails
 KRH-01 and KRH-04 for the reason Section 2.4 names, and it fails KRH-05
 because resolving K2 against a K1 signature reports `invalid` /
 `SIGNATURE_INVALID`, not the `indeterminate` this vector requires, for an
@@ -204,12 +201,12 @@ in either runner's output.
 Both reference SDKs leave Section 2.4's evidence handling entirely to the
 caller's resolver. `verifyAuthorityDelegationChain` /
 `verify_authority_delegation_chain` never inspect `issued_at` against a
-boundary or against any evidence source themselves; they call the
+boundary or against any evidence source themselves. They call the
 caller-supplied `resolveVerificationKey` / `resolve_verification_key` with
 `(issuer, verification_method, issued_at)` and check the signature against
 whatever key material that call returns, or report the state the call's
 `KeyResolutionFailure` outcome maps to. Neither SDK ships a Section
-2.4-aware resolver for authority delegations; `historicalResolver` /
+2.4-aware resolver for authority delegations. `historicalResolver` /
 `historical_resolver` in this fixture's own `verify.ts` and `validate.py`
 are this fixture's resolvers, not SDK code.
 
@@ -296,7 +293,7 @@ SDKs. See "Findings" above.
 
 - TypeScript:
   `node_modules/agent-passport-system/dist/src/v2/authority-delegation/verify.js`,
-  Phase 3, lines 153-172 (published package; only `dist/` ships, there is no
+  Phase 3, lines 153-172 (published package. Only `dist/` ships, there is no
   `src/` in the npm package). The resolver call is at line 161:
   `resolveVerificationKey(delegation.issuer, delegation.verification_method,
   delegation.issued_at)`. The comment above it (lines 153-156) cites draft
@@ -346,8 +343,8 @@ A pass does **not** establish:
   built only to make Section 2.4's evidence requirement executable here
 - that Section 2.4's evidentiary requirement applies uniformly to every
   boundary-dependent case in the same way, or what "acceptable" timestamp or
-  log evidence looks like in general. The draft leaves that to a profile;
-  this fixture's profile is a test fixture, not a proposal
+  log evidence looks like in general. The draft leaves that to a profile.
+  This fixture's profile is a test fixture, not a proposal
 - anything about delegation revocation. Rotating a key does not revoke what
   the key signed, and this family does not test revocation: every vector's
   `resolveRevocation` / `resolve_revocation` callback always returns
@@ -360,7 +357,7 @@ A pass does **not** establish:
   independent draft-03 implementation resolves keys, or reports resolution
   failures, this way
 - anything about Section 2.5's resolution-outcome taxonomy for external or
-  evidence signers beyond the line ranges quoted above; this fixture's
+  evidence signers beyond the line ranges quoted above. This fixture's
   identifier is the issuer's own signing key, not an external or evidence
   signer
 

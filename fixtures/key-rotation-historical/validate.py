@@ -59,7 +59,7 @@ def historical_resolver(_issuer, verification_method, issued_at):
         return {"outcome": "not_found"}
     if issued_at >= fixture["rotation_boundary"]:
         return fixture["keys"]["K2"]
-    if fixture["boundary_evidence"].get(issued_at):
+    if (fixture["boundary_evidence"].get(issued_at) or {}).get("attests_before_boundary") is True:
         return fixture["keys"]["K1"]
     return {"outcome": "ambiguous"}
 

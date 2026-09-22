@@ -127,7 +127,7 @@ function historicalResolver(): VerificationKeyResolver {
   return (_issuer, verificationMethod, issuedAt) => {
     if (verificationMethod !== fixture.verification_method) return { outcome: 'not_found' }
     if (issuedAt >= fixture.rotation_boundary) return fixture.keys.K2
-    return fixture.boundary_evidence[issuedAt] ? fixture.keys.K1 : { outcome: 'ambiguous' }
+    return (fixture.boundary_evidence[issuedAt] as { attests_before_boundary?: unknown } | undefined)?.attests_before_boundary === true ? fixture.keys.K1 : { outcome: 'ambiguous' }
   }
 }
 
