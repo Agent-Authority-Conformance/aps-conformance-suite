@@ -57,10 +57,12 @@ capability-token `jti`, not a `receipt_id` or a policy-decision verdict, and its
 file header says the single-use state it tracks "lives in-process for a single process
 lifetime ... the integrator's responsibility" (same file, lines 34-36).
 
-Following the prompt this family was built from and the precedent set by
+Following the precedent set by
 [`fixtures/runtime-authority-denial-continuity/`](../runtime-authority-denial-continuity/),
-this fixture supplies that missing boundary itself, in `harness.ts`. **The reference
-boundary is this family's own code, not an SDK conformance result.** It calls the real
+this fixture supplies that missing boundary itself, in `harness.ts`. **The single-use
+consumption boundary is implemented by this fixture, not by either APS SDK. The SDKs are
+used only for the records they actually expose.** The reference boundary is this family's
+own code, not an SDK conformance result. It calls the real
 SDK for the two things the SDK does establish, a policy-decision receipt's signature and
 section 5.3 stage validity (`verifyReceiptV1`), and the backing
 `AuthorityDelegationV1` chain's structural, temporal and revocation state
@@ -94,7 +96,7 @@ tests, and no vector exists to test the missing export itself.
   `computeActionRefV2`, `createActionReferenceInputV2` and `computePayloadRefV1`: action
   A (primary), and action C (a narrower operation, distinct target and
   `scope_required`). Action B is referenced only as the mismatched target case
-  ASU-04 presents against; no decision is minted for it.
+  ASU-04 presents against. No decision is minted for it.
 - seven policy-decision records (section 5.3.2): five permit and one deny bound to
   action A, one narrow bound to action C. Every decision's `decision_ref` is built with
   `buildDecisionRefV1` over real `DecisionEvidenceV1` material (`authority_state`,
@@ -104,8 +106,8 @@ tests, and no vector exists to test the missing export itself.
 `mint.ts` asserts at mint time, and aborts writing `chain.json` if any assertion fails,
 that: the two delegations verify `valid` when their resolver answers `active` and
 `DELEGATION_FOR_REVOCATION_CASE` verifies `invalid`/`REVOKED` when its resolver answers
-`revoked`; every action pair has a distinct `action_ref`; every decision has a distinct
-`receipt_id`; and every one of the nine minted receipts verifies `status: "valid"` under
+`revoked`, every action pair has a distinct `action_ref`, every decision has a distinct
+`receipt_id`, and every one of the nine minted receipts verifies `status: "valid"` under
 the SDK's own `verifyReceiptV1`, called with the same `boundaryIdentity` `harness.ts`
 uses at consumption time.
 
@@ -124,15 +126,15 @@ uses at consumption time.
   vectors that turn on those two removed steps.
 
 Line 1097's "complete any spend reservation" is not modeled by either boundary
-configuration; see "Does not claim".
+configuration. See "Does not claim".
 
 `verify.ts` loads `chain.json` and `vectors.json`, runs both boundary configurations
 over the same nine ordered presentations, and checks each against its expected outcome.
 `verify.py` is a second, independently written implementation of the same boundary rules
-(steps 1-4 and 6 above; it does not call `verifyReceiptV1` or
+(steps 1-4 and 6 above). It does not call `verifyReceiptV1` or
 `verifyAuthorityDelegationChain` and does not reproduce step 0's signature check or the
-chain-recheck's own cryptography, and says so in its own module docstring), run over the
-same `chain.json` records and the same `vectors.json` presentations.
+chain-recheck's own cryptography, as its module docstring says. It runs over the same
+`chain.json` records and the same `vectors.json` presentations.
 
 ## Vectors, timeline style, one clock
 
@@ -157,7 +159,7 @@ boundary consuming one stream of approvals rather than nine independent evaluati
 ASU-07's two presentations model the prompt's race case deterministically: one
 `DispatchBoundary.consume()` call, then a second at the same instant with nothing
 dispatched between them. Both calls run synchronously on one instance, so there is no
-real concurrency to simulate; the atomicity being tested is that the second call sees
+real concurrency to simulate. The atomicity being tested is that the second call sees
 the first call's ledger write, not that two threads contend for a lock.
 
 ## Negative control
@@ -190,7 +192,7 @@ Expected final line:
 
     PASSED: reference-boundary matched every presentation, defective boundary failed exactly the declared set
 
-Regenerating `chain.json` (byte for byte; `git diff` is empty after a second run):
+Regenerating `chain.json` gives the same bytes, and `git diff` is empty after a second run:
 
     npx tsx fixtures/approval-single-use/mint.ts
 
@@ -221,7 +223,7 @@ for this suite. The minting, key-resolution and seed-label pattern follows
 `fixtures/action-result-binding/mint.ts` and `fixtures/ancestor-revocation-chain/mint.py`.
 The reference-boundary-plus-declared-defective-control pattern follows
 `fixtures/runtime-authority-denial-continuity/harness.ts`. All code was written in this
-lab; neither runner was reviewed by anyone outside it, and no independent third party
+lab. Neither runner was reviewed by anyone outside it, and no independent third party
 has run either of them.
 
 ## What a pass establishes
@@ -252,17 +254,17 @@ two steps, and none of the other six.
 A pass does **not** establish:
 
 - anything about a deployed enforcement gateway, MCP server or agent runtime. No
-  network call is made and no protocol is spoken; `harness.ts` is this family's own
+  network call is made and no protocol is spoken. `harness.ts` is this family's own
   in-process reference model.
 - anything about AuthZEN or any other approval protocol. This family is scoped to
   draft-pidlisnyi-aps-03 section 5.3.2 alone.
 - anything about spend reservation or cumulative ledger behavior under
   draft-pidlisnyi-aps-03 section 3.4 ("Cumulative Spend Across a Delegation Subtree").
   Line 1097's "complete any spend reservation" is the one clause of the quoted paragraph
-  neither boundary configuration implements; no vector here mints or checks a bounded
+  neither boundary configuration implements. No vector here mints or checks a bounded
   spend facet, a reservation, or a commit/cancel transition.
 - real concurrency or a race between independent threads or processes. ASU-07's two
-  presentations run synchronously, one after the other, on one boundary instance; see
+  presentations run synchronously, one after the other, on one boundary instance. See
   "Vectors, timeline style, one clock".
 - that this family's `DispatchBoundary` is the only correct reading of lines 1093-1099,
   or that its consume-before-recheck ordering (a permit revoked at the recheck step is
@@ -273,6 +275,6 @@ A pass does **not** establish:
   finding above (the undocumented-at-runtime `verifyAuthorityDelegation` export) is the
   only such gap in either SDK.
 - anything about `agent-passport-system` for Python. This family's reference boundary
-  and its records are minted and verified in TypeScript only; `verify.py` is a
+  and its records are minted and verified in TypeScript only. `verify.py` is a
   from-scratch, no-dependency reimplementation of the boundary rules, not a Python SDK
   run, and its own module docstring says so.
