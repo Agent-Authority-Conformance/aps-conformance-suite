@@ -16,8 +16,8 @@ The proposal asks for a worked example that would validate the freshness dimensi
 
 Family: [`fixtures/revocation-resolution-forward-compat`](../../fixtures/revocation-resolution-forward-compat/)
 
-- `C19-13-resolver-throws`: the revocation lookup fails. Result `indeterminate`, code `REVOCATION_UNKNOWN`, never `valid`.
-- `C19-03` to `C19-12`: the lookup returns an answer the verifier does not recognize (an unknown status string, null, a number, a boolean, an object, an array). Each is `indeterminate` with `REVOCATION_UNKNOWN`.
+- Direct case, `C19-13-resolver-throws`: the revocation lookup fails. Result `indeterminate`, code `REVOCATION_UNKNOWN`, never `valid`.
+- Related candidate cases, `C19-03` to `C19-12`: the store does return something, but it is not a recognized revocation state (an unknown status string, null, a number, a boolean, an object, an array). The verifier refuses to round that into `valid` and returns `indeterminate` with `REVOCATION_UNKNOWN`. The proposal does not say an unrecognized answer is the same as no answer, so these are adjacent to the rule rather than a direct instance of it.
 - Controls: `C19-01` (active, `valid`) shows the chain itself is sound, and `C19-02` (revoked, `invalid` with `REVOKED`) shows a real revocation is still reported as one.
 
 What the positive verifier establishes: when revocation state cannot be established, the result is not valid, and it is kept apart from an actual revocation. This family has no deliberately wrong verifier. Its controls are the active and revoked cases.
