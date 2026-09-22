@@ -272,12 +272,16 @@ Expected final line:
 
 ## Python
 
-Run against the actual Python SDK under test, for example:
+The recorded run used a clean virtual environment with the published
+`agent-passport-system` 4.0.0 wheel, nothing inherited from a local checkout:
 
-    PYTHONPATH=/path/to/agent-passport-python/src \
-      python3 fixtures/key-rotation-historical/validate.py
+    python3 -m venv /tmp/aps-py400
+    /tmp/aps-py400/bin/pip install agent-passport-system==4.0.0
+    /tmp/aps-py400/bin/python fixtures/key-rotation-historical/validate.py
 
-Expected final line: the same as the TypeScript runner's.
+Expected final line: the same as the TypeScript runner's. To test another Python
+implementation, run `validate.py` with that implementation importable as `agent_passport`
+and record which one ran.
 
 ## SDK historical key resolution used by this fixture
 
