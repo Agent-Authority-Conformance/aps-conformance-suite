@@ -211,6 +211,67 @@
       "final_state": { "42": { "available": true } }
     },
     {
+      "id": "A7-reauthorization-rejects-stale-denial-ref",
+      "property": "A",
+      "role": "denial_ref_binding",
+      "description": "In this candidate model, D2 replaces D1 at the same tool, effect and context. The stale D1 ref is rejected without releasing D2. The current D2 ref then permits the retry. Using the same tool exercises supersession under both reference-gate and N1.",
+      "timeline": [
+        {
+          "event": "deny",
+          "request": "A7-r1",
+          "tool": "delete_record",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "reason": "authority_insufficient_for_transition",
+          "expected": { "outcome": "deny" }
+        },
+        {
+          "event": "deny",
+          "request": "A7-r2",
+          "tool": "delete_record",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "reason": "authority_insufficient_for_transition_second_review",
+          "expected": { "outcome": "deny" }
+        },
+        {
+          "event": "reauthorize",
+          "request": "A7-r3",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "denial_ref": "A7-r1",
+          "basis": "stale_ref_must_not_release",
+          "expected": { "outcome": "deny", "reason": "reauthorize_denial_ref_not_found" }
+        },
+        {
+          "event": "attempt",
+          "request": "A7-r4",
+          "tool": "delete_record",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "expected": { "outcome": "deny", "reason": "denied_effect_continuity" }
+        },
+        {
+          "event": "reauthorize",
+          "request": "A7-r5",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "denial_ref": "A7-r2",
+          "basis": "current_denial_lifted",
+          "expected": { "outcome": "allow" }
+        },
+        {
+          "event": "attempt",
+          "request": "A7-r6",
+          "tool": "delete_record",
+          "effect": { "resource": "record:44", "transition": "unavailable", "domain": "records" },
+          "context": "ctx-a7",
+          "expected": { "outcome": "allow", "reason": "reauthorized" }
+        }
+      ],
+      "final_state": { "44": { "available": false } }
+    },
+    {
       "id": "B1-decomposition-composes-denied-effect",
       "property": "B",
       "role": "decomposition_boundary",

@@ -249,26 +249,40 @@ export class EnforcementPoint {
   }
 
   /**
-   * Reauthorization bound to one effect and one context (comment 5634265554).
-   * It resolves every unresolved denial recorded for that exact (effect,
-   * context) pair, regardless of which tool key recorded it, and advances the
-   * generation. A denial for a different effect, or the same effect under a
-   * different context, is untouched -- that is what vector A6 exercises.
+   * This candidate model binds release to effect, context and exact denialRef.
+   * Validate before changing the ledger or generation. Rejection adds only a
+   * deny audit entry. A6 allows null when no unresolved denial matches.
+   * Reference-gate replaces same-key denials (A7). N1 can retain separate
+   * tool-keyed records, covered by the direct harness regression.
    */
   reauthorize(requestId: string, effect: EffectIdentity, context: string, denialRef: string | null, basis: string): Outcome {
-    this.generation += 1
+    const candidates: DenialRecord[] = []
     for (const record of this.ledger.values()) {
       if (!record.resolved && effectsEqual(record.effect, effect) && record.context === context) {
-        record.resolved = true
-        record.resolvedAtGeneration = this.generation
-        record.resolvedBasis = basis
-        if (denialRef !== null && record.denialRef !== denialRef) {
-          throw new Error(`reauthorize ${requestId}: denial_ref ${denialRef} does not match the record it resolved (${record.denialRef})`)
-        }
+        candidates.push(record)
       }
     }
-    this.audit.push({ request: requestId, kind: 'reauthorize', tool: null, effect, context, decision: 'reauthorized', reason: basis })
-    return { decision: 'allow', reason: 'reauthorized' }
+
+    let outcome: Outcome
+    if (candidates.length === 0 && denialRef === null) {
+      outcome = { decision: 'allow', reason: 'reauthorized' }
+    } else if (denialRef === null) {
+      outcome = { decision: 'deny', reason: 'reauthorize_denial_ref_required' }
+    } else {
+      const target = candidates.find((record) => record.denialRef === denialRef)
+      if (target === undefined) {
+        outcome = { decision: 'deny', reason: 'reauthorize_denial_ref_not_found' }
+      } else {
+        this.generation += 1
+        target.resolved = true
+        target.resolvedAtGeneration = this.generation
+        target.resolvedBasis = basis
+        outcome = { decision: 'allow', reason: 'reauthorized' }
+      }
+    }
+
+    this.audit.push({ request: requestId, kind: 'reauthorize', tool: null, effect, context, decision: outcome.decision, reason: outcome.reason })
+    return outcome
   }
 
   /**

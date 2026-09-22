@@ -7,14 +7,11 @@ enforcement point in front of a generic resource store, with no APS types anywhe
 
 ## Status
 
-Candidate against discussion text in an open issue. The issue's author, RavindraAnnam,
-announced on 2026-09-19 that a separate compact runtime-authority control and conformance
-draft would follow from this thread (comment 5742545996 below). That draft does not exist
-yet at the time this fixture was written, and this fixture is not it. A future reviewer of
-that draft can read this fixture as input, not as a replacement for it, and it does not
-define RavindraAnnam's eventual properties. If that draft changes the wording, the
-boundary, or the identity model this fixture assumes, this fixture goes stale and should
-be revised or retired against the merged text, not treated as having anticipated it.
+Candidate against discussion text in open issue #71. RavindraAnnam has since opened
+[the runtime-authority proposal in #86](https://github.com/OWASP/www-project-agentic-skills-top-10/pull/86).
+This fixture remains an input to that discussion. It has not been validated against
+#86 and does not define its properties. If the proposed wording, boundary or identity
+model changes, this fixture needs review against that text.
 
 ## Source
 
@@ -116,10 +113,10 @@ Three policies differ along two independent axes. One is how the denial ledger k
 request, either canonical effect identity or that identity scoped additionally by tool.
 The other is whether a composed-effect oracle is present.
 
-- **reference-gate.** Canonical keying, oracle present. Runs against all eight cases and
+- **reference-gate.** Canonical keying, oracle present. Runs against all nine cases and
   must match every one.
 - **fresh-path-control (N1).** Tool-scoped keying, oracle present. Runs only against
-  Property A's six cases. Its one flaw is that it treats a different tool or a delegated
+  Property A's seven cases. Its one flaw is that it treats a different tool or a delegated
   path as an unrelated request, so it must fail exactly `A3-deny-then-alias-tool` and
   `A4-deny-then-delegate`, and pass the rest.
 - **per-write-control (N2).** Canonical keying, oracle absent. Runs only against Property
@@ -141,11 +138,12 @@ Both runners produced the same table.
 
 | policy | cases run | matched | declared fail set | observed fail set |
 |---|---|---|---|---|
-| reference-gate | 8 (A + B) | 8/8 | none | none |
-| fresh-path-control (N1) | 6 (A only) | 4/6 | `A3-deny-then-alias-tool`, `A4-deny-then-delegate` | same |
+| reference-gate | 9 (A + B) | 9/9 | none | none |
+| fresh-path-control (N1) | 7 (A only) | 5/7 | `A3-deny-then-alias-tool`, `A4-deny-then-delegate` | same |
 | per-write-control (N2) | 2 (B only) | 1/2 | `B1-decomposition-composes-denied-effect` | same |
 
-Every `final_state` check on every case also matched, for both runners.
+Both runners also agree on final-state outcomes, including the expected mismatches
+for A3/A4 under N1 and B1 under N2.
 
 ## Running
 
@@ -154,7 +152,10 @@ From the repository root, TypeScript:
     npm ci --include=dev
     npm run verify:runtime-authority-denial-continuity
 
-It also runs as the last step of `npm test`. Expected final line:
+It also runs in `npm test`, followed by the direct N1 harness regression
+(`npm run test:runtime-authority-n1`). The regression checks two live tool-keyed
+denials and rejected reauthorization without changing the candidate vector schema.
+Expected final line from the fixture verifier:
 
     PASSED: reference-gate matched every case, N1 and N2 each failed exactly their declared set
 

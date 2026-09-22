@@ -144,16 +144,26 @@ class EnforcementPoint:
         return ("allow", "no_denial_on_effect")
 
     def reauthorize(self, effect: dict[str, str], context: str, denial_ref: str | None) -> tuple[str, str]:
-        for record in self.ledger.values():
-            if record.resolved:
-                continue
-            if effect_key(record.effect) != effect_key(effect):
-                continue
-            if record.context != context:
-                continue
-            if denial_ref is not None and record.denial_ref != denial_ref:
-                raise ValueError(f"reauthorize: denial_ref {denial_ref} does not match record's {record.denial_ref}")
-            record.resolved = True
+        """Release only an exact effect/context/ref match in this candidate model.
+        Validate before mutation. A6 allows null with no unresolved denial.
+        """
+        candidates = [
+            record
+            for record in self.ledger.values()
+            if not record.resolved and effect_key(record.effect) == effect_key(effect) and record.context == context
+        ]
+
+        if not candidates and denial_ref is None:
+            return ("allow", "reauthorized")
+
+        if denial_ref is None:
+            return ("deny", "reauthorize_denial_ref_required")
+
+        target = next((record for record in candidates if record.denial_ref == denial_ref), None)
+        if target is None:
+            return ("deny", "reauthorize_denial_ref_not_found")
+
+        target.resolved = True
         return ("allow", "reauthorized")
 
     def decompose_write(self, tool: str, resource_id: str, write: dict[str, Any], context: str) -> tuple[str, str]:
