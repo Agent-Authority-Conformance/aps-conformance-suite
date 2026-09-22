@@ -8,13 +8,16 @@ scope grants, and the same spend ceiling in the same unit.
 Each numbered case's action requirement is modeled as a second, synthetic
 delegation hop appended after the leaf: issuer L, subject a fixed
 "scs-action" identity, carrying exactly the scope grants and spend ceiling
-the action needs. This lets every vector be decided by the SDKs' one public,
-exported entry point for checking a proposed authority vector against a
-chain: `verifyAuthorityDelegationChain`'s own seven-facet narrowing check
+the action needs. This is what the family's cross-check path (verify.ts's
+and validate.py's synthetic-hop path) reads through `chains.json`'s
+`presented` map: it lets that path's vectors be decided by
+`verifyAuthorityDelegationChain`'s own seven-facet narrowing check
 (compareAuthority, draft-pidlisnyi-aps-03 Section 3.2), run as phase 9 of
-chain verification. Neither SDK's published package exports a separate
-action-versus-chain evaluation function; see the family README's "SDK
-surface" section.
+chain verification. The family's primary path does not read this synthetic
+hop at all. It reads `chain_1` / `chain_2` (the plain single-hop chains
+below) directly, plus each vector's `action` field in vectors.json, and
+calls the SDKs' own scope and budget primitives. See the family README's
+"Primary path" and "Cross-check: the synthetic-hop path" sections.
 
 For the reject vectors this script deliberately signs a hop whose authority
 is wider than its stated parent permits (extra scope, or a higher spend

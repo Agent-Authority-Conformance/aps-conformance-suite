@@ -47,51 +47,84 @@ indeterminate, unsupported) this fixture's expected results are drawn from,
 and state that attenuation failure is invalid, which is the failure category
 every reject vector here falls into.
 
-## SDK surface
+## Primary path
 
-Both reference SDKs' one exported entry point for checking a proposed
-authority vector against a chain is `verifyAuthorityDelegationChain` /
-`verify_authority_delegation_chain` itself: its phase 9 runs the seven-facet
-narrowing check of Section 3.2 (`compareAuthority` / `compare_authority`)
-between every adjacent pair in the presented chain array. Neither published
-package exports a separate function for checking an action's scope or spend
-need against an already-verified chain.
+As of `agent-passport-system` 7.1.0, both reference SDKs' published packages
+export the real scope-covering and budget-ledger primitives from their
+package root, not only the chain-level `verifyAuthorityDelegationChain` /
+`verify_authority_delegation_chain` entry point. This fixture's primary path
+(vectors SCS-01 to SCS-05) uses those primitives directly, one call per
+decision, on the one chain (`chains.json`'s `chain_1` or `chain_2`, the root
+alone, no synthetic hop) each vector's `primary_chain` field names:
 
-TypeScript specifically: `agent-passport-system`'s `package.json` declares an
-`exports` map with exactly two entries, `"."` and `"./core"`
-(`node_modules/agent-passport-system/package.json`). The modules that hold
-the draft-03-conformant scope and spend checks,
-`dist/src/v2/authority-delegation/scope.js` (`scopeGrantCovers`,
-`scopeNarrows`) and `dist/src/v2/authority-delegation/budget.js`
-(`InMemoryAuthorityBudgetLedger.reserve`), are not re-exported from
-`dist/src/index.js` and are therefore unreachable by a normal import of the
-published package; importing either module path directly raises
-`ERR_PACKAGE_PATH_NOT_EXPORTED`, confirmed while authoring this fixture. The
-package's public surface does export `scopeCovers` / `scopeAuthorizes`
-(`core/delegation.js`), but that pair is explicitly documented in the SDK's
-own source, `dist/src/core/delegation.d.ts` lines 55-57, as "the pre-draft
-rule", distinct from the draft-path narrowing check, so it is not used here.
+1. **Chain state.** `verifyAuthorityDelegationChain(chain, { now, resolveVerificationKey, trustRoot, resolveRevocation })`
+   (`verify_authority_delegation_chain` in Python), with `now` and
+   `verification_keys` taken from `chains.json`, revocation resolved `active`,
+   and the root trusted. All five vectors' chains resolve `valid` here. This
+   phase exists so a chain failure, were one introduced, would be reported by
+   its own failure code rather than mistaken for a scope or budget rejection.
+2. **Scope.** For every grant the action needs (`vector.action.scope_needed`),
+   `isValidScopeGrant(needed)` / `is_valid_scope_grant(needed)` must hold, and
+   some grant on the chain's leaf (`chain[chain.length - 1].authority.scope.grants`,
+   the last, and here the only, member of the presented chain) must cover it:
+   `scopeGrantCovers(grant, needed)` / `scope_grant_covers(grant, needed)`. A
+   need not covered by any leaf grant is rejected with reason
+   `scope_not_covered`.
+3. **Budget.** A fresh `new InMemoryAuthorityBudgetLedger()` /
+   `InMemoryAuthorityBudgetLedger()` per vector reserves the action's amount
+   against the chain: `.reserve(chain, actionRef, unit, amount)`, with
+   `actionRef` a deterministic 64-character lowercase hex string, the SHA-256
+   hex digest of the vector's own id. The ledger's own result code, `RESERVED`
+   on success or a rejection code such as `PER_ACTION_EXCEEDED` on failure, is
+   recorded as the reason.
 
-Given that, this fixture models each action's scope and spend requirement as
+An action is admitted only if all three pass. `verify.ts` and `validate.py`
+each run this exact sequence and record, per vector, in `vectors.json`'s
+`primary_expected` field, the resulting state and reason.
+
+SCS-06 has no `primary_chain`: it is a concatenation of both chains' roots,
+not a selection of one, so the primary path does not run for it. It is
+decided only by the cross-check below, unchanged.
+
+## Cross-check: the synthetic-hop path
+
+The fixture's original technique, from before 7.1.0 exported the primitives
+above, remains as a cross-check that must agree with the primary path on
+every vector's state. It models each action's scope and spend requirement as
 a second, synthetic `AuthorityDelegationV1` hop appended after the leaf,
 signed by the leaf's own key, then relies on `verifyAuthorityDelegationChain`
 itself, called on the two-element array, to decide whether that hop's
-authority is covered by the presented chain. This reaches exactly the same
-Section 3.2 narrowing check that a direct call to `scopeNarrows` or the
-budget ledger would apply, through the one entry point both SDKs' published
-packages actually export in both languages. `mint.py` documents this
-technique in full and signs the reject vectors' widening hops by calling the
-SDK's lower-level `compute_authority_delegation_id_for_write` and
-`sign_authority_delegation` primitives directly, bypassing
-`issue_sub_authority_delegation`'s own cooperative-issuance narrowing check,
-because that check would otherwise refuse to sign a hop wide enough to
-demonstrate a reject vector. What is tested is chain verification's refusal
-of a widening record that is nonetheless syntactically valid and correctly
-signed, not the issuer's willingness to create one. Do not read the
-synthetic action hop as new protocol wire format, or as a claim that an
-action is issued as a delegation on any real wire; it is this fixture's own
-technique for reaching the SDKs' one exported narrowing check, stated here so
-it cannot be mistaken for either.
+authority is covered by the presented chain. This reaches the same Section
+3.2 narrowing check (`compareAuthority` / `compare_authority`, run as chain
+verification's phase 9) that the primary path's scope and budget primitives
+apply directly. `mint.py` documents this technique in full and signs the
+reject vectors' widening hops by calling the SDK's lower-level
+`compute_authority_delegation_id_for_write` and `sign_authority_delegation`
+primitives directly, bypassing `issue_sub_authority_delegation`'s own
+cooperative-issuance narrowing check, because that check would otherwise
+refuse to sign a hop wide enough to demonstrate a reject vector. What is
+tested is chain verification's refusal of a widening record that is
+nonetheless syntactically valid and correctly signed, not the issuer's
+willingness to create one. Do not read the synthetic action hop as new
+protocol wire format, or as a claim that an action is issued as a delegation
+on any real wire. It is this fixture's own second route to the same
+rejection, kept as a cross-check precisely because it was, until 7.1.0, the
+only route.
+
+`verify.ts` and `validate.py` both run the primary path and the synthetic-hop
+path for every vector and fail if the two paths' states (valid or invalid)
+differ on any of SCS-01 to SCS-05. Their reasons are expected to differ in
+name: the primary path names the check that actually rejected (a scope
+predicate, or the budget ledger's own code), while the synthetic-hop path
+names whichever chain-verification failure code
+`verifyAuthorityDelegationChain` attached to the synthetic hop. SCS-05 is the
+clearest case: the primary path's ledger rejects with `PER_ACTION_EXCEEDED`
+because the action's amount, evaluated as a spend reservation against chain
+1's own ceiling, exceeds it. The synthetic-hop path rejects with
+`SPEND_WIDENING` because chain verification's phase 9 sees the synthetic
+hop's own declared spend facet as wider than its parent's. Both names
+describe the same fact, chain 1 alone cannot cover the requested amount, seen
+through two different checks.
 
 ## Case
 
@@ -128,31 +161,43 @@ stated change.
 ## Vectors
 
 There are 6 cases in `vectors.json`, run against `chains.json`. The `action`
-field on each vector records what the named presented chain's second hop
-encodes; it is documentation, matching what `mint.py` minted, and is never
-read by `verify.ts` or `validate.py`, which read only `presented_chain`.
+field on each vector records the action's scope and spend requirement. The
+primary path reads it directly (`scope_needed`, `unit`, `amount`), and it
+also matches what `mint.py` baked into the named presented chain's synthetic
+second hop, which the cross-check path reads instead, through
+`presented_chain`.
 
-| id | presented chain | change from its control | expected |
-|---|---|---|---|
-| SCS-01 | chain 1 + hop(needs `calendar:write`, amount 50) | control | valid |
-| SCS-02 | chain 2 + hop(needs `payments:refund`, amount 50) | control | valid |
-| SCS-03 | chain 1 + hop(needs `calendar:write`+`payments:refund`, amount 50) | scope widened to add `payments:refund`, which chain 1 never granted | invalid, `SCOPE_WIDENING`, index 1 |
-| SCS-04 | chain 2 + hop(needs `calendar:write`+`payments:refund`, amount 50) | scope widened to add `calendar:write`, which chain 2 never granted | invalid, `SCOPE_WIDENING`, index 1 |
-| SCS-05 | chain 1 + hop(needs `calendar:write`, amount 100) | amount raised from 50 to 100, above chain 1's own 60 ceiling | invalid, `SPEND_WIDENING`, index 1 |
-| SCS-06 | chain 1's root immediately followed by chain 2's root, no requirement hop | presentation is a concatenation of both chains' roots, not chain 1 alone | invalid, `PARENT_MISMATCH`, index 1 |
+| id | primary chain | action requirement | change from its control | primary: state, reason | synthetic: state, reason |
+|---|---|---|---|---|---|
+| SCS-01 | chain 1 | needs `calendar:write`, amount 50 | control | valid, `RESERVED` | valid |
+| SCS-02 | chain 2 | needs `payments:refund`, amount 50 | control | valid, `RESERVED` | valid |
+| SCS-03 | chain 1 | needs `calendar:write`+`payments:refund`, amount 50 | scope widened to add `payments:refund`, which chain 1 never granted | invalid, `scope_not_covered` | invalid, `SCOPE_WIDENING`, index 1 |
+| SCS-04 | chain 2 | needs `calendar:write`+`payments:refund`, amount 50 | scope widened to add `calendar:write`, which chain 2 never granted | invalid, `scope_not_covered` | invalid, `SCOPE_WIDENING`, index 1 |
+| SCS-05 | chain 1 | needs `calendar:write`, amount 100 | amount raised from 50 to 100, above chain 1's own 60 ceiling | invalid, `PER_ACTION_EXCEEDED` | invalid, `SPEND_WIDENING`, index 1 |
+| SCS-06 | (none, concatenation) | needs `calendar:write`, amount 50 | presentation is a concatenation of both chains' roots, not chain 1 alone | not run | invalid, `PARENT_MISMATCH`, index 1 |
+
+The primary path's state and reason above are recorded in each vector's
+`primary_expected` field, and the synthetic path's, in `expected`. Both
+`verify.ts` and `validate.py` check both fields, plus that the two paths'
+states agree, on SCS-01 to SCS-05. See "Primary path" and "Cross-check" above
+for what each column's reason names.
 
 ### SCS-05 is the union check
 
 SCS-05's amount, 100, exceeds chain 1's own ceiling of 60 but not the sum of
-chain 1's and chain 2's ceilings, 120. `verifyAuthorityDelegationChain` is
-called with chain 1's two-element presented array only; chain 2's record
-never appears in that call's argument, in the verification-key resolver, or
-anywhere else reachable from it. A verifier that somehow unioned the two
-chains' budgets would wrongly accept 100 against a combined 120; this
-fixture's presented array structurally cannot supply that union, because the
-one exported entry point takes a single chain array and nothing else. The
-rejection here is therefore evidence of the single-chain-selection property
-lines 594-596 requires, not only of chain 1's own ceiling being enforced.
+chain 1's and chain 2's ceilings, 120. On the primary path,
+`InMemoryAuthorityBudgetLedger.reserve` is called with chain 1's own
+one-element array only. Chain 2's record never appears in that call's
+argument, or anywhere else reachable from it, so there is no way for its
+ceiling to be added in. On the synthetic-hop path,
+`verifyAuthorityDelegationChain` is likewise called with chain 1's
+two-element presented array only. A verifier that somehow unioned the two
+chains' budgets would wrongly accept 100 against a combined 120. Both paths'
+inputs structurally cannot supply that union, because neither the ledger's
+`reserve` nor the chain verifier takes more than the one chain array each is
+given. The rejection here is therefore evidence of the single-chain-selection
+property lines 594-596 requires, not only of chain 1's own ceiling being
+enforced.
 
 ### SCS-06 is not a union either
 
@@ -185,7 +230,11 @@ newly added and not yet tracked at a prior revision).
 ## TypeScript
 
 The repository root currently pins the published `agent-passport-system`
-package.
+package at 7.1.0, the first version whose `package.json` `exports` map
+re-exports `isValidScopeGrant`, `scopeGrantCovers`, `scopeNarrows` and
+`InMemoryAuthorityBudgetLedger` from the package root (`dist/src/index.js`),
+alongside `verifyAuthorityDelegationChain`. That is what makes the primary
+path possible. See "Primary path" above.
 
 From the conformance-suite root:
 
@@ -200,10 +249,19 @@ Expected final line:
 
 ## Python
 
-Run against the actual Python SDK under test, for example:
+Run against the published `agent-passport-system` 4.0.0 in a clean virtual
+environment, for example:
 
-    PYTHONPATH=/path/to/agent-passport-python/src \
-      python3 fixtures/single-chain-selection/validate.py
+    python3 -m venv /path/to/venv
+    /path/to/venv/bin/pip install agent-passport-system==4.0.0
+    /path/to/venv/bin/python fixtures/single-chain-selection/validate.py
+
+`agent_passport.v2.authority_delegation` has exposed `is_valid_scope_grant`,
+`scope_grant_covers` and `InMemoryAuthorityBudgetLedger` as ordinary public
+names since before this fixture existed. Python never had the packaging
+restriction TypeScript had before 7.1.0 (see "Primary path" above), so its
+primary path runs against the same published 4.0.0 the synthetic-hop path
+already used.
 
 Expected final line:
 
@@ -217,31 +275,41 @@ already established by
 [`fixtures/ancestor-revocation-chain/`](../ancestor-revocation-chain/README.md)
 and
 [`fixtures/revocation-resolution-forward-compat/`](../revocation-resolution-forward-compat/README.md)
-to two independent single-hop chains and a synthetic per-action requirement
-hop. Both runners were executed locally against the pinned TypeScript SDK
-(`agent-passport-system`, package.json) and the Python SDK checkout at
-`agent-passport-python/src` on this machine; this is an author-produced
-record, not an independent one, per `CONTRIBUTING.md`'s admission rules for
-run records.
+to two independent single-hop chains, a synthetic per-action requirement hop,
+and, since 7.1.0, a primary path calling the same SDKs' scope and budget
+primitives directly. Both runners were executed locally: the TypeScript
+runner against the published `agent-passport-system` 7.1.0 from npm
+(`package.json`, `node_modules/agent-passport-system/package.json`), the
+Python runner against the published `agent-passport-system` 4.0.0 installed
+in a clean virtual environment (`importlib.metadata.version("agent-passport-system")`
+reports `4.0.0` in that environment), not a local source checkout. This is an
+author-produced record, not an independent one, per `CONTRIBUTING.md`'s
+admission rules for run records.
 
 ## What a pass establishes
 
 For the exact SDK revision that was run, a pass establishes that:
 
 - an action whose scope and spend requirement is fully covered by the one
-  chain it is presented with verifies valid
+  chain it is presented with verifies valid on the primary path (the ledger
+  reserves it, code `RESERVED`) and on the synthetic-hop cross-check
 - an action whose scope requirement exceeds what the presented chain granted
-  is rejected with `SCOPE_WIDENING`, regardless of whether a second chain the
-  same leaf agent holds would have covered the missing scope
+  is rejected on the primary path (`scope_not_covered`) and on the
+  synthetic-hop cross-check (`SCOPE_WIDENING`), regardless of whether a
+  second chain the same leaf agent holds would have covered the missing scope
 - an action whose amount exceeds the presented chain's own spend ceiling is
-  rejected with `SPEND_WIDENING`, even when a second chain the same leaf
-  agent holds has its own separate ceiling that would, summed, have been
-  enough
+  rejected on the primary path, by the budget ledger's own
+  `PER_ACTION_EXCEEDED` code, and on the synthetic-hop cross-check
+  (`SPEND_WIDENING`), even when a second chain the same leaf agent holds has
+  its own separate ceiling that would, summed, have been enough
 - a presentation that concatenates two chains' roots into one array is
   rejected as a malformed chain, at the existing parent-linkage check, before
-  any scope or spend comparison runs
-- both reference SDKs decide all six cases identically through the one
-  entry point their published packages export for this check
+  any scope or spend comparison runs (the synthetic-hop path only, since the
+  primary path does not run on this vector, having no single chain to select)
+- both reference SDKs' primary and cross-check paths agree on state for
+  every vector they both decide, through the real scope and budget
+  primitives and through the one chain-verification entry point,
+  respectively, that their published packages export for this check
 
 ## Does not claim
 
@@ -252,22 +320,24 @@ A pass does **not** establish:
   does not define, approximate, or test that profile. P1 and P2 here are two
   separate roots delegating to the same leaf, not a composition of two
   principals' authority into one grant
-- anything about cumulative spend across a delegation subtree, Section 3.4's
-  ledger. Both chains here are single-hop with no descendants, and the
-  budget check this fixture exercises is the static per-hop attenuation
-  ceiling of Section 3.2, not the running reserved/committed ledger of
-  Section 3.4. `InMemoryAuthorityBudgetLedger`, the SDK's runtime ledger for
-  that section, is not used by this fixture; see "SDK surface" above for why
+- anything about cumulative spend across a delegation subtree tracked over
+  more than one action, Section 3.4's running reserved/committed ledger
+  behavior across a sequence of reservations. The primary path does call
+  `InMemoryAuthorityBudgetLedger.reserve` (see "Primary path" above), but with
+  a fresh ledger per vector and exactly one reservation against it, so what
+  it exercises is a single reservation's own per-action and cumulative
+  ceiling check, not the ledger's behavior across multiple actions,
+  dispatch, commit, or cancellation
 - which chain an implementation should choose when a leaf holds several
   chains that would each independently authorize an action. Every vector
   here presents the runner with exactly one chain already selected; this
   fixture says nothing about how that selection is made or whether a
   particular selection policy is required
-- that the synthetic action-as-delegation-hop technique this fixture uses is
-  itself a protocol mechanism, a recommended enforcement pattern, or
+- that the synthetic action-as-delegation-hop technique the cross-check path
+  uses is itself a protocol mechanism, a recommended enforcement pattern, or
   anything an implementation needs to replicate internally. It is this
-  fixture's way of reaching the one check both SDKs export publicly; see
-  "SDK surface" above
+  fixture's own second route to the same rejection the primary path reaches
+  directly. See "Cross-check: the synthetic-hop path" above
 - that this behavior is unique to the SDKs run here, or that every
   independent draft-03 implementation has been checked
 - anything about revocation, chain depth beyond the two hops each presented

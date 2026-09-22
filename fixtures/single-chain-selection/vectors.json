@@ -5,32 +5,42 @@
     {
       "id": "SCS-01-accept-chain-1-in-scope-in-budget",
       "presented_chain": "SCS-01",
+      "primary_chain": "chain_1",
       "action": { "chain": "chain_1", "scope_needed": ["calendar:write"], "unit": "iso4217:USD:minor", "amount": "50" },
-      "expected": { "state": "valid", "failure_code": null, "failure_index": null }
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null },
+      "primary_expected": { "state": "valid", "reason": "RESERVED" }
     },
     {
       "id": "SCS-02-accept-chain-2-in-scope-in-budget",
       "presented_chain": "SCS-02",
+      "primary_chain": "chain_2",
       "action": { "chain": "chain_2", "scope_needed": ["payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
-      "expected": { "state": "valid", "failure_code": null, "failure_index": null }
+      "expected": { "state": "valid", "failure_code": null, "failure_index": null },
+      "primary_expected": { "state": "valid", "reason": "RESERVED" }
     },
     {
       "id": "SCS-03-reject-needs-both-scopes-presented-chain-1",
       "presented_chain": "SCS-03",
+      "primary_chain": "chain_1",
       "action": { "chain": "chain_1", "scope_needed": ["calendar:write", "payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
-      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 }
+      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "scope_not_covered" }
     },
     {
       "id": "SCS-04-reject-needs-both-scopes-presented-chain-2",
       "presented_chain": "SCS-04",
+      "primary_chain": "chain_2",
       "action": { "chain": "chain_2", "scope_needed": ["calendar:write", "payments:refund"], "unit": "iso4217:USD:minor", "amount": "50" },
-      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 }
+      "expected": { "state": "invalid", "failure_code": "SCOPE_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "scope_not_covered" }
     },
     {
       "id": "SCS-05-reject-amount-exceeds-chain-1-ceiling-chain-2-must-not-count",
       "presented_chain": "SCS-05",
+      "primary_chain": "chain_1",
       "action": { "chain": "chain_1", "scope_needed": ["calendar:write"], "unit": "iso4217:USD:minor", "amount": "100" },
-      "expected": { "state": "invalid", "failure_code": "SPEND_WIDENING", "failure_index": 1 }
+      "expected": { "state": "invalid", "failure_code": "SPEND_WIDENING", "failure_index": 1 },
+      "primary_expected": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED" }
     },
     {
       "id": "SCS-06-reject-concatenated-chain-is-malformed-not-unioned",

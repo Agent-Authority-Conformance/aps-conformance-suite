@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 
+import hashlib
 import json
 import sys
 from pathlib import Path
 
-from agent_passport.v2.authority_delegation import verify_authority_delegation_chain
+from agent_passport.v2.authority_delegation import (
+    InMemoryAuthorityBudgetLedger,
+    is_valid_scope_grant,
+    scope_grant_covers,
+    verify_authority_delegation_chain,
+)
 
 
 HERE = Path(__file__).resolve().parent
@@ -45,6 +51,50 @@ def actual_failure(result):
     }
 
 
+def action_ref_for(vector_id):
+    return hashlib.sha256(vector_id.encode("utf-8")).hexdigest()
+
+
+def run_primary_path(vector):
+    """Decide chain state, scope coverage and spend headroom with the SDK's own
+    real primitives, on the one chain the action presents, no synthetic hop
+    involved. See the README's "Primary path" section."""
+    primary_chain = vector.get("primary_chain")
+    if primary_chain is None:
+        return None
+    chain = fixture[primary_chain]
+
+    chain_result = verify_authority_delegation_chain(
+        chain,
+        now=fixture["now"],
+        resolve_verification_key=lambda _issuer, verification_method, _issued_at:
+            fixture["verification_keys"].get(verification_method),
+        trust_root=lambda _root: True,
+        resolve_revocation=lambda _delegation: "active",
+    )
+    if chain_result.state != "valid":
+        failure = actual_failure(chain_result)
+        return {"state": "invalid", "reason": failure["code"] or chain_result.state}
+
+    leaf_grants = chain[-1]["authority"]["scope"]["grants"]
+    needed_grants = vector["action"]["scope_needed"]
+    scope_covered = all(
+        is_valid_scope_grant(needed) and any(scope_grant_covers(grant, needed) for grant in leaf_grants)
+        for needed in needed_grants
+    )
+    if not scope_covered:
+        return {"state": "invalid", "reason": "scope_not_covered"}
+
+    ledger = InMemoryAuthorityBudgetLedger()
+    reservation = ledger.reserve(
+        chain,
+        action_ref_for(vector["id"]),
+        vector["action"]["unit"],
+        vector["action"]["amount"],
+    )
+    return {"state": "valid" if reservation.ok else "invalid", "reason": reservation.code}
+
+
 passed = 0
 
 for vector in vectors["cases"]:
@@ -68,7 +118,7 @@ for vector in vectors["cases"]:
     failure = actual_failure(result)
     expected = vector["expected"]
 
-    ok = (
+    synthetic_ok = (
         result.state == expected["state"]
         and result.valid == (expected["state"] == "valid")
         and failure["code"] == expected["failure_code"]
@@ -79,6 +129,19 @@ for vector in vectors["cases"]:
         )
     )
 
+    primary = run_primary_path(vector)
+    primary_expected = vector.get("primary_expected")
+
+    primary_ok = (
+        primary is None
+        or primary_expected is None
+        or (primary["state"] == primary_expected["state"] and primary["reason"] == primary_expected["reason"])
+    )
+
+    agreement_ok = primary is None or primary["state"] == result.state
+
+    ok = synthetic_ok and primary_ok and agreement_ok
+
     if ok:
         passed += 1
         suffix = (
@@ -86,15 +149,16 @@ for vector in vectors["cases"]:
             if failure["code"] is not None
             else ""
         )
-        print(f"PASS {vector['id']} state={result.state}{suffix}")
+        primary_note = f" primary={primary['state']}({primary['reason']})" if primary is not None else ""
+        print(f"PASS {vector['id']} state={result.state}{suffix}{primary_note}")
     else:
         print(f"FAIL {vector['id']}", file=sys.stderr)
         print(
-            "  expected: " + json.dumps(expected, sort_keys=True),
+            "  synthetic expected: " + json.dumps(expected, sort_keys=True),
             file=sys.stderr,
         )
         print(
-            "  actual:   " + json.dumps(
+            "  synthetic actual:   " + json.dumps(
                 {
                     "state": result.state,
                     "valid": result.valid,
@@ -114,6 +178,15 @@ for vector in vectors["cases"]:
             ),
             file=sys.stderr,
         )
+        if primary_expected is not None:
+            print("  primary expected: " + json.dumps(primary_expected, sort_keys=True), file=sys.stderr)
+        if primary is not None:
+            print("  primary actual:   " + json.dumps(primary, sort_keys=True), file=sys.stderr)
+        if not agreement_ok:
+            print(
+                f"  primary/synthetic disagreement: primary={primary['state'] if primary else None} synthetic={result.state}",
+                file=sys.stderr,
+            )
 
 print(f"single-chain-selection Python: {passed}/{len(vectors['cases'])} passed")
 sys.exit(0 if passed == len(vectors["cases"]) else 1)
