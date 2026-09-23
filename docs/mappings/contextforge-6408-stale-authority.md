@@ -47,7 +47,7 @@ Read from source. Only the cache lifetime point was executed, as described in it
 - The policy decision point is a plugin. The plugin framework is off by default (`mcpgateway/plugins/__init__.py:41`, `_PLUGINS_ENABLED = False`) and `UnifiedPDPPlugin` ships as `mode: "disabled"` (`plugins/config.yaml:1269`). Everything below applies only when an operator enables both.
 - `PolicyDecisionPoint.check_access` returns a cached decision before evaluating any engine (`plugins/unified_pdp/pdp.py:161`) and caches every result, allow and deny (`pdp.py:185`, `plugins/unified_pdp/cache.py:219`). The default lifetime is 60 seconds (`plugins/unified_pdp/pdp_models.py:174`).
 - `DecisionCache.invalidate` (`cache.py:261`) has no caller outside `cache.py`. A policy change does not evict cached decisions, so the time for a change to reach a cached request is bounded by cache lifetime rather than by an invalidation event.
-- On a Redis cache hit, the current implementation repopulates the in-memory cache with a new full `ttl_seconds` lifetime rather than the Redis entry's remaining lifetime (`cache.py:211`). By inspection, `ttl_seconds` therefore does not bound the total age of a decision served across both cache tiers. A deterministic local check ran the unmodified `cache.py` and `pdp_models.py` with a controlled clock and a fake Redis honouring `setex` expiry, and two cache instances standing in for two workers. With `ttl_seconds` 60, a decision cached at t+0 was served by the second worker at t+118.5, while the first worker stopped serving it at t+61. The check was not run against a deployed gateway or a real Redis. Whether that TTL is intended to be the "configured propagation window" in #6408 is not established here.
+- On a Redis cache hit, the current implementation repopulates the in-memory cache with a new full `ttl_seconds` lifetime rather than the Redis entry's remaining lifetime (`cache.py:211`). By inspection, `ttl_seconds` therefore does not bound the total age of a decision served across both cache tiers. The mapping evidence script [`contextforge-6408/two_tier_ttl.py`](contextforge-6408/two_tier_ttl.py) loads the unmodified `cache.py` and `pdp_models.py` in place from a checkout, refuses to run unless the checkout is at the pinned commit and both files match their pinned SHA-256, and runs them with a controlled clock, a fake Redis honouring `setex` expiry, and two cache instances standing in for two workers. With `ttl_seconds` 60, a decision cached at t+0 was served by the second worker at t+118.5, while the first worker stopped serving it at t+61. The check was not run against a deployed gateway or a real Redis. Whether that TTL is intended to be the "configured propagation window" in #6408 is not established here.
 - An engine timeout or evaluation error yields the configured `default_decision` (`pdp.py:262` to `287`), which defaults to deny (`plugins/unified_pdp/unified_pdp.py:148`). Because the cache is consulted first, a cached allow is still served while the engine is unreachable, until it expires. That is the `CAR-07` shape.
 
 ## Reproducing
@@ -60,6 +60,14 @@ npm run verify:cached-authorization-revocation
 ```
 
 Recorded at that commit: `correct` matched every case and `stale-cache` failed exactly the declared set. The family runs the lab's own reference harness, not ContextForge and not an SDK.
+
+The cache lifetime check needs a checkout of `IBM/mcp-context-forge` at `380469fc2d50df599124b58c9ddea8ab2d739207`, git, and pydantic 2:
+
+```sh
+python3 docs/mappings/contextforge-6408/two_tier_ttl.py <path to the checkout>
+```
+
+Recorded: 7 of 7 checks passed, exit 0, with pydantic 2.13.5. It is mapping evidence for this record, not a lab family or vector.
 
 ## Boundaries
 
