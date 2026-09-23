@@ -42,12 +42,12 @@ Every denial above is read from the downstream double's own record (`downstream_
 
 ## What the code at `380469fc` shows
 
-Read from source, not executed.
+Read from source. Only the cache lifetime point was executed, as described in its bullet.
 
 - The policy decision point is a plugin. The plugin framework is off by default (`mcpgateway/plugins/__init__.py:41`, `_PLUGINS_ENABLED = False`) and `UnifiedPDPPlugin` ships as `mode: "disabled"` (`plugins/config.yaml:1269`). Everything below applies only when an operator enables both.
 - `PolicyDecisionPoint.check_access` returns a cached decision before evaluating any engine (`plugins/unified_pdp/pdp.py:161`) and caches every result, allow and deny (`pdp.py:185`, `plugins/unified_pdp/cache.py:219`). The default lifetime is 60 seconds (`plugins/unified_pdp/pdp_models.py:174`).
 - `DecisionCache.invalidate` (`cache.py:261`) has no caller outside `cache.py`. A policy change does not evict cached decisions, so the time for a change to reach a cached request is bounded by cache lifetime rather than by an invalidation event.
-- With Redis configured, a Redis hit repopulates the in-memory layer with a fresh full lifetime (`cache.py:211`). The oldest decision a worker can serve is then longer than `ttl_seconds`.
+- On a Redis cache hit, the current implementation repopulates the in-memory cache with a new full `ttl_seconds` lifetime rather than the Redis entry's remaining lifetime (`cache.py:211`). By inspection, `ttl_seconds` therefore does not bound the total age of a decision served across both cache tiers. A deterministic local check ran the unmodified `cache.py` and `pdp_models.py` with a controlled clock and a fake Redis honouring `setex` expiry, and two cache instances standing in for two workers. With `ttl_seconds` 60, a decision cached at t+0 was served by the second worker at t+118.5, while the first worker stopped serving it at t+61. The check was not run against a deployed gateway or a real Redis. Whether that TTL is intended to be the "configured propagation window" in #6408 is not established here.
 - An engine timeout or evaluation error yields the configured `default_decision` (`pdp.py:262` to `287`), which defaults to deny (`plugins/unified_pdp/unified_pdp.py:148`). Because the cache is consulted first, a cached allow is still served while the engine is unreachable, until it expires. That is the `CAR-07` shape.
 
 ## Reproducing
@@ -64,7 +64,7 @@ Recorded at that commit: `correct` matched every case and `stale-cache` failed e
 ## Boundaries
 
 - ContextForge's current implementation uses a general policy-decision cache, while this family revokes an authorization grant. The mapping is to the stale-authority and propagation failure shape, not to identical state or cache semantics.
-- Nothing here was run against ContextForge. The code observations are one reading of `380469fc` and can be wrong.
+- Nothing here was run against a ContextForge deployment. The code observations are one reading of `380469fc` and can be wrong. The one executed check exercises two source files in isolation.
 - The PDP path is opt-in on current `main`, and the User Story text describes the intended end state, not default shipped behavior.
 - Requirement 3 has two sides. This family covers only a cached allow that outlives the authority behind it. The literal case in #6533, a cached denial served as an allow, has no vector in this lab and is not claimed here.
 - Only the three requirements above are mapped. Nothing here maps authentication outsourcing, JWT trust mode, the Layer 1 and Layer 2 split, scope narrowing, latency, or the CoSAI hard constraints.
