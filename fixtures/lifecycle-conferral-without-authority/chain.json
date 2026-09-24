@@ -1,0 +1,1806 @@
+{
+  "delegations": {
+    "child_consumes_last_hop": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:fbfb2e859ed3ac9980173d87bd23dd2aca6b3d491ac09aa2bfebf7eeabbeebb0",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "d838d39f88dd3bba174e023acb4b3358",
+      "parent_delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "be3056eaf0b0d912b2936eb31e889553426e3f797b07b0ef8f2453cd3d060e9d6090bddc1149bb30033dec4cb4f85cb5500e6c21d24db8e66f8c57e970ecd00b",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_depth_absent": {
+      "authority": {
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:17ed548ae49889e992115754b561f4b2f0ac5c3a8572163c916a075493d642d5",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "f6f3610c4255ac05aef3167eb3fc244c",
+      "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "07e8fe50828d32301ec4359be2cc649e65dbe0db03aa781a3df6dbfb7ede3a0a2b9a239fd9370c4c9231ebaeb6a29f6da85085363a89347a5186e8af1c1e760c",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_no_hop_consumed": {
+      "authority": {
+        "depth": {
+          "remaining": 2
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:a4c30bfa5c91695f6c26156678230ae509036b890433701e57d9fcf19c159ce4",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "4696a7c84b23417de26bb3f60ed4e8a5",
+      "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "a04f364784a431af3b74dd1bb7e196238bffb29cf5cf8d9138c1f2b697faa6adb8f0fa84b8a6048d70a42a13665c57e19e911cb88a7ccf27e88fcb977673dd02",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_ok": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:d1378a9fb2929abe096a3f68db70b8dace7c68ef080826790dd91c85bef15ddd",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "b3174c9c757ce8c7a21329ae77b27b35",
+      "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "5337dc30152d5244ffec2f3d14ab0e840bd24dbb5e175bbf6e8c6559d96970851caba2d66bc49f08e7d77cbbfd11cde04729efd62c8c81d36885812a01227301",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_same_scope_from_none": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 80,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "compensable",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "60000",
+          "mode": "bounded",
+          "per_action": "6000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001"
+          ]
+        }
+      },
+      "delegation_id": "sha256:49c813f8262312b8891e0ba63237ce611b7145247a236c17c98496ada91287a1",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "dcc771df117560cebd786bbeed48d318",
+      "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "67636a222a27cedfe590240e5b0eb1fc6c8edd10e80deed12544cc4c9b1734820446cd7152c77f59075fe2368c6f5749f52a8f858ebc23d3920cd42f502fab0c",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_strictly_narrower_from_none": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:75065e777efd0c2c5133c83ae262a5a9c5b6cfaffbcbeefe06328027261cc39c",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "8a732d9b13df6f847d422cbc16434ff6",
+      "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "fcad1d250060818369992c1884e7ae449539ed2f597599e5cecfba028898dd99cb662f9d3ac343ee7035733f2a8fcff08240e8a6248b46c8803b6bf223c4c105",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "child_widens_scope": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:*",
+            "payments:refund"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:d119ff099ce40c43eebaeabc412444786f2a38262cb5f5d979756bbc164aacd5",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "853dd80419c34b9bc73f21668381cee1",
+      "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "4474637b60e4a527cd4492cc844d22869c54b02bbbfce51228bce34aedec069aa58bb19c6cb7e4c5bff8169bebfc0f3d58b112dd04b141523e3c67814ceaba04",
+      "subject": "did:aps:example:cwa-subagent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    },
+    "grandchild_from_exhausted": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 30,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "5000",
+          "mode": "bounded",
+          "per_action": "500",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-23T00:00:00.000Z",
+          "not_before": "2026-09-22T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002",
+            "F-003"
+          ]
+        }
+      },
+      "delegation_id": "sha256:1ea940d161d9a727a304a96f51ca7a03620c8f3063e671161f270e37c4583095",
+      "issued_at": "2026-09-22T10:00:00.000Z",
+      "issuer": "did:aps:example:cwa-subagent",
+      "nonce": "51b49c9727403c42da4e349a8b056d08",
+      "parent_delegation_id": "sha256:fbfb2e859ed3ac9980173d87bd23dd2aca6b3d491ac09aa2bfebf7eeabbeebb0",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "379d8edaa1e0e8ac509909d524168fa069907283526700a60915ae63cbd9c8c3af8236753e911a579562e43db9d7e8aca05103deb1c47f1c402fc0cb1ec10a0a",
+      "subject": "did:aps:example:cwa-worker",
+      "verification_method": "did:aps:example:cwa-subagent#key-1",
+      "version": "1.0"
+    },
+    "grandchild_ok": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 30,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "5000",
+          "mode": "bounded",
+          "per_action": "500",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-23T00:00:00.000Z",
+          "not_before": "2026-09-22T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002",
+            "F-003"
+          ]
+        }
+      },
+      "delegation_id": "sha256:2566f0c3fd2b6a400205b396141e290ee96bad902335cf3dae228caedada9737",
+      "issued_at": "2026-09-22T10:00:00.000Z",
+      "issuer": "did:aps:example:cwa-subagent",
+      "nonce": "24c68f7cbc4c44bffba59fa96e15242a",
+      "parent_delegation_id": "sha256:d1378a9fb2929abe096a3f68db70b8dace7c68ef080826790dd91c85bef15ddd",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "5f6a4f906ba93c8e2933999fb58c7dfd2e6c2dab324b5b7d176acb4331dc6ec40b925bac7493787c5acc57e61509adb70934149db93a4f586f69668370ec2306",
+      "subject": "did:aps:example:cwa-worker",
+      "verification_method": "did:aps:example:cwa-subagent#key-1",
+      "version": "1.0"
+    },
+    "root_confers_none": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 80,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "compensable",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "60000",
+          "mode": "bounded",
+          "per_action": "6000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001"
+          ]
+        }
+      },
+      "delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:cwa-scheduling-principal",
+      "nonce": "92dad23234c6f244542aa1cb60ee9efa",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "52003d5f9e946b4a25c0c6e91dae0751a2560089459ce4befe9f2f65214ee15458123fbe185aa0387019c03b6a839aa47f321589353e8939c5c8fb84ed846a01",
+      "subject": "did:aps:example:cwa-calendar-agent",
+      "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+      "version": "1.0"
+    },
+    "root_confers_one": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 80,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "compensable",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "60000",
+          "mode": "bounded",
+          "per_action": "6000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001"
+          ]
+        }
+      },
+      "delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:cwa-scheduling-principal",
+      "nonce": "5979a954541fa4b780692dfa1de49910",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "d5d26c796b281cdbb0d4892738878fb6604f94c1b2f3e01b58ea4ac6eeca046a812c6209efb40c273e9c11e59d2283ed9018ecbf7b66f83c737bb2e92cebe904",
+      "subject": "did:aps:example:cwa-calendar-agent",
+      "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+      "version": "1.0"
+    },
+    "root_confers_two": {
+      "authority": {
+        "depth": {
+          "remaining": 2
+        },
+        "reputation": {
+          "ceiling": 80,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "compensable",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "60000",
+          "mode": "bounded",
+          "per_action": "6000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001"
+          ]
+        }
+      },
+      "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:cwa-scheduling-principal",
+      "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+      "subject": "did:aps:example:cwa-calendar-agent",
+      "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+      "version": "1.0"
+    },
+    "self_child_from_none": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 40,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "tentative",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "10000",
+          "mode": "bounded",
+          "per_action": "1000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-24T00:00:00.000Z",
+          "not_before": "2026-09-22T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": [
+            "F-001",
+            "F-002"
+          ]
+        }
+      },
+      "delegation_id": "sha256:dffa6b3c1d22bb6ed3bbeb39d685528c35140cc1a7f968e305703310d74414ff",
+      "issued_at": "2026-09-22T09:00:00.000Z",
+      "issuer": "did:aps:example:cwa-calendar-agent",
+      "nonce": "288eb230e10d7f50881b03ffa79678da",
+      "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "d3f12b2e5ed2078507e174502a7d7b124ce3b3ea776468f0037879221dffde73d53ccd0036492be6127013dc42f534d1f0c555a749554aba317604fb9b04df0a",
+      "subject": "did:aps:example:cwa-calendar-agent",
+      "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+      "version": "1.0"
+    }
+  },
+  "family": "lifecycle-conferral-without-authority",
+  "generated_by": "fixtures/lifecycle-conferral-without-authority/mint.ts",
+  "identities": {
+    "agent": "did:aps:example:cwa-calendar-agent",
+    "principal": "did:aps:example:cwa-scheduling-principal",
+    "subagent": "did:aps:example:cwa-subagent",
+    "worker": "did:aps:example:cwa-worker"
+  },
+  "mint_time_sdk_observations": {
+    "compare_authority_cwa_03": [
+      {
+        "code": "DEPTH_EXHAUSTED",
+        "facet": "depth",
+        "message": "parent has no remaining delegation hop"
+      }
+    ],
+    "cooperative_issuance_refusal_from_zero_depth_parent": "authority delegation does not narrow (DEPTH_EXHAUSTED)",
+    "verify_chain_CWA-01": {
+      "failures": [],
+      "state": "valid"
+    },
+    "verify_chain_CWA-02": {
+      "failures": [
+        {
+          "code": "DEPTH_EXHAUSTED",
+          "facet": "depth",
+          "index": 1,
+          "message": "parent has no remaining delegation hop"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-03": {
+      "failures": [
+        {
+          "code": "DEPTH_EXHAUSTED",
+          "facet": "depth",
+          "index": 1,
+          "message": "parent has no remaining delegation hop"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-04": {
+      "failures": [
+        {
+          "code": "DEPTH_EXHAUSTED",
+          "facet": "depth",
+          "index": 2,
+          "message": "parent has no remaining delegation hop"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-05": {
+      "failures": [
+        {
+          "code": "DEPTH_WIDENING",
+          "facet": "depth",
+          "index": 1,
+          "message": "child remaining depth must consume at least one hop"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-06": {
+      "failures": [
+        {
+          "code": "SCOPE_WIDENING",
+          "facet": "scope",
+          "index": 1,
+          "message": "child scope is not covered by parent scope"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-07": {
+      "failures": [
+        {
+          "code": "SCHEMA_INVALID",
+          "index": 1,
+          "message": "authority must carry exactly all seven facets"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-08": {
+      "failures": [
+        {
+          "code": "DEPTH_EXHAUSTED",
+          "facet": "depth",
+          "index": 1,
+          "message": "parent has no remaining delegation hop"
+        }
+      ],
+      "state": "invalid"
+    },
+    "verify_chain_CWA-09": {
+      "failures": [],
+      "state": "valid"
+    },
+    "verify_chain_CWA-10": {
+      "failures": [],
+      "state": "valid"
+    }
+  },
+  "now": "2026-09-22T12:00:00.000Z",
+  "presented": {
+    "CWA-01": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:d1378a9fb2929abe096a3f68db70b8dace7c68ef080826790dd91c85bef15ddd",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "b3174c9c757ce8c7a21329ae77b27b35",
+        "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "5337dc30152d5244ffec2f3d14ab0e840bd24dbb5e175bbf6e8c6559d96970851caba2d66bc49f08e7d77cbbfd11cde04729efd62c8c81d36885812a01227301",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-02": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "92dad23234c6f244542aa1cb60ee9efa",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "52003d5f9e946b4a25c0c6e91dae0751a2560089459ce4befe9f2f65214ee15458123fbe185aa0387019c03b6a839aa47f321589353e8939c5c8fb84ed846a01",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:49c813f8262312b8891e0ba63237ce611b7145247a236c17c98496ada91287a1",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "dcc771df117560cebd786bbeed48d318",
+        "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "67636a222a27cedfe590240e5b0eb1fc6c8edd10e80deed12544cc4c9b1734820446cd7152c77f59075fe2368c6f5749f52a8f858ebc23d3920cd42f502fab0c",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-03": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "92dad23234c6f244542aa1cb60ee9efa",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "52003d5f9e946b4a25c0c6e91dae0751a2560089459ce4befe9f2f65214ee15458123fbe185aa0387019c03b6a839aa47f321589353e8939c5c8fb84ed846a01",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:75065e777efd0c2c5133c83ae262a5a9c5b6cfaffbcbeefe06328027261cc39c",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "8a732d9b13df6f847d422cbc16434ff6",
+        "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "fcad1d250060818369992c1884e7ae449539ed2f597599e5cecfba028898dd99cb662f9d3ac343ee7035733f2a8fcff08240e8a6248b46c8803b6bf223c4c105",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-04": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "5979a954541fa4b780692dfa1de49910",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d5d26c796b281cdbb0d4892738878fb6604f94c1b2f3e01b58ea4ac6eeca046a812c6209efb40c273e9c11e59d2283ed9018ecbf7b66f83c737bb2e92cebe904",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:fbfb2e859ed3ac9980173d87bd23dd2aca6b3d491ac09aa2bfebf7eeabbeebb0",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "d838d39f88dd3bba174e023acb4b3358",
+        "parent_delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "be3056eaf0b0d912b2936eb31e889553426e3f797b07b0ef8f2453cd3d060e9d6090bddc1149bb30033dec4cb4f85cb5500e6c21d24db8e66f8c57e970ecd00b",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 30,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "5000",
+            "mode": "bounded",
+            "per_action": "500",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-23T00:00:00.000Z",
+            "not_before": "2026-09-22T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002",
+              "F-003"
+            ]
+          }
+        },
+        "delegation_id": "sha256:1ea940d161d9a727a304a96f51ca7a03620c8f3063e671161f270e37c4583095",
+        "issued_at": "2026-09-22T10:00:00.000Z",
+        "issuer": "did:aps:example:cwa-subagent",
+        "nonce": "51b49c9727403c42da4e349a8b056d08",
+        "parent_delegation_id": "sha256:fbfb2e859ed3ac9980173d87bd23dd2aca6b3d491ac09aa2bfebf7eeabbeebb0",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "379d8edaa1e0e8ac509909d524168fa069907283526700a60915ae63cbd9c8c3af8236753e911a579562e43db9d7e8aca05103deb1c47f1c402fc0cb1ec10a0a",
+        "subject": "did:aps:example:cwa-worker",
+        "verification_method": "did:aps:example:cwa-subagent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-05": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:a4c30bfa5c91695f6c26156678230ae509036b890433701e57d9fcf19c159ce4",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "4696a7c84b23417de26bb3f60ed4e8a5",
+        "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "a04f364784a431af3b74dd1bb7e196238bffb29cf5cf8d9138c1f2b697faa6adb8f0fa84b8a6048d70a42a13665c57e19e911cb88a7ccf27e88fcb977673dd02",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-06": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*",
+              "payments:refund"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:d119ff099ce40c43eebaeabc412444786f2a38262cb5f5d979756bbc164aacd5",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "853dd80419c34b9bc73f21668381cee1",
+        "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "4474637b60e4a527cd4492cc844d22869c54b02bbbfce51228bce34aedec069aa58bb19c6cb7e4c5bff8169bebfc0f3d58b112dd04b141523e3c67814ceaba04",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-07": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:17ed548ae49889e992115754b561f4b2f0ac5c3a8572163c916a075493d642d5",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "f6f3610c4255ac05aef3167eb3fc244c",
+        "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "07e8fe50828d32301ec4359be2cc649e65dbe0db03aa781a3df6dbfb7ede3a0a2b9a239fd9370c4c9231ebaeb6a29f6da85085363a89347a5186e8af1c1e760c",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-08": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "92dad23234c6f244542aa1cb60ee9efa",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "52003d5f9e946b4a25c0c6e91dae0751a2560089459ce4befe9f2f65214ee15458123fbe185aa0387019c03b6a839aa47f321589353e8939c5c8fb84ed846a01",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:dffa6b3c1d22bb6ed3bbeb39d685528c35140cc1a7f968e305703310d74414ff",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "288eb230e10d7f50881b03ffa79678da",
+        "parent_delegation_id": "sha256:dd5fa30f96df286de70ac8c1cf032d91bca5871bc8c0b16cf6b713384d020423",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d3f12b2e5ed2078507e174502a7d7b124ce3b3ea776468f0037879221dffde73d53ccd0036492be6127013dc42f534d1f0c555a749554aba317604fb9b04df0a",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-09": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "eefc40cb419d44b85a3558df53c95dd2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6b3b628a7829b9decce076205854ebe06f5331dc30372a0c1b6e80d180aa8b6223c55d446d93c2a773559a0ca72de7088bceceee8b6366194c3b19f965a80a02",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:d1378a9fb2929abe096a3f68db70b8dace7c68ef080826790dd91c85bef15ddd",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "b3174c9c757ce8c7a21329ae77b27b35",
+        "parent_delegation_id": "sha256:7ae00d4cfd3c9e8daa421e36e49a80b398d73f48dab407958c610ca2e5409b04",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "5337dc30152d5244ffec2f3d14ab0e840bd24dbb5e175bbf6e8c6559d96970851caba2d66bc49f08e7d77cbbfd11cde04729efd62c8c81d36885812a01227301",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 30,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "5000",
+            "mode": "bounded",
+            "per_action": "500",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-23T00:00:00.000Z",
+            "not_before": "2026-09-22T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002",
+              "F-003"
+            ]
+          }
+        },
+        "delegation_id": "sha256:2566f0c3fd2b6a400205b396141e290ee96bad902335cf3dae228caedada9737",
+        "issued_at": "2026-09-22T10:00:00.000Z",
+        "issuer": "did:aps:example:cwa-subagent",
+        "nonce": "24c68f7cbc4c44bffba59fa96e15242a",
+        "parent_delegation_id": "sha256:d1378a9fb2929abe096a3f68db70b8dace7c68ef080826790dd91c85bef15ddd",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "5f6a4f906ba93c8e2933999fb58c7dfd2e6c2dab324b5b7d176acb4331dc6ec40b925bac7493787c5acc57e61509adb70934149db93a4f586f69668370ec2306",
+        "subject": "did:aps:example:cwa-worker",
+        "verification_method": "did:aps:example:cwa-subagent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "CWA-10": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 80,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "compensable",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "60000",
+            "mode": "bounded",
+            "per_action": "6000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-25T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001"
+            ]
+          }
+        },
+        "delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:cwa-scheduling-principal",
+        "nonce": "5979a954541fa4b780692dfa1de49910",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d5d26c796b281cdbb0d4892738878fb6604f94c1b2f3e01b58ea4ac6eeca046a812c6209efb40c273e9c11e59d2283ed9018ecbf7b66f83c737bb2e92cebe904",
+        "subject": "did:aps:example:cwa-calendar-agent",
+        "verification_method": "did:aps:example:cwa-scheduling-principal#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 40,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "tentative",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "calendar:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "10000",
+            "mode": "bounded",
+            "per_action": "1000",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": [
+              "F-001",
+              "F-002"
+            ]
+          }
+        },
+        "delegation_id": "sha256:fbfb2e859ed3ac9980173d87bd23dd2aca6b3d491ac09aa2bfebf7eeabbeebb0",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:cwa-calendar-agent",
+        "nonce": "d838d39f88dd3bba174e023acb4b3358",
+        "parent_delegation_id": "sha256:9be7519af67892c028cc6c6a16967d55cdacbf1a2babd7d3cb0750c1f6cff217",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "be3056eaf0b0d912b2936eb31e889553426e3f797b07b0ef8f2453cd3d060e9d6090bddc1149bb30033dec4cb4f85cb5500e6c21d24db8e66f8c57e970ecd00b",
+        "subject": "did:aps:example:cwa-subagent",
+        "verification_method": "did:aps:example:cwa-calendar-agent#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "sdk": "agent-passport-system 7.1.0 (npm)",
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-conferral-without-authority:",
+  "trusted_root_issuer": "did:aps:example:cwa-scheduling-principal",
+  "verification_keys": {
+    "did:aps:example:cwa-calendar-agent#key-1": "dd7cc81731f680316dea12415dd7426d84e1ed73b6e0cc720dc1861d89b92d75",
+    "did:aps:example:cwa-scheduling-principal#key-1": "d5a3bc9ce7340022477481d494e91ba0536993ab3900f715130140dc87bd48ce",
+    "did:aps:example:cwa-subagent#key-1": "a0777bf37dd02378d5ed26ec0c63247538fa78cd57d85969b03c0bcfe728bab9"
+  }
+}
