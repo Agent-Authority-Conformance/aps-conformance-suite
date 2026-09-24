@@ -1,0 +1,299 @@
+{
+  "chains": {
+    "newer": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "orders:cancel",
+              "orders:place"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-22T12:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:0905068f764f08c3b447d182df508678b6c314f35146efa4c783df187b6fa41b",
+        "issued_at": "2026-09-22T12:00:00.000Z",
+        "issuer": "did:aps:example:tpr-principal",
+        "nonce": "08b041cb970fb8e1daad0547fc69ca46",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "0ab24c3e31c40119c362090db3f1d9e59066a34d7b9f9916785442f86e3e43c3f8a6f2dfc638a6c3d7564a6383f1d4e49ee9bc029075cdb356d0c19e2d2d7902",
+        "subject": "did:aps:example:tpr-agent",
+        "verification_method": "did:aps:example:tpr-principal#key-1",
+        "version": "1.0"
+      }
+    ],
+    "older": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "orders:place"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:d6ac4a0f05cc96a7b0ad63e63fccc946f31849fc8cf6ed161adce15195ef9a58",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:tpr-principal",
+        "nonce": "be045d3182809d70761e6c900dc0af96",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "e918e9f37e9006ba55d4e5baa93d44bceae7e962317f14b916c986b30c3546011bf9a545428f066186ad5f0c8c8240d2b80d0ba676ef68f5dbfa4c02300e5800",
+        "subject": "did:aps:example:tpr-agent",
+        "verification_method": "did:aps:example:tpr-principal#key-1",
+        "version": "1.0"
+      }
+    ],
+    "terminated": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "advice:issue"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:7c4d590508f1bc71cb0aa6ed2e326a06c2281528d87d46b748fab23f3d803dfd",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:tpr-principal",
+        "nonce": "262366b6b08589371ca824772ca2d90c",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "4d664eb1393bba616b1012adf26e014a19485f4da881297da5926eb86dbab7993ba66d84ca045a18607eb1c944e74f98b178af565ee650bb4601aad3eee87f0e",
+        "subject": "did:aps:example:tpr-agent",
+        "verification_method": "did:aps:example:tpr-principal#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "counterparties": {
+    "other": "counterparty:tpr-other",
+    "repeat": "counterparty:tpr-repeat",
+    "stranger": "counterparty:tpr-stranger"
+  },
+  "description": "Chain state and notice state as two separate records with two separate answers, a two-tier notice rule, and a newer grant that is not a revocation of an earlier one. Three one-hop AuthorityDelegationV1 grants, three draft-03 section 3.5.1 revocations (one of them deliberately naming a revoker who is not the target issuer), four notice records and one prior-dealing register, minted and verified with agent-passport-system 7.1.0.",
+  "identities": {
+    "agent": "did:aps:example:tpr-agent",
+    "other_principal": "did:aps:example:tpr-other-principal",
+    "principal": "did:aps:example:tpr-principal"
+  },
+  "mint_time_sdk_observations": {
+    "external_revoker_issuance_refusal": "authority revocation revoker is not the target delegation issuer (REVOKER_NOT_ISSUER)",
+    "newer_chain_after_older_express_revocation": {
+      "first_failure_code": null,
+      "state": "valid"
+    },
+    "older_chain_after_express_revocation": {
+      "first_failure_code": "REVOKED",
+      "state": "invalid"
+    },
+    "older_chain_with_newer_grant_and_no_revocation": {
+      "first_failure_code": null,
+      "state": "valid"
+    },
+    "older_chain_with_wrong_revoker_record": {
+      "first_failure_code": "REVOCATION_UNKNOWN",
+      "state": "indeterminate"
+    },
+    "terminated_chain_after_revocation": {
+      "first_failure_code": "REVOKED",
+      "state": "invalid"
+    },
+    "terminated_chain_before_revocation": "valid",
+    "wrong_revoker_record_verification": {
+      "first_failure_code": "REVOKER_NOT_ISSUER",
+      "state": "invalid"
+    },
+    "wrong_revoker_resolver_answer": "unknown"
+  },
+  "minted_by": "fixtures/lifecycle-third-party-reliance-notice/mint.ts",
+  "notices": {
+    "individual_other": {
+      "counterparty": "counterparty:tpr-other",
+      "issued_at": "2026-09-24T09:00:00.000Z",
+      "issuer": "did:aps:example:tpr-principal",
+      "mode": "individual",
+      "profile": "aps-conformance-suite:lifecycle-third-party-reliance-notice:notice-record-v0",
+      "revocation_id": "sha256:c2d0eafd45b56e1ef615ebe003a848652b1eda831ecf9909fa190ac17e11fbde",
+      "signature": "a16ef0b247e80cf34b574e0c55ad23586311d9f7443f2ad40013657a4e3b4722c92453c93fa7e7b22cb178793485a48d746804b1851fdb20d85bbc6c7b587a07",
+      "verification_method": "did:aps:example:tpr-principal#key-1"
+    },
+    "individual_repeat": {
+      "counterparty": "counterparty:tpr-repeat",
+      "issued_at": "2026-09-24T09:00:00.000Z",
+      "issuer": "did:aps:example:tpr-principal",
+      "mode": "individual",
+      "profile": "aps-conformance-suite:lifecycle-third-party-reliance-notice:notice-record-v0",
+      "revocation_id": "sha256:c2d0eafd45b56e1ef615ebe003a848652b1eda831ecf9909fa190ac17e11fbde",
+      "signature": "1bbb05abd293be10aea3507c505c2a24040997528064ffba9daa2daaf747342e918a55fed22e8c0c10a2a33ab162b552a1b900bb717348f7f43ebf3aa8092706",
+      "verification_method": "did:aps:example:tpr-principal#key-1"
+    },
+    "individual_repeat_no_standing": {
+      "counterparty": "counterparty:tpr-repeat",
+      "issued_at": "2026-09-24T09:00:00.000Z",
+      "issuer": "did:aps:example:tpr-other-principal",
+      "mode": "individual",
+      "profile": "aps-conformance-suite:lifecycle-third-party-reliance-notice:notice-record-v0",
+      "revocation_id": "sha256:c2d0eafd45b56e1ef615ebe003a848652b1eda831ecf9909fa190ac17e11fbde",
+      "signature": "3fd5ea3a7fb3b6b8b9aa347dfed4f53335556335985dd25bc5a79b3ea20e9a9c4a621458aa68137fa1d5239d8645ee9bcb952156e5c57f63cbb511a7e9e0a009",
+      "verification_method": "did:aps:example:tpr-other-principal#key-1"
+    },
+    "publication_all": {
+      "counterparty": null,
+      "issued_at": "2026-09-24T09:00:00.000Z",
+      "issuer": "did:aps:example:tpr-principal",
+      "mode": "publication",
+      "profile": "aps-conformance-suite:lifecycle-third-party-reliance-notice:notice-record-v0",
+      "revocation_id": "sha256:c2d0eafd45b56e1ef615ebe003a848652b1eda831ecf9909fa190ac17e11fbde",
+      "signature": "94e4cb0619611e08aad325636778b6c8ca06711d3c047ea8429061e297110226bf52f9c48b90e5b0b46146eec9af616f5628ec8244fff748971a1a2a48d3820d",
+      "verification_method": "did:aps:example:tpr-principal#key-1"
+    }
+  },
+  "prior_dealing_register": {
+    "as_of": "2026-09-22T09:00:00.000Z",
+    "counterparties": [
+      "counterparty:tpr-repeat"
+    ],
+    "delegation_id": "sha256:7c4d590508f1bc71cb0aa6ed2e326a06c2281528d87d46b748fab23f3d803dfd",
+    "issuer": "did:aps:example:tpr-principal",
+    "profile": "aps-conformance-suite:lifecycle-third-party-reliance-notice:prior-dealing-register-v0",
+    "signature": "bce9693ff160f6b10cd09bc870880526eebcb98cdb98961a3418a9ddbe94ec7454ef661fada838509736f2f3da957d2adebd3a95a15fd2d20ea12314be6ba40c",
+    "verification_method": "did:aps:example:tpr-principal#key-1"
+  },
+  "profile": "aps-lifecycle-third-party-reliance-notice-v0",
+  "profiles": {
+    "notice_record": "aps-conformance-suite:lifecycle-third-party-reliance-notice:notice-record-v0",
+    "prior_dealing_register": "aps-conformance-suite:lifecycle-third-party-reliance-notice:prior-dealing-register-v0"
+  },
+  "revocations": {
+    "revoke_older_express": {
+      "cascade_transaction_id": "sha256:d189cc47f36a50caee6a78f089558aa56cdb9d252c6edc6c7237e0b9edace70b",
+      "delegation_id": "sha256:d6ac4a0f05cc96a7b0ad63e63fccc946f31849fc8cf6ed161adce15195ef9a58",
+      "nonce": "e0e36fc4e92e8ad84c7880a3333f458c",
+      "reason_code": "express_revocation_of_earlier_grant",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:48e19972958838f4aceb6ef3c0902901fd90b423e6beb0cd33b0ff799e54139a",
+      "revoked_at": "2026-09-22T12:00:00.000Z",
+      "revoker": "did:aps:example:tpr-principal",
+      "signature": "509d888f42f02ebc2a77e29675b1b12920eb76a105fb8e85af8bdad802f5ed5afd38350b4471543b688f16a6c17b8f3d6c6cf583f8db7fd86901405051e6f509",
+      "verification_method": "did:aps:example:tpr-principal#key-1",
+      "version": "1.0"
+    },
+    "revoke_older_wrong_revoker": {
+      "cascade_transaction_id": "sha256:a31879b1c3084b5ed7f2691db139250d53f8a78140446526fbfd3beeea000647",
+      "delegation_id": "sha256:d6ac4a0f05cc96a7b0ad63e63fccc946f31849fc8cf6ed161adce15195ef9a58",
+      "nonce": "e9ce966a199ec7016cd6abe079f8a394",
+      "reason_code": "asserted_revocation_by_another_principal",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:fb29aa6be3bb2cb454d237db264a525d49774609a2a1ec0c4dd1965207f571fe",
+      "revoked_at": "2026-09-22T12:00:00.000Z",
+      "revoker": "did:aps:example:tpr-other-principal",
+      "signature": "78a3746130dc263a68e0e20f0f2ffcb0327d6796b516d01a772e7b9d5aabe29fbd6170ab54780edf1ca8eed186a2d5dc44838f2e3da74c14222e340bf7af6009",
+      "verification_method": "did:aps:example:tpr-other-principal#key-1",
+      "version": "1.0"
+    },
+    "revoke_terminated": {
+      "cascade_transaction_id": "sha256:7a6db2a9df597203da0af64e7eca9afa244620efa1da861d4b855ffea5f876f0",
+      "delegation_id": "sha256:7c4d590508f1bc71cb0aa6ed2e326a06c2281528d87d46b748fab23f3d803dfd",
+      "nonce": "28de38ea7af935a4a1b4ad9554267c28",
+      "reason_code": "principal_terminated_authority",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:c2d0eafd45b56e1ef615ebe003a848652b1eda831ecf9909fa190ac17e11fbde",
+      "revoked_at": "2026-09-22T12:00:00.000Z",
+      "revoker": "did:aps:example:tpr-principal",
+      "signature": "f75d5b478f91bba1bfc3af629a1abfe7bca5209764d5886272998dbee12576e154a1567ecb2cc1bbacc99ab6e9b897272cc487391ad8e89b0977fd2d39fa540e",
+      "verification_method": "did:aps:example:tpr-principal#key-1",
+      "version": "1.0"
+    }
+  },
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-third-party-reliance-notice:",
+  "signature_domains": {
+    "notice_record": "APS-CONFORMANCE-TPR-NOTICE-RECORD-V0",
+    "prior_dealing_register": "APS-CONFORMANCE-TPR-PRIOR-DEALING-REGISTER-V0"
+  },
+  "timeline": {
+    "not_after": "2026-10-01T00:00:00.000Z",
+    "t0_issued": "2026-09-21T00:00:00.000Z",
+    "t1_before": "2026-09-22T09:00:00.000Z",
+    "t2_revoked": "2026-09-22T12:00:00.000Z",
+    "t3_after_revocation": "2026-09-23T09:00:00.000Z",
+    "t4_notice": "2026-09-24T09:00:00.000Z",
+    "t5_after_notice": "2026-09-25T09:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:tpr-agent#key-1": "ac23a6e87e8dfa84064f21e6b69cafd1dc3892028fe6e1bf2ddee5391b3af556",
+    "did:aps:example:tpr-other-principal#key-1": "35e3a81dcbbff3c407676fb481e86ff59dab55d01149522b61aec5f11bfc0a89",
+    "did:aps:example:tpr-principal#key-1": "69f56474db81234f4d4ec9f5eac4d8f557facc72069ba66e072fd9f4727936ad"
+  }
+}
