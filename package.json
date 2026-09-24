@@ -99,7 +99,7 @@
   "devDependencies": {
     "@types/node": "^26.5.1",
     "ajv": "8.20.0",
-    "tsx": "^4.23.13",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "viem": "2.56.5"
   },
