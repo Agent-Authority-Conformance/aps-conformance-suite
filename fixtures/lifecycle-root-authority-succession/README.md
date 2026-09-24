@@ -120,6 +120,24 @@ order:
 Thirteen. Five for the role-bound mode, two for the identity-bound mode, two for
 the silent mode, two for the vacant office, and two chain-stage controls.
 
+### Invariant attribution
+
+`vectors.json` names L2, L3 and L4 at the family header. Four vectors now also
+name an invariant in their own record, under `proposed_text.sections`, in the
+long form the rest of the suite uses:
+
+| vector | invariant | what it returns and why that is the invariant |
+|---|---|---|
+| `LRAS-C-007-b-role-bound-new-occupant-needs-no-reissuance` | L2 | `valid`. The occupant changed and the unchanged delegation still verifies, so the authority did not travel with the identity |
+| `LRAS-C-007-c-role-bound-former-occupant` | L2 | `invalid`. The same identity continues and its authority does not, which is L2 stated directly |
+| `LRAS-C-007-g-identity-bound-turnover-does-not-transfer` | L4 | `invalid`. The new occupant inherits nothing from an identity-bound grant and needs a fresh chain |
+| `LRAS-C-007-i-silent-binding-with-a-new-occupant` | L4 | `not_established`. The delegation does not say which mode applies, so whether the new occupant inherits is not established here. Not established is not a finding that the successor does inherit, and it is not a finding that they do not |
+
+The other nine vectors name no invariant, which is the accurate record: they turn
+on the binding mode, on record standing or on the chain stage, and no invariant
+in `AUTHORITY-LIFECYCLE.md` states a rule for any of those. L3 stays a
+family-header reference with no vector behind it.
+
 ## Negative controls
 
 Six defective configurations. `declared_fail_sets` names exactly which vectors

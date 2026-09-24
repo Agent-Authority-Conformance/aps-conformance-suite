@@ -63,9 +63,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "reached_declared_end",
-        "ending": "expiry",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "EXPIRED"
+        "ending": "expiry"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "EXPIRED"
       }
     },
     {
@@ -86,9 +88,11 @@
         "verdict": "invalid",
         "reason": "ended_early_for_cause",
         "ending": "revocation",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "REVOKED",
         "detail": "cause=credential-obtained-through-misstatement actor=did:aps:example:ler-issuing-office"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "REVOKED"
       }
     },
     {
@@ -109,9 +113,11 @@
         "verdict": "invalid",
         "reason": "ended_early_for_cause",
         "ending": "revocation",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "EXPIRED",
         "detail": "cause=credential-obtained-through-misstatement actor=did:aps:example:ler-issuing-office"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "EXPIRED"
       }
     },
     {
@@ -132,9 +138,11 @@
         "verdict": "not_established",
         "reason": "revocation_without_lifecycle_standing",
         "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "claimed_by=did:aps:example:ler-outsider"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -153,9 +161,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "inside_declared_window",
-        "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "ending": null
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -176,9 +186,11 @@
         "verdict": "valid",
         "reason": "renewal_evaluated_on_its_own_terms",
         "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "delegation_id=sha256:9326d67d563e6f96f557b164496d4f23a79c526d17ea630f84b0e9faf665fc0d"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -198,9 +210,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "superseded_artifact_reached_its_own_declared_end",
-        "ending": "expiry",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "EXPIRED"
+        "ending": "expiry"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "EXPIRED"
       }
     },
     {
@@ -222,9 +236,11 @@
         "verdict": "not_established",
         "reason": "evidence_keyed_to_superseded_artifact",
         "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "keyed_to=sha256:05124757257ae75f3989024e8a34d39bb49a8ceb074c03dedb2450d64b21f1b6"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -243,9 +259,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "delegation_id_does_not_bind_its_content",
-        "ending": null,
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "ID_MISMATCH"
+        "ending": null
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "ID_MISMATCH"
       }
     },
     {
@@ -264,9 +282,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "renewal_widens_beyond_its_parent",
-        "ending": null,
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "SCOPE_WIDENING"
+        "ending": null
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "SCOPE_WIDENING"
       }
     },
     {
@@ -287,9 +307,11 @@
         "verdict": "valid",
         "reason": "inside_the_recorded_caretaking_scope",
         "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "caretaking=ops:interim:routine"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -310,9 +332,11 @@
         "verdict": "invalid",
         "reason": "outside_the_recorded_caretaking_scope",
         "ending": null,
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "caretaking=ops:interim:routine"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -332,9 +356,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "mandate_extension_widens_beyond_the_interim_grant",
-        "ending": null,
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "TIME_WIDENING"
+        "ending": null
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "TIME_WIDENING"
       }
     },
     {
@@ -355,9 +381,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "extension_record_is_not_a_fresh_grant",
-        "ending": "expiry",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "EXPIRED"
+        "ending": "expiry"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "EXPIRED"
       }
     },
     {
@@ -379,9 +407,11 @@
         "verdict": "not_established",
         "reason": "extension_issuer_not_named_by_the_recorded_instrument",
         "ending": null,
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "claimed_by=did:aps:example:ler-interim-holder"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     }
   ]

@@ -278,11 +278,24 @@ def to_event(fixture: dict, v: dict) -> dict:
             "now": v["now"], "revocation": v["revocation"], "records": records}
 
 
-def matches(actual: dict, expected: dict) -> bool:
-    for key in ("verdict", "reason", "ending", "sdk_chain_state", "sdk_failure_code"):
+def matches_lifecycle(actual: dict, expected: dict) -> bool:
+    for key in ("verdict", "reason", "ending"):
         if actual.get(key) != expected.get(key):
             return False
     return actual.get("detail") == expected.get("detail")
+
+
+def matches_sdk_cross_check(actual: dict, cross: dict) -> bool:
+    # The SDK chain answer is a second assertion, not part of the lifecycle verdict, so
+    # it is read from the vector's `sdk_cross_check` sibling rather than from `expected`.
+    # Both are still checked on every vector.
+    return (actual.get("sdk_chain_state") == cross.get("chain_state")
+            and actual.get("sdk_failure_code") == cross.get("failure_code"))
+
+
+def matches(actual: dict, vector: dict) -> bool:
+    return (matches_lifecycle(actual, vector["expected"])
+            and matches_sdk_cross_check(actual, vector["sdk_cross_check"]))
 
 
 def line(a: dict) -> str:
@@ -313,11 +326,11 @@ def main() -> int:
     matched = 0
     for v in vectors["vectors"]:
         actual = ref_results[v["id"]]
-        ok = matches(actual, v["expected"])
+        ok = matches(actual, v)
         matched += 1 if ok else 0
         print(f"  {'MATCH' if ok else 'MISMATCH'} {v['id']}  {line(actual)}")
         if not ok:
-            print(f"    expected: {json.dumps(v['expected'])}")
+            print(f"    expected: {json.dumps(v['expected'])} sdk_cross_check: {json.dumps(v['sdk_cross_check'])}")
             print(f"    actual:   {json.dumps(actual)}")
 
     all_defectives_ok = True
@@ -330,7 +343,7 @@ def main() -> int:
         for v in vectors["vectors"]:
             actual = results[v["id"]]
             should_match = v["id"] not in declared
-            entry_ok = matches(actual, v["expected"]) if should_match else not matches(actual, v["expected"])
+            entry_ok = matches(actual, v) if should_match else not matches(actual, v)
             ok = ok and entry_ok
             if should_match and entry_ok:
                 continue

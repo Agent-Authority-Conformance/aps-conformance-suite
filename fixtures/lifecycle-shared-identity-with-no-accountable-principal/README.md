@@ -102,6 +102,25 @@ being true or if no case pairs a valid chain with accountability
 testing what the section is about, so it is a checked property rather than a
 convention.
 
+### This family produces no negative authority verdict
+
+All 12 cases expect `authority_verdict: valid`. That is by construction: the
+section exists to show that a perfectly good chain says nothing about who is
+accountable, so every case is given a valid chain and the question is asked on
+the other axis. The consequence is worth stating plainly rather than leaving a
+reader to count it.
+
+A green run here is evidence about the accountability axis and about nothing on
+the authority axis. It does not show that an implementation can return
+`invalid`, `not_established`, `suspended`, `restricted` or `not_yet_effective`
+for authority, and no vector here would catch an implementation that could not.
+The discrimination lives entirely on `accountability_verdict`, 8
+`not_established` against 4 `valid`, and on the `anomaly` field. Negative
+authority verdicts are the business of the families built for them. The same
+statement is carried in the data, at `verdicts.no_negative_authority_verdict` in
+`vectors.json`, so a reader working from the JSON does not have to infer it from
+the counts.
+
 ### Verdict vocabulary
 
 `valid`, `invalid`, `not_established`, `not_yet_effective`, `suspended`,
@@ -365,6 +384,10 @@ For this reference model, at this revision, a pass establishes that:
   establish legal liability. A `valid` accountability verdict here says the
   record set establishes who a system identifies as responsible. It says nothing
   about what follows from that.
+- **It establishes nothing about negative authority verdicts.** Every case
+  expects `authority_verdict: valid`, so a passing run says nothing about
+  whether an implementation can reach any other authority verdict. See "This
+  family produces no negative authority verdict" above.
 - **`not_established` is not an accusation.** It does not say the action was
   unauthorized, that anyone did anything wrong, or that nobody is accountable.
   It says this record set does not answer the question, which is why

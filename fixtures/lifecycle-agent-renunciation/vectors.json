@@ -17,6 +17,7 @@
       "L3",
       "L4"
     ],
+    "invariants_note": "Context for the departure scenario, not vector-level coverage. No vector in this family tests L3 or L4 and none names either in its own record. L3 is about reversing a revocation and no vector presents a withdrawn renunciation. L4 is about what a successor inherits and this family establishes nothing about who covers the work afterwards, which README.md states under 'Where the proposed text was too vague to test'. Read L4 coverage off fixtures/lifecycle-root-authority-succession, whose LRAS-C-007-g and LRAS-C-007-i name it at vector level.",
     "cases": [
       "LC-H-010",
       "LC-H-011"

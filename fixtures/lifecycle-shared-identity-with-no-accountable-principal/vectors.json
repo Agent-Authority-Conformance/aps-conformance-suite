@@ -25,6 +25,7 @@
   "verdicts": {
     "vocabulary": ["valid", "invalid", "not_established", "not_yet_effective", "suspended", "restricted"],
     "authority_verdict": "The state of the authority the acting identity holds. Every case in this family has a valid chain on purpose: the point of the section is that a perfectly good chain says nothing about who is accountable.",
+    "no_negative_authority_verdict": "All 12 cases expect authority_verdict valid. This family produces no negative authority verdict at all, by construction. A green run here is evidence about the accountability axis and about nothing on the authority axis: it does not show that an implementation can return invalid, not_established, suspended, restricted or not_yet_effective for authority, and it was never built to. The discrimination in this family is entirely on accountability_verdict, 8 not_established against 4 valid, and on the anomaly field. Read negative authority verdicts off the families built for them.",
     "accountability_verdict": "Whether the record set establishes which individual is accountable for this action. valid means it does. not_established means it does not, which is different from naming the wrong person and different from the action being unauthorized.",
     "anomaly": "A third, non-verdict field. It records whether an unscoped all-powerful identity was used for a task on its own enumerated required-list or off it. not_applicable where the acting identity is not that kind of identity."
   },

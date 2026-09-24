@@ -347,10 +347,72 @@ if undeclared:
 if declared_but_passing:
     print(f"  declared but matched: {', '.join(declared_but_passing)}", file=sys.stderr)
 
-ok = reference_matched == total and not undeclared and not declared_but_passing
+# The same ten divergences, split by the single defect that causes each one. Each
+# boundary below keeps every other check and drops exactly one, so a failing run names
+# the axis of wrongness instead of only reporting that an implementation is not the
+# reference. Nothing new is decided: the five declared sets must be disjoint and their
+# union must be the combined control's declared set, both checked here.
+NO_DEFECTS = dict(
+    presenter_is_whoever_presents=False,
+    claims_supply_scope=False,
+    freshness_only=False,
+    skip_executor_lifecycle=False,
+    declared_is_consented=False,
+)
+SINGLE_DEFECTS = [
+    ("defective-presenter-is-whoever-presents", "presenter_is_whoever_presents"),
+    ("defective-claims-supply-scope", "claims_supply_scope"),
+    ("defective-freshness-window-only", "freshness_only"),
+    ("defective-skips-executor-lifecycle", "skip_executor_lifecycle"),
+    ("defective-runtime-declaration-is-consent", "declared_is_consented"),
+]
+
+split_sets = vectors["declared_fail_sets"]
+split_ok = True
+seen: set[str] = set()
+for name, flag in SINGLE_DEFECTS:
+    entry = split_sets.get(name)
+    if entry is None:
+        print(f"  vectors.json declares no fail set for {name}", file=sys.stderr)
+        split_ok = False
+        continue
+    for vid in entry["fail_set"]:
+        if vid in seen:
+            print(f"  {vid} appears in more than one single-defect fail set", file=sys.stderr)
+            split_ok = False
+        seen.add(vid)
+        if vid not in declared_set:
+            print(f"  {name} declares {vid}, which the combined control does not", file=sys.stderr)
+            split_ok = False
+    entry_set = set(entry["fail_set"])
+    results = run(Boundary(name, **{**NO_DEFECTS, flag: True}))
+    entry_undeclared = sorted(vid for vid, vok in results.items() if not vok and vid not in entry_set)
+    not_reproduced = sorted(vid for vid in entry["fail_set"] if results.get(vid) is True)
+    if entry_undeclared:
+        print(f"  {name} undeclared divergence: {', '.join(entry_undeclared)}", file=sys.stderr)
+    if not_reproduced:
+        print(f"  {name} declared but matched: {', '.join(not_reproduced)}", file=sys.stderr)
+    entry_ok = not entry_undeclared and not not_reproduced
+    if not entry_ok:
+        split_ok = False
+    print(
+        f"  {name}: removes {entry['removes']}, and diverged on exactly its "
+        f"{len(entry['fail_set'])} declared vectors: {entry_ok}"
+    )
+
+if len(seen) != len(declared_set):
+    print(
+        f"  the five single-defect fail sets cover {len(seen)} vectors, the combined control "
+        f"declares {len(declared_set)}",
+        file=sys.stderr,
+    )
+    split_ok = False
+print(f"single-defect fail sets partition the combined declared set: {split_ok}")
+
+ok = reference_matched == total and not undeclared and not declared_but_passing and split_ok
 print(
     "PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly "
-    "the declared set (python)"
+    "the declared set, and each single-defect boundary diverged on exactly its own declared set (python)"
     if ok
     else "FAILED (python)"
 )

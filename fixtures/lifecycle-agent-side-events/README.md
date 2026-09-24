@@ -365,6 +365,29 @@ Those five removals account for exactly ten vectors. The declared diverging set:
     ASE-19-LC-E-027-d-consent-does-not-reach-back-before-it-was-given
     ASE-20-LC-E-027-e-a-capability-the-runtime-does-not-declare
 
+### The same ten, split by defect
+
+One undivided fail set says an implementation is not the reference. It does not say which
+of the five removals it made. `declared_fail_sets` in `vectors.json` splits the same ten
+vectors by the single removal that causes each divergence, and both runners build a
+boundary per removal and check it in both directions, exactly as they already check the
+combined one.
+
+| control | the one thing it removes | its declared fail set |
+|---|---|---|
+| `defective-presenter-is-whoever-presents` | the comparison of the presenting identity to the grant's `subject` | ASE-12, ASE-14 |
+| `defective-claims-supply-scope` | the refusal to let a self-asserted authority claim supply scope | ASE-15 |
+| `defective-freshness-window-only` | the consumption record and the lost-record refusal window | ASE-05, ASE-07 |
+| `defective-skips-executor-lifecycle` | the executor lifecycle lookup | ASE-02, ASE-04 |
+| `defective-runtime-declaration-is-consent` | the separation of what the runtime can do now from what the principal consented to | ASE-17, ASE-19, ASE-20 |
+
+The five sets are disjoint and their union is exactly the combined control's ten, which
+both runners assert rather than leaving to this table. ASE-14 belongs to the subject
+comparison and not to the claim rule, because the claim it carries is refused on the
+presenter check before the scope rule is reached. That was read off the run, not reasoned
+out. No vector, no input and no expected outcome differs between the two views: this is
+the same control described at a finer grain.
+
 This is the negative control a naive implementation passes wrongly, and it is not a straw
 man. Every check it keeps is a real check, including a live SDK chain verification with a
 correct revocation answer and two Ed25519 signature verifications per presentation. On all
@@ -384,7 +407,7 @@ TypeScript, wired into `npm test` as a step:
 
 Expected final line:
 
-    PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set
+    PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set, and each single-defect boundary diverged on exactly its own declared set
 
 Regenerating `chain.json` gives the same bytes, and `git diff` is empty after a second run:
 
@@ -399,7 +422,7 @@ of the hermetic Node-only CI gate. Needs `agent-passport-system` 4.x installed:
 
 Expected final line:
 
-    PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set (python)
+    PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set, and each single-defect boundary diverged on exactly its own declared set (python)
 
 The two SDK support probes, which print a per-API `supported` or `not_supported` line and
 assert nothing:
@@ -466,7 +489,9 @@ Both runners were executed locally against `agent-passport-system` 7.1.0 (npm) a
 `agent-passport-system` 4.1.0 (PyPI, in a virtual environment). The `reference-boundary`
 matched 20/20 presentations under both runners.
 `defective-boundary-same-agent-fresh-signature` diverged on exactly the declared set of 10
-under both runners and matched the remaining 10 under both. `npm ci --include=dev` and
+under both runners and matched the remaining 10 under both. Each of the five
+single-defect boundaries diverged on exactly its own declared set under both runners, and
+the five sets partitioned the combined ten. `npm ci --include=dev` and
 `npm test` both exited 0 with this family wired in. These are author-produced records, not
 independent ones, per `CONTRIBUTING.md`.
 

@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url'
 import type { AuthorityDelegationV1 } from 'agent-passport-system'
 
 import {
+  SINGLE_DEFECT_BOUNDARIES,
   makeDefectiveBoundary,
   makeReferenceBoundary,
   type AgentSideEventBoundary,
@@ -149,10 +150,51 @@ console.log(`defective-boundary declared failing set: ${declared.length}`)
 if (undeclaredFailures.length > 0) console.error(`  undeclared divergence: ${undeclaredFailures.join(', ')}`)
 if (declaredButPassing.length > 0) console.error(`  declared but matched: ${declaredButPassing.join(', ')}`)
 
-const ok = referenceMatched === total && undeclaredFailures.length === 0 && declaredButPassing.length === 0
+// The same ten divergences, split by the single defect that causes each one. Each
+// boundary below keeps every other check and drops exactly one, so a failing run names
+// the axis of wrongness instead of only reporting that an implementation is not the
+// reference. Nothing new is decided: the five declared sets must be disjoint and their
+// union must be the combined control's declared set, both checked here.
+const splitSets: Record<string, { removes: string, fail_set: string[] }> = vectors.declared_fail_sets
+let splitOk = true
+const seen = new Set<string>()
+for (const { name, make } of SINGLE_DEFECT_BOUNDARIES) {
+  const entry = splitSets[name]
+  if (entry === undefined) {
+    console.error(`  vectors.json declares no fail set for ${name}`)
+    splitOk = false
+    continue
+  }
+  for (const id of entry.fail_set) {
+    if (seen.has(id)) {
+      console.error(`  ${id} appears in more than one single-defect fail set`)
+      splitOk = false
+    }
+    seen.add(id)
+    if (!declaredSet.has(id)) {
+      console.error(`  ${name} declares ${id}, which the combined control does not`)
+      splitOk = false
+    }
+  }
+  const entrySet = new Set(entry.fail_set)
+  const results = run(make(options))
+  const undeclared = [...results.entries()].filter(([id, ok]) => !ok && !entrySet.has(id)).map(([id]) => id)
+  const notReproduced = entry.fail_set.filter((id) => results.get(id) === true)
+  if (undeclared.length > 0) console.error(`  ${name} undeclared divergence: ${undeclared.join(', ')}`)
+  if (notReproduced.length > 0) console.error(`  ${name} declared but matched: ${notReproduced.join(', ')}`)
+  if (undeclared.length > 0 || notReproduced.length > 0) splitOk = false
+  console.log(`  ${name}: removes ${entry.removes}, and diverged on exactly its ${entry.fail_set.length} declared vectors: ${undeclared.length === 0 && notReproduced.length === 0}`)
+}
+if (seen.size !== declaredSet.size) {
+  console.error(`  the five single-defect fail sets cover ${seen.size} vectors, the combined control declares ${declaredSet.size}`)
+  splitOk = false
+}
+console.log(`single-defect fail sets partition the combined declared set: ${splitOk}`)
+
+const ok = referenceMatched === total && undeclaredFailures.length === 0 && declaredButPassing.length === 0 && splitOk
 console.log(
   ok
-    ? 'PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set'
+    ? 'PASSED: reference-boundary matched every presentation, defective boundary diverged on exactly the declared set, and each single-defect boundary diverged on exactly its own declared set'
     : 'FAILED',
 )
 process.exit(ok ? 0 : 1)

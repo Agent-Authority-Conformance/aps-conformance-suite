@@ -84,10 +84,19 @@ answer, the SDK's own chain verification still returns `valid`.
 | each signed lifecycle record's issuer signature | the SDK | `verify` over `canonicalizeJCS` / `canonicalize_jcs` |
 | all fourteen lifecycle rules | **this fixture** | `harness.ts`, and `verify_python_sdk.py` on the Python side |
 
-`vectors.json` carries `sdk_chain_state` and `sdk_failure_code` next to every lifecycle
-verdict. They are never merged. Three places where they disagree on purpose:
+`vectors.json` carries the SDK chain answer beside every lifecycle verdict, not inside
+it. Each vector has an `expected` block holding `verdict`, `reason` and `detail`, and a
+sibling `sdk_cross_check` block holding `chain_state` and `failure_code`. Both are
+checked on every vector by both runners and a vector passes only when both match. The two
+blocks are never merged, which is why they sit apart: the lifecycle verdict is decided by
+this fixture's rules and the chain answer is the SDK's, and on three vectors they
+disagree on purpose. Keeping them apart also means a verifier with a different authority
+model can be driven by these inputs and compared on the `expected` block alone.
 
-- `LC-G-007-c`: lifecycle verdict `not_yet_effective`, SDK `invalid` with `NOT_YET_VALID`.
+Three places where they disagree on purpose:
+
+- `LC-G-007-c`: lifecycle verdict `not_yet_effective`, SDK `chain_state: invalid` with
+  `failure_code: NOT_YET_VALID`.
 - `LC-E-019-b`: lifecycle verdict `invalid` (the wind-down grace elapsed), SDK `valid`
   (the grant itself is untouched).
 - `LC-E-034-b`: lifecycle verdict `suspended`, SDK `valid`. The resolver has no answer for

@@ -108,6 +108,7 @@
       "note": "The executor a grant names and the capabilities it carries are expressed as colon-separated scope grants, so both stay inside the grammar draft-03 defines. draft-03 defines no executor grant and no capability grant."
     }
   },
+  "declared_fail_sets_note": "declared_defective_fail_set is the combined control: one boundary with all five defects at once. declared_fail_sets splits the same ten vectors by the single defect that causes each divergence, so a failing run names which axis of wrongness an implementation has and not merely that it is not the reference. The five sets are disjoint and their union is exactly declared_defective_fail_set, which both runners check. No vector, input or expected outcome differs between the two views.",
   "declared_defective_fail_set": [
     "ASE-02-LC-E-002-b-named-executor-retired-not-established",
     "ASE-04-LC-E-002-d-named-executor-unresolvable-not-established",
@@ -120,6 +121,43 @@
     "ASE-19-LC-E-027-d-consent-does-not-reach-back-before-it-was-given",
     "ASE-20-LC-E-027-e-a-capability-the-runtime-does-not-declare"
   ],
+  "declared_fail_sets": {
+    "defective-presenter-is-whoever-presents": {
+      "removes": "the comparison of the presenting identity to the grant's subject",
+      "fail_set": [
+        "ASE-12-LC-E-025-a-a-copy-presents-the-originals-grant-not-established",
+        "ASE-14-LC-E-031-a-transferred-memory-claim-is-not-a-grant"
+      ]
+    },
+    "defective-claims-supply-scope": {
+      "removes": "the refusal to let a self-asserted authority claim supply scope",
+      "fail_set": [
+        "ASE-15-LC-E-031-b-a-memory-claim-does-not-widen-the-grants-scope"
+      ]
+    },
+    "defective-freshness-window-only": {
+      "removes": "the consumption record and the lost-record refusal window",
+      "fail_set": [
+        "ASE-05-LC-E-012-a-second-presentation-of-the-same-credential-not-established",
+        "ASE-07-LC-E-012-c-replay-record-lost-inside-the-window-not-established"
+      ]
+    },
+    "defective-skips-executor-lifecycle": {
+      "removes": "the executor lifecycle lookup",
+      "fail_set": [
+        "ASE-02-LC-E-002-b-named-executor-retired-not-established",
+        "ASE-04-LC-E-002-d-named-executor-unresolvable-not-established"
+      ]
+    },
+    "defective-runtime-declaration-is-consent": {
+      "removes": "the separation of what the runtime can do now from what the principal consented to",
+      "fail_set": [
+        "ASE-17-LC-E-027-b-a-capability-an-update-added-and-nobody-consented-to",
+        "ASE-19-LC-E-027-d-consent-does-not-reach-back-before-it-was-given",
+        "ASE-20-LC-E-027-e-a-capability-the-runtime-does-not-declare"
+      ]
+    }
+  },
   "presentations": [
     {
       "id": "ASE-01-LC-E-002-a-named-executor-live-control",

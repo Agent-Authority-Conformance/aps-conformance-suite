@@ -57,7 +57,7 @@ it.
 mint.ts                 builds chain.json, byte for byte, from published seed labels
 chain.json              9 delegation chains, 9 signed lifecycle records, 5 action refs
 harness.ts              the reference boundary and its two declared defective controls
-vectors.json            15 vectors, their expected outcomes and the declared fail sets
+vectors.json            15 vectors, their expected outcomes, their SDK cross-checks and the declared fail sets
 verify.ts               the TypeScript run, wired into `npm test`
 verify_python_sdk.py    the Python run, manual, not in the Node-only CI gate
 CHECKSUMS.sha256        digests of every file above
@@ -89,6 +89,15 @@ must produce no diff. Each vector is presented to a freshly constructed boundary
 | lifecycle standing to end an artifact early | **this fixture** | the signed standing registry in `chain.json` |
 | renewal, supersession, and evidence keyed to a superseded identifier | **this fixture** | `harness.ts` |
 | an interim or caretaking mandate | **this fixture** | `harness.ts` |
+
+`vectors.json` carries the SDK chain answer beside every lifecycle verdict, not inside
+it. Each vector has an `expected` block holding `verdict`, `reason`, `ending` and
+`detail`, and a sibling `sdk_cross_check` block holding `chain_state` and `failure_code`.
+Both are checked on every vector by both runners and a vector passes only when both
+match. The two blocks sit apart because the fixture never merges them: on `LC-I-007-c`
+the SDK's `EXPIRED` sits next to an `ending` of `revocation`, not instead of it. Keeping
+them apart also means a verifier with a different authority model can be driven by these
+inputs and compared on the `expected` block alone.
 
 Two SDK answers worth naming, both recorded in `chain.json` under
 `mint_time_sdk_observations` rather than asserted here:
