@@ -1,0 +1,731 @@
+{
+  "_placeholder": false,
+  "profile": "aac-lifecycle-fiduciary-succession-v0",
+  "clock": {
+    "T_ISSUE": "2026-09-20T08:00:00.000Z",
+    "T_NOT_AFTER": "2026-09-30T00:00:00.000Z",
+    "T_INTEREST_PRIOR": "2026-09-20T09:00:00.000Z",
+    "T_APPROVE_EARLY": "2026-09-20T10:00:00.000Z",
+    "T_ACT": "2026-09-20T11:00:00.000Z",
+    "T_CAPACITY_EARLIER": "2026-09-20T11:30:00.000Z",
+    "T_INTEREST_INTERVENING": "2026-09-21T09:00:00.000Z",
+    "T_VACATE": "2026-09-21T10:00:00.000Z",
+    "T_APPROVE": "2026-09-21T11:00:00.000Z",
+    "T_ACTION_1": "2026-09-21T12:00:00.000Z",
+    "T_RESOLUTION": "2026-09-22T09:00:00.000Z",
+    "T_ACTION_BEFORE_RESOLUTION": "2026-09-21T13:00:00.000Z",
+    "T_ACTION_AFTER_RESOLUTION": "2026-09-22T12:00:00.000Z",
+    "T_RATIFY": "2026-09-23T09:00:00.000Z",
+    "T_EVALUATE_AFTER_RATIFY": "2026-09-23T12:00:00.000Z",
+    "T_EVALUATE_BEFORE_RATIFY": "2026-09-22T18:00:00.000Z"
+  },
+  "act_id": "lfs-act-sell-press-line-3",
+  "action_ref": "lfs-act-ledger-close",
+  "target": "lfs:asset:press-line-3",
+  "verification_keys": {
+    "did:aps:example:lfs-principal#key-1": "ad93ea535bd93ba111d72d8b309003027e82f92fe9fe9700c32be2bc19ee9e7d",
+    "did:aps:example:lfs-holder-1#key-1": "3cdf531c16ac847c6369c8a03145ed673e41c8f218e8fcb39fec9938078ca2c1",
+    "did:aps:example:lfs-holder-2#key-1": "d0558aa40ed69ba6f7304b126e9f728ccae1224a25c594f64f6759ccc9316819",
+    "did:aps:example:lfs-holder-3#key-1": "35f7257135b7528f2d7c1686ece7a208a601a1ef072bfb0c257c42859c78b589",
+    "did:aps:example:lfs-holder-4#key-1": "f4b02b03530d5493cba91e91b21f1835b68ad339b9c6d0ae18fdee9425238d5c",
+    "did:aps:example:lfs-temp-admin#key-1": "a4f7f3e0f2e80888e7d71ae7cb75a5c7bf5cd1d26e25b7d03c833dd4d4af6267",
+    "did:aps:example:lfs-agent-2#key-1": "5c4e777763f9c1de9906c4c313a3eeb85e7f2aa3dfe8befe4f79aae7a0e42a18",
+    "did:aps:example:lfs-registrar#key-1": "8351a949f02c08a165db700bb34fc4d3a7e696a76821ac84ae8a673de7d0cb34",
+    "did:aps:example:lfs-court#key-1": "cc2190854fd60105e82f2082b4c6cb4d4014d77e58660399a3764c205ecae3a9",
+    "did:aps:example:lfs-capacity-examiner#key-1": "008ee599f59ac4040c5fdc81880c762d2dfd623f448201657830632a9ec6d434",
+    "did:aps:example:lfs-interest-registry#key-1": "7a993deb0eb1919e6651573057d742496a4019abb011aa1ee277ff98cb49ee42",
+    "did:aps:example:lfs-impostor#key-1": "7f724d2f976b7499dfb88c401e67fdcfefb35db1318d45600c875a426fd210c5"
+  },
+  "attestor_role_registry": {
+    "did:aps:example:lfs-registrar": "org-registrar",
+    "did:aps:example:lfs-court": "court-of-record",
+    "did:aps:example:lfs-capacity-examiner": "capacity-examiner",
+    "did:aps:example:lfs-interest-registry": "property-registry",
+    "did:aps:example:lfs-impostor": "unaffiliated-observer"
+  },
+  "event_standing": {
+    "holder_vacancy": "org-registrar",
+    "co_holder_approval": "named-co-holder",
+    "co_holder_dissent": "named-co-holder",
+    "dispute_resolution": "court-of-record",
+    "principal_ratification": "grant-principal",
+    "principal_capacity_finding": "capacity-examiner",
+    "intervening_interest": "property-registry"
+  },
+  "terms_by_chain": {
+    "G_COHOLDER_H1": "G_COHOLDER_H1",
+    "G_COHOLDER_H2": "G_COHOLDER_H2",
+    "G_COHOLDER4_H1": "G_COHOLDER4_H1",
+    "G_TEMP_ADMIN": "G_TEMP_ADMIN",
+    "G_RATIFY": "G_RATIFY"
+  },
+  "grant_terms": {
+    "G_COHOLDER_H1": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:aa2d58b6d85b3fd5f669c2d4007a87efa40c4aba0daa2e6bebbcedaebf531f48",
+      "issuer": "did:aps:example:lfs-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "co_holders": [
+          "did:aps:example:lfs-holder-1",
+          "did:aps:example:lfs-holder-2",
+          "did:aps:example:lfs-holder-3"
+        ],
+        "decision_rule": "majority_of_current_holders",
+        "action_ref": "lfs-act-ledger-close",
+        "permitted_action_classes": [
+          "ledger_close"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "8497430001dfe45fa2e4079c941454e3",
+      "terms_id": "165aa4678fa70cc55be6038ca266cf0d27d40a45391b226766ef184f37d1c49d",
+      "signature": "a832a5b0e2bd5aa052d6cfe2fbaf44d5393faaa3c11bf98fce5a260dbfcd39a86632c80f77ed6527b412fd4048e213905bf4b5b938baa6e27f4fe11e878c7304"
+    },
+    "G_COHOLDER_H2": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:4afbf15ff096d39c9ae4b59fbf7063220b461bd3521565c4fbf3ea7bbd2bdf56",
+      "issuer": "did:aps:example:lfs-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "co_holders": [
+          "did:aps:example:lfs-holder-1",
+          "did:aps:example:lfs-holder-2",
+          "did:aps:example:lfs-holder-3"
+        ],
+        "decision_rule": "majority_of_current_holders",
+        "action_ref": "lfs-act-ledger-close",
+        "permitted_action_classes": [
+          "ledger_close"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "a0c53bcc78edf41ca86a45961f1e5628",
+      "terms_id": "95f3cdfa7d86c0769bb90e2320026fa374f9c5b7f4a85876ee94350cb8f6fec0",
+      "signature": "67d93976835614e4d18c08e9586690974946964a1fc63f20752d17f4b6aaa049aaa1e574f94743d143550c5f913cfe7ee4f052d84c467d548c395514f9075306"
+    },
+    "G_COHOLDER4_H1": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:00ac86e14aadfe19f34e343ada20efc1ca154672490e57a60b6a9f4f6858ccaa",
+      "issuer": "did:aps:example:lfs-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "co_holders": [
+          "did:aps:example:lfs-holder-1",
+          "did:aps:example:lfs-holder-2",
+          "did:aps:example:lfs-holder-3",
+          "did:aps:example:lfs-holder-4"
+        ],
+        "decision_rule": "majority_of_current_holders",
+        "action_ref": "lfs-act-ledger-close",
+        "permitted_action_classes": [
+          "ledger_close"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "ad556af456a523413e6a837b984b58a1",
+      "terms_id": "9ecfcc89b9776327376e406df2e9f217e7c2c448ff3bac648b0a9a5ffe934019",
+      "signature": "94c8a9f5ca7216a430e773592df7ac996fcc7e4d2d9de6e10d1fe72083557984b28ebc60737f7a1bc4349410a67132e3d28573973201f51bb6e0d0c1ad843309"
+    },
+    "G_TEMP_ADMIN": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:36046e431a7a6c8b2b14ab6ab8e82dab8f0b368f6a4a1a89219c6e126d8570aa",
+      "issuer": "did:aps:example:lfs-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "mandate": {
+          "mandate_class": "temporary_preservation",
+          "permitted_action_classes": [
+            "preserve"
+          ],
+          "ends_on_event": "dispute_resolution",
+          "dispute_ref": "lfs-dispute-2026-09"
+        }
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "75247cc44d3d57b3a8afb4d59a842f86",
+      "terms_id": "ff19d86798ea820c1ee03eda53e34c5e9130a5f3ce23e8894a7ef4f3c88bfe90",
+      "signature": "a089dd6cc33d5c25c455a4e0b04690be6708a5f5560c17e702e3e198f84e423be34f7f14519da137bdacdbbacae7410eca32a016b506dd05d11ead161b6ccf03"
+    },
+    "G_RATIFY": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:dfc22c41757285e19ee4c401f287d612f6bc64e02aaa116d4ae0773806cb57f4",
+      "issuer": "did:aps:example:lfs-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "permitted_action_classes": [
+          "reconcile"
+        ],
+        "integrated_acts": {
+          "lfs-act-sell-press-line-3": {
+            "components": [
+              "transfer_title",
+              "receive_payment"
+            ],
+            "target": "lfs:asset:press-line-3"
+          }
+        }
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "5698ee30d02cbf32fe0d251ff27037c2",
+      "terms_id": "848f3612a04c010c0359829fc72d59bd924730574163d9089714c6e833536251",
+      "signature": "01d663c66923950bb15d7094b6250c852ad8789d9ed34331ff65ddba80f5cb13e39320724a38975999df9042f1651ea57c0e7975afea2da6b1d57bc1c8d42306"
+    }
+  },
+  "events": {
+    "APPROVE_H1_EARLY": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_approval",
+      "attestor": "did:aps:example:lfs-holder-1",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-20T10:00:00.000Z",
+      "recorded_at": "2026-09-20T10:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-1#key-1",
+      "nonce": "28e6c5c7ac21a5d44006b305c375358d",
+      "event_id": "e61b946eff51825522ea07b7d9e10bea78305b185552057f6c6720a12e6b2e25",
+      "signature": "21cc612ed64a708ace9b632a690cde27cbd4544a41f5080fe4751556dbcd4baeaa906cba7cdcf8f9f402a22ea25fb5b82776c2fe998038e1a8c0827e0a30df0d"
+    },
+    "APPROVE_H1": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_approval",
+      "attestor": "did:aps:example:lfs-holder-1",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-1#key-1",
+      "nonce": "3ffdc6005b55884118a9ae16c1b3a1be",
+      "event_id": "46ff2b3936180e4f8e01cb61b353d1ea4695a0d68c232fe5046d6cd666f864b7",
+      "signature": "d25a1747e7f3c33c1f07712076e9a73e3b3f2532fb3b38bf5269a00d5e737ae5126a6115ce555b5aa483a085d4fdc79a0024e5c1634a0a2d33d72603ab29e201"
+    },
+    "APPROVE_H2": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_approval",
+      "attestor": "did:aps:example:lfs-holder-2",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-2#key-1",
+      "nonce": "955ba84a78ea7aa863164134525435b0",
+      "event_id": "8c40a126144cbd66461396d600bcc14b14a0a21110e6722e08a1707272be4cb5",
+      "signature": "bd8b5e79d038b6e43aaae9cb310cbde3628598c210de08a870213361fdc3850cd51c661f65163b41dc68b7e9dd919981c17eacbf12385532117c72d84a46720e"
+    },
+    "APPROVE_H3": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_approval",
+      "attestor": "did:aps:example:lfs-holder-3",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-3#key-1",
+      "nonce": "1138e837119cd6b5ff481ed931f5d7a4",
+      "event_id": "bbcbc7f4f9077eeba00b72a0323e3cde23fd42308d3971bdd2d4284e402a5913",
+      "signature": "124582ac2cdc4ab10849da6592455b9fa46d3bba8e3b1d8452a0ddc7b9277c131710a5d0ba6b165ed5778455e028ffc1325d297c766f1133fb4ded6a1647b001"
+    },
+    "DISSENT_H3": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_dissent",
+      "attestor": "did:aps:example:lfs-holder-3",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-3#key-1",
+      "nonce": "1f20797c61b59164a294a2f24a465ff2",
+      "event_id": "9c3e0573205d173af16eded1b0706440408f78c65f98388e50e078f98c352803",
+      "signature": "359db17d9c8432e0889c2b7cd326f1c1fb3e77394b9eef1f1bdd4b0a11205fa391580703d9985bd09fcf29651fcf33f7542369e334a65248b5368d4dce619f04"
+    },
+    "DISSENT_H4": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_dissent",
+      "attestor": "did:aps:example:lfs-holder-4",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-holder-4#key-1",
+      "nonce": "9cd84c71124efa2546236cc31d34f5b4",
+      "event_id": "f2280eece6b9c0d625969075690bf2b0c25fd8510fabd54900dc7af800e91ca6",
+      "signature": "48f93d0ebd339a281cb0b80e7aacf9e171acfca19ed6a4bf1faff324b0d4956f0f96595218dc3034d9d71d2c2ad077f1fc441184777f6ece26e7f93be1663d00"
+    },
+    "APPROVE_IMPOSTOR": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "co_holder_approval",
+      "attestor": "did:aps:example:lfs-impostor",
+      "attestor_role": "named-co-holder",
+      "subject_ref": "lfs-act-ledger-close",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "action_ref": "lfs-act-ledger-close"
+      },
+      "verification_method": "did:aps:example:lfs-impostor#key-1",
+      "nonce": "a53074503fd58a71941bd9acb4d3beb7",
+      "event_id": "6eb250b094b99b3c3c172be1086512316dcb8e18ada46a0aa2a54a9e946ebc7e",
+      "signature": "21b8c35604125e17c208f12b82697b580370eb2bdce237a7375f50dbf5e260e72227762a53c388534d996fb163eefa7bf96d9e5503f0bb47576cf175293a1d00"
+    },
+    "VACANCY_H1": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "holder_vacancy",
+      "attestor": "did:aps:example:lfs-registrar",
+      "attestor_role": "org-registrar",
+      "subject_ref": "did:aps:example:lfs-holder-1",
+      "occurred_at": "2026-09-21T10:00:00.000Z",
+      "recorded_at": "2026-09-21T10:00:00.000Z",
+      "payload": {
+        "basis": "resigned"
+      },
+      "verification_method": "did:aps:example:lfs-registrar#key-1",
+      "nonce": "2ada82db1466474df8756a0acd4285aa",
+      "event_id": "2211cf804345732a0534d8d13ae89bdc12d420972946f7eb7761b81ee5741670",
+      "signature": "11085b4c93fe2de694e957eaa9f565401f526525c95d4e3cd9674b873da0bdd5c450311cccdc47b34a6c06531bec24c0624182a8aabc325943ce09441597680b"
+    },
+    "VACANCY_H3": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "holder_vacancy",
+      "attestor": "did:aps:example:lfs-registrar",
+      "attestor_role": "org-registrar",
+      "subject_ref": "did:aps:example:lfs-holder-3",
+      "occurred_at": "2026-09-21T10:00:00.000Z",
+      "recorded_at": "2026-09-21T10:00:00.000Z",
+      "payload": {
+        "basis": "resigned"
+      },
+      "verification_method": "did:aps:example:lfs-registrar#key-1",
+      "nonce": "7a6ba872b7162abf0c76982faf048d4f",
+      "event_id": "9a8a760f16016b64132a9a3873523677b0f53639fbe2b6bc2618b8a9b439771a",
+      "signature": "0e63ec451adfed3b9e921745de05bbcb94f1dc78d5893a4ec37a144913406e851a37873e589b121868cce8d51497e5ef021d1e560bbde85b0bb58686a840c70b"
+    },
+    "DISPUTE_RESOLUTION": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "dispute_resolution",
+      "attestor": "did:aps:example:lfs-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lfs-temp-admin",
+      "occurred_at": "2026-09-22T09:00:00.000Z",
+      "recorded_at": "2026-09-22T09:00:00.000Z",
+      "payload": {
+        "dispute_ref": "lfs-dispute-2026-09",
+        "outcome": "permanent_successor_appointed"
+      },
+      "verification_method": "did:aps:example:lfs-court#key-1",
+      "nonce": "bbedb4930b9bdfbd18a23c0950eda6c4",
+      "event_id": "42e95cbcb0bbe2e0e8e2942bab7fc4d0433561780e77e1efe281a5ed1c16544b",
+      "signature": "03ebec45df5524bd766d28c981437f5d243361a18a6869a8dfe58cce1460786b0f49f85b92c504476c5a5e1f996aa43794fb20a650c5cd7b539aec8c73e79902"
+    },
+    "DISPUTE_RESOLUTION_NO_STANDING": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "dispute_resolution",
+      "attestor": "did:aps:example:lfs-impostor",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lfs-temp-admin",
+      "occurred_at": "2026-09-22T09:00:00.000Z",
+      "recorded_at": "2026-09-22T09:00:00.000Z",
+      "payload": {
+        "dispute_ref": "lfs-dispute-2026-09",
+        "outcome": "permanent_successor_appointed"
+      },
+      "verification_method": "did:aps:example:lfs-impostor#key-1",
+      "nonce": "1ea8ad333e9663a14d38156faa452351",
+      "event_id": "6c804285db08e8ba724e1aab88c25c0452a25bc6516bc8a6f73484c921c3368f",
+      "signature": "5c9562bdd5bde6f4254abb354b902748ba2422fcb9e7872a4857dcffdd4090c02f63b0cc4712c08afb5ace7cadc69594690770f3116d9d955e8cc049972bd400"
+    },
+    "RATIFICATION_FULL": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "principal_ratification",
+      "attestor": "did:aps:example:lfs-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lfs-act-sell-press-line-3",
+      "occurred_at": "2026-09-23T09:00:00.000Z",
+      "recorded_at": "2026-09-23T09:00:00.000Z",
+      "payload": {
+        "act_id": "lfs-act-sell-press-line-3",
+        "covers_components": [
+          "receive_payment",
+          "transfer_title"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "30d9d85376a2235c715e7e8389e4b973",
+      "event_id": "f37feed7b86537291861f0d561f9dd3355e9fe1b2d10ac487c0d750f55e43418",
+      "signature": "08e180f46d13a6cbda6788574671ecd56cb193ec43ac08df50514862542aeaea7e5bdb42e3c9ee765dad824c8329965ff2075a1b541dd55facd0b6d5cc014208"
+    },
+    "RATIFICATION_PARTIAL": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "principal_ratification",
+      "attestor": "did:aps:example:lfs-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lfs-act-sell-press-line-3",
+      "occurred_at": "2026-09-23T09:00:00.000Z",
+      "recorded_at": "2026-09-23T09:00:00.000Z",
+      "payload": {
+        "act_id": "lfs-act-sell-press-line-3",
+        "covers_components": [
+          "receive_payment"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-principal#key-1",
+      "nonce": "73da89e89e385413519fcbbf21a18b2c",
+      "event_id": "16d10fd31fc96ceb8167e743b87553987abc867f350141ac94d7e1c66daa10b0",
+      "signature": "89aea3580d551b937ff9398d8082fe351564f6be3f1e8e23dfa168bd9237d3dbae2fb4d2988d7d1d47d332d20d98bebc539ec9a2363a292b7a584c255a78b60c"
+    },
+    "RATIFICATION_FROM_IMPOSTOR": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "principal_ratification",
+      "attestor": "did:aps:example:lfs-impostor",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lfs-act-sell-press-line-3",
+      "occurred_at": "2026-09-23T09:00:00.000Z",
+      "recorded_at": "2026-09-23T09:00:00.000Z",
+      "payload": {
+        "act_id": "lfs-act-sell-press-line-3",
+        "covers_components": [
+          "receive_payment",
+          "transfer_title"
+        ]
+      },
+      "verification_method": "did:aps:example:lfs-impostor#key-1",
+      "nonce": "bfcbb0970dda731ece5e64afb2a8f7b1",
+      "event_id": "43467a83960f1aac3761c380d38d4083ed157e26928f7f5bbe7b4b43ad5ce614",
+      "signature": "047187d4fdfb5eb9a427ea1331d98dde315647b31811c37e5eb9f9fe76da91ea19c17a41fbce5935d7082d82dd39ed7ce44345d6346dd13b32decc8ac3430c03"
+    },
+    "CAPACITY_LACKS_AT_RATIFICATION": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "principal_capacity_finding",
+      "attestor": "did:aps:example:lfs-capacity-examiner",
+      "attestor_role": "capacity-examiner",
+      "subject_ref": "did:aps:example:lfs-principal",
+      "occurred_at": "2026-09-23T09:00:00.000Z",
+      "recorded_at": "2026-09-23T09:00:00.000Z",
+      "payload": {
+        "finding": "lacks_capacity",
+        "covers_from": "2026-09-23T09:00:00.000Z",
+        "covers_through": "2026-09-23T12:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lfs-capacity-examiner#key-1",
+      "nonce": "92b77529429cf9a7aefb4935eb397f0e",
+      "event_id": "afa3f7ea5c4a44476c8d98664c36be97a34be7c0be7095d61383938bcb542421",
+      "signature": "0753ac44c9a9f5ab702f385c678adc8c1c0d57f0529c97b34533fce7b35da97898445f8534382beeeea3c5a91a1a3be0701189d91777b4e28a8396ebdc7f6508"
+    },
+    "CAPACITY_LACKS_EARLIER": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "principal_capacity_finding",
+      "attestor": "did:aps:example:lfs-capacity-examiner",
+      "attestor_role": "capacity-examiner",
+      "subject_ref": "did:aps:example:lfs-principal",
+      "occurred_at": "2026-09-20T11:30:00.000Z",
+      "recorded_at": "2026-09-20T11:30:00.000Z",
+      "payload": {
+        "finding": "lacks_capacity",
+        "covers_from": "2026-09-20T11:30:00.000Z",
+        "covers_through": "2026-09-21T10:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lfs-capacity-examiner#key-1",
+      "nonce": "c3682c990ef5e104293c81cd5278c27c",
+      "event_id": "47c215c41a0820e39f645371b43af4108bead78f9664a7ca5759a50a030abc20",
+      "signature": "68bf5a4e28750423cf8b5565c99f2752e8d3c62a7f9493e3d2a3cf619d99333def3c208a9d2eabc31336a10e2817e853590edd336b264cdc3843dfdfaf5a1f01"
+    },
+    "INTERVENING_INTEREST": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "intervening_interest",
+      "attestor": "did:aps:example:lfs-interest-registry",
+      "attestor_role": "property-registry",
+      "subject_ref": "lfs:asset:press-line-3",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "target": "lfs:asset:press-line-3",
+        "acquired_at": "2026-09-21T09:00:00.000Z",
+        "holder": "lfs:third-party:blue-co"
+      },
+      "verification_method": "did:aps:example:lfs-interest-registry#key-1",
+      "nonce": "fdc4bfa9d20e00162a1f15d39bedfaa1",
+      "event_id": "f57455c293e4bb3300297752d2fe76dc7586bac8478f289fb8b1c8e80391b27e",
+      "signature": "cca2822160c8167c2da90072a764f33639e74d0768e24de6885910fc9f443e99b28107fc49c178d820de686a40fb1fde8061f4e994900f504c54a4d8705f440f"
+    },
+    "PRIOR_INTEREST": {
+      "record_type": "fixture:succession-event:v0",
+      "version": "0.1",
+      "event_type": "intervening_interest",
+      "attestor": "did:aps:example:lfs-interest-registry",
+      "attestor_role": "property-registry",
+      "subject_ref": "lfs:asset:press-line-3",
+      "occurred_at": "2026-09-20T09:00:00.000Z",
+      "recorded_at": "2026-09-20T09:00:00.000Z",
+      "payload": {
+        "target": "lfs:asset:press-line-3",
+        "acquired_at": "2026-09-20T09:00:00.000Z",
+        "holder": "lfs:third-party:green-co"
+      },
+      "verification_method": "did:aps:example:lfs-interest-registry#key-1",
+      "nonce": "23511ccf0a44e5819466438bc906a1da",
+      "event_id": "159f38159754fcf51336ce67e88ea199fcb886f0529c1025dfdb8a25e1d87c62",
+      "signature": "3f01ebb3acdc1eef713013e0cc56b1ca850a70e1fcab1aeed1c7b7f9eb4778291b28514f2ce6d07d100b88cbbd746ade3d8f53dc72993bf4abba5bc81d798600"
+    }
+  },
+  "chains": {
+    "G_COHOLDER_H1": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lfs-principal",
+        "subject": "did:aps:example:lfs-holder-1",
+        "verification_method": "did:aps:example:lfs-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "d24bfcf9737e62809237ebf8f507d0c2",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:close"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:aa2d58b6d85b3fd5f669c2d4007a87efa40c4aba0daa2e6bebbcedaebf531f48",
+        "signature": "3f1528016505213fe8cddf366b6bcf70cf1cab3a1f507f92217b45c1302197d15707bc0201de07b597961cf5ffa8797986d58b7be780f4fbc68d01eb2aa3ab06"
+      }
+    ],
+    "G_COHOLDER_H2": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lfs-principal",
+        "subject": "did:aps:example:lfs-holder-2",
+        "verification_method": "did:aps:example:lfs-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "3136860517b95196a972f62db93a7a4c",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:close"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:4afbf15ff096d39c9ae4b59fbf7063220b461bd3521565c4fbf3ea7bbd2bdf56",
+        "signature": "1a17186ddb5636bef32d9f2c5ad3b4b146aa0a49c0e7b070ea64c25510c904e1a6eaa63b5dfd333e6a668e50bac9062a3eed062fab878f69a88c2b9303dc3d09"
+      }
+    ],
+    "G_COHOLDER4_H1": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lfs-principal",
+        "subject": "did:aps:example:lfs-holder-1",
+        "verification_method": "did:aps:example:lfs-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "8d1c65c2558baef154b4ba57d58b6f17",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:close"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:00ac86e14aadfe19f34e343ada20efc1ca154672490e57a60b6a9f4f6858ccaa",
+        "signature": "51794176ea3763cd32f7f54da04494eb692fb8dd00177a01473cba87dd7775e84fc0f6758254b1398f2fd1d75b1094c41e3a740b141a6057db67671f9fcf7507"
+      }
+    ],
+    "G_TEMP_ADMIN": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lfs-principal",
+        "subject": "did:aps:example:lfs-temp-admin",
+        "verification_method": "did:aps:example:lfs-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "37c0c4edbe7ef4080ee1527a4eb50ff5",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "estate:manage"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:36046e431a7a6c8b2b14ab6ab8e82dab8f0b368f6a4a1a89219c6e126d8570aa",
+        "signature": "610c6cd8430a4da19bd2dec9cd90fee465c453c13611b227e2347ebf5e57d3ef7a6dbb69bca36cb30038eec9f64247b6b1010095daaa418c2ce4521d2b3fb70f"
+      }
+    ],
+    "G_RATIFY": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lfs-principal",
+        "subject": "did:aps:example:lfs-agent-2",
+        "verification_method": "did:aps:example:lfs-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "e0f858b75ba7b8d0cf1cc2e6169c813f",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "estate:manage"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:dfc22c41757285e19ee4c401f287d612f6bc64e02aaa116d4ae0773806cb57f4",
+        "signature": "b720ed510dc760aba0169c4d6d3bc8630a78d9aa9b8e0a59dabfd791a88bbd9ca291b044c3f4988ec3a0c31df3756b821f6e66fe81c02126d81a20b5a0074805"
+      }
+    ]
+  }
+}

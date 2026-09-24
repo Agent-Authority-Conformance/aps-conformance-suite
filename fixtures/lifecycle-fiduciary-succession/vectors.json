@@ -1,0 +1,613 @@
+{
+  "profile": "aac-lifecycle-fiduciary-succession-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "commit": "7796e22",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+      "Lifecycle concepts are separate > Authority lifecycle state > Expiry or exhaustion",
+      "Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+      "Lifecycle concepts are separate > Decisions and effects > Approval",
+      "Lifecycle concepts are separate > Verification and evidence > Evidence"
+    ],
+    "invariants": [
+      "L3",
+      "L8",
+      "L10"
+    ],
+    "cases": [
+      "LC-A-019",
+      "LC-A-022",
+      "LC-A-023"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no rule for co-holders of one instrument, for a quorum over current holders, for a mandate that ends on an external event, or for ratification. Section 3.3 chain verification is the only draft-03 surface any case touches, and every case records its chain_state separately from its verdict."
+  },
+  "description": "One principal and three questions: what a quorum of co-holders of one instrument can decide when they disagree or when one drops out, what a mandate narrower than ordinary successor authority permits and when it ends, and what a later ratification does and does not reach. Every vector carries an action instant and a separate evaluation instant, so a record written later is usable only at the later evaluation.",
+  "clock_reference": "chain.json .clock",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "cases": [
+    {
+      "id": "LFS-A-019-a-majority-of-three-with-one-dissent",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the quorum rule. Two of three named co-holders approve and the third dissents on the record. The action proceeds on the majority.",
+      "polarity": "positive",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2",
+        "DISSENT_H3"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "quorum",
+        "code": "majority_of_current_holders"
+      }
+    },
+    {
+      "id": "LFS-A-019-b-single-approval-not-established",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "One approval among three current holders. The action is not authorized and the verdict does not claim anyone refused: nothing was established either way about the other two.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "quorum",
+        "code": "majority_not_reached"
+      }
+    },
+    {
+      "id": "LFS-A-019-c-vacancy-and-the-remainder-acts",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. One of three co-holders has a recorded vacancy. The two remaining current holders both approve, and no replacement has been seated.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that requires a vacancy to be backfilled before the remaining holders can act returns not_established and passes this vector wrongly, freezing an instrument the rule lets the remainder carry.",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2",
+        "VACANCY_H3"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "quorum",
+        "code": "majority_of_current_holders"
+      }
+    },
+    {
+      "id": "LFS-A-019-d-approval-from-a-holder-who-has-since-vacated",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. An authentic approval recorded before that holder's vacancy, a second approval from a current holder, and a dissent from the third. One approval among two current holders is not a majority.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that counts every authentic approval it can find returns valid and passes this vector wrongly. The stale approval is not forged and it is not withdrawn: its signer is simply no longer a current holder.",
+      "grant": "G_COHOLDER_H2",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1_EARLY",
+        "VACANCY_H1",
+        "APPROVE_H2",
+        "DISSENT_H3"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "quorum",
+        "code": "majority_not_reached"
+      }
+    },
+    {
+      "id": "LFS-A-019-e-acting-holder-has-vacated",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "The holder whose chain is being presented has a recorded vacancy of its own. A quorum of the others cannot supply standing the presenter no longer has.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "VACANCY_H1",
+        "APPROVE_H2",
+        "APPROVE_H3"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "quorum",
+        "code": "acting_holder_vacated"
+      }
+    },
+    {
+      "id": "LFS-A-019-f-three-of-four-with-one-dissent",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A four-holder instrument where three approve and one dissents.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that requires every named holder to approve returns not_established and passes this vector wrongly. Unanimity is what the rule releases co-holders from, not what it requires.",
+      "grant": "G_COHOLDER4_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2",
+        "APPROVE_H3",
+        "DISSENT_H4"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "quorum",
+        "code": "majority_of_current_holders"
+      }
+    },
+    {
+      "id": "LFS-A-019-g-approval-from-a-party-the-instrument-does-not-name",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "A correctly signed approval from a party the instrument's own co-holder list does not name. Who the co-holders are is read off the instrument, not off the record claiming to be one.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_IMPOSTOR"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "quorum",
+        "code": "majority_not_reached"
+      }
+    },
+    {
+      "id": "LFS-A-019-h-action-class-outside-the-instrument",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "A clean majority for an action class the instrument does not permit. A quorum decides whether the holders agree, not what the instrument covers.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "distribute",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "active",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "quorum",
+        "code": "action_class_outside_instrument"
+      }
+    },
+    {
+      "id": "LFS-A-022-a-preservation-action-inside-the-mandate",
+      "case_id": "LC-A-022",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the temporary mandate. A preservation action while the dispute is still open.",
+      "polarity": "positive",
+      "grant": "G_TEMP_ADMIN",
+      "action_class": "preserve",
+      "action_at": "T_ACTION_BEFORE_RESOLUTION",
+      "evaluated_at": "T_ACTION_BEFORE_RESOLUTION",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "mandate",
+        "code": "within_temporary_mandate"
+      }
+    },
+    {
+      "id": "LFS-A-022-b-distribution-outside-the-mandate",
+      "case_id": "LC-A-022",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. The same holder, the same open dispute, an action class the mandate does not permit.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation with only one shape of successor authority gives this caretaker full successor powers, returns valid and passes this vector wrongly, letting it take an action that would prejudice the pending dispute.",
+      "grant": "G_TEMP_ADMIN",
+      "action_class": "distribute",
+      "action_at": "T_ACTION_BEFORE_RESOLUTION",
+      "evaluated_at": "T_ACTION_BEFORE_RESOLUTION",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "mandate",
+        "code": "outside_preservation_scope"
+      }
+    },
+    {
+      "id": "LFS-A-022-c-mandate-ends-on-the-resolution",
+      "case_id": "LC-A-022",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A resolution record naming the same dispute reaches the action instant. The mandate is over even though nobody revoked anything and the chain still verifies valid.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that ends authority only on an explicit revocation answer keeps this caretaker running after the dispute resolved, returns valid and passes this vector wrongly.",
+      "grant": "G_TEMP_ADMIN",
+      "action_class": "preserve",
+      "action_at": "T_ACTION_AFTER_RESOLUTION",
+      "evaluated_at": "T_ACTION_AFTER_RESOLUTION",
+      "revocation": "active",
+      "presented_events": [
+        "DISPUTE_RESOLUTION"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "mandate",
+        "code": "temporary_mandate_ended_on_resolution"
+      }
+    },
+    {
+      "id": "LFS-A-022-d-before-the-resolution",
+      "case_id": "LC-A-022",
+      "status": "candidate_against_proposed",
+      "tests": "The same resolution record held by the verifier, at an action instant before the resolution itself happened. The record is usable and what it establishes has not been reached yet.",
+      "polarity": "positive",
+      "grant": "G_TEMP_ADMIN",
+      "action_class": "preserve",
+      "action_at": "T_ACTION_BEFORE_RESOLUTION",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "DISPUTE_RESOLUTION"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "mandate",
+        "code": "within_temporary_mandate"
+      }
+    },
+    {
+      "id": "LFS-A-022-e-resolution-without-standing",
+      "case_id": "LC-A-022",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A resolution record whose own attestor_role claims the role with standing, from an attestor the registry places elsewhere.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the role off the record body accepts this record, ends the mandate, returns invalid and passes this vector wrongly.",
+      "grant": "G_TEMP_ADMIN",
+      "action_class": "preserve",
+      "action_at": "T_ACTION_AFTER_RESOLUTION",
+      "evaluated_at": "T_ACTION_AFTER_RESOLUTION",
+      "revocation": "active",
+      "presented_events": [
+        "DISPUTE_RESOLUTION_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "mandate",
+        "code": "within_temporary_mandate"
+      }
+    },
+    {
+      "id": "LFS-A-023-a-out-of-scope-act-not-ratified",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "The original decision. The agent takes an action class its grant's terms do not permit, and at that instant nothing else exists.",
+      "polarity": "negative",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_ACT",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "ratification",
+        "code": "act_outside_declared_scope"
+      }
+    },
+    {
+      "id": "LFS-A-023-b-ratified-in-its-entirety",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "The headline. A ratification from the grant's own principal, covering every component of the one integrated act, evaluated after it was recorded. The act is authorized as of the act instant. The pinned prior receipt is the separate, earlier decision at the act instant, and it is unchanged.",
+      "polarity": "positive",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "ratification",
+        "code": "ratified_entirety"
+      },
+      "prior_receipt": {
+        "note": "The same act at the same instant, evaluated before the ratification was recorded. This is the receipt the boundary produced then. Its canonical bytes are pinned, so a ratification that rewrote it rather than adding a new record would fail this vector.",
+        "grant": "G_RATIFY",
+        "action_class": "sell_asset",
+        "action_at": "T_ACT",
+        "evaluated_at": "T_ACT",
+        "revocation": "active",
+        "presented_events": [],
+        "digest": "a34d341c8939eaa48a24894258d309afc3a74176843e697cab46e4ca384f004f"
+      }
+    },
+    {
+      "id": "LFS-A-023-c-ratification-recorded-after-the-evaluation",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "The same ratification presented to a verifier evaluating at an instant before the ratification was written. A record the verifier does not hold yet decides nothing.",
+      "polarity": "negative",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_BEFORE_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "ratification",
+        "code": "act_outside_declared_scope"
+      }
+    },
+    {
+      "id": "LFS-A-023-d-partial-ratification",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A ratification naming one component of a two-component integrated act, the favourable one.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats ratification as a generic approve-this-record operation accepts the partial ratification, returns valid and passes this vector wrongly, letting the principal keep the favourable half and disavow the rest.",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_PARTIAL"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "ratification",
+        "code": "partial_ratification_ineffective"
+      }
+    },
+    {
+      "id": "LFS-A-023-e-ratification-while-the-principal-lacked-capacity",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A full ratification signed by the principal, with a capacity finding from an examiner with standing covering the ratification instant.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that accepts a ratification signal without checking the principal's capacity at the ratifying instant returns valid and passes this vector wrongly. The signature verifies: capacity is a separate finding.",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL",
+        "CAPACITY_LACKS_AT_RATIFICATION"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "ratification",
+        "code": "ratification_ineffective_principal_lacked_capacity"
+      }
+    },
+    {
+      "id": "LFS-A-023-f-capacity-finding-outside-the-ratification-window",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "The pair to the vector above. The same kind of finding from the same examiner, covering a window that closes before the ratification. The binding has to match, not merely exist.",
+      "polarity": "positive",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL",
+        "CAPACITY_LACKS_EARLIER"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "ratification",
+        "code": "ratified_entirety"
+      }
+    },
+    {
+      "id": "LFS-A-023-g-intervening-interest-restricts-the-effect",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A third party outside the transaction acquired a recorded interest in the same target between the act and the ratification. The ratification stands and the effect on that target does not follow from it.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats ratification as a clean rewrite of history reaches through the intervening interest, returns valid and passes this vector wrongly.",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL",
+        "INTERVENING_INTEREST"
+      ],
+      "expected": {
+        "verdict": "restricted",
+        "stage": "ratification",
+        "code": "ratified_but_intervening_interest_not_reached"
+      }
+    },
+    {
+      "id": "LFS-A-023-h-interest-acquired-before-the-act",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "An interest in the same target acquired before the act rather than between the act and the ratification. This family's rule is bounded to the window between the two, and README.md records that the broader reading is not tested here.",
+      "polarity": "positive",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FULL",
+        "PRIOR_INTEREST"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "ratification",
+        "code": "ratified_entirety"
+      }
+    },
+    {
+      "id": "LFS-A-023-i-ratification-from-a-party-that-is-not-the-principal",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "A correctly signed ratification from somebody who is not this grant's own principal. Who may ratify is read off the chain, not off the record.",
+      "polarity": "negative",
+      "grant": "G_RATIFY",
+      "action_class": "sell_asset",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_EVALUATE_AFTER_RATIFY",
+      "revocation": "active",
+      "presented_events": [
+        "RATIFICATION_FROM_IMPOSTOR"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "ratification",
+        "code": "act_outside_declared_scope"
+      }
+    },
+    {
+      "id": "LFS-A-023-j-action-inside-the-declared-scope",
+      "case_id": "LC-A-023",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the same grant. An action class the terms do permit needs no ratification at all.",
+      "polarity": "positive",
+      "grant": "G_RATIFY",
+      "action_class": "reconcile",
+      "action_at": "T_ACT",
+      "evaluated_at": "T_ACT",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "ratification",
+        "code": "within_declared_scope"
+      }
+    },
+    {
+      "id": "LFS-CTRL-a-revoked-chain",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. A revoked answer is reported at the chain stage without reaching any quorum reasoning.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "revoked",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED"
+      }
+    },
+    {
+      "id": "LFS-CTRL-b-unknown-revocation",
+      "case_id": "LC-A-019",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. An unknown revocation answer is indeterminate under draft-03 Section 3.3 and surfaces as not_established, never as valid.",
+      "polarity": "negative",
+      "grant": "G_COHOLDER_H1",
+      "action_class": "ledger_close",
+      "action_at": "T_ACTION_1",
+      "evaluated_at": "T_ACTION_1",
+      "revocation": "unknown",
+      "presented_events": [
+        "APPROVE_H1",
+        "APPROVE_H2"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN"
+      }
+    }
+  ],
+  "declared_fail_sets": {
+    "defective-counts-approval-from-vacated-holder": [
+      "LFS-A-019-d-approval-from-a-holder-who-has-since-vacated"
+    ],
+    "defective-requires-unanimity-of-named-holders": [
+      "LFS-A-019-a-majority-of-three-with-one-dissent",
+      "LFS-A-019-c-vacancy-and-the-remainder-acts",
+      "LFS-A-019-f-three-of-four-with-one-dissent",
+      "LFS-A-019-h-action-class-outside-the-instrument"
+    ],
+    "defective-requires-backfill-before-acting": [
+      "LFS-A-019-c-vacancy-and-the-remainder-acts",
+      "LFS-A-019-d-approval-from-a-holder-who-has-since-vacated"
+    ],
+    "defective-temporary-admin-has-full-successor-powers": [
+      "LFS-A-022-b-distribution-outside-the-mandate"
+    ],
+    "defective-revoke-only": [
+      "LFS-A-022-c-mandate-ends-on-the-resolution"
+    ],
+    "defective-ratification-reaches-intervening-interest": [
+      "LFS-A-023-g-intervening-interest-restricts-the-effect"
+    ],
+    "defective-accepts-partial-ratification": [
+      "LFS-A-023-d-partial-ratification"
+    ],
+    "defective-ignores-capacity-at-ratification": [
+      "LFS-A-023-e-ratification-while-the-principal-lacked-capacity"
+    ],
+    "defective-trusts-self-declared-role": [
+      "LFS-A-022-e-resolution-without-standing"
+    ]
+  }
+}

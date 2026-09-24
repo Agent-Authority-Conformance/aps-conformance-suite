@@ -1,0 +1,730 @@
+{
+  "_placeholder": false,
+  "attestor_standing": {
+    "aac:corporate-succession:v0": [
+      "did:aps:example:oev-registry-office"
+    ],
+    "aac:external-restriction:v0": [
+      "did:aps:example:oev-registry-office"
+    ],
+    "aac:third-party-consent:v0": "gate_holder"
+  },
+  "chains": {
+    "A_CHAIN": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "orders:place"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:d5c2ba81a4cebd08396b814b037e1946764eb1523550d4fc92e83edc93841358",
+        "issued_at": "2026-09-22T07:00:00.000Z",
+        "issuer": "did:aps:example:oev-company-a-officer",
+        "nonce": "31a9a05f6031c4d686bc413f6c652d7a",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "856ec2f3ac089f631a60545b2f553802a2da8185ffd3da6ae07bd1e6f7c051324cb7139e6a4c2164eb6811f0b6e9ea69f4f863fa3523a79e831af8681dfc5602",
+        "subject": "did:aps:example:oev-agent-m",
+        "verification_method": "did:aps:example:oev-company-a-officer#key-1",
+        "version": "1.0"
+      }
+    ],
+    "B_CHAIN": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "orders:place"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T09:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:89208c05a891e185e7af384be63a188d0bac77619ed339d7b405f3dcbe0914fb",
+        "issued_at": "2026-09-22T09:00:00.000Z",
+        "issuer": "did:aps:example:oev-company-b-officer",
+        "nonce": "fd8ac31196fd9d7d96bebcaef789f6a3",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "c09c26b33bed4e854c2802cfb676597e9e27aac26accc708d80eee0c3c9a39050e9286bb6a32de6039061455968f2cab399ea8aafd006de8d410403ebf780e07",
+        "subject": "did:aps:example:oev-agent-m",
+        "verification_method": "did:aps:example:oev-company-b-officer#key-1",
+        "version": "1.0"
+      }
+    ],
+    "OPS": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:new",
+              "orders:place",
+              "payments:submit"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:70bcae7b1e587672cd34879bdbdde42c36f20a8fc64aa4fd1f5adaec467e649a",
+        "issued_at": "2026-09-22T07:00:00.000Z",
+        "issuer": "did:aps:example:oev-org-ops",
+        "nonce": "c98df7724dc80e6affd8c0cc79b25c8c",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "95cc9ba9af82374365231cee1f4d779e440affa3f2b62efc73137fa2b3c70f600ab48c5652edb5bcabb3343347fa3da0576c16e95f6d44cf5a16694b15a24009",
+        "subject": "did:aps:example:oev-ops-manager",
+        "verification_method": "did:aps:example:oev-org-ops#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:new",
+              "orders:place",
+              "payments:submit"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:10:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:356d3dffe9d679f83017abc1dab3dfa87f8b9195c0898ee8926e908b4208a396",
+        "issued_at": "2026-09-22T07:10:00.000Z",
+        "issuer": "did:aps:example:oev-ops-manager",
+        "nonce": "2569db222abcfd2bf30a811cf7c71bb1",
+        "parent_delegation_id": "sha256:70bcae7b1e587672cd34879bdbdde42c36f20a8fc64aa4fd1f5adaec467e649a",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6de5cb50f3cb80407d1c9bd51da8e90ab9231424947176064632bdc3f9b0a33f42c1f1a8b037f7a443e30f2bfe1773b3dff908267858e3f5914a8304d104970d",
+        "subject": "did:aps:example:oev-agent-o",
+        "verification_method": "did:aps:example:oev-ops-manager#key-1",
+        "version": "1.0"
+      }
+    ],
+    "PRED": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:new"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:72ec6b853dabfc35021a87ad4771edc5dbe10514f0abe42c1dc0bbd7bced4308",
+        "issued_at": "2026-09-22T07:00:00.000Z",
+        "issuer": "did:aps:example:oev-org",
+        "nonce": "416d8afc612c94067a04bdca5764805d",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "2a6a01084501f26221279e2feb82064fc90955c5cf7fe52820ef9df671b918302581c012fc96a4b4e9d02052c1c82b314be9ec9450d03222627928815674f205",
+        "subject": "did:aps:example:oev-predecessor",
+        "verification_method": "did:aps:example:oev-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:new"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:10:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:9538d4753bb61d40cb70bdd67932c93a5b3101e7d802256895da1318c4d674a8",
+        "issued_at": "2026-09-22T07:10:00.000Z",
+        "issuer": "did:aps:example:oev-predecessor",
+        "nonce": "04f246d51d8afec8deb81971f8212b3e",
+        "parent_delegation_id": "sha256:72ec6b853dabfc35021a87ad4771edc5dbe10514f0abe42c1dc0bbd7bced4308",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "01cefd4d49c8d091a072eedd163f25bd0a3d67454248f6987e6d1158d7fc2d29488ccfe7b507c5336f780bee7cb28bcb3e85f2820f22db6f5e050b036580b90e",
+        "subject": "did:aps:example:oev-agent-s",
+        "verification_method": "did:aps:example:oev-predecessor#key-1",
+        "version": "1.0"
+      }
+    ],
+    "REPARENT_RESIGNED": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:renewal"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:20:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "issued_at": "2026-09-22T07:20:00.000Z",
+        "issuer": "did:aps:example:oev-org",
+        "nonce": "6b88acef29df3fa40f72b1608c4d15fb",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "aef0aed890b60a6f4ca5d03e13a346f5673262a98399f39bc534ffb89a0e8634dcde1762e0eb94c2a17dac87840204d3f3ef83f887ba6ea66c340a495eae2e0f",
+        "subject": "did:aps:example:oev-interim",
+        "verification_method": "did:aps:example:oev-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:32:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:5b5395de4d28b19994eb71a8b5392cb9a5b337696d4225ec67e6bdcfa3126ac5",
+        "issued_at": "2026-09-22T07:32:00.000Z",
+        "issuer": "did:aps:example:oev-predecessor",
+        "nonce": "aeca3d7f9dee68c6d65f4043330c7aa8",
+        "parent_delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "0db795cd995c0bd662eec0a5a9edb5d14c7412cb22f3a44e67dd43e9bdfc0c83a5305cd1cf4611fb69db4f347d3f2c597ed6a274581692279218002033c75906",
+        "subject": "did:aps:example:oev-agent-s",
+        "verification_method": "did:aps:example:oev-predecessor#key-1",
+        "version": "1.0"
+      }
+    ],
+    "REPARENT_STALE": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:renewal"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:20:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "issued_at": "2026-09-22T07:20:00.000Z",
+        "issuer": "did:aps:example:oev-org",
+        "nonce": "6b88acef29df3fa40f72b1608c4d15fb",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "aef0aed890b60a6f4ca5d03e13a346f5673262a98399f39bc534ffb89a0e8634dcde1762e0eb94c2a17dac87840204d3f3ef83f887ba6ea66c340a495eae2e0f",
+        "subject": "did:aps:example:oev-interim",
+        "verification_method": "did:aps:example:oev-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:new"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:10:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:9538d4753bb61d40cb70bdd67932c93a5b3101e7d802256895da1318c4d674a8",
+        "issued_at": "2026-09-22T07:10:00.000Z",
+        "issuer": "did:aps:example:oev-predecessor",
+        "nonce": "04f246d51d8afec8deb81971f8212b3e",
+        "parent_delegation_id": "sha256:72ec6b853dabfc35021a87ad4771edc5dbe10514f0abe42c1dc0bbd7bced4308",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "01cefd4d49c8d091a072eedd163f25bd0a3d67454248f6987e6d1158d7fc2d29488ccfe7b507c5336f780bee7cb28bcb3e85f2820f22db6f5e050b036580b90e",
+        "subject": "did:aps:example:oev-agent-s",
+        "verification_method": "did:aps:example:oev-predecessor#key-1",
+        "version": "1.0"
+      }
+    ],
+    "SUCC_WIDE": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:renewal"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:20:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "issued_at": "2026-09-22T07:20:00.000Z",
+        "issuer": "did:aps:example:oev-org",
+        "nonce": "6b88acef29df3fa40f72b1608c4d15fb",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "aef0aed890b60a6f4ca5d03e13a346f5673262a98399f39bc534ffb89a0e8634dcde1762e0eb94c2a17dac87840204d3f3ef83f887ba6ea66c340a495eae2e0f",
+        "subject": "did:aps:example:oev-interim",
+        "verification_method": "did:aps:example:oev-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:sign:new"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:31:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:592767c5958e780c007df40ed6b102af18bf057a16516d537f8fc14d5d980c9d",
+        "issued_at": "2026-09-22T07:31:00.000Z",
+        "issuer": "did:aps:example:oev-interim",
+        "nonce": "38d7b2eafaf3f5676df35383e5caf450",
+        "parent_delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "758bc980e1e7825b582e07345472d2c6545c0681e5baaa767dd9a4e43c31761e97cb5867f86f71d482f238f8e41c0fbf18c3b474883a4a5530ecaaeb8e5d500a",
+        "subject": "did:aps:example:oev-agent-s",
+        "verification_method": "did:aps:example:oev-interim#key-1",
+        "version": "1.0"
+      }
+    ],
+    "SUCC_WITHIN": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle",
+              "contracts:sign:renewal"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:20:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "issued_at": "2026-09-22T07:20:00.000Z",
+        "issuer": "did:aps:example:oev-org",
+        "nonce": "6b88acef29df3fa40f72b1608c4d15fb",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "aef0aed890b60a6f4ca5d03e13a346f5673262a98399f39bc534ffb89a0e8634dcde1762e0eb94c2a17dac87840204d3f3ef83f887ba6ea66c340a495eae2e0f",
+        "subject": "did:aps:example:oev-interim",
+        "verification_method": "did:aps:example:oev-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "contracts:settle"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-30T00:00:00.000Z",
+            "not_before": "2026-09-22T07:30:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:5939da84a39c5ccf941a69cb71136e49f470d81f40b899a2424e895d17baa724",
+        "issued_at": "2026-09-22T07:30:00.000Z",
+        "issuer": "did:aps:example:oev-interim",
+        "nonce": "7e810ee7a778ebb329807ecbf0444272",
+        "parent_delegation_id": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "efb4e165a32e35592a0cea160fb61ffa85b0178883861d64db1192932b30931d360c7c73a8c406f6d5b3a0f87d2e5c421534839aa9f83a952d1056154d69e207",
+        "subject": "did:aps:example:oev-agent-s",
+        "verification_method": "did:aps:example:oev-interim#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "external_records": {
+    "CONSENT_FROM_ACQUIRER": {
+      "attestor": "did:aps:example:oev-company-b-officer",
+      "effective_at": "2026-09-22T08:45:00.000Z",
+      "gate_holder": "did:aps:example:oev-vendor-c",
+      "operation": "orders:place",
+      "record_type": "aac:third-party-consent:v0",
+      "signature": "9a72e09585735918cee73da605801956a40ac5f4b68ccf07c6215a8edaebeb7bf6755826d1e8f0928211ea7893171875482aa54fbdd81c286f16ff76297f2503",
+      "target": "did:aps:example:oev-vendor-c"
+    },
+    "CONSENT_VENDOR_C": {
+      "attestor": "did:aps:example:oev-vendor-c",
+      "effective_at": "2026-09-22T08:45:00.000Z",
+      "gate_holder": "did:aps:example:oev-vendor-c",
+      "operation": "orders:place",
+      "record_type": "aac:third-party-consent:v0",
+      "signature": "c82b47ed7641ed6be4def3af8a6e14f9e6819c7277f079c0a0b8ed91b3707ea44614cd30b0d994cb88906b3b55b75a6e9dc8902ab162a73205f30a480bedb203",
+      "target": "did:aps:example:oev-vendor-c"
+    },
+    "CONSENT_VENDOR_D": {
+      "attestor": "did:aps:example:oev-vendor-d",
+      "effective_at": "2026-09-22T08:45:00.000Z",
+      "gate_holder": "did:aps:example:oev-vendor-d",
+      "operation": "orders:place",
+      "record_type": "aac:third-party-consent:v0",
+      "signature": "7b100caa6a992a6462f55d9903a2bdf0ea61a0bcbd02df459c451b6f72c5ee97c5f84a9b97e34cc3dc0abe1743fff9c46cc83746b7cfbc5ac4da0fa96581d202",
+      "target": "did:aps:example:oev-vendor-d"
+    },
+    "DISSOLUTION_RESTRICTION": {
+      "about_principal": "did:aps:example:oev-org-ops",
+      "attestor": "did:aps:example:oev-registry-office",
+      "basis": "winding-up",
+      "effective_at": "2026-09-22T08:30:00.000Z",
+      "record_type": "aac:external-restriction:v0",
+      "remaining_operations": [
+        "contracts:settle"
+      ],
+      "signature": "b27e9fa701a966010ac886f735a08f0e519b4c47a07c3918b544693461f8196f225348291f7ae59419710c034a22f7ea2f490da8ed4f1026e0d6655ebaa91803"
+    },
+    "SUCCESSION_WITHOUT_STANDING": {
+      "attestor": "did:aps:example:oev-a-former-cfo",
+      "constituent": "did:aps:example:oev-company-a",
+      "effective_at": "2026-09-22T08:30:00.000Z",
+      "record_type": "aac:corporate-succession:v0",
+      "signature": "be10f7800351aa5b3e0ec788052c10e91cefc62414bfb6bb963d7d5d8ee40488e8ee7b028880fdcc61d7e0922d86304f6ce579ee2191daddee5fee591f11b70c",
+      "surviving": "did:aps:example:oev-company-b"
+    },
+    "SUCCESSION_WITH_STANDING": {
+      "attestor": "did:aps:example:oev-registry-office",
+      "constituent": "did:aps:example:oev-company-a",
+      "effective_at": "2026-09-22T08:30:00.000Z",
+      "record_type": "aac:corporate-succession:v0",
+      "signature": "93159b902ef27857254b7547e3e37bda5120be9396bc57726f0c682f323ff8a1e70b36a3debe0c64b0cc263f2ef32b14909cc0790ce83243ee75dc570e58f50e",
+      "surviving": "did:aps:example:oev-company-b"
+    }
+  },
+  "mint_now": "2026-09-22T08:00:00.000Z",
+  "principal_of_root": {
+    "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49": "did:aps:example:oev-org",
+    "sha256:70bcae7b1e587672cd34879bdbdde42c36f20a8fc64aa4fd1f5adaec467e649a": "did:aps:example:oev-org-ops",
+    "sha256:72ec6b853dabfc35021a87ad4771edc5dbe10514f0abe42c1dc0bbd7bced4308": "did:aps:example:oev-org",
+    "sha256:89208c05a891e185e7af384be63a188d0bac77619ed339d7b405f3dcbe0914fb": "did:aps:example:oev-company-b",
+    "sha256:d5c2ba81a4cebd08396b814b037e1946764eb1523550d4fc92e83edc93841358": "did:aps:example:oev-company-a"
+  },
+  "refusals": {
+    "succ_wide": {
+      "code": "SCOPE_WIDENING",
+      "message": "SCOPE_WIDENING: child scope is not covered by parent scope",
+      "raised": true
+    }
+  },
+  "roles": {
+    "A_ROOT": "sha256:d5c2ba81a4cebd08396b814b037e1946764eb1523550d4fc92e83edc93841358",
+    "B_ROOT": "sha256:89208c05a891e185e7af384be63a188d0bac77619ed339d7b405f3dcbe0914fb",
+    "OPS_LEAF": "sha256:356d3dffe9d679f83017abc1dab3dfa87f8b9195c0898ee8926e908b4208a396",
+    "OPS_ROOT": "sha256:70bcae7b1e587672cd34879bdbdde42c36f20a8fc64aa4fd1f5adaec467e649a",
+    "PRED_ROOT": "sha256:72ec6b853dabfc35021a87ad4771edc5dbe10514f0abe42c1dc0bbd7bced4308",
+    "PRED_TO_AGENT": "sha256:9538d4753bb61d40cb70bdd67932c93a5b3101e7d802256895da1318c4d674a8",
+    "REPARENT_RESIGNED": "sha256:5b5395de4d28b19994eb71a8b5392cb9a5b337696d4225ec67e6bdcfa3126ac5",
+    "SUCC_ROOT": "sha256:6eca56edaccbb5af695e65324fce6ada8054e3dbf19e9ecccb08426779964b49",
+    "SUCC_WIDE": "sha256:592767c5958e780c007df40ed6b102af18bf057a16516d537f8fc14d5d980c9d",
+    "SUCC_WITHIN": "sha256:5939da84a39c5ccf941a69cb71136e49f470d81f40b899a2424e895d17baa724"
+  },
+  "verification_keys": {
+    "did:aps:example:oev-a-former-cfo#key-1": "b3a7c4b1f058dd91dcd4e07733e05da30ae644e3b4273b99f7dc612776122f8b",
+    "did:aps:example:oev-agent-m#key-1": "3a9b8ad6458af15833c4e2406a72f40acf3e1429dde2be7c813382d9c188a4a0",
+    "did:aps:example:oev-agent-o#key-1": "8c969b9d6071b1322b1a93c767e0495473e934abcabff07bd7514160780ef102",
+    "did:aps:example:oev-agent-s#key-1": "db2e4802533c3888d45cdb3cd5f9039ab554bd15ae12afc065360432eb7d80df",
+    "did:aps:example:oev-company-a-officer#key-1": "23d37d43d0b92f66599e05efb727472f53c169e4298f32853e3e0eec64ad26ae",
+    "did:aps:example:oev-company-b-officer#key-1": "a869bcadf58add3ed6f62ce0a59d4eefa7031bdd80a0fe0000801c3426c3c234",
+    "did:aps:example:oev-interim#key-1": "f3edc29c7749cf09a9859d363acb489e44f5faacde674a63819a089a1112d8cc",
+    "did:aps:example:oev-ops-manager#key-1": "01c6c998a7a5206da598c56e64cfd901c27614be8a109641b9dca758f0abc94c",
+    "did:aps:example:oev-org#key-1": "fb855997e139a7252bb398c55ac46e53f0a70774e0bfb8490a38fecf58c80b96",
+    "did:aps:example:oev-org-ops#key-1": "740ecca1cb9dd14dfe5669aeccc46cd66b3a77d84ec8c031221458e931c00029",
+    "did:aps:example:oev-predecessor#key-1": "84b44b942118bca23e2df1f952a068d750fbfb49a9bdd65c08c446c23b34d940",
+    "did:aps:example:oev-registry-office#key-1": "764056f3ac57cf6e452343ea4215334bc0c388825cb770f3eeb4a4a92bee9be5",
+    "did:aps:example:oev-vendor-c#key-1": "ca77f3cabb3e81b813b16ffc0ee82623414411b56dce03f08947fd1feca1b429",
+    "did:aps:example:oev-vendor-d#key-1": "0ec84880903c7e1ad2322d1b60dedf69c58dc3f4ee93b3b810b043099da54847"
+  }
+}
