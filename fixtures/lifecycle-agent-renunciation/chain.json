@@ -1,0 +1,267 @@
+{
+  "_placeholder": false,
+  "profile": "aac-lifecycle-agent-renunciation-v0",
+  "clock": {
+    "T_ISSUE": "2026-09-20T08:00:00.000Z",
+    "T_NOT_AFTER": "2026-09-30T00:00:00.000Z",
+    "T_BEFORE": "2026-09-20T10:00:00.000Z",
+    "T_DELIVER": "2026-09-21T09:00:00.000Z",
+    "T_AFTER_DELIVERY": "2026-09-21T10:00:00.000Z",
+    "T_ACCEPTANCE": "2026-09-21T11:00:00.000Z",
+    "T_STATED_EFFECTIVE": "2026-09-23T09:00:00.000Z",
+    "T_BEFORE_STATED_EFFECTIVE": "2026-09-22T09:00:00.000Z",
+    "T_AFTER_STATED_EFFECTIVE": "2026-09-23T10:00:00.000Z",
+    "T_HANDOVER": "2026-09-22T12:00:00.000Z",
+    "T_AFTER_HANDOVER": "2026-09-22T13:00:00.000Z",
+    "T_LIABILITY": "2026-09-24T09:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:lar-principal#key-1": "b2314b0c33e0ae89c8f7949e3ff78b7e8a2f318475c4516a6419a0f55165922f",
+    "did:aps:example:lar-agent#key-1": "baf5a3af7a2732c30f3b9f48cac7aa3d5340e3d98a38386765eb5be1d1c433b9",
+    "did:aps:example:lar-other-agent#key-1": "b9495022849a6b84b69d38e19ccfec1cdb62e3e5924a86cb1f3d709d158f30e7",
+    "did:aps:example:lar-org-registrar#key-1": "eac890d0df5588e26b99fc06925fcd082f021cc3ca98251a3963965ffb7e2adb",
+    "did:aps:example:lar-contract-registry#key-1": "8e88e555c46f18f27296995516c77f565ae285496870363ab434e7d3f9a401e1",
+    "did:aps:example:lar-impostor#key-1": "e1aad5be6758e66543b3c1e79bb1b289831a539b647fc1df20ba71c6fd0270e2"
+  },
+  "attestor_role_registry": {
+    "did:aps:example:lar-org-registrar": "org-registrar",
+    "did:aps:example:lar-contract-registry": "contract-registry",
+    "did:aps:example:lar-impostor": "unaffiliated-observer"
+  },
+  "event_standing": {
+    "agent_renunciation": "grant-subject",
+    "principal_acceptance": "grant-principal",
+    "handover_complete": "org-registrar",
+    "no_exit_agreement": "contract-registry",
+    "liability_determination": "contract-registry"
+  },
+  "events": {
+    "RENOUNCE_PLAIN": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "agent_renunciation",
+      "attestor": "did:aps:example:lar-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "delivered_to": "did:aps:example:lar-principal",
+        "delivered_at": "2026-09-21T09:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lar-agent#key-1",
+      "nonce": "f991eeee1437d72cba1a66ce7fd0ce8b",
+      "event_id": "3998ad2a2d51f5a6e411f6bdd462bc99809329a2ea960a9f7e8bcc7391045046",
+      "signature": "7215b2557f74bf02b272de038cc3a88af0fe46a2c3fc28d3c4ba27802c98da8a2909bfce26014721df6e536fb8e91f1736b282de9f378c9c9e21cbc83c8be504"
+    },
+    "RENOUNCE_LATER_DATE": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "agent_renunciation",
+      "attestor": "did:aps:example:lar-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "delivered_to": "did:aps:example:lar-principal",
+        "delivered_at": "2026-09-21T09:00:00.000Z",
+        "effective_date": "2026-09-23T09:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lar-agent#key-1",
+      "nonce": "3fc25660f63905e94635b924f78c73cd",
+      "event_id": "14019add5dee0cf402f563118d0f2e8cdcdaf199c82c82930e340d4f7cadbf78",
+      "signature": "dc666ad55e518999b42c91dc9952d3e81b0c332f2c0db61d3fd44a96d11360cc18d0e0ee9e582f4e708dbb8ffdfb9957e321db05d05a7a5cb3dd02e950293207"
+    },
+    "RENOUNCE_ON_EVENT": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "agent_renunciation",
+      "attestor": "did:aps:example:lar-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "delivered_to": "did:aps:example:lar-principal",
+        "delivered_at": "2026-09-21T09:00:00.000Z",
+        "effective_on_event": "handover_complete",
+        "event_ref": "lar-handover-2026-09"
+      },
+      "verification_method": "did:aps:example:lar-agent#key-1",
+      "nonce": "c259c4e4d77551176f626882ce5863e6",
+      "event_id": "ceb0869da6f15e7d45b5299980f5a93307edc66fabeede4c734ca86c99046467",
+      "signature": "b55cea8257c349762365258498a83be4c085d7e15ca128ed40e187b2071dfca613c5d150d632d6b6d112a3f103c905ce61a0b92f34988a5e099f7aa87ac77707"
+    },
+    "RENOUNCE_WRONGFUL": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "agent_renunciation",
+      "attestor": "did:aps:example:lar-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "delivered_to": "did:aps:example:lar-principal",
+        "delivered_at": "2026-09-21T09:00:00.000Z",
+        "agreement_ref": "lar-agreement-2026-04"
+      },
+      "verification_method": "did:aps:example:lar-agent#key-1",
+      "nonce": "ead76557b693aaedbf7d74d7a9d8f922",
+      "event_id": "28685d0cf79c73ae2a4851a99673d9ba1e3049fa47636406d0582784c5ed7bcb",
+      "signature": "c423bfc2dc19f44b79cba90b087215a6f855e6f7b9f180f7d927a7f82aa8034062aeae7b41f874534a414af566afbe03d6df544e03820f031691de8e46ab610a"
+    },
+    "RENOUNCE_FROM_OTHER": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "agent_renunciation",
+      "attestor": "did:aps:example:lar-other-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "delivered_to": "did:aps:example:lar-principal",
+        "delivered_at": "2026-09-21T09:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lar-other-agent#key-1",
+      "nonce": "da220bdd8dd830e8438b094337da9606",
+      "event_id": "902e8e9cfac8213d073c19dd86c1b21cae9c5199c3e627f592eac49e9d3a6c0a",
+      "signature": "b65000a43797e3d3ae35c8331d34980ccf787cccc1e31a90b72e0a08cd6214691f623ebc8d0942af73010ccc161df3ec601443f1456600365c338e6328192902"
+    },
+    "ACCEPTANCE": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_acceptance",
+      "attestor": "did:aps:example:lar-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-21T11:00:00.000Z",
+      "recorded_at": "2026-09-21T11:00:00.000Z",
+      "payload": {
+        "accepts": "renunciation"
+      },
+      "verification_method": "did:aps:example:lar-principal#key-1",
+      "nonce": "a8af7b8881bd554374b5c2f2a90d97ef",
+      "event_id": "384ec43159f8282aae4e4086d3b212a1a1b362ea4f92243ae1710b2f99a3e51a",
+      "signature": "01ebca08d067152bab33fcc1ec7cd5a72df4ff3da299dc9be3843aa93ffd6f9a2baa35cd5cbf352675ec096a89a9c784def8118e7c7837d79a0a15b8f9c34902"
+    },
+    "HANDOVER_COMPLETE": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "handover_complete",
+      "attestor": "did:aps:example:lar-org-registrar",
+      "attestor_role": "org-registrar",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-22T12:00:00.000Z",
+      "recorded_at": "2026-09-22T12:00:00.000Z",
+      "payload": {
+        "event_ref": "lar-handover-2026-09"
+      },
+      "verification_method": "did:aps:example:lar-org-registrar#key-1",
+      "nonce": "0b048df6c193dde6e59595554bbc41ba",
+      "event_id": "70078fc2bd2fc5dd410585a7c01d179eccf11fab1b6b1a9fbacdc00521717346",
+      "signature": "8737119df69e2731169bcb60ad0ed9565486fd9e434754ce4e2b18be8695692c1c87f6bf1387323ea47d43270bb5b6011a2056e65406dd8af84b35ec60f0c106"
+    },
+    "HANDOVER_COMPLETE_NO_STANDING": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "handover_complete",
+      "attestor": "did:aps:example:lar-impostor",
+      "attestor_role": "org-registrar",
+      "subject_ref": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+      "occurred_at": "2026-09-22T12:00:00.000Z",
+      "recorded_at": "2026-09-22T12:00:00.000Z",
+      "payload": {
+        "event_ref": "lar-handover-2026-09"
+      },
+      "verification_method": "did:aps:example:lar-impostor#key-1",
+      "nonce": "c19a18e4e9cea5138f09cb72a79ba200",
+      "event_id": "ef455ee403f8b9d03d0f3c8d2cd2c549e890358f6426170d8d45726cc101baef",
+      "signature": "fc7a14e2643a51d2e00fd8588dccad06ab150e8334c11bbf959667c8216cf0c3ca2550b38c36bd4fbaa5d1f47f9c81ff6227fdb9f711e6741201e6ec7a02ba0c"
+    },
+    "NO_EXIT_AGREEMENT": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "no_exit_agreement",
+      "attestor": "did:aps:example:lar-contract-registry",
+      "attestor_role": "contract-registry",
+      "subject_ref": "did:aps:example:lar-agent",
+      "occurred_at": "2026-09-20T08:00:00.000Z",
+      "recorded_at": "2026-09-20T08:00:00.000Z",
+      "payload": {
+        "agreement_ref": "lar-agreement-2026-04",
+        "no_exit_through": "2026-09-30T00:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lar-contract-registry#key-1",
+      "nonce": "101fa1f1e306e171eed71dd033b51e10",
+      "event_id": "6ef5718fc9d71a4f96745e832153fe787e2219182a10a3db0e2f2f1b338989b4",
+      "signature": "0cfbbaafdd3ec54c520aca8f9698405f238c4b9df6c660e397939d2c1d773c9f8972cd0d65dc877645836e231eedc61d9d92bc65f16ff1b7eca6cd9d06318b0e"
+    },
+    "LIABILITY_DETERMINATION": {
+      "record_type": "fixture:renunciation-event:v0",
+      "version": "0.1",
+      "event_type": "liability_determination",
+      "attestor": "did:aps:example:lar-contract-registry",
+      "attestor_role": "contract-registry",
+      "subject_ref": "did:aps:example:lar-agent",
+      "occurred_at": "2026-09-24T09:00:00.000Z",
+      "recorded_at": "2026-09-24T09:00:00.000Z",
+      "payload": {
+        "agreement_ref": "lar-agreement-2026-04",
+        "outcome": "recorded"
+      },
+      "verification_method": "did:aps:example:lar-contract-registry#key-1",
+      "nonce": "1ff385db0da815f73d7e8a29af906255",
+      "event_id": "ef81be1b4a4cdeb4c80e466ae6879f6a61008a2ecec169bc096f35cec87f19fb",
+      "signature": "f07748a8113eb565a48010f95ded3154bb0bdefe2dbdd54014a985c265986f9a30247cff92cab9565a2723fc265e9b603f2634284ceab7ea181ee78325569705"
+    }
+  },
+  "chains": {
+    "G_AGENT": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lar-principal",
+        "subject": "did:aps:example:lar-agent",
+        "verification_method": "did:aps:example:lar-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "22e20bf950c977c96d793f9ee7964fd8",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "board:sign"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:062ed0a068fd8ee1f202f258257d59c2d8171c714650e006cc2b824ba12f0821",
+        "signature": "5df5a78fec08e7782a8efbabb30476d30f182edff3acc9d916c22736cdbb7b31fbbb82bc5fedec8aea4da8dc9b2f6c2fd08c0644f77ceeae464d4882caa2be04"
+      }
+    ]
+  }
+}

@@ -1,0 +1,728 @@
+{
+  "profile": "aac-lifecycle-principal-events-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "commit": "7796e22",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Parties and standing > Issuer standing",
+      "Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+      "Lifecycle concepts are separate > Authority lifecycle state > Suspension",
+      "Lifecycle concepts are separate > Authority lifecycle state > Revocation",
+      "Lifecycle concepts are separate > Verification and evidence > Status observation",
+      "Lifecycle concepts are separate > Verification and evidence > Notice",
+      "What changes when a person leaves"
+    ],
+    "invariants": [
+      "L1",
+      "L3",
+      "L8",
+      "L10"
+    ],
+    "open_questions": [
+      "Office vacancy and succession",
+      "Grants signed just before departure"
+    ],
+    "cases": [
+      "LC-A-001",
+      "LC-A-005",
+      "LC-A-006",
+      "LC-A-009",
+      "LC-A-010",
+      "LC-A-012",
+      "LC-A-016"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no rule for death, incapacity, notice, relationship-dependent designations, retroactive forfeiture, lifecycle standing held by a party outside the chain, coupled-interest survival or pre-committed succession. Section 3.3 chain verification is the only draft-03 surface any case touches, and every case records its chain_state separately from its verdict so the two are never confused."
+  },
+  "description": "One principal, several grants, and a set of signed principal-event records. Each vector presents one grant, one actor, one action instant, one revocation answer and a set of event records, and asks what a verifier can establish about the actor's authority. The chain verifies valid at every action instant in every vector except the two chain-stage controls, so a non-valid verdict never comes from the chain.",
+  "clock_reference": "chain.json .clock",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "cases": [
+    {
+      "id": "LPE-A-001-a-baseline-valid",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control. No principal event is presented and the chain verifies valid, so the grant is exercisable and the gate says why.",
+      "polarity": "positive",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A1",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-b-death-recorded-notice-not-established",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "A death record from an attestor with standing is presented and nothing establishes that the grant's subject had notice of it. The world state and what the verifier can establish differ, and the code says which one the verdict reports.",
+      "polarity": "positive",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A2",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "death_recorded_notice_not_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-c-terminated-on-notice",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "The death record and a notice record from the grant's own subject are both presented and both reach the action instant. Authority ends, with no revocation record anywhere.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "NOTICE_AGENT"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "terminated_on_notice_of_death"
+      }
+    },
+    {
+      "id": "LPE-A-001-d-durable-grant-ends-at-death",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. The grant's own terms declare it durable and declare that durability's scope is surviving incapacity only. Death plus notice ends it anyway.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads durable as blanket death-immunity returns valid and passes this vector wrongly. Every byte of the terms record is authentic and the signature verifies: only the scope of the declared durability disagrees.",
+      "grant": "G_DURABLE",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "NOTICE_AGENT"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "terminated_on_notice_of_death"
+      }
+    },
+    {
+      "id": "LPE-A-001-e-durable-survives-incapacity",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "The other half of the durability pair. An incapacity finding reaches the action instant and the grant's declared durability scope covers exactly this.",
+      "polarity": "positive",
+      "grant": "G_DURABLE",
+      "actor": null,
+      "action_at": "T_A2",
+      "revocation": "active",
+      "presented_events": [
+        "INCAPACITY"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-f-not-durable-ends-at-incapacity",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "The same incapacity finding against a grant whose terms declare it not durable.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A2",
+      "revocation": "active",
+      "presented_events": [
+        "INCAPACITY"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "terminated_on_principal_incapacity"
+      }
+    },
+    {
+      "id": "LPE-A-001-g-death-record-without-standing",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "A death record from an attestor the registry places in a role with standing for nothing. It is not evidence in either direction: it does not end the grant and the verdict does not claim the death did not happen.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH_NO_STANDING",
+        "NOTICE_AGENT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-h-death-record-self-declared-role",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A correctly signed death record whose own attestor_role member claims the role with standing, from an attestor the registry places elsewhere.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the role off the record body instead of an attestor-role registry accepts this record and returns invalid, passing this vector wrongly.",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH_ROLE_CLAIM_CONFLICT",
+        "NOTICE_AGENT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-i-notice-from-another-party",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "A notice record signed by a party that is not this grant's subject. Notice to somebody else is not notice to this subject, so termination stays unestablished.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "NOTICE_WRONG_SUBJECT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "death_recorded_notice_not_established"
+      }
+    },
+    {
+      "id": "LPE-A-001-j-revoked-chain-control",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. A revoked answer is a draft-03 Section 3.3 result and the gate reports it at the chain stage without reaching any principal-event reasoning.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A1",
+      "revocation": "revoked",
+      "presented_events": [],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED"
+      }
+    },
+    {
+      "id": "LPE-A-001-k-unknown-revocation-control",
+      "case_id": "LC-A-001",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. An unknown revocation answer is indeterminate under draft-03 Section 3.3 and surfaces here as not_established, never as valid.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A1",
+      "revocation": "unknown",
+      "presented_events": [],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN"
+      }
+    },
+    {
+      "id": "LPE-A-005-a-decree-terminates-without-a-revocation-record",
+      "case_id": "LC-A-005",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. A designation whose terms bind it to a marriage ends when the decree record reaches the action instant. No revocation record exists anywhere in this vector.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that ends authority only on an explicit revocation answer keeps verifying this designation valid, because nobody revoked anything, and passes this vector wrongly.",
+      "grant": "G_SPOUSAL_DECREE",
+      "actor": null,
+      "action_at": "T_A5",
+      "revocation": "active",
+      "presented_events": [
+        "DECREE"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "relationship_terminated_no_revocation_record"
+      }
+    },
+    {
+      "id": "LPE-A-006-a-filing-trigger-ends-at-filing",
+      "case_id": "LC-A-006",
+      "status": "candidate_against_proposed",
+      "tests": "The same designation shape with a terms record naming the filing, not the decree, as its termination trigger. The filing record alone ends it.",
+      "polarity": "negative",
+      "grant": "G_SPOUSAL_FILING",
+      "actor": null,
+      "action_at": "T_A4",
+      "revocation": "active",
+      "presented_events": [
+        "FILING"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "relationship_terminated_no_revocation_record"
+      }
+    },
+    {
+      "id": "LPE-A-006-b-decree-trigger-not-reached-by-a-filing",
+      "case_id": "LC-A-006",
+      "status": "candidate_against_proposed",
+      "tests": "The pair to the vector above. The same filing record against a designation whose terms name the decree leaves it exercisable, and the code names the reason rather than reporting a plain valid.",
+      "polarity": "positive",
+      "grant": "G_SPOUSAL_DECREE",
+      "actor": null,
+      "action_at": "T_A4",
+      "revocation": "active",
+      "presented_events": [
+        "FILING"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "termination_trigger_not_reached"
+      }
+    },
+    {
+      "id": "LPE-A-006-c-silent-trigger-not-established",
+      "case_id": "LC-A-006",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. The terms bind the designation to a marriage and declare no termination trigger. With a decree record presented, which event ends this designation is a term the record does not carry.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that hardcodes one trigger for a silent binding returns a definite answer either way and passes this vector wrongly. Both possible defaults are wrong for the same reason: the term is missing, not implied.",
+      "grant": "G_SPOUSAL_SILENT",
+      "actor": null,
+      "action_at": "T_A5",
+      "revocation": "active",
+      "presented_events": [
+        "DECREE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "principal_event",
+        "code": "termination_trigger_not_declared"
+      }
+    },
+    {
+      "id": "LPE-A-009-a-forfeiture-voids-appointment",
+      "case_id": "LC-A-009",
+      "status": "candidate_against_proposed",
+      "tests": "A finding from a party with standing that the appointed fiduciary forfeited the appointment. The appointment is void from inception rather than ended going forward.",
+      "polarity": "negative",
+      "grant": "G_FIDUCIARY",
+      "actor": null,
+      "action_at": "T_A7",
+      "revocation": "active",
+      "presented_events": [
+        "KILLING_FINDING"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "appointment_void_from_inception"
+      }
+    },
+    {
+      "id": "LPE-A-009-b-forfeiture-reaches-an-earlier-instant",
+      "case_id": "LC-A-009",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control, and the headline of this case. The action instant is before the finding was recorded and the chain from the forfeiting party verifies valid at that instant. Once the verifier holds the finding, the answer for that instant is invalid.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats the finding as an ordinary forward-looking revocation returns valid for this earlier instant and passes this vector wrongly. The receipt check on this vector separately pins that the earlier receipt, taken before the finding existed, is unchanged.",
+      "grant": "G_FIDUCIARY_SUB",
+      "actor": null,
+      "action_at": "T_A6",
+      "revocation": "active",
+      "presented_events": [
+        "KILLING_FINDING"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "principal_event",
+        "code": "appointment_void_from_inception"
+      },
+      "prior_receipt": {
+        "note": "The same grant, actor, instant and revocation answer with the finding not presented. This is the receipt a boundary produced before the finding existed. Its canonical bytes are pinned below, so a later finding that changed it would fail this vector.",
+        "grant": "G_FIDUCIARY_SUB",
+        "actor": null,
+        "action_at": "T_A6",
+        "revocation": "active",
+        "presented_events": [],
+        "digest": "fffb8b081893111d9cde0f917a6812b7acd68c6b50bd295088177b95c12cfad0"
+      }
+    },
+    {
+      "id": "LPE-A-009-c-finding-without-standing",
+      "case_id": "LC-A-009",
+      "status": "candidate_against_proposed",
+      "tests": "The same finding from an attestor the registry does not place in a role with standing for it. It strips nothing, and the verdict does not claim the underlying facts are false.",
+      "polarity": "negative",
+      "grant": "G_FIDUCIARY",
+      "actor": null,
+      "action_at": "T_A7",
+      "revocation": "active",
+      "presented_events": [
+        "KILLING_FINDING_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-010-a-guardian-appointment-continues-the-delegation",
+      "case_id": "LC-A-010",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. An authority from outside the delegation chain is appointed over the principal. The existing delegation is not terminated by that appointment.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the appointment of an outside authority as an automatic revocation of what that authority did not issue returns invalid and passes this vector wrongly.",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A8",
+      "revocation": "active",
+      "presented_events": [
+        "GUARDIAN"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-010-b-external-suspension",
+      "case_id": "LC-A-010",
+      "status": "candidate_against_proposed",
+      "tests": "The outside authority then issues an order naming this delegation. Lifecycle standing here belongs to a party the delegation's own issuance never named, and the state it produces is suspension, not revocation.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A9",
+      "revocation": "active",
+      "presented_events": [
+        "GUARDIAN",
+        "SUSPEND_ORDER"
+      ],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "standing",
+        "code": "suspended_by_external_order"
+      }
+    },
+    {
+      "id": "LPE-A-010-c-external-termination",
+      "case_id": "LC-A-010",
+      "status": "candidate_against_proposed",
+      "tests": "The same outside authority terminates the delegation. Both records are presented and the terminating one controls.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A10",
+      "revocation": "active",
+      "presented_events": [
+        "GUARDIAN",
+        "SUSPEND_ORDER",
+        "TERMINATE_ORDER"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "standing",
+        "code": "terminated_by_external_order"
+      }
+    },
+    {
+      "id": "LPE-A-010-d-order-without-standing",
+      "case_id": "LC-A-010",
+      "status": "candidate_against_proposed",
+      "tests": "An order with the right shape from a party the registry does not place in the role that has standing to issue it. The delegation keeps running and the rejection reason travels in the notes.",
+      "polarity": "negative",
+      "grant": "G_PLAIN",
+      "actor": null,
+      "action_at": "T_A9",
+      "revocation": "active",
+      "presented_events": [
+        "SUSPEND_ORDER_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-012-a-self-declared-survival-not-established",
+      "case_id": "LC-A-012",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. The grant's own terms claim it survives the principal's death on a coupled-interest basis. Nothing outside the grant supports that claim, so survival is not established, and the grant is not invalid either.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that honours an issuer's own survival flag returns valid and passes this vector wrongly. The flag is a claim the issuer made about its own grant, not a finding about the delegate's interest.",
+      "grant": "G_COUPLED",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "principal_event",
+        "code": "coupled_interest_not_established"
+      }
+    },
+    {
+      "id": "LPE-A-012-b-interest-in-the-subject-matter-established",
+      "case_id": "LC-A-012",
+      "status": "candidate_against_proposed",
+      "tests": "The same grant with a record from a registry with standing showing the delegate holds an interest in the very subject matter the terms name.",
+      "polarity": "positive",
+      "grant": "G_COUPLED",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "INTEREST_IN_SUBJECT_MATTER"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-012-c-interest-in-proceeds-only",
+      "case_id": "LC-A-012",
+      "status": "candidate_against_proposed",
+      "tests": "An authentic record from the same registry recording an interest in the proceeds of exercising the power rather than in the subject matter itself. That is a different event type and it does not establish the survival basis.",
+      "polarity": "negative",
+      "grant": "G_COUPLED",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "INTEREST_IN_PROCEEDS"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "principal_event",
+        "code": "coupled_interest_not_established"
+      }
+    },
+    {
+      "id": "LPE-A-012-d-interest-in-a-different-subject-matter",
+      "case_id": "LC-A-012",
+      "status": "candidate_against_proposed",
+      "tests": "The right event type from the right registry, naming a different thing than the grant's terms name. The binding has to match, not merely exist.",
+      "polarity": "negative",
+      "grant": "G_COUPLED",
+      "actor": null,
+      "action_at": "T_A3",
+      "revocation": "active",
+      "presented_events": [
+        "DEATH",
+        "INTEREST_WRONG_SUBJECT_MATTER"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "principal_event",
+        "code": "coupled_interest_not_established"
+      }
+    },
+    {
+      "id": "LPE-A-016-a-primary-acts-under-its-own-instrument",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the succession instrument. The primary is the instrument's own subject and nothing has happened yet.",
+      "polarity": "positive",
+      "grant": "G_SUCCESSION",
+      "actor": null,
+      "action_at": "T_A1",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-016-b-successor-activated-by-the-primary-exit",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "The first named successor acts after a recorded exit of the primary. Its authority comes from the same instrument at the terms that instrument already set. Nothing new was issued and the principal did nothing at handoff.",
+      "polarity": "positive",
+      "grant": "G_SUCCESSION",
+      "actor": "did:aps:example:lpe-successor-1",
+      "action_at": "T_A12",
+      "revocation": "active",
+      "presented_events": [
+        "PRIMARY_EXIT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-016-c-successor-before-the-predecessor-exit",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "The same successor at an instant before the exit record's own occurrence. The successor's authority exists in the instrument and is not yet effective, which is a different state from not established and from invalid.",
+      "polarity": "negative",
+      "grant": "G_SUCCESSION",
+      "actor": "did:aps:example:lpe-successor-1",
+      "action_at": "T_A11",
+      "revocation": "active",
+      "presented_events": [
+        "PRIMARY_EXIT"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "stage": "succession",
+        "code": "predecessor_still_serving"
+      }
+    },
+    {
+      "id": "LPE-A-016-d-second-successor-waits-for-the-first",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "The second successor in the order acts while the first successor has no recorded exit. The order is a sequence, not a set.",
+      "polarity": "negative",
+      "grant": "G_SUCCESSION",
+      "actor": "did:aps:example:lpe-successor-2",
+      "action_at": "T_A12",
+      "revocation": "active",
+      "presented_events": [
+        "PRIMARY_EXIT"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "stage": "succession",
+        "code": "predecessor_still_serving"
+      }
+    },
+    {
+      "id": "LPE-A-016-e-second-successor-activated",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "Both predecessors have recorded exits that reach the action instant, so the second successor is exercisable under the same instrument.",
+      "polarity": "positive",
+      "grant": "G_SUCCESSION",
+      "actor": "did:aps:example:lpe-successor-2",
+      "action_at": "T_A12",
+      "revocation": "active",
+      "presented_events": [
+        "PRIMARY_EXIT",
+        "SUCCESSOR_1_EXIT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "principal_event",
+        "code": "no_terminating_event_established"
+      }
+    },
+    {
+      "id": "LPE-A-016-f-successor-does-not-reach-the-predecessor-tree",
+      "case_id": "LC-A-016",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control. The same activated successor presents a different delegation, one the primary issued on its own account, whose terms name no successor order. Authority pre-committed inside one instrument reaches that instrument only.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats a named successor as inheriting whatever the predecessor issued returns valid and passes this vector wrongly, handing the successor a delegation the instrument never mentioned.",
+      "grant": "G_PRIMARY_PERSONAL",
+      "actor": "did:aps:example:lpe-successor-1",
+      "action_at": "T_A12",
+      "revocation": "active",
+      "presented_events": [
+        "PRIMARY_EXIT"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "succession",
+        "code": "successor_scope_limited_to_instrument"
+      }
+    }
+  ],
+  "declared_fail_sets": {
+    "defective-durability-survives-death": [
+      "LPE-A-001-d-durable-grant-ends-at-death"
+    ],
+    "defective-revoke-only": [
+      "LPE-A-001-b-death-recorded-notice-not-established",
+      "LPE-A-001-c-terminated-on-notice",
+      "LPE-A-001-d-durable-grant-ends-at-death",
+      "LPE-A-001-f-not-durable-ends-at-incapacity",
+      "LPE-A-001-i-notice-from-another-party",
+      "LPE-A-005-a-decree-terminates-without-a-revocation-record",
+      "LPE-A-006-a-filing-trigger-ends-at-filing",
+      "LPE-A-006-b-decree-trigger-not-reached-by-a-filing",
+      "LPE-A-006-c-silent-trigger-not-established",
+      "LPE-A-012-a-self-declared-survival-not-established",
+      "LPE-A-012-c-interest-in-proceeds-only",
+      "LPE-A-012-d-interest-in-a-different-subject-matter"
+    ],
+    "defective-forfeiture-forward-only": [
+      "LPE-A-009-b-forfeiture-reaches-an-earlier-instant"
+    ],
+    "defective-guardian-appointment-is-revocation": [
+      "LPE-A-010-a-guardian-appointment-continues-the-delegation"
+    ],
+    "defective-trusts-self-declared-role": [
+      "LPE-A-001-h-death-record-self-declared-role",
+      "LPE-A-010-d-order-without-standing"
+    ],
+    "defective-trusts-self-declared-survival": [
+      "LPE-A-012-a-self-declared-survival-not-established",
+      "LPE-A-012-c-interest-in-proceeds-only",
+      "LPE-A-012-d-interest-in-a-different-subject-matter"
+    ],
+    "defective-silent-trigger-defaults-to-decree": [
+      "LPE-A-006-c-silent-trigger-not-established"
+    ],
+    "defective-successor-inherits-tree": [
+      "LPE-A-016-f-successor-does-not-reach-the-predecessor-tree"
+    ]
+  }
+}

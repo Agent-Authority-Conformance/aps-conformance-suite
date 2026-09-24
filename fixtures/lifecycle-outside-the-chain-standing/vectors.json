@@ -1,0 +1,2285 @@
+{
+  "controls": {
+    "bylaw-number-wins": {
+      "defect": "Takes whatever number the bylaws declare as the quorum, in either direction, so a declared number below the majority default silently lowers the floor. Isolated from well-formed-record-suffices because the defect is arithmetic on the threshold rather than a missing standing check.",
+      "expected_fail_ids": [
+        "LC-H-004-g"
+      ],
+      "name": "bylaw-number-wins",
+      "runs_against_concepts": [
+        "issuing_body_quorum"
+      ]
+    },
+    "forced-binary": {
+      "defect": "Forces a binary answer when no forum determination exists, by honouring whichever claimed root was issued first. This is the defect LC-H-006 names: the correct state is a third one, held pending resolution, with the holder relieved of the decision.",
+      "expected_fail_ids": [
+        "LC-H-006-a",
+        "LC-H-006-c",
+        "LC-H-006-d",
+        "LC-H-006-e",
+        "LC-H-006-f",
+        "LC-H-006-h"
+      ],
+      "name": "forced-binary",
+      "runs_against_concepts": [
+        "disputed_root_held"
+      ]
+    },
+    "revival-restores": {
+      "defect": "Treats an order from an external body as switching the terminated chain back to valid, rather than as a distinct new grant from a different issuer. This is the defect LC-H-005 names: the replacement's terms come from the reinstating body, and a revival model loses that.",
+      "expected_fail_ids": [
+        "LC-H-005-a"
+      ],
+      "name": "revival-restores",
+      "runs_against_concepts": [
+        "external_reinstatement_grant"
+      ]
+    },
+    "well-formed-record-suffices": {
+      "defect": "Verifies that the suspension record is well formed and signed by somebody the body's roster lists, and never asks whether the body that purported to act had quorum to transact business. This is the defect LC-H-004 names: it lets a rump minority suspend a principal's authority with no real body action behind it.",
+      "expected_fail_ids": [
+        "LC-H-004-b",
+        "LC-H-004-c",
+        "LC-H-004-e",
+        "LC-H-004-g",
+        "LC-H-004-h"
+      ],
+      "name": "well-formed-record-suffices",
+      "runs_against_concepts": [
+        "issuing_body_quorum"
+      ]
+    }
+  },
+  "description": "Standing held from outside the chain a grant runs through. A collective body's own composition as a precondition for the validity of what it issued, a replacement grant issued by a body outside the original principal-agent relationship, and a disputed root held by a neutral forum with no claimant yet established. Every vector is candidate against proposed text in aeoess/agent-authority-lifecycle, never against a published specification.",
+  "family": "lifecycle-outside-the-chain-standing",
+  "generated_by": "fixtures/lifecycle-outside-the-chain-standing/generate.py",
+  "label": "candidate_against_proposed",
+  "profile": "aac-lifecycle-outside-the-chain-standing-v0",
+  "proposed_text_source": {
+    "cases_version": "CASES.md v0.2 (local branch cases-v0.2, commit 2bf5c7e)",
+    "commit_floor": "7796e22",
+    "repo": "aeoess/agent-authority-lifecycle",
+    "section": "Outside-the-chain standing"
+  },
+  "seed": "see chain.json seed_prefix; no randomness is used in this file",
+  "vectors": [
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [],
+      "description": "Seven seats, no bylaw number, four seated directors participating, all four signing. Quorum is the majority default of four, so there is a body action and the targeted delegation is suspended.",
+      "expected": {
+        "body_action_exists": true,
+        "code": "SUSPENDED_BY_BODY",
+        "target_chain_verdict": "suspended",
+        "verdict": "suspended"
+      },
+      "id": "LC-H-004-a",
+      "label": "candidate_against_proposed",
+      "polarity": "positive",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": null,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": true,
+            "holders": 4,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "checkQuorum is run with an Office whose holderSet is the four participating seated directors and a QuorumFailurePolicy whose minimumHolders is the effective quorum this fixture computed. It counts holders against a supplied minimum; it does not itself derive a majority-of-total-seats default, and it does not take a suspension record as an input.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [
+        "well-formed-record-suffices"
+      ],
+      "description": "Seven seats, no bylaw number, three seated directors participating. Three is below the majority default of four, so there is no valid body action to evaluate. The verdict is not established, not invalid, and the targeted delegation stays valid.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "ISSUING_BODY_QUORUM_NOT_ESTABLISHED",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-b",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": null,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": false,
+            "holders": 3,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "the false answer here comes from a minimumHolders this fixture supplied, not from any majority-of-total-seats rule inside the SDK.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [
+        "well-formed-record-suffices"
+      ],
+      "description": "Seven seats, bylaws requiring five, four participating. The greater number the bylaws require governs, so four is not quorum and there is no body action.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "ISSUING_BODY_QUORUM_NOT_ESTABLISHED",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-c",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": 5,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": false,
+            "holders": 4,
+            "required": 5
+          },
+          "layer": "office_holder_count",
+          "note": "minimumHolders supplied as the bylaw number five.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [],
+      "description": "Seven seats, bylaws requiring five, five participating and signing. The bylaw number is met, so the targeted delegation is suspended.",
+      "expected": {
+        "body_action_exists": true,
+        "code": "SUSPENDED_BY_BODY",
+        "target_chain_verdict": "suspended",
+        "verdict": "suspended"
+      },
+      "id": "LC-H-004-d",
+      "label": "candidate_against_proposed",
+      "polarity": "positive",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": 5,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": true,
+            "holders": 5,
+            "required": 5
+          },
+          "layer": "office_holder_count",
+          "note": "minimumHolders supplied as the bylaw number five.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [
+        "well-formed-record-suffices"
+      ],
+      "description": "Seven seats, no bylaw number, four participants of whom one is not a seated director. Only seated directors count, so three count and quorum is not established.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "ISSUING_BODY_QUORUM_NOT_ESTABLISHED",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-e",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": null,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "observer-1"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "observer-1"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": false,
+            "holders": 3,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "the fixture filters participants against seated_directors before building holderSet; checkQuorum has no notion of a participant who is not a holder.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [],
+      "description": "Quorum is met, but the suspension record is signed only by someone who was not a counted participant. A body action needs a signature from the body that met quorum, so the record does not establish one.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "BODY_ACTION_NOT_SIGNED_BY_PARTICIPANT",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-f",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": null,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "observer-1"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": true,
+            "holders": 4,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "checkQuorum answers true here, which is the point: holder count alone does not establish that the record in hand is that body's action.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [
+        "well-formed-record-suffices",
+        "bylaw-number-wins"
+      ],
+      "description": "Seven seats, bylaws naming three, three participating. A declared number lower than the majority default does not lower it, so quorum is not established.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "ISSUING_BODY_QUORUM_NOT_ESTABLISHED",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-g",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": 3,
+          "participants": [
+            "dir-1",
+            "dir-2",
+            "dir-3"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1",
+            "dir-2",
+            "dir-3"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": false,
+            "holders": 3,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "minimumHolders supplied as the effective quorum four, not as the declared three; checkQuorum would answer true if handed the declared three, which is why the floor is applied by this fixture and not by the SDK.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the targeted chain verifies valid on its own records, so the suspension question is not a chain-verification question",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "OFFICER",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-004",
+      "concept": "issuing_body_quorum",
+      "control_fails": [
+        "well-formed-record-suffices"
+      ],
+      "description": "Negative control target. Seven seats, no bylaw number, one seated director participating and signing. A single director produces a properly formed, properly signed suspension record and nothing else.",
+      "expected": {
+        "body_action_exists": false,
+        "code": "ISSUING_BODY_QUORUM_NOT_ESTABLISHED",
+        "target_chain_verdict": "valid",
+        "verdict": "not_established"
+      },
+      "id": "LC-H-004-h",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md, Lifecycle concepts are separate: Issuer standing (\"A valid signature establishes who signed. It does not by itself establish standing.\") and Lifecycle standing (\"Who may suspend, revoke, replace or reaffirm an authority artifact.\"), extended by CASES.md LC-H-004 to a collective body's own internal standing requirement. Also AUTHORITY-LIFECYCLE.md L8, Suspension is not revocation.",
+      "records": {
+        "body": {
+          "body_id": "body:board",
+          "bylaw_quorum": null,
+          "participants": [
+            "dir-1"
+          ],
+          "seated_directors": [
+            "dir-1",
+            "dir-2",
+            "dir-3",
+            "dir-4",
+            "dir-5",
+            "dir-6",
+            "dir-7"
+          ],
+          "total_seats": 7
+        },
+        "suspension": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:board",
+          "signed_by": [
+            "dir-1"
+          ],
+          "suspension_id": "susp:1",
+          "target_role": "BODY_TO_OFFICER"
+        },
+        "target_chain": "OFFICER"
+      },
+      "sdk": {
+        "npm": {
+          "api": "checkQuorum (npm agent-passport-system 7.1.0)",
+          "expected": {
+            "hasQuorum": false,
+            "holders": 1,
+            "required": 4
+          },
+          "layer": "office_holder_count",
+          "note": "with no policy argument at all checkQuorum answers hasQuorum true and required 1 for this same office, recorded under What the SDKs do not support.",
+          "supported": true
+        },
+        "pypi": {
+          "layer": "office_holder_count",
+          "reason": "the PyPI SDK at 4.1.0 exposes no charter, office, quorum or approval-threshold module; dir(agent_passport) has no name matching quorum, charter, office or threshold, and no submodule under agent_passport/ mentions quorum",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "the replacement chain verifies valid on its own records, rooted in a different issuer, and carries backpay:read which no record of the terminated chain carries",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [
+        "revival-restores"
+      ],
+      "description": "An order from a body the registry places standing with, its predicate not met for the exception, and a replacement chain rooted in that body's designee. The replacement is valid, the terminated chain stays invalid, and the replacement carries a grant the original relationship never had.",
+      "expected": {
+        "code": "NEW_GRANT_FROM_EXTERNAL_ISSUER",
+        "new_chain_carries_grant_absent_from_old": [
+          "backpay:read"
+        ],
+        "new_chain_root_issuer_differs": true,
+        "new_chain_verdict": "valid",
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "valid"
+      },
+      "id": "LC-H-005-a",
+      "label": "candidate_against_proposed",
+      "polarity": "positive",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": "REINSTATED",
+        "old_chain": "TERMINATED",
+        "order": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:labor-board",
+          "order_id": "order:1",
+          "predicate": {
+            "discharged_for_cause": false
+          },
+          "standing_ref": "reg:labor-board:2026-09-20",
+          "terms": {
+            "chain": "REINSTATED",
+            "extra_grants": [
+              "backpay:read"
+            ]
+          }
+        },
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [],
+      "description": "The same order with its record stating the discharge was for cause. The order does not issue, so replacement authority is not established. That is not the same as saying the order is invalid.",
+      "expected": {
+        "code": "ORDER_PREDICATE_NOT_MET",
+        "new_chain_verdict": null,
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "not_established"
+      },
+      "id": "LC-H-005-b",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": null,
+        "old_chain": "TERMINATED",
+        "order": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:labor-board",
+          "order_id": "order:1",
+          "predicate": {
+            "discharged_for_cause": true
+          },
+          "standing_ref": "reg:labor-board:2026-09-20",
+          "terms": {
+            "chain": "REINSTATED",
+            "extra_grants": [
+              "backpay:read"
+            ]
+          }
+        },
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "the replacement chain verifies valid on its own records, rooted in a different issuer, and carries backpay:read which no record of the terminated chain carries",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [],
+      "description": "An order from a body the registry does not place standing with. Replacement authority is not established, and the record does not claim the body acted without authority, only that standing was not shown.",
+      "expected": {
+        "code": "ORDER_STANDING_NOT_ESTABLISHED",
+        "new_chain_verdict": "not_established",
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "not_established"
+      },
+      "id": "LC-H-005-c",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": "REINSTATED",
+        "old_chain": "TERMINATED",
+        "order": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:unregistered",
+          "order_id": "order:1",
+          "predicate": {
+            "discharged_for_cause": false
+          },
+          "standing_ref": "reg:labor-board:2026-09-20",
+          "terms": {
+            "chain": "REINSTATED",
+            "extra_grants": [
+              "backpay:read"
+            ]
+          }
+        },
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [],
+      "description": "An order with standing and its predicate met, but no replacement chain has been issued yet. An order is not itself a grant, so replacement authority is not established and the terminated chain stays invalid.",
+      "expected": {
+        "code": "NO_REPLACEMENT_GRANT",
+        "new_chain_verdict": null,
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "not_established"
+      },
+      "id": "LC-H-005-d",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": null,
+        "old_chain": "TERMINATED",
+        "order": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:labor-board",
+          "order_id": "order:1",
+          "predicate": {
+            "discharged_for_cause": false
+          },
+          "standing_ref": "reg:labor-board:2026-09-20",
+          "terms": {
+            "chain": "REINSTATED",
+            "extra_grants": [
+              "backpay:read"
+            ]
+          }
+        },
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "the replacement chain verifies valid on its own records, rooted in a different issuer, and carries backpay:read which no record of the terminated chain carries",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "REINSTATED",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [],
+      "description": "An order that carries standing but no standing_ref a verifier could follow. Standing is not established from the order naming itself.",
+      "expected": {
+        "code": "ORDER_STANDING_NOT_ESTABLISHED",
+        "new_chain_verdict": "not_established",
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "not_established"
+      },
+      "id": "LC-H-005-e",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": "REINSTATED",
+        "old_chain": "TERMINATED",
+        "order": {
+          "at": "2026-09-20T11:00:00.000Z",
+          "by_body": "body:labor-board",
+          "order_id": "order:1",
+          "predicate": {
+            "discharged_for_cause": false
+          },
+          "standing_ref": null,
+          "terms": {
+            "chain": "REINSTATED",
+            "extra_grants": [
+              "backpay:read"
+            ]
+          }
+        },
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "the terminated chain stays invalid with REVOKED at index 0 whatever the order says, and the order is not an input the chain verifier takes",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "TERMINATED",
+            "expected": {
+              "failure_code": "REVOKED",
+              "failure_index": 0,
+              "state": "invalid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-005",
+      "concept": "external_reinstatement_grant",
+      "control_fails": [],
+      "description": "Negative control target. No order at all, only the terminated chain. Nothing establishes replacement authority, and the naive boundary that treats any later record about the same subject as a revival has nothing to revive.",
+      "expected": {
+        "code": "NO_REPLACEMENT_GRANT",
+        "new_chain_verdict": null,
+        "old_chain_failure_code": "REVOKED",
+        "old_chain_verdict": "invalid",
+        "old_chain_verdict_unchanged_by_order": true,
+        "verdict": "not_established"
+      },
+      "id": "LC-H-005-f",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L3 (\"Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain.\") and L4, extended by CASES.md LC-H-005 to a fresh grant issued by a body with standing from outside the original principal-agent relationship. Also the Issuer standing and Lifecycle standing concepts.",
+      "records": {
+        "new_chain": null,
+        "old_chain": "TERMINATED",
+        "order": null,
+        "registry": {
+          "bodies_with_standing": [
+            "body:labor-board"
+          ]
+        },
+        "revoked_roles": [
+          "EMPLOYER_ROOT"
+        ]
+      },
+      "sdk": {
+        "npm": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "external_order",
+          "reason": "no API represents a grant issued by a body outside the original chain under a conditional order, nor a predicate that has to hold before the order issues",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "note": "both SDKs answer valid at this instant; the hold is not a state either one has",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "note": "both SDKs answer valid at this instant; the hold is not a state either one has",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "note": "both SDKs answer valid at this instant; the hold is not a state either one has",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "note": "both SDKs answer valid at this instant; the hold is not a state either one has",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "A secured deposit with the named forum and no determination yet. It is not established which claimant governs. Neither chain is valid and neither is invalid, and the holder is discharged from choosing.",
+      "expected": {
+        "code": "HELD_PENDING_FORUM",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-a",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "deposit",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": null
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [],
+      "description": "A determination from the forum named in the deposit choosing the first claimant. That claimant's chain is valid and the rival's is invalid for the same subject.",
+      "expected": {
+        "code": "FORUM_DETERMINED",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "valid",
+          "CLAIM_Q": "invalid"
+        },
+        "verdict": "valid"
+      },
+      "id": "LC-H-006-b",
+      "label": "candidate_against_proposed",
+      "polarity": "positive",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "deposit",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": {
+          "at": "2026-09-20T11:30:00.000Z",
+          "chosen_claimant": "claimant:p",
+          "forum_id": "forum:court-1"
+        }
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "A determination from a forum other than the one the deposit names. It does not resolve the hold, so the question stays not established and the hold continues.",
+      "expected": {
+        "code": "DETERMINATION_FORUM_MISMATCH",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-c",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "deposit",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": {
+          "at": "2026-09-20T11:30:00.000Z",
+          "chosen_claimant": "claimant:p",
+          "forum_id": "forum:other"
+        }
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "A deposit record that names a forum but records neither a deposit nor a bond. The hold is not established, and the holder is not discharged from choosing.",
+      "expected": {
+        "code": "HOLD_NOT_SECURED",
+        "holder_must_choose": true,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-d",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": null,
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": null
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "Two rival claimed roots and no deposit record at all. The dispute is unresolved with no mechanism holding it open, so the holder still faces the choice the deposit would have discharged.",
+      "expected": {
+        "code": "DISPUTE_UNRESOLVED_NO_FORUM",
+        "holder_must_choose": true,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-e",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": null,
+        "determination": null
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "A determination from the named forum naming a claimant the deposit does not list as a party. It does not resolve the hold.",
+      "expected": {
+        "code": "DETERMINATION_CLAIMANT_NOT_A_PARTY",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-f",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "deposit",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": {
+          "at": "2026-09-20T11:30:00.000Z",
+          "chosen_claimant": "claimant:r",
+          "forum_id": "forum:court-1"
+        }
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [],
+      "description": "The bond alternative is equally effective as a secured hold. With a bond and a determination choosing the second claimant, that chain is valid and the first is invalid.",
+      "expected": {
+        "code": "FORUM_DETERMINED",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "invalid",
+          "CLAIM_Q": "valid"
+        },
+        "verdict": "valid"
+      },
+      "id": "LC-H-006-g",
+      "label": "candidate_against_proposed",
+      "polarity": "positive",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "bond",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": {
+          "at": "2026-09-20T11:30:00.000Z",
+          "chosen_claimant": "claimant:q",
+          "forum_id": "forum:court-1"
+        }
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    },
+    {
+      "also_runs": [
+        {
+          "claim": "each claimed chain verifies valid on its own records in both SDKs, which is the gap this case is about: neither SDK has a state for a root held pending a forum",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_P",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        },
+        {
+          "claim": "and the same for the rival claimed chain",
+          "layer": "chain_state",
+          "npm": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          },
+          "pypi": {
+            "chain": "CLAIM_Q",
+            "expected": {
+              "failure_code": null,
+              "failure_index": null,
+              "state": "valid"
+            },
+            "layer": "chain_state",
+            "supported": true
+          }
+        }
+      ],
+      "at": "2026-09-20T12:00:00.000Z",
+      "case": "LC-H-006",
+      "concept": "disputed_root_held",
+      "control_fails": [
+        "forced-binary"
+      ],
+      "description": "A determination dated before the deposit was made. It cannot be the forum's answer to a question that was not yet before it, so the hold continues.",
+      "expected": {
+        "code": "DETERMINATION_PRECEDES_DEPOSIT",
+        "holder_must_choose": false,
+        "per_chain": {
+          "CLAIM_P": "not_established",
+          "CLAIM_Q": "not_established"
+        },
+        "verdict": "not_established"
+      },
+      "id": "LC-H-006-h",
+      "label": "candidate_against_proposed",
+      "polarity": "negative",
+      "proposed_text": "AUTHORITY-LIFECYCLE.md L7 (\"A revocation answer that is unavailable or stale is indeterminate. It does not become active\") and the Status observation concept, extended by CASES.md LC-H-006 to an acknowledged dispute over which of two claimed roots is authoritative. Also OPEN-QUESTIONS.md, Notice and relying parties.",
+      "records": {
+        "claims": [
+          {
+            "chain": "CLAIM_P",
+            "claimant": "claimant:p"
+          },
+          {
+            "chain": "CLAIM_Q",
+            "claimant": "claimant:q"
+          }
+        ],
+        "deposit": {
+          "claimants": [
+            "claimant:p",
+            "claimant:q"
+          ],
+          "deposit_id": "dep:1",
+          "deposited_at": "2026-09-20T10:00:00.000Z",
+          "forum_id": "forum:court-1",
+          "secured_by": "deposit",
+          "subject": "did:aps:example:ocs-agent-d"
+        },
+        "determination": {
+          "at": "2026-09-20T09:30:00.000Z",
+          "chosen_claimant": "claimant:p",
+          "forum_id": "forum:court-1"
+        }
+      },
+      "sdk": {
+        "npm": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        },
+        "pypi": {
+          "layer": "held_pending_forum",
+          "reason": "neither SDK has a verdict for authority held pending a neutral forum; the chain verifier's state vocabulary is valid, invalid and indeterminate only",
+          "supported": false
+        }
+      }
+    }
+  ],
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ]
+}

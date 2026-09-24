@@ -1,0 +1,1096 @@
+{
+  "_placeholder": false,
+  "profile": "aac-lifecycle-principal-events-v0",
+  "clock": {
+    "T_ISSUE": "2026-09-20T08:00:00.000Z",
+    "T_NOT_AFTER": "2026-09-30T00:00:00.000Z",
+    "T_INTEREST": "2026-09-20T09:00:00.000Z",
+    "T_A1": "2026-09-20T10:00:00.000Z",
+    "T_DEATH": "2026-09-21T09:00:00.000Z",
+    "T_INCAPACITY": "2026-09-21T09:30:00.000Z",
+    "T_A2": "2026-09-21T12:00:00.000Z",
+    "T_NOTICE": "2026-09-21T15:00:00.000Z",
+    "T_A3": "2026-09-21T18:00:00.000Z",
+    "T_GUARDIAN": "2026-09-22T08:00:00.000Z",
+    "T_FILING": "2026-09-22T09:00:00.000Z",
+    "T_PRIMARY_EXIT": "2026-09-22T09:00:00.000Z",
+    "T_A8": "2026-09-22T10:00:00.000Z",
+    "T_A12": "2026-09-22T10:30:00.000Z",
+    "T_A4": "2026-09-22T12:00:00.000Z",
+    "T_A6": "2026-09-22T15:00:00.000Z",
+    "T_SUSPEND_ORDER": "2026-09-22T18:00:00.000Z",
+    "T_A9": "2026-09-23T06:00:00.000Z",
+    "T_DECREE": "2026-09-23T09:00:00.000Z",
+    "T_A5": "2026-09-23T12:00:00.000Z",
+    "T_TERMINATE_ORDER": "2026-09-23T18:00:00.000Z",
+    "T_A10": "2026-09-24T06:00:00.000Z",
+    "T_KILLING_FINDING": "2026-09-24T09:00:00.000Z",
+    "T_A7": "2026-09-24T15:00:00.000Z",
+    "T_A11": "2026-09-21T10:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:lpe-principal#key-1": "047be6719dd50f802e2b00b2d670eb2c00b72ba54a535983124b5825d253b0be",
+    "did:aps:example:lpe-agent#key-1": "48bb969d3926cf6df5b8efd75c857d9a11301f642a1f1137152a74b1f64c4e9e",
+    "did:aps:example:lpe-spouse-agent#key-1": "ec699d3e49e65f234dbec9de545dbe4693934d5a50ab09e178da26259843726f",
+    "did:aps:example:lpe-fiduciary#key-1": "eb5b95aba77702732b5cb91196169706c32dbc4805859f9a058ef688ae445802",
+    "did:aps:example:lpe-fiduciary-sub-agent#key-1": "56bde341376c46acfc2638593bb53e004c21e893e8d416e82f4e69e47dec0e8f",
+    "did:aps:example:lpe-lender#key-1": "7bd60813996be05f62b01a1182c99145635845ae9bf816be7db7f96ce6247e82",
+    "did:aps:example:lpe-primary-agent#key-1": "09aedf4604b11eee8333766d4c116d0d7e7338ce1e9d1792fc72c9ab0d951eab",
+    "did:aps:example:lpe-primary-sub-agent#key-1": "180ded426ccee1724fccba5ea365a31e03ac9d6f81a0267b8c7433573206ae33",
+    "did:aps:example:lpe-successor-1#key-1": "8467aef9f85f7f5042d03bea520d251eebfddee6cc6506af2e60efe55bc9c426",
+    "did:aps:example:lpe-successor-2#key-1": "74c1dfd029899c89494a78b7c81d112172183280f8cc523679aa920825ab11ef",
+    "did:aps:example:lpe-vital-records#key-1": "cda5803c2dabf3393e2bd228c082f4ec6225b4f3ebf9c38721f5da22bf822b76",
+    "did:aps:example:lpe-capacity-examiner#key-1": "e86c8fecd8bb50623ce113a8cef5555d29c1312d5c162930382220d746255a10",
+    "did:aps:example:lpe-court#key-1": "03782e90ab409417f23716bfae1d6681e717b0823c24b9ff8d47122ebc4f35d0",
+    "did:aps:example:lpe-collateral-registry#key-1": "2189e876a0e263cb44fd2fc634ce5d26bccfad917e7f0285d21b5372163145e7",
+    "did:aps:example:lpe-org-registrar#key-1": "79206b3dd0aa0d4602622995acb47c450bb8406a5d80a7b6b42fe931016c9b5b",
+    "did:aps:example:lpe-impostor#key-1": "baf7d7e292ee37aed6139fd13d52e91350f78ee5423e91fb9088e4b75dc71060"
+  },
+  "attestor_role_registry": {
+    "did:aps:example:lpe-vital-records": "vital-records-registrar",
+    "did:aps:example:lpe-capacity-examiner": "capacity-examiner",
+    "did:aps:example:lpe-court": "court-of-record",
+    "did:aps:example:lpe-collateral-registry": "collateral-registry",
+    "did:aps:example:lpe-org-registrar": "org-registrar",
+    "did:aps:example:lpe-impostor": "unaffiliated-observer"
+  },
+  "event_standing": {
+    "principal_death": "vital-records-registrar",
+    "principal_incapacity": "capacity-examiner",
+    "notice_of_principal_death": "grant-subject",
+    "marriage_dissolution_filing": "court-of-record",
+    "marriage_dissolution_decree": "court-of-record",
+    "felonious_killing_finding": "court-of-record",
+    "guardian_appointment": "court-of-record",
+    "court_order_suspend_delegation": "court-of-record",
+    "court_order_terminate_delegation": "court-of-record",
+    "collateral_interest_in_subject_matter": "collateral-registry",
+    "collateral_interest_in_proceeds_only": "collateral-registry",
+    "agent_exit": "org-registrar"
+  },
+  "terms_by_chain": {
+    "G_PLAIN": "G_PLAIN",
+    "G_DURABLE": "G_DURABLE",
+    "G_SPOUSAL_DECREE": "G_SPOUSAL_DECREE",
+    "G_SPOUSAL_FILING": "G_SPOUSAL_FILING",
+    "G_SPOUSAL_SILENT": "G_SPOUSAL_SILENT",
+    "G_FIDUCIARY": "G_FIDUCIARY",
+    "G_FIDUCIARY_SUB": "G_FIDUCIARY",
+    "G_COUPLED": "G_COUPLED",
+    "G_SUCCESSION": "G_SUCCESSION",
+    "G_PRIMARY_PERSONAL": "G_PRIMARY_PERSONAL"
+  },
+  "grant_terms": {
+    "G_PLAIN": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:e7a8648c1683843889380a0367064c43bfcdc15368616014ff8b9b98ac790480",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable"
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "b62846f653a17e0b65ad645bd6d5bac6",
+      "terms_id": "be020371e1e955888f360626508101fac41c00795072fbcd3482f40da3d89f7c",
+      "signature": "26d61a399bf69a7a729fdddfc11402611356888569c0bf86505b6d158ad95fb199de02390e567a2e2339cfb1e89dd33ec7a3e5adaffbe508539aa3fbae60b009"
+    },
+    "G_DURABLE": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:4dbe4b6f43062e1939dd775321308bb55f72174da12de31064794dd58f17022e",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "durable",
+        "durability_scope": "survives_incapacity_only"
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "9900b22217012386bccdecff0a28377d",
+      "terms_id": "ae92ba2c8e57e7a7a16e81d6a301e594bc0eecf01e2a2da9c7400ce708a14af1",
+      "signature": "e5cfba4cd0650c76957fe53177e951017b29c89c1861825c05f7236355bd1a8c1b4b926a9526b529c8502dc6241b07dd44027e957fb6f1e3d9d6875ef9269801"
+    },
+    "G_SPOUSAL_DECREE": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:214fb90e5689bba1d5f9fbb3bc3af3bf4f92baa72ff3e015901f5bb93d9a6730",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "relationship_binding": {
+          "relationship": "marriage",
+          "counterparty": "did:aps:example:lpe-spouse-agent",
+          "termination_trigger": "marriage_dissolution_decree"
+        }
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "58027316d5eb468f4ac7c4995913b84f",
+      "terms_id": "0a04acd088fdf60f4c0edfd37c0db0954998a65469bdca779f8aaebc72904bdd",
+      "signature": "bac0ee07d053741ca96a5873a316b374900f0a479bebdd0ebdde124b76621802dd95cdfa04a53c0271bd71ae8f04bce1876f0053a2325cad9f84fbffd484b806"
+    },
+    "G_SPOUSAL_FILING": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:230c569e47b62ee7a68971bb2ad60cdfc1b5325b61f810bb6a1c980d51bbf9df",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "relationship_binding": {
+          "relationship": "marriage",
+          "counterparty": "did:aps:example:lpe-spouse-agent",
+          "termination_trigger": "marriage_dissolution_filing"
+        }
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "a709bf934c13cbfb9fee927211b33a25",
+      "terms_id": "a42b43f2343f6bb832aa1d7e49045913bdebb944727f8bde813e0df2e695476a",
+      "signature": "0b1220e7abaad7718658b5c5b7cf499083d8556227298371cb2d855f3d97347be0e0dfc43ac4e92162f1e892d60665b0c5084399bdc1beabc0ea0babcb632102"
+    },
+    "G_SPOUSAL_SILENT": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:969cc0bcfd928f00064e980f4c103b1d016cf451a52fc7058bbc3867c9f2d926",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "relationship_binding": {
+          "relationship": "marriage",
+          "counterparty": "did:aps:example:lpe-spouse-agent"
+        }
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "481fb596c8ba41923cdcc246453095b4",
+      "terms_id": "aad17c68a92f19835ea23762b7986a577f0ac1eae4b9c2652af7f9fdd7ee7b36",
+      "signature": "b9b95287ac99098227096a4d196ac065f38517db001eed765cb35b848abbe15dc529ca20aa0bf1bf4a554cbf0c1adc117995e292aaca96639072cb2006d29005"
+    },
+    "G_FIDUCIARY": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:c2494695a099c1a1e7cf8b9f24be4077b4cff1d1f916b9e46be7786caf401935",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "appointment": {
+          "capacity": "fiduciary",
+          "appointed_at": "2026-09-20T08:00:00.000Z"
+        }
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "a378aa9f6abf1449dcd935f965f7b891",
+      "terms_id": "acd1f4909e42982861300efad53adc6b6caa24b09f25ffd526359ab0485e0e66",
+      "signature": "dafe53bec051e7ad9cd588447f1cdc1b1300e92166c9094986182da15eb2d5ee899708c107fcde32a11c75656851e583f65d5d73b4bab3fb3ccfe00d6c179b09"
+    },
+    "G_COUPLED": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:e446925fa796b7597be48b0b8b98e4a20f13682f83df2d31adae6e48810fd516",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "survives_principal_death": true,
+        "survival_basis": "interest_coupled",
+        "subject_matter_ref": "lpe:collateral:press-line-3"
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "2eb78d955d5c81e1e9b0a0cd95a9b196",
+      "terms_id": "71eacd6ed8afb9288ddfe33db27c551b8cbc4adfc32fbe4916237fb0196b066b",
+      "signature": "3941c34c1aac56692ece5fa0fb1df95c559ca447352452221b6a53bc9f94688572edc4461a279c42fde36adb6eaa658a1d6cc1e2c2a9859090cb06680bbd1904"
+    },
+    "G_SUCCESSION": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:ad71d33013eec170927401b64159f3598422a221f7a563fd72c2ee2691b14631",
+      "issuer": "did:aps:example:lpe-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable",
+        "successor_order": [
+          "did:aps:example:lpe-primary-agent",
+          "did:aps:example:lpe-successor-1",
+          "did:aps:example:lpe-successor-2"
+        ]
+      },
+      "verification_method": "did:aps:example:lpe-principal#key-1",
+      "nonce": "0491a405b5fc167a17818593281f8137",
+      "terms_id": "45d8b1968e075ebaffb0a0d875faeb4053433b2717d3b23184e46b480ebc942e",
+      "signature": "9d441079850c6b5333a177dbc284f1867b8e5ce0f8eb04f8da844a003bafc69bc972f391e9afc1e3978981439ec9efcd5b49d8aa150c45758d071af8fdd43b00"
+    },
+    "G_PRIMARY_PERSONAL": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:a3ebcd8060557e125299ccead51d6c4251465233bf7f40984f233c2f32c3205b",
+      "issuer": "did:aps:example:lpe-primary-agent",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "durability": "not_durable"
+      },
+      "verification_method": "did:aps:example:lpe-primary-agent#key-1",
+      "nonce": "4639c011fd00aa236f058429ec33e7af",
+      "terms_id": "36d140afb20077e9e9492fbbab50b547d6b7117b6ed00e3edfda2f11baaf3d23",
+      "signature": "26a4de25eb1e9cf493545785e6bca3a72ac8aac5955f132646b5c5c12fe9a91d7948cae7bdc2133b59362b751982bb9d8cad632719692a328e3284554f166b05"
+    }
+  },
+  "events": {
+    "DEATH": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "principal_death",
+      "attestor": "did:aps:example:lpe-vital-records",
+      "attestor_role": "vital-records-registrar",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "register_entry": "lpe-vr-0001"
+      },
+      "verification_method": "did:aps:example:lpe-vital-records#key-1",
+      "nonce": "a83c2da29ad379fdde25103dd9dc67e4",
+      "event_id": "cb7883aee16a9a6019f5f18f566470693abcd8d94c080768545d568d2e0dbb1f",
+      "signature": "6a55957261aab72412ff7173f3f9cf0bd49dee3b5d209093bcbd649bd684ed890f40b58453a3eaeafc4e4fd65778812b1c73f44c25ac8ab0d39010b69e819d0e"
+    },
+    "DEATH_NO_STANDING": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "principal_death",
+      "attestor": "did:aps:example:lpe-impostor",
+      "attestor_role": "unaffiliated-observer",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "register_entry": "lpe-vr-0001"
+      },
+      "verification_method": "did:aps:example:lpe-impostor#key-1",
+      "nonce": "728e8d650ca7c4b0f2c40205dad089cf",
+      "event_id": "23703271594718dfcfc0a4996a029ceeb441bd26ac7bd7dce82572e7572a7755",
+      "signature": "67b81a0bc00c5a77b70eb2bef9ed2b6b68ba1b92a0d31a643f8690e7416e5664eae36d23ac573c84c2ffaa2873d609bd422219820c5fe0de09da441385ae3600"
+    },
+    "DEATH_ROLE_CLAIM_CONFLICT": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "principal_death",
+      "attestor": "did:aps:example:lpe-impostor",
+      "attestor_role": "vital-records-registrar",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "register_entry": "lpe-vr-0001"
+      },
+      "verification_method": "did:aps:example:lpe-impostor#key-1",
+      "nonce": "bc3399d794c8302ec8089daa0aafb373",
+      "event_id": "14b9ae6bf58f2dc1a7a8a17a45088ed4a7933afd9da764d4e32723c9f5ec9ad1",
+      "signature": "53a6298c7ce6a979f561bfcbf941d5763697b54daf5ca97494cbc17f64a458d67c8cf6595dd47d23dcf8c09e8857853d916aa45544c27f10a47c3d0d88aefd00"
+    },
+    "INCAPACITY": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "principal_incapacity",
+      "attestor": "did:aps:example:lpe-capacity-examiner",
+      "attestor_role": "capacity-examiner",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T09:30:00.000Z",
+      "recorded_at": "2026-09-21T09:30:00.000Z",
+      "payload": {
+        "finding": "lacks_capacity"
+      },
+      "verification_method": "did:aps:example:lpe-capacity-examiner#key-1",
+      "nonce": "cb55cd5a4de8f8f858f42d3301a5bcf4",
+      "event_id": "bac130519c77059ef10d648213aed1b7bf31897db2f19f701dce4cbdea6c9883",
+      "signature": "49135cf4a46fb5955e449c9d520bc1aaa4caba4f789d62a1eb01a3cfc1a3d1226827d5ae2b17340faec8c5a66e8d3e025d3a617bff8dadcafe98d519c09aa30d"
+    },
+    "NOTICE_AGENT": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "notice_of_principal_death",
+      "attestor": "did:aps:example:lpe-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T15:00:00.000Z",
+      "recorded_at": "2026-09-21T15:00:00.000Z",
+      "payload": {
+        "received_from": "did:aps:example:lpe-vital-records"
+      },
+      "verification_method": "did:aps:example:lpe-agent#key-1",
+      "nonce": "2ef6b4a2f90a57ea4e571d015ae8df33",
+      "event_id": "55a45025a9579445a3dae30eb4236af9b3d98f3ccd0d23d0b71b8e54371fa018",
+      "signature": "e159cd1500fd10d258f55bb76e8e687f85586ef15b6279338d2822a7ebe3d8bbce79074d43e7405d67d14fbf023696a9aa7bb91130235c2ddd1cb68556b94306"
+    },
+    "NOTICE_WRONG_SUBJECT": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "notice_of_principal_death",
+      "attestor": "did:aps:example:lpe-spouse-agent",
+      "attestor_role": "grant-subject",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-21T15:00:00.000Z",
+      "recorded_at": "2026-09-21T15:00:00.000Z",
+      "payload": {
+        "received_from": "did:aps:example:lpe-vital-records"
+      },
+      "verification_method": "did:aps:example:lpe-spouse-agent#key-1",
+      "nonce": "0868934457c3f14d4a818ff2f771add6",
+      "event_id": "b68a1133ec532da5b36d9c2392bd45cf1443d6946a9b7a95129ff7c0815f45d4",
+      "signature": "8603bcb9c876fc7a8b3c2fc7122e8292badbffd428f8e3eae8e72965f627f95acd9ea244ade8e851869bea6cf810d5c14cfb668827a9b42f9863fd54ec275709"
+    },
+    "FILING": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "marriage_dissolution_filing",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-22T09:00:00.000Z",
+      "recorded_at": "2026-09-22T09:00:00.000Z",
+      "payload": {
+        "docket": "lpe-dr-2026-114",
+        "counterparty": "did:aps:example:lpe-spouse-agent"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "7efef009572651ff43f4a36bb431bccf",
+      "event_id": "b7babe69f4c2ef8bb5fe0754544517bd0ac5e66640f9a7463bfb136f5297321b",
+      "signature": "3034b063f910681eaad67e8f6ff72bf493c8df93557490d5e2bc26dc4b76784cc7dfc9f2612b08525fe170d2c3de5e56365de88e5589b906a002e8575173bd07"
+    },
+    "DECREE": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "marriage_dissolution_decree",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-23T09:00:00.000Z",
+      "recorded_at": "2026-09-23T09:00:00.000Z",
+      "payload": {
+        "docket": "lpe-dr-2026-114",
+        "counterparty": "did:aps:example:lpe-spouse-agent"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "fdbdb641ceb57648e6a8afd94af39ed5",
+      "event_id": "e2f582b002c7ee224e86fe1faff2e391a9e24de601741ef68374cbba1b7a8a8e",
+      "signature": "92d93c37d15665a6310804a2110d3588a7908c75b19aaef1e34e115bf245b1ad1e0335880e37b6ed06f2401caa9017b08148f435750fb842e95e6c134b854106"
+    },
+    "KILLING_FINDING": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "felonious_killing_finding",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lpe-fiduciary",
+      "occurred_at": "2026-09-24T09:00:00.000Z",
+      "recorded_at": "2026-09-24T09:00:00.000Z",
+      "payload": {
+        "decedent": "did:aps:example:lpe-principal",
+        "disposition": "adjudicated"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "0fbe45613e026c627fbe2fbd55a9cba7",
+      "event_id": "b610eb231308265b1f255cc242136fd1b1cdd16315754aff08e7c6bb06e01b81",
+      "signature": "edbf3f38e52ffee460e5780529c327ef3dc0036d7dbecd2696f1c044fbaf2d4d540c5940d11f038621c3c88fa98bcbb835f1ef333d137c7774e86eee631a9801"
+    },
+    "KILLING_FINDING_NO_STANDING": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "felonious_killing_finding",
+      "attestor": "did:aps:example:lpe-impostor",
+      "attestor_role": "unaffiliated-observer",
+      "subject_ref": "did:aps:example:lpe-fiduciary",
+      "occurred_at": "2026-09-24T09:00:00.000Z",
+      "recorded_at": "2026-09-24T09:00:00.000Z",
+      "payload": {
+        "decedent": "did:aps:example:lpe-principal",
+        "disposition": "alleged"
+      },
+      "verification_method": "did:aps:example:lpe-impostor#key-1",
+      "nonce": "ed1b0785fd83edb773f6c3f218d75902",
+      "event_id": "733f50e2329a71d9fc4405b3739d907df9b3f11930af07d106856c043bb7819a",
+      "signature": "92e7a267617a2e42d0f330519f548176530e9a0b27a282df89368504668950fa520a42c1c9001cf0c5466f921e461f7044f0cbad8d0f7b6240b56ade5a1f170c"
+    },
+    "GUARDIAN": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "guardian_appointment",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "did:aps:example:lpe-principal",
+      "occurred_at": "2026-09-22T08:00:00.000Z",
+      "recorded_at": "2026-09-22T08:00:00.000Z",
+      "payload": {
+        "guardian_of": "estate"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "6f0496e08724ad28460eb7001be3bcab",
+      "event_id": "3a67e9671346760d69bca05488e39c395bb95cba441094a60825a7676cfb1f08",
+      "signature": "fa5799f1be6abe407d7e67038b9f6980ddcdf134b649329239ddad45b73bd596cb7a605c6f5b2bcf7991937388a649b4583996adb080459d56537e5e34c92801"
+    },
+    "SUSPEND_ORDER": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "court_order_suspend_delegation",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "sha256:e7a8648c1683843889380a0367064c43bfcdc15368616014ff8b9b98ac790480",
+      "occurred_at": "2026-09-22T18:00:00.000Z",
+      "recorded_at": "2026-09-22T18:00:00.000Z",
+      "payload": {
+        "order": "lpe-ord-2026-31"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "4a95d7f39ce31a08f78c68f20de4962b",
+      "event_id": "4dca902bee8ff3bedce66c0f3d1d908889fdaf0ad25dbd0f45ba30af3cc91679",
+      "signature": "aa113ec2b4ac854d420828963c9409e0deccfb1a26746f0f6bc0408122e87022d1a166afa7f907a8539b178f24e0876389c5586970bb4110e8ed96f54cc03604"
+    },
+    "TERMINATE_ORDER": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "court_order_terminate_delegation",
+      "attestor": "did:aps:example:lpe-court",
+      "attestor_role": "court-of-record",
+      "subject_ref": "sha256:e7a8648c1683843889380a0367064c43bfcdc15368616014ff8b9b98ac790480",
+      "occurred_at": "2026-09-23T18:00:00.000Z",
+      "recorded_at": "2026-09-23T18:00:00.000Z",
+      "payload": {
+        "order": "lpe-ord-2026-44"
+      },
+      "verification_method": "did:aps:example:lpe-court#key-1",
+      "nonce": "c0e0aa7367d2dfd48ca6b2c3abb9b32a",
+      "event_id": "5cc48fa67102d1f1fa36249c7ecea54cadddece82b1045c8106aa91e7613e5c4",
+      "signature": "7a77496dc676d29f6e347328ce31f4103b3442d8c64607921549d068f7f0f1762a718d252723cb76e6d2e8bd65092f5b6c87a8374732a842b7dda1aaa63d7006"
+    },
+    "SUSPEND_ORDER_NO_STANDING": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "court_order_suspend_delegation",
+      "attestor": "did:aps:example:lpe-impostor",
+      "attestor_role": "court-of-record",
+      "subject_ref": "sha256:e7a8648c1683843889380a0367064c43bfcdc15368616014ff8b9b98ac790480",
+      "occurred_at": "2026-09-22T18:00:00.000Z",
+      "recorded_at": "2026-09-22T18:00:00.000Z",
+      "payload": {
+        "order": "lpe-ord-2026-31"
+      },
+      "verification_method": "did:aps:example:lpe-impostor#key-1",
+      "nonce": "e4131584280a916fe3c877ecb3226b69",
+      "event_id": "8c3fde8dfb8848bcaad6acdbd716bf6efd998617d54e73c3b7ec7399a38228b9",
+      "signature": "9b8414cd01376b6b17621b5c42fb540cb8b6acf0b0ccbce8150d1951530fa989bf9c2eb58e2c18a2d8a4e329e359125dbf4667f1fb6aaa7a86d8428ce6fd6301"
+    },
+    "INTEREST_IN_SUBJECT_MATTER": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "collateral_interest_in_subject_matter",
+      "attestor": "did:aps:example:lpe-collateral-registry",
+      "attestor_role": "collateral-registry",
+      "subject_ref": "did:aps:example:lpe-lender",
+      "occurred_at": "2026-09-20T09:00:00.000Z",
+      "recorded_at": "2026-09-20T09:00:00.000Z",
+      "payload": {
+        "holder": "did:aps:example:lpe-lender",
+        "subject_matter_ref": "lpe:collateral:press-line-3"
+      },
+      "verification_method": "did:aps:example:lpe-collateral-registry#key-1",
+      "nonce": "eb43928964fabf54d1aa5bdc4ee0e79c",
+      "event_id": "a14aa002d50e31c1f5c849a2de3ded737b3e9189dc769bfcbe611dea3dbcde30",
+      "signature": "3b006ed343d2e74289bf08b672922e1ddb2ce9881f2cbfb7cec4357d38f9318f77a6e8802e1e70d88b65a105e0b440e27056f50d225c6fda071aa15af16f3404"
+    },
+    "INTEREST_IN_PROCEEDS": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "collateral_interest_in_proceeds_only",
+      "attestor": "did:aps:example:lpe-collateral-registry",
+      "attestor_role": "collateral-registry",
+      "subject_ref": "did:aps:example:lpe-lender",
+      "occurred_at": "2026-09-20T09:00:00.000Z",
+      "recorded_at": "2026-09-20T09:00:00.000Z",
+      "payload": {
+        "holder": "did:aps:example:lpe-lender",
+        "subject_matter_ref": "lpe:collateral:press-line-3"
+      },
+      "verification_method": "did:aps:example:lpe-collateral-registry#key-1",
+      "nonce": "89b49e0e1069a6d197a3e3c5e70a9e07",
+      "event_id": "34b2307ac0685249a6eb7d8c28bc4c64171938d1b872b7b6f4ef9ad31a19125a",
+      "signature": "d1627a05209c4f4d8013cc9a5627c787abbc6403d76be7e3f111dca9d55f3ff8b6325d3093b4b1239f1b7f8a30ecf9f2493353dfa6294085464158ae013dc005"
+    },
+    "INTEREST_WRONG_SUBJECT_MATTER": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "collateral_interest_in_subject_matter",
+      "attestor": "did:aps:example:lpe-collateral-registry",
+      "attestor_role": "collateral-registry",
+      "subject_ref": "did:aps:example:lpe-lender",
+      "occurred_at": "2026-09-20T09:00:00.000Z",
+      "recorded_at": "2026-09-20T09:00:00.000Z",
+      "payload": {
+        "holder": "did:aps:example:lpe-lender",
+        "subject_matter_ref": "lpe:collateral:press-line-9"
+      },
+      "verification_method": "did:aps:example:lpe-collateral-registry#key-1",
+      "nonce": "192ed24d56252fdeda12d989b849ae73",
+      "event_id": "4754c5a4c0b2f39663195db66082930a13d33bea6bb276eeba7201fc9c2938a4",
+      "signature": "ee2782501bb0fac6b1c4971b12e6965556e389ee94e4f0939cb4b9b13e2fc8adc8921b37264f8675d16441462647f51eb7827c596a89f1ca702e8bcd369a2a01"
+    },
+    "PRIMARY_EXIT": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "agent_exit",
+      "attestor": "did:aps:example:lpe-org-registrar",
+      "attestor_role": "org-registrar",
+      "subject_ref": "did:aps:example:lpe-primary-agent",
+      "occurred_at": "2026-09-22T09:00:00.000Z",
+      "recorded_at": "2026-09-22T09:00:00.000Z",
+      "payload": {
+        "basis": "resigned"
+      },
+      "verification_method": "did:aps:example:lpe-org-registrar#key-1",
+      "nonce": "cad23a3dcb25864de622ceadaf65aaec",
+      "event_id": "bb848c6b83e71ddb4d9fda253540e4259eecc4625b501e5bcca5c37f6de2c103",
+      "signature": "89da82d5f4d408801303b6e6276093ad1bb2ed9b59341b7338823d04600490434578b49d1e2f6d097866c0f2cfbf07a7766763786caf0d643447e6d6a51b2f05"
+    },
+    "SUCCESSOR_1_EXIT": {
+      "record_type": "fixture:principal-event:v0",
+      "version": "0.1",
+      "event_type": "agent_exit",
+      "attestor": "did:aps:example:lpe-org-registrar",
+      "attestor_role": "org-registrar",
+      "subject_ref": "did:aps:example:lpe-successor-1",
+      "occurred_at": "2026-09-22T09:00:00.000Z",
+      "recorded_at": "2026-09-22T09:00:00.000Z",
+      "payload": {
+        "basis": "declined_to_serve"
+      },
+      "verification_method": "did:aps:example:lpe-org-registrar#key-1",
+      "nonce": "e04371a9c7d8b485de52c97ebbe4b705",
+      "event_id": "1be0b4e9fc6edfbffbf5dcbe739a9d1f8237e4099ed0aa9e5b0c84952502d50e",
+      "signature": "0b4a1af597844527eef63726677ddd12e10daba3aa8a6251cb9cddca3f4634afe475764d83f05e9dacb487f6439add63bf151b8ee4be673848dfdf47268dd308"
+    }
+  },
+  "chains": {
+    "G_PLAIN": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "359b8daa26e51e88f79e54406ce16175",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:e7a8648c1683843889380a0367064c43bfcdc15368616014ff8b9b98ac790480",
+        "signature": "e76534c3fc524a17e6a6df7c248edadc24b88d64b6ef78a921b5afcd535d367a1f64c6b91f7be0057493ea8c6b4dcd4e5a52144e612e138fb671080ce8895e06"
+      }
+    ],
+    "G_DURABLE": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "dab837720f069840dc5736c02bc623d9",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:4dbe4b6f43062e1939dd775321308bb55f72174da12de31064794dd58f17022e",
+        "signature": "b097291a68c80c803aaa99b57a9113c92e356ee6d8db7e02e054e956cd65e24d62c78ffee7a53b033ae113c7c16eaf32506f3e39cb7615d75126bd92d1dedc00"
+      }
+    ],
+    "G_SPOUSAL_DECREE": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-spouse-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "f9c00a5d9d4331fe282de8a1f3e4ef98",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:214fb90e5689bba1d5f9fbb3bc3af3bf4f92baa72ff3e015901f5bb93d9a6730",
+        "signature": "9e7d391a02ee3ceb1460b2820e7eb143e972d6fdd4c2a759f0837e9fe0de398e903e1f93b6c387aae6c5682b6b62a1e31e9f7c0808aeb0d55431c340a2664208"
+      }
+    ],
+    "G_SPOUSAL_FILING": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-spouse-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "ef4a5ed112f3f16a7e06c58084bf2d37",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:230c569e47b62ee7a68971bb2ad60cdfc1b5325b61f810bb6a1c980d51bbf9df",
+        "signature": "56f260c72ebc97dc88250701a21841c3b25d8dc1c3a1e7501d9563cff09fe417e0b79779a4011394aa6f51d0123228cbedc1327fa113a6d2ba491c45edd83a0e"
+      }
+    ],
+    "G_SPOUSAL_SILENT": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-spouse-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "98756fe3fb131f6154ac1d142dc54098",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:969cc0bcfd928f00064e980f4c103b1d016cf451a52fc7058bbc3867c9f2d926",
+        "signature": "ade28e925ba3a46e1f8b780b7911a13dddfe555722a47c060d4ce43d78d5667d67e7ac54b93301cd56b3780bb84f8183651a2da9140cc521b5a8e3e8c73e3808"
+      }
+    ],
+    "G_FIDUCIARY": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-fiduciary",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "7ed6b2ea28a516d420c0928cf1ed3d09",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 1
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:c2494695a099c1a1e7cf8b9f24be4077b4cff1d1f916b9e46be7786caf401935",
+        "signature": "7d81fd43c482b7bfe36d569c563e35fd75e1031fe605d1e32ce83d364114ef69c85141fa42d4c66c099112695ac25f86b04e75f0c1918f362fe9f3b9270b0804"
+      }
+    ],
+    "G_FIDUCIARY_SUB": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-fiduciary",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "7ed6b2ea28a516d420c0928cf1ed3d09",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 1
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:c2494695a099c1a1e7cf8b9f24be4077b4cff1d1f916b9e46be7786caf401935",
+        "signature": "7d81fd43c482b7bfe36d569c563e35fd75e1031fe605d1e32ce83d364114ef69c85141fa42d4c66c099112695ac25f86b04e75f0c1918f362fe9f3b9270b0804"
+      },
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": "sha256:c2494695a099c1a1e7cf8b9f24be4077b4cff1d1f916b9e46be7786caf401935",
+        "issuer": "did:aps:example:lpe-fiduciary",
+        "subject": "did:aps:example:lpe-fiduciary-sub-agent",
+        "verification_method": "did:aps:example:lpe-fiduciary#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "26c1251e423585a0bddcd7967c9f6c61",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:810b1f55c69b8dc8e182afa6a68759e8da6dea7b62690c1fa4bfcf61b578969f",
+        "signature": "33fa30f4b5ef17579a6c2876915c129bca22745c2e8dce1e23c36d748cd99c0576bbe743e45b3d16a1fcb13f496ff191268225cf67481279a9848ab15ccb110b"
+      }
+    ],
+    "G_COUPLED": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-lender",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "7398ae30d98884217c0863d8a2a157b9",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "collateral:dispose"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:e446925fa796b7597be48b0b8b98e4a20f13682f83df2d31adae6e48810fd516",
+        "signature": "ba692220f4f5de004cd11893b43dc087e2480076055b2f123d716359d31df2c55d7beaa5f598facd763370c467fb55893cce83732af2b12ca7671df3b98ea60e"
+      }
+    ],
+    "G_SUCCESSION": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-primary-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "d60e8e8b39670710ee9f55413482534c",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 1
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:ad71d33013eec170927401b64159f3598422a221f7a563fd72c2ee2691b14631",
+        "signature": "2bb1e33dc902c0809898add27aef665fbd46e965ae43fea50a1c6dc7cf00b06a0521e0d07b031c7e1518f47f1090c7029541be58c1b9034cef244d7ce97f170c"
+      }
+    ],
+    "G_PRIMARY_PERSONAL": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpe-principal",
+        "subject": "did:aps:example:lpe-primary-agent",
+        "verification_method": "did:aps:example:lpe-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "d60e8e8b39670710ee9f55413482534c",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 1
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:ad71d33013eec170927401b64159f3598422a221f7a563fd72c2ee2691b14631",
+        "signature": "2bb1e33dc902c0809898add27aef665fbd46e965ae43fea50a1c6dc7cf00b06a0521e0d07b031c7e1518f47f1090c7029541be58c1b9034cef244d7ce97f170c"
+      },
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": "sha256:ad71d33013eec170927401b64159f3598422a221f7a563fd72c2ee2691b14631",
+        "issuer": "did:aps:example:lpe-primary-agent",
+        "subject": "did:aps:example:lpe-primary-sub-agent",
+        "verification_method": "did:aps:example:lpe-primary-agent#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "4edec6d1e2122807622d2057b3d6af95",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:write"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:a3ebcd8060557e125299ccead51d6c4251465233bf7f40984f233c2f32c3205b",
+        "signature": "70f9ea7be55ddf680d874d1fe785f801612dc6a26a9f439a15f664d45487d4893d451973c99fba7f33bbd6ce49a44313c0c75c9f9cf71f05e65853bab823ed0d"
+      }
+    ]
+  }
+}
