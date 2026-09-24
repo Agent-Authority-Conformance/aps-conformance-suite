@@ -1,0 +1,318 @@
+{
+  "profile": "aps-lifecycle-policy-change-v0",
+  "status": "candidate_against_proposed",
+  "description": "Policy version as a lifecycle dependency separate from the grant. One never-revoked grant, three signed policy versions for one policy_id, six signed operative-pointer records and four authorization-decision records. Thirteen presentations in three modes: which version is operative at an instant, whether a pointer move is a rollback to a version that was already operative, and what a past decision record renders as when it is read later. Every vector is candidate against proposed text: draft-pidlisnyi-aps-03 states no rule for policy versioning, for operative-pointer resolution, or for rendering a past decision against a pinned version. See README.",
+  "evaluation": "Each presentation is an independent evaluation against a fresh boundary. No state is carried between presentations and presentation order does not matter.",
+  "verdict_vocabulary": ["valid", "invalid", "not_established", "restricted"],
+  "case_source": {
+    "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+    "document": "CASES.md",
+    "commit": "2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda",
+    "branch": "cases-v0.2",
+    "section": "Policy change",
+    "note": "This commit was a local branch when this family was built and may not yet be reachable from the public default branch. The proposed text the vectors test is pinned separately below, at a commit that is on the public default branch."
+  },
+  "proposed_text": {
+    "policy-version": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Decisions and effects",
+      "concept": "Policy version",
+      "quote": "Policy version. Which policy an approval or decision was evaluated against. The same action can be allowed under one version and denied under the next.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "authorization-decision": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Decisions and effects",
+      "concept": "Authorization decision",
+      "quote": "Authorization decision. The record an enforcement point makes that an action was allowed or denied, against the authority, policy and inputs it evaluated.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "evidence": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Verification and evidence",
+      "concept": "Evidence",
+      "quote": "Evidence. Records a decision, transition, invocation, execution or effect. Ending authority does not by itself erase or invalidate evidence of earlier events.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "issuer-standing": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Parties and standing",
+      "concept": "Issuer standing",
+      "quote": "Issuer standing. Why the issuer was allowed to create, narrow, suspend, revoke or replace authority for the principal. A valid signature establishes who signed. It does not by itself establish standing.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    }
+  },
+  "draft03": {
+    "states_this_rule": false,
+    "closest_text": {
+      "section": "3.5",
+      "quote": "The enforcement gateway MUST recheck revocation status at execution time, not only at approval time.",
+      "why_it_is_not_the_rule": "That sentence is about revocation status, which is a fact about the authority artifact. Nothing in it says which policy version an evaluation runs under, how a verifier resolves that version at an instant, or what a past decision record renders as when it is read after the policy changed."
+    },
+    "also_relied_on": {
+      "section": "3.3",
+      "quote": "A verifier MUST NOT union scopes or budgets from multiple chains.",
+      "note": "Every action vector selects the one grant and uses draft-03 chain verification unchanged for it. The policy layer sits on top of that result and never alters it."
+    }
+  },
+  "pointer_sets": {
+    "BASE": ["P1_initial_v1", "P2_upgrade_v2"],
+    "WITH_ROLLBACK": ["P1_initial_v1", "P2_upgrade_v2", "P3_rollback_v1"],
+    "COMPETING": ["P1_initial_v1", "P2_upgrade_v2", "P3_rollback_v1", "P4_competing_v2"],
+    "CLAIMED_ROLLBACK": ["P1_initial_v1", "P2_upgrade_v2", "P3_rollback_v1", "P5_claimed_rollback_to_v3"],
+    "NO_STANDING": ["P1_initial_v1", "P2_upgrade_v2", "P6_no_standing_v1"]
+  },
+  "declared_defective_fail_set": [
+    "PC-03-LC-I-004-c-competing-pointers-one-effective-from-not-established",
+    "PC-04-LC-I-004-d-claimed-rollback-to-never-operative-version-not-established",
+    "PC-05-LC-I-004-e-pointer-issuer-without-policy-standing-not-established",
+    "PC-06-LC-I-005-a-pinned-decision-renders-under-its-own-version",
+    "PC-08-LC-I-005-c-unpinned-decision-not-established",
+    "PC-09-LC-I-005-d-pinned-version-unresolvable-not-established",
+    "PC-11-LC-I-006-b-tightened-policy-restricts-the-action-not-the-grant"
+  ],
+  "presentations": [
+    {
+      "id": "PC-01-LC-I-004-a-operative-version-at-an-instant-control",
+      "case_id": "LC-I-004",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "pointer",
+      "note": "The family's control. One pointer in force, nothing competing, nothing claimed. Every later pointer vector differs from this one in exactly the way its id names.",
+      "differs_from": null,
+      "pointer_set": "BASE",
+      "classify": "P1_initial_v1",
+      "at": "2026-09-20T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "pointer_is_not_a_rollback_claim",
+        "operative_version_id": "v1",
+        "pointer_classification": "initial"
+      }
+    },
+    {
+      "id": "PC-02-LC-I-004-b-rollback-to-previously-operative-version",
+      "case_id": "LC-I-004",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "pointer",
+      "differs_from": "PC-01: a third pointer moves the operative version back to v1, which pointer P1 had already made operative",
+      "pointer_set": "WITH_ROLLBACK",
+      "classify": "P3_rollback_v1",
+      "at": "2026-09-22T18:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "rollback_to_previously_operative_version",
+        "operative_version_id": "v1",
+        "pointer_classification": "rollback_to_existing_version"
+      }
+    },
+    {
+      "id": "PC-03-LC-I-004-c-competing-pointers-one-effective-from-not-established",
+      "case_id": "LC-I-004",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "pointer",
+      "differs_from": "PC-02: a fourth pointer with standing carries the same effective_from as P3 and names v2 instead of v1",
+      "pointer_set": "COMPETING",
+      "classify": "P3_rollback_v1",
+      "at": "2026-09-22T18:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "operative_pointer_ambiguous",
+        "operative_version_id": null,
+        "pointer_classification": null
+      }
+    },
+    {
+      "id": "PC-04-LC-I-004-d-claimed-rollback-to-never-operative-version-not-established",
+      "case_id": "LC-I-004",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version", "evidence"],
+      "mode": "pointer",
+      "differs_from": "PC-02: the pointer says kind rollback and names v3, a version authored after every pointer before it and never operative under any of them. v3's rules are byte-identical to v1's",
+      "pointer_set": "CLAIMED_ROLLBACK",
+      "classify": "P5_claimed_rollback_to_v3",
+      "at": "2026-09-23T08:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "rollback_target_never_previously_operative",
+        "operative_version_id": "v3",
+        "pointer_classification": "new_version_not_a_rollback"
+      }
+    },
+    {
+      "id": "PC-05-LC-I-004-e-pointer-issuer-without-policy-standing-not-established",
+      "case_id": "LC-I-004",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["issuer-standing", "policy-version"],
+      "mode": "pointer",
+      "differs_from": "PC-02: the pointer is correctly formed and its Ed25519 signature verifies, and it is signed by an identity this boundary does not resolve as having standing for this policy",
+      "pointer_set": "NO_STANDING",
+      "classify": "P6_no_standing_v1",
+      "at": "2026-09-23T08:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "pointer_issuer_without_policy_standing",
+        "operative_version_id": "v2",
+        "pointer_classification": null
+      }
+    },
+    {
+      "id": "PC-06-LC-I-005-a-pinned-decision-renders-under-its-own-version",
+      "case_id": "LC-I-005",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authorization-decision", "evidence", "policy-version"],
+      "mode": "render",
+      "differs_from": "the render control PC-07: the version operative at read time is not the version this decision was evaluated against, so the two readings diverge",
+      "pointer_set": "BASE",
+      "decision": "D1_allow_under_v1_pinned",
+      "read_at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "decision_renders_under_the_version_used",
+        "operative_version_id": "v1"
+      }
+    },
+    {
+      "id": "PC-07-LC-I-005-b-pin-equals-current-version-renders-the-same-either-way",
+      "case_id": "LC-I-005",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authorization-decision", "policy-version"],
+      "mode": "render",
+      "note": "The render control. The pinned version happens to be the version operative at read time, so pinning and not pinning give the same answer. This is why the defect is invisible in ordinary operation.",
+      "differs_from": null,
+      "pointer_set": "BASE",
+      "decision": "D2_deny_under_v2_pinned",
+      "read_at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "decision_renders_under_the_version_used",
+        "operative_version_id": "v2"
+      }
+    },
+    {
+      "id": "PC-08-LC-I-005-c-unpinned-decision-not-established",
+      "case_id": "LC-I-005",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authorization-decision", "evidence"],
+      "mode": "render",
+      "differs_from": "PC-06: the decision record carries an outcome and no policy version pin at all. Its inputs re-derive to the same outcome under both v1 and v2, so rendering it under the current version looks clean and establishes nothing about which rule produced it",
+      "pointer_set": "BASE",
+      "decision": "D3_allow_unpinned",
+      "read_at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "decision_not_pinned_to_policy_version"
+      }
+    },
+    {
+      "id": "PC-09-LC-I-005-d-pinned-version-unresolvable-not-established",
+      "case_id": "LC-I-005",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authorization-decision", "evidence"],
+      "mode": "render",
+      "differs_from": "PC-08: the decision does carry a pin, and the digest it pins resolves to no policy version this boundary holds",
+      "pointer_set": "BASE",
+      "decision": "D4_allow_pinned_unresolvable",
+      "read_at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "pinned_policy_version_unresolvable"
+      }
+    },
+    {
+      "id": "PC-10-LC-I-006-a-action-under-the-version-in-force-at-the-time-control",
+      "case_id": "LC-I-006",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "action",
+      "note": "The action control. The grant is valid, the operative version is the permissive one, and the action is inside it.",
+      "differs_from": null,
+      "pointer_set": "BASE",
+      "at": "2026-09-20T12:00:00.000Z",
+      "amount": 4000,
+      "approval_presented": false,
+      "revocation": "active",
+      "expected": {
+        "verdict": "valid",
+        "reason": "allowed_under_operative_policy_version",
+        "chain_state": "valid",
+        "operative_version_id": "v1"
+      }
+    },
+    {
+      "id": "PC-11-LC-I-006-b-tightened-policy-restricts-the-action-not-the-grant",
+      "case_id": "LC-I-006",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version", "authorization-decision"],
+      "mode": "action",
+      "differs_from": "PC-10: the same grant and the same action at a later instant, after the policy tightened. Nothing about the grant changed, expired or was revoked",
+      "pointer_set": "BASE",
+      "at": "2026-09-23T12:00:00.000Z",
+      "amount": 4000,
+      "approval_presented": false,
+      "revocation": "active",
+      "expected": {
+        "verdict": "restricted",
+        "reason": "denied_under_operative_policy_version",
+        "chain_state": "valid",
+        "operative_version_id": "v2"
+      }
+    },
+    {
+      "id": "PC-12-LC-I-006-c-tightened-policy-still-admits-a-conforming-action",
+      "case_id": "LC-I-006",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "action",
+      "differs_from": "PC-11: the same grant at the same instant under the same tightened version, with an action inside the tightened ceiling and the approval the tightened version requires. The grant was never invalidated, which is what this vector exists to show",
+      "pointer_set": "BASE",
+      "at": "2026-09-23T12:00:00.000Z",
+      "amount": 500,
+      "approval_presented": true,
+      "revocation": "active",
+      "expected": {
+        "verdict": "valid",
+        "reason": "allowed_under_operative_policy_version",
+        "chain_state": "valid",
+        "operative_version_id": "v2"
+      }
+    },
+    {
+      "id": "PC-13-LC-I-006-d-revoked-grant-is-invalid-not-restricted",
+      "case_id": "LC-I-006",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["policy-version"],
+      "mode": "action",
+      "differs_from": "PC-12: identical in every respect except that the revocation resolver answers revoked. This is the discriminator the family turns on: a policy tightening is restricted and an actual revocation is invalid, and the two must not read the same",
+      "pointer_set": "BASE",
+      "at": "2026-09-23T12:00:00.000Z",
+      "amount": 500,
+      "approval_presented": true,
+      "revocation": "revoked",
+      "expected": {
+        "verdict": "invalid",
+        "reason": "authority_chain_not_valid",
+        "detail": "invalid/REVOKED",
+        "chain_state": "invalid"
+      }
+    }
+  ]
+}

@@ -1,0 +1,762 @@
+{
+  "profile": "aps-lifecycle-agent-side-events-v0",
+  "status": "candidate_against_proposed",
+  "description": "Events on the agent side of an unchanged grant: a self-made copy and a new instance carrying transferred memory present the same authority material, a still-fresh credential is presented twice and a replay record is lost, the executor a grant names is retired on a published schedule, a revocation notice takes effect part way through the window, and a capability appears in the runtime that the principal never consented to. Twenty presentations against four one-hop grants that are valid under every lifecycle rule at every instant evaluated. Every vector is candidate against proposed text.",
+  "evaluation": "Each presentation is an independent evaluation against a fresh boundary. The consumed-credential set and the lost-record instant are inputs to each presentation, not state carried between them, so presentation order does not matter.",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "restricted"
+  ],
+  "case_source": {
+    "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+    "document": "CASES.md",
+    "commit": "2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda",
+    "branch": "cases-v0.2",
+    "section": "Agent-side events",
+    "note": "This commit was a local branch when this family was built and may not yet be reachable from the public default branch. The proposed text the vectors test is pinned separately below, at a commit that is on the public default branch."
+  },
+  "proposed_text": {
+    "agent-identity": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Parties and standing",
+      "concept": "Agent identity",
+      "quote": "Agent identity. Says which agent is acting. Identity continuity does not establish authority continuity.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "presented-credential-or-session": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Presented credential or session",
+      "quote": "Presented credential or session. A session or derived token used to exercise authority in a particular request. Ending a grant does not necessarily invalidate every session or derived token already issued, and ending a session does not by itself end the grant.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "action-or-capability-binding": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Action or capability binding",
+      "quote": "Action or capability binding. Which operation, implementation or schema a grant refers to, where that distinction matters. A tool can keep its name while what it does changes, which widens effective authority without any change to the grant.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "approval": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Decisions and effects",
+      "concept": "Approval",
+      "quote": "Approval. A principal or approver allows a proposed action. It is an input to authorization, with its own scope, expiry and use count, and it can be withdrawn before dispatch.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "evidence": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Verification and evidence",
+      "concept": "Evidence",
+      "quote": "Evidence. Records a decision, transition, invocation, execution or effect. Ending authority does not by itself erase or invalidate evidence of earlier events.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "notice": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Verification and evidence",
+      "concept": "Notice",
+      "quote": "Notice. That a particular party or enforcement point learned of a transition at a particular time. Recording a transition and observing it are different events.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "l2-identity-continuity": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Invariants > L2",
+      "concept": "L2. Identity continuity does not imply authority continuity",
+      "quote": "The same agent identity can appear under an old authority chain and under an independent replacement chain. Revoking the old chain's ancestor invalidates the old chain. The replacement chain stands on its own.",
+      "status_in_that_document": "tested as a scenario",
+      "status_quote": "Status **tested** as a scenario. The chain results are [draft-03](https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/03/) Section 3.3 verification."
+    }
+  },
+  "draft03": {
+    "states_this_rule": false,
+    "closest_text": {
+      "section": "3.5",
+      "quote": "The enforcement gateway MUST recheck revocation status at execution time, not only at approval time.",
+      "why_it_is_not_the_rule": "That sentence requires a recheck of revocation status. It says nothing about whether the process presenting a grant is the grant's subject, whether a still-fresh credential has already been spent, whether the executor a grant names still exists, or whether the capability an action needs was consented to. Each of those can fail with a perfectly current revocation answer."
+    },
+    "also_relied_on": {
+      "section": "3.2. Component Orders",
+      "quote": "Scope grants use ASCII colon-separated segments. \"*\" covers all grants; a wildcard is otherwise permitted only as the terminal segment \":*\".",
+      "note": "The executor a grant names and the capabilities it carries are expressed as colon-separated scope grants, so both stay inside the grammar draft-03 defines. draft-03 defines no executor grant and no capability grant."
+    }
+  },
+  "declared_defective_fail_set": [
+    "ASE-02-LC-E-002-b-named-executor-retired-not-established",
+    "ASE-04-LC-E-002-d-named-executor-unresolvable-not-established",
+    "ASE-05-LC-E-012-a-second-presentation-of-the-same-credential-not-established",
+    "ASE-07-LC-E-012-c-replay-record-lost-inside-the-window-not-established",
+    "ASE-12-LC-E-025-a-a-copy-presents-the-originals-grant-not-established",
+    "ASE-14-LC-E-031-a-transferred-memory-claim-is-not-a-grant",
+    "ASE-15-LC-E-031-b-a-memory-claim-does-not-widen-the-grants-scope",
+    "ASE-17-LC-E-027-b-a-capability-an-update-added-and-nobody-consented-to",
+    "ASE-19-LC-E-027-d-consent-does-not-reach-back-before-it-was-given",
+    "ASE-20-LC-E-027-e-a-capability-the-runtime-does-not-declare"
+  ],
+  "presentations": [
+    {
+      "id": "ASE-01-LC-E-002-a-named-executor-live-control",
+      "case_id": "LC-E-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding"
+      ],
+      "note": "The family's control. The grant is valid, the presenter is its subject, the credential is fresh and unspent, the executor the grant names is live, and the capability is consented. Every later vector differs from this one in exactly the way its id names.",
+      "differs_from": null,
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-02-LC-E-002-b-named-executor-retired-not-established",
+      "case_id": "LC-E-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding"
+      ],
+      "differs_from": "ASE-01: the attestor's record says the executor the grant names was retired on 2026-09-22. Nobody revoked the grant, nothing expired on its own terms, and nobody suspended anything",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_RETIRED"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "named_executor_retired",
+        "detail": "exec-pinned-2026-06 retired_from=2026-09-22T00:00:00.000Z",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-03-LC-E-002-c-action-before-the-executor-was-retired",
+      "case_id": "LC-E-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding",
+        "notice"
+      ],
+      "differs_from": "ASE-02: the same retirement record, evaluated at an instant before the retirement took effect. A retirement reaches an action from the instant it takes effect and not before",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_BEFORE_RETIREMENT",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_RETIRED"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-21T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-04-LC-E-002-d-named-executor-unresolvable-not-established",
+      "case_id": "LC-E-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding"
+      ],
+      "differs_from": "ASE-01: the grant names an executor no record from the attestor with standing resolves at all, which is a different answer from a record saying it was retired",
+      "presenter": "agent",
+      "grant": "G_AGENT_UNKNOWN_EXECUTOR",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "named_executor_unresolvable",
+        "detail": "exec-never-registered",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-05-LC-E-012-a-second-presentation-of-the-same-credential-not-established",
+      "case_id": "LC-E-012",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "presented-credential-or-session",
+        "approval"
+      ],
+      "differs_from": "ASE-01: the same credential, still inside its freshness window and still correctly signed, presented to a boundary that has already consumed it",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [
+        "K_MAIN"
+      ],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "credential_already_presented",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-06-LC-E-012-b-credential-outside-its-freshness-window-not-established",
+      "case_id": "LC-E-012",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "presented-credential-or-session"
+      ],
+      "differs_from": "ASE-01: the same credential fifteen minutes later, past the end of the window it declares",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:20:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "credential_outside_freshness_window",
+        "detail": "2026-09-23T11:55:00.000Z..2026-09-23T12:05:00.000Z at=2026-09-23T12:20:00.000Z",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-07-LC-E-012-c-replay-record-lost-inside-the-window-not-established",
+      "case_id": "LC-E-012",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "presented-credential-or-session",
+        "evidence"
+      ],
+      "differs_from": "ASE-01: the boundary's record of which credentials it has consumed was lost at 11:58, and the action instant is inside one freshness window of that loss",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": "2026-09-23T11:58:00.000Z",
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "replay_cache_lost_within_skew_window",
+        "detail": "lost=2026-09-23T11:58:00.000Z refuse_until=2026-09-23T12:08:00.000Z",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-08-LC-E-012-d-replay-record-lost-and-the-window-has-passed",
+      "case_id": "LC-E-012",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "presented-credential-or-session"
+      ],
+      "differs_from": "ASE-07: the same loss, evaluated after a full freshness window has passed since it, with a credential issued after the loss. Nothing lost can still be replayed inside its own window",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_LATE",
+      "consumed": [],
+      "cache_lost_at": "2026-09-23T11:58:00.000Z",
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:20:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-09-LC-E-021-a-action-while-the-authority-is-live",
+      "case_id": "LC-E-021",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "notice"
+      ],
+      "note": "The revocation control. No revocation notice exists in this record set at all.",
+      "differs_from": null,
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_PRE_REVOCATION",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T05:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-10-LC-E-021-b-action-after-the-revocation-takes-effect",
+      "case_id": "LC-E-021",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "notice"
+      ],
+      "differs_from": "ASE-09: a revocation notice from the principal took effect at 06:00, and this action is at 12:00. A new action after that instant is not authorized by the grant",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [
+        "V_EFFECTIVE_EARLY"
+      ],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "invalid",
+        "reason": "authority_chain_not_valid",
+        "detail": "invalid/REVOKED",
+        "chain_state": "invalid"
+      }
+    },
+    {
+      "id": "ASE-11-LC-E-021-c-the-earlier-action-re-evaluated-with-the-notice-in-hand",
+      "case_id": "LC-E-021",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "notice",
+        "evidence"
+      ],
+      "differs_from": "ASE-10: the same revocation notice and the same record set, evaluated for an action at 05:00 rather than at 12:00. Differs from ASE-09 only in that the notice is present. A later record does not reach back and rewrite what an earlier action was authorized by",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_PRE_REVOCATION",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [
+        "V_EFFECTIVE_EARLY"
+      ],
+      "at": "2026-09-23T05:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-12-LC-E-025-a-a-copy-presents-the-originals-grant-not-established",
+      "case_id": "LC-E-025",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "agent-identity",
+        "l2-identity-continuity"
+      ],
+      "differs_from": "ASE-01: the process presenting the grant is a copy of the agent rather than the agent the grant names. It holds the identical bytes and offers no record of its own",
+      "presenter": "copy",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "presenter_not_grant_subject",
+        "detail": "presenter=did:aps:example:ase-agent-copy subject=did:aps:example:ase-agent",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-13-LC-E-025-b-a-copy-with-its-own-grant-is-established",
+      "case_id": "LC-E-025",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "agent-identity",
+        "l2-identity-continuity"
+      ],
+      "differs_from": "ASE-12: the principal issued the copy a grant in its own right. The copy is not barred from acting, it needs a grant, and this is what having one looks like",
+      "presenter": "copy",
+      "grant": "G_COPY",
+      "requested_capability": "cap:summarize",
+      "credential": "K_COPY",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE_COPY"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-14-LC-E-031-a-transferred-memory-claim-is-not-a-grant",
+      "case_id": "LC-E-031",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "agent-identity",
+        "evidence"
+      ],
+      "differs_from": "ASE-12: the new instance carries a signed record from the old instance describing what it is authorized to do. The record is authentic, it is about the presenter, and it is an assertion by an agent rather than a grant by a principal",
+      "presenter": "new_instance",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [
+        "C_CARRIED_ONTO_NEW_INSTANCE"
+      ],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "self_asserted_authority_claim_is_not_a_grant",
+        "detail": "asserter=did:aps:example:ase-agent subject=did:aps:example:ase-agent",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-15-LC-E-031-b-a-memory-claim-does-not-widen-the-grants-scope",
+      "case_id": "LC-E-031",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "agent-identity",
+        "evidence"
+      ],
+      "differs_from": "ASE-14: the presenter is the grant's own subject, so identity is not the question. Its carried memory asserts a capability its grant does not carry, and the record is ignored rather than counted",
+      "presenter": "agent",
+      "grant": "G_AGENT_NARROW",
+      "requested_capability": "cap:tool-invoke",
+      "credential": "K_TOOL_INVOKE",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [
+        "C_ABOUT_ITSELF"
+      ],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "scope_not_granted",
+        "detail": "cap:tool-invoke ignored_claims=1",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-16-LC-E-027-a-a-consented-capability-while-an-unconsented-one-is-present",
+      "case_id": "LC-E-027",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding",
+        "approval"
+      ],
+      "note": "The capability control, and the most arguable vector in the family. An update added a capability nobody consented to, and the capability the principal did consent to still works.",
+      "differs_from": "ASE-01: the runtime now declares a second capability the principal never consented to. The action requests the consented one",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:summarize",
+      "credential": "K_MAIN",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_UPDATED",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-17-LC-E-027-b-a-capability-an-update-added-and-nobody-consented-to",
+      "case_id": "LC-E-027",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding",
+        "approval"
+      ],
+      "differs_from": "ASE-16: the action requests the capability the update added instead of the one the principal consented to. The grant carries it in scope, the runtime can do it, and nobody agreed to it",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:tool-invoke",
+      "credential": "K_TOOL_INVOKE",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_UPDATED",
+      "consent_records": [
+        "S_BASE"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "restricted",
+        "reason": "capability_not_consented",
+        "detail": "cap:tool-invoke consented=cap:summarize",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-18-LC-E-027-c-a-later-consent-covers-the-added-capability",
+      "case_id": "LC-E-027",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "approval"
+      ],
+      "differs_from": "ASE-17: the principal has since consented to the added capability. Re-consent is what unblocks it, not the update having landed",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:tool-invoke",
+      "credential": "K_TOOL_INVOKE",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_UPDATED",
+      "consent_records": [
+        "S_BASE",
+        "S_EXTENDED"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "valid",
+        "reason": "action_established",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-19-LC-E-027-d-consent-does-not-reach-back-before-it-was-given",
+      "case_id": "LC-E-027",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "approval",
+        "notice"
+      ],
+      "differs_from": "ASE-18: the same extended consent record, evaluated for an action at 05:00, an hour before the consent was given. Consent reaches an action from the instant it is given and not before, which is ASE-11's rule pointing the other way",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:tool-invoke",
+      "credential": "K_TOOL_INVOKE_EARLY",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_UPDATED",
+      "consent_records": [
+        "S_EXTENDED"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T05:00:00.000Z",
+      "expected": {
+        "verdict": "restricted",
+        "reason": "capability_not_consented",
+        "detail": "cap:tool-invoke consented=none",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "ASE-20-LC-E-027-e-a-capability-the-runtime-does-not-declare",
+      "case_id": "LC-E-027",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "action-or-capability-binding"
+      ],
+      "differs_from": "ASE-18: the principal consented to the capability and the runtime does not declare it. Consent to something the executing thing cannot do establishes nothing about this action",
+      "presenter": "agent",
+      "grant": "G_AGENT",
+      "requested_capability": "cap:tool-invoke",
+      "credential": "K_TOOL_INVOKE",
+      "consumed": [],
+      "cache_lost_at": null,
+      "executor_records": [
+        "X_PINNED_LIVE"
+      ],
+      "claims": [],
+      "declared_capabilities": "D_BASE",
+      "consent_records": [
+        "S_EXTENDED"
+      ],
+      "revocation_notices": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "capability_not_declared_by_runtime",
+        "detail": "cap:tool-invoke",
+        "chain_state": "valid"
+      }
+    }
+  ]
+}
