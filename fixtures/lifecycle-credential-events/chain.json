@@ -1,0 +1,100 @@
+{
+  "chain": [
+    {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "billing:submit"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:357c679076c9ee8dc35147b6e725b48120a00bee1b89852cfe8ee6fc0b52d476",
+      "issued_at": "2026-09-20T10:00:00.000Z",
+      "issuer": "did:aps:example:lce-principal",
+      "nonce": "76dfedaa298a171c1f93e9a68b1edb87",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "73690bedf2629e1aef455bd985ecc05afdfd2980debb86a1f3b952d9ecfd440ef17c2ce3020fb162b0534fd479a963dc414e99a607b77fb580fbdae7ec139507",
+      "subject": "did:aps:example:lce-integrator",
+      "verification_method": "did:aps:example:lce-principal#key-1",
+      "version": "1.0"
+    },
+    {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "billing:submit"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:6e83d92642c30cafb1e54039300d2efe7edd9d18e31d417d3beaf3bece44603d",
+      "issued_at": "2026-09-20T11:00:00.000Z",
+      "issuer": "did:aps:example:lce-integrator",
+      "nonce": "7f34065acea8dd3a209ee8675ad0f335",
+      "parent_delegation_id": "sha256:357c679076c9ee8dc35147b6e725b48120a00bee1b89852cfe8ee6fc0b52d476",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "bd9dd71fc94425232720089d7299fde22ab6aba818469eb93e5fb3fe8d00f8141840a5d9a90965994e4ce414caa6833c227751ce07429c6fad824571405dfa0f",
+      "subject": "did:aps:example:lce-agent",
+      "verification_method": "did:aps:example:lce-integrator#key-1",
+      "version": "1.0"
+    }
+  ],
+  "now": "2026-09-20T12:00:00.000Z",
+  "seed_input": "aac-lifecycle-credential-events-v0",
+  "seed_sha256_hex": "244eba597e631d3a8ce471bfcd9dc803e14e485f47be7b9075bfdefa92b4fcac",
+  "subjects": {
+    "agent": "did:aps:example:lce-agent",
+    "integrator": "did:aps:example:lce-integrator",
+    "principal": "did:aps:example:lce-principal"
+  },
+  "verification_keys": {
+    "did:aps:example:lce-integrator#key-1": "f3cc31903457372988ffc74423673b792fe3e0f62a71a9d23131bc9a680a53d6",
+    "did:aps:example:lce-principal#key-1": "6d44d356b8873558c43727d407566b84ff4ad061cf2df8bf86506cf49522f318"
+  }
+}
