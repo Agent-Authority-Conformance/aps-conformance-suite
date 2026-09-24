@@ -1,0 +1,1675 @@
+{
+  "actions": {
+    "advice-issue": {
+      "action_ref": "ad36a9991f889299fb3ad3e31100d7ffee39a264e68132b9f2207bdd68187714",
+      "input": {
+        "action_type": "advice.issue",
+        "agent_id": "did:aps:example:lre-advice-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "ce31851636a470014763b9eeceda463c",
+        "payload_ref": "d876525908176018bd5de0434ece237144beee6074643f83c8c385a814f865c1",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "advice:issue"
+        ],
+        "target": "https://example.invalid/advice/issue"
+      }
+    },
+    "collect-pursue": {
+      "action_ref": "4d5456bdc559a3076bbbeb05cebd85e1105f3cde9c595102e9eb73b2335af99d",
+      "input": {
+        "action_type": "collections.pursue",
+        "agent_id": "did:aps:example:lre-collections-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "723df603457046cc00ef2319508cd641",
+        "payload_ref": "f17c0a39772f207ca69c7b2f44498b596a05f6639e23eb5616cbcc1200d0372f",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "collections:pursue"
+        ],
+        "target": "https://example.invalid/collections/pursue"
+      }
+    },
+    "pay-licence-a": {
+      "action_ref": "25aa77367874e0240413739aa624354f3fad4c76e3bee158540377170b4e4f0e",
+      "input": {
+        "action_type": "payments.transfer",
+        "agent_id": "did:aps:example:lre-payments-agent-a",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "0014cb946345ffd800c009095c18a18a",
+        "payload_ref": "b02ad8e7daa3ac6a3db3e2f7f41377bd1fc9e5738edcb5c73594e8332e139595",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "payments:transfer"
+        ],
+        "target": "https://example.invalid/payments/licence-a"
+      }
+    },
+    "pay-licence-b": {
+      "action_ref": "49426dc69500c9da169765113d05ad50922ecd21337d6bdaacfec32586236636",
+      "input": {
+        "action_type": "payments.transfer",
+        "agent_id": "did:aps:example:lre-payments-agent-b",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "fe7837b4b9b3d16469b56a8baed89648",
+        "payload_ref": "e4aee42c2889bde231a5dfb01c8a24be825d5f49b59107fc18cbd0f677c84937",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "payments:transfer"
+        ],
+        "target": "https://example.invalid/payments/licence-b"
+      }
+    },
+    "pay-licence-c": {
+      "action_ref": "238e40300cb6704fa1390d085dbb10d61f3f3ccd6d7346c7539fd336fa211e38",
+      "input": {
+        "action_type": "payments.transfer",
+        "agent_id": "did:aps:example:lre-payments-agent-c",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "86c2c16b7a0e15fee42324ce10e06cee",
+        "payload_ref": "b31c404c12e52036eb5b0f5ba373fe986e9de53ed73a0d1a51962f87c3cdbbe2",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "payments:transfer"
+        ],
+        "target": "https://example.invalid/payments/licence-c"
+      }
+    },
+    "pay-listed": {
+      "action_ref": "ee460c709177aa9219647fbd9957256c06b85a832ec1c86e56f90722c711fa35",
+      "input": {
+        "action_type": "payments.transfer",
+        "agent_id": "did:aps:example:lre-payments-agent-a",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "14e520db4e3021738ea79d0f579aa5d6",
+        "payload_ref": "1c05e6db846e5b43c0aded486523c51efa5ce3befd4a81d76146b5245555b0c9",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "payments:transfer"
+        ],
+        "target": "https://example.invalid/payments/listed"
+      }
+    },
+    "pay-unlisted": {
+      "action_ref": "39a0a2b886b3b8cdf3da807ac9585f07908deebe4f43a13e8db879a3b1488655",
+      "input": {
+        "action_type": "payments.transfer",
+        "agent_id": "did:aps:example:lre-payments-agent-a",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "4afa640d0a44cb845c40e465bd71d8e6",
+        "payload_ref": "7dd8bfcd26d2dc354ced8ea77278099019877f6947738a8642a81d862ea67b90",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "payments:transfer"
+        ],
+        "target": "https://example.invalid/payments/unlisted"
+      }
+    },
+    "proc-historical": {
+      "action_ref": "cbe68d130a5c942e1f3b5dca6dbc40a3f96336fc3f24dc9705c4ca5d4d0485e5",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:lre-procurement-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "28fbe72261a0dfc9ddc171e2bed30c9a",
+        "payload_ref": "2ee17216213afaee93791f3859870b108e83e1fe2ae388d55d005ee7e58fbedf",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:purchase"
+        ],
+        "target": "https://example.invalid/orders/historical"
+      }
+    },
+    "proc-large": {
+      "action_ref": "1f9803194a27761d7c578645b89fe854a86a3c9501f12cf660892e46baa45e59",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:lre-procurement-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "0c06d4121fc50172c96245c26be34e7c",
+        "payload_ref": "e40242b9e597f7e5bd7fd9cd0e98b0531d60655848fe776378450d01185a74dc",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:purchase"
+        ],
+        "target": "https://example.invalid/orders/large"
+      }
+    },
+    "proc-later": {
+      "action_ref": "228303fc800ad352f86bb171a2634a41f428e94800d73a3de74d198f86886d1c",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:lre-procurement-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "d7c181bd2502c76a8161c6ac7d73fbd5",
+        "payload_ref": "8e6039fbd8d0b86245e8634f7ec836b6c0fceeda018424517380a93cfe2b73ec",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:purchase"
+        ],
+        "target": "https://example.invalid/orders/later"
+      }
+    },
+    "proc-small": {
+      "action_ref": "e8eadc359968947063ad62de40b66435286de4d158a426a796721e0da83b8be3",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:lre-procurement-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "9bfa76b96e2e7019d610189457cdac1e",
+        "payload_ref": "bfcd3e47737cd004d00fcb2db0bf2b890b02771760c0a0ea6593c64fa52766e4",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:purchase"
+        ],
+        "target": "https://example.invalid/orders/small"
+      }
+    },
+    "proc-sub": {
+      "action_ref": "d9d589d885a75763ca57fe947ff57ce833e95ea6d30f9a8c25fca503337f8e80",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:lre-procurement-subagent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "2d9b36dc4f0fafbc68a4e275f208fcc7",
+        "payload_ref": "76be820cc8e5e8bd97c0eb6f32e7becd678c0c577e379458f6aa6e4b9ffa5d3b",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:purchase"
+        ],
+        "target": "https://example.invalid/orders/sub"
+      }
+    },
+    "report-in-scope": {
+      "action_ref": "8dcdef9f51c529d795a30e557a2c3cc7e2481ed859ab52f35e3c85e798e44c66",
+      "input": {
+        "action_type": "compliance.report",
+        "agent_id": "did:aps:example:lre-reporting-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "1edb687908678f5325ce50406afbaccf",
+        "payload_ref": "1027308ae25fd1f7fd0d9baf2f1cf42f02dc9dab7ce3fe33145d66f0d48620ce",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "compliance:report"
+        ],
+        "target": "https://example.invalid/reports/quarterly"
+      }
+    },
+    "treasury-move": {
+      "action_ref": "ff5517d8b2103795ade772a0c6e81b30047e8d1cac9b92867657bb0955e0d3c9",
+      "input": {
+        "action_type": "treasury.move-funds",
+        "agent_id": "did:aps:example:lre-treasury-agent",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "nonce": "3cd698955b63bb3416a99c9c50d8b395",
+        "payload_ref": "747fa4940d6e72a7e1ee579702ca8b0d587005b6276451d7c101431d0520e16b",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "treasury:move-funds"
+        ],
+        "target": "https://example.invalid/treasury/move"
+      }
+    }
+  },
+  "certifications": {
+    "proc_large": {
+      "action_ref": "1f9803194a27761d7c578645b89fe854a86a3c9501f12cf660892e46baa45e59",
+      "certifier": "did:aps:example:lre-responsible-official",
+      "gate_event_id": "sha256:c04bd2593764a40186babdddf5e60b0aab542159187f6b7e5a724adf7e7b737d",
+      "issued_at": "2026-09-23T09:00:00.000Z",
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:gate-certification-v0",
+      "signature": "a4b55f0a61a5dcda43e18020edc9091d0ede4404b804bd2d5ce1ddbee8303e6ba0eeea7dc2c43fb2f6c0cddabf9ed274d5d8b79457810b336d987b706048e009",
+      "verification_method": "did:aps:example:lre-responsible-official#key-1"
+    },
+    "report_in_scope": {
+      "action_ref": "8dcdef9f51c529d795a30e557a2c3cc7e2481ed859ab52f35e3c85e798e44c66",
+      "certifier": "did:aps:example:lre-responsible-official",
+      "gate_event_id": "sha256:6b28ddc66ee5619161db62e34d252582791e0be56d6f4648b11b1ca31a1d312d",
+      "issued_at": "2026-09-23T09:00:00.000Z",
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:gate-certification-v0",
+      "signature": "48c305aab7c6aa03117231d1355289f567e1774b25c1051cd9e7a9be183123464cd63e34569e89fb31179500ecd43c5fd30fe32c7e95d701d435b236f6c2b304",
+      "verification_method": "did:aps:example:lre-responsible-official#key-1"
+    }
+  },
+  "chains": {
+    "decree": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "compliance:report"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:583a0a02200aef560e323a96802656557b1e920f9e702a84d4d87d220898cfb3",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-org",
+        "nonce": "8fbfa492a6eea613489dc90296ae3050",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "9e7dbe5c9da08b65aebba60a8210fc6b0efdddffc57e095f2e23bf095192956a450307cf4aecdf9f7f94949c29a5afe6ebc00afb5c5ae9da4f903df82d77fd0d",
+        "subject": "did:aps:example:lre-reporting-agent",
+        "verification_method": "did:aps:example:lre-org#key-1",
+        "version": "1.0"
+      }
+    ],
+    "licence_a": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "payments:transfer"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:603f19b08b00a1475dce2ef2fef7d83c5066728efcf7c2c7d9aa0a4d28ff6205",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-payments-company",
+        "nonce": "fbd22ae59ef01c1abb49bf378fd6326c",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "f9b6cb7d240a17394d2c162164f76791e37571ee57b2f6dbc426244d89d5bdac19b87b4eab78da30332bf2293ec3fa1d2f3007a8c1d049b66dc2866ce1666300",
+        "subject": "did:aps:example:lre-payments-agent-a",
+        "verification_method": "did:aps:example:lre-payments-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "licence_b": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "payments:transfer"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:96cc838644ec177203b01f5d888f836a18c885c49f932b41f74a415134eac2e3",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-payments-company",
+        "nonce": "3ab1f11046bb68c53ea29816ae96a308",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "eca0ce6987673fb60197423c71ab083935be2f7f7e13e9b762da4d5caa442b9a6c17c6be762e97318bacd386abeecf674377b61bf845a6dc18307e38e2f9950b",
+        "subject": "did:aps:example:lre-payments-agent-b",
+        "verification_method": "did:aps:example:lre-payments-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "licence_c": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "payments:transfer"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:710c1e6a6e7bdf925a2b6ecc108ea6ba296c234152c3f1cd2b2b659753975fc4",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-payments-company",
+        "nonce": "a379e422acb8ab65c8354ce8ac5342eb",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "a09d9ac19b811ac55d9a99c444afb509922c1732320976cd9d330e18c6c079803f4bc517dba568d32544c26d0b518745e472948b4f6f16c4b1a5af0dd9481008",
+        "subject": "did:aps:example:lre-payments-agent-c",
+        "verification_method": "did:aps:example:lre-payments-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "officer": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:516a4f40cd57e13c829aec31fc386d6ae600ff37455ae976103b63b3f07db32b",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-org",
+        "nonce": "00a43166928e82ac9a68d1bb1bbfdbb5",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "689f5135d4a3c53872071814257200f4c555facb16ad0f1b33e0fc382f9d7e1e072a37173eec1855f46060570b5cca51054307997bfc7cdf1b90d2ed1d9d3406",
+        "subject": "did:aps:example:lre-finance-office",
+        "verification_method": "did:aps:example:lre-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:75c901d73c230d08aa287c57aa427e822ddc2e1c1e3e43829c3b1e5f8c23a182",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-finance-office",
+        "nonce": "5310e7073e860f7ab43c5887be1d0f24",
+        "parent_delegation_id": "sha256:516a4f40cd57e13c829aec31fc386d6ae600ff37455ae976103b63b3f07db32b",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "2f1133e4645573f2ade31adbb56b54d9a5bf7e4e1990c46bb6e88277947d2f1d9394742623fddffc5764d57dae4e6824d0ff5fa6373829deea41d7bffd52e500",
+        "subject": "did:aps:example:lre-procurement-agent",
+        "verification_method": "did:aps:example:lre-finance-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "officer_deep": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 2
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:8191492567c666138adb3426b457e3ca38cf8e05af473a1bdf36dbea7d83657f",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-org",
+        "nonce": "584f5f501ea4d3b53c65342b1754a72a",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "d9b5460fc7f379d9f99517fcfb4ad6ad94d2bd113fd7ca2186ef6877dfb95262f945d456d6609d2990e1be48d2597663d19b3b26bc62f279887b6cf3f23c0200",
+        "subject": "did:aps:example:lre-finance-office",
+        "verification_method": "did:aps:example:lre-org#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:bad78ba95d22c2667ea2e60f0148fef3e9b63ef066199984d6aeb9438001b501",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-finance-office",
+        "nonce": "d06e2a94c0b43b94550cc5c825283d73",
+        "parent_delegation_id": "sha256:8191492567c666138adb3426b457e3ca38cf8e05af473a1bdf36dbea7d83657f",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "f7681230f193ae1d9412b11b1b1d1c44cec10f5f358230227087c1d0ecc824c452bdeb0caa56792538a34c3ea661d63e2d2ed5aed41cddb8019fbee5a5b8f00a",
+        "subject": "did:aps:example:lre-procurement-agent",
+        "verification_method": "did:aps:example:lre-finance-office#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:ebb28717cf689efe4dfa3b60c0efe3c40a66bca4acaabaa8601e0531465bff4a",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-procurement-agent",
+        "nonce": "9060ae072e4f35bee5933825811575e9",
+        "parent_delegation_id": "sha256:bad78ba95d22c2667ea2e60f0148fef3e9b63ef066199984d6aeb9438001b501",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "6ba1525836a80077c54d7d2d2e4066d9ab5b720e6ecacf8f7ebc0238763125c8f25a1d6dccd33e06ece9fdd5197d040bbfe7d8e152de23944a76c784e02f2e09",
+        "subject": "did:aps:example:lre-procurement-subagent",
+        "verification_method": "did:aps:example:lre-procurement-agent#key-1",
+        "version": "1.0"
+      }
+    ],
+    "payments": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "payments:transfer"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:969785a3583465abd395248059c141eb956b630a97f4dab2ccb8bc5e5e69428a",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-payments-company",
+        "nonce": "61e81ec22e37c0d42f5db1c535d22631",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "cb256a87f8ea70e511cff75eecd399248af2efc0c278bb357a51d8b830b817b567a08f9e3d4667a6033af9b265739951021ea8b6c116475b10b81204b7bb9e0c",
+        "subject": "did:aps:example:lre-payments-agent-a",
+        "verification_method": "did:aps:example:lre-payments-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "receiver": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "collections:pursue"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:cd0a3086ecf803bdcff1a21e4eb02ec0a1a051b621624333209ff76d646b885f",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-receiver",
+        "nonce": "60bfe0fc3a97ff8e42a30654413b656a",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "e4063dd47885be32f236c441e749bbaa5ca9342536a7d1c96a3ba5be5a3d66c0d125849a6f2c5a3701b2fa23d01565829739aff090941f5bce9eb9c7d487e108",
+        "subject": "did:aps:example:lre-collections-agent",
+        "verification_method": "did:aps:example:lre-receiver#key-1",
+        "version": "1.0"
+      }
+    ],
+    "resource": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "treasury:move-funds"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:d577e8b0f7cfcc0bc1394e03cf9ad3bee82002bf4e20cedc0caee6591674ded1",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-company",
+        "nonce": "43dbe96628673bfdea1b0ae1ef0468a9",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "3251415a2b29c8acf61fd66b807ceede74772c1eb265225a6823c2edd614bbb41aa1ecd8a026780b9eb46c56a4a3e590e7c74b64d9e71d592bbafd8e8b77f200",
+        "subject": "did:aps:example:lre-treasury-agent",
+        "verification_method": "did:aps:example:lre-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "resource_regrant": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "treasury:move-funds"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:a4879e41e46581c13446501da78eb9313cc3105abcae68506c973e6f840a7dc7",
+        "issued_at": "2026-09-24T12:00:00.000Z",
+        "issuer": "did:aps:example:lre-company",
+        "nonce": "7ce2b2884c78b3fd84b3525e8c416640",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "44f2e242a1b0fdc02325ccd1d6db85b5d05c34e1c50cea4508ee31af5d5192f8abf4b704a752e9005d3ae996a0355c2a785078852e454677c00b5baa83344d0b",
+        "subject": "did:aps:example:lre-treasury-agent",
+        "verification_method": "did:aps:example:lre-company#key-1",
+        "version": "1.0"
+      }
+    ],
+    "suspension": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "advice:issue"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:609935d048614c7b828eb58315bfb0fcae77d44f7b446ed168afc35f8db05834",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-firm",
+        "nonce": "228241e2c82590f8ef2b598be31377d2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "835d99fb39fdd16703798584d7e52dcc1bc815bb50e99eee5a5da64b69ad8cd2d65898cdbf597708fe4e568a881d007d01c540b15dc0d5b6aef91d0bdddefb02",
+        "subject": "did:aps:example:lre-representative-office",
+        "verification_method": "did:aps:example:lre-firm#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "advice:issue"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:bf41397a83b9cedaf7aaf417416d110ffc5411d9a2525c677c8eba26ea49a893",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-representative-office",
+        "nonce": "c114fe6d3862e6892465aca53ddcf489",
+        "parent_delegation_id": "sha256:609935d048614c7b828eb58315bfb0fcae77d44f7b446ed168afc35f8db05834",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "a05f77124e91157e56254d4a9a9ceba3938c6b20d5e9873b3c175677600635f427aadb41f629e5c4f6127e0badd23672d05814c46a891e5624d2bfbf92f6b708",
+        "subject": "did:aps:example:lre-advice-agent",
+        "verification_method": "did:aps:example:lre-representative-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "trustee": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:38b330dd78a5def2e7e4a3f938e12ce7975238687dac934891e0ed20c1ec2b8f",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-trustee",
+        "nonce": "f691e11cea4797be912f37b107757682",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "727148d9ba3c14899b6fa5b4eea414268b24fea6d843e6575b03e5662252330a8d5f86d9f58a61aca9786a8ae16182acdc2fbe42e4b3dd2127a1ce0038329c0b",
+        "subject": "did:aps:example:lre-procurement-agent",
+        "verification_method": "did:aps:example:lre-trustee#key-1",
+        "version": "1.0"
+      }
+    ],
+    "trustee_deferred": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-28T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:81f44e52c1fd1d474cf1ea5de47a354f93bbf61def6f18576185f27b75eeb30e",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-trustee",
+        "nonce": "a7092cc4de103ce3b58b414b2ed6cc09",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "7ed5bcd4fe6754198be8c19aebd0b7ae7d131a69531825a7145a8591accd9d06fe8985b82a53569a9b76006dd81c9087c716094fabd158d944201e1f0d2f3403",
+        "subject": "did:aps:example:lre-procurement-agent",
+        "verification_method": "did:aps:example:lre-trustee#key-1",
+        "version": "1.0"
+      }
+    ],
+    "unsigned_claim": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "procurement:purchase"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-21T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:c52bd732d1496ef270643c307d041ddd364d94546fb0f33eabfc72f8ae99544b",
+        "issued_at": "2026-09-21T00:00:00.000Z",
+        "issuer": "did:aps:example:lre-org",
+        "nonce": "9b8ff380a80c338ded1828c2afc53a63",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "1f04579ad7aa3d682b10d7f2be3d423d42a2791f15a76efe42cbce1431f984f701c2c293eae1b73e3283da6a3dabef29e2607f11b10c6306d66e4408fb43a10d",
+        "subject": "did:aps:example:lre-procurement-agent",
+        "verification_method": "did:aps:example:lre-org#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "dependency_bindings": {
+    "licence_a": {
+      "delegation_id": "sha256:603f19b08b00a1475dce2ef2fef7d83c5066728efcf7c2c7d9aa0a4d28ff6205",
+      "depends_on": [
+        "dependency:lre-money-transmitter-licence"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:lre-payments-company",
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:dependency-binding-v0",
+      "signature": "354b1c28a0a9c10692a026cb20cde15a49aa50c08eb3f7a4025c388f44191b55334cfc0a1af077b5d678cd9cbd5afe1a516f9f40863ac96a396943691c0f4501",
+      "verification_method": "did:aps:example:lre-payments-company#key-1"
+    },
+    "licence_b": {
+      "delegation_id": "sha256:96cc838644ec177203b01f5d888f836a18c885c49f932b41f74a415134eac2e3",
+      "depends_on": [
+        "dependency:lre-money-transmitter-licence"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:lre-payments-company",
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:dependency-binding-v0",
+      "signature": "6d7db5ed2f5ea13333d27138dffce6755b813738497978f167538c0781a398eca2d3b2e0c8274c9df97acf00b079f1f474d243523a393ba54f8298c29dd1010c",
+      "verification_method": "did:aps:example:lre-payments-company#key-1"
+    },
+    "licence_c": {
+      "delegation_id": "sha256:710c1e6a6e7bdf925a2b6ecc108ea6ba296c234152c3f1cd2b2b659753975fc4",
+      "depends_on": [],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:lre-payments-company",
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:dependency-binding-v0",
+      "signature": "5687dbcfd1dfa33485cf4cc53ce85cf0ab381da36b9c72e6699d99b6688fcaad851df7f01931454a54af07cef4ec3edb2dfa64d18041f3274ada650968064d07",
+      "verification_method": "did:aps:example:lre-payments-company#key-1"
+    }
+  },
+  "description": "External authority events that end, suspend, narrow, gate, release or re-root authority without any delegation record changing. Thirteen chains, three dependency bindings, twenty-one external authority events, two gate certifications, one draft-03 revocation and one historical action-intent receipt, minted and verified with agent-passport-system 7.1.0.",
+  "external_events": {
+    "establish_receiver_root": {
+      "effect": "establish_trust_root",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:bee4b13e1761e2f72ec86025d21fb5bb47b121ad8ea7384ef50bd67fa355d776",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "949476282eb469baadaf89cc920a405b7a67972f02537b12df9379c2a044c3baf4183d67ea18cab27644f586c3f206b2a80dc81dc943b2cd62257ee5e870bb03",
+      "standing_basis": "order-appointing-receiver:lre-2026-0018",
+      "target": {
+        "id": "did:aps:example:lre-receiver",
+        "kind": "root"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "gate_decree_certification": {
+      "effect": "add_approval_gate",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:6b28ddc66ee5619161db62e34d252582791e0be56d6f4648b11b1ca31a1d312d",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {
+        "certifier": "did:aps:example:lre-responsible-official",
+        "gate_scope": "compliance:report",
+        "sunset": "2026-09-24T18:00:00.000Z",
+        "threshold_minor": null
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "af99cede203e74b938223ebac49eeba7615383aa36f84d76a8d5df2862eb3acac83128bd061fc93d983aecbadfed74c47ee735cae518c893acc423500f94c004",
+      "standing_basis": "consent-decree:lre-2026-0012",
+      "target": {
+        "id": "did:aps:example:lre-org",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "gate_officer_threshold": {
+      "effect": "add_approval_gate",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:c04bd2593764a40186babdddf5e60b0aab542159187f6b7e5a724adf7e7b737d",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {
+        "certifier": "did:aps:example:lre-responsible-official",
+        "gate_scope": "procurement:purchase",
+        "sunset": null,
+        "threshold_minor": "500000"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "048fb46354e37d0c4160b7cad460f1e60d8e133c1deda23c78826ba7795e6a41f50ddedea16b2a9fb0f7df49b203cc577277797d8a474b2c3c3f7f798df02708",
+      "standing_basis": "order-authorising-operations:lre-2026-0009",
+      "target": {
+        "id": "did:aps:example:lre-finance-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "ratify_historical_act": {
+      "effect": "ratify_action",
+      "effective_at": "2026-09-22T15:00:00.000Z",
+      "event_id": "sha256:bc4e5443619f3259a125089a8d6042abf53b945a1428ca5fc2b0e09088c1972c",
+      "issuer": "did:aps:example:lre-org",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "ed591b48a7345714fd822330e74d0adf2be73b1a91e47997a037461ff9c8aeb10a3ba6f08f3781247cefadb21452499d8716ba520bf7647214a0f1bd32935e08",
+      "standing_basis": "principal-ratification-record:lre-2026-0019",
+      "target": {
+        "id": "cbe68d130a5c942e1f3b5dca6dbc40a3f96336fc3f24dc9705c4ca5d4d0485e5",
+        "kind": "action"
+      },
+      "verification_method": "did:aps:example:lre-org#key-1"
+    },
+    "ratify_historical_act_no_standing": {
+      "effect": "ratify_action",
+      "effective_at": "2026-09-22T15:00:00.000Z",
+      "event_id": "sha256:a2208e2381cc95b65010f03a46396ae4eb578af93943ec9831b7e95cdb1e1ad3",
+      "issuer": "did:aps:example:lre-unregistered-authority",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "05a864aef778890a46048892c9adc3cc64aa31cc70918df7cf1b2e5565c8dd733b74ec35b8c70db44b0f3ce1a2a2ebd6f587515140e0e0b2056cbbc6a9a84a03",
+      "standing_basis": "asserted-by-the-record-itself",
+      "target": {
+        "id": "cbe68d130a5c942e1f3b5dca6dbc40a3f96336fc3f24dc9705c4ca5d4d0485e5",
+        "kind": "action"
+      },
+      "verification_method": "did:aps:example:lre-unregistered-authority#key-1"
+    },
+    "release_counterparty_v": {
+      "effect": "release_restriction",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:3b3be841409048956f8607f23e536df2e83520a4bccd01a1a6463d9b0449ac27",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-24T12:00:00.000Z",
+      "signature": "b6c11a7fdb0d62f0fd972dd78de89687c13ebdcc9bddc2701f552a88b7f0fc485dc0a0f16f7f843ff8571fb1eb9005e4b8539683194306d608c16d9061688007",
+      "standing_basis": "delisting-order:lre-2026-0003",
+      "target": {
+        "id": "sha256:9a02513f311254b315a4c8e13001df4a99b35123299a29209e14ae2b820ad4fe",
+        "kind": "event"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "release_gate_officer": {
+      "effect": "release_restriction",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:8fb191ce028eb9bbcda85a650f27d8bfc302ff67a795b34afe12ba6777e73faa",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-24T12:00:00.000Z",
+      "signature": "440b86926ec080b9403a37bc444be2f8562f7886a0244f52dae7c2977b9b4c25a57cf276c37daf7148de46f1ad8f59b056bed497488687a78bb6f91736bde408",
+      "standing_basis": "order-confirming-plan:lre-2026-0010",
+      "target": {
+        "id": "sha256:c04bd2593764a40186babdddf5e60b0aab542159187f6b7e5a724adf7e7b737d",
+        "kind": "event"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "release_rep_internal": {
+      "effect": "release_suspension",
+      "effective_at": "2026-09-25T09:00:00.000Z",
+      "event_id": "sha256:b3ca583be5d8b85b3f474b15ba17360100255146dfb0cfb56b3088153f5feab8",
+      "issuer": "did:aps:example:lre-firm",
+      "parameters": {
+        "cause_id": "cause:firm-internal-2026-0014"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-25T09:00:00.000Z",
+      "signature": "079621b2e2f096f4f8ca6c1fe8229f838194ad2ee8f9ea8b026d463bc98dca3e64030f8482ba43e61e942d4ff1fc224138540fe5cf7b9e43944599050a403d0d",
+      "standing_basis": "firm-supervisory-record:lre-2026-0016",
+      "target": {
+        "id": "did:aps:example:lre-representative-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-firm#key-1"
+    },
+    "release_rep_regulatory": {
+      "effect": "release_suspension",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:d74f35e95d185269f936f9ff17bb1e41f173c7503f8fd0bdb6d185323914ba93",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {
+        "cause_id": "cause:regulatory-2026-0013"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-24T12:00:00.000Z",
+      "signature": "6858d17faf1a9a12a94b1f002b28973a661f4c30d322f1aaff3cf98242417f7952199c621342fb5677ec74809d49a842bf13a8d35ec107c1fdbac68937b2e609",
+      "standing_basis": "expiry-of-sanction-period:lre-2026-0015",
+      "target": {
+        "id": "did:aps:example:lre-representative-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "release_resource_account": {
+      "effect": "release_restriction",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:7d4ba2bf4e426b84ca53e4e72cca6814e14b63130de0de2b6519db9290cccc4d",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-24T12:00:00.000Z",
+      "signature": "1b3117eee1319295988c17850289ba0b7b41c1faa46e0cac73980eac9380bbf5effdc9cee101bb306e59960b34b01274452fd3544cd6610b6deeefac8c69cf08",
+      "standing_basis": "order-dismissing-case:lre-2026-0006",
+      "target": {
+        "id": "sha256:50e777d6b855d8c74710532dbcbe3ed5b9a34c731a030eb720fd50f446a77a68",
+        "kind": "event"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "release_resource_transfer": {
+      "effect": "release_restriction",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:152854ebc5678aab8ff61eb726bea1874f152c74ad861287d04fbc7f59693c81",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-24T12:00:00.000Z",
+      "signature": "cb4db2151142c4744084e4811911c72849a37d84d519b1de3dc54a39eb982b2de436a1379140fe4ae790d26dfca3c7343c9c8ee341e4f091b0538b217de81408",
+      "standing_basis": "order-on-motion:lre-2026-0008",
+      "target": {
+        "id": "sha256:0b38293f3e75b8fac95a924dbf689ded8eb407798da72dac189ddb85e131992b",
+        "kind": "event"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "replace_officer_by_trustee": {
+      "effect": "replace_principal",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:743b55fb23b69dae0c9c23481dda354e8a3aeb021c67d4356b1fcca7a51c65c6",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {
+        "successor": "did:aps:example:lre-trustee"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "897b56c1f30fc5bcc5a06cb57f0857ef1c133f91c8d79268b7837c7e732c292989b4caec018e054d99347779c519a39b4fe5fe68f4b537edde40e66c8fa6ff09",
+      "standing_basis": "order-appointing-trustee:lre-2026-0011",
+      "target": {
+        "id": "did:aps:example:lre-finance-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "restrict_counterparty_v": {
+      "effect": "restrict_execution",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:9a02513f311254b315a4c8e13001df4a99b35123299a29209e14ae2b820ad4fe",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "459c044c2b75afc6c6364039ef952156aa8851a67e5f95d09ccbd645422e77dbcd7fad9c84b980b8acaa2b24bf251ffd99b8309b2b762c0fc67438e22f027408",
+      "standing_basis": "listing-order:lre-2026-0002",
+      "target": {
+        "id": "counterparty:lre-vendor-v",
+        "kind": "counterparty"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "restrict_counterparty_w_future": {
+      "effect": "restrict_execution",
+      "effective_at": "2026-09-24T12:00:00.000Z",
+      "event_id": "sha256:e84933380aa586af1dd7d2f88558b96e8f489726f92f065d7a45c4eaf7f72055",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "ccb094f3f045b5952a104f5e2927c3b3d0c32b44b01b00ea6911ca0ce764d75476093af608388ead8d0759f4fb20a84bd8b2e1e39b1b9a44aa15fb374a27960a",
+      "standing_basis": "listing-order:lre-2026-0005",
+      "target": {
+        "id": "counterparty:lre-vendor-w",
+        "kind": "counterparty"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "restrict_resource_account_backdated": {
+      "effect": "restrict_execution",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:50e777d6b855d8c74710532dbcbe3ed5b9a34c731a030eb720fd50f446a77a68",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "a4aa71efb46c148dd139930419591cbdcb08edf71205c41c016eecc3d2bb6a852a9917a6f0b2404eb02719af7afc812d91b370fbce533853a8f04a3f2d33c703",
+      "standing_basis": "restraining-order:lre-2026-0004",
+      "target": {
+        "id": "resource:lre-account-1",
+        "kind": "resource"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    },
+    "revoke_licence": {
+      "effect": "revoke_dependency",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:68a3686905912de95cf4ed6c702e0180f0caa58b3b3f153abd30466883aa9c66",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "758ac1e3b45291547fb7141818d71cf0f759007bb14c249ce5370b12e4606f12c8947f20ce012d5f88a20e3518f87789f649cc6066bea2cb7452717f18e02f09",
+      "standing_basis": "final-order-of-revocation:lre-2026-0017",
+      "target": {
+        "id": "dependency:lre-money-transmitter-licence",
+        "kind": "dependency"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "suspend_rep_internal": {
+      "effect": "suspend_principal",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:d93483f505e80efb3fa1e5679a334bd8fe069bd94228ae2b12c0b82ff0812145",
+      "issuer": "did:aps:example:lre-firm",
+      "parameters": {
+        "cause_id": "cause:firm-internal-2026-0014"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "9dddd829ed7af9b43fc16b3c717f8297cfdf1c79eac7ea4b534c1b750b7e69957bb67385f3a6a7483a02488d0250947b756d40d76a1d68bec46a454196a3fa01",
+      "standing_basis": "firm-supervisory-record:lre-2026-0014",
+      "target": {
+        "id": "did:aps:example:lre-representative-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-firm#key-1"
+    },
+    "suspend_rep_regulatory": {
+      "effect": "suspend_principal",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:97288d0c59148222280f301886bd33296b637cdcfe8d25e5462a69170133fd80",
+      "issuer": "did:aps:example:lre-regulator",
+      "parameters": {
+        "cause_id": "cause:regulatory-2026-0013"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "93abb76c934dff2bb5a148f437174ec67783294ea125697068e895da50ec7651e91ce083a225d87be56927b3a00ba5a98a671cafc32eeb34fedd4a79b1d45a0a",
+      "standing_basis": "sanction-order:lre-2026-0013",
+      "target": {
+        "id": "did:aps:example:lre-representative-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-regulator#key-1"
+    },
+    "terminate_officer_by_receiver": {
+      "effect": "terminate_principal_authority",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:8a5063485ae39c87245d4b941e767cfb0db3eb72762a255a95ee8a423cd600db",
+      "issuer": "did:aps:example:lre-receiver",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "4b1abe2f6035adfa6c0cda29fd267f77cbf770dade3a0e344c0adccbfd7e235c00be72a44e7de009c977f4018d1e178f1a4e63258047194fb14eb8215c032b00",
+      "standing_basis": "appointment-of-receiver:lre-2026-0001",
+      "target": {
+        "id": "did:aps:example:lre-finance-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-receiver#key-1"
+    },
+    "terminate_officer_no_standing": {
+      "effect": "terminate_principal_authority",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:f2d8d89f56b43085418373d340686e18be3b6f3933b8ded20b68b16d2015c40a",
+      "issuer": "did:aps:example:lre-unregistered-authority",
+      "parameters": {},
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "38a45ac3140859fd059f93518d2ecbaf71e02009004eba7456ec4153bad31e31b66e559c31b54bc5e623dcaa603200c43bbed88d7bb4e75d63406d58807bc304",
+      "standing_basis": "asserted-by-the-record-itself",
+      "target": {
+        "id": "did:aps:example:lre-finance-office",
+        "kind": "principal"
+      },
+      "verification_method": "did:aps:example:lre-unregistered-authority#key-1"
+    },
+    "transfer_resource_account": {
+      "effect": "transfer_resource_ownership",
+      "effective_at": "2026-09-22T12:00:00.000Z",
+      "event_id": "sha256:0b38293f3e75b8fac95a924dbf689ded8eb407798da72dac189ddb85e131992b",
+      "issuer": "did:aps:example:lre-court",
+      "parameters": {
+        "new_owner": "owner:lre-forfeiture-beneficiary"
+      },
+      "profile": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+      "recorded_at": "2026-09-22T15:00:00.000Z",
+      "signature": "ac7c3048480e3c800722b3e7a359d30495cd40811b34129a08c22a333f6004d1f834931809e37b13c852263cbdffcfd37250e352912577979573155e12894d02",
+      "standing_basis": "forfeiture-order:lre-2026-0007",
+      "target": {
+        "id": "resource:lre-account-1",
+        "kind": "resource"
+      },
+      "verification_method": "did:aps:example:lre-court#key-1"
+    }
+  },
+  "historical_receipt": {
+    "action_ref": "cbe68d130a5c942e1f3b5dca6dbc40a3f96336fc3f24dc9705c4ca5d4d0485e5",
+    "delegation_ref": "sha256:c52bd732d1496ef270643c307d041ddd364d94546fb0f33eabfc72f8ae99544b",
+    "evidence_refs": [],
+    "issued_at": "2026-09-22T09:00:00.000Z",
+    "issuer": "did:aps:example:lre-procurement-agent",
+    "profile": "aps-receipt-v1",
+    "receipt_id": "7681aef3cc95d4428957784a2433901b7f42bbf1114aeef4d5dc28dd73c685b5",
+    "receipt_type": "aps:action-intent:v1",
+    "result": {
+      "profile": "aps-action-intent-result-v1",
+      "status": "declared"
+    },
+    "signatures": [
+      {
+        "alg": "Ed25519",
+        "key_id": "did:aps:example:lre-procurement-agent#key-1",
+        "signer": "did:aps:example:lre-procurement-agent",
+        "value": "c01405f2c0c124ef0c728c0f97ce8eeabfa44f77649dc96e5d2e82c8b1ccf0c0bb3c183083b637ac9aa2f3dd306e76614e402961fa49e82d950a5eac2421b903"
+      }
+    ],
+    "subject_agent": "did:aps:example:lre-procurement-agent"
+  },
+  "historical_receipt_digest": "sha256:68b1ad8380a7e5f737ea8821cdfdb664a2fc32f2173b1f00583cc84f110b3352",
+  "identities": {
+    "advice_agent": "did:aps:example:lre-advice-agent",
+    "certifier": "did:aps:example:lre-responsible-official",
+    "collections_agent": "did:aps:example:lre-collections-agent",
+    "company": "did:aps:example:lre-company",
+    "court": "did:aps:example:lre-court",
+    "finance_office": "did:aps:example:lre-finance-office",
+    "firm": "did:aps:example:lre-firm",
+    "org": "did:aps:example:lre-org",
+    "payments_agent_a": "did:aps:example:lre-payments-agent-a",
+    "payments_agent_b": "did:aps:example:lre-payments-agent-b",
+    "payments_agent_c": "did:aps:example:lre-payments-agent-c",
+    "payments_company": "did:aps:example:lre-payments-company",
+    "procurement_agent": "did:aps:example:lre-procurement-agent",
+    "procurement_subagent": "did:aps:example:lre-procurement-subagent",
+    "receiver": "did:aps:example:lre-receiver",
+    "regulator": "did:aps:example:lre-regulator",
+    "reporting_agent": "did:aps:example:lre-reporting-agent",
+    "representative_office": "did:aps:example:lre-representative-office",
+    "treasury_agent": "did:aps:example:lre-treasury-agent",
+    "trustee": "did:aps:example:lre-trustee",
+    "unregistered_authority": "did:aps:example:lre-unregistered-authority"
+  },
+  "mint_time_sdk_observations": {
+    "chain_state_at_t4": {
+      "decree": {
+        "code": null,
+        "state": "valid"
+      },
+      "licence_a": {
+        "code": null,
+        "state": "valid"
+      },
+      "licence_b": {
+        "code": null,
+        "state": "valid"
+      },
+      "licence_c": {
+        "code": null,
+        "state": "valid"
+      },
+      "officer": {
+        "code": null,
+        "state": "valid"
+      },
+      "officer_deep": {
+        "code": null,
+        "state": "valid"
+      },
+      "payments": {
+        "code": null,
+        "state": "valid"
+      },
+      "receiver": {
+        "code": null,
+        "state": "valid"
+      },
+      "resource": {
+        "code": null,
+        "state": "valid"
+      },
+      "resource_regrant": {
+        "code": null,
+        "state": "valid"
+      },
+      "suspension": {
+        "code": null,
+        "state": "valid"
+      },
+      "trustee": {
+        "code": null,
+        "state": "valid"
+      },
+      "trustee_deferred": {
+        "code": "NOT_YET_VALID",
+        "state": "invalid"
+      },
+      "unsigned_claim": {
+        "code": "SIGNATURE_INVALID",
+        "state": "invalid"
+      }
+    },
+    "external_revoker_refusal": "authority revocation revoker is not the target delegation issuer (REVOKER_NOT_ISSUER)",
+    "officer_chain_after_revocation": {
+      "first_failure_code": "REVOKED",
+      "state": "invalid"
+    },
+    "officer_chain_complete_evidence": {
+      "first_failure_code": null,
+      "state": "valid"
+    },
+    "officer_chain_pruned_evidence": {
+      "first_failure_code": "REVOCATION_UNKNOWN",
+      "state": "indeterminate"
+    },
+    "officer_leaf_revocation_verification": "valid",
+    "receiver_root_under_closed_policy": {
+      "first_failure_code": "ROOT_UNTRUSTED",
+      "state": "invalid"
+    },
+    "receiver_root_with_established_root": {
+      "first_failure_code": null,
+      "state": "valid"
+    }
+  },
+  "minted_by": "fixtures/lifecycle-legal-regulatory-events/mint.ts",
+  "off_graph_targets": {
+    "counterparty_listed": "counterparty:lre-vendor-v",
+    "counterparty_unlisted": "counterparty:lre-vendor-w",
+    "dependency_licence": "dependency:lre-money-transmitter-licence",
+    "resource_account": "resource:lre-account-1"
+  },
+  "profile": "aps-lifecycle-legal-regulatory-events-v0",
+  "profiles": {
+    "dependency_binding": "aps-conformance-suite:lifecycle-legal-regulatory-events:dependency-binding-v0",
+    "external_authority_event": "aps-conformance-suite:lifecycle-legal-regulatory-events:external-authority-event-v0",
+    "gate_certification": "aps-conformance-suite:lifecycle-legal-regulatory-events:gate-certification-v0"
+  },
+  "revocations": {
+    "officer_leaf": {
+      "cascade_transaction_id": "sha256:4660c0a813e785c96d9682144084aa4cbf67391632c545f93109fd10410b74ff",
+      "delegation_id": "sha256:75c901d73c230d08aa287c57aa427e822ddc2e1c1e3e43829c3b1e5f8c23a182",
+      "nonce": "85c8975ae6d76b50c355c77e93023acd",
+      "reason_code": "external_order",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:ba051da521b710538312ce5dd8334c4ad418a52f9449a2d3db5ce1f8a32f7ebb",
+      "revoked_at": "2026-09-22T12:00:00.000Z",
+      "revoker": "did:aps:example:lre-finance-office",
+      "signature": "d83dc90d2dc7d2478f8d353d72826d9a12eadfc1c1fd4a741fd16748a5c7476f53a7854146c1a6cae7b055d5dc5076203bcfd9a3c0b19c981b0f8f86950f3b0c",
+      "verification_method": "did:aps:example:lre-finance-office#key-1",
+      "version": "1.0"
+    }
+  },
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-legal-regulatory-events:",
+  "signature_domains": {
+    "dependency_binding": "APS-CONFORMANCE-LRE-DEPENDENCY-BINDING-V0",
+    "external_authority_event": "APS-CONFORMANCE-LRE-EXTERNAL-EVENT-V0",
+    "gate_certification": "APS-CONFORMANCE-LRE-GATE-CERTIFICATION-V0"
+  },
+  "timeline": {
+    "decree_sunset": "2026-09-24T18:00:00.000Z",
+    "not_after": "2026-10-01T00:00:00.000Z",
+    "t0_issued": "2026-09-21T00:00:00.000Z",
+    "t1_before": "2026-09-22T09:00:00.000Z",
+    "t2_effective": "2026-09-22T12:00:00.000Z",
+    "t3_recorded": "2026-09-22T15:00:00.000Z",
+    "t4_after": "2026-09-23T09:00:00.000Z",
+    "t5_release": "2026-09-24T12:00:00.000Z",
+    "t6_after_release": "2026-09-25T09:00:00.000Z",
+    "t7_deferred_not_before": "2026-09-28T00:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:lre-advice-agent#key-1": "2c21b1129ee29f81bf127df84733d5bec9ed6fa74b3c9f7c0384225b39c792af",
+    "did:aps:example:lre-collections-agent#key-1": "7dbfffe4b8bfc9a330259a58cac850bf6c5799aaf56076b8b7740fa995b4a51a",
+    "did:aps:example:lre-company#key-1": "1a266c0931d73b4490326dff2262a9ed964d71bd4c8cb20e1bdacc44f6f40118",
+    "did:aps:example:lre-court#key-1": "02e9dc3144a96ab273760ebdc018ad4517a326a8796d48d68cd7e0ddda4b4678",
+    "did:aps:example:lre-finance-office#key-1": "4949c913597c10ada48a622eb22a0854ef2858371454ba7710749000f88ffe52",
+    "did:aps:example:lre-firm#key-1": "e03e6dd900b7a657c3858dcb719d795fcd18144d64994b0540c904e3e83da5d3",
+    "did:aps:example:lre-org#key-1": "01beb732181dcf72f226e19aa7d1e727fcb4b5c3be6539b8a140a6c94572acab",
+    "did:aps:example:lre-payments-agent-a#key-1": "40da7e7aca17e865c7ae6854dd5520e6379e62b8dd31bffe3ded291ff09402fc",
+    "did:aps:example:lre-payments-agent-b#key-1": "81cee6aad91bc73f23d59e8c2a06b37e5461d810d3293c6364e2a286e4f00687",
+    "did:aps:example:lre-payments-agent-c#key-1": "64e95ef9a66627d3f2307ceff16ffda26ae6fae7e076176e509eff33717fc756",
+    "did:aps:example:lre-payments-company#key-1": "a3cb04c94c873b158defc066780016c3a220af8d1889be8f69200080888fef7f",
+    "did:aps:example:lre-procurement-agent#key-1": "cf65f0c552a721204ebbbe5a880fe860b7c96726ea4e19c8b1e8b1876c1563c7",
+    "did:aps:example:lre-procurement-subagent#key-1": "77fb69c00af9e11bbce7a5d57a5d98ff8c7d16c0c8f451340704d7d96f2807c1",
+    "did:aps:example:lre-receiver#key-1": "6265fd3d1667030c33b63db7a7323aa5d688832ee56c8f89d44b96764864b260",
+    "did:aps:example:lre-regulator#key-1": "fe91e77e5149a0e0b8c3fe7528a2be5a0ff715c6db1dc8bdf0274955b28cc317",
+    "did:aps:example:lre-reporting-agent#key-1": "6e5fab0817c5c3ef7ba6d1d5c2f1ce36f209c106dac47ec3d1e28acbe861f6f0",
+    "did:aps:example:lre-representative-office#key-1": "cbb23b85545eba9a41a3b0748fdcb834c8246e2e3897bd34192ab6bd01f02824",
+    "did:aps:example:lre-responsible-official#key-1": "412c6ba7a8d702e0a611013b496dfbc8cbbef5d26ea17ae8f1feb6361478fb17",
+    "did:aps:example:lre-treasury-agent#key-1": "baf81dbde4a0ec9a9f234d0116576ee3fee9d28f5088090ad1d5692b9e2b4c4b",
+    "did:aps:example:lre-trustee#key-1": "25d05bc01a2f46e0c44901fbaea4870367158d12fa962b583d3fe192f8df8e8e",
+    "did:aps:example:lre-unregistered-authority#key-1": "34e4ac1f77592759cb0dc53b0e6a32cd4a43c733e115e26c2dccd52cf5a40621"
+  },
+  "verifier_trust_policy": {
+    "lifecycle_standing": {
+      "add_approval_gate": [
+        "did:aps:example:lre-court"
+      ],
+      "establish_trust_root": [
+        "did:aps:example:lre-court"
+      ],
+      "ratify_action": [
+        "did:aps:example:lre-org",
+        "did:aps:example:lre-company",
+        "did:aps:example:lre-payments-company",
+        "did:aps:example:lre-firm"
+      ],
+      "release_restriction": [
+        "did:aps:example:lre-regulator",
+        "did:aps:example:lre-court"
+      ],
+      "release_suspension": [
+        "did:aps:example:lre-regulator",
+        "did:aps:example:lre-firm"
+      ],
+      "replace_principal": [
+        "did:aps:example:lre-court"
+      ],
+      "restrict_execution": [
+        "did:aps:example:lre-regulator",
+        "did:aps:example:lre-court"
+      ],
+      "revoke_dependency": [
+        "did:aps:example:lre-regulator"
+      ],
+      "suspend_principal": [
+        "did:aps:example:lre-regulator",
+        "did:aps:example:lre-firm"
+      ],
+      "terminate_principal_authority": [
+        "did:aps:example:lre-receiver"
+      ],
+      "transfer_resource_ownership": [
+        "did:aps:example:lre-court"
+      ]
+    },
+    "trust_roots": {
+      "accepts_established_roots": [
+        "did:aps:example:lre-org",
+        "did:aps:example:lre-payments-company",
+        "did:aps:example:lre-firm",
+        "did:aps:example:lre-company",
+        "did:aps:example:lre-trustee"
+      ],
+      "closed_to_original_governance": [
+        "did:aps:example:lre-org",
+        "did:aps:example:lre-payments-company",
+        "did:aps:example:lre-firm",
+        "did:aps:example:lre-company",
+        "did:aps:example:lre-trustee"
+      ]
+    }
+  }
+}

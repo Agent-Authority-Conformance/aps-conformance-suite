@@ -1,0 +1,321 @@
+{
+  "profile": "aps-lifecycle-third-party-reliance-notice-v0",
+  "status_label": "candidate_against_proposed",
+  "description": "A chain's verification state and whether notice of a termination reached one named outside party are two separate records with two separate answers. Twelve vectors across three cases: the two answers are independent, a broadcast record and an individually addressed record are not interchangeable, and a newer grant is not a revocation of an earlier one. Every vector is labelled candidate_against_proposed. No vector here is a draft-pidlisnyi-aps-03 conformance case for notice, because draft-03 states no rule for it and neither reference SDK exports one. No vector answers whether an outside party's reliance is protected: that is a legal effect decided off the wire and no verifier computes it from records. Authority verdicts use only the settled vocabulary: valid, invalid, suspended, restricted, not established, not yet effective.",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "7796e22",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Verification and evidence > Notice",
+      "Lifecycle concepts are separate > Verification and evidence > Status observation",
+      "Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+      "Lifecycle concepts are separate > Authority lifecycle state > Revocation"
+    ],
+    "invariants": [
+      "L5. Independent chains are not combined",
+      "L7. Unknown revocation state is not active",
+      "L11. No silent authority resurrection"
+    ],
+    "open_questions": ["Notice and relying parties"],
+    "cases_document": {
+      "repository": "aeoess/agent-authority-lifecycle",
+      "file": "CASES.md",
+      "commit": "2bf5c7e",
+      "section": "Third-party reliance and notice"
+    }
+  },
+  "revocation_sets": {
+    "none": [],
+    "terminated": ["revoke_terminated"],
+    "older_express": ["revoke_older_express"],
+    "older_wrong_revoker": ["revoke_older_wrong_revoker"]
+  },
+  "notice_sets": {
+    "none": [],
+    "publication_only": ["publication_all"],
+    "individual_repeat_only": ["individual_repeat"],
+    "publication_and_individual_repeat": ["publication_all", "individual_repeat"],
+    "publication_and_individual_other": ["publication_all", "individual_other"],
+    "individual_repeat_no_standing": ["individual_repeat_no_standing"]
+  },
+  "held_sets": {
+    "terminated_only": ["terminated"],
+    "older_and_newer": ["older", "newer"]
+  },
+  "declared_fail_sets": {
+    "defective-boundary-single-notice-boolean": [
+      "TPR-A-027-b", "TPR-A-027-d", "TPR-A-028-b", "TPR-A-028-d", "TPR-A-033-b", "TPR-A-033-d"
+    ],
+    "defective-boundary-publication-covers-everyone": ["TPR-A-028-b", "TPR-A-028-d"],
+    "defective-boundary-notice-without-standing": ["TPR-A-027-d"],
+    "defective-boundary-newest-wins": ["TPR-A-033-a"]
+  },
+  "vectors": [
+    {
+      "id": "TPR-A-027-a",
+      "case": "LC-A-027",
+      "tests": "positive control: the grant still verifies valid and there is no termination for anyone to have notice of. Both answers are reported, and neither is a restatement of the other",
+      "differs_from": null,
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "none",
+      "notice_set": "none",
+      "counterparty": "repeat",
+      "now": "t1_before",
+      "expected": {
+        "authority_verdict": "valid",
+        "authority_reason": "chain_valid",
+        "chain_state": "valid",
+        "chain_failure_code": null,
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_termination_recorded",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-027-b",
+      "case": "LC-A-027",
+      "tests": "the grant's own issuer revokes it and nobody has written to the counterparty. The chain is invalid REVOKED and notice is not established. Two records, two answers, and the second does not follow from the first",
+      "differs_from": "TPR-A-027-a: the verifier's status source holds the revocation record",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "none",
+      "counterparty": "repeat",
+      "now": "t3_after_revocation",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_notice_record",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-027-c",
+      "case": "LC-A-027",
+      "tests": "the same revocation with an individually addressed notice record to this counterparty from the party who revoked. The chain verdict has not moved and the notice answer has, which is what makes the two independent",
+      "differs_from": "TPR-A-027-b: an individual notice record naming this counterparty is observed",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "individual_repeat_only",
+      "counterparty": "repeat",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "established",
+        "notice_basis": "individual",
+        "notice_reason": "individual_notice_record",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-027-d",
+      "case": "LC-A-027",
+      "tests": "negative control: a genuinely signed notice record naming the right counterparty and the right revocation, from a principal who did not revoke the grant. Notice is not established, and the reason says it is a standing failure and not a signature failure",
+      "differs_from": "TPR-A-027-c: the notice record's issuer is not the party who revoked the grant",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "individual_repeat_no_standing",
+      "counterparty": "repeat",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "notice_issuer_without_standing",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-028-a",
+      "case": "LC-A-028",
+      "tests": "one broadcast record naming no recipient, and a counterparty the signed prior-dealing register does not list. Notice is established on the publication basis",
+      "differs_from": null,
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "publication_only",
+      "counterparty": "stranger",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "established",
+        "notice_basis": "publication",
+        "notice_reason": "publication_notice_record",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-028-b",
+      "case": "LC-A-028",
+      "tests": "the same one broadcast record and a counterparty the register does list. Notice is not established: one record published once does not do for a counterparty this principal already had a recorded dealing history with. This is the vector a single-tier notice model fails",
+      "differs_from": "TPR-A-028-a: the counterparty appears in the signed prior-dealing register",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "publication_only",
+      "counterparty": "repeat",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "individual_notice_required_for_prior_dealing",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-028-c",
+      "case": "LC-A-028",
+      "tests": "the broadcast record plus an individually addressed one to the listed counterparty. Notice is established, and the basis reported is the individual record rather than the broadcast",
+      "differs_from": "TPR-A-028-b: an individual notice record naming this counterparty is also observed",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "publication_and_individual_repeat",
+      "counterparty": "repeat",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "established",
+        "notice_basis": "individual",
+        "notice_reason": "individual_notice_record",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-028-d",
+      "case": "LC-A-028",
+      "tests": "negative control: the broadcast record plus an individually addressed one to a different counterparty. An individual record is notice to the party it names and to nobody else, so this listed counterparty is still not established",
+      "differs_from": "TPR-A-028-c: the individual notice record names a different counterparty",
+      "chain": "terminated",
+      "held": "terminated_only",
+      "revocation_set": "terminated",
+      "notice_set": "publication_and_individual_other",
+      "counterparty": "repeat",
+      "now": "t5_after_notice",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "individual_notice_required_for_prior_dealing",
+        "held_grant_count": 1
+      }
+    },
+    {
+      "id": "TPR-A-033-a",
+      "case": "LC-A-033",
+      "tests": "the same principal has issued a second, broader grant to the same agent two days after the first, and nothing in either names the other. The older grant still verifies valid: the existence of a newer instrument is not a revocation event. This is the vector a newest-wins model fails",
+      "differs_from": null,
+      "chain": "older",
+      "held": "older_and_newer",
+      "revocation_set": "none",
+      "notice_set": "none",
+      "counterparty": "stranger",
+      "now": "t3_after_revocation",
+      "expected": {
+        "authority_verdict": "valid",
+        "authority_reason": "chain_valid",
+        "chain_state": "valid",
+        "chain_failure_code": null,
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_termination_recorded",
+        "held_grant_count": 2
+      }
+    },
+    {
+      "id": "TPR-A-033-b",
+      "case": "LC-A-033",
+      "tests": "an express revocation record naming the older grant, from that grant's own issuer. The older grant is invalid REVOKED, through a record that says so and not through the arrival of a newer instrument",
+      "differs_from": "TPR-A-033-a: the status source holds an express revocation record naming the older grant",
+      "chain": "older",
+      "held": "older_and_newer",
+      "revocation_set": "older_express",
+      "notice_set": "none",
+      "counterparty": "stranger",
+      "now": "t3_after_revocation",
+      "expected": {
+        "authority_verdict": "invalid",
+        "authority_reason": "chain_not_valid",
+        "chain_state": "invalid",
+        "chain_failure_code": "REVOKED",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_notice_record",
+        "held_grant_count": 2
+      }
+    },
+    {
+      "id": "TPR-A-033-c",
+      "case": "LC-A-033",
+      "tests": "the newer grant under the same express revocation of the older one. The revocation reaches the delegation it names and no other, so two grants from one principal to one agent remain two independently checked chains",
+      "differs_from": "TPR-A-033-b: the newer grant is presented instead of the older one",
+      "chain": "newer",
+      "held": "older_and_newer",
+      "revocation_set": "older_express",
+      "notice_set": "none",
+      "counterparty": "stranger",
+      "now": "t3_after_revocation",
+      "expected": {
+        "authority_verdict": "valid",
+        "authority_reason": "chain_valid",
+        "chain_state": "valid",
+        "chain_failure_code": null,
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_termination_recorded",
+        "held_grant_count": 2
+      }
+    },
+    {
+      "id": "TPR-A-033-d",
+      "case": "LC-A-033",
+      "tests": "negative control: a well-formed, correctly signed revocation record naming the older grant whose revoker is a different principal. The SDK resolver answers unknown, chain verification is indeterminate with REVOCATION_UNKNOWN, and the verdict is not established. An unestablished revocation neither ends the grant nor leaves it valid",
+      "differs_from": "TPR-A-033-b: the revocation record's revoker is not the target grant's issuer",
+      "chain": "older",
+      "held": "older_and_newer",
+      "revocation_set": "older_wrong_revoker",
+      "notice_set": "none",
+      "counterparty": "stranger",
+      "now": "t3_after_revocation",
+      "expected": {
+        "authority_verdict": "not established",
+        "authority_reason": "chain_state_not_established",
+        "chain_state": "indeterminate",
+        "chain_failure_code": "REVOCATION_UNKNOWN",
+        "notice_state": "not established",
+        "notice_basis": null,
+        "notice_reason": "no_notice_record",
+        "held_grant_count": 2
+      }
+    }
+  ]
+}
