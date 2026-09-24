@@ -25,7 +25,7 @@ AT = "2026-09-20T12:00:00.000Z"
 PROPOSED = {
     "repo": "aeoess/agent-authority-lifecycle",
     "commit_floor": "7796e22",
-    "cases_version": "CASES.md v0.2 (local branch cases-v0.2, commit 2bf5c7e)",
+    "cases_version": "CASES.md v0.2 (commit 2bf5c7e)",
     "section": "Multiple principals and conflict",
 }
 

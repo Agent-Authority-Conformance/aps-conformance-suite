@@ -18,7 +18,7 @@ principal never consented to.
 
 Six cases from the **Agent-side events** section of `CASES.md` in
 [`aeoess/agent-authority-lifecycle`](https://github.com/aeoess/agent-authority-lifecycle),
-at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
+at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda`:
 
 | case | vectors |
 |---|---|
@@ -29,9 +29,9 @@ at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
 | LC-E-031, a memory architecture built for one continuous identity says nothing about whether its content is current authority once transferred | ASE-14, ASE-15 |
 | LC-E-027, a real precedent exists for gating expanded capability behind mandatory re-consent | ASE-16 to ASE-20 |
 
-That commit was a local branch when this family was built and may not yet be reachable
-from the public default branch. The proposed text the vectors actually test is pinned
-separately, at a commit that is.
+That commit is reachable from the public default branch of that repository. The
+proposed text the vectors actually test is pinned separately, at an earlier commit on
+the same history.
 
 The other six cases in that section are not built here. `HANDOFF-2026-09-24-lab-g5.md`
 records why, case by case. In short, LC-E-001 and LC-E-033 are covered by
@@ -432,7 +432,7 @@ SHA-256 over the exact bytes of this family's files, at this commit:
     6ed8bdcf2c8d9a0e668951487c38ddfb40f5c39d68702242021f55e0bab35ec5  mint.ts
     0beb55d82f5b72f723d09b53dd8d57c1547cd997288268b86f2df52e6cf34521  sdk-probe.mjs
     e517452b6b7b551a9609e0e88560cda0cb85fe19e190963d8334b1523ef3fa2b  sdk-probe.py
-    12a9eb99c577068c402cd0cfa6ef711dbe150a691abd1977f0c2fe3cda38558d  vectors.json
+    a5ee9f773273bbbc4c3def7fd84f574f29391d7456c09105474b0eaa289a3bf5  vectors.json
     93d72c0604fcc5576d7120111fd3165a9c0dc97012afd26fc5df9ada4ab165df  verify.py
     b0bd174a846d063c34352918b6f5e9525e7f0bc36add703021ae7647f93e036f  verify.ts
 

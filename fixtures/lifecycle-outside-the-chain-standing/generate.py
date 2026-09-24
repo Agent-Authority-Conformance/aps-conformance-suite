@@ -75,7 +75,7 @@ def quorum_probe(holders: int, required: int, has_quorum: bool, note: str) -> di
 PROPOSED = {
     "repo": "aeoess/agent-authority-lifecycle",
     "commit_floor": "7796e22",
-    "cases_version": "CASES.md v0.2 (local branch cases-v0.2, commit 2bf5c7e)",
+    "cases_version": "CASES.md v0.2 (commit 2bf5c7e)",
     "section": "Outside-the-chain standing",
 }
 
