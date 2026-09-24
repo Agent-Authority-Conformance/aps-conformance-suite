@@ -1,0 +1,58 @@
+{
+ "author_rationale": "No bypass observed, and observation coverage of alternate paths is established for the evaluated scope and bound to the evaluated claim: the asymmetric rule from #189 lets this reach pass.",
+ "checker_input": {
+  "context": {
+   "claim_ref": "pos01-claim-1",
+   "evaluation_scope": "positive control: single admission, single dispatch",
+   "observation_coverage": {
+    "basis": "test fixture: coverage of alternate paths to cred-pos-01 stipulated as established for this scope and this claim",
+    "claim_ref": "pos01-claim-1",
+    "scope": "positive control: single admission, single dispatch",
+    "status": "established"
+   }
+  },
+  "evidence": {
+   "admission": {
+    "action_id": "act-pos-01",
+    "args_digest": "sha256:pos01-authorized-args",
+    "decision": "authorized",
+    "tool": "wire_transfer"
+   },
+   "closure": {
+    "credential_use": {
+     "admission_ref": "act-pos-01",
+     "credential": "cred-pos-01",
+     "path": "governed"
+    },
+    "dispatch": {
+     "args_digest": "sha256:pos01-authorized-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "observed_digest": "sha256:pos01-authorized-args",
+     "status": "agrees"
+    },
+    "ref": "act-pos-01",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "non_bypassability",
+   "statement": "the protected effect was not reached by a path that bypasses the authorization boundary"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": null,
+  "verdict": "pass"
+ },
+ "id": "CAND-COSAI-149-D2E-POS-01-NON-BYPASSABILITY-COVERED",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "note": "Positive control, lab-authored. Same scenario as POS-01-EXACT-CALL, isolating non_bypassability with an established observation-coverage premise for the evaluated scope and claim.",
+  "source": null
+ },
+ "status": "candidate_against_proposed"
+}

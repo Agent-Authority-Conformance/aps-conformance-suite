@@ -1,0 +1,46 @@
+{
+ "author_rationale": "The independent read-back could not be performed at all: this is neither a pass nor a fail, it is unestablished, with a reason attached.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "read-back could not be performed"
+  },
+  "evidence": {
+   "admission": {
+    "action_id": "act-effect-02",
+    "args_digest": "sha256:effect02-args",
+    "decision": "authorized",
+    "tool": "ledger_write"
+   },
+   "closure": {
+    "dispatch": {
+     "args_digest": "sha256:effect02-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "reason": "downstream ledger read API returned 503 throughout the verification window",
+     "status": "unavailable"
+    },
+    "ref": "act-effect-02",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "effect_verified",
+   "statement": "the tool's self-report agrees with an independent read-back"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": "read_back",
+  "verdict": "not_established"
+ },
+ "id": "CAND-COSAI-149-D2E-EFFECT-02",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "note": "Read-back-unavailable is not one of the three REMORA vectors named on #149 (V-02, V-13, V-14 map to exact-call mutation, effect mismatch and EFFECT_INDETERMINATE respectively). New case, lab-authored, isolating the not_established/read_back path agreed on #149 between Levaj2000 and aeoess, 2026-09-09.",
+  "source": null
+ },
+ "status": "candidate_against_proposed"
+}

@@ -1,0 +1,46 @@
+{
+ "author_rationale": "The closure shows the protected credential used via an alternate path with no admission record covering it: an observed bypass.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "alternate path to a protected credential, no admission record"
+  },
+  "evidence": {
+   "admission": null,
+   "closure": {
+    "credential_use": {
+     "admission_ref": null,
+     "credential": "cred-shared-secret",
+     "path": "alternate"
+    },
+    "dispatch": {
+     "args_digest": "sha256:bypass01-effect-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "observed_digest": "sha256:bypass01-effect-args",
+     "status": "agrees"
+    },
+    "ref": "closure-bypass-01",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "non_bypassability",
+   "statement": "the protected effect was not reached by a path that bypasses the authorization boundary"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": null,
+  "verdict": "fail"
+ },
+ "id": "CAND-COSAI-149-D2E-BYPASS-01",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "note": "No REMORA vector expresses non_bypassability. aeoess on #149 (2026-09-09T20:38Z): \"No REMORA vector currently expresses this, because its effectful adapter methods all require the handle returned by authorize.\" New case, lab-authored.",
+  "source": null
+ },
+ "status": "candidate_against_proposed"
+}
