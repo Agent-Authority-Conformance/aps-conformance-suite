@@ -49,13 +49,19 @@
     "test:cross-stack-registry": "node tests/cross-stack-registry.test.mjs",
     "test:readme-inventory": "node tests/readme-inventory.test.mjs",
     "readme:inventory": "node scripts/readme-inventory.mjs --write",
-    "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip && npm run test:layered-gate-mutation && npm run verify:revocation-resolution-forward-compat && npm run verify:action-result-binding && npm run verify:ancestor-revocation-chain && npm run verify:issuance-refusal-expiry && npm run verify:single-chain-selection && npm run verify:key-rotation-historical && npm run verify:sponsor-handover && npm run verify:cached-authorization-revocation && npm run verify:runtime-authority-denial-continuity && npm run verify:arap-binding && npm run test:runtime-authority-n1 && npm run verify:approval-single-use",
+    "test": "npm run typecheck && npm run test:digest-integrity && npm run test:manifest-integrity && npm run test:cross-stack-registry && npm run test:readme-inventory && npm run verify && npm run test:fail-loud && npm run test:canonical-bytes && npm run verify:envoys-rfc9421 && npm run verify:a2a-1496-negative-paths && npm run verify:sk-function-invocation && npm run verify:aae-envelope && npm run verify:two-wrapper-attribution && npm run verify:accountability-record && npm run verify:read-fidelity-receipt && npm run verify:receipt-decision-relation && npm run verify:receipt-decision-relation:flip && npm run test:layered-gate-mutation && npm run verify:revocation-resolution-forward-compat && npm run verify:action-result-binding && npm run verify:ancestor-revocation-chain && npm run verify:issuance-refusal-expiry && npm run verify:single-chain-selection && npm run verify:key-rotation-historical && npm run verify:sponsor-handover && npm run verify:cached-authorization-revocation && npm run verify:runtime-authority-denial-continuity && npm run verify:arap-binding && npm run test:runtime-authority-n1 && npm run verify:approval-single-use && npm run verify:authority-epoch-rollback && npm run verify:conflicting-status-sources && npm run verify:conflicting-status-sources:sdk-ts && npm run verify:lifecycle-infrastructure-failure && npm run verify:lifecycle-evidence-and-record",
     "test:runtime-authority-n1": "tsx runners/ts/runtime-authority-n1-live-records-regression.test.ts",
     "test:digest-integrity": "node tests/digest-integrity.test.mjs",
     "typecheck": "tsc --noEmit",
     "test:cross-stack-wiring": "node scripts/check-cross-stack-wiring.mjs",
     "typecheck:cross-stack": "tsc -p tsconfig.cross-stack.json --noEmit",
-    "verify:cross-stack": "npm run test:cross-stack-wiring && npm run typecheck:cross-stack && node scripts/run-cross-stack.mjs"
+    "verify:cross-stack": "npm run test:cross-stack-wiring && npm run typecheck:cross-stack && node scripts/run-cross-stack.mjs",
+    "verify:authority-epoch-rollback": "tsx fixtures/authority-epoch-rollback/verify.ts",
+    "generate:conflicting-status-sources": "tsx fixtures/conflicting-status-sources/generate.ts",
+    "verify:conflicting-status-sources": "tsx fixtures/conflicting-status-sources/verify.ts",
+    "verify:conflicting-status-sources:sdk-ts": "tsx fixtures/conflicting-status-sources/sdk-bridge.ts",
+    "verify:lifecycle-infrastructure-failure": "tsx fixtures/lifecycle-infrastructure-failure/verify.ts",
+    "verify:lifecycle-evidence-and-record": "tsx fixtures/lifecycle-evidence-and-record/verify.ts"
   },
   "devDependencies": {
     "@types/node": "^26.5.1",

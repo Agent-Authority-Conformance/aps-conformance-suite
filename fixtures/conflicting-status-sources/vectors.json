@@ -1,0 +1,1546 @@
+{
+  "family": "conflicting-status-sources",
+  "version": "1",
+  "status": "candidate",
+  "label": "candidate_against_proposed",
+  "description": "Status observation and coverage at one authorization boundary. Two status sources a verifier trusts disagree about the same delegation, a source answers past its declared freshness bound, and a verifier that declared itself offline admits on a snapshot inside a bound it declared in advance. Every case is a candidate against proposed text. Nothing here is a conformance claim about APS or any published specification.",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "5c1bf09",
+    "version": "0.1.2-draft",
+    "note": "The text under test, not an external source for any claim. Cited by section name and commit so a reader can pin what this fixture was written against."
+  },
+  "determinism": {
+    "seed_input": "aac-conflicting-status-sources-v0",
+    "seed_sha256_hex": "50eee3f23348b239fdf54e45d5486b797e236c31c339699ee721710fce53aea6",
+    "canonicalization": "RFC 8785 JSON Canonicalization Scheme",
+    "canonicalization_ref": "https://www.rfc-editor.org/rfc/rfc8785",
+    "digest": "SHA-256 over the RFC 8785 canonical bytes of the status-observation record",
+    "clock": "every instant is a constant in generate.ts; no wall-clock read anywhere",
+    "chain": "chain.json, minted by mint.py from the same seed_input"
+  },
+  "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+  "sources": [
+    {
+      "source_id": "registry-a",
+      "freshness_bound_s": 300
+    },
+    {
+      "source_id": "registry-b",
+      "freshness_bound_s": 600
+    },
+    {
+      "source_id": "snapshot-c",
+      "freshness_bound_s": 3600
+    }
+  ],
+  "reasons": {
+    "status_active_all_sources_agree": "admit; every required source answered inside its freshness bound and every answer was active",
+    "status_revoked": "deny; a source the verifier trusts answered revoked and no usable answer disagreed",
+    "status_sources_conflict": "deny; two sources the verifier trusts gave different determinate answers about the same delegation",
+    "status_stale_beyond_bound": "not_established; an answer the verdict needed was older than the bound declared for its source",
+    "status_coverage_incomplete": "not_established; a source the trust policy requires produced no answer at all",
+    "status_no_usable_observation": "not_established; no source produced a usable determinate answer",
+    "admitted_on_snapshot_within_declared_bound": "admit; an offline verifier used a snapshot inside the bound it declared, and recorded which snapshot and what age"
+  },
+  "controls": [
+    {
+      "name": "latest-answer-wins",
+      "axis": "disagreement resolution",
+      "scope": [
+        "CSS-01-single-source-active-admits",
+        "CSS-02-two-sources-agree-active-admits",
+        "CSS-03-two-sources-agree-revoked-denies",
+        "CSS-04-fresh-conflict-denies-with-conflict-reason",
+        "CSS-05-stale-revoked-against-fresh-active-denies",
+        "CSS-12-later-conflict-does-not-rewrite-the-earlier-record"
+      ],
+      "must_fail": [
+        "CSS-04-fresh-conflict-denies-with-conflict-reason",
+        "CSS-05-stale-revoked-against-fresh-active-denies",
+        "CSS-12-later-conflict-does-not-rewrite-the-earlier-record"
+      ]
+    },
+    {
+      "name": "drop-stale-then-decide",
+      "axis": "what survives the freshness bound, and what coverage is measured over",
+      "scope": [
+        "CSS-02-two-sources-agree-active-admits",
+        "CSS-05-stale-revoked-against-fresh-active-denies",
+        "CSS-06-one-source-stale-past-bound-not-established",
+        "CSS-07-required-source-silent-not-established",
+        "CSS-08-no-usable-answer-not-established",
+        "CSS-13-answer-exactly-at-the-bound-admits",
+        "CSS-14-answer-one-second-past-the-bound-not-established"
+      ],
+      "must_fail": [
+        "CSS-05-stale-revoked-against-fresh-active-denies",
+        "CSS-06-one-source-stale-past-bound-not-established",
+        "CSS-07-required-source-silent-not-established"
+      ]
+    },
+    {
+      "name": "offline-admit-without-recording",
+      "axis": "whether an offline admission records the snapshot and age it used",
+      "scope": [
+        "CSS-09-offline-snapshot-within-declared-bound-admits",
+        "CSS-10-offline-snapshot-past-declared-bound-not-established",
+        "CSS-11-offline-snapshot-revoked-denies"
+      ],
+      "must_fail": [
+        "CSS-09-offline-snapshot-within-declared-bound-admits"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "CSS-01-single-source-active-admits",
+      "property": "C",
+      "role": "positive control",
+      "label": "candidate_against_proposed",
+      "description": "One required source, one answer inside its freshness bound, active. The control that shows the admit path works before any disagreement is introduced.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 rules one revocation result per chain member. It does not state a rule for two status sources answering about the same member, so the multi-source decision this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-01.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "admit",
+            "reason": "status_active_all_sources_agree",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-01.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "admit",
+              "reason": "status_active_all_sources_agree",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 1,
+                "complete": true
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 652,
+            "canonical_sha256": "a0f1523245176f0365234cfa0a0579f6eca061a34f37b12c1f66b5e705e5586c"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-02-two-sources-agree-active-admits",
+      "property": "C",
+      "role": "positive control",
+      "label": "candidate_against_proposed",
+      "description": "Both required sources answer active inside their own bounds. Coverage is complete and the states agree, which is the only shape that admits online.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 rules one revocation result per chain member. It does not state a rule for two status sources answering about the same member, so the multi-source decision this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-02.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "active",
+              "as_of": "2026-09-20T11:58:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "admit",
+            "reason": "status_active_all_sources_agree",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-02.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "admit",
+              "reason": "status_active_all_sources_agree",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:58:00Z",
+                  "age_s": 120,
+                  "freshness_bound_s": 600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 846,
+            "canonical_sha256": "db4f08fdbee1a591b902bcf4c8eeb7c438407ffe1cdf7b7ae39b1b71646601b9"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-03-two-sources-agree-revoked-denies",
+      "property": "C",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "Both required sources answer revoked inside their bounds. Agreement on revoked is not a conflict, and the reason says revoked rather than conflict.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 rules one revocation result per chain member. It does not state a rule for two status sources answering about the same member, so the multi-source decision this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-03.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "revoked",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "revoked",
+              "as_of": "2026-09-20T11:58:30Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "deny",
+            "reason": "status_revoked",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-03.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "deny",
+              "reason": "status_revoked",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T11:58:30Z",
+                  "age_s": 90,
+                  "freshness_bound_s": 600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 829,
+            "canonical_sha256": "2997ca988eefae327b0febdfdbc51128847a8c09cba823105592ad91593fae83"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-04-fresh-conflict-denies-with-conflict-reason",
+      "property": "C",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "The family core. Two sources the verifier trusts, both inside their own freshness bounds, disagree about the same delegation: one active, one revoked. The verdict is deny with a conflict reason, and the record names both sources and both states.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 rules one revocation result per chain member. It does not state a rule for two status sources answering about the same member, so the multi-source decision this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-04.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "revoked",
+              "as_of": "2026-09-20T11:58:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "deny",
+            "reason": "status_sources_conflict",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-04.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "deny",
+              "reason": "status_sources_conflict",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T11:58:00Z",
+                  "age_s": 120,
+                  "freshness_bound_s": 600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": {
+                "states": [
+                  "active",
+                  "revoked"
+                ],
+                "sources": [
+                  "registry-a",
+                  "registry-b"
+                ]
+              },
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 903,
+            "canonical_sha256": "36d59d03e0c56a6dcccb28e52260e10f958f80507a75a10be8d522e10702cc59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-05-stale-revoked-against-fresh-active-denies",
+      "property": "C",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "The negative control a naive implementation passes wrongly. The revoked answer is past its source freshness bound and the active answer is inside its own, so an implementation that discards stale answers before deciding sees one fresh active answer and admits. A revocation that was observed does not become unobserved with age, so the reference verifier still counts it and the states still conflict.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate, and that a caller must not collapse indeterminate into valid. It does not define a per-source freshness bound, and it does not state what the result is when one source is stale and another is fresh, so the boundary verdict this case checks is not a draft-03 conformance case. draft-03 Section 3.5 does state that revocation is irreversible, which is why an observed revocation is still counted here, but it states nothing about weighing it against a fresher answer from a second source."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-05.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "revoked",
+              "as_of": "2026-09-20T11:45:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "deny",
+            "reason": "status_sources_conflict",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-05.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "deny",
+              "reason": "status_sources_conflict",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T11:45:00Z",
+                  "age_s": 900,
+                  "freshness_bound_s": 600,
+                  "within_bound": false,
+                  "used": true,
+                  "use_basis": "revocation_observed_outside_bound_still_used"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": {
+                "states": [
+                  "active",
+                  "revoked"
+                ],
+                "sources": [
+                  "registry-a",
+                  "registry-b"
+                ]
+              },
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 926,
+            "canonical_sha256": "eb6a4b62a425ffecf406e3b7c47e532d0fa05c410f21525a3467e75faf83baae"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-06-one-source-stale-past-bound-not-established",
+      "property": "F",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "Both sources answer active, but one answer is older than that source freshness bound. The stale answer is not false and it is not a revocation. It establishes nothing, so the boundary verdict is not_established, not admit and not deny.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate, and that a caller must not collapse indeterminate into valid. It does not define a per-source freshness bound, and it does not state what the result is when one source is stale and another is fresh, so the boundary verdict this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-06.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "active",
+              "as_of": "2026-09-20T11:45:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "not_established",
+            "reason": "status_stale_beyond_bound",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-06.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "not_established",
+              "reason": "status_stale_beyond_bound",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:45:00Z",
+                  "age_s": 900,
+                  "freshness_bound_s": 600,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "stale_beyond_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 1,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 849,
+            "canonical_sha256": "e2d04d4d627e0965c40eb228bde18a77b3c459da150ccec6a0bd489e4c186879"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-07-required-source-silent-not-established",
+      "property": "F",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "One required source produced no answer at all. The answers that did arrive agree on active, so an implementation that measures coverage over what arrived admits. Coverage is measured against the declared source set, so this is not_established with a coverage reason, which is a different finding from a stale answer.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness",
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 states no coverage requirement over a declared set of status sources, so this case is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-07.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "not_established",
+            "reason": "status_coverage_incomplete",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-07.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "not_established",
+              "reason": "status_coverage_incomplete",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 1,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 671,
+            "canonical_sha256": "7f8600794c7bdb5acac240338e1033e87e26bc81f4d62d9db77ec4a42efd1836"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-08-no-usable-answer-not-established",
+      "property": "F",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "One source answers past its bound and the other does not answer. Nothing usable and determinate remains, and the reason distinguishes that from a stale answer inside a covered set and from a missing source.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate, and that a caller must not collapse indeterminate into valid. It does not define a per-source freshness bound, and it does not state what the result is when one source is stale and another is fresh, so the boundary verdict this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-08.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:45:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "unavailable"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "not_established",
+            "reason": "status_no_usable_observation",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-08.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "not_established",
+              "reason": "status_no_usable_observation",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:45:00Z",
+                  "age_s": 900,
+                  "freshness_bound_s": 300,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "stale_beyond_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "unavailable",
+                  "as_of": null,
+                  "age_s": null,
+                  "freshness_bound_s": 600,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "source_gave_no_answer"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 0,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 842,
+            "canonical_sha256": "274529aee370b232e31af7338d717f4a3f4ca10e732218abebe32fbd66b7c5cf"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-09-offline-snapshot-within-declared-bound-admits",
+      "property": "O",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "description": "A verifier that declared itself offline, with a snapshot source and a bound it declared in advance, holds a snapshot inside that bound saying active. It may admit, and the record it writes has to name the snapshot it admitted on and the age that snapshot had at the boundary.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 does not describe an offline verifier admitting on a snapshot inside a declared bound, and Section 5.4 requires a decision to include revocation observations without stating the fields one carries. This case is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-09.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "offline",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ],
+            "snapshot_source": {
+              "source_id": "snapshot-c",
+              "freshness_bound_s": 3600
+            },
+            "declared_offline_bound_s": 3600
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "unavailable"
+            },
+            {
+              "source_id": "snapshot-c",
+              "answer": "active",
+              "as_of": "2026-09-20T11:30:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "admit",
+            "reason": "admitted_on_snapshot_within_declared_bound",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-09.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "offline",
+              "decision": "admit",
+              "reason": "admitted_on_snapshot_within_declared_bound",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "unavailable",
+                  "as_of": null,
+                  "age_s": null,
+                  "freshness_bound_s": 300,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "source_gave_no_answer"
+                },
+                {
+                  "source_id": "snapshot-c",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:30:00Z",
+                  "age_s": 1800,
+                  "freshness_bound_s": 3600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 0,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": {
+                "source_id": "snapshot-c",
+                "as_of": "2026-09-20T11:30:00Z",
+                "age_s": 1800,
+                "declared_bound_s": 3600
+              },
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 928,
+            "canonical_sha256": "0c23a6de918fb0c684db5b8191ad5beec815dfc53f94963b505ac1a3560771c1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-10-offline-snapshot-past-declared-bound-not-established",
+      "property": "O",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "The same offline verifier, with a snapshot older than the bound it declared. The declared bound is the whole basis for the offline admission, so past it the snapshot establishes nothing.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 does not describe an offline verifier admitting on a snapshot inside a declared bound, and Section 5.4 requires a decision to include revocation observations without stating the fields one carries. This case is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-10.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "offline",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ],
+            "snapshot_source": {
+              "source_id": "snapshot-c",
+              "freshness_bound_s": 3600
+            },
+            "declared_offline_bound_s": 3600
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "unavailable"
+            },
+            {
+              "source_id": "snapshot-c",
+              "answer": "active",
+              "as_of": "2026-09-20T10:00:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "not_established",
+            "reason": "status_stale_beyond_bound",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-10.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "offline",
+              "decision": "not_established",
+              "reason": "status_stale_beyond_bound",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "unavailable",
+                  "as_of": null,
+                  "age_s": null,
+                  "freshness_bound_s": 300,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "source_gave_no_answer"
+                },
+                {
+                  "source_id": "snapshot-c",
+                  "answer": "active",
+                  "as_of": "2026-09-20T10:00:00Z",
+                  "age_s": 7200,
+                  "freshness_bound_s": 3600,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "stale_beyond_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 0,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 829,
+            "canonical_sha256": "83f650b9a0801be8f4d3c7e93ab638e3f716de91fc96c875f74710fa5e738469"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-11-offline-snapshot-revoked-denies",
+      "property": "O",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "The offline verifier holds a snapshot inside its declared bound saying revoked. Being offline is a reason to admit less, never a reason to soften an observed revocation, so this denies.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 does not describe an offline verifier admitting on a snapshot inside a declared bound, and Section 5.4 requires a decision to include revocation observations without stating the fields one carries. This case is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-11.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "offline",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ],
+            "snapshot_source": {
+              "source_id": "snapshot-c",
+              "freshness_bound_s": 3600
+            },
+            "declared_offline_bound_s": 3600
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "unavailable"
+            },
+            {
+              "source_id": "snapshot-c",
+              "answer": "revoked",
+              "as_of": "2026-09-20T11:30:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "deny",
+            "reason": "status_revoked",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-11.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "offline",
+              "decision": "deny",
+              "reason": "status_revoked",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "unavailable",
+                  "as_of": null,
+                  "age_s": null,
+                  "freshness_bound_s": 300,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "source_gave_no_answer"
+                },
+                {
+                  "source_id": "snapshot-c",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T11:30:00Z",
+                  "age_s": 1800,
+                  "freshness_bound_s": 3600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 0,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 810,
+            "canonical_sha256": "dd1598fb5842250ff538937bd0259b979beb0ec342f0ccf8fb967150460b018c"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-13-answer-exactly-at-the-bound-admits",
+      "property": "F",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "description": "The answer is exactly as old as the bound declared for its source. The bound is inclusive, so this admits. It is here so the pair with CSS-14 pins which side of the boundary each verdict sits on, rather than leaving it to a reader to assume.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate, and that a caller must not collapse indeterminate into valid. It does not define a per-source freshness bound, and it does not state what the result is when one source is stale and another is fresh, so the boundary verdict this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-13.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:55:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "admit",
+            "reason": "status_active_all_sources_agree",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-13.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "admit",
+              "reason": "status_active_all_sources_agree",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:55:00Z",
+                  "age_s": 300,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 1,
+                "complete": true
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 653,
+            "canonical_sha256": "a30948802011174a4c46b55d23fb529da2dce7009ef70117089c40d30a226dc5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-14-answer-one-second-past-the-bound-not-established",
+      "property": "F",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "One second older than CSS-13 and the only source in the trust policy. Nothing usable remains, so the verdict is not_established. The answer still says active and the fixture does not call it false.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate, and that a caller must not collapse indeterminate into valid. It does not define a per-source freshness bound, and it does not state what the result is when one source is stale and another is fresh, so the boundary verdict this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-14.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:54:59Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "not_established",
+            "reason": "status_no_usable_observation",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-14.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "not_established",
+              "reason": "status_no_usable_observation",
+              "required_sources": [
+                "registry-a"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:54:59Z",
+                  "age_s": 301,
+                  "freshness_bound_s": 300,
+                  "within_bound": false,
+                  "used": false,
+                  "use_basis": "stale_beyond_bound"
+                }
+              ],
+              "coverage": {
+                "required": 1,
+                "usable_determinate": 0,
+                "complete": false
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 659,
+            "canonical_sha256": "9fb9559c6491b4cfcc1c5aa8c0506fa6310be6b691b583654a4e0609b66d8a01"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSS-12-later-conflict-does-not-rewrite-the-earlier-record",
+      "property": "C",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "description": "Two authorization boundaries ten minutes apart. The first admits on two agreeing active answers. By the second, one source reports revoked and the other still reports active, so the second boundary denies on a conflict. The second record references the first by digest. The first record is not rewritten, and the vector pins its bytes so a runner that rewrote it would fail.",
+      "proposed_text": {
+        "repository": "aeoess/agent-authority-lifecycle",
+        "commit": "5c1bf09",
+        "version": "0.1.2-draft",
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Status observation"
+        ]
+      },
+      "draft_03": {
+        "states_the_rule": false,
+        "note": "draft-03 Section 3.3 rules one revocation result per chain member. It does not state a rule for two status sources answering about the same member, so the multi-source decision this case checks is not a draft-03 conformance case."
+      },
+      "boundaries": [
+        {
+          "boundary_id": "CSS-12.b1",
+          "evaluated_at": "2026-09-20T12:00:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T11:59:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "active",
+              "as_of": "2026-09-20T11:58:00Z"
+            }
+          ],
+          "prior_record_sha256": null,
+          "expected": {
+            "decision": "admit",
+            "reason": "status_active_all_sources_agree",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-12.b1",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:00:00Z",
+              "verifier_mode": "online",
+              "decision": "admit",
+              "reason": "status_active_all_sources_agree",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:59:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "active",
+                  "as_of": "2026-09-20T11:58:00Z",
+                  "age_s": 120,
+                  "freshness_bound_s": 600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": null,
+              "snapshot": null,
+              "prior_record_sha256": null
+            },
+            "canonical_bytes_len": 846,
+            "canonical_sha256": "13a5a6b057b33c0439e956aaf38b35047df84371d43139444141bdbdc449ae60"
+          }
+        },
+        {
+          "boundary_id": "CSS-12.b2",
+          "evaluated_at": "2026-09-20T12:10:00Z",
+          "trust_policy": {
+            "mode": "online",
+            "required_sources": [
+              {
+                "source_id": "registry-a",
+                "freshness_bound_s": 300
+              },
+              {
+                "source_id": "registry-b",
+                "freshness_bound_s": 600
+              }
+            ]
+          },
+          "observations": [
+            {
+              "source_id": "registry-a",
+              "answer": "active",
+              "as_of": "2026-09-20T12:09:00Z"
+            },
+            {
+              "source_id": "registry-b",
+              "answer": "revoked",
+              "as_of": "2026-09-20T12:05:00Z"
+            }
+          ],
+          "prior_record_sha256": "PRIOR",
+          "expected": {
+            "decision": "deny",
+            "reason": "status_sources_conflict",
+            "record": {
+              "record_type": "aac.status-observation-record.v0",
+              "boundary_id": "CSS-12.b2",
+              "delegation_ref": "sha256:6873f2f14f86fe7ce3fb8d2d43b4f5cf5875e25072a934c86f34697a21ea164d",
+              "evaluated_at": "2026-09-20T12:10:00Z",
+              "verifier_mode": "online",
+              "decision": "deny",
+              "reason": "status_sources_conflict",
+              "required_sources": [
+                "registry-a",
+                "registry-b"
+              ],
+              "sources_consulted": [
+                {
+                  "source_id": "registry-a",
+                  "answer": "active",
+                  "as_of": "2026-09-20T12:09:00Z",
+                  "age_s": 60,
+                  "freshness_bound_s": 300,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                },
+                {
+                  "source_id": "registry-b",
+                  "answer": "revoked",
+                  "as_of": "2026-09-20T12:05:00Z",
+                  "age_s": 300,
+                  "freshness_bound_s": 600,
+                  "within_bound": true,
+                  "used": true,
+                  "use_basis": "within_freshness_bound"
+                }
+              ],
+              "coverage": {
+                "required": 2,
+                "usable_determinate": 2,
+                "complete": true
+              },
+              "conflict": {
+                "states": [
+                  "active",
+                  "revoked"
+                ],
+                "sources": [
+                  "registry-a",
+                  "registry-b"
+                ]
+              },
+              "snapshot": null,
+              "prior_record_sha256": "13a5a6b057b33c0439e956aaf38b35047df84371d43139444141bdbdc449ae60"
+            },
+            "canonical_bytes_len": 965,
+            "canonical_sha256": "b0bb8e9ce27ac1a4fd5ecf3bb171490dacfdb6cd4edce5e75c918b03af76e3e2"
+          }
+        }
+      ]
+    }
+  ]
+}
