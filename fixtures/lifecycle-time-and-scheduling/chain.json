@@ -1,0 +1,1994 @@
+{
+  "actions": {
+    "batch_read": {
+      "action_ref": "7341da8009855d6cbaca5389ea9ce770fd98342aaa001f60cc727960a5d7c198",
+      "input": {
+        "action_type": "batch.read",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "b1a51fd43e6cd6889a2aeabcc148ed0e",
+        "payload_ref": "1c399e0a47fb144f6636477015775052af6fe9a959f589cca0a6b6f2ac6cde8e",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:batch:read"
+        ],
+        "target": "https://ops.example/api/v1/batch/read"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:batch:read"
+    },
+    "batch_write": {
+      "action_ref": "0f4a99cc6675900bec432c7f0af7196482b960f6b279989c7ec265caf05020f8",
+      "input": {
+        "action_type": "batch.write",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "dca5bdb0152de652c924a5ec630ffbaa",
+        "payload_ref": "32b90d7f711a3715cb6659529560990cd83f1f878c52cd7221f234f03b831dcc",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:batch:write"
+        ],
+        "target": "https://ops.example/api/v1/batch/write"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:batch:write"
+    },
+    "job_read": {
+      "action_ref": "cef14d3bfce701df389489b97b850cfa60c66aaab6c43141923a48c856940d9f",
+      "input": {
+        "action_type": "job.read",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "658f38d1d825bbe6b90d9a82e837fa3b",
+        "payload_ref": "374151dfc86d8fe5c1974de52319f7defcbc8e53b64d9898a49d8d0b7fa40798",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:job:read"
+        ],
+        "target": "https://ops.example/api/v1/job/read"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:job:read"
+    },
+    "job_write": {
+      "action_ref": "446f53a249e7144ea3b8e13f06b29404153432d45c27414e1dd606e7172211ee",
+      "input": {
+        "action_type": "job.write",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "7675256a5bff12f3e69a60c6854f21ce",
+        "payload_ref": "8d458fd4e8aab8191a9d32bd0923a5fb4794eb603ae05c5ca6c57c8eeac4abaa",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:job:write"
+        ],
+        "target": "https://ops.example/api/v1/job/write"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:job:write"
+    },
+    "office_direct": {
+      "action_ref": "25d6ebd7d80e1f259bbe8e5d3a46aa9c7ce1353d538c0ba4cde45826dbe7d9ee",
+      "input": {
+        "action_type": "office.direct",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "abda0b2bb9e02367782ae76a7f774b67",
+        "payload_ref": "aa3613ab63e1cc305eca2f2acac3b6f708ca399fe75a32ef8c54eb487bfe1a05",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:office:direct"
+        ],
+        "target": "https://ops.example/api/v1/office/direct"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:office:direct"
+    },
+    "position_control": {
+      "action_ref": "d6ea97a3e6877097865e939b6835c05aaf746aefe48ba14684916d5fcaa1bfed",
+      "input": {
+        "action_type": "position.control",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "86f94a68cfb3dbbe8b0025a181cce658",
+        "payload_ref": "777912c6b965d338f58179813ce63db94c9fc705aeb38d01c0d713bd35669f99",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:position:control"
+        ],
+        "target": "https://ops.example/api/v1/position/control"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:position:control"
+    },
+    "queue_settle": {
+      "action_ref": "230b11ad26cb21f101fce55bd178b8ee9690456b92ae210268c12e621d8bdbc2",
+      "input": {
+        "action_type": "queue.settle",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "4c4efcbd4f00b41048a59a1e91e3a25f",
+        "payload_ref": "246328e441dd21d38892c0a7f43771ceb80422d8c76a36f4ab057c923631667c",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:queue:settle"
+        ],
+        "target": "https://ops.example/api/v1/queue/settle"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:queue:settle"
+    },
+    "reconcile_read": {
+      "action_ref": "7ec2474f711871bc152be3312da765550ad3906a3d95bf6d55999ca0c9cc4d0b",
+      "input": {
+        "action_type": "reconcile.read",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "f5a1ec2a849725d2273fb8b786e56d52",
+        "payload_ref": "b36e0c4edfe89c02a4c92f90b6c73f7510761d2273c05aacfb2598a0b93b5232",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:reconcile:read"
+        ],
+        "target": "https://ops.example/api/v1/reconcile/read"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:reconcile:read"
+    },
+    "reconcile_write": {
+      "action_ref": "d707d6dc0c787ec6ff54ae9af017ae1069355067984f119a434afc02ade29038",
+      "input": {
+        "action_type": "reconcile.write",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "dd5f59b368e4b1877b3ca710597bf230",
+        "payload_ref": "ae5cecdf42363836fdf0b94b7db08d6686e3679519835976d143fd7e7f29905c",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:reconcile:write"
+        ],
+        "target": "https://ops.example/api/v1/reconcile/write"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:reconcile:write"
+    },
+    "series_reconcile": {
+      "action_ref": "06b91ead0ed000e19b788c83f67973079cc0c1f27b228336cf046e01e9b32945",
+      "input": {
+        "action_type": "series.reconcile",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "7fd1b34e9adbe7f41a8c491aed358c17",
+        "payload_ref": "3a7360e837fdb109d3278ad8e17dbbeaef154b48a5ba6e8e1d43b5ce6a0a377c",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:series:reconcile"
+        ],
+        "target": "https://ops.example/api/v1/series/reconcile"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:series:reconcile"
+    },
+    "timed_call": {
+      "action_ref": "4ae46ec96e602ae72e1169ce42d31a4d07993b4c0dd41d884a748dadfafd7a61",
+      "input": {
+        "action_type": "timed.call",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-10T10:00:00.000Z",
+        "nonce": "1dd335641ec123dd8ba025659c872ef3",
+        "payload_ref": "a5d77ef7c1187bb73c54fe48ffa4fe5357cb20aa8f07783115bf05be23d9ab04",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:timed:call"
+        ],
+        "target": "https://ops.example/api/v1/timed/call"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "requested_scope": "ops:timed:call"
+    },
+    "workflow_commit": {
+      "action_ref": "be2f56df9169c17dc9df11e5afb0887671ec5309aad0a53fdb39c5486feb986f",
+      "input": {
+        "action_type": "workflow.commit",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "815781ee5645bd97537498e60dbe60aa",
+        "payload_ref": "a5fecc4c652de8ff92df5dfac35f9b21a0d0d6c90823c0d9ec31826ee124c1c0",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:workflow:commit"
+        ],
+        "target": "https://ops.example/api/v1/workflow/commit"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:workflow:commit"
+    },
+    "workflow_read": {
+      "action_ref": "5b24c8b625bcca9adcd20a6a643c549d0222dfbdd03a4b469c9205ee2ff90e65",
+      "input": {
+        "action_type": "workflow.read",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "3c224295049a6919a051e52df8411415",
+        "payload_ref": "0060a96ff9737dcf01a11e8d35e8ea7436711b63ccdba220ff51160905b8f225",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:workflow:read"
+        ],
+        "target": "https://ops.example/api/v1/workflow/read"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:workflow:read"
+    },
+    "workload_call": {
+      "action_ref": "92a79a1fce01737ff4d11cbf16697358adffbebfaba1115d3b56c37eeadaa9be",
+      "input": {
+        "action_type": "workload.call",
+        "agent_id": "did:aps:example:lts-reconciliation-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "ee90e7b17824c7e690aff75c596aaaf7",
+        "payload_ref": "536c7287baa767fda00dd87eb9129839486fb96a82093b314e0f2d22f36568c5",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:workload:call"
+        ],
+        "target": "https://ops.example/api/v1/workload/call"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "requested_scope": "ops:workload:call"
+    }
+  },
+  "description": "Fourteen time and scheduling lifecycle cases. Twelve root AuthorityDelegationV1 grants, one signed standing registry, forty-odd fixture-local signed lifecycle records (a fixture-local profile, not a protocol object) and thirteen draft-03 action references, minted and verified with agent-passport-system 7.1.0.",
+  "grants": {
+    "creator_broad": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:batch:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:5c29571d3d2ce28cacd9ad88d34050075a932a2b146e30c9a40e259ed83bc805",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "5b3a568fc905d8bed92bc7759b36d3e5",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "556f2f91fcdf39de408a933b473003387f0b1621ecf5b306b01baf0072c842832bb81c2a45a66b5bbd943b8066b1069e81015d17199f57fa09d23d08234e8002",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "creator_narrow": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:batch:read"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:36bab6f186bef94f6d87062aa3e4f0b19111775d0c39510eb0eaa0b7b0c7a163",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "dcc1f3aadf31de0583418c369d0ef5fc",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "207efdb1802beb2a9e985ba70e38d2b0fba9929c228950a4875f75521329f7019a549bab43a169cd683b9cb51d7bda508b22d00971f0406b99f558dbf5f03c0b",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "directed": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:reconcile:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:95648b2be03afbfcfd47061c5944590b65ac54fd9ad30eb2b0a07d0baddeec53",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "00c34bb6a0af37ce4a2a587413370ee1",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "06714d7225c3d1d644cc3ea15c8ccb0efb9e24f5b2fba28a5eca4e932ad67bff97a96f43a0050ee31f65ff94df7a8d8cc70fdf90e4a7c41b866604c6a475a60b",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "job": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:job:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:ec3ea23453417aae43c06b46593fadf6a044c7774c94494f5bbce9dbf9f9ec2a",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "a5afeac5778071b264327a728486e602",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "d35a3c53f494f96d25ff141ccb57dd6b842f965ca2d3e5966c13ecc158cb92fac0c263ab3fa93f39868309e4b723e357a1a78c4eba3ed502a91e333f0b1af409",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "office": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:office:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:3ee8a160c1463c4622715280bda71ba05a72447b45ab2d08b82c26d5cb572fe2",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "d0a78ee5e0f8788d57af1cd86adc0712",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "f41256ab3718c197f9014b3cc51b1e6227c03eb6333280a1bfd18dddcf17ab85b058b30f49c26453821f92e41b05dc2a683c8b52a3e3fec5216b5321cb920108",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "position_incoming": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:position:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:f5bbba23a0075fcb533407cc7beb2e3547a55f3f9413c16e16d63914ff597dab",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "be0e12a120e0a7aa24bc461e082b708c",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "411d1858806ca3c48043aed70155d5e5db1506cb90dd433eae21357c8afa7e5405d951f9652c95c5382893898a55895e580f9ad193960a29d616857017579b09",
+      "subject": "did:aps:example:lts-incoming-holder",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "position_outgoing": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:position:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:6a69c227150e09884e0fcf7362dd265a40e2c52c43a03a7fd75ff1ba0b04d33a",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "ae2eb90785d367b573a5f64d6ed51dcb",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "fa61d93bf8804e05ee4a537b12ef8a62343eba8c34c443a2522c8880c7d4fee6b9922e64723c27ec0ab2e8416e2cc8c2225b5c6b6d75455579e35e4287ea9000",
+      "subject": "did:aps:example:lts-outgoing-holder",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "queued": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:queue:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:1ffc9bbd075989057f36015a057535135d7cff987215d4a6be283bb40b554bb2",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "0f9d9e4177c768f31160ec544448b11e",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "372202b726513ed885748046d30e9e8f4e859580e99b9feb6f877fad2e6a3b11a2276a30a1e8584f3a39ba49b1a38736716617d23b726c7b617d1d0ee2f6e802",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "series_fallback": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:series:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:4569689266340c962136edc8b64da93210c401b068fd956cc952cecbcb40df03",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "bddfd52a1bb23755bcba008e74c3be22",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "ef58de8c423aac1ca94dab09c10484ce64a7ed7345c15935a953c313a202db2b52a2a481a9b9d499c979372fc69abaff730314c8a32e6e3344ab254bd658cc0d",
+      "subject": "did:aps:example:lts-organizational-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "series_owner": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:series:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:d86dd10d3a36e466c1b6d23333d033495dbc437b528d594edc1c7421e26de184",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "34f8dc1bf53067b8a61d69bfbadf63a5",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "e93a7841ae99058dfed4764fb7c9317ee5eb67a242208597c763f3d7d4800d33c5af6a3d94c3d01a9de0243b9a9a391bf2caf533c15aaafccbfff4ce855e0703",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "timebound": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:timed:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-10T11:00:00.000Z",
+          "not_before": "2026-09-10T09:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:6b60e6af9ed99576ad7fcadb0a646ef29f097577d8aace92ee8e8042a8b6e552",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "a3c1db51fff514f5e3b14e18128c8410",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "5a53063c0f3f9ffb04eead8d4b509678b7a416b0f7420c3d1b09459c85d7213a2bf49ea33234beee746b536bcac6aa5476fc77eab912f470a921badae3e5030f",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "workflow": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:workflow:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:11fe5c74e1bc958bd6f51423087e293bb671036d2f1243a83d70e9c0f91b5bd4",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "cf2e40544eb785d698569b0462a1e29c",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "398a33996565a3ba9d14a61248e19c43c46ba714e7331a152fba849f50777019136eff775965021e5a9181bf8331c1b5bdf58b8837bf46ef2733b3e41b37520b",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    },
+    "workload": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ops:workload:*"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-10-01T00:00:00.000Z",
+          "not_before": "2026-09-01T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:8c7634763d512cad065a52b0e7fcfb26ac621c54484cd6f156ee7fde904bd511",
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "nonce": "dd6c65d3f8e03898eaa8c6ef4e9388c2",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "c4c8ccbaecd007ded99f3e4a97aad3d562e06d37a292bc1d1284db0b3f793d6c86157000aeaa0708ab52b288ddd89ece062ec79ab556e4c2b605bf55f4bd4f04",
+      "subject": "did:aps:example:lts-reconciliation-agent",
+      "verification_method": "did:aps:example:lts-operations-office#key-1",
+      "version": "1.0"
+    }
+  },
+  "identities": {
+    "AGENT": "did:aps:example:lts-reconciliation-agent",
+    "BOUNDARY": "did:aps:example:lts-enforcement-boundary",
+    "INCOMING": "did:aps:example:lts-incoming-holder",
+    "OFFICE": "did:aps:example:lts-operations-office",
+    "ORG_AGENT": "did:aps:example:lts-organizational-agent",
+    "OUTGOING": "did:aps:example:lts-outgoing-holder",
+    "OUTSIDER": "did:aps:example:lts-outsider",
+    "REGISTRAR": "did:aps:example:lts-registrar"
+  },
+  "mint_time_sdk_observations": {
+    "chain_state_by_grant_and_instant": {
+      "creator_broad": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "creator_narrow": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "directed": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "job": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "office": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "position_incoming": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "position_outgoing": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "queued": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "series_fallback": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "series_owner": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "timebound": {
+        "T1": "invalid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "invalid",
+        "T5": "invalid",
+        "T6": "invalid"
+      },
+      "workflow": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      },
+      "workload": {
+        "T1": "valid",
+        "T2": "valid",
+        "T3": "valid",
+        "T4": "valid",
+        "T5": "valid",
+        "T6": "valid"
+      }
+    },
+    "is_purpose_permitted": {
+      "batch_write_in_narrow_grant": false,
+      "job_write_in_template_v2": false,
+      "reconcile_read_in_fallback": true,
+      "reconcile_write_in_fallback": false
+    },
+    "revoked_resolution": {
+      "code": "REVOKED",
+      "state": "invalid"
+    },
+    "timebound_chain_probe": {
+      "after": {
+        "code": "EXPIRED",
+        "state": "invalid"
+      },
+      "before": {
+        "code": "NOT_YET_VALID",
+        "state": "invalid"
+      },
+      "inside": {
+        "code": null,
+        "state": "valid"
+      },
+      "wrapped": {
+        "code": "NOT_YET_VALID",
+        "state": "invalid"
+      }
+    }
+  },
+  "minted_by": "fixtures/lifecycle-time-and-scheduling/mint.ts",
+  "profile": "aps-lifecycle-time-and-scheduling-v0",
+  "record_profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+  "record_signature_domain": "APS-CONFORMANCE-LIFECYCLE-TIME-RECORD-V0",
+  "records": {
+    "c008_default_rule": {
+      "body": {
+        "default_successor_role": "first_assistant",
+        "minimum_tenure_days": 90,
+        "office": "did:aps:example:lts-operations-office"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "succession_default",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_default_rule",
+      "signature": "feab61c2817946d60733b0aa23d8b7a5a1a322a61172b4294a7230023fa0845e8469d0f799800a1eedcf96c9b887d6b400219660c9cce8375c03cd245d35d504",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c008_default_rule_self_declared": {
+      "body": {
+        "default_successor_role": "first_assistant",
+        "minimum_tenure_days": 90,
+        "office": "did:aps:example:lts-operations-office"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-outsider",
+      "kind": "succession_default",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_default_rule_self_declared",
+      "signature": "b6d0f011e71c4ce08159cf52f7997ff81881f5d0f37ab10c653a119f678842201ffb1f88ca48692b26299055ceeefd68efdfa508fd2256a08b5be10bb15a3802",
+      "verification_method": "did:aps:example:lts-outsider#key-1"
+    },
+    "c008_direction": {
+      "body": {
+        "grant": "sha256:3ee8a160c1463c4622715280bda71ba05a72447b45ab2d08b82c26d5cb572fe2",
+        "office": "did:aps:example:lts-operations-office",
+        "requested_scope": "ops:office:direct"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-incoming-holder",
+      "kind": "direction",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_direction",
+      "signature": "e83a11a086d6e6f529faba250eced321c5ede89ad65aac70d3f7f687a60decc859093b137d53dea490e3b03bd6c6e4a3fe818502e8d5d347875ac7545ae05e01",
+      "verification_method": "did:aps:example:lts-incoming-holder#key-1"
+    },
+    "c008_direction_outsider": {
+      "body": {
+        "grant": "sha256:3ee8a160c1463c4622715280bda71ba05a72447b45ab2d08b82c26d5cb572fe2",
+        "office": "did:aps:example:lts-operations-office",
+        "requested_scope": "ops:office:direct"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-outsider",
+      "kind": "direction",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_direction_outsider",
+      "signature": "79fad6d35483163f14801ce4c244f896c00e4e531a02ae60445f9ade6a7e076ab8f170bc25ae56e5e29feef3f01c77a2cadd5c8e0e5a35d6e0e16c9544303e07",
+      "verification_method": "did:aps:example:lts-outsider#key-1"
+    },
+    "c008_tenure_eligible": {
+      "body": {
+        "held_since": "2026-01-01T00:00:00.000Z",
+        "holder": "did:aps:example:lts-incoming-holder",
+        "office": "did:aps:example:lts-operations-office",
+        "role": "first_assistant"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "role_tenure",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_tenure_eligible",
+      "signature": "33d2275cbbc747b2e0389fcd1b7531dede95a2d57ea2c32932c5a32c626ad448335ecf06245f7fefb3f778474ada53cae57f5344d63989edb6132e6366819308",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "c008_tenure_short": {
+      "body": {
+        "held_since": "2026-08-20T00:00:00.000Z",
+        "holder": "did:aps:example:lts-incoming-holder",
+        "office": "did:aps:example:lts-operations-office",
+        "role": "first_assistant"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "role_tenure",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_tenure_short",
+      "signature": "81c5e0cea9ee7ce2f9328d89e70a3dbd2c89ff5485627bfa255cf17cd4e85788a2f3b6b3e042248674d87b69c0cc1daa2128bd75b3b6792bfc98642a3ab20406",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "c008_vacancy": {
+      "body": {
+        "office": "did:aps:example:lts-operations-office",
+        "vacant_from": "2026-09-10T08:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T08:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "vacancy",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c008_vacancy",
+      "signature": "e76e63f3196b88ce6c565cfde466edc45d64473f17402908c98cb629cddc1ea2aa4e5801a0c142e23540d809a35584ff4f8b99cd82a6853101cba4ef3262790f",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "c014_ack": {
+      "body": {
+        "acknowledged_at": "2026-09-10T10:00:00.000Z",
+        "briefing_digest": "80433629d2df611c83008b24d2e67f1bba78cdda90f2c522179fabaec986b52d",
+        "offer_id": "c014_offer"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-incoming-holder",
+      "kind": "handover_ack",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c014_ack",
+      "signature": "62cf17887c3c5ea2c40188d5fa64d5f88d328ff70d583f9d5e63a8a143bce21b5660247600e056091f6e4caaeff8041ddaddffbb05077054280ebc3c6003cf0a",
+      "verification_method": "did:aps:example:lts-incoming-holder#key-1"
+    },
+    "c014_ack_wrong_signer": {
+      "body": {
+        "acknowledged_at": "2026-09-10T10:00:00.000Z",
+        "briefing_digest": "80433629d2df611c83008b24d2e67f1bba78cdda90f2c522179fabaec986b52d",
+        "offer_id": "c014_offer"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-outsider",
+      "kind": "handover_ack",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c014_ack_wrong_signer",
+      "signature": "ba2ca1d6785203d92bc379712ae1053afa7924594d24ee2738572081daf75efdc5223e42c5f73b3dd97cd92405474735a3c473d4b569750267445bdc62b6fd02",
+      "verification_method": "did:aps:example:lts-outsider#key-1"
+    },
+    "c014_offer": {
+      "body": {
+        "briefing_digest": "80433629d2df611c83008b24d2e67f1bba78cdda90f2c522179fabaec986b52d",
+        "incoming": "did:aps:example:lts-incoming-holder",
+        "offered_at": "2026-09-10T09:00:00.000Z",
+        "outgoing": "did:aps:example:lts-outgoing-holder",
+        "position": "ops:position"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-outgoing-holder",
+      "kind": "handover_offer",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c014_offer",
+      "signature": "3cd02f66153a9e6670a0700b8ce135c12c7213990cf6a2dc12778472f749716419fce5b57c736241925a43b38dd3a35ff9f83bfcfda444437199de6521d63d01",
+      "verification_method": "did:aps:example:lts-outgoing-holder#key-1"
+    },
+    "c015_contact_live": {
+      "body": {
+        "agent": "did:aps:example:lts-reconciliation-agent",
+        "last_contact_at": "2026-09-10T10:00:00.000Z",
+        "restored_at": null
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "contact_observation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c015_contact_live",
+      "signature": "a8d9199b134c139b3de0333a433d905f1265da23e9e4b1e7f8b09b7540f3c8c47ad47824f7fb409c2f5a6029f3be6e743dd2aa3ffdbe8fccc2235000b7f5fd09",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "c015_contact_lost": {
+      "body": {
+        "agent": "did:aps:example:lts-reconciliation-agent",
+        "last_contact_at": "2026-09-10T08:00:00.000Z",
+        "restored_at": null
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "contact_observation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c015_contact_lost",
+      "signature": "09901cd593c4c2bb5ce90744dfa2d2fc50bd1c46b52fdf08f7ecb6dc00deb09bca06d0d16a47ce6e9a24cdde609a7b97f80dbe5c959fbe5c13449cd7893f5005",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "c015_contact_restored": {
+      "body": {
+        "agent": "did:aps:example:lts-reconciliation-agent",
+        "last_contact_at": "2026-09-10T08:00:00.000Z",
+        "restored_at": "2026-09-10T11:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "contact_observation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c015_contact_restored",
+      "signature": "7d7ea2eb68ebbbccc903887e9a012a7c220a5d3ee1731e1c8903554ec41e35dbc1f09d2a20585bc97d49db6e446e4d177cbc1a65845a4db170a2e1371ec41e03",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "c015_fallback": {
+      "body": {
+        "contact_loss_threshold_seconds": 900,
+        "fallback_scope": [
+          "ops:reconcile:read"
+        ],
+        "grant": "sha256:95648b2be03afbfcfd47061c5944590b65ac54fd9ad30eb2b0a07d0baddeec53"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "fallback_authorization",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c015_fallback",
+      "signature": "d7eb444c16a7f4372a2e5c3a11eb70e044c43932cc3861114e4ac86f97dfa7ece7965e11dac63f649778921f071320b924206f422f3291088b63455b93974b0b",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c017_rest_complete": {
+      "body": {
+        "holder": "did:aps:example:lts-incoming-holder",
+        "rest_ended_at": "2026-09-10T09:00:00.000Z",
+        "rest_started_at": "2026-09-10T00:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "rest_ledger",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c017_rest_complete",
+      "signature": "f80165e1766d2228b809bb4947a18fd15af67aa1de270488b6c0e2ba254c6f117d153ae7375204aecff8c228d2bb9525d01cb78d0d2a1602d3d1004610fe8006",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "c017_rest_incomplete": {
+      "body": {
+        "holder": "did:aps:example:lts-incoming-holder",
+        "rest_ended_at": null,
+        "rest_started_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "rest_ledger",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c017_rest_incomplete",
+      "signature": "9153a467a906cf3a9281a83090fc5b7139f0f44688662d3cc7d81178f1fc5a98c5709d2069ac52df5ef480d4a5938cf41e3ea4e3094cef63e5ec61292c5f2a0e",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "c017_schedule": {
+      "body": {
+        "minimum_rest_seconds": 7200,
+        "position": "ops:position",
+        "slots": [
+          {
+            "at": "2026-09-10T10:00:00.000Z",
+            "incoming": "did:aps:example:lts-incoming-holder",
+            "outgoing": "did:aps:example:lts-outgoing-holder"
+          },
+          {
+            "at": "2026-09-10T12:00:00.000Z",
+            "incoming": "did:aps:example:lts-outgoing-holder",
+            "outgoing": "did:aps:example:lts-incoming-holder"
+          }
+        ]
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "rotation_schedule",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c017_schedule",
+      "signature": "f44d9d9ebf188e494243ec70640c79003174df3f8a675cb6027b61619c5ea042b8d82e0891adde33927020e3c53448abf53d99a6125ac300e4ebc3ce9245300b",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c025_atomic_relief": {
+      "body": {
+        "departing": "did:aps:example:lts-outgoing-holder",
+        "designated": "did:aps:example:lts-incoming-holder",
+        "effective_at": "2026-09-10T09:00:00.000Z",
+        "position": "ops:position"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "atomic_relief",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c025_atomic_relief",
+      "signature": "c41d3c624d00bbd9b2e80bd37d06c678bf36db2fb598e7263dc7c4b1ae133aac757e0f4a4d7ba73961509e0b506fe6bf31a021050ac6bb4c2ddec25a4388390d",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c025_departure": {
+      "body": {
+        "departing": "did:aps:example:lts-outgoing-holder",
+        "effective_at": "2026-09-10T09:00:00.000Z",
+        "position": "ops:position"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "departure",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c025_departure",
+      "signature": "5ccf2ba1a0a5f30d48c03a6811302a52b19ee5c22502968e14111b3f1183b70c278d17a0df35017a350436322442645fbdb587ba8816049564327a26e0aa1c0b",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c025_designation": {
+      "body": {
+        "designated": "did:aps:example:lts-incoming-holder",
+        "effective_at": "2026-09-10T11:00:00.000Z",
+        "position": "ops:position"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "designation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c025_designation",
+      "signature": "d5d59f7fd9e83091ed8ba9784efbacf4955712596aebb4bce4fe68c32433e080e1842336177e144bf70641bfd6d91e3efceee763e4c9c2e878b8c03efaf12502",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c025_designation_unqualified": {
+      "body": {
+        "designated": "did:aps:example:lts-outsider",
+        "effective_at": "2026-09-10T11:00:00.000Z",
+        "position": "ops:position"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "designation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c025_designation_unqualified",
+      "signature": "23e5cd3a72380915b4cc0d7dd300708a6e6fda7ad6daef16e41a26e190853c261c6f8abc056604d111b4f24ab03e6e56039399ac0b5179e73253bedbf2af4d01",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "c025_qualification": {
+      "body": {
+        "holder": "did:aps:example:lts-incoming-holder",
+        "position": "ops:position",
+        "qualification": "senior-operator"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "qualification",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "c025_qualification",
+      "signature": "4ce091509401c45f39e42a4896edafe3aeeda70a43506c282edc3915bed7b098c010ca755fba9999fa02a8fc19f3c16f23c14342680b80d25ba7676077dda905",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "e008_instance_pinned_missing": {
+      "body": {
+        "grant": "sha256:11fe5c74e1bc958bd6f51423087e293bb671036d2f1243a83d70e9c0f91b5bd4",
+        "instance_id": "wf-0004",
+        "pinned_policy_version": "9.9.9",
+        "started_at": "2026-09-10T08:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T08:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "instance_start",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_instance_pinned_missing",
+      "signature": "b61004017ea29b97b6a48658aef0d51186452d86b433838e9a5dbdce8f9a6ed2f24ed1d55be7054c09f7baf7d8acb5a8eedea6a212f6dfe85ded1c7b448d8706",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e008_instance_pinned_v1": {
+      "body": {
+        "grant": "sha256:11fe5c74e1bc958bd6f51423087e293bb671036d2f1243a83d70e9c0f91b5bd4",
+        "instance_id": "wf-0001",
+        "pinned_policy_version": "1.0.0",
+        "started_at": "2026-09-10T08:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T08:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "instance_start",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_instance_pinned_v1",
+      "signature": "e64022151c7196821ed69718e066d5b60d4f1177cf4137d60dc0adf85befdfe871beb4ddcae13e3602658c475a45c7758cf43e8f0f56d2c4aed624c183c0d40f",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e008_instance_pinned_v2": {
+      "body": {
+        "grant": "sha256:11fe5c74e1bc958bd6f51423087e293bb671036d2f1243a83d70e9c0f91b5bd4",
+        "instance_id": "wf-0002",
+        "pinned_policy_version": "2.0.0",
+        "started_at": "2026-09-10T10:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "instance_start",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_instance_pinned_v2",
+      "signature": "67da01fab68814495545d0567ce58e5af4f5e6cbddf00fa5d43b2b6da3893018e0a6ab657697b630a744eb784c04bb8234e3804d5d53a5f9cb84e8e8ca9f7700",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e008_instance_unpinned": {
+      "body": {
+        "grant": "sha256:11fe5c74e1bc958bd6f51423087e293bb671036d2f1243a83d70e9c0f91b5bd4",
+        "instance_id": "wf-0003",
+        "pinned_policy_version": null,
+        "started_at": "2026-09-10T08:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T08:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "instance_start",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_instance_unpinned",
+      "signature": "b1410581d2c6d566f4f1b1141e3c496605373db5e70d4a4492594b9eec5514ca3cb19e27046c23fbffce5bbc16ac3c1229daa560fd5eda5fb184ade48eacea06",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e008_policy_v1": {
+      "body": {
+        "denied_scopes": [],
+        "effective_from": "2026-09-01T00:00:00.000Z",
+        "policy_id": "workflow-spend-v1",
+        "policy_version": "1.0.0"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "policy",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_policy_v1",
+      "signature": "d1a5ad16f27c84f96ee47945c171d6a3586745b962ede63a0dcc7ccdf918674cfd9d313af28b8b3e051330627349b4797a971eab67901ef90dc2377fb10ca204",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e008_policy_v2": {
+      "body": {
+        "denied_scopes": [
+          "ops:workflow:commit"
+        ],
+        "effective_from": "2026-09-10T09:00:00.000Z",
+        "policy_id": "workflow-spend-v1",
+        "policy_version": "2.0.0"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "policy",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e008_policy_v2",
+      "signature": "6598cd21de1af929992062813f7a2592d881e34655ead13aa5674381e32810722db95875dcd2bfc8a77fa24f7086b22a1c20564b96c69ec77cd4322b4bd16407",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e014_owner_removed": {
+      "body": {
+        "identity": "did:aps:example:lts-reconciliation-agent",
+        "removed_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "identity_removal",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e014_owner_removed",
+      "signature": "2628e8a029b3bf0b13159ba6127e84ee654105df86b2c7aed3b64e12b6c770cc2962d5d63fd4762aa08caa2837fb80ddd30dc8f4b625e32e425abedf676e6b01",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "e014_series": {
+      "body": {
+        "action_scope": "ops:series:reconcile",
+        "disposition_on_owner_removal": null,
+        "grant": "sha256:d86dd10d3a36e466c1b6d23333d033495dbc437b528d594edc1c7421e26de184",
+        "owner": "did:aps:example:lts-reconciliation-agent",
+        "series_id": "nightly-reconciliation"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "series",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e014_series",
+      "signature": "7532b2b2d4b4a3b98d5ada4c693e1abc712ab9b881a438b7db53ab6acea4389fa6910e3b5edd6b0eb880a407ee4c4accb10c2ae34eda5ceec60d57edcde33102",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e014_series_with_disposition": {
+      "body": {
+        "action_scope": "ops:series:reconcile",
+        "disposition_on_owner_removal": {
+          "grant": "sha256:4569689266340c962136edc8b64da93210c401b068fd956cc952cecbcb40df03",
+          "mode": "reassign",
+          "reassign_to": "did:aps:example:lts-organizational-agent"
+        },
+        "grant": "sha256:d86dd10d3a36e466c1b6d23333d033495dbc437b528d594edc1c7421e26de184",
+        "owner": "did:aps:example:lts-reconciliation-agent",
+        "series_id": "nightly-reconciliation-b"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "series",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e014_series_with_disposition",
+      "signature": "bdc1959b5a051ef3b9ecd43308aa0393fa2903d7770afb7e5a76998f34a01428bab110ca672ac6b64c3196c2d1abb525ad087bf9fca2840d7957254a447f8b05",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e018_occurrence_under_v1": {
+      "body": {
+        "created_at": "2026-09-10T09:00:00.000Z",
+        "created_under_template_version": "1",
+        "job_id": "hourly-export",
+        "occurrence_id": "hourly-export-0007"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "occurrence",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e018_occurrence_under_v1",
+      "signature": "6a72c1b57d3803b20b3d09067da7e605e97885d3a247e0c7916ed900010bf5cd5ee924017b88197728948fe21773fc4f5d0b19434a13be2bd932ba22e861f90e",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e018_occurrence_under_v2": {
+      "body": {
+        "created_at": "2026-09-10T11:00:00.000Z",
+        "created_under_template_version": "2",
+        "job_id": "hourly-export",
+        "occurrence_id": "hourly-export-0008"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "occurrence",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e018_occurrence_under_v2",
+      "signature": "6824b662ee5484b0bc854f69e6bbf5b62fd6663eb0dd13c15ca7e8dd58eca57bdc4df9402dd174be21150662387a43d3207902f93afcc7cf6cdcc1ec602c0b08",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e018_occurrence_unrecorded": {
+      "body": {
+        "created_at": "2026-09-10T09:00:00.000Z",
+        "created_under_template_version": null,
+        "job_id": "hourly-export",
+        "occurrence_id": "hourly-export-0009"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "occurrence",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e018_occurrence_unrecorded",
+      "signature": "efab84cc1829eb043e009535abaa7f1696f23ea9d60852153add93edb7706e483c7a55fa2ff21d9d96a6ff27821d8489408848c2b2707f5e9e2f95c98c2e6301",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e018_template_v1": {
+      "body": {
+        "effective_from": "2026-09-01T00:00:00.000Z",
+        "job_id": "hourly-export",
+        "scope": [
+          "ops:job:*"
+        ],
+        "template_version": "1"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "occurrence_template",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e018_template_v1",
+      "signature": "ddd5432221ee76ab90b7093e2f4514d93a078562fc53866b6ebddf3b627934cfd4943b6a2c19a3cdc20110b5f578f553167f408e9a4168adf9364ac8539ef704",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e018_template_v2": {
+      "body": {
+        "effective_from": "2026-09-10T10:00:00.000Z",
+        "job_id": "hourly-export",
+        "scope": [
+          "ops:job:read"
+        ],
+        "template_version": "2"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "occurrence_template",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e018_template_v2",
+      "signature": "5e27e15d5cf60d907146f057e7b28b8e504243dec687b59e6899a8ba42249af3adb3dc952ab6955e89c139059a892d1c3900017f61504320d60e9b4bb9304f0c",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e019_wind_down": {
+      "body": {
+        "grace_seconds": 1800,
+        "grant": "sha256:8c7634763d512cad065a52b0e7fcfb26ac621c54484cd6f156ee7fde904bd511",
+        "termination_started_at": "2026-09-10T10:00:00.000Z",
+        "workload": "did:aps:example:lts-reconciliation-agent"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "wind_down",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e019_wind_down",
+      "signature": "82a8452235fbd06a7def7fc0715a5b3b17af2e5511ed700234e57def85a360bde50c2b54be229661e5098836b72c30622d0e8b3d1a83b38d3767c7fd435bdc09",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e019_wind_down_no_bound": {
+      "body": {
+        "grace_seconds": null,
+        "grant": "sha256:8c7634763d512cad065a52b0e7fcfb26ac621c54484cd6f156ee7fde904bd511",
+        "termination_started_at": "2026-09-10T10:00:00.000Z",
+        "workload": "did:aps:example:lts-reconciliation-agent"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "wind_down",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e019_wind_down_no_bound",
+      "signature": "bcafc2582aeea7b64f463595992c033075da75ca316e69ef2d31aeec524a081c0bee807a4c7bc59c1b3d3b9c0cfa9954e02b5bc91f05a20690deb8b489e82d03",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e020_job_broad": {
+      "body": {
+        "action_scope": "ops:batch:write",
+        "creator": "did:aps:example:lts-reconciliation-agent",
+        "creator_grant": "sha256:5c29571d3d2ce28cacd9ad88d34050075a932a2b146e30c9a40e259ed83bc805",
+        "job_id": "batch-writer"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "scheduled_job",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e020_job_broad",
+      "signature": "18f106c3d975501ddd135364e2da5ae15bb1167e3d7b8377660df4d8f0eee573702be91b19a69f337ed8b5329c2fe323bf981c0e7613aba7bb5f87c4df2e6503",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e020_job_narrowed": {
+      "body": {
+        "action_scope": "ops:batch:write",
+        "creator": "did:aps:example:lts-reconciliation-agent",
+        "creator_grant": "sha256:36bab6f186bef94f6d87062aa3e4f0b19111775d0c39510eb0eaa0b7b0c7a163",
+        "job_id": "batch-writer-b"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "scheduled_job",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e020_job_narrowed",
+      "signature": "621cf83499bafcd0910c2a02286a48021b31d85435fac467161bea7b953eab4186bad561ebbc952ca2e9c87dae14af24970c9a62d94f74977de902ae31f6a802",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e020_job_no_creator_grant": {
+      "body": {
+        "action_scope": "ops:batch:read",
+        "creator": "did:aps:example:lts-reconciliation-agent",
+        "creator_grant": null,
+        "job_id": "batch-orphan"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "scheduled_job",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e020_job_no_creator_grant",
+      "signature": "a4cc8cc7058ef39327502740062ae075af3c92150aef948442067244177f98e0a5deca8ef002ada7ed72040f9aef4f340028f4e1cc909989ea228384302b6203",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e020_job_reader": {
+      "body": {
+        "action_scope": "ops:batch:read",
+        "creator": "did:aps:example:lts-reconciliation-agent",
+        "creator_grant": "sha256:36bab6f186bef94f6d87062aa3e4f0b19111775d0c39510eb0eaa0b7b0c7a163",
+        "job_id": "batch-reader"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "scheduled_job",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e020_job_reader",
+      "signature": "11437a4c538d52a76a6761cd4e1ea1a044daf8f69d0911c2008f2f416c524794952a2a60840394dc5d62d3d448641db7006ed1b21a655bf1cc7d8b6fc7e82d00",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e034_queued": {
+      "body": {
+        "action_scope": "ops:queue:settle",
+        "fires_at": "2026-09-10T12:00:00.000Z",
+        "grant": "sha256:1ffc9bbd075989057f36015a057535135d7cff987215d4a6be283bb40b554bb2",
+        "queue_id": "q-0001",
+        "queued_at": "2026-09-10T08:00:00.000Z",
+        "requires_live_suspension_source": true
+      },
+      "issued_at": "2026-09-10T08:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "queued_action",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e034_queued",
+      "signature": "2362fff8a561edd0920156b3078381cb1295457cedcb8f6b62be723718749418bebd20905c0e3b9270c9a10ef240464862eee0788826f39580dfe7fee8d5ed05",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "e034_suspension_active": {
+      "body": {
+        "cause": "investigation-4711",
+        "grant": "sha256:1ffc9bbd075989057f36015a057535135d7cff987215d4a6be283bb40b554bb2",
+        "released_at": null,
+        "suspended_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "suspension",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e034_suspension_active",
+      "signature": "8d6449aa652e49ba6ec18b28a789faac3e88680bbbcf435881b4c85771c88decf2a415d9e7b1a7a44745e0467ec2fe2c4fdc517c8e801c78adc452a8ab62360e",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "e034_suspension_released": {
+      "body": {
+        "cause": "investigation-4711",
+        "grant": "sha256:1ffc9bbd075989057f36015a057535135d7cff987215d4a6be283bb40b554bb2",
+        "released_at": "2026-09-10T11:00:00.000Z",
+        "suspended_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "suspension",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "e034_suspension_released",
+      "signature": "2e5dc22696b74e6496d3ef04c9476fe5e4a44308c3fed27ca820fe67a5326079c984fb80843fa6f6bdc1f045d59a0c84fc7726c92ff36fa5a38e9da730e7270e",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    },
+    "g007_clock_after": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T11:30:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T11:30:00.000Z",
+        "smear_policy": null,
+        "source": "ntp:pool-a",
+        "verifier": "did:aps:example:lts-registrar"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g007_clock_after",
+      "signature": "0e8026769cfca905204c032323f785bdc74d156f3f090a94a1086b160e003e194c2bede4388e9cb63dab8ba6e8677b7f3893e351e86724375d43b7df70485508",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "g007_clock_before": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T08:30:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T08:30:00.000Z",
+        "smear_policy": null,
+        "source": "ntp:pool-a",
+        "verifier": "did:aps:example:lts-outgoing-holder"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-outgoing-holder",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g007_clock_before",
+      "signature": "a140f469590fc9fbad1887e4b6318f1005cee75367cc1b3977c1f1f8df42c925c3bc471498129f6864a09e201e23f766eddcde80e37e98305c720a260ce0d904",
+      "verification_method": "did:aps:example:lts-outgoing-holder#key-1"
+    },
+    "g007_clock_inside": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "ntp:pool-a",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g007_clock_inside",
+      "signature": "82baff97949b317e7b6cf45e8a71f3b4a5079de55aa36159871da17e13485f35a7afab6ff4c805bd158cf31535d301fcf729de4e288243a62dabc82e50f7c60f",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g008_cross_check_disagrees": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:05.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "gnss:legacy-week-counter",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g008_cross_check_disagrees",
+      "signature": "ea942b81c10d809aec6d46e29c5ae92f1bd51123d6683f2935e741abc95fba55d24ba98c73898134f30f32bc586ce5cd3a8284250c9c8d9221f6491ef426cc01",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g008_cross_checked": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "gnss:legacy-week-counter",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g008_cross_checked",
+      "signature": "eea469be9a4111dcd9bd5f9437091aac4f22136eea7910771166702207a016a66dc87fe9f25852a09bfae7c2d60d387909d197b264866f8cbed5a822988c0d07",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g008_no_source": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g008_no_source",
+      "signature": "8a6c15288d97550d3431bc4aa15a884531f87985ea91a5621cec59d7f1a5795da552c86564881f9a649bead5a83819dfee0dcc5e62f4ac0082831669670fe00e",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g008_wrapped_single_source": {
+      "body": {
+        "cross_check": null,
+        "reading": "2007-01-25T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "gnss:legacy-week-counter",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g008_wrapped_single_source",
+      "signature": "fdae6cb3906e2878f76357a5942bd151b09fedc5454b9b0ae0be1900d443859126fe7cc817448594817a7281b4490e2d3ad4c534ca67e911b11e28f587120208",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g009_far_apart": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:05.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:05.000Z",
+        "smear_policy": {
+          "bound_ms": 500,
+          "window_end": "2026-09-10T11:00:00.000Z",
+          "window_start": "2026-09-10T09:00:00.000Z"
+        },
+        "source": "ntp:unsmeared",
+        "verifier": "did:aps:example:lts-registrar"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_far_apart",
+      "signature": "847e968bb8908d03ca3e50967bbf0de786d8e9c4a9be9d429b80757dc106563cfeaec0120f03010f207535dc591d3ffaa20dacb4419e24142904cc79e54a4f0d",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "g009_smeared": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": {
+          "bound_ms": 500,
+          "window_end": "2026-09-10T11:00:00.000Z",
+          "window_start": "2026-09-10T09:00:00.000Z"
+        },
+        "source": "ntp:smeared",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_smeared",
+      "signature": "ab3e47d79dca393d3e1ad3924019d54857ed7cc5c5664ba2533640bbd6f1143cd39126aa232b5dcd3c628b04ad34e7a74e4162088b52df7253e04ef076b6e706",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g009_smeared_no_window": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": null,
+        "source": "ntp:smeared",
+        "verifier": "did:aps:example:lts-enforcement-boundary"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-enforcement-boundary",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_smeared_no_window",
+      "signature": "32cce5c88cdf529335425b1f2046f021353be36b3d2d16a7a3a31e54cb28aa6ba1db769b9c986e33c9e9e115d0095fc421c1064cf03e1676d50ef956e7789b07",
+      "verification_method": "did:aps:example:lts-enforcement-boundary#key-1"
+    },
+    "g009_smeared_twin": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.000Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.000Z",
+        "smear_policy": {
+          "bound_ms": 500,
+          "window_end": "2026-09-10T11:00:00.000Z",
+          "window_start": "2026-09-10T09:00:00.000Z"
+        },
+        "source": "ntp:unsmeared",
+        "verifier": "did:aps:example:lts-registrar"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_smeared_twin",
+      "signature": "16243ee37e153de1deb0d839d118db7d23fcbb78cbcd42b9a8a28d7afb9f024848f9611e837155960b0b9a1f8908708a3f92ece95f70c7430c06d2ca88d18601",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "g009_unsmeared": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.400Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.400Z",
+        "smear_policy": {
+          "bound_ms": 500,
+          "window_end": "2026-09-10T11:00:00.000Z",
+          "window_start": "2026-09-10T09:00:00.000Z"
+        },
+        "source": "ntp:unsmeared",
+        "verifier": "did:aps:example:lts-registrar"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_unsmeared",
+      "signature": "5995bf9a6278cab253e1b88635f3c72f0b83ab67a198240fd6ed48cc4e70c7be3c916fdad21d1ca669ec5b54d97c411d244cacb554474ba845e839af0f788809",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "g009_unsmeared_no_window": {
+      "body": {
+        "cross_check": {
+          "bound_ms": 500,
+          "reading": "2026-09-10T10:00:00.400Z",
+          "source": "ntp:pool-b"
+        },
+        "reading": "2026-09-10T10:00:00.400Z",
+        "smear_policy": null,
+        "source": "ntp:unsmeared",
+        "verifier": "did:aps:example:lts-registrar"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-registrar",
+      "kind": "clock_attestation",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "g009_unsmeared_no_window",
+      "signature": "472978bfac2cdcf71a05a838799089a71d57f4a723eb43c76d794a7fa489c66a4019cd157160f1d1f3489d6a091f77e903c59b753f1f3fb05c8d9fab46934d0a",
+      "verification_method": "did:aps:example:lts-registrar#key-1"
+    },
+    "standing_registry": {
+      "body": {
+        "fallback_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "identity_removal_attestor": [
+          "did:aps:example:lts-registrar"
+        ],
+        "instance_attestor": [
+          "did:aps:example:lts-enforcement-boundary"
+        ],
+        "job_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "observation_attestor": [
+          "did:aps:example:lts-enforcement-boundary"
+        ],
+        "occurrence_attestor": [
+          "did:aps:example:lts-enforcement-boundary"
+        ],
+        "policy_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "qualification_attestor": [
+          "did:aps:example:lts-registrar"
+        ],
+        "queue_attestor": [
+          "did:aps:example:lts-enforcement-boundary"
+        ],
+        "relief_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "rest_attestor": [
+          "did:aps:example:lts-registrar"
+        ],
+        "schedule_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "series_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "succession_rule_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "suspension_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "template_author": [
+          "did:aps:example:lts-operations-office"
+        ],
+        "tenure_attestor": [
+          "did:aps:example:lts-registrar"
+        ],
+        "vacancy_attestor": [
+          "did:aps:example:lts-registrar"
+        ],
+        "wind_down_attestor": [
+          "did:aps:example:lts-enforcement-boundary"
+        ]
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:lts-operations-office",
+      "kind": "standing_registry",
+      "profile": "aps-conformance-suite:lifecycle-time-and-scheduling:record-v0",
+      "record_id": "standing_registry",
+      "signature": "57628ae5156da03b477e9ab50ac1195a75d1e7f58f708ec6144a3e31cbb18446da8d9fb3873d16dd247b5334ba06615dd8af399a348d73dbf49ffbbd5eea6102",
+      "verification_method": "did:aps:example:lts-operations-office#key-1"
+    }
+  },
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-time-and-scheduling:",
+  "timeline": {
+    "T1": "2026-09-10T08:00:00.000Z",
+    "T2": "2026-09-10T09:00:00.000Z",
+    "T3": "2026-09-10T10:00:00.000Z",
+    "T4": "2026-09-10T11:00:00.000Z",
+    "T5": "2026-09-10T12:00:00.000Z",
+    "T6": "2026-09-10T13:00:00.000Z",
+    "after_end": "2026-10-05T00:00:00.000Z",
+    "gps_rollover_weeks": 1024,
+    "issued": "2026-09-01T00:00:00.000Z",
+    "not_after": "2026-10-01T00:00:00.000Z",
+    "timebound_not_after": "2026-09-10T11:00:00.000Z",
+    "timebound_not_before": "2026-09-10T09:00:00.000Z",
+    "wrapped_reading": "2007-01-25T10:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:lts-enforcement-boundary#key-1": "59ca88ce94968127ac2a53319a9b6c5315decbbb06eafba9055ff1719ee8a7c8",
+    "did:aps:example:lts-incoming-holder#key-1": "d89914653ca9883596ae9f0ebafffcc0c5b19ff203abc726c072c9af6ae4fa52",
+    "did:aps:example:lts-operations-office#key-1": "2374dff4438560e8e4fe2221918d8722740dd5e9acc0187d5133d7cbe7017df2",
+    "did:aps:example:lts-organizational-agent#key-1": "8c96109ba929d49cd611c09749cc9f80d2f5312f925e611c2f2213ee94597d27",
+    "did:aps:example:lts-outgoing-holder#key-1": "28bd04b5eae155604bed7954f195c2c7b80df1978e74bb32a9a3857451b40fba",
+    "did:aps:example:lts-outsider#key-1": "7a6cf03e0c651fc39126e001876864daedb0338df3eee4f1d09ce171a634ba37",
+    "did:aps:example:lts-reconciliation-agent#key-1": "1aea2f323a3b43250a793784a0a218de2b3f5b7061f6ff73d6941fb87ffe889f",
+    "did:aps:example:lts-registrar#key-1": "791c789d910a79dfc13ea9f24836839488b92dd2a78c1a3470d6bff7da54d239"
+  }
+}
