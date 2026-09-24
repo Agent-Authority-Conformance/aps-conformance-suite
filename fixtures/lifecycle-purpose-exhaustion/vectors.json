@@ -1,0 +1,599 @@
+{
+  "profile": "aps-lifecycle-purpose-exhaustion-v1",
+  "status_label": "candidate_against_proposed",
+  "reconciled_from": {
+    "note": "One family built from two independent builds that had collided on this directory. Vector ids are unchanged from both builds, because CASES.md at the pinned commit already names them and renaming them would break links it already carries.",
+    "bounds_track_profile": "aps-lifecycle-purpose-exhaustion-v0",
+    "single_use_track_profile": "aac-lifecycle-purpose-exhaustion-single-use-v0"
+  },
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "bbb4709",
+    "commit_is_public_on": "main",
+    "documents": [
+      "AUTHORITY-LIFECYCLE.md",
+      "CASES.md"
+    ],
+    "version_in_document": "0.2.0-draft (AUTHORITY-LIFECYCLE.md), v0.2 (CASES.md)",
+    "named_text": [
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Authority lifecycle state > Expiry or exhaustion",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Authority lifecycle state > Revocation",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Parties and standing > Issuer standing",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Decisions and effects > Approval",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Verification and evidence > Evidence attestor",
+      "AUTHORITY-LIFECYCLE.md > Invariants > L3. Reauthorization creates new authority",
+      "AUTHORITY-LIFECYCLE.md > Invariants > L7. Unknown revocation state is not active",
+      "AUTHORITY-LIFECYCLE.md > Invariants > L10. Expiry is not revocation",
+      "CASES.md > Purpose exhaustion > LC-I-013",
+      "CASES.md > Purpose exhaustion > LC-I-014",
+      "CASES.md > LC-A-008",
+      "CASES.md > LC-D-010",
+      "CASES.md > LC-D-034"
+    ]
+  },
+  "description": "Exhaustion as a lifecycle state that is neither revocation nor expiry, across two record sets. The bounds track (records-bounds.json, ids PXE-01 to PXE-12) reaches exhaustion by purpose, by use count and by budget, and its headline is a second purchase under a grant that is not revoked, has not expired, whose chain verifies valid at that instant and whose one declared purpose an authenticated record already says was met. The single-use track (records-single-use.json, ids LC-I-013-a to LC-I-014-e) reaches exhaustion by the admission itself, and asks two further questions: how far a detected reuse reaches, and whether an exhaustion can be undone by anyone. Twenty-one ordered events. Within each track one boundary instance per policy holds the ledgers across the whole list, in this order, so order is part of the fixture. Every vector is labelled candidate_against_proposed. No vector is a draft-pidlisnyi-aps-03 conformance claim for purpose exhaustion, use-count exhaustion, reuse cascade or irreversibility, because draft-03 states no rule for any of them. The budget vectors PXE-06 and PXE-07 additionally exercise a rule draft-03 does state, cited per vector.",
+  "tracks": {
+    "bounds": {
+      "records": "records-bounds.json",
+      "minted_by": "mint-bounds.ts",
+      "boundary_class": "AuthorityBoundary in harness.ts",
+      "compared_fields": [
+        "outcome",
+        "reason",
+        "bound_state",
+        "exhaustion_basis",
+        "chain_state",
+        "detail"
+      ],
+      "bound_state_vocabulary": [
+        "not_reached",
+        "exhausted",
+        "not_established"
+      ],
+      "policies": {
+        "reference-boundary": "The boundary in harness.ts. One exhaustion ledger set per instance, one fixture-pinned clock.",
+        "defective-boundary-chain-validity-only": "Everything draft-03 section 3.3 chain verification does and nothing else. It still tracks exhaustion state and never gates on it. One axis.",
+        "defective-boundary-trusts-unauthenticated-completion": "Tracks exhaustion in full and reads result.status out of any completion record without establishing who signed it or whether that party had standing. One axis."
+      }
+    },
+    "single-use": {
+      "records": "records-single-use.json",
+      "minted_by": "mint_single_use.py",
+      "boundary_class": "ExhaustionBoundary in harness.ts",
+      "compared_fields": [
+        "outcome",
+        "reason",
+        "exhaustion_basis",
+        "chain_verdict",
+        "chain_failure_code",
+        "bound_state",
+        "records_written"
+      ],
+      "bound_state_vocabulary": [
+        "not_reached",
+        "exhausted",
+        "invalid"
+      ],
+      "policies": {
+        "reference": "The boundary in harness.ts. Both bounds share one ledger per grant and one clock.",
+        "reuse-rejecting-only": "Identical to the reference boundary except that a detected reuse stops at the reused grant: nothing issued out of it is reached. One axis.",
+        "validity-window-only": "Identical to the reference boundary except that it holds no exhaustion ledger at all. A grant is issued, valid until a date, then expired. One axis."
+      },
+      "scope_note": "The plain half of LC-I-013, that a second presentation of a single-use grant is refused, is already covered on this branch's base and in wave 2 material and is not re-tested here. See README, What this family does not re-test."
+    }
+  },
+  "declared_fail_sets": {
+    "defective-boundary-chain-validity-only": [
+      "PXE-03-reject-second-purchase-wednesday",
+      "PXE-05-reject-use-count-consumed",
+      "PXE-07-reject-budget-exhausted",
+      "PXE-10-reject-purchase-after-unauthenticated-completion",
+      "PXE-11-reject-purchase-after-completion-without-standing"
+    ],
+    "defective-boundary-trusts-unauthenticated-completion": [
+      "PXE-08-reject-unauthenticated-completion",
+      "PXE-09-reject-completion-from-party-without-standing",
+      "PXE-10-reject-purchase-after-unauthenticated-completion",
+      "PXE-11-reject-purchase-after-completion-without-standing"
+    ],
+    "reuse-rejecting-only": [
+      "LC-I-013-c"
+    ],
+    "validity-window-only": [
+      "LC-I-013-b",
+      "LC-I-013-c",
+      "LC-I-014-b",
+      "LC-I-014-e"
+    ]
+  },
+  "divergence_note": "declared_fail_sets names the vectors where a defective policy reaches a different admission decision from the reference boundary. record_divergence, per vector, names the policies that reach the SAME admission decision and record a different lifecycle state for it. The validity-window-only boundary admits LC-I-013-a and LC-I-014-a exactly as the reference does and records not_reached where the reference records exhausted: the two boundaries are already distinguishable at the first use, before any refusal, and only the recorded state shows it. Both kinds of divergence are checked, so neither can drift.",
+  "events": [
+    {
+      "id": "PXE-01-accept-first-purchase-tuesday",
+      "track": "bounds",
+      "case_ids": [
+        "LC-A-008"
+      ],
+      "kind": "present",
+      "tests": "positive control: one replacement compressor, first purchase, inside the grant's time window and inside its declared purpose",
+      "differs_from": null,
+      "grant": "purpose",
+      "action": "purpose_first",
+      "now": "2026-09-22T14:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "dispatch_admitted",
+        "bound_state": "not_reached",
+        "exhaustion_basis": null,
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-02-observe-authenticated-completion",
+      "track": "bounds",
+      "case_ids": [
+        "LC-A-008"
+      ],
+      "kind": "observe",
+      "tests": "an action-result record issued by the enforcement boundary the grant's purpose bound names as a fulfillment attestor, signature verifying, reports the compressor installed Tuesday",
+      "differs_from": "PXE-01: an observation of a completion record, not a presentation of an action",
+      "grant": "purpose",
+      "completion": "completion_authentic",
+      "now": "2026-09-22T16:30:00.000Z",
+      "expected": {
+        "outcome": "completion_accepted",
+        "reason": "fulfillment_recorded",
+        "bound_state": "exhausted",
+        "exhaustion_basis": "an authenticated fulfillment record from a party with standing",
+        "chain_state": null
+      }
+    },
+    {
+      "id": "PXE-03-reject-second-purchase-wednesday",
+      "track": "bounds",
+      "case_ids": [
+        "LC-A-008",
+        "LC-D-010",
+        "LC-D-034"
+      ],
+      "kind": "present",
+      "tests": "the headline case. A second purchase Wednesday under the same grant, still before the grant's not_after, still inside its declared purpose, backed by a chain that verifies valid at this instant. The purpose is exhausted and the grant is neither revoked nor expired.",
+      "differs_from": "PXE-01: presented Wednesday, after an authenticated completion record for the same purpose was accepted",
+      "grant": "purpose",
+      "action": "purpose_second",
+      "now": "2026-09-23T10:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "purpose_exhausted",
+        "bound_state": "exhausted",
+        "exhaustion_basis": "an authenticated fulfillment record from a party with standing",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-04-accept-first-use-under-use-count-grant",
+      "track": "bounds",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "tests": "positive control for the use_count 1 variant: the first and only admission the bound allows",
+      "differs_from": "PXE-01: the grant's declared bound is use_count 1, not purpose",
+      "grant": "use_count",
+      "action": "use_count_first",
+      "now": "2026-09-22T14:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "dispatch_admitted",
+        "bound_state": "not_reached",
+        "exhaustion_basis": null,
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-05-reject-use-count-consumed",
+      "track": "bounds",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "tests": "use_count 1 consumed. Unlike the purpose bound, the admission itself consumes this bound: no completion record is involved.",
+      "differs_from": "PXE-04: the same grant, presented a second time, after PXE-04 was admitted",
+      "grant": "use_count",
+      "action": "use_count_second",
+      "now": "2026-09-23T10:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "use_count_exhausted",
+        "bound_state": "exhausted",
+        "exhaustion_basis": "the admission itself",
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-06-accept-first-purchase-under-budget-grant",
+      "track": "bounds",
+      "case_ids": [],
+      "kind": "present",
+      "tests": "positive control for the budget variant: a purchase for the grant's entire signed cumulative limit, reserved and settled through the SDK's own accounting ledger",
+      "differs_from": "PXE-01: the grant carries a bounded spend facet, and the presentation carries an amount",
+      "grant": "budget",
+      "action": "budget_first",
+      "amount": "480000",
+      "now": "2026-09-22T14:00:00.000Z",
+      "revocation": "active",
+      "draft03_basis": "draft-pidlisnyi-aps-03 section 3.4, Cumulative Spend Across a Delegation Subtree",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "dispatch_admitted",
+        "bound_state": "not_reached",
+        "exhaustion_basis": null,
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-07-reject-budget-exhausted",
+      "track": "bounds",
+      "case_ids": [],
+      "kind": "present",
+      "tests": "budget exhausted. One further minor unit against a cumulative limit already fully committed. The SDK's ledger supplies the verdict, and the detail is the SDK's own code.",
+      "differs_from": "PXE-06: the same grant, one minor unit requested after the cumulative limit was committed in full",
+      "grant": "budget",
+      "action": "budget_second",
+      "amount": "1",
+      "now": "2026-09-23T10:00:00.000Z",
+      "revocation": "active",
+      "draft03_basis": "draft-pidlisnyi-aps-03 section 3.4, Cumulative Spend Across a Delegation Subtree",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "budget_exhausted",
+        "bound_state": "exhausted",
+        "exhaustion_basis": "the SDK budget ledger",
+        "chain_state": "valid",
+        "detail": "CUMULATIVE_EXCEEDED"
+      }
+    },
+    {
+      "id": "PXE-08-reject-unauthenticated-completion",
+      "track": "bounds",
+      "case_ids": [
+        "LC-D-034"
+      ],
+      "kind": "observe",
+      "tests": "negative control. A completion record naming the enforcement boundary as issuer, structurally intact, reporting succeeded, whose signature does not verify. Fulfillment is not established. It is not established that the purpose was fulfilled and it is not established that it was not.",
+      "differs_from": "PXE-02: the signature bytes are a well-formed Ed25519 signature over different content",
+      "grant": "purpose_bad_sig",
+      "completion": "completion_bad_signature",
+      "now": "2026-09-23T09:00:00.000Z",
+      "expected": {
+        "outcome": "completion_rejected",
+        "reason": "completion_signature_invalid",
+        "bound_state": "not_established",
+        "exhaustion_basis": null,
+        "chain_state": null
+      }
+    },
+    {
+      "id": "PXE-09-reject-completion-from-party-without-standing",
+      "track": "bounds",
+      "case_ids": [],
+      "kind": "observe",
+      "tests": "negative control. A completion record whose signature verifies against the parts vendor's own published key, issued by a party the grant's purpose bound does not name as a fulfillment attestor. Authenticated, and by someone without standing. The two are different failures and this family will not collapse them.",
+      "differs_from": "PXE-08: the signature is genuine. The issuer is the one without standing.",
+      "grant": "purpose_no_standing",
+      "completion": "completion_no_standing",
+      "now": "2026-09-23T09:05:00.000Z",
+      "expected": {
+        "outcome": "completion_rejected",
+        "reason": "completion_attestor_without_standing",
+        "bound_state": "not_established",
+        "exhaustion_basis": null,
+        "chain_state": null,
+        "detail": "sdk_boundary_identity=mismatch"
+      }
+    },
+    {
+      "id": "PXE-10-reject-purchase-after-unauthenticated-completion",
+      "track": "bounds",
+      "case_ids": [],
+      "kind": "present",
+      "tests": "the vector a naive implementation passes wrongly. A boundary that reads result.status out of the record in PXE-08 without checking who signed it reaches the same admitted-or-not answer as the reference boundary here, and records a different lifecycle state: it calls the grant exhausted on evidence that establishes nothing. Only the bound_state field separates the two.",
+      "differs_from": "PXE-03: the completion record behind it was rejected as unauthenticated, so the state is not_established and not exhausted",
+      "grant": "purpose_bad_sig",
+      "action": "bad_sig_first",
+      "now": "2026-09-23T10:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "bound_state_not_established",
+        "bound_state": "not_established",
+        "exhaustion_basis": null,
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-11-reject-purchase-after-completion-without-standing",
+      "track": "bounds",
+      "case_ids": [],
+      "kind": "present",
+      "tests": "the same trap through the standing route rather than the signature route. A boundary that accepts any authenticated record without asking whether its signer had standing records exhausted here.",
+      "differs_from": "PXE-10: the completion record behind it was authentic and came from a party without standing",
+      "grant": "purpose_no_standing",
+      "action": "no_standing_first",
+      "now": "2026-09-23T10:05:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "bound_state_not_established",
+        "bound_state": "not_established",
+        "exhaustion_basis": null,
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "PXE-12-reject-after-grant-not_after-expiry-and-exhaustion-coexist",
+      "track": "bounds",
+      "case_ids": [
+        "LC-D-010"
+      ],
+      "kind": "present",
+      "tests": "expiry and exhaustion are separate states that coexist. Saturday is after the grant's own not_after, so the chain no longer verifies valid. The purpose was already exhausted on Tuesday. The denial names the time failure, and the recorded bound_state still says exhausted. Neither state is revocation.",
+      "differs_from": "PXE-03: presented after the grant's not_after instead of before it",
+      "grant": "purpose",
+      "action": "purpose_saturday",
+      "now": "2026-09-26T09:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "grant_chain_not_valid",
+        "bound_state": "exhausted",
+        "exhaustion_basis": "an authenticated fulfillment record from a party with standing",
+        "chain_state": "invalid",
+        "detail": "invalid/EXPIRED"
+      }
+    },
+    {
+      "id": "LC-I-013-a",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "sign": "positive",
+      "tests": "positive control. The first and only admission the single-use artifact allows. The admission is what consumes it: no separate exhaustion step runs and no second record is written. An artifact was issued out of this use, and it is what LC-I-013-c comes back for.",
+      "differs_from": null,
+      "chain": "SU_GRANT",
+      "now": "2026-09-22T09:00:00.000Z",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "admitted_and_exhausted",
+        "exhaustion_basis": "the admission itself",
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-013-b",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "sign": "negative",
+      "tests": "the second presentation of the same artifact. It is refused, and the refusal is not the same state as an ordinary exhaustion: the bound state becomes invalid, not exhausted, because a second presentation of a single-use artifact is a signal about the artifact and not a retry. The chain still verifies valid at this instant and the not_after is eight days away, so neither revocation nor expiry is doing any work here.",
+      "differs_from": "LC-I-013-a: the same artifact, presented a second time",
+      "chain": "SU_GRANT",
+      "now": "2026-09-22T09:05:00.000Z",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "single_use_reuse_detected",
+        "exhaustion_basis": null,
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "invalid",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-013-c",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "the distinct half of LC-I-013, and the vector two defective boundaries pass wrongly. The artifact issued out of the first use is presented after the reuse was detected. Its own chain verifies valid, its own record is unremarkable, and nothing about it was revoked. It is not admitted, because the grant it was issued out of was reused. A boundary that rejects the second presentation and stops there admits this one, which is the whole gap between refusing a replay and acting on what the replay says about everything already issued from the artifact.",
+      "differs_from": "LC-I-013-b: the artifact presented is the one issued out of the first use, not the grant itself",
+      "chain": "SU_DERIVED",
+      "now": "2026-09-22T09:10:00.000Z",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "ancestor_invalidated_by_reuse",
+        "exhaustion_basis": null,
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "invalid",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": true,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-013-d",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-013"
+      ],
+      "kind": "present",
+      "sign": "positive",
+      "tests": "the blast radius of the reuse, bounded from the other side. An independently rooted artifact, issued out of a different single-use grant that was never reused, is presented after LC-I-013-b. It is admitted. A cascade that reached it would be overbroad, and this is the vector that would catch that.",
+      "differs_from": "LC-I-013-c: the artifact was issued out of a different grant, under a different root, which nobody reused",
+      "chain": "OTHER_DERIVED",
+      "now": "2026-09-22T09:15:00.000Z",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "derived_artifact_chain_valid",
+        "exhaustion_basis": null,
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "not_reached",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-014-a",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-014"
+      ],
+      "kind": "present",
+      "sign": "positive",
+      "tests": "positive control for the notch bound, and the atomicity claim. Using the permit and exhausting it are one recorded event: exactly one record is written, it carries both the admission and the exhausted bound state, and exhaustion_basis names the admission itself rather than a separately observed completion record. The distinction from an observed-completion shape is the point, and it is checked here rather than described.",
+      "differs_from": "LC-I-013-a: the bound is notch, not single_use, so a later reuse leaves the state exhausted rather than invalid",
+      "chain": "NOTCH_GRANT",
+      "now": "2026-09-22T10:00:00.000Z",
+      "expected": {
+        "outcome": "admitted",
+        "reason": "admitted_and_exhausted",
+        "exhaustion_basis": "the admission itself",
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-014-b",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-014"
+      ],
+      "kind": "present",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "a second presentation of an exhausted permit, eight days before its stated not_after, on a chain that verifies valid at this instant. Not admitted, and the recorded state is exhausted, not revoked and not expired. A boundary that models the grant only as a validity window reports it as usable, and bound_state is the only field that separates the two answers.",
+      "differs_from": "LC-I-014-a: the same permit, presented a second time",
+      "chain": "NOTCH_GRANT",
+      "now": "2026-09-22T10:05:00.000Z",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "purpose_exhausted",
+        "exhaustion_basis": "the admission itself",
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-014-c",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-014"
+      ],
+      "kind": "void",
+      "sign": "negative",
+      "tests": "a record asking to undo the exhaustion, signed by the party that issued the permit and does hold standing to revoke it. Refused. Standing is not the blocker: there is no channel that reverses an exhaustion, and the reason says so rather than saying the signer was not allowed. The validity-window boundary refuses this record too, and records the grant as never having reached its bound, so even the two refusals it agrees with carry a different lifecycle state.",
+      "differs_from": "LC-I-014-b: this is a record asking to undo the exhaustion, not a presentation of the permit",
+      "grant": "G_NOTCH",
+      "signed_by": "did:aps:example:pxs-permit-authority",
+      "now": "2026-09-22T10:10:00.000Z",
+      "expected": {
+        "outcome": "void_refused",
+        "reason": "exhaustion_is_not_reversible",
+        "exhaustion_basis": null,
+        "chain_verdict": null,
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-014-d",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-014"
+      ],
+      "kind": "void",
+      "sign": "negative",
+      "tests": "the same request signed by the permit's own subject, who holds no standing to change it. Also refused, and under a different reason. The two refusals are kept apart so that a boundary cannot report 'nobody may do this' as 'you in particular may not', which would leave a reader thinking a differently signed record would have worked. The validity-window boundary refuses this record too, and records the grant as never having reached its bound, so even the two refusals it agrees with carry a different lifecycle state.",
+      "differs_from": "LC-I-014-c: the signer holds no standing over this grant",
+      "grant": "G_NOTCH",
+      "signed_by": "did:aps:example:pxs-notch-agent",
+      "now": "2026-09-22T10:15:00.000Z",
+      "expected": {
+        "outcome": "void_refused",
+        "reason": "void_attestor_without_standing",
+        "exhaustion_basis": null,
+        "chain_verdict": null,
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    },
+    {
+      "id": "LC-I-014-e",
+      "track": "single-use",
+      "case_ids": [
+        "LC-I-014"
+      ],
+      "kind": "present",
+      "sign": "negative",
+      "tests": "the permit presented once more, after both refused void records. The state is unchanged: still exhausted, still not admitted. Neither refused record moved anything, which is what makes them refusals rather than pending requests.",
+      "differs_from": "LC-I-014-b: two refused void records were written between them",
+      "chain": "NOTCH_GRANT",
+      "now": "2026-09-22T10:20:00.000Z",
+      "expected": {
+        "outcome": "not_admitted",
+        "reason": "purpose_exhausted",
+        "exhaustion_basis": "the admission itself",
+        "chain_verdict": "valid",
+        "chain_failure_code": null,
+        "bound_state": "exhausted",
+        "records_written": 1
+      },
+      "record_divergence": {
+        "reuse-rejecting-only": false,
+        "validity-window-only": true
+      }
+    }
+  ]
+}

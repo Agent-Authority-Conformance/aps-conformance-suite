@@ -1,0 +1,822 @@
+{
+  "actions": {
+    "bad_sig_first": {
+      "action_ref": "87183451ea29ca0fb9092fde461ac91dd751f62bc30f7f9dd1099d32aa066be5",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-23T09:59:00.000Z",
+        "nonce": "189dd73a2077ef4289e94100cc92c6c7",
+        "payload_ref": "1cf32f039a43d33e25da56bb33f531060afb6568be6e566a7c199db327e113a9",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "budget_first": {
+      "action_ref": "84dc198bef74f9f0c7e21bfeff5eec9beb3721dd2b54e7a44099da9a16b0eae7",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-22T13:59:00.000Z",
+        "nonce": "26f1cc603b510a36c5931e10a775417a",
+        "payload_ref": "2d0218e0ad87546f277bebd7ef4d1ada2b6453e0dca589fd318cfd28fef534f4",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "budget_second": {
+      "action_ref": "4107f8542a07f1ad60b19ec1392d6c7d430f86ac4c3148516acf9f3bd9ebaa1f",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-23T09:59:00.000Z",
+        "nonce": "557f58c5bbfd9cea8463ade67fe6ce73",
+        "payload_ref": "b6df264bbc3f29673c885a74bdcd6ba0bc53c394b533069f4aeb75c7c744a7bd",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "no_standing_first": {
+      "action_ref": "99ec5182c3cffc5a543dabd026fc6701195a1c02f96f389008900e001757ace1",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-23T09:59:00.000Z",
+        "nonce": "ee3f04e7eeef497e4bbf01c0c65d6fea",
+        "payload_ref": "498c4bca07402009ddc43ea2566c355c9bdd0fc907d7a03827d6ec0ab4b65d18",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "purpose_first": {
+      "action_ref": "14f0f40f184f62164c35c55d8801121953de6bb8919db8b2d0edbfc9352f37bf",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-22T13:59:00.000Z",
+        "nonce": "f84190e69561dd04cf0dda66923ca443",
+        "payload_ref": "bb401f3e8b4a07cbfac11ff5eba1082d1ca859c96b0386671b183b0cf7ed4e20",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "purpose_saturday": {
+      "action_ref": "ee1b01939a57d14c6c021b562b6e796d48282c8132c5b201d27511e6d70b3146",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-26T08:59:00.000Z",
+        "nonce": "59c39b6d13a3990dc921913b6c166cfa",
+        "payload_ref": "3204e11408bdb19c68b00f2059b62fccd26433812340ae8f002eafdbf96538bf",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "purpose_second": {
+      "action_ref": "5836702257917682fb9ea11dd529e8c136149e90d10d1b327e7421805f487756",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-23T09:59:00.000Z",
+        "nonce": "9c55839a97bae677fe1141b14ebb9ddc",
+        "payload_ref": "c23bdb52b0d0266562b17e009ae619663e8dd32e544d0909ce22c1df0871a1bd",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "use_count_first": {
+      "action_ref": "bc413f94aa1985a84549a93c4559b832eb1841998455d7917e045f52bde74c1d",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-22T13:59:00.000Z",
+        "nonce": "c11d6bd757686fdf8c278d3f92bc4684",
+        "payload_ref": "9ff5ee0e9d911d7b60f37ddbabc2b157465c1908a3d69b180bd4c77190c65f12",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "use_count_second": {
+      "action_ref": "28cfb82fe407678a67fbcd5e9c1f0699cbeedec32d0dcb18e60fc83e329b8cf8",
+      "input": {
+        "action_type": "procurement.purchase",
+        "agent_id": "did:aps:example:pxe-procurement-agent",
+        "issued_at": "2026-09-23T09:59:00.000Z",
+        "nonce": "14ffbc02e28624c3c74eb2ca1b7bc7ad",
+        "payload_ref": "ebad406ecca9376e41b6b17ea273b9e4ee2be7969ee37d4be24908d2c291739b",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    }
+  },
+  "decision_evidence": {
+    "decision_authentic": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:authority-state-v0",
+        "selected_chain": [
+          "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:pxe-enforcement-boundary",
+        "evaluated_at": "2026-09-22T14:00:01.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "6312a2c1d19bb55a822f8463f43d0134836e0785e6d1d5df26839077e7163b11",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "37ac4a19e7cbf1e12e2e1c009fe33089757fc44634e55a12f4994eb67ddccc7e",
+      "policy_input": {
+        "policy_id": "procurement-replacement-part-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "decision_bad_sig": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:authority-state-v0",
+        "selected_chain": [
+          "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:pxe-enforcement-boundary",
+        "evaluated_at": "2026-09-22T14:00:01.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "7e397fb52f92cb0be6cda8e741da16f774c173f721a88199485d0616b6de8004",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "c3a3b58bac8470dcf26302ba8c2687686552d1a4fafec2f0827b4085d420dafc",
+      "policy_input": {
+        "policy_id": "procurement-replacement-part-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    },
+    "decision_no_standing": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:authority-state-v0",
+        "selected_chain": [
+          "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:pxe-enforcement-boundary",
+        "evaluated_at": "2026-09-22T14:00:01.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "89d2e3cf2d03da37a644180d18faa2de15f0dbf117dfd9d16f10e59bfcfbbb48",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "398fd2646875e83d4e2a9a33d8ada40b967fd62993cae1c7efe7817b5bdd9200",
+      "policy_input": {
+        "policy_id": "procurement-replacement-part-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "procurement:hvac:replace-compressor:ch-3"
+        ],
+        "target": "https://parts.example/api/v1/orders"
+      }
+    }
+  },
+  "description": "Exhaustion by purpose, by use count and by budget as a lifecycle state separate from revocation and from expiry. Five one-hop AuthorityDelegationV1 grants, five principal-signed purpose bounds (a fixture-local profile, not a protocol object), nine actions, three action-intent receipts and three action-result completion records, minted and verified with agent-passport-system 7.1.0.",
+  "grants": {
+    "budget": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "procurement:hvac:replace-compressor:ch-3"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "cumulative": "480000",
+          "mode": "bounded",
+          "per_action": "480000",
+          "unit": "iso4217:USD:minor"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:60c33858561da64acc7b38fa6d15a00f273a8b3a672aa538960e006ec154765c",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "nonce": "6e3db7add3b6607047245d452ddbce89",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "d61f1325a4947b62c99af391f059a2b784c151ff0a47e08c46cde9ed2ecd424953206f8bc1d7063f57cb697ef64f0ebaae272b0ff4774c25a770308535c0e30d",
+      "subject": "did:aps:example:pxe-procurement-agent",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1",
+      "version": "1.0"
+    },
+    "purpose": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "procurement:hvac:replace-compressor:ch-3"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "nonce": "f7198fe591618d3bcac88374da286bc9",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "8a13622b97292b56cb05c48323fe3b3a20927ad1709b90d28629dfc5ef1e3bcbf914b02f60cb70287025f8a726c642fce7f8fd133ab663fb88b119ea46a0bb0b",
+      "subject": "did:aps:example:pxe-procurement-agent",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1",
+      "version": "1.0"
+    },
+    "purpose_bad_sig": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "procurement:hvac:replace-compressor:ch-3"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "nonce": "360573876de5dc71c661d84ef59f0850",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "5efa9bdce0e011d51da053be5e6fcec2eb185cca8e6772f10b79f4c010b7fb7800ca4672683bfb99481fc7ab0e8c82c92a6c7ca6bfc049f7a3f5c31c846ffc0d",
+      "subject": "did:aps:example:pxe-procurement-agent",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1",
+      "version": "1.0"
+    },
+    "purpose_no_standing": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "procurement:hvac:replace-compressor:ch-3"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "nonce": "40db92b4fc13717f764fad0550ebdf5a",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "da1b4dec21a7fa1dd7bb8ce0f691837072ee975639f330f361ee19a05ce1ba91f535b66cebdbe3acf153f097c30e6a4001d8cf670e3ee5ab497aa93e0e08fb06",
+      "subject": "did:aps:example:pxe-procurement-agent",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1",
+      "version": "1.0"
+    },
+    "use_count": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "procurement:hvac:replace-compressor:ch-3"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-25T00:00:00.000Z",
+          "not_before": "2026-09-21T00:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:437a0583e702cb8c3eee52f44dfebf70677e324899f89c22c2f8aea3cede833c",
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "nonce": "ba3d56e9910da1227a3dd2272e0ed6c9",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "e2e9e063b14a2d8b6fafd7196c94347c52bb264364a32aa5c584dae5210b718cef4a42ac398e19d942e1283f06f96b064b5d38b2c03ffaf390f3fea146af2d0d",
+      "subject": "did:aps:example:pxe-procurement-agent",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1",
+      "version": "1.0"
+    }
+  },
+  "identities": {
+    "agent": "did:aps:example:pxe-procurement-agent",
+    "enforcement_boundary": "did:aps:example:pxe-enforcement-boundary",
+    "principal": "did:aps:example:pxe-facility-principal",
+    "vendor_without_standing": "did:aps:example:pxe-parts-vendor"
+  },
+  "mint_time_sdk_observations": {
+    "budget_commit_full_cumulative": "COMMITTED",
+    "budget_reserve_full_cumulative": "RESERVED",
+    "budget_reserve_one_more_minor_unit": "CUMULATIVE_EXCEEDED",
+    "chain_state_saturday": {
+      "first_failure_code": "EXPIRED",
+      "state": "invalid"
+    },
+    "chain_state_wednesday": {
+      "budget": "valid",
+      "purpose": "valid",
+      "purpose_bad_sig": "valid",
+      "purpose_no_standing": "valid",
+      "use_count": "valid"
+    },
+    "completion_authentic_status": "valid",
+    "completion_bad_signature_status": "invalid",
+    "completion_no_standing_boundary_identity_axis": "mismatch",
+    "completion_no_standing_status_expecting_boundary": "invalid",
+    "completion_no_standing_status_expecting_vendor": "valid",
+    "is_purpose_permitted_first_purchase": true,
+    "is_purpose_permitted_second_purchase": true
+  },
+  "minted_by": "fixtures/lifecycle-purpose-exhaustion/mint-bounds.ts",
+  "profile": "aps-lifecycle-purpose-exhaustion-v0",
+  "purpose": "procurement:hvac:replace-compressor:ch-3",
+  "purpose_bound_signature_domain": "APS-CONFORMANCE-PURPOSE-BOUND-V0",
+  "purpose_bounds": {
+    "budget": {
+      "bound": {
+        "cumulative": "480000",
+        "mode": "budget",
+        "unit": "iso4217:USD:minor"
+      },
+      "delegation_id": "sha256:60c33858561da64acc7b38fa6d15a00f273a8b3a672aa538960e006ec154765c",
+      "fulfillment_attestors": [
+        "did:aps:example:pxe-enforcement-boundary"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:purpose-bound-v0",
+      "purpose": "procurement:hvac:replace-compressor:ch-3",
+      "signature": "076b0978a167c969e05ddc3419d30646f8babef6484622dad7568143472309e8e122052479c23eb66cc9f0fbbfa89e96802e8c535748b3235dfb8322aff8b609",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1"
+    },
+    "purpose": {
+      "bound": {
+        "mode": "purpose",
+        "purpose": "procurement:hvac:replace-compressor:ch-3"
+      },
+      "delegation_id": "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686",
+      "fulfillment_attestors": [
+        "did:aps:example:pxe-enforcement-boundary"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:purpose-bound-v0",
+      "purpose": "procurement:hvac:replace-compressor:ch-3",
+      "signature": "f7c570a87a2305808d42b471badf1b8b7a626e4eee216677e038cee068c6954b0b11a861d4268d28f97cd690451178958f82a06a44f4d68f386bc166e4584309",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1"
+    },
+    "purpose_bad_sig": {
+      "bound": {
+        "mode": "purpose",
+        "purpose": "procurement:hvac:replace-compressor:ch-3"
+      },
+      "delegation_id": "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f",
+      "fulfillment_attestors": [
+        "did:aps:example:pxe-enforcement-boundary"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:purpose-bound-v0",
+      "purpose": "procurement:hvac:replace-compressor:ch-3",
+      "signature": "dd7080f992caf0164ce743f8ab4a5583ef23846a6a156ed4f5e13bd4a4da0731569b448d5685599bba969c9c2e1fe710b8f1d82af985e7cda64881cacac85009",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1"
+    },
+    "purpose_no_standing": {
+      "bound": {
+        "mode": "purpose",
+        "purpose": "procurement:hvac:replace-compressor:ch-3"
+      },
+      "delegation_id": "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5",
+      "fulfillment_attestors": [
+        "did:aps:example:pxe-enforcement-boundary"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:purpose-bound-v0",
+      "purpose": "procurement:hvac:replace-compressor:ch-3",
+      "signature": "ca52f121ca28b536b409eac5865342fcaaa9adc16c01956dcce9963ec98e43e23386b60b58706a24609e7a83642ba873bbcdf4f4dc41e4419cff08b8dc7d1602",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1"
+    },
+    "use_count": {
+      "bound": {
+        "limit": 1,
+        "mode": "use_count"
+      },
+      "delegation_id": "sha256:437a0583e702cb8c3eee52f44dfebf70677e324899f89c22c2f8aea3cede833c",
+      "fulfillment_attestors": [
+        "did:aps:example:pxe-enforcement-boundary"
+      ],
+      "issued_at": "2026-09-21T00:00:00.000Z",
+      "issuer": "did:aps:example:pxe-facility-principal",
+      "profile": "aps-conformance-suite:lifecycle-purpose-exhaustion:purpose-bound-v0",
+      "purpose": "procurement:hvac:replace-compressor:ch-3",
+      "signature": "cc12fe646b318847b67098d878a4bdb7916024a0a64b845095d6192e673c916508a1555b0685a94c0c106125c9a1b827b308adcfafa222685e4d881b5176a90f",
+      "verification_method": "did:aps:example:pxe-facility-principal#key-1"
+    }
+  },
+  "receipts": {
+    "completion_authentic": {
+      "action_ref": "14f0f40f184f62164c35c55d8801121953de6bb8919db8b2d0edbfc9352f37bf",
+      "decision_ref": "37ac4a19e7cbf1e12e2e1c009fe33089757fc44634e55a12f4994eb67ddccc7e",
+      "delegation_ref": "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T16:30:00.000Z",
+      "issuer": "did:aps:example:pxe-enforcement-boundary",
+      "prev": "d2b498b431a3375550d85c294db29f5eeaa44e5f665345e15945a26ebce76704",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "3d501155fdbd09f723bd14ab18f170ecc38b1e8b1ab056bac4adcf237bdf80c7",
+      "receipt_type": "aps:action-result:v1",
+      "result": {
+        "effect_ref": "d6473d0ce752410bb16d8262b5f9bafef9fc6bb5d661ce03e546f89da147e951",
+        "error_code": null,
+        "profile": "aps-action-result-v1",
+        "status": "succeeded"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-enforcement-boundary#key-1",
+          "signer": "did:aps:example:pxe-enforcement-boundary",
+          "value": "6855e1c6326f9a4a6bd7e1164574890f46d4a17e42822d34010337ca85512504a55b394bcb4b9ad39aef58232c640852ce27a4d98d6ab2d5ffc490cdbfa95406"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "completion_bad_signature": {
+      "action_ref": "87183451ea29ca0fb9092fde461ac91dd751f62bc30f7f9dd1099d32aa066be5",
+      "decision_ref": "c3a3b58bac8470dcf26302ba8c2687686552d1a4fafec2f0827b4085d420dafc",
+      "delegation_ref": "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T16:30:00.000Z",
+      "issuer": "did:aps:example:pxe-enforcement-boundary",
+      "prev": "c4dd66b99e7b1028d989cef2beb43edbdb52d14234ba498e6c7b71681127b8ce",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "1ef22001a09cd13a643176b68394bd233c7d9e8c8233bd4b079e553ee8b702d0",
+      "receipt_type": "aps:action-result:v1",
+      "result": {
+        "effect_ref": "8eda337bd8c5544c3ddb24a295e1c4bab0682e6c75b345977d2a829b3c45a97e",
+        "error_code": null,
+        "profile": "aps-action-result-v1",
+        "status": "succeeded"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-enforcement-boundary#key-1",
+          "signer": "did:aps:example:pxe-enforcement-boundary",
+          "value": "f75864b764b399e61393b88db8bfe803c58ea4649a2304ea34b1d068a3fffafae356efe8dcc2b8820601bba7d72fb302b9e062bb4cdf66e4b6cbcab00e4d6e09"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "completion_no_standing": {
+      "action_ref": "99ec5182c3cffc5a543dabd026fc6701195a1c02f96f389008900e001757ace1",
+      "decision_ref": "398fd2646875e83d4e2a9a33d8ada40b967fd62993cae1c7efe7817b5bdd9200",
+      "delegation_ref": "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T16:30:00.000Z",
+      "issuer": "did:aps:example:pxe-parts-vendor",
+      "prev": "2e7158412f7d266757402218715ab55b80360e10e1f1e7f68f4207b451b1d72e",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "0564611b514faea08f03486c9d12bb659d4517b3c340b42f00c1f09f63152350",
+      "receipt_type": "aps:action-result:v1",
+      "result": {
+        "effect_ref": "65d773f3872cf8dc2145f4535d744992a1b39ed8791982a8c61cca497ffc83e5",
+        "error_code": null,
+        "profile": "aps-action-result-v1",
+        "status": "succeeded"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-parts-vendor#key-1",
+          "signer": "did:aps:example:pxe-parts-vendor",
+          "value": "fe10692ddf5aa1ff71903edeef31f430b3b69778df15810d0e3b5b39433854409a06529caa427bb434e90b851e04a2f60867116dbd12ae7155dbe89bee02170b"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "decision_authentic": {
+      "action_ref": "14f0f40f184f62164c35c55d8801121953de6bb8919db8b2d0edbfc9352f37bf",
+      "decision_ref": "37ac4a19e7cbf1e12e2e1c009fe33089757fc44634e55a12f4994eb67ddccc7e",
+      "delegation_ref": "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:01.000Z",
+      "issuer": "did:aps:example:pxe-enforcement-boundary",
+      "prev": "99594214a7ddafefc9bb7d9015ef47e3f9d0a94ec2332e21b58c29031d637579",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "d2b498b431a3375550d85c294db29f5eeaa44e5f665345e15945a26ebce76704",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "6312a2c1d19bb55a822f8463f43d0134836e0785e6d1d5df26839077e7163b11",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-enforcement-boundary#key-1",
+          "signer": "did:aps:example:pxe-enforcement-boundary",
+          "value": "b76f9c08c9acaa471eb7f530b303155ada7c8c98f97ec632288ec648a04b35c68cdb55efd0f3d80fac9f957245201b316759971533b85ee622dad0678651a90b"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "decision_bad_sig": {
+      "action_ref": "87183451ea29ca0fb9092fde461ac91dd751f62bc30f7f9dd1099d32aa066be5",
+      "decision_ref": "c3a3b58bac8470dcf26302ba8c2687686552d1a4fafec2f0827b4085d420dafc",
+      "delegation_ref": "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:01.000Z",
+      "issuer": "did:aps:example:pxe-enforcement-boundary",
+      "prev": "08f17ce2586256f85d4fa15fc9007643f7e2fb49dff2eb675e201e5e12302036",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "c4dd66b99e7b1028d989cef2beb43edbdb52d14234ba498e6c7b71681127b8ce",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "7e397fb52f92cb0be6cda8e741da16f774c173f721a88199485d0616b6de8004",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-enforcement-boundary#key-1",
+          "signer": "did:aps:example:pxe-enforcement-boundary",
+          "value": "5fef3703264b6cb09548ddfeba3e4e4794ccd35043d45dbd06145226c60efb335a6a12bb95b53ce15b5f4dc288ca46fcb11a895614358f0a870284b56f27d007"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "decision_no_standing": {
+      "action_ref": "99ec5182c3cffc5a543dabd026fc6701195a1c02f96f389008900e001757ace1",
+      "decision_ref": "398fd2646875e83d4e2a9a33d8ada40b967fd62993cae1c7efe7817b5bdd9200",
+      "delegation_ref": "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:01.000Z",
+      "issuer": "did:aps:example:pxe-enforcement-boundary",
+      "prev": "fefbc757d5ad07c46f7ab2949834a708d50f3695f98024c59e57dab3110dba41",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "2e7158412f7d266757402218715ab55b80360e10e1f1e7f68f4207b451b1d72e",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "89d2e3cf2d03da37a644180d18faa2de15f0dbf117dfd9d16f10e59bfcfbbb48",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-22T18:00:00.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-enforcement-boundary#key-1",
+          "signer": "did:aps:example:pxe-enforcement-boundary",
+          "value": "cf5ed5ee1052cbd1674f1c8526a13556725f3861510085ea260fccb05d62035ff037a15a54b95447f24cea20c92b87304e80fbfd42ab63d0137c2d02a0f3a101"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "intent_authentic": {
+      "action_ref": "14f0f40f184f62164c35c55d8801121953de6bb8919db8b2d0edbfc9352f37bf",
+      "delegation_ref": "sha256:797cc4a44a1a3d3ea69b0c49748d5acd54feaf301845a771adca083f8fa0f686",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:00.000Z",
+      "issuer": "did:aps:example:pxe-procurement-agent",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "99594214a7ddafefc9bb7d9015ef47e3f9d0a94ec2332e21b58c29031d637579",
+      "receipt_type": "aps:action-intent:v1",
+      "result": {
+        "profile": "aps-action-intent-result-v1",
+        "status": "declared"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-procurement-agent#key-1",
+          "signer": "did:aps:example:pxe-procurement-agent",
+          "value": "0e13bba7f93b266848fb2a8f7e647b3d04fd302311bc81adcda8f21efe94adcc3474d7e469b13c1f03d9152138443f00ee2d6516594e0ec0a4011d2d5cefdc07"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "intent_bad_sig": {
+      "action_ref": "87183451ea29ca0fb9092fde461ac91dd751f62bc30f7f9dd1099d32aa066be5",
+      "delegation_ref": "sha256:c85a719ef00fed181597d1fb56d53bf7b447ebe53d255e3a2eb51c4f421f6c1f",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:00.000Z",
+      "issuer": "did:aps:example:pxe-procurement-agent",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "08f17ce2586256f85d4fa15fc9007643f7e2fb49dff2eb675e201e5e12302036",
+      "receipt_type": "aps:action-intent:v1",
+      "result": {
+        "profile": "aps-action-intent-result-v1",
+        "status": "declared"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-procurement-agent#key-1",
+          "signer": "did:aps:example:pxe-procurement-agent",
+          "value": "9dc221f5771e4a2b01daf1fd835267d0d5dadaa03b88f5366e5e1c0aa292fea6f3e2de19c29d3d76144633493e34051238640b4cd55fca4f3a886f1e54036b01"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    },
+    "intent_no_standing": {
+      "action_ref": "99ec5182c3cffc5a543dabd026fc6701195a1c02f96f389008900e001757ace1",
+      "delegation_ref": "sha256:d6180cb41a948bfe4e858e59aa9c61f272245826dee4258bbe8ac608eb6401d5",
+      "evidence_refs": [],
+      "issued_at": "2026-09-22T14:00:00.000Z",
+      "issuer": "did:aps:example:pxe-procurement-agent",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "fefbc757d5ad07c46f7ab2949834a708d50f3695f98024c59e57dab3110dba41",
+      "receipt_type": "aps:action-intent:v1",
+      "result": {
+        "profile": "aps-action-intent-result-v1",
+        "status": "declared"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:pxe-procurement-agent#key-1",
+          "signer": "did:aps:example:pxe-procurement-agent",
+          "value": "22d2535da3efd2c91cb099b325fe6439d725d20a4cc2d7d88ab36431c438be3fe153e7cfc93fffdb181660a48df21c21ed2aafcee8aad40b1d0054f945af1706"
+        }
+      ],
+      "subject_agent": "did:aps:example:pxe-procurement-agent"
+    }
+  },
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-purpose-exhaustion:",
+  "timeline": {
+    "friday_not_after": "2026-09-25T00:00:00.000Z",
+    "monday": "2026-09-21T00:00:00.000Z",
+    "saturday": "2026-09-26T09:00:00.000Z",
+    "tuesday": "2026-09-22T14:00:00.000Z",
+    "wednesday": "2026-09-23T10:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:pxe-enforcement-boundary#key-1": "768264d41f4e4225eb7180a17aa8ff9ca053d72b0d220315b396b88844cc04c1",
+    "did:aps:example:pxe-facility-principal#key-1": "9436b63bc7a853bfc8b0b1101f3d3a43d45d2a527f2b7116b404838fa54d8b03",
+    "did:aps:example:pxe-parts-vendor#key-1": "37169385e0c2757be51ca9048a76336a713e4ecf132f193ffc94d9a97f4dfdd4",
+    "did:aps:example:pxe-procurement-agent#key-1": "13622f11e6f1d0d327054296c2a103d132bf40a82905029b7a389d94c6cdaf49"
+  }
+}
