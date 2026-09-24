@@ -1,0 +1,148 @@
+{
+  "profile": "aps-authority-revocation-record-v0",
+  "status": "candidate_against_proposed",
+  "description": "Exercises the shipped aps:authority-revocation:v1 record format: the three domain-separated preimages, the identifier and signature construction over them, the revocation time as a signed member, the closed record_type, the cascade transaction identity bound to the record's own originating content, and the store's first-wins slot for one delegation. Part A runs the record verifier. Part B runs the verifying mutation path into a store.",
+  "part_a_record_verification": {
+    "description": "Each vector hands one candidate record and the target delegation to the record verifier, with the fixture's key-resolver table. Every reject vector is one named defect from ARR-01, minted with correctly recomputed identifiers and a fresh signature wherever the defect does not forbid it, so exactly one thing is wrong per vector.",
+    "cases": [
+      {
+        "id": "ARR-01-control-valid-record",
+        "role": "control",
+        "record": "control",
+        "changed_from_baseline": null,
+        "defect": null,
+        "expected": {
+          "state": "valid",
+          "valid": true,
+          "failures": []
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-02-reject-revocation-id-wrong-domain",
+        "role": "reject",
+        "record": "revocation_id_wrong_domain",
+        "changed_from_baseline": "revocation_id domain tag",
+        "defect": "revocation_id is sha256 over APS-AUTHORITY-DELEGATION-ID-V1 and one NUL byte, the AuthorityDelegationV1 identifier tag, instead of APS-AUTHORITY-REVOCATION-ID-V1. The body under it is byte identical to ARR-01's and the record is signed over itself as it stands.",
+        "expected": {
+          "state": "invalid",
+          "valid": false,
+          "failures": [
+            {
+              "code": "ID_MISMATCH",
+              "message": "revocation content address does not match its body"
+            }
+          ]
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-03-reject-signature-wrong-domain",
+        "role": "reject",
+        "record": "signature_wrong_domain",
+        "changed_from_baseline": "signature domain tag",
+        "defect": "The Ed25519 signature is over APS-AUTHORITY-REVOCATION-ID-V1 and one NUL byte followed by the same JCS bytes, instead of APS-AUTHORITY-REVOCATION-SIGNATURE-V1. Both identifiers recompute and the signing key is the issuer's.",
+        "expected": {
+          "state": "invalid",
+          "valid": false,
+          "failures": [
+            {
+              "code": "SIGNATURE_INVALID",
+              "message": "Ed25519 signature is invalid"
+            }
+          ]
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-04-reject-revocation-time-outside-signed-content",
+        "role": "reject",
+        "record": "revocation_time_outside_signed_content",
+        "changed_from_baseline": "revoked_at is not a member",
+        "defect": "revoked_at is absent, so the revocation time is inside none of the three preimages. Both identifiers and the signature are minted over the truncated content, so nothing else is wrong. The time the record would have carried is in fixture.json under out_of_band.revoked_at.",
+        "expected": {
+          "state": "invalid",
+          "valid": false,
+          "failures": [
+            {
+              "code": "SCHEMA_INVALID",
+              "message": "revoked_at is required"
+            },
+            {
+              "code": "NONCANONICAL_VALUE",
+              "message": "revoked_at must be a canonical UTC-millisecond timestamp"
+            }
+          ]
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-05-reject-unknown-record-type",
+        "role": "reject",
+        "record": "unknown_record_type",
+        "changed_from_baseline": "record_type",
+        "defect": "record_type is aps:authority-revocation-record:v1, which this version does not define. Both identifiers and the signature are minted over the changed content, so the type is the only defect.",
+        "expected": {
+          "state": "unsupported",
+          "valid": false,
+          "failures": [
+            {
+              "code": "UNSUPPORTED_RECORD_TYPE",
+              "message": "record_type must be aps:authority-revocation:v1"
+            }
+          ]
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-06-reject-cascade-transaction-id-not-bound",
+        "role": "reject",
+        "record": "cascade_transaction_id_not_bound",
+        "changed_from_baseline": "cascade_transaction_id",
+        "defect": "cascade_transaction_id is a well-formed sha256 content address derived from a different origin, this record's content with a different nonce. revocation_id is recomputed over the body carrying it and the record is re-signed, so the cascade binding is the only thing that does not hold.",
+        "expected": {
+          "state": "invalid",
+          "valid": false,
+          "failures": [
+            {
+              "code": "CASCADE_TRANSACTION_MISMATCH",
+              "message": "cascade_transaction_id does not recompute from the record"
+            }
+          ]
+        },
+        "status": "candidate_against_proposed"
+      }
+    ]
+  },
+  "part_b_store_first_wins": {
+    "description": "One store, two offers of the same record id, in order. The verifying mutation path is the only supported way a record enters a store, and the slot is keyed by the delegation the record names.",
+    "cases": [
+      {
+        "id": "ARR-07-control-first-record-inserted",
+        "role": "control",
+        "store": "fresh",
+        "offer": "control",
+        "changed_from_baseline": null,
+        "expected": {
+          "recorded": true,
+          "inserted": true,
+          "stored_record": "control"
+        },
+        "status": "candidate_against_proposed"
+      },
+      {
+        "id": "ARR-08-reject-duplicate-record-id",
+        "role": "reject",
+        "store": "same",
+        "offer": "control",
+        "changed_from_baseline": "the same record id is offered a second time",
+        "expected": {
+          "recorded": true,
+          "inserted": false,
+          "stored_record": "control"
+        },
+        "status": "candidate_against_proposed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "_placeholder": false,
+  "domain_tags": {
+    "cascade_transaction_id": "APS-AUTHORITY-REVOCATION-CASCADE-TRANSACTION-ID-V1\u0000",
+    "foreign_delegation_id": "APS-AUTHORITY-DELEGATION-ID-V1\u0000",
+    "revocation_id": "APS-AUTHORITY-REVOCATION-ID-V1\u0000",
+    "signature": "APS-AUTHORITY-REVOCATION-SIGNATURE-V1\u0000"
+  },
+  "foreign_cascade_origin": {
+    "cascade_transaction_id": "sha256:7f900bc412d9ce7dc8eada52b298cae9d42cd6491e7bc7f38aecb33841ad4db3",
+    "nonce": "4c4d4e4f505152535455565758595a5b",
+    "note": "The origin ARR-06's cascade_transaction_id is bound to: this record's content with a different nonce."
+  },
+  "key_resolver": {
+    "description": "Look up the (controller, verification_method) pair. When no entry matches, or when the record's revoked_at is earlier than the entry's key_valid_from, answer not_found. Otherwise answer public_key_hex. The verifier hands the resolver the TARGET delegation's issuer as the controller, never the revocation's own revoker.",
+    "entries": [
+      {
+        "controller": "did:example:aps-root-authority",
+        "key_label": "issuer-key",
+        "key_valid_from": "2026-03-01T00:00:00.000Z",
+        "public_key_hex": "5bc104a33e1bc847bb26c8ef16b681c17aeab71a479228fef6be9557deb0e423",
+        "verification_method": "did:example:aps-root-authority#key-1"
+      },
+      {
+        "controller": "did:example:aps-root-authority",
+        "key_label": "issuer-rotated-key",
+        "key_valid_from": "2026-03-10T00:00:00.000Z",
+        "public_key_hex": "a0ada3ec33b3db96f75803772e94469db3c21befd6aadc7cb679ca967d510ca0",
+        "verification_method": "did:example:aps-root-authority#key-2"
+      },
+      {
+        "controller": "did:example:aps-impostor",
+        "key_label": "impostor-key",
+        "key_valid_from": "2026-03-01T00:00:00.000Z",
+        "public_key_hex": "c7f4b326bc8aa1bac18d2ace6a0296a7cc2f1e8b7699fdfb6d70d5034f2c4dd7",
+        "verification_method": "did:example:aps-impostor#key-1"
+      }
+    ]
+  },
+  "keys": {
+    "impostor_priv": "b658575607b4ba6fe0c910dedfaf7de130201ac10d5b290c2162e9eda516c980",
+    "issuer_priv": "4bee34d35de8a35dcc2e399e4a0ab6ce443f18b1a0373edf771bf3352b13ff47",
+    "issuer_rotated_priv": "aebc39d8b3e4b38aed170d8769b3777d755298db12b0ed92fd0a912064a05c18"
+  },
+  "out_of_band": {
+    "note": "The revocation time ARR-04's record does not carry. Kept here rather than in the record because the closed schema has no member that could hold it outside the signed content.",
+    "revoked_at": "2026-03-15T12:00:00.000Z"
+  },
+  "provenance": {
+    "negatives": "Minted by this script from the same content, one defect each.",
+    "positive_case": {
+      "implementation_commit": "f6792af732f2102b239cca6b18840f6fa7d8fe87",
+      "note": "ARR-01 is that vector's valid_case record. mint.py re-mints it from the published seeds and inputs and refuses to write this file unless it reproduces the vector's delegation_id, cascade_transaction_id, revocation_id and both signatures byte for byte.",
+      "repository": "aeoess/agent-passport-system",
+      "vector_file": "fixtures/authority-revocation/authority-revocation-vectors-v1.json",
+      "vector_file_sha256": "43dbe7fed137269405be38bf829681bc18525a1eccb8e8236e37f03720147ee2",
+      "vector_name": "valid-direct-revocation"
+    }
+  },
+  "records": {
+    "cascade_transaction_id_not_bound": {
+      "cascade_transaction_id": "sha256:7f900bc412d9ce7dc8eada52b298cae9d42cd6491e7bc7f38aecb33841ad4db3",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:de6935fc385f60b5422908200ea06b7783ed33cdb5d5dde388933aa9279d2f89",
+      "revoked_at": "2026-03-15T12:00:00.000Z",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "67847c3c5a3fcde56456837047597b83a4fb16418f203edf69ca8e6c133d7dae49fc0a913792dfaf3be46b4f6723ad17174d001e8839280e83f4454c854be305",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    },
+    "control": {
+      "cascade_transaction_id": "sha256:62d509615d78dd1a0f72222b78ea887e51a5ec3fbf94113539828af9e8c93137",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:2e4a42ace216ca9041e15a5207804af7ad3e213d44563644ba5db721a34b23dc",
+      "revoked_at": "2026-03-15T12:00:00.000Z",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "94e7cd2e8ef0faa8523606380ee12b9dd80c29d9bd08f331960607d76f9719a9343a616008032a143c57edab8528c73877e65296a98aefbc257aa24ff357ac08",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    },
+    "revocation_id_wrong_domain": {
+      "cascade_transaction_id": "sha256:62d509615d78dd1a0f72222b78ea887e51a5ec3fbf94113539828af9e8c93137",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:70e6f21f1424d106a78eb6e296c13ef60449f0c5c1d065e1af093bfa058f1231",
+      "revoked_at": "2026-03-15T12:00:00.000Z",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "cbabf80672452c1e72d44273c3c80099fe913050de3fbadc5eb190f0bad9b8a7c7e3187af7e86558cace2a1bd14157339017fe55650fb64864cd03f4f997d205",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    },
+    "revocation_time_outside_signed_content": {
+      "cascade_transaction_id": "sha256:42871d74f95a6665385763870104cf350a0ad3afcb6467f79f21f989f5532293",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:dd61bb441459d5f373ed6c7a2fe89030bd82238f346d873b51751837a70c2df6",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "f9e66902762c676e53dab28d7a16dd9b032cc191961509f0c65a0e0f04d9ed147f2abb75ff0ae47a72babcf8893579e68aee81f8c2e81e098ddd17307299c60f",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    },
+    "signature_wrong_domain": {
+      "cascade_transaction_id": "sha256:62d509615d78dd1a0f72222b78ea887e51a5ec3fbf94113539828af9e8c93137",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:2e4a42ace216ca9041e15a5207804af7ad3e213d44563644ba5db721a34b23dc",
+      "revoked_at": "2026-03-15T12:00:00.000Z",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "0746cda738998febc6000a018870c678b8b9107a9d8310e9522cc56234997decde5b7a9a060fc1cd7e5d90b4097aeba71a7e8f1bd1e484af6d774f8c1e1b0808",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    },
+    "unknown_record_type": {
+      "cascade_transaction_id": "sha256:6423b733488850daba64d1d673fef133a261770c80591bd7677b008841414394",
+      "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+      "detail": "Issuer signing key retired after a hardware replacement.",
+      "nonce": "3c3d3e3f404142434445464748494a4b",
+      "reason_code": "issuer-key-compromise",
+      "record_type": "aps:authority-revocation-record:v1",
+      "revocation_id": "sha256:c9d7c3098bdd1c5acfd37fe07e04437967228eae56c2e60924d268d0ce0d4cbe",
+      "revoked_at": "2026-03-15T12:00:00.000Z",
+      "revoker": "did:example:aps-root-authority",
+      "signature": "788de60a610bb97def43439a5e75c064dcd0f74760b8a313f4861355f202fc350111050b246dc92cb4935a581ad1c0ce55a913c27b6cda7f946a6b189fb78e0b",
+      "verification_method": "did:example:aps-root-authority#key-1",
+      "version": "1.0"
+    }
+  },
+  "target_delegation": {
+    "authority": {
+      "depth": {
+        "remaining": 2
+      },
+      "reputation": {
+        "ceiling": 75,
+        "profile": "aps-score-0-100-v1"
+      },
+      "reversibility": {
+        "ceiling": "compensable",
+        "profile": "aps-tci-v1"
+      },
+      "scope": {
+        "grants": [
+          "commerce:checkout"
+        ],
+        "profile": "aps-hierarchical-v1"
+      },
+      "spend": {
+        "cumulative": "50000",
+        "mode": "bounded",
+        "per_action": "2500",
+        "unit": "iso4217:USD:minor"
+      },
+      "time": {
+        "not_after": "2026-04-01T00:00:00.000Z",
+        "not_before": "2026-03-01T00:00:00.000Z"
+      },
+      "values": {
+        "profile": "aps-values-identifiers-v1",
+        "required": [
+          "F-001",
+          "F-003"
+        ]
+      }
+    },
+    "delegation_id": "sha256:b7e452c7d640c3aeb1ddd0943d75d8a44dfabac8ad96f85c31428a8aa4e895e6",
+    "issued_at": "2026-03-01T00:00:00.000Z",
+    "issuer": "did:example:aps-root-authority",
+    "nonce": "0f0e0d0c0b0a09080706050403020100",
+    "parent_delegation_id": null,
+    "record_type": "aps:authority-delegation:v1",
+    "signature": "085c9e08b72517aaa3f724a6c2bfeeb307ad017cf468be75bf5cad1c71b1aebf66ea6068fc2181230e957cd31f2ba7bab030fabbf565971b77532b17b0474b0d",
+    "subject": "did:example:aps-agent-alpha",
+    "verification_method": "did:example:aps-root-authority#key-1",
+    "version": "1.0"
+  }
+}
