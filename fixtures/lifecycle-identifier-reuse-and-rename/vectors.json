@@ -1,0 +1,359 @@
+{
+  "profile": "aps-lifecycle-identifier-reuse-and-rename-v0",
+  "status": "candidate_against_proposed",
+  "description": "An authority path whose recovery or verification depends on an identifier no party in the delegation graph controls. Five one-hop grants, eleven custodian-signed identifier-binding records over a mail domain, a package namespace and a phone number, and three retention records. Thirteen presentations: the dependency is undeclared, unpinned, current, lapsed, re-registered by an unrelated party, routinely reassigned, resumed after a gap the custodian retained, resumed after a gap it did not, and asserted by two custodian records that disagree. Every vector is candidate against proposed text: draft-pidlisnyi-aps-03 states no rule about an off-chain identifier a grant depends on. See README.",
+  "evaluation": "Each presentation is an independent evaluation against a fresh boundary. No state is carried between presentations and presentation order does not matter.",
+  "verdict_vocabulary": ["valid", "invalid", "not_established"],
+  "case_source": {
+    "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+    "document": "CASES.md",
+    "commit": "2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda",
+    "branch": "cases-v0.2",
+    "section": "Identifier reuse and rename",
+    "note": "This commit was a local branch when this family was built and may not yet be reachable from the public default branch. The proposed text the vectors test is pinned separately below, at a commit that is on the public default branch."
+  },
+  "proposed_text": {
+    "target-binding": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Target binding",
+      "quote": "Target binding. Which resource, counterparty or object the authority applies to. Continuity of a name does not by itself establish continuity of the thing named.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "authority-path-and-dependency": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Authority path and dependency",
+      "quote": "Authority path and dependency. Which other authority a grant currently depends on. Historical provenance and current dependency are not necessarily the same thing.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "issuer-standing": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Parties and standing",
+      "concept": "Issuer standing",
+      "quote": "Issuer standing. Why the issuer was allowed to create, narrow, suspend, revoke or replace authority for the principal. A valid signature establishes who signed. It does not by itself establish standing.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "coverage-and-completeness": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "7796e22fb80480d0336ff0967a862c84284c15e4",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Verification and evidence",
+      "concept": "Coverage and completeness",
+      "quote": "Coverage and completeness. What set or interval the available evidence covers. Showing that individual records are authentic is weaker than establishing that all relevant events were observed.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    }
+  },
+  "draft03": {
+    "states_this_rule": false,
+    "closest_text": {
+      "section": "4.1. Action Reference",
+      "quote": "target is the exact resource, tool, or endpoint against which the action will be dispatched; a profile MUST define its target string construction.",
+      "why_it_is_not_the_rule": "target names a resource for one action. It says nothing about an identifier a grant's recovery or verification path depends on, who currently controls that identifier, or what a verifier records when control of it moves without any delegation-layer event."
+    },
+    "pin_syntax_basis": {
+      "section": "3.2. Component Orders",
+      "quote": "Scope grants use ASCII colon-separated segments. \"*\" covers all grants; a wildcard is otherwise permitted only as the terminal segment \":*\".",
+      "note": "This family expresses a dependency and its controller pin as further colon-separated segments, so both stay inside the scope grammar draft-03 defines. draft-03 does not define this encoding or any other."
+    }
+  },
+  "declared_defective_fail_set": [
+    "IRR-02-LC-I-001-b-dependency-not-declared-not-established",
+    "IRR-03-LC-I-001-c-lapsed-then-registered-by-an-unrelated-party-not-established",
+    "IRR-04-LC-I-001-d-no-binding-covers-the-action-instant-not-established",
+    "IRR-05-LC-I-002-a-vacated-name-claimed-by-a-new-controller-not-established",
+    "IRR-07-LC-I-002-c-uncovered-gap-with-the-pinned-controller-back-not-established",
+    "IRR-08-LC-I-002-d-retention-record-from-a-custodian-without-standing-not-established",
+    "IRR-09-LC-I-003-a-routine-reassignment-to-a-new-subscriber-not-established",
+    "IRR-10-LC-I-003-b-two-custodian-records-disagree-not-established",
+    "IRR-11-LC-I-003-c-declared-dependency-with-no-controller-pin-not-established"
+  ],
+  "presentations": [
+    {
+      "id": "IRR-01-LC-I-001-a-declared-pinned-and-continuously-bound-control",
+      "case_id": "LC-I-001",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding", "authority-path-and-dependency"],
+      "note": "The family's control. The grant names the mail domain as a dependency, pins its controller, and the registrar's record says that controller has held it without interruption since before the grant was issued. Every later vector differs from this one in exactly the way its id names.",
+      "differs_from": null,
+      "grant": "G_MAIL_PINNED",
+      "relies_on_kind": "mail-domain",
+      "relies_on_identifier": "acme-legal.example",
+      "bindings": ["B_MAIL_ORG_CURRENT"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "valid",
+        "reason": "identifier_continuity_established",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-org"
+      }
+    },
+    {
+      "id": "IRR-02-LC-I-001-b-dependency-not-declared-not-established",
+      "case_id": "LC-I-001",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authority-path-and-dependency", "target-binding"],
+      "differs_from": "IRR-01: the grant carries the same recovery authority and names the mail domain nowhere, while the recovery path relies on it exactly as before. This is the identifier the graph never modelled at all",
+      "grant": "G_MAIL_UNDECLARED",
+      "relies_on_kind": "mail-domain",
+      "relies_on_identifier": "acme-legal.example",
+      "bindings": ["B_MAIL_ORG_CURRENT"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_dependency_not_declared",
+        "detail": "extid:mail-domain:acme-legal.example",
+        "chain_state": "valid",
+        "controller_at_instant": null
+      }
+    },
+    {
+      "id": "IRR-03-LC-I-001-c-lapsed-then-registered-by-an-unrelated-party-not-established",
+      "case_id": "LC-I-001",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding"],
+      "differs_from": "IRR-01: the pinned controller's registration ended on 2026-09-21 and an unrelated party registered the same string on 2026-09-22. Nothing in any delegation chain changed",
+      "grant": "G_MAIL_PINNED",
+      "relies_on_kind": "mail-domain",
+      "relies_on_identifier": "acme-legal.example",
+      "bindings": ["B_MAIL_ORG_LAPSED", "B_MAIL_NEWPARTY"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_controller_changed",
+        "detail": "pinned=did:aps:example:irr-org holder=did:aps:example:irr-newparty",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-newparty"
+      }
+    },
+    {
+      "id": "IRR-04-LC-I-001-d-no-binding-covers-the-action-instant-not-established",
+      "case_id": "LC-I-001",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding", "coverage-and-completeness"],
+      "differs_from": "IRR-03: nobody took the lapsed string. No custodian record covers the action instant at all, which is a different answer from a record naming a different holder",
+      "grant": "G_MAIL_PINNED",
+      "relies_on_kind": "mail-domain",
+      "relies_on_identifier": "acme-legal.example",
+      "bindings": ["B_MAIL_ORG_LAPSED"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_binding_lapsed",
+        "detail": "no_binding_covers=2026-09-23T12:00:00.000Z",
+        "chain_state": "valid",
+        "controller_at_instant": null
+      }
+    },
+    {
+      "id": "IRR-05-LC-I-002-a-vacated-name-claimed-by-a-new-controller-not-established",
+      "case_id": "LC-I-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding"],
+      "differs_from": "IRR-03: a package namespace rather than a mail domain, vacated by a rename rather than by a lapse, and claimed by a different party one day later. The dependent reference still resolves the same string",
+      "grant": "G_PACKAGE_PINNED",
+      "relies_on_kind": "package-namespace",
+      "relies_on_identifier": "acme",
+      "bindings": ["B_PACKAGE_PUBLISHER_ENDED", "B_PACKAGE_CLAIMER"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_controller_changed",
+        "detail": "pinned=did:aps:example:irr-publisher holder=did:aps:example:irr-claimer",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-claimer"
+      }
+    },
+    {
+      "id": "IRR-06-LC-I-002-b-retained-gap-with-the-pinned-controller-back",
+      "case_id": "LC-I-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding", "coverage-and-completeness"],
+      "note": "The second control. The pinned controller holds the name again, it did not hold it for two days in between, and the host's retention record covers that interval exactly.",
+      "differs_from": "IRR-05: the original publisher takes the name back instead of someone else taking it, and the host has a record withholding it from re-registration for the whole interval nobody held it",
+      "grant": "G_PACKAGE_PINNED",
+      "relies_on_kind": "package-namespace",
+      "relies_on_identifier": "acme",
+      "bindings": ["B_PACKAGE_PUBLISHER_ENDED", "B_PACKAGE_PUBLISHER_RESUMED"],
+      "retentions": ["R_PACKAGE_FULL"],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "valid",
+        "reason": "identifier_continuity_established",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-publisher"
+      }
+    },
+    {
+      "id": "IRR-07-LC-I-002-c-uncovered-gap-with-the-pinned-controller-back-not-established",
+      "case_id": "LC-I-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["coverage-and-completeness", "target-binding"],
+      "differs_from": "IRR-06: the retention record stops one day before the resumption, so there is an interval in which the name was held by nobody and withheld by nobody. The holder now is still the pinned holder, which is what makes this the vector a naive implementation cannot see",
+      "grant": "G_PACKAGE_PINNED",
+      "relies_on_kind": "package-namespace",
+      "relies_on_identifier": "acme",
+      "bindings": ["B_PACKAGE_PUBLISHER_ENDED", "B_PACKAGE_PUBLISHER_RESUMED"],
+      "retentions": ["R_PACKAGE_SHORT"],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_continuity_gap_uncovered",
+        "detail": "2026-09-21T00:00:00.000Z..2026-09-22T00:00:00.000Z",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-publisher"
+      }
+    },
+    {
+      "id": "IRR-08-LC-I-002-d-retention-record-from-a-custodian-without-standing-not-established",
+      "case_id": "LC-I-002",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["issuer-standing", "coverage-and-completeness"],
+      "differs_from": "IRR-06: the retention record covers the whole interval and its Ed25519 signature verifies, and it is signed by an identity this boundary does not resolve as the custodian for this identifier kind",
+      "grant": "G_PACKAGE_PINNED",
+      "relies_on_kind": "package-namespace",
+      "relies_on_identifier": "acme",
+      "bindings": ["B_PACKAGE_PUBLISHER_ENDED", "B_PACKAGE_PUBLISHER_RESUMED"],
+      "retentions": ["R_PACKAGE_NO_STANDING"],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "retention_custodian_without_standing",
+        "detail": "did:aps:example:irr-outsider",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-publisher"
+      }
+    },
+    {
+      "id": "IRR-09-LC-I-003-a-routine-reassignment-to-a-new-subscriber-not-established",
+      "case_id": "LC-I-003",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding", "authority-path-and-dependency"],
+      "differs_from": "IRR-03: the custodian's own records show no gap at all. The pinned holder's binding ends at exactly the instant the next holder's begins, which is routine numbering-plan behaviour and not a lapse anyone failed to prevent",
+      "grant": "G_PHONE_PINNED",
+      "relies_on_kind": "phone-e164",
+      "relies_on_identifier": "+15550100",
+      "bindings": ["B_PHONE_A_ENDED", "B_PHONE_B"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_controller_changed",
+        "detail": "pinned=did:aps:example:irr-subscriber-a holder=did:aps:example:irr-subscriber-b",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-subscriber-b"
+      }
+    },
+    {
+      "id": "IRR-10-LC-I-003-b-two-custodian-records-disagree-not-established",
+      "case_id": "LC-I-003",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["coverage-and-completeness", "target-binding"],
+      "differs_from": "IRR-12: one custodian with standing has two open records covering the action instant, naming different holders. Nothing in either record orders them",
+      "grant": "G_PHONE_PINNED",
+      "relies_on_kind": "phone-e164",
+      "relies_on_identifier": "+15550100",
+      "bindings": ["B_PHONE_A_CURRENT", "B_PHONE_B_OVERLAPPING"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_binding_conflict",
+        "detail": "holders=did:aps:example:irr-subscriber-a|did:aps:example:irr-subscriber-b",
+        "chain_state": "valid",
+        "controller_at_instant": null
+      }
+    },
+    {
+      "id": "IRR-11-LC-I-003-c-declared-dependency-with-no-controller-pin-not-established",
+      "case_id": "LC-I-003",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding", "authority-path-and-dependency"],
+      "differs_from": "IRR-12: the grant names the number as a dependency and says nothing about who holds it. Nothing about the number changed, and the verdict is the same either way, because an unpinned dependency gives the verifier no basis in either direction",
+      "grant": "G_PHONE_UNPINNED",
+      "relies_on_kind": "phone-e164",
+      "relies_on_identifier": "+15550100",
+      "bindings": ["B_PHONE_A_CURRENT"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "not_established",
+        "reason": "identifier_controller_not_pinned",
+        "detail": "extid:phone-e164:+15550100",
+        "chain_state": "valid",
+        "controller_at_instant": null
+      }
+    },
+    {
+      "id": "IRR-12-LC-I-003-d-still-held-by-the-pinned-subscriber-control",
+      "case_id": "LC-I-003",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["target-binding"],
+      "note": "The third control, one per identifier kind. Declared, pinned, and still held by the pinned subscriber without interruption.",
+      "differs_from": null,
+      "grant": "G_PHONE_PINNED",
+      "relies_on_kind": "phone-e164",
+      "relies_on_identifier": "+15550100",
+      "bindings": ["B_PHONE_A_CURRENT"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": {
+        "verdict": "valid",
+        "reason": "identifier_continuity_established",
+        "chain_state": "valid",
+        "controller_at_instant": "did:aps:example:irr-subscriber-a"
+      }
+    },
+    {
+      "id": "IRR-13-LC-I-001-e-revoked-grant-is-invalid-not-identifier-not-established",
+      "case_id": "LC-I-001",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["authority-path-and-dependency"],
+      "differs_from": "IRR-01: identical in every respect except that the revocation resolver answers revoked. An identifier changing hands and an authority being revoked are different events and must not read the same",
+      "grant": "G_MAIL_PINNED",
+      "relies_on_kind": "mail-domain",
+      "relies_on_identifier": "acme-legal.example",
+      "bindings": ["B_MAIL_ORG_CURRENT"],
+      "retentions": [],
+      "at": "2026-09-23T12:00:00.000Z",
+      "revocation": "revoked",
+      "expected": {
+        "verdict": "invalid",
+        "reason": "authority_chain_not_valid",
+        "detail": "invalid/REVOKED",
+        "chain_state": "invalid"
+      }
+    }
+  ]
+}

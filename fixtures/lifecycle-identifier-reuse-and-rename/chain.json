@@ -1,0 +1,437 @@
+{
+  "_placeholder": false,
+  "generated_at": "2026-09-23",
+  "sdk": {
+    "npm": "agent-passport-system@7.1.0"
+  },
+  "seed_prefix": "aps-conformance-suite:lifecycle-identifier-reuse-and-rename",
+  "now": "2026-09-23T12:00:00.000Z",
+  "digest_domains": {
+    "identifier_binding": "APS-IRR-IDENTIFIER-BINDING-V0",
+    "identifier_retention": "APS-IRR-IDENTIFIER-RETENTION-V0"
+  },
+  "parties": {
+    "principal": "did:aps:example:irr-principal",
+    "agent": "did:aps:example:irr-agent",
+    "registrar": "did:aps:example:irr-registrar",
+    "package_host": "did:aps:example:irr-package-host",
+    "carrier": "did:aps:example:irr-carrier",
+    "outsider": "did:aps:example:irr-outsider",
+    "org": "did:aps:example:irr-org",
+    "new_party": "did:aps:example:irr-newparty",
+    "publisher": "did:aps:example:irr-publisher",
+    "claimer": "did:aps:example:irr-claimer",
+    "subscriber_a": "did:aps:example:irr-subscriber-a",
+    "subscriber_b": "did:aps:example:irr-subscriber-b"
+  },
+  "identifiers": {
+    "mail-domain": "acme-legal.example",
+    "package-namespace": "acme",
+    "phone-e164": "+15550100"
+  },
+  "custodian_standing": {
+    "mail-domain": "did:aps:example:irr-registrar",
+    "package-namespace": "did:aps:example:irr-package-host",
+    "phone-e164": "did:aps:example:irr-carrier"
+  },
+  "scope_encoding": {
+    "dependency": "extid:<kind>:<identifier>",
+    "controller_pin": "extid:<kind>:<identifier>:controller:<did>"
+  },
+  "verification_keys": {
+    "did:aps:example:irr-principal#key-1": "04daa5bf282769916c372f28707d7ff293d7f98c226b2f39cd96054aa78f3f5b",
+    "did:aps:example:irr-agent#key-1": "648774373026b963dfac1a2b6d4b2bc618b63d582f38a635eb6ce8fc74e5b934"
+  },
+  "custodian_keys": {
+    "did:aps:example:irr-registrar": "afe0b8f9adda97d4fb1af5887002af206dfed5679833161e50d3f78233b01bdb",
+    "did:aps:example:irr-package-host": "9fd000ddcf7750336b79de37366404e82a6c07ef27183d624baa05016e56420f",
+    "did:aps:example:irr-carrier": "d090674d6b0548654eb296aaa3190917a36a3da4a62f9c046d64e5f0c27721ff",
+    "did:aps:example:irr-outsider": "cb071d1543830ceed94df2a1e08277ada770b037145d4cb2892322a714b1db46"
+  },
+  "roles": {
+    "G_MAIL_PINNED": "sha256:42d62f57e01aba4d954481994c7aad824641b31fca381e3bb0d1d2f9d2181f7b",
+    "G_MAIL_UNDECLARED": "sha256:7b47966a10b1da613e4bc97e358551b22f27d9443c6c6121dee50fec01e83b22",
+    "G_PACKAGE_PINNED": "sha256:aa8b6292329dfe254cb6275111b9272b615bd3e2afe49073f82538aa1303ee68",
+    "G_PHONE_PINNED": "sha256:db7bcb7115694a5ec257b15d64de8180d995266aa91234f28b5c5983221def3f",
+    "G_PHONE_UNPINNED": "sha256:f15f7a05c1d573c3a8ba440fc197f2bd25f7edacc4c12d9430e12869753df511"
+  },
+  "grants": {
+    "G_MAIL_PINNED": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:irr-principal",
+      "subject": "did:aps:example:irr-agent",
+      "verification_method": "did:aps:example:irr-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "14a0cab489629aa60a29433705667e7a",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "account:recover",
+            "extid:mail-domain:acme-legal.example",
+            "extid:mail-domain:acme-legal.example:controller:did:aps:example:irr-org"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:42d62f57e01aba4d954481994c7aad824641b31fca381e3bb0d1d2f9d2181f7b",
+      "signature": "be6d2c203c6dce4b5418e6e0f289db8ccc4a9a02504fb3a5d6e28388bcaf530fb8fd9aff660c092fbd472b7ebd9bb760ed6b7c490a3e7b4a72b19a77073b7508"
+    },
+    "G_MAIL_UNDECLARED": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:irr-principal",
+      "subject": "did:aps:example:irr-agent",
+      "verification_method": "did:aps:example:irr-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "bb8fca07f10973791a190fa18be7ce3a",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "account:recover"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:7b47966a10b1da613e4bc97e358551b22f27d9443c6c6121dee50fec01e83b22",
+      "signature": "f39f048134e66c1da49312cfb5672d259d6f363afc54821c7f970121f030653636af9766be3989ba31f8cc249da0a486a939d9d0d64d1b1543e20d0104142400"
+    },
+    "G_PACKAGE_PINNED": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:irr-principal",
+      "subject": "did:aps:example:irr-agent",
+      "verification_method": "did:aps:example:irr-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "9e96e439c1e00357f2ae6c20039fa3ae",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "extid:package-namespace:acme",
+            "extid:package-namespace:acme:controller:did:aps:example:irr-publisher",
+            "package:install"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:aa8b6292329dfe254cb6275111b9272b615bd3e2afe49073f82538aa1303ee68",
+      "signature": "e3fda04ccc6f6e99f6bfa281706bd740912823611d5b395e0e17b8bff359b3b6180dfec904bd9ff73c41d954174ae9a9d8fee20dcb43ea40c22755cc01f0fa03"
+    },
+    "G_PHONE_PINNED": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:irr-principal",
+      "subject": "did:aps:example:irr-agent",
+      "verification_method": "did:aps:example:irr-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "439ac8840b90518336ba39b67f58ae3d",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "account:recover",
+            "extid:phone-e164:+15550100",
+            "extid:phone-e164:+15550100:controller:did:aps:example:irr-subscriber-a"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:db7bcb7115694a5ec257b15d64de8180d995266aa91234f28b5c5983221def3f",
+      "signature": "a3223a9b3090b1252bc1f1669812906ae23dbc723b346ebfd3b885f5e23b2b8ab7f32ba907c49e42dbf174e790f9861cc81b5f2040c5d5d110f22f54218e5709"
+    },
+    "G_PHONE_UNPINNED": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:irr-principal",
+      "subject": "did:aps:example:irr-agent",
+      "verification_method": "did:aps:example:irr-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "315f02071ae291b1e1f06c8d8b462492",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "account:recover",
+            "extid:phone-e164:+15550100"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:f15f7a05c1d573c3a8ba440fc197f2bd25f7edacc4c12d9430e12869753df511",
+      "signature": "f327c19ba3c5d427ab8851424a9ca5e33b3856fae64ec41fcdf769989e136b7fa687b7e7438f008da5cbe5b6472504baa63e51e92aa5dc4c40a84f4148263001"
+    }
+  },
+  "bindings": {
+    "B_MAIL_ORG_CURRENT": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "mail-domain",
+      "identifier": "acme-legal.example",
+      "controller": "did:aps:example:irr-org",
+      "bound_from": "2026-01-01T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-registrar",
+      "nonce": "f8bbd61118308dbf88bd1bd435f05a3a",
+      "binding_id": "sha256:a3c90b5f9d0daa5fb726f8b41cf0c30391ad0ace8fa64bab0072fcb207172f3b",
+      "signature": "622bb609fbb76821bea58ded0a455f03c922eab7d92be667a9c2162d3209851d32bdf51a963d19aa6b40b79287b406ba3afed337d18dfc188351ba0788303f0a"
+    },
+    "B_MAIL_ORG_LAPSED": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "mail-domain",
+      "identifier": "acme-legal.example",
+      "controller": "did:aps:example:irr-org",
+      "bound_from": "2026-01-01T00:00:00.000Z",
+      "bound_until": "2026-09-21T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-registrar",
+      "nonce": "06a83c94904e2054c83dbfb6cc2692d5",
+      "binding_id": "sha256:23e55f53c4993b28509c92d8fb7e3a1b3805bed6f8999ef32e25cc7c2828ac00",
+      "signature": "0668bdcfd5331e17be8f63583b45c4a8ae29d30ab47acbb0d611bcff7e724a460b78519524a3cefa176a14b2d746c87cfe4575b411750669b2f11e01a4a05a00"
+    },
+    "B_MAIL_NEWPARTY": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "mail-domain",
+      "identifier": "acme-legal.example",
+      "controller": "did:aps:example:irr-newparty",
+      "bound_from": "2026-09-22T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-registrar",
+      "nonce": "426c0fe606cb971658043f2f1534d334",
+      "binding_id": "sha256:d638d952046f4a8bb8f548e701f65a7d1a6115438395dd714199a7860f5f1fb2",
+      "signature": "41bdf5d1ee374486af493edb4c6aedce3f1ccafdd7c507a07585f3bfbb94b0ec642b4f887de7f4c19e28757fa7d92458f9c3d2bfa1b938ab7b6ec87b7574d90f"
+    },
+    "B_PACKAGE_PUBLISHER_ENDED": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "controller": "did:aps:example:irr-publisher",
+      "bound_from": "2026-01-01T00:00:00.000Z",
+      "bound_until": "2026-09-20T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-package-host",
+      "nonce": "e24b55eb8dded9c488f84761dc9b46a4",
+      "binding_id": "sha256:0dfb26524f761bf5ab3b4bb32d72e4829fd29af866b40112d6a43a84faa07cdd",
+      "signature": "e5899edb85572e9c7798d90d4b8fc69f008853a898911f85530abd21c3041ddefe0bcae8611c29927168fd3840a234a8d07f006a09b8d3c06fcb5524ae441703"
+    },
+    "B_PACKAGE_CLAIMER": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "controller": "did:aps:example:irr-claimer",
+      "bound_from": "2026-09-21T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-package-host",
+      "nonce": "3f01f0fda35293a0ab8a81815ec48a00",
+      "binding_id": "sha256:94d1725147cac5f344e86bae187621915859fa1592fbab9747900c0aa552041c",
+      "signature": "c3101f904f4599f03dcc6de97719d27b9c9dce7ac2c037c501d50ea60c32b200e069e910a4d22bf35581203e6853dc1e87d02311f545f2e9016b6ee2afa2a80c"
+    },
+    "B_PACKAGE_PUBLISHER_RESUMED": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "controller": "did:aps:example:irr-publisher",
+      "bound_from": "2026-09-22T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-package-host",
+      "nonce": "baf97156a1d448108e8575c561499c3b",
+      "binding_id": "sha256:0e36c72a93592b75ee4f298be342cfd4c37a404a03569f31b55fd86d81ad0d8f",
+      "signature": "3a230cc59c96b9c83c8e76c2ca9dfd693a407fb02bd1b26b9ca63603bbc2e83cdf91681e3dc1997beb66402c2a4ae25ec90df0a5f53aa1678231f6a248656200"
+    },
+    "B_PHONE_A_CURRENT": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "phone-e164",
+      "identifier": "+15550100",
+      "controller": "did:aps:example:irr-subscriber-a",
+      "bound_from": "2026-01-01T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-carrier",
+      "nonce": "f1c1bd7006bd612e4435c422aef21976",
+      "binding_id": "sha256:fe58484f90081f005465c83e24b51f0d6009850f202e845f9623c4f10edcd6db",
+      "signature": "379f4aadb9694e5aa5031c48e9e9a6dba9d481e6138ebc02dcfb6f72203aa201c9c8e3b54e85e7cfeaceab0866935df6d534bf0c67cb60746365d05f41915105"
+    },
+    "B_PHONE_A_ENDED": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "phone-e164",
+      "identifier": "+15550100",
+      "controller": "did:aps:example:irr-subscriber-a",
+      "bound_from": "2026-01-01T00:00:00.000Z",
+      "bound_until": "2026-09-22T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-carrier",
+      "nonce": "092de231a24f6cecccccd27d8673b472",
+      "binding_id": "sha256:5c4265996c3a1d3b3890c794d58870234287a47614cd68d67c9b3102e751c69d",
+      "signature": "21229a628ea469e9b4724ac0dedbdb7592d021909fb7cf9e712fd78a674b6bb74eba9e7e32307b5cb509c948cdb915319ef28a136d755841cbc58a837cfa9306"
+    },
+    "B_PHONE_B": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "phone-e164",
+      "identifier": "+15550100",
+      "controller": "did:aps:example:irr-subscriber-b",
+      "bound_from": "2026-09-22T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-carrier",
+      "nonce": "b667470c38b388a62d19d7f735ea3e7d",
+      "binding_id": "sha256:154744025e5a4b90a68c0838fddc888ab1402b44c6789775c33e1d19041fcf23",
+      "signature": "ecd81cf2a1baa80727ef1b3a7334b911c9e71736acda1cbcc55f929d68c279ba819f59366483961498f10874ba2921db45ad8ca2c73ed8e5fbd9a547954d4605"
+    },
+    "B_PHONE_B_OVERLAPPING": {
+      "record_type": "aps-lab:identifier-binding:v0",
+      "identifier_kind": "phone-e164",
+      "identifier": "+15550100",
+      "controller": "did:aps:example:irr-subscriber-b",
+      "bound_from": "2026-09-01T00:00:00.000Z",
+      "bound_until": null,
+      "custodian": "did:aps:example:irr-carrier",
+      "nonce": "ff4d192cc085e4ff25c65409658e128d",
+      "binding_id": "sha256:ce8cfb981c744b49d5be2600c959d82e11703182fcc88aad2dc01b5e5616049b",
+      "signature": "7e4fcc666992d859b3f06fe91e17a9e6693f6f9ebafe4edc31d978603332a1199bd975bce016409de9dcf229120f066319f10054cc33ae44d7e86a65add36703"
+    }
+  },
+  "retentions": {
+    "R_PACKAGE_FULL": {
+      "record_type": "aps-lab:identifier-retention:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "retained_from": "2026-09-20T00:00:00.000Z",
+      "retained_until": "2026-09-22T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-package-host",
+      "reason": "namespace withheld from re-registration while dependents resolve it",
+      "nonce": "2ad61e5791161ba01412a7bded5fa77c",
+      "retention_id": "sha256:25ccc280a6899db6e27a1b9bfbd329bba37ea8b069edb8a019b060cffa05912f",
+      "signature": "0c7a3567bc3143d9d550fbdaac47a17316433fa765a5aa3954a9b9758f3046ae9e118d5abb897982facdc2bb17737df40eb7ae37d4817892ee3c4d01ca3ae80f"
+    },
+    "R_PACKAGE_SHORT": {
+      "record_type": "aps-lab:identifier-retention:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "retained_from": "2026-09-20T00:00:00.000Z",
+      "retained_until": "2026-09-21T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-package-host",
+      "reason": "namespace withheld from re-registration while dependents resolve it",
+      "nonce": "6307389c35ed67dc3ed5b422f7712737",
+      "retention_id": "sha256:40bac926c19ebf1df13b8ccfd209033a7bec210527ee65898db5a5a3290dda16",
+      "signature": "f74640a8c613c731e95ca28d853cc027eb70f686ea764ca1ec101ea993aebd410a9beea91efb7c1ffbe7caadc3660a4a8d6e3ab724f40d5abaaacacb4a948e01"
+    },
+    "R_PACKAGE_NO_STANDING": {
+      "record_type": "aps-lab:identifier-retention:v0",
+      "identifier_kind": "package-namespace",
+      "identifier": "acme",
+      "retained_from": "2026-09-20T00:00:00.000Z",
+      "retained_until": "2026-09-22T00:00:00.000Z",
+      "custodian": "did:aps:example:irr-outsider",
+      "reason": "namespace withheld from re-registration while dependents resolve it",
+      "nonce": "94f28c6ed3f7f5e360497193dbf510c2",
+      "retention_id": "sha256:993bd0604a60a3148ae53af87db3819e52fcc012ab6608fb91d4c6ce013fd0b5",
+      "signature": "1e27abcd59a0d8cad46f53c0250a5a2ea231e8189128e44b797946ffe2a3e7f9bbee2fc038873f30edc93d3c90feb6ce541ae8549a205199d32de59f7f27f108"
+    }
+  }
+}
