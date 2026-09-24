@@ -96,7 +96,7 @@
     "verify:lifecycle-third-party-reliance-notice": "tsx fixtures/lifecycle-third-party-reliance-notice/verify.ts"
   },
   "devDependencies": {
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.2",
     "ajv": "8.20.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
