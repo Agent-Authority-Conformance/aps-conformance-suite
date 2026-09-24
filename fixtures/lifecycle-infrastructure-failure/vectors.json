@@ -1,0 +1,781 @@
+{
+  "family": "lifecycle-infrastructure-failure",
+  "version": "0.1.0",
+  "status": "candidate_against_proposed",
+  "label": "candidate_against_proposed",
+  "description": "Candidate cases for the Infrastructure failure section of CASES.md. Six independent boundary evaluators, one per question the section raises: a status artifact past its own declared refresh time, a publisher correcting its own erroneous publication, an issuer timestamp with no independent time evidence, a merge of two divergent authority histories, a read that must causally follow a revocation write, and the coverage of an evidence interval that is still inside a declared delivery lag. The harness is protocol neutral. It has no APS type, no network call, no randomness and no wall-clock read: every instant in this file is a literal.",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "2bf5c7e",
+    "commit_note": "CASES.md v0.2 at 2bf5c7e, which descends from 7796e22. AUTHORITY-LIFECYCLE.md and OPEN-QUESTIONS.md are unchanged from 5c1bf09 at this commit.",
+    "version_at_commit": "AUTHORITY-LIFECYCLE.md 0.1.2-draft, CASES.md 0.2-draft",
+    "status_of_the_text": "proposed and open. AUTHORITY-LIFECYCLE.md states that no public case tests these concepts yet, and every case in the CASES.md section this family covers carries Status: proposed."
+  },
+  "cases_source": {
+    "document": "CASES.md",
+    "section": "Infrastructure failure",
+    "note": "Each vector's case_id is the CASES.md case it was built from. Vector ids embed that case id."
+  },
+  "determinism": {
+    "randomness": "none",
+    "wall_clock_reads": "none",
+    "seeds": "No seed is consumed. Nothing in this family is generated: every field of every input is a literal in this file, and both runners are pure functions over those literals. The seed record other families keep exists so a minted artifact can be regenerated; there is no minted artifact here.",
+    "canonicalization": "RFC 8785 JCS. input-digests.json pins, per case, the SHA-256 of the RFC 8785 canonicalization of that case's input object. Both runners recompute every digest through a published SDK's JCS primitive (npm canonicalizeJCS, PyPI canonicalize_jcs) and fail on a mismatch, so the two SDKs' canonicalizations are compared against the same pinned bytes."
+  },
+  "verdicts": {
+    "vocabulary": ["valid", "invalid", "not_established", "not_yet_effective", "suspended", "restricted"],
+    "note": "not_established means the record set does not establish the fact. It is not a claim that the fact is false. No case in this family returns not_yet_effective or suspended; the vocabulary is listed whole so a reader can see which values were available and not used."
+  },
+  "policies": {
+    "reference": "artifact-window-honoured, correction-with-standing, independent-time-required, revocation-preserving-merge, required-observation-enforced, settled-prefix-only. One reference evaluator per group; the group named on each case selects it.",
+    "negative_controls": [
+      {
+        "id": "N1-verifier-bound-only",
+        "group": "status_artifact",
+        "defect": "Reads only the verifier's own freshness bound. Ignores the status artifact's own declared next_update, and ignores an artifact dated ahead of the evaluation instant.",
+        "declared_fail_set": ["LC-F-006-b", "LC-F-015-a"]
+      },
+      {
+        "id": "N2-correction-accepts-any-signer",
+        "group": "status_correction",
+        "defect": "Accepts any signed correction naming the list. It does not check that the signer publishes that list, does not check whether the entry is backed by a signed revocation from a party with lifecycle standing, and does not check that the correction names the version the consumer holds.",
+        "declared_fail_set": ["LC-F-009-c", "LC-F-009-d", "LC-F-009-e"]
+      },
+      {
+        "id": "N3-trusts-issuer-clock",
+        "group": "issuer_time_evidence",
+        "defect": "Treats the issuer's own claimed issued_at as established fact. Requires no independent time evidence and ignores a declared time-source-disagreement window.",
+        "declared_fail_set": ["LC-F-014-b", "LC-F-014-c"]
+      },
+      {
+        "id": "N4-last-writer-wins",
+        "group": "history_reconciliation",
+        "defect": "Resolves the merged history by taking, per delegation, the single highest-timestamp write across both sides. No revocation priority, no handling of a discarded history, and no requirement that a reconciliation record exist.",
+        "declared_fail_set": ["LC-F-016-a", "LC-F-016-b", "LC-F-022-a", "LC-F-026-a"]
+      },
+      {
+        "id": "N5-ignores-required-observation",
+        "group": "causal_read",
+        "defect": "Serves the replica's answer whenever the replica is inside its declared lag bound, without checking whether the replica has applied the write the request required it to observe.",
+        "declared_fail_set": ["LC-F-017-b"]
+      },
+      {
+        "id": "N6-empty-means-absent",
+        "group": "evidence_coverage",
+        "defect": "Treats an empty result over an interval as evidence that nothing happened in that interval. Ignores the declared delivery lag and ignores a declared consumer that never received the interval.",
+        "declared_fail_set": ["LC-F-027-b", "LC-F-029-a"]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "LC-F-006-a",
+      "case_id": "LC-F-006",
+      "group": "status_artifact",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A status artifact inside both its own declared refresh window and the verifier's bound admits",
+      "description": "The control. The publisher's list is 300 seconds old, its own next_update is five minutes ahead of the evaluation instant, and the verifier tolerates 600 seconds. Nothing is stale on either clock and the answer is active.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "active", "this_update": "2026-09-20T11:55:00Z", "next_update": "2026-09-20T12:05:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "valid", "reason": "status_active_within_both_windows" }
+    },
+    {
+      "id": "LC-F-006-b",
+      "case_id": "LC-F-006",
+      "group": "status_artifact",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A list past its own declared next_update is not established, even while inside the verifier's own freshness bound",
+      "description": "The family core, and the vector a naive implementation passes wrongly. The publisher missed a refresh cycle: next_update was 11:58:00 and no successor was published. The answer is 300 seconds old, which is comfortably inside the verifier's 600 second tolerance, so a verifier that consults only its own bound admits. The artifact's own declared commitment has lapsed, so what it says about revocations recorded after 11:55:00 is unknown, and the verdict is not_established. The answer is not false and no revocation is claimed.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "active", "this_update": "2026-09-20T11:55:00Z", "next_update": "2026-09-20T11:58:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "not_established", "reason": "status_artifact_past_next_update" }
+    },
+    {
+      "id": "LC-F-006-c",
+      "case_id": "LC-F-006",
+      "group": "status_artifact",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A recorded revocation on an overdue list still denies",
+      "description": "Same overdue list as LC-F-006-b, but the entry says revoked. An expired refresh commitment means the list may be missing later changes; it does not un-say a revocation the list already records. The verdict is invalid, not not_established, and it is reached on the recorded revocation rather than on the staleness.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L3. Reauthorization creates new authority",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "revoked", "this_update": "2026-09-20T11:55:00Z", "next_update": "2026-09-20T11:58:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "invalid", "reason": "status_revoked" }
+    },
+    {
+      "id": "LC-F-006-d-inverse-check",
+      "case_id": "LC-F-006",
+      "group": "status_artifact",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "The two windows are independent: inside next_update but past the verifier's own bound is also not established",
+      "description": "The mirror of LC-F-006-b. The list is well inside its own declared next_update of 13:00:00, but it is 1200 seconds old against a verifier bound of 600 seconds. The stricter of the two windows governs. This vector exists so the family cannot be read as replacing the verifier's bound with the publisher's window; both are checked and either one failing is enough.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy",
+          "Lifecycle concepts are separate > Verification and evidence > Status observation"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "active", "this_update": "2026-09-20T11:40:00Z", "next_update": "2026-09-20T13:00:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "not_established", "reason": "status_past_verifier_bound" }
+    },
+    {
+      "id": "LC-F-015-a",
+      "case_id": "LC-F-006",
+      "case_id_variant": "LC-F-015",
+      "group": "status_artifact",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A status answer dated ahead of the evaluation instant is not established",
+      "description": "The LC-F-015 variant named under LC-F-006 in CASES.md. The list's own this_update is five minutes ahead of the instant the verifier is evaluating at. An age computed as now minus this_update is negative, and an implementation that floors a negative age at zero reads this answer as maximally fresh. It is not fresh; it is unreadable as an age at all, so the verdict is not_established. This is the second vector a naive implementation passes wrongly, and the SDK run recorded in SDK-RUNS.md shows a published implementation doing exactly that.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "active", "this_update": "2026-09-20T12:05:00Z", "next_update": "2026-09-20T12:15:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "not_established", "reason": "status_artifact_future_dated" }
+    },
+    {
+      "id": "LC-F-015-b",
+      "case_id": "LC-F-006",
+      "case_id_variant": "LC-F-015",
+      "group": "status_artifact",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "An answer dated exactly at the evaluation instant is not future dated",
+      "description": "Boundary pin for LC-F-015-a. this_update equals evaluated_at exactly, and next_update is ahead. An answer produced at the instant it is read is age zero, not ahead of the clock, so it admits. The pair fixes which side of the boundary each verdict sits on rather than leaving a reader to assume it.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Status observation"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "artifact": { "list_id": "registry-a", "answer": "active", "this_update": "2026-09-20T12:00:00Z", "next_update": "2026-09-20T12:10:00Z" },
+        "verifier_freshness_bound_s": 600
+      },
+      "expected": { "verdict": "valid", "reason": "status_active_within_both_windows" }
+    },
+
+    {
+      "id": "LC-F-009-a",
+      "case_id": "LC-F-009",
+      "group": "status_correction",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A consumer holding the erroneous version denies on what it holds",
+      "description": "The control that establishes the starting state. A build-pipeline bug published list version 41 with this delegation marked revoked. This consumer holds version 41 and has seen no correction. On the records it holds, the entry says revoked, so it denies. The fixture does not treat the consumer as wrong for denying: it denied on authentic evidence, which is exactly the harm LC-F-009 says has to be evidenced rather than waved away.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Status observation"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "held_version": 41,
+        "entry": { "list_id": "registry-a", "version": 41, "answer": "revoked" },
+        "underlying_revocation_record": null,
+        "correction": null,
+        "list_publisher_key_id": "publisher-a"
+      },
+      "expected": { "verdict": "invalid", "reason": "status_entry_revoked" }
+    },
+    {
+      "id": "LC-F-009-b",
+      "case_id": "LC-F-009",
+      "group": "status_correction",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "The list publisher retracting its own erroneous entry is a correction, not a reauthorization",
+      "description": "The publisher of registry-a signs a correction naming versions 41 through 41 as erroneous for this entry, and no signed revocation record from a party with lifecycle standing underlies the entry. The entry never asserted a revocation anyone had standing to make, so the correction is accepted and the chain reads valid. This is not L3 being bent. L3 governs a revocation that was validly made; here there was none to reverse, and the correction is a new record naming the bad version window rather than a deletion of the old one.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L3. Reauthorization creates new authority",
+          "Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "held_version": 41,
+        "entry": { "list_id": "registry-a", "version": 41, "answer": "revoked" },
+        "underlying_revocation_record": null,
+        "correction": { "kind": "publication_error_correction", "list_id": "registry-a", "erroneous_versions": [41, 41], "signer_key_id": "publisher-a" },
+        "list_publisher_key_id": "publisher-a"
+      },
+      "expected": { "verdict": "valid", "reason": "publication_error_corrected" }
+    },
+    {
+      "id": "LC-F-009-c",
+      "case_id": "LC-F-009",
+      "group": "status_correction",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A correction signed by someone who does not publish the list is not a correction",
+      "description": "Byte-identical to LC-F-009-b except that the correction's signer is not the key that publishes registry-a. A signature establishes who signed. It does not establish standing to retract another party's publication. The correction is not accepted and the consumer keeps reading the published entry, so the verdict stays invalid.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Parties and standing > Issuer standing",
+          "Lifecycle concepts are separate > Parties and standing > Lifecycle standing"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "held_version": 41,
+        "entry": { "list_id": "registry-a", "version": 41, "answer": "revoked" },
+        "underlying_revocation_record": null,
+        "correction": { "kind": "publication_error_correction", "list_id": "registry-a", "erroneous_versions": [41, 41], "signer_key_id": "unrelated-signer" },
+        "list_publisher_key_id": "publisher-a"
+      },
+      "expected": { "verdict": "invalid", "reason": "correction_without_publisher_standing" }
+    },
+    {
+      "id": "LC-F-009-d",
+      "case_id": "LC-F-009",
+      "group": "status_correction",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A publisher cannot correct away a revocation it did not make",
+      "description": "The boundary that keeps this group from being a reversal mechanism. The entry is backed by a signed revocation record from a party the applicable model gives lifecycle standing. The list publisher signs the same publication-error correction it signed in LC-F-009-b. Here it is refused: the publisher publishes the list, it does not hold standing over the revocation the list is reporting. The chain stays invalid.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L3. Reauthorization creates new authority",
+          "Lifecycle concepts are separate > Parties and standing > Lifecycle standing"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "held_version": 41,
+        "entry": { "list_id": "registry-a", "version": 41, "answer": "revoked" },
+        "underlying_revocation_record": { "record_id": "rev-1", "signer_key_id": "revoker-a", "signer_has_lifecycle_standing": true },
+        "correction": { "kind": "publication_error_correction", "list_id": "registry-a", "erroneous_versions": [41, 41], "signer_key_id": "publisher-a" },
+        "list_publisher_key_id": "publisher-a"
+      },
+      "expected": { "verdict": "invalid", "reason": "correction_refused_underlying_revocation" }
+    },
+    {
+      "id": "LC-F-009-e",
+      "case_id": "LC-F-009",
+      "group": "status_correction",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A correction reaches only the versions it names",
+      "description": "The correction is genuine and signed by the publisher, but it names versions 43 through 44 as erroneous. This consumer holds version 41, which the correction does not reach. A consumer must not read any correction from its publisher as blanket absolution for whatever version it happens to hold. The verdict stays invalid, on the entry the consumer actually holds.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "held_version": 41,
+        "entry": { "list_id": "registry-a", "version": 41, "answer": "revoked" },
+        "underlying_revocation_record": null,
+        "correction": { "kind": "publication_error_correction", "list_id": "registry-a", "erroneous_versions": [43, 44], "signer_key_id": "publisher-a" },
+        "list_publisher_key_id": "publisher-a"
+      },
+      "expected": { "verdict": "invalid", "reason": "correction_does_not_cover_held_version" }
+    },
+
+    {
+      "id": "LC-F-014-a",
+      "case_id": "LC-F-014",
+      "group": "issuer_time_evidence",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "An issuer timestamp covered by independent time evidence establishes the ordering",
+      "description": "The control. The grant claims issued_at 10:00:00, the revocation it must predate is at 11:00:00, and an independent time attestation covers the interval containing issued_at. The ordering is established and the grant reads valid.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L9. Key rotation is not delegation revocation",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence attestor"
+        ]
+      },
+      "input": {
+        "ordering_is_load_bearing": true,
+        "issuer_claimed_issued_at": "2026-09-20T10:00:00Z",
+        "revocation_at": "2026-09-20T11:00:00Z",
+        "independent_time_evidence": { "attestor": "timestamp-authority-b", "covers_from": "2026-09-20T09:00:00Z", "covers_to": "2026-09-20T10:30:00Z" },
+        "declared_time_source_disagreement_windows": []
+      },
+      "expected": { "verdict": "valid", "reason": "ordering_established_by_independent_time_evidence" }
+    },
+    {
+      "id": "LC-F-014-b",
+      "case_id": "LC-F-014",
+      "group": "issuer_time_evidence",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "An issuer's own claimed timestamp does not establish that a grant predates a revocation",
+      "description": "The vector a naive implementation passes wrongly. Identical to LC-F-014-a with the independent time evidence removed. issued_at is an issuer claim, and here the whole question is whether the grant was signed before the revocation, which is exactly the fact an issuer whose time source is controlled could shift. Without acceptable time evidence the ordering is not established. The grant is not declared invalid: the record set does not decide it either way.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L9. Key rotation is not delegation revocation",
+          "Lifecycle concepts are separate > Verification and evidence > Status observation"
+        ]
+      },
+      "input": {
+        "ordering_is_load_bearing": true,
+        "issuer_claimed_issued_at": "2026-09-20T10:00:00Z",
+        "revocation_at": "2026-09-20T11:00:00Z",
+        "independent_time_evidence": null,
+        "declared_time_source_disagreement_windows": []
+      },
+      "expected": { "verdict": "not_established", "reason": "issuer_timestamp_unattested" }
+    },
+    {
+      "id": "LC-F-014-c",
+      "case_id": "LC-F-014",
+      "group": "issuer_time_evidence",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "An artifact signed inside a declared time-source-disagreement window is not established",
+      "description": "The issuer itself recorded a window in which its external time reference disagreed with an independent one. This grant's claimed issued_at falls inside that window. The disagreement window is checked before anything else, so the verdict is not_established for that specific reason even when other evidence would otherwise be reachable. A later re-verification against restored trusted time is a new record, not a rewrite of this one.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence attestor"
+        ]
+      },
+      "input": {
+        "ordering_is_load_bearing": true,
+        "issuer_claimed_issued_at": "2026-09-20T10:00:00Z",
+        "revocation_at": "2026-09-20T11:00:00Z",
+        "independent_time_evidence": { "attestor": "timestamp-authority-b", "covers_from": "2026-09-20T09:00:00Z", "covers_to": "2026-09-20T10:30:00Z" },
+        "declared_time_source_disagreement_windows": [
+          { "from": "2026-09-20T09:45:00Z", "to": "2026-09-20T10:15:00Z", "detected_by": "issuer-a" }
+        ]
+      },
+      "expected": { "verdict": "not_established", "reason": "issuer_time_source_disputed" }
+    },
+    {
+      "id": "LC-F-014-d",
+      "case_id": "LC-F-014",
+      "group": "issuer_time_evidence",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "Independent time evidence can establish the ordering against the issuer as well as for it",
+      "description": "The attested issued_at is 11:30:00, after the 11:00:00 revocation. Independent time evidence covers it. The ordering is established and it goes the other way, so the grant is invalid rather than not_established. This vector is here so the group cannot be read as a rule that missing evidence and adverse evidence produce the same answer.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L1. Revoking an ancestor invalidates the authority that depends on it",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence attestor"
+        ]
+      },
+      "input": {
+        "ordering_is_load_bearing": true,
+        "issuer_claimed_issued_at": "2026-09-20T11:30:00Z",
+        "revocation_at": "2026-09-20T11:00:00Z",
+        "independent_time_evidence": { "attestor": "timestamp-authority-b", "covers_from": "2026-09-20T11:00:00Z", "covers_to": "2026-09-20T12:00:00Z" },
+        "declared_time_source_disagreement_windows": []
+      },
+      "expected": { "verdict": "invalid", "reason": "issued_after_revocation" }
+    },
+    {
+      "id": "LC-F-014-e",
+      "case_id": "LC-F-014",
+      "group": "issuer_time_evidence",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "The evidence requirement is scoped to the ordering question, not to every timestamp",
+      "description": "No revocation is in the picture, so no ordering claim rests on the timestamp. The issuer's unattested issued_at is enough and the grant reads valid. Without this control the group would read as a rule that every issuer timestamp needs a timestamp authority behind it, which is not what LC-F-014 says and not what AUTHORITY-LIFECYCLE.md's L9 requires.",
+      "proposed_text": {
+        "sections": ["Invariants > L9. Key rotation is not delegation revocation"]
+      },
+      "input": {
+        "ordering_is_load_bearing": false,
+        "issuer_claimed_issued_at": "2026-09-20T10:00:00Z",
+        "revocation_at": null,
+        "independent_time_evidence": null,
+        "declared_time_source_disagreement_windows": []
+      },
+      "expected": { "verdict": "valid", "reason": "no_ordering_claim_rests_on_the_timestamp" }
+    },
+
+    {
+      "id": "LC-F-016-a",
+      "case_id": "LC-F-016",
+      "group": "history_reconciliation",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A revocation recorded only on the losing side of a partition survives reconciliation",
+      "description": "Two sides of a partition each accepted writes. Side A took two ordinary metadata writes, the later at 11:30:00. Side B took one write, a revocation of this delegation at 11:10:00. A merge that keeps whichever side had more recent or more numerous writes drops the revocation entirely. A revocation-preserving merge keeps it, and the reconciliation record says which writes were kept and which were discarded, so the verdict is invalid.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L1. Revoking an ancestor invalidates the authority that depends on it",
+          "Invariants > L11. No silent authority resurrection",
+          "OPEN-QUESTIONS.md > Authority rollback"
+        ]
+      },
+      "input": {
+        "delegation_id": "del-1",
+        "side_a": [
+          { "seq": 1, "at": "2026-09-20T11:05:00Z", "kind": "metadata", "delegation_id": "del-1" },
+          { "seq": 2, "at": "2026-09-20T11:30:00Z", "kind": "metadata", "delegation_id": "del-1" }
+        ],
+        "side_b": [
+          { "seq": 1, "at": "2026-09-20T11:10:00Z", "kind": "revocation", "delegation_id": "del-1" }
+        ],
+        "reconciliation_record": { "present": true, "kept": ["a:1", "a:2", "b:1"], "discarded": [] }
+      },
+      "expected": { "verdict": "invalid", "reason": "revoked_on_reconciled_history" }
+    },
+    {
+      "id": "LC-F-016-b",
+      "case_id": "LC-F-016",
+      "group": "history_reconciliation",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A merge with no reconciliation record does not establish what it merged",
+      "description": "The same divergent writes as LC-F-016-a with the reconciliation record removed. Something merged, but nothing says which writes were kept, discarded or merged. Showing that individual records are authentic is weaker than establishing which set the merge covered, so the verdict is not_established rather than a verdict on the delegation. This is L12 applied to the reconciliation itself.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L12. Completeness is a separate and stronger claim",
+          "OPEN-QUESTIONS.md > Teardown completeness"
+        ]
+      },
+      "input": {
+        "delegation_id": "del-1",
+        "side_a": [
+          { "seq": 1, "at": "2026-09-20T11:05:00Z", "kind": "metadata", "delegation_id": "del-1" },
+          { "seq": 2, "at": "2026-09-20T11:30:00Z", "kind": "metadata", "delegation_id": "del-1" }
+        ],
+        "side_b": [
+          { "seq": 1, "at": "2026-09-20T11:10:00Z", "kind": "revocation", "delegation_id": "del-1" }
+        ],
+        "reconciliation_record": { "present": false, "kept": [], "discarded": [] }
+      },
+      "expected": { "verdict": "not_established", "reason": "reconciliation_record_absent" }
+    },
+    {
+      "id": "LC-F-022-a",
+      "case_id": "LC-F-022",
+      "group": "history_reconciliation",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A revocation write must not lose a wall-clock race to an unrelated metadata write",
+      "description": "One revocation at 11:10:00 in one region and one routine metadata update to the same delegation record at 11:10:01 in another. Under generic last-writer-wins the metadata update is later, so it wins and the revocation is gone as a side effect of resolving a write that was not itself about revocation. A revocation-preserving merge does not let a non-revocation write decide a revocation, so the verdict is invalid.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L1. Revoking an ancestor invalidates the authority that depends on it",
+          "Invariants > L11. No silent authority resurrection"
+        ]
+      },
+      "input": {
+        "delegation_id": "del-1",
+        "side_a": [
+          { "seq": 1, "at": "2026-09-20T11:10:00Z", "kind": "revocation", "delegation_id": "del-1" }
+        ],
+        "side_b": [
+          { "seq": 1, "at": "2026-09-20T11:10:01Z", "kind": "metadata", "delegation_id": "del-1" }
+        ],
+        "reconciliation_record": { "present": true, "kept": ["a:1", "b:1"], "discarded": [] }
+      },
+      "expected": { "verdict": "invalid", "reason": "revoked_on_reconciled_history" }
+    },
+    {
+      "id": "LC-F-022-b",
+      "case_id": "LC-F-022",
+      "group": "history_reconciliation",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "With no divergence, last-writer-wins reaches the same answer",
+      "description": "Both writes are on one side and the revocation is the later of the two, so a generic last-writer-wins merge happens to be right here. The control isolates the defect in N4 to the case where a non-revocation write is the later one, rather than letting the whole group read as an indictment of every timestamp-ordered merge.",
+      "proposed_text": {
+        "sections": ["Invariants > L1. Revoking an ancestor invalidates the authority that depends on it"]
+      },
+      "input": {
+        "delegation_id": "del-1",
+        "side_a": [
+          { "seq": 1, "at": "2026-09-20T11:09:00Z", "kind": "metadata", "delegation_id": "del-1" },
+          { "seq": 2, "at": "2026-09-20T11:10:00Z", "kind": "revocation", "delegation_id": "del-1" }
+        ],
+        "side_b": [],
+        "reconciliation_record": { "present": true, "kept": ["a:1", "a:2"], "discarded": [] }
+      },
+      "expected": { "verdict": "invalid", "reason": "revoked_on_reconciled_history" }
+    },
+    {
+      "id": "LC-F-026-a",
+      "case_id": "LC-F-026",
+      "group": "history_reconciliation",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A grant that exists only on a discarded history is not established, not invalid",
+      "description": "An isolated primary kept accepting writes it could not confirm would survive, among them a grant of del-2. Reconciliation discarded that side's writes and said so. The grant record is authentic and correctly signed; it was simply never in the accepted set. The right verdict is not_established, which is a different statement from invalid. Calling it invalid would assert that someone with standing ended it, and nobody did.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L11. No silent authority resurrection",
+          "Invariants > L12. Completeness is a separate and stronger claim",
+          "OPEN-QUESTIONS.md > Authority rollback"
+        ]
+      },
+      "input": {
+        "delegation_id": "del-2",
+        "side_a": [],
+        "side_b": [
+          { "seq": 1, "at": "2026-09-20T11:12:00Z", "kind": "grant", "delegation_id": "del-2" }
+        ],
+        "reconciliation_record": { "present": true, "kept": [], "discarded": ["b:1"] }
+      },
+      "expected": { "verdict": "not_established", "reason": "grant_on_discarded_history" }
+    },
+    {
+      "id": "LC-F-026-b",
+      "case_id": "LC-F-026",
+      "group": "history_reconciliation",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A grant present on the kept history is valid",
+      "description": "The same grant, written on the side the reconciliation kept. It is valid. The pair with LC-F-026-a pins that the difference is which history the reconciliation record says was accepted, not anything about the grant record itself, which is byte-identical in both vectors apart from the side it sits on.",
+      "proposed_text": {
+        "sections": ["Invariants > L11. No silent authority resurrection"]
+      },
+      "input": {
+        "delegation_id": "del-2",
+        "side_a": [
+          { "seq": 1, "at": "2026-09-20T11:12:00Z", "kind": "grant", "delegation_id": "del-2" }
+        ],
+        "side_b": [],
+        "reconciliation_record": { "present": true, "kept": ["a:1"], "discarded": [] }
+      },
+      "expected": { "verdict": "valid", "reason": "grant_on_reconciled_history" }
+    },
+
+    {
+      "id": "LC-F-017-a",
+      "case_id": "LC-F-017",
+      "group": "causal_read",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A replica that has applied the required write answers on it",
+      "description": "The control. The request carries a required-observation token naming revocation write w-7, and the replica serving the check has applied w-7. The replica answers revoked and the verdict is invalid, reached on the revocation rather than on anything about consistency.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L1. Revoking an ancestor invalidates the authority that depends on it",
+          "Lifecycle concepts are separate > Verification and evidence > Status observation"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "required_observation": { "write_id": "w-7" },
+        "replica": { "replica_id": "eu-1", "applied_writes": ["w-5", "w-6", "w-7"], "as_of": "2026-09-20T11:59:50Z", "answer": "revoked" },
+        "replica_lag_bound_s": 60
+      },
+      "expected": { "verdict": "invalid", "reason": "status_revoked" }
+    },
+    {
+      "id": "LC-F-017-b",
+      "case_id": "LC-F-017",
+      "group": "causal_read",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A check that cannot prove it observed the write it must follow has not checked",
+      "description": "The vector a naive implementation passes wrongly. The request carries the same required-observation token naming w-7, and the replica has applied only through w-6. The replica is two seconds behind, well inside its declared bound, and it answers active. A verifier that reads only the lag admits. The requirement is not that the replica be recent; it is that this read observe that specific prior write, and it did not, so nothing is established.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Lifecycle concepts are separate > Verification and evidence > Notice",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "required_observation": { "write_id": "w-7" },
+        "replica": { "replica_id": "us-2", "applied_writes": ["w-5", "w-6"], "as_of": "2026-09-20T11:59:58Z", "answer": "active" },
+        "replica_lag_bound_s": 60
+      },
+      "expected": { "verdict": "not_established", "reason": "required_write_not_observed" }
+    },
+    {
+      "id": "LC-F-017-c",
+      "case_id": "LC-F-017",
+      "group": "causal_read",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "With no required observation, a replica inside its declared bound admits",
+      "description": "Byte-identical to LC-F-017-b except that the request carries no required-observation token. Nothing says this read has to follow any particular write, the replica is inside the bound its deployment declared, and it answers active, so it admits. The pair with LC-F-017-b shows the token is what decides, not the lag. A deployment that admits here is taking a declared, bounded risk, and the decision record names the replica it was served from.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Verifier trust policy",
+          "Lifecycle concepts are separate > Verification and evidence > Status observation"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "required_observation": null,
+        "replica": { "replica_id": "us-2", "applied_writes": ["w-5", "w-6"], "as_of": "2026-09-20T11:59:58Z", "answer": "active" },
+        "replica_lag_bound_s": 60
+      },
+      "expected": { "verdict": "valid", "reason": "within_declared_replica_bound" }
+    },
+    {
+      "id": "LC-F-017-d",
+      "case_id": "LC-F-017",
+      "group": "causal_read",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A replica past its declared bound is not established even with no required observation",
+      "description": "No token, but the replica is 300 seconds behind against a declared bound of 60. The deployment's own declared tolerance is exceeded, so the answer establishes nothing and the verdict is not_established. Exceeding a declared bound is a defect the deployment said it would catch, and this vector is what catching it looks like.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Status observation",
+          "Invariants > L7. Unknown revocation state is not active"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "required_observation": null,
+        "replica": { "replica_id": "us-2", "applied_writes": ["w-5"], "as_of": "2026-09-20T11:55:00Z", "answer": "active" },
+        "replica_lag_bound_s": 60
+      },
+      "expected": { "verdict": "not_established", "reason": "replica_past_bound" }
+    },
+
+    {
+      "id": "LC-F-027-a",
+      "case_id": "LC-F-027",
+      "group": "evidence_coverage",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "An interval entirely older than the declared delivery lag has established coverage",
+      "description": "The control. The query covers 10:00:00 to 11:00:00, the declared delivery-lag bound is 300 seconds, and the evaluation instant is 12:00:00, so the whole interval is older than the settled horizon of 11:55:00. Every declared consumer has a delivery record reaching past the interval's end. Coverage over the interval is established.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L12. Completeness is a separate and stronger claim",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "query_interval": { "from": "2026-09-20T10:00:00Z", "to": "2026-09-20T11:00:00Z" },
+        "delivery_lag_bound_s": 300,
+        "records_found_in_interval": 4,
+        "consumers": [
+          { "consumer_id": "audit-store", "delivered_through": "2026-09-20T11:50:00Z" },
+          { "consumer_id": "siem", "delivered_through": "2026-09-20T11:45:00Z" }
+        ]
+      },
+      "expected": { "verdict": "valid", "reason": "interval_settled_and_consumers_delivered" }
+    },
+    {
+      "id": "LC-F-027-b",
+      "case_id": "LC-F-027",
+      "group": "evidence_coverage",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "An empty window inside the declared delivery lag is not evidence that nothing happened",
+      "description": "The vector a naive implementation passes wrongly. The query runs to 11:58:00, which is inside the 300 second delivery lag, and the store returns zero records for that tail. Zero records here means the batched delivery has not caught up, not that no decision was made. An investigation running in near real time reads this exactly backwards. Coverage over the interval is not established; the interval's settled prefix is a different, narrower claim the reason string names.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L12. Completeness is a separate and stronger claim",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness",
+          "Lifecycle concepts are separate > Verification and evidence > Notice"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "query_interval": { "from": "2026-09-20T10:00:00Z", "to": "2026-09-20T11:58:00Z" },
+        "delivery_lag_bound_s": 300,
+        "records_found_in_interval": 0,
+        "consumers": [
+          { "consumer_id": "audit-store", "delivered_through": "2026-09-20T11:58:00Z" },
+          { "consumer_id": "siem", "delivered_through": "2026-09-20T11:58:00Z" }
+        ]
+      },
+      "expected": { "verdict": "not_established", "reason": "interval_inside_delivery_lag" }
+    },
+    {
+      "id": "LC-F-029-a",
+      "case_id": "LC-F-027",
+      "case_id_variant": "LC-F-029",
+      "group": "evidence_coverage",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A consumer that never received the interval leaves a coverage gap that time does not close",
+      "description": "The LC-F-029 variant named under LC-F-027 in CASES.md. The interval is fully settled, so the delivery-lag check passes, but one declared consumer's delivery record stops at 10:30:00, before the interval's end. That consumer never received part of the interval at all, which is a permanent gap rather than a late arrival. Coverage across the declared consumer set is not established.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L12. Completeness is a separate and stronger claim",
+          "Lifecycle concepts are separate > Verification and evidence > Notice",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "query_interval": { "from": "2026-09-20T10:00:00Z", "to": "2026-09-20T11:00:00Z" },
+        "delivery_lag_bound_s": 300,
+        "records_found_in_interval": 4,
+        "consumers": [
+          { "consumer_id": "audit-store", "delivered_through": "2026-09-20T11:50:00Z" },
+          { "consumer_id": "siem", "delivered_through": "2026-09-20T10:30:00Z" }
+        ]
+      },
+      "expected": { "verdict": "not_established", "reason": "consumer_delivery_gap" }
+    },
+    {
+      "id": "LC-F-029-b",
+      "case_id": "LC-F-027",
+      "case_id_variant": "LC-F-029",
+      "group": "evidence_coverage",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A coverage gap closes by a delivery record, not by time passing",
+      "description": "The same consumer as LC-F-029-a with its delivery record now reaching 11:50:00. The gap closed because a record says the consumer received the interval, not because the interval got older. This pair keeps the group from being read as a rule that every gap heals on its own once enough time has gone by.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Notice",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "query_interval": { "from": "2026-09-20T10:00:00Z", "to": "2026-09-20T11:00:00Z" },
+        "delivery_lag_bound_s": 300,
+        "records_found_in_interval": 4,
+        "consumers": [
+          { "consumer_id": "audit-store", "delivered_through": "2026-09-20T11:50:00Z" },
+          { "consumer_id": "siem", "delivered_through": "2026-09-20T11:50:00Z" }
+        ]
+      },
+      "expected": { "verdict": "valid", "reason": "interval_settled_and_consumers_delivered" }
+    }
+  ]
+}

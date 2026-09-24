@@ -1,0 +1,224 @@
+{
+  "chain": [
+    {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ledger:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T10:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+      "issued_at": "2026-09-20T10:00:00.000Z",
+      "issuer": "did:aps:example:aer-principal",
+      "nonce": "26d2a74bda2d88f2bc47161822a5433c",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "f53f949b07cd65ce456b4eb0bc8efc4aa34927b39971d8b6e1ff91b6d9cca2df3adb55155d43fd3b484a91ecfef5593650d5b1341ebf24823d10afa7ef5c280f",
+      "subject": "did:aps:example:aer-agent-a",
+      "verification_method": "did:aps:example:aer-principal#key-1",
+      "version": "1.0"
+    },
+    {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "ledger:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-21T00:00:00.000Z",
+          "not_before": "2026-09-20T11:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e",
+      "issued_at": "2026-09-20T11:00:00.000Z",
+      "issuer": "did:aps:example:aer-agent-a",
+      "nonce": "fa8d12b4a17c4917bb7d8107e9bc9e1b",
+      "parent_delegation_id": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "0df44d5afea2aabd80d88f1642cdb5db022f5751b2aef2de57ce794cf579a9b3d6bf1161f975ead7faf0e97b8631568a115957e42cd53a34f6698401e37faf02",
+      "subject": "did:aps:example:aer-agent-b",
+      "verification_method": "did:aps:example:aer-agent-a#key-1",
+      "version": "1.0"
+    }
+  ],
+  "digests": {
+    "algorithm": "sha256 over RFC 8785 JCS canonical bytes",
+    "chain": [
+      "59677748f33d80a9a3de25fb089803d8af8467b183a2afb5331d3096f29c842b",
+      "154b3de27f8fa6cf58f3e6d21c46ef724d1a7be7eee972245488903da93f2a10"
+    ],
+    "records": {
+      "root-revocation": "9ec312ab5992c9865c58f787902b8604c41ba6a05c70eb7673d4fd65d91c29df",
+      "withdrawal-authorized": "f7f7e9acd699fc9a5b2f586ab7cde7558548a34338e5b29f3ca3882d7a4de22b",
+      "withdrawal-unauthorized": "ac4ac86dc33303a506396f2e97efbb0ca674697f417e68b7ea9b29e51ff81701"
+    }
+  },
+  "generated_by": "fixtures/authority-epoch-rollback/mint.py",
+  "now": "2026-09-20T13:00:00.000Z",
+  "profile": "aps-authority-epoch-rollback-v0",
+  "records": {
+    "root-revocation": {
+      "cascade_transaction_id": "sha256:9167ba6899a74be366c7e6f65c33d27eb0dec594d04d5e61b0df659391dd02d0",
+      "delegation_id": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+      "nonce": "fecc048dbba289b66c798e1f6ce6d296",
+      "reason_code": "credential-compromise",
+      "record_type": "aps:authority-revocation:v1",
+      "revocation_id": "sha256:7587fd4b8263f4ab9dd7073f2a8212fa01de6803524c90030d2dd03eb4c907b7",
+      "revoked_at": "2026-09-20T11:30:00.000Z",
+      "revoker": "did:aps:example:aer-principal",
+      "signature": "2fb211b8aca169c0d8bccdedf499c4c58651482f0f4196ffe54de20f025ed8ac0b909fe1595f089ba5b79edd955bf5acfb78fe6765b4402886aee1dfe1718c0e",
+      "verification_method": "did:aps:example:aer-principal#key-1",
+      "version": "1.0"
+    },
+    "withdrawal-authorized": {
+      "delegation_id": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+      "detail": "The revocation was recorded against the wrong delegation identifier.",
+      "fixture_record_type": "fixture:authority-epoch-rollback:revocation-withdrawal:v0",
+      "reason_code": "recorded-in-error",
+      "revocation_id": "sha256:7587fd4b8263f4ab9dd7073f2a8212fa01de6803524c90030d2dd03eb4c907b7",
+      "signature": "ba75b76f3e44bcd74344b206c1dfa731abe1866dea9b4ea16490e3eabafb9f7000d69c3fef7cd4276084319501b2be97c7ab266f21227812e8c6983288e2d70e",
+      "verification_method": "did:aps:example:aer-principal#key-1",
+      "version": "0",
+      "withdrawn_at": "2026-09-20T12:30:00.000Z",
+      "withdrawn_by": "did:aps:example:aer-principal"
+    },
+    "withdrawal-unauthorized": {
+      "delegation_id": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+      "detail": "The revocation was recorded against the wrong delegation identifier.",
+      "fixture_record_type": "fixture:authority-epoch-rollback:revocation-withdrawal:v0",
+      "reason_code": "recorded-in-error",
+      "revocation_id": "sha256:7587fd4b8263f4ab9dd7073f2a8212fa01de6803524c90030d2dd03eb4c907b7",
+      "signature": "0093cbb49e5ba227692227512f69399a107da528bbdd015538e8931a389b3bb3000ce3d68477f9254e3b086308fb43677b0c1e823ed231a0004eedaa56cfe303",
+      "verification_method": "did:aps:example:aer-agent-a#key-1",
+      "version": "0",
+      "withdrawn_at": "2026-09-20T12:30:00.000Z",
+      "withdrawn_by": "did:aps:example:aer-agent-a"
+    }
+  },
+  "roles": {
+    "CHILD": "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e",
+    "ROOT": "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f"
+  },
+  "seed_labels": [
+    "principal:v1",
+    "agent-a:v1",
+    "root-nonce:v1",
+    "child-nonce:v1",
+    "revocation-nonce:v1"
+  ],
+  "seed_prefix": "aps-conformance-suite:authority-epoch-rollback:",
+  "verification_keys": {
+    "did:aps:example:aer-agent-a#key-1": "2427473ed045a4d7bab8e35ce13a2e76d275e99a91d868d622edc7b68166b9d5",
+    "did:aps:example:aer-principal#key-1": "05bb47f4df336ba73c4b54ca2494e560f088a6993366c48703eee9ec05cfc43b"
+  },
+  "views": {
+    "epoch-6": {
+      "description": "State as it stood before the revocation was recorded. Both delegations tracked, no revocation held.",
+      "epoch": 6,
+      "revocations": [],
+      "tracked": [
+        "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+        "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e"
+      ],
+      "withdrawals": []
+    },
+    "epoch-7": {
+      "description": "State after the root revocation was recorded.",
+      "epoch": 7,
+      "revocations": [
+        "root-revocation"
+      ],
+      "tracked": [
+        "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+        "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e"
+      ],
+      "withdrawals": []
+    },
+    "epoch-8": {
+      "description": "One epoch later with no change to the record set. Used to show a forward move is not fenced.",
+      "epoch": 8,
+      "revocations": [
+        "root-revocation"
+      ],
+      "tracked": [
+        "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+        "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e"
+      ],
+      "withdrawals": []
+    },
+    "epoch-8-corrected": {
+      "description": "The root revocation plus a withdrawal record signed by the revoker.",
+      "epoch": 8,
+      "revocations": [
+        "root-revocation"
+      ],
+      "tracked": [
+        "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+        "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e"
+      ],
+      "withdrawals": [
+        "withdrawal-authorized"
+      ]
+    },
+    "epoch-8-unauthorized-correction": {
+      "description": "The root revocation plus a withdrawal record signed by a party that is not the revoker.",
+      "epoch": 8,
+      "revocations": [
+        "root-revocation"
+      ],
+      "tracked": [
+        "sha256:fecc4af3c1c20365558ca8835f6759ef18bda7b652d7789410efe5b22394977f",
+        "sha256:ef7507eb95444400e710da9e186a69d356218e73f89afc5f00a0c231a5eebd0e"
+      ],
+      "withdrawals": [
+        "withdrawal-unauthorized"
+      ]
+    }
+  },
+  "withdrawal_record_type": "fixture:authority-epoch-rollback:revocation-withdrawal:v0",
+  "withdrawal_signature_domain": "fixture:authority-epoch-rollback:revocation-withdrawal:v0:sig"
+}
