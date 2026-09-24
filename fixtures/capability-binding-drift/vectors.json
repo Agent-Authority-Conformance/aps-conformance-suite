@@ -1,0 +1,165 @@
+{
+  "profile": "aps-capability-binding-drift-v0",
+  "description": "Action or capability binding. A grant pins a tool by name and by implementation digest, and this family also pins the tool's declared metadata. The tool keeps its name while its implementation digest, or its declared schema and permissions, change and gain a destructive capability. Every vector is candidate against proposed text: draft-pidlisnyi-aps-03 states no capability pin rule and defines no pin syntax. See README.",
+  "status": "candidate_against_proposed",
+  "evaluation": "Each presentation is an independent evaluation against a fresh boundary. No state is carried between presentations and presentation order does not matter.",
+  "proposed_text": {
+    "action-or-capability-binding": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Action or capability binding",
+      "quote": "Action or capability binding. Which operation, implementation or schema a grant refers to, where that distinction matters. A tool can keep its name while what it does changes, which widens effective authority without any change to the grant.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    },
+    "target-binding": {
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "version": "0.1.2-draft",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "concept": "Target binding",
+      "quote": "Target binding. Which resource, counterparty or object the authority applies to. Continuity of a name does not by itself establish continuity of the thing named.",
+      "status_in_that_document": "proposed",
+      "status_quote": "The grouping and every other entry are **proposed**, added in 0.1.1-draft or 0.1.2-draft. No public case tests them yet."
+    }
+  },
+  "draft03": {
+    "states_this_rule": false,
+    "closest_text": {
+      "section": "4.1. Action Reference",
+      "quote": "target is the exact resource, tool, or endpoint against which the action will be dispatched; a profile MUST define its target string construction.",
+      "why_it_is_not_the_rule": "target names a resource, tool or endpoint. It carries no implementation digest and no schema digest, so it cannot distinguish two revisions of one tool that keep the same endpoint."
+    },
+    "pin_syntax_basis": {
+      "section": "3.2. Component Orders",
+      "quote": "Scope grants use ASCII colon-separated segments. \"*\" covers all grants; a wildcard is otherwise permitted only as the terminal segment \":*\".",
+      "note": "This family expresses a pin as further colon-separated segments under the tool grant so that the pin stays inside the scope grammar draft-03 defines. draft-03 does not define this encoding or any other pin encoding."
+    }
+  },
+  "declared_defective_fail_set": [
+    "CBD-03-not-established-schema-drift-same-implementation-digest",
+    "CBD-04-not-established-unpinned-grant-tool-changed",
+    "CBD-05-not-established-unpinned-grant-tool-unchanged",
+    "CBD-06-not-established-registry-entry-stale-against-running-implementation",
+    "CBD-08-not-established-implementation-pinned-metadata-unpinned"
+  ],
+  "presentations": [
+    {
+      "id": "CBD-01-admit-unchanged-under-pin",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": null,
+      "note": "The prompt's control: digest unchanged, action admitted. Every later vector differs from this one in exactly the way its id names.",
+      "grant": "pinned",
+      "registry_entry": "v1",
+      "current_implementation": "v1",
+      "current_metadata": "v1",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "admitted", "reason": "capability_continuity_established" }
+    },
+    {
+      "id": "CBD-02-not-established-implementation-digest-drift",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding", "target-binding"],
+      "differs_from": "CBD-01: the tool keeps its name and its endpoint, its build changes, the attestor re-attests the new build, and its declared permissions gain ledger:delete",
+      "grant": "pinned",
+      "registry_entry": "v2",
+      "current_implementation": "v2",
+      "current_metadata": "v2",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "pinned_implementation_digest_mismatch" }
+    },
+    {
+      "id": "CBD-03-not-established-schema-drift-same-implementation-digest",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-01: the endpoint descriptor is byte-identical, so the implementation digest is unchanged, while the declared schema gains a purge parameter and the declared permissions gain ledger:delete",
+      "grant": "pinned",
+      "registry_entry": "v1",
+      "current_implementation": "v1",
+      "current_metadata": "v2",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "pinned_metadata_digest_mismatch" }
+    },
+    {
+      "id": "CBD-04-not-established-unpinned-grant-tool-changed",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-02: the grant names the tool but carries no pin at all",
+      "grant": "unpinned",
+      "registry_entry": "v2",
+      "current_implementation": "v2",
+      "current_metadata": "v2",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "no_capability_pin_in_grant" }
+    },
+    {
+      "id": "CBD-05-not-established-unpinned-grant-tool-unchanged",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-04: nothing about the tool changed. The verdict is the same, because an unpinned grant gives the verifier no basis either way, and the absence of change is not something the grant establishes",
+      "grant": "unpinned",
+      "registry_entry": "v1",
+      "current_implementation": "v1",
+      "current_metadata": "v1",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "no_capability_pin_in_grant" }
+    },
+    {
+      "id": "CBD-06-not-established-registry-entry-stale-against-running-implementation",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-01: the signed registry entry still names the pinned digest, and the implementation actually reachable behind the tool name is the v2 build. The entry is a claim, and the claim is stale",
+      "grant": "pinned",
+      "registry_entry": "v1",
+      "current_implementation": "v2",
+      "current_metadata": "v1",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "registry_entry_implementation_mismatch" }
+    },
+    {
+      "id": "CBD-07-not-established-attestation-by-unrecognized-attestor",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-01: the registry entry names the pinned digest but is signed by a different attestor, so it does not verify against the attestor key the boundary resolves",
+      "grant": "pinned",
+      "registry_entry": "v1_other_attestor",
+      "current_implementation": "v1",
+      "current_metadata": "v1",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "tool_attestation_signature_invalid" }
+    },
+    {
+      "id": "CBD-08-not-established-implementation-pinned-metadata-unpinned",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": ["action-or-capability-binding"],
+      "differs_from": "CBD-03: the grant pins the implementation digest and says nothing about the declared schema or permissions. This is the partial pin the proposed text does not address",
+      "grant": "impl_pin_only",
+      "registry_entry": "v1",
+      "current_implementation": "v1",
+      "current_metadata": "v2",
+      "requested_tool": "ledger.export",
+      "now": "2026-09-23T12:00:00.000Z",
+      "revocation": "active",
+      "expected": { "verdict": "not_established", "reason": "metadata_not_pinned_in_grant" }
+    }
+  ]
+}

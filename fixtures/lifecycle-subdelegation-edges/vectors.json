@@ -1,0 +1,412 @@
+{
+  "profile": "aac-lifecycle-subdelegation-edges-v0",
+  "status_label": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "2bf5c7e",
+    "earliest_commit_for_these_concepts": "7796e22",
+    "documents": [
+      "AUTHORITY-LIFECYCLE.md",
+      "CASES.md",
+      "OPEN-QUESTIONS.md"
+    ],
+    "version_in_document": "0.1.2-draft (AUTHORITY-LIFECYCLE.md), 0.2-draft (CASES.md)",
+    "named_text": [
+      "Lifecycle concepts are separate > Authority and dependencies > Authority path and dependency",
+      "Lifecycle concepts are separate > Authority lifecycle state > Expiry or exhaustion",
+      "Lifecycle concepts are separate > Verification and evidence > Status observation",
+      "Lifecycle concepts are separate > Verification and evidence > Notice",
+      "Lifecycle concepts are separate > Verification and evidence > Evidence",
+      "Invariants > L1. Revoking an ancestor invalidates the authority that depends on it",
+      "Invariants > L5. Independent chains are not combined",
+      "Invariants > L7. Unknown revocation state is not active",
+      "Invariants > L10. Expiry is not revocation",
+      "CASES.md > Subdelegation edges > LC-H-007",
+      "CASES.md > Subdelegation edges > LC-H-008",
+      "CASES.md > Subdelegation edges (candidate) > LC-H-009"
+    ]
+  },
+  "description": "Three subdelegation edges the proposed text names and none of L1-L12 states as a rule: whether a child's own declared validity period has to nest inside its parent's, whether exhausting a chain's declared maximum subdelegation depth is its own named failure rather than a variant of expiry or revocation, and what a verifier returns for a child minted after an ancestor's revocation was recorded at the source but before that revocation was visible to the issuer. Every vector is candidate_against_proposed. Nothing here is a draft-pidlisnyi-aps-03 conformance claim: draft-03 states no rule for any of the three questions, and where the reference SDKs enforce something anyway, the vector records that as observed implementation behavior. Each vector is decided under three named policies so a divergence is attributable to the declared policy axis and to nothing else.",
+  "policies": {
+    "reference": "The chain verifier under test, called once per vector with the vector's clock and revocation answers. This is the policy whose verdict the expected block states.",
+    "per-artifact-only": "A deliberately defective verifier that checks each presented record on its own and never compares two of them: signature verifies under the resolved key, the record's own validity period includes the verification instant, and the record's own revocation answer is not revoked. It is shaped on the per-certificate checks a widely used base path algorithm specifies (see README, Sources) and it performs no parent linkage check and no facet comparison.",
+    "issuer-attestation-trusting": "A deliberately defective verifier that runs the reference checks except that, for any member the fixture carries a pinned issuer status observation for, it takes that member's revocation state from the issuer's recorded observation instead of from the current resolver answer. It models treating an issuer's contemporaneous good-faith belief as the member's status."
+  },
+  "declared_fail_sets": {
+    "per-artifact-only": [
+      "LC-H-007-c",
+      "LC-H-007-d",
+      "LC-H-008-b",
+      "LC-H-008-d"
+    ],
+    "issuer-attestation-trusting": [
+      "LC-H-009-b",
+      "LC-H-009-c"
+    ]
+  },
+  "cases": [
+    {
+      "id": "LC-H-007-a",
+      "case_id": "LC-H-007",
+      "kind": "verify",
+      "sign": "positive",
+      "tests": "positive control. A child whose declared validity period nests strictly inside its parent's, verified at an instant inside both. Nothing about nesting is being exercised yet: this is the shape every other LC-H-007 vector is measured against.",
+      "differs_from": null,
+      "chain": "H7_NESTED",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-007-b",
+      "case_id": "LC-H-007",
+      "kind": "verify",
+      "sign": "positive",
+      "tests": "the inclusive edge of containment. The child's not_after is the parent's not_after exactly. Containment is inclusive, so this is valid, and it is here so that the pair b/c isolates one second of difference rather than a range.",
+      "differs_from": "LC-H-007-a: the child's not_after is the parent's not_after to the millisecond instead of an hour inside it",
+      "chain": "H7_EQUAL",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-007-c",
+      "case_id": "LC-H-007",
+      "kind": "verify",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "the family's first negative control, and the vector a per-artifact verifier passes wrongly. The child's declared not_after extends four days past its parent's. The verification instant is inside both windows, nothing is revoked, and every record's own validity period includes the instant, so every per-artifact check passes. The reference verifier compares the two windows and returns invalid with TIME_WIDENING at index 1.",
+      "differs_from": "LC-H-007-b: the child's not_after is 2026-09-25T00:00:00.000Z, past the parent's 2026-09-21T00:00:00.000Z",
+      "chain": "H7_WIDENING",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "TIME_WIDENING",
+        "failure_index": 1
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": false,
+          "why_wrong": "every record's own validity period includes the instant, so a verifier that never compares a child's window against its parent's admits a chain whose child claims four more days than its parent ever held"
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "invalid",
+          "failure_code": "TIME_WIDENING",
+          "failure_index": 1,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-007-d",
+      "case_id": "LC-H-007",
+      "kind": "verify",
+      "sign": "negative",
+      "tests": "the same widening child, verified after the parent's own not_after and before the child's. This is the instant at which the mismatch would surface even to a verifier that only ever evaluates each link separately. The reference verifier still names the widening, not the expiry: the facet comparison runs before the current-validity check, so the reported code is stable across both instants rather than changing with the clock.",
+      "differs_from": "LC-H-007-c: verified at 2026-09-22T12:00:00.000Z, past the parent's not_after",
+      "chain": "H7_WIDENING",
+      "now": "2026-09-22T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "TIME_WIDENING",
+        "failure_index": 1
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "invalid",
+          "failure_code": "EXPIRED",
+          "failure_index": 0,
+          "agrees": false,
+          "why_wrong": "it reaches invalid, but through the parent's own expiry at index 0 and only once the clock passed the parent's not_after. The nesting mismatch sat undetected in the child's record until that moment, and the reason it reports is the wrong one for what is wrong with the chain"
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "invalid",
+          "failure_code": "TIME_WIDENING",
+          "failure_index": 1,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-007-e",
+      "case_id": "LC-H-007",
+      "kind": "issuance",
+      "sign": "negative",
+      "tests": "the issuance layer for the same question. The SDK's own child issuer was asked to mint the widening child and refused before signing anything. The refusal code it raised is pinned in chains.json and read back here. This vector records what the reference implementation does. The proposed text states no issuance-time nesting rule.",
+      "differs_from": "LC-H-007-c: this is the mint-time refusal, not a verification of an already-signed record",
+      "refusal": "c7_widening",
+      "expected": {
+        "raised": true,
+        "code": "TIME_WIDENING"
+      }
+    },
+    {
+      "id": "LC-H-008-a",
+      "case_id": "LC-H-008",
+      "kind": "verify",
+      "sign": "positive",
+      "tests": "positive control. A three-record chain whose root declared two remaining hops, so the chain sits exactly at its own declared maximum depth without passing it. Valid.",
+      "differs_from": null,
+      "chain": "H8_WITHIN_DEPTH",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-008-b",
+      "case_id": "LC-H-008",
+      "kind": "verify",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "the family's second negative control. A three-record chain whose root declared one remaining hop, so the third link is past the declared limit. Every record is current, unexpired and unrevoked, and every per-artifact check passes. The reference verifier returns invalid with DEPTH_EXHAUSTED at index 2. The constraint is carried on an ancestor, so the failure is a property of the chain's shape, not of the deepest record's own contents.",
+      "differs_from": "LC-H-008-a: the root declares one remaining hop instead of two, so the same chain length is one link past the limit",
+      "chain": "H8_OVER_DEPTH",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {},
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 2
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": false,
+          "why_wrong": "a verifier with no check on the chain's declared depth admits a subdelegation past the stated limit, because every individual link in it is current, unrevoked and unexpired"
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "invalid",
+          "failure_code": "DEPTH_EXHAUSTED",
+          "failure_index": 2,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-008-c",
+      "case_id": "LC-H-008",
+      "kind": "issuance",
+      "sign": "negative",
+      "tests": "the issuance layer for depth. The SDK's child issuer was asked to mint the over-depth child and refused before signing. Recorded, like LC-H-007-e, as observed implementation behavior rather than as a conformance claim.",
+      "differs_from": "LC-H-008-b: this is the mint-time refusal, not a verification",
+      "refusal": "g8_overdepth",
+      "expected": {
+        "raised": true,
+        "code": "DEPTH_EXHAUSTED"
+      }
+    },
+    {
+      "id": "LC-H-008-d",
+      "case_id": "LC-H-008",
+      "kind": "verify",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "depth exhaustion is its own named failure and does not collapse into revocation. The same over-depth chain, with the deepest record additionally answered revoked. The reference verifier still reports DEPTH_EXHAUSTED: the structural constraint decides before any status answer is consulted, so the two failures never merge into one. A per-artifact verifier reaches invalid here for the first time in this group, and names revocation, which is the wrong reason for a chain that would be over-depth whatever the resolver said.",
+      "differs_from": "LC-H-008-b: the deepest record is additionally answered revoked",
+      "chain": "H8_OVER_DEPTH",
+      "now": "2026-09-20T12:00:00.000Z",
+      "revocation": {
+        "G8_OVERDEPTH": "revoked"
+      },
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 2
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "invalid",
+          "failure_code": "REVOKED",
+          "failure_index": 2,
+          "agrees": false,
+          "why_wrong": "it reaches invalid only because a status answer happened to say revoked, and names revocation at index 2 for a chain that violates its ancestor's declared depth limit whatever any resolver says. Depth exhaustion and revocation are two failures and this vector keeps them apart"
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "invalid",
+          "failure_code": "DEPTH_EXHAUSTED",
+          "failure_index": 2,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-009-a",
+      "case_id": "LC-H-009",
+      "kind": "verify",
+      "sign": "positive",
+      "tests": "positive control, and the record a later finding must not rewrite. The child was minted at 10:05:00Z, inside the propagation window. This boundary is at 10:20:00Z and the status answer available to it still says the parent is active. The verdict is valid and the record written here says so.",
+      "differs_from": null,
+      "chain": "H9_PROPAGATION",
+      "now": "2026-09-20T10:20:00.000Z",
+      "revocation": {},
+      "emits_record": true,
+      "prior_record_of": null,
+      "expected": {
+        "authority_verdict": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": true
+        }
+      }
+    },
+    {
+      "id": "LC-H-009-b",
+      "case_id": "LC-H-009",
+      "kind": "verify",
+      "sign": "negative",
+      "tests": "the case's core. The same chain at a later boundary, where the parent's revocation is established. The child is invalid because of its parent's status, not because of anything in the child's own record, and not because the child was issued in bad faith. The reference verifier reports REVOKED at index 0, the parent, not at index 1.",
+      "differs_from": "LC-H-009-a: the boundary is at 11:00:00Z and the status answer for the parent says revoked",
+      "chain": "H9_PROPAGATION",
+      "now": "2026-09-20T11:00:00.000Z",
+      "revocation": {
+        "P9": "revoked"
+      },
+      "emits_record": true,
+      "prior_record_of": "LC-H-009-a",
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "invalid",
+          "failure_code": "REVOKED",
+          "failure_index": 0,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": false,
+          "why_wrong": "it takes the parent's status from the issuer's own 09:55:00Z observation, which said active, instead of from the answer available at this boundary, so an issuer's contemporaneous good-faith belief stands in for the parent's actual status"
+        }
+      }
+    },
+    {
+      "id": "LC-H-009-c",
+      "case_id": "LC-H-009",
+      "kind": "verify",
+      "sign": "negative",
+      "negative_control": true,
+      "tests": "the family's third negative control, isolating the attestation route. The issuer's pinned status observation for the parent, taken at 09:55:00Z and saying active, is presented alongside the chain at a boundary where the current answer says revoked. It is a genuine record of what the issuer saw. It is not a current status answer, and it does not make the child's authority current. The reference verifier returns invalid. The attestation-trusting policy admits.",
+      "differs_from": "LC-H-009-b: the issuer's status observation is explicitly presented to the verifier rather than merely existing in the fixture",
+      "chain": "H9_PROPAGATION",
+      "now": "2026-09-20T11:05:00.000Z",
+      "revocation": {
+        "P9": "revoked"
+      },
+      "present_issuer_observation": true,
+      "expected": {
+        "authority_verdict": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0
+      },
+      "policy_expected": {
+        "per-artifact-only": {
+          "authority_verdict": "invalid",
+          "failure_code": "REVOKED",
+          "failure_index": 0,
+          "agrees": true
+        },
+        "issuer-attestation-trusting": {
+          "authority_verdict": "valid",
+          "failure_code": null,
+          "failure_index": null,
+          "agrees": false,
+          "why_wrong": "an authentic record of what one node observed is treated as the parent's status, which is exactly the confusion between an issuer's good-faith belief and the parent's actual status that this case names"
+        }
+      }
+    },
+    {
+      "id": "LC-H-009-d",
+      "case_id": "LC-H-009",
+      "kind": "record-continuity",
+      "sign": "positive",
+      "tests": "the later finding does not rewrite the earlier receipt. The record written at LC-H-009-b names the record written at LC-H-009-a by digest, and the LC-H-009-a record's own bytes are unchanged by the later finding. Both digests are pinned below, so a runner that quietly rewrote the earlier record could not reproduce them.",
+      "differs_from": "LC-H-009-b: this vector checks the two emitted records against each other rather than checking a chain",
+      "earlier": "LC-H-009-a",
+      "later": "LC-H-009-b",
+      "expected": {
+        "earlier_record_sha256": "cb9e4007477880df24d1a28b2e3ddaa0cf0369cd76cb9941d5582cde011e5589",
+        "later_record_prior_sha256": "cb9e4007477880df24d1a28b2e3ddaa0cf0369cd76cb9941d5582cde011e5589",
+        "later_record_sha256": "5aff4238c2b517e9cc59367e8656db29c159b3ee0c9a0a1d4c7ee6ca2433a244",
+        "earlier_record_rewritten": false
+      }
+    }
+  ]
+}

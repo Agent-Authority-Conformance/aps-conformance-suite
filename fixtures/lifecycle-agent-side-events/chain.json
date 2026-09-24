@@ -1,0 +1,416 @@
+{
+  "_placeholder": false,
+  "generated_at": "2026-09-23",
+  "sdk": {
+    "npm": "agent-passport-system@7.1.0"
+  },
+  "seed_prefix": "aps-conformance-suite:lifecycle-agent-side-events",
+  "now": "2026-09-23T12:00:00.000Z",
+  "freshness_ms": 600000,
+  "digest_domains": {
+    "executor_lifecycle": "APS-ASE-EXECUTOR-LIFECYCLE-V0",
+    "action_authorization_credential": "APS-ASE-ACTION-AUTHORIZATION-V0",
+    "self_asserted_authority_claim": "APS-ASE-AUTHORITY-CLAIM-V0",
+    "capability_consent": "APS-ASE-CAPABILITY-CONSENT-V0",
+    "revocation_notice": "APS-ASE-REVOCATION-NOTICE-V0"
+  },
+  "parties": {
+    "principal": "did:aps:example:ase-principal",
+    "agent": "did:aps:example:ase-agent",
+    "copy": "did:aps:example:ase-agent-copy",
+    "new_instance": "did:aps:example:ase-agent-new-instance",
+    "executor_attestor": "did:aps:example:ase-executor-attestor"
+  },
+  "standing": {
+    "executor_lifecycle": "did:aps:example:ase-executor-attestor",
+    "capability_consent": "did:aps:example:ase-principal",
+    "revocation_notice": "did:aps:example:ase-principal"
+  },
+  "executor_ids": {
+    "pinned": "exec-pinned-2026-06",
+    "unknown": "exec-never-registered"
+  },
+  "capability_declarations": {
+    "D_BASE": [
+      "cap:summarize"
+    ],
+    "D_UPDATED": [
+      "cap:summarize",
+      "cap:tool-invoke"
+    ]
+  },
+  "verification_keys": {
+    "did:aps:example:ase-principal#key-1": "4acb13e822b582d7e1f2c4264c74df6836abe41b3d7efa1354452fa388e984b2"
+  },
+  "record_keys": {
+    "did:aps:example:ase-principal": "4acb13e822b582d7e1f2c4264c74df6836abe41b3d7efa1354452fa388e984b2",
+    "did:aps:example:ase-agent": "a27b83635a6337234b95131ff8c808a4ec19a6ba28afaf4b09eb4516fc39ba44",
+    "did:aps:example:ase-executor-attestor": "b475f8962ea92bf4eea5038abbdb591a4453ec8ef871dc0988a6b9ab7ab15fc4"
+  },
+  "roles": {
+    "G_AGENT": "sha256:86d6b39e9df2827cd3518ac3d9b9e45106463656dc592d82c357ce1bc825aa2e",
+    "G_COPY": "sha256:673380ed9cd08e6a388cff37d27095aec6dd8a878a8d952f4381bf0fa9e38a1e",
+    "G_AGENT_UNKNOWN_EXECUTOR": "sha256:9b05ad96c990153fe3eab04a6dd51948e985fc12bc89a24a17f006cdf003fbef",
+    "G_AGENT_NARROW": "sha256:9b51915f1310f95f62e8c9209b0944d59abc89792f5e2abdd42c5b522d5ee611"
+  },
+  "grants": {
+    "G_AGENT": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "verification_method": "did:aps:example:ase-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "cf947033080b32b4708c6a184e394529",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "cap:summarize",
+            "cap:tool-invoke",
+            "executor:exec-pinned-2026-06",
+            "ledger:read"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:86d6b39e9df2827cd3518ac3d9b9e45106463656dc592d82c357ce1bc825aa2e",
+      "signature": "c7ac8a4f528a6ff70311eb51efc259050d53dbda15ce205b922ef67a7f11f9216fc6d1fb3dfd801297cd5a28fc3c1ec83efb86300594f09d6623dcaa2c261402"
+    },
+    "G_COPY": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent-copy",
+      "verification_method": "did:aps:example:ase-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "d51b4ed3b2866eb7161da3b8f8ea7da1",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "cap:summarize",
+            "cap:tool-invoke",
+            "executor:exec-pinned-2026-06",
+            "ledger:read"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:673380ed9cd08e6a388cff37d27095aec6dd8a878a8d952f4381bf0fa9e38a1e",
+      "signature": "37715a13d0deafaadf6afeb3703a663bb945d8bf4f298701c144cb7ea981747cdc980f6f6ca9ab4ed10e8c114d869a8d18cab6c533d1bcc3f19d46fd35f53707"
+    },
+    "G_AGENT_UNKNOWN_EXECUTOR": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "verification_method": "did:aps:example:ase-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "a8dc43dd2f55aa4656f7b2576fdc2202",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "cap:summarize",
+            "cap:tool-invoke",
+            "executor:exec-never-registered",
+            "ledger:read"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:9b05ad96c990153fe3eab04a6dd51948e985fc12bc89a24a17f006cdf003fbef",
+      "signature": "bb5918246a77018a2f459a8ae1e7278f5197ee1c804cbb24204a4c7f66236cdd9d6e31e71467c0fb4aa6cc37c099d37b14ba67d52eccc1299eb56a535183a90a"
+    },
+    "G_AGENT_NARROW": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "verification_method": "did:aps:example:ase-principal#key-1",
+      "issued_at": "2026-09-19T09:00:00.000Z",
+      "nonce": "f52d765e1ac4645c169fe95c92378964",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "cap:summarize",
+            "executor:exec-pinned-2026-06",
+            "ledger:read"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-19T09:00:00.000Z",
+          "not_after": "2026-09-30T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:9b51915f1310f95f62e8c9209b0944d59abc89792f5e2abdd42c5b522d5ee611",
+      "signature": "1b0008c7cbb414daffcdb19de52156c52473a6c196b06270f530be66ee441c232ea31eb8ef533b5fc53bd2e32bfae7217b0998bb2d61653868475de47b08270c"
+    }
+  },
+  "executors": {
+    "X_PINNED_LIVE": {
+      "record_type": "aps-lab:executor-lifecycle:v0",
+      "executor_id": "exec-pinned-2026-06",
+      "live_from": "2026-01-01T00:00:00.000Z",
+      "retired_from": null,
+      "attestor": "did:aps:example:ase-executor-attestor",
+      "nonce": "9414da1df2936807d029f1bdcb86e0b6",
+      "executor_record_id": "sha256:6d28f2c95b5111df83a198377ac397181757f556a14d6c33a8e2427b979343e2",
+      "signature": "a9516a2e7b7a9c566c74e9c9bbe05fb8539a7b68f41eaa0f226e8b4f3baf5524d870233438f5ef0cdb45a31baedd43aa28020b0aa1a1a56186129d5f7789560a"
+    },
+    "X_PINNED_RETIRED": {
+      "record_type": "aps-lab:executor-lifecycle:v0",
+      "executor_id": "exec-pinned-2026-06",
+      "live_from": "2026-01-01T00:00:00.000Z",
+      "retired_from": "2026-09-22T00:00:00.000Z",
+      "attestor": "did:aps:example:ase-executor-attestor",
+      "nonce": "dd98ce1aae8ec3443e711fe2b860c2bb",
+      "executor_record_id": "sha256:9402e2c0b5a0a75ae052945bfa6fd7d272a7b6589f29978d04966ff2241150b1",
+      "signature": "7e540213d53526f896eae9aa8d9d76f0364e0ef259bb11cff112b467679199f48c1d3260d505d6cb5b0bf562c4d94f2bd825494376ba4551eb59111ec1588c08"
+    }
+  },
+  "credentials": {
+    "K_MAIN": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:summarize",
+      "issued_at": "2026-09-23T11:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "5f69ac9087c38a89900b9ea4e8c07d65",
+      "credential_id": "sha256:a68d6e27019f7cf0bac6c8049240442d526487eaddf7e034d0f1ed0a1ff37b2f",
+      "signature": "ba73f2d40673678bd22a1391e379e45e896497f74830fd26d65fbc87d32eec02d62059990b6051bccd152c96b87c38b30900c29092ebd43e18b42191c22b5d0f"
+    },
+    "K_LATE": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:summarize",
+      "issued_at": "2026-09-23T12:20:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "95522e3cf394edde4b884661e4311c9d",
+      "credential_id": "sha256:a059afcf33ca908d6a0e027e50739c39316d1e196afb52644c8161877536895a",
+      "signature": "82464b8da137c53b67b05661566ba4328261ddb60aaab163cc7d4b5d4e0e6b90ffe00b99ed0e4a2fcb2c8be04d2ec1b27206f30c09190094d8c969f89624b102"
+    },
+    "K_BEFORE_RETIREMENT": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:summarize",
+      "issued_at": "2026-09-21T11:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "69d7525827a03c0746c57d0eda37808d",
+      "credential_id": "sha256:4e620d841f7700252c94e94e312e47e8f36f921494fce6cc16c4937000e06dee",
+      "signature": "b0838977e76e92dbc5d5b0e7dcc817f92a300f7bc051538d05fcb019b5bc1897a5a32f6cbfb19b411a9930a75fbe60737689b6fde5526af2ac02426d58f84d0f"
+    },
+    "K_PRE_REVOCATION": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:summarize",
+      "issued_at": "2026-09-23T04:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "b3e624ffe1dd94c296b988a87ad6255f",
+      "credential_id": "sha256:8c2483caa2535b2bd240b58ae26c6fb72cc51979b56e6af9f1696242f394dc34",
+      "signature": "c7beab55f1ecc527e90926c28a23716f4416656420b9c548b13b7cc3d2521f7491b76843f280ab00fd96e7ee5b0bc51db43536feb9c6a1606d1f410641b84601"
+    },
+    "K_COPY": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent-copy",
+      "capability": "cap:summarize",
+      "issued_at": "2026-09-23T11:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "dcda88b0c5ef3b46130b5fcb7b0a23fe",
+      "credential_id": "sha256:33af560ff2bd16e6c8350bf1a80a0bd25e9b7606c891c4dd9b9bdc49eafbfabe",
+      "signature": "86e11b73c1e5f96c522db8adeb706c2947712f4ea2f8fefdc6fc440dbc027296243ea9013a739b3810f9a36984469a39f38cb54e6ca54f20ca3328d0fc7e1102"
+    },
+    "K_TOOL_INVOKE": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:tool-invoke",
+      "issued_at": "2026-09-23T11:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "e2756fe0bba1076418e08d092a5368a3",
+      "credential_id": "sha256:c2792c84ec911f484d2113a7c2d64edfaf74758a579f0178cf100aac238bf7c8",
+      "signature": "e809daa4f646d80e8ca4a4022912ba454446e1d109033776d922dd45d5cd18570ad272c2278713830d5b6ab51dcf89e73346ee50292696cd4950441652f6dc0c"
+    },
+    "K_TOOL_INVOKE_EARLY": {
+      "record_type": "aps-lab:action-authorization-credential:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "capability": "cap:tool-invoke",
+      "issued_at": "2026-09-23T04:55:00.000Z",
+      "freshness_ms": 600000,
+      "nonce": "e76e42d839042e2d18f5802b61d91b1d",
+      "credential_id": "sha256:3844d5fbc910f3441dfcdfe8ea9263c9a62fed8000ca7e91fdb985a85de10b73",
+      "signature": "23f315d3009679409e7d587b312b98b98670e988c314ab4e62b87e4dd0676d6567fd925e0c01c91e8bc2958c85df10f6950deb59f636ff4fca24205c2da0f400"
+    }
+  },
+  "claims": {
+    "C_CARRIED_ONTO_NEW_INSTANCE": {
+      "record_type": "aps-lab:self-asserted-authority-claim:v0",
+      "asserter": "did:aps:example:ase-agent",
+      "about": "did:aps:example:ase-agent-new-instance",
+      "claimed_grants": [
+        "cap:summarize",
+        "cap:tool-invoke",
+        "ledger:read"
+      ],
+      "asserted_at": "2026-09-22T10:00:00.000Z",
+      "nonce": "37215b2fda455f5f46a12a21f33983ee",
+      "claim_id": "sha256:9a2a6816b17bfa5cb0d00f80d80c44ad7ee981737f552946ef44719ae037b7d5",
+      "signature": "460a4c36d6b01b24d7e51177c4b9ca0073d45599d385826e0853d2043bb82767eb8d2311752e4dd37c1282f36807413be3926762bbc4c3843fc1a1197c67bd00"
+    },
+    "C_ABOUT_ITSELF": {
+      "record_type": "aps-lab:self-asserted-authority-claim:v0",
+      "asserter": "did:aps:example:ase-agent",
+      "about": "did:aps:example:ase-agent",
+      "claimed_grants": [
+        "cap:tool-invoke"
+      ],
+      "asserted_at": "2026-09-22T10:00:00.000Z",
+      "nonce": "afe86ef8bdb052c8d2d5c5254a6f217c",
+      "claim_id": "sha256:c2e2b62a7b62832aad579e663624a5840651d03d596706f450cbc5239c4e46db",
+      "signature": "007288159c2beda4bd367fe4fd5084ab3250c7aebd685ca86c6bfc57415052a17e33d67a23330541745c658fe6c5e1ad7781d1f1a572459ed7dbbe000a0eb90c"
+    }
+  },
+  "consents": {
+    "S_BASE": {
+      "record_type": "aps-lab:capability-consent:v0",
+      "principal": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "consented_capabilities": [
+        "cap:summarize"
+      ],
+      "as_of": "2026-09-19T09:00:00.000Z",
+      "nonce": "23a45a8023cccde5302c2650342de361",
+      "consent_id": "sha256:df6882ccdf0844140b933591af1052065dfac5517fc113e95ca895399d780fdf",
+      "signature": "9ef54059fd21a4cf0f7b93a64048fc17275aace775e0da1b3ea9ef90589badb8414a77a1cf5cc377ed5e021ad9afa151327e969e9b58752196b5b41f74eb3505"
+    },
+    "S_EXTENDED": {
+      "record_type": "aps-lab:capability-consent:v0",
+      "principal": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent",
+      "consented_capabilities": [
+        "cap:summarize",
+        "cap:tool-invoke"
+      ],
+      "as_of": "2026-09-23T06:00:00.000Z",
+      "nonce": "3a79b84a449f2ceaeb3bc0952949a6fd",
+      "consent_id": "sha256:0dcf65df49924c6fb8c26ee4491068163d354af3b6fc75582a2d73b1c5880a2f",
+      "signature": "9a1640e7b7993bcb86dad82ae7f346a3b83b9e1f69f3f07af8d09ad5168a0a50e928bc0ca040a462afcf6f02ab7805fdfd2714f581507ab48e3e833579e0f902"
+    },
+    "S_BASE_COPY": {
+      "record_type": "aps-lab:capability-consent:v0",
+      "principal": "did:aps:example:ase-principal",
+      "subject": "did:aps:example:ase-agent-copy",
+      "consented_capabilities": [
+        "cap:summarize"
+      ],
+      "as_of": "2026-09-19T09:00:00.000Z",
+      "nonce": "7d774e857ad99993145d7a2f102e80e7",
+      "consent_id": "sha256:5847cfdde7c39e751fadadf739f48643b48ac0fad0f0a5d2c86f6690cc04f4d5",
+      "signature": "ba6301f283054ca6cbb091d41625baae20d1d084ce746bfe52f41beeefa6927cc2b95db990b428882d404d5c26ca698de31bc123022b36acdcec50ffbbaddd00"
+    }
+  },
+  "revocations": {
+    "V_EFFECTIVE_EARLY": {
+      "record_type": "aps-lab:revocation-notice:v0",
+      "issuer": "did:aps:example:ase-principal",
+      "delegation_id": "sha256:86d6b39e9df2827cd3518ac3d9b9e45106463656dc592d82c357ce1bc825aa2e",
+      "effective_at": "2026-09-23T06:00:00.000Z",
+      "nonce": "d85a0278664bfd6c7ec8f382c4865a53",
+      "revocation_id": "sha256:315f854dc3c1855c0e383233c18d088002b41c0c45f0f320908cfe7c93f215c9",
+      "signature": "0382a586638e9086ca980539abe469ebe01b07d0a566f01b04b0fa0d4d25920ebea08f47ae30703b5ffbcd3bb3a56c1009c226080c06eba94e93205696363d0a"
+    }
+  }
+}

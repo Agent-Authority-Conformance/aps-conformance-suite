@@ -1,0 +1,178 @@
+{
+  "_placeholder": false,
+  "canonical_sha256": {
+    "chain_read_r1": "a190d2bb5faa33b280e9bf30312e0a57d74fd16e16ab67acd43e5ff68ccc06b0",
+    "chain_read_r1_alt": "2d6ec66641be798fe38eef238af05e0e99ca217bb63160bfd80eaef27b2e3bdf",
+    "chain_write_r2": "29ec95c06b389ff0a6ee122483bd72669a4b3519c488f31ec9b72504d40b8227"
+  },
+  "chains": {
+    "chain_read_r1": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "resource1:read"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "5",
+            "mode": "bounded",
+            "per_action": "5",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-23T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:780daed68c283403e1402410859859269f1e7ad705161ff693b098aba4f12614",
+        "issued_at": "2026-09-23T10:00:00.000Z",
+        "issuer": "did:aps:example:csnu-principal-1",
+        "nonce": "ab8cb5d602a96eeebbc63bc88d3f5ef4",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "e6e9b219f023f6d680647ed29ce8ddc5be16b663b4bbc973504ac4c31fa25cfda8ce8a904f473007798668a36b6b4c80f21904b3afe87c12bb480cb400befe0f",
+        "subject": "did:aps:example:csnu-agent-l",
+        "verification_method": "did:aps:example:csnu-principal-1#key-1",
+        "version": "1.0"
+      }
+    ],
+    "chain_read_r1_alt": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "resource1:read"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "5",
+            "mode": "bounded",
+            "per_action": "5",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-23T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:87e5feec3570c611716665bc8dc074d9cf0dbc715705a884cab91928f26e00a4",
+        "issued_at": "2026-09-23T10:00:00.000Z",
+        "issuer": "did:aps:example:csnu-principal-3",
+        "nonce": "114a75000cc6b47d3cd6fec5a17ab404",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "ce3d1a649fd8bf6e91b1b76aaf9940a97f3cbc0781e0e04f7fb488ab9b607c870fa3ffb45c03a57ced3113797933db1f6fc5de01768242da788f80d424b6ab09",
+        "subject": "did:aps:example:csnu-agent-l",
+        "verification_method": "did:aps:example:csnu-principal-3#key-1",
+        "version": "1.0"
+      }
+    ],
+    "chain_write_r2": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "resource2:write"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "cumulative": "5",
+            "mode": "bounded",
+            "per_action": "5",
+            "unit": "iso4217:USD:minor"
+          },
+          "time": {
+            "not_after": "2026-09-24T00:00:00.000Z",
+            "not_before": "2026-09-23T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:48bcb186fa79eedf8100b93230d866c9b86fbe9c1d7168377929388e331a03b3",
+        "issued_at": "2026-09-23T10:00:00.000Z",
+        "issuer": "did:aps:example:csnu-principal-2",
+        "nonce": "90ad05cb95e013ea5b3ed76d53ee00a2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "ccb5a009e7d528c79bc2ec208bce486eeb862bae7a75b82cc81060a5de4be2f957d9ac77038f978ea84b7fbe62e1971e2370575dae2dd825389b5dc38ac8e80c",
+        "subject": "did:aps:example:csnu-agent-l",
+        "verification_method": "did:aps:example:csnu-principal-2#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "delegation_ids": {
+    "chain_read_r1": "sha256:780daed68c283403e1402410859859269f1e7ad705161ff693b098aba4f12614",
+    "chain_read_r1_alt": "sha256:87e5feec3570c611716665bc8dc074d9cf0dbc715705a884cab91928f26e00a4",
+    "chain_write_r2": "sha256:48bcb186fa79eedf8100b93230d866c9b86fbe9c1d7168377929388e331a03b3"
+  },
+  "now": "2026-09-23T13:00:00.000Z",
+  "seeds": {
+    "derivation": "private_key = sha256(seed_prefix + label); nonce = sha256(seed_prefix + label)[:32]",
+    "key_labels": {
+      "did:aps:example:csnu-agent-l#key-1": "agent-l:v1",
+      "did:aps:example:csnu-principal-1#key-1": "principal-1:v1",
+      "did:aps:example:csnu-principal-2#key-1": "principal-2:v1",
+      "did:aps:example:csnu-principal-3#key-1": "principal-3:v1"
+    },
+    "nonce_labels": {
+      "chain_read_r1": "p1-to-l-read-r1-nonce:v1",
+      "chain_read_r1_alt": "p3-to-l-read-r1-alt-nonce:v1",
+      "chain_write_r2": "p2-to-l-write-r2-nonce:v1"
+    },
+    "seed_prefix": "aps-conformance-suite:csnu:"
+  },
+  "verification_keys": {
+    "did:aps:example:csnu-agent-l#key-1": "f7829bd256005602c6f776da97a68eadfdd3dcdfc8111aacad1e14154800b069",
+    "did:aps:example:csnu-principal-1#key-1": "aaa2386dc9bdd8df1975c700c597f1c0450da9cde2b9a9f9445a2ba53d7e0d1a",
+    "did:aps:example:csnu-principal-2#key-1": "daa72c0e208148b5958a9158f87d975f01a0257aecc904ccbc7c99e9522903ca",
+    "did:aps:example:csnu-principal-3#key-1": "628a1882fafb63b47e25371d928ad1b5e03349ffe12f890eb6a9aa5353de7577"
+  }
+}

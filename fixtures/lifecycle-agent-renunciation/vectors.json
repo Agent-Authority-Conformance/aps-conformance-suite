@@ -1,0 +1,306 @@
+{
+  "profile": "aac-lifecycle-agent-renunciation-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "commit": "7796e22",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Parties and standing > Sponsor or responsible owner",
+      "Lifecycle concepts are separate > Authority lifecycle state > Revocation",
+      "Lifecycle concepts are separate > Verification and evidence > Notice",
+      "Lifecycle concepts are separate > Verification and evidence > Accountability record",
+      "What changes when a person leaves"
+    ],
+    "invariants": [
+      "L3",
+      "L4"
+    ],
+    "cases": [
+      "LC-H-010",
+      "LC-H-011"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no rule for an agent ending its own role. Section 3.3 chain verification is the only draft-03 surface any case touches, and every case records its chain_state separately from its verdict. No vector produces a liability finding and two assert that the result carries none."
+  },
+  "description": "One grant and a set of signed renunciation records from the agent itself. Each vector names the action instant, the revocation answer and the records presented, and asks when the agent's own authority ended.",
+  "clock_reference": "chain.json .clock",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "cases": [
+    {
+      "id": "LAR-H-010-a-baseline-valid",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control. Nothing has been renounced and the chain verifies valid.",
+      "polarity": "positive",
+      "grant": "G_AGENT",
+      "action_at": "T_BEFORE",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "renunciation",
+        "code": "no_renunciation_presented"
+      }
+    },
+    {
+      "id": "LAR-H-010-b-effective-on-delivery-with-the-principal-silent",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "The headline. The agent delivered a renunciation naming no later date and no triggering event, and the principal has recorded nothing at all. The role is over.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that waits for an acceptance record from the principal returns valid and passes this vector wrongly, building in a veto the principal does not have and holding the agent to authority against its own stated will.",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_DELIVERY",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_PLAIN"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_delivery"
+      }
+    },
+    {
+      "id": "LAR-H-010-c-acceptance-recorded-changes-nothing",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "The same renunciation with an acceptance record from the principal also presented. The result and the code are the same as without it: acceptance is not what makes it effective.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_STATED_EFFECTIVE",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_PLAIN",
+        "ACCEPTANCE"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_delivery"
+      }
+    },
+    {
+      "id": "LAR-H-010-d-stated-later-date-not-yet-reached",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "A renunciation naming a later effective date, at an instant after delivery and before that date. The delivery instant is not the effective instant when the record says otherwise.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads delivery as always controlling returns invalid and passes this vector wrongly, ending an agent's authority days before the agent said it would end.",
+      "grant": "G_AGENT",
+      "action_at": "T_BEFORE_STATED_EFFECTIVE",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_LATER_DATE"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "renunciation",
+        "code": "renunciation_not_yet_effective"
+      }
+    },
+    {
+      "id": "LAR-H-010-e-stated-later-date-reached",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "The pair to the vector above, at an instant past the stated date.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_STATED_EFFECTIVE",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_LATER_DATE"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_stated_effective_date"
+      }
+    },
+    {
+      "id": "LAR-H-010-f-effective-on-an-event-not-recorded",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "A renunciation whose own effective date is determined by a named event, with nothing establishing that the event happened.",
+      "polarity": "positive",
+      "grant": "G_AGENT",
+      "action_at": "T_BEFORE_STATED_EFFECTIVE",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_ON_EVENT"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "renunciation",
+        "code": "renunciation_trigger_not_recorded"
+      }
+    },
+    {
+      "id": "LAR-H-010-g-effective-on-an-event-recorded",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "The same renunciation with a record from an attestor with standing establishing the named event, at an instant after it.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_HANDOVER",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_ON_EVENT",
+        "HANDOVER_COMPLETE"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_recorded_event"
+      }
+    },
+    {
+      "id": "LAR-H-010-h-trigger-record-without-standing",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "The same shape with the trigger record from an attestor whose own attestor_role claims the registrar role and whom the registry places elsewhere.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the role off the record body accepts this trigger, returns invalid and passes this vector wrongly.",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_HANDOVER",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_ON_EVENT",
+        "HANDOVER_COMPLETE_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "renunciation",
+        "code": "renunciation_trigger_not_recorded"
+      }
+    },
+    {
+      "id": "LAR-H-010-i-renunciation-from-another-party",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "A correctly signed renunciation of this grant from a party that is not this grant's subject. Only the agent may end its own role.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_DELIVERY",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_FROM_OTHER"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "renunciation",
+        "code": "no_renunciation_presented"
+      }
+    },
+    {
+      "id": "LAR-H-011-a-wrongful-renunciation-is-effective-immediately",
+      "case_id": "LC-H-011",
+      "status": "candidate_against_proposed",
+      "tests": "A renunciation delivered in the face of a recorded agreement not to leave. It reaches the same verdict and the same code as the clean one, and no liability question is answered here.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that holds a breaching renunciation pending a liability determination returns suspended and passes this vector wrongly, conflating whether authority ended with whether ending it that way was a breach.",
+      "grant": "G_AGENT",
+      "action_at": "T_AFTER_DELIVERY",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_WRONGFUL",
+        "NO_EXIT_AGREEMENT"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_delivery"
+      },
+      "assert_no_liability_field": true,
+      "assert_same_code_as": "LAR-H-010-b-effective-on-delivery-with-the-principal-silent"
+    },
+    {
+      "id": "LAR-H-011-b-wrongful-renunciation-with-a-determination-on-record",
+      "case_id": "LC-H-011",
+      "status": "candidate_against_proposed",
+      "tests": "The same renunciation with a later determination also on record. The authority verdict is unchanged, because the determination was never what decided it.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_LIABILITY",
+      "revocation": "active",
+      "presented_events": [
+        "RENOUNCE_WRONGFUL",
+        "NO_EXIT_AGREEMENT",
+        "LIABILITY_DETERMINATION"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "renunciation",
+        "code": "renounced_on_delivery"
+      },
+      "assert_no_liability_field": true,
+      "assert_same_code_as": "LAR-H-010-b-effective-on-delivery-with-the-principal-silent"
+    },
+    {
+      "id": "LAR-CTRL-a-revoked-chain",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. A revoked answer is reported at the chain stage without reaching any renunciation reasoning.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_BEFORE",
+      "revocation": "revoked",
+      "presented_events": [],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED"
+      }
+    },
+    {
+      "id": "LAR-CTRL-b-unknown-revocation",
+      "case_id": "LC-H-010",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. An unknown revocation answer is indeterminate under draft-03 Section 3.3 and surfaces as not_established, never as valid.",
+      "polarity": "negative",
+      "grant": "G_AGENT",
+      "action_at": "T_BEFORE",
+      "revocation": "unknown",
+      "presented_events": [],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN"
+      }
+    }
+  ],
+  "declared_fail_sets": {
+    "defective-requires-principal-acceptance": [
+      "LAR-H-010-b-effective-on-delivery-with-the-principal-silent",
+      "LAR-H-010-d-stated-later-date-not-yet-reached",
+      "LAR-H-010-e-stated-later-date-reached",
+      "LAR-H-010-f-effective-on-an-event-not-recorded",
+      "LAR-H-010-g-effective-on-an-event-recorded",
+      "LAR-H-010-h-trigger-record-without-standing",
+      "LAR-H-011-a-wrongful-renunciation-is-effective-immediately",
+      "LAR-H-011-b-wrongful-renunciation-with-a-determination-on-record"
+    ],
+    "defective-wrongful-renunciation-pends-liability": [
+      "LAR-H-011-a-wrongful-renunciation-is-effective-immediately"
+    ],
+    "defective-ignores-stated-effective-date": [
+      "LAR-H-010-d-stated-later-date-not-yet-reached",
+      "LAR-H-010-e-stated-later-date-reached"
+    ],
+    "defective-trusts-self-declared-role": [
+      "LAR-H-010-h-trigger-record-without-standing"
+    ]
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "_placeholder": false,
+  "profile": "aac-lifecycle-principal-unreachable-v0",
+  "clock": {
+    "T_ISSUE": "2026-09-20T08:00:00.000Z",
+    "T_NOT_AFTER": "2026-09-30T00:00:00.000Z",
+    "T_ORDER": "2026-09-21T09:00:00.000Z",
+    "T_CONFIRM": "2026-09-21T09:30:00.000Z",
+    "T_ACTION": "2026-09-21T10:00:00.000Z",
+    "T_UNREACHABLE_THROUGH": "2026-09-21T12:00:00.000Z",
+    "T_DEADLINE": "2026-09-21T12:00:00.000Z",
+    "T_ACTION_AFTER_DEADLINE": "2026-09-21T13:00:00.000Z",
+    "T_LATE_CONFIRM": "2026-09-21T14:00:00.000Z",
+    "T_LATER_ACTION": "2026-09-21T15:00:00.000Z"
+  },
+  "order_ref": "lpu-order-2026-09-21-a",
+  "verification_keys": {
+    "did:aps:example:lpu-principal#key-1": "ab482977512cbae627fc3a87c705f7d313cb313464e381dd0e0845e9ae2f38b1",
+    "did:aps:example:lpu-agent#key-1": "c052338087a48ec478156a677a6d0b86f91ffabcc479bc7a926c69c6a921e826",
+    "did:aps:example:lpu-ops-desk#key-1": "02a5b0d45e98a2e79a878dcda5f93bcc4332107773a8aa7ccf2232a1146202af",
+    "did:aps:example:lpu-delegate-confirmer#key-1": "b9d88dd0cf5735c5590b3803ca390b3d0671dc66d12b8a44d3eab8e1417254f2",
+    "did:aps:example:lpu-impostor#key-1": "cbc4fd84318898943370a6cf3ccf8e2e41f82bb1b72034edc10064a470f7afc3"
+  },
+  "attestor_role_registry": {
+    "did:aps:example:lpu-ops-desk": "operations-desk",
+    "did:aps:example:lpu-delegate-confirmer": "operations-desk",
+    "did:aps:example:lpu-impostor": "unaffiliated-observer"
+  },
+  "event_standing": {
+    "principal_confirmation": "grant-principal",
+    "unreachability_observation": "operations-desk",
+    "deadline_elapsed_observation": "operations-desk"
+  },
+  "terms_by_chain": {
+    "G_PAYMENT": "G_PAYMENT"
+  },
+  "grant_terms": {
+    "G_PAYMENT": {
+      "record_type": "fixture:grant-terms:v0",
+      "version": "0.1",
+      "delegation_id": "sha256:b3338365fbc357b33ff441a201819b21ee36b6480ae4cc8d504efee7a040da5f",
+      "issuer": "did:aps:example:lpu-principal",
+      "issued_at": "2026-09-20T08:00:00.000Z",
+      "terms": {
+        "confirmation_procedure": {
+          "procedure_id": "lpu-callback-v1",
+          "required_confirmer": "did:aps:example:lpu-principal",
+          "applies_to_action_classes": [
+            "payment_order"
+          ],
+          "deadline": "2026-09-21T12:00:00.000Z"
+        }
+      },
+      "verification_method": "did:aps:example:lpu-principal#key-1",
+      "nonce": "c4fc9d9e5e6b5b6ebd70b2b0957dcc01",
+      "terms_id": "360e308c4019df92bff0b316cc3b5beb6d1b3d7b05752af52b5e2bc6efa81cfb",
+      "signature": "3be51b9f1ee9a19b609cb3f2e73d7706c88fa075ca30b77abd73c3ee9849d0eb57bcdc8dfa58f4c4e6d56954e5c721626bc535a8484307bd81273e0f0d2f9503"
+    }
+  },
+  "events": {
+    "CONFIRM_OK": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_confirmation",
+      "attestor": "did:aps:example:lpu-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lpu-order-2026-09-21-a",
+      "occurred_at": "2026-09-21T09:30:00.000Z",
+      "recorded_at": "2026-09-21T09:30:00.000Z",
+      "payload": {
+        "procedure_id": "lpu-callback-v1",
+        "order_ref": "lpu-order-2026-09-21-a",
+        "confirmed_at": "2026-09-21T09:30:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-principal#key-1",
+      "nonce": "5821d304609af43b1de68a5e61c3b850",
+      "event_id": "f5400e15e66409c0568aea6b5f40b7a3eb208a99e040f71855ce8ea8269cea41",
+      "signature": "30bb1f7257c950b298093e6e433ddbb6324049005242457fde27e8f0ff10551014cbccd2b4ab7ab93aa676a40e7b8cf01a11a5231ae988c0f6a99452706bb308"
+    },
+    "CONFIRM_LATE": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_confirmation",
+      "attestor": "did:aps:example:lpu-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lpu-order-2026-09-21-a",
+      "occurred_at": "2026-09-21T14:00:00.000Z",
+      "recorded_at": "2026-09-21T14:00:00.000Z",
+      "payload": {
+        "procedure_id": "lpu-callback-v1",
+        "order_ref": "lpu-order-2026-09-21-a",
+        "confirmed_at": "2026-09-21T14:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-principal#key-1",
+      "nonce": "0c087b343580bde476acfd5bb0d5e930",
+      "event_id": "b71fc1a9608c914083f6be446041aed5b3ecc786406125dba9bc31a237232285",
+      "signature": "5bc367034f888eb327dd0f6520e5d82820cfba41cb0e1035343547667f327ecd5598994cbf32b2edffa855e4d5a32658881c7f9ccb35689c4a50212bd953d800"
+    },
+    "CONFIRM_OTHER_ORDER": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_confirmation",
+      "attestor": "did:aps:example:lpu-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lpu-order-2026-09-21-b",
+      "occurred_at": "2026-09-21T09:30:00.000Z",
+      "recorded_at": "2026-09-21T09:30:00.000Z",
+      "payload": {
+        "procedure_id": "lpu-callback-v1",
+        "order_ref": "lpu-order-2026-09-21-b",
+        "confirmed_at": "2026-09-21T09:30:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-principal#key-1",
+      "nonce": "e205ab84aa0d662f6eaa692ce5a959a2",
+      "event_id": "cd9e7dcd35115b461f82e84453c8e46bcf97516aed0965c4598a39555a4dd210",
+      "signature": "d2e4f19250fc5249c74d997615f3855e57a97855c91b2fc2011c96b4286fb3617af1d06c0d14213f749f00a7bd01e45e56a86832315cdd19dc20936b31622905"
+    },
+    "CONFIRM_OTHER_PROCEDURE": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_confirmation",
+      "attestor": "did:aps:example:lpu-principal",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lpu-order-2026-09-21-a",
+      "occurred_at": "2026-09-21T09:30:00.000Z",
+      "recorded_at": "2026-09-21T09:30:00.000Z",
+      "payload": {
+        "procedure_id": "lpu-email-reply-v0",
+        "order_ref": "lpu-order-2026-09-21-a",
+        "confirmed_at": "2026-09-21T09:30:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-principal#key-1",
+      "nonce": "4862b00559d544d2f9af18d73737e96c",
+      "event_id": "8d1a947baaa7e69bcdfa11d93351b26d45cfdc27404dadb4d49421a7fbcfe831",
+      "signature": "325c9255847a51c3ad868df1f6ba6440ae0cd7badeb50d35960742a5eafb2fb2ed164418220581f5350b2e2317aba60f8e70185fe3d441b502381b049fab1206"
+    },
+    "CONFIRM_FROM_DELEGATE": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "principal_confirmation",
+      "attestor": "did:aps:example:lpu-delegate-confirmer",
+      "attestor_role": "grant-principal",
+      "subject_ref": "lpu-order-2026-09-21-a",
+      "occurred_at": "2026-09-21T09:30:00.000Z",
+      "recorded_at": "2026-09-21T09:30:00.000Z",
+      "payload": {
+        "procedure_id": "lpu-callback-v1",
+        "order_ref": "lpu-order-2026-09-21-a",
+        "confirmed_at": "2026-09-21T09:30:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-delegate-confirmer#key-1",
+      "nonce": "1b0b9811e9d13fcdf43ef35943fa7fc0",
+      "event_id": "3fd8e22ae6c1659c0b8a480bdb3703281459314ca6ede145c5110a00df4a7f81",
+      "signature": "14131fdac80fae8a65ae1ad20059d5d1970cdb1313ab4add44b92dc5ce3dd6f58b33dd1e915a4c81b5aa510d4d7467d768338bed50d3e2a91cd1bb1f5ee62f0b"
+    },
+    "UNREACHABLE": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "unreachability_observation",
+      "attestor": "did:aps:example:lpu-ops-desk",
+      "attestor_role": "operations-desk",
+      "subject_ref": "did:aps:example:lpu-principal",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "order_ref": "lpu-order-2026-09-21-a",
+        "attempts": 3,
+        "through": "2026-09-21T12:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-ops-desk#key-1",
+      "nonce": "e886d4e6e06e1e8a717b019d2d63ea7a",
+      "event_id": "050a146fc5700740e8bf6ddc84142d76fb7982e06bf611128b4f3165d2f45d44",
+      "signature": "4e3ef37960a008238643d7b99913b1875d00b338fa76c8f82a99b58ef209af727ff93cd44a63a3633fea49e8ba003bcd71a8fc70081351e2801e6740de98a300"
+    },
+    "UNREACHABLE_NO_STANDING": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "unreachability_observation",
+      "attestor": "did:aps:example:lpu-impostor",
+      "attestor_role": "operations-desk",
+      "subject_ref": "did:aps:example:lpu-principal",
+      "occurred_at": "2026-09-21T09:00:00.000Z",
+      "recorded_at": "2026-09-21T09:00:00.000Z",
+      "payload": {
+        "order_ref": "lpu-order-2026-09-21-a",
+        "attempts": 3,
+        "through": "2026-09-21T12:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-impostor#key-1",
+      "nonce": "a256abc7f8bc2556b55926e4546a5faf",
+      "event_id": "22c8b22a0fdbb908db5ca6adc8a3a55579473f0108f568dba483bfc727af1aef",
+      "signature": "750102591153e1b0af9c850b7fd1bb791388a01b65cf1b49ce443a67a981c87ee25c37498f5f3721669bd61bdae9707ae6fea466cfa6b3e5f1d45539f3a9c30e"
+    },
+    "DEADLINE_ELAPSED": {
+      "record_type": "fixture:confirmation-event:v0",
+      "version": "0.1",
+      "event_type": "deadline_elapsed_observation",
+      "attestor": "did:aps:example:lpu-ops-desk",
+      "attestor_role": "operations-desk",
+      "subject_ref": "did:aps:example:lpu-principal",
+      "occurred_at": "2026-09-21T12:00:00.000Z",
+      "recorded_at": "2026-09-21T12:00:00.000Z",
+      "payload": {
+        "order_ref": "lpu-order-2026-09-21-a",
+        "deadline": "2026-09-21T12:00:00.000Z"
+      },
+      "verification_method": "did:aps:example:lpu-ops-desk#key-1",
+      "nonce": "4b78feaa3772a4298345e13173d46973",
+      "event_id": "3dd4df85a8fc0db552c75f9f6fa8784a5bcaf090767638cb880e669550d87c1d",
+      "signature": "dbc73d01cd2c22c3b5a087266806679ab29ececaf56f52633ade993602271b1af4b7bc3b3e2e1e05d4503f8c54014cadcb22944d1e905747b4d71090619d1a0c"
+    }
+  },
+  "chains": {
+    "G_PAYMENT": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpu-principal",
+        "subject": "did:aps:example:lpu-agent",
+        "verification_method": "did:aps:example:lpu-principal#key-1",
+        "issued_at": "2026-09-20T08:00:00.000Z",
+        "nonce": "b9addc78cb2030e0d102fac9379e747a",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "payments:submit",
+              "statements:read"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T08:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:b3338365fbc357b33ff441a201819b21ee36b6480ae4cc8d504efee7a040da5f",
+        "signature": "b562ce254baa9b9c4bd34953298726e6dcefbed5257ff3e40ec94ac71bfa7df4ea16794f5d269d2711d16742c79839c34e175c06db077c79e8f8c59b2127fe03"
+      }
+    ]
+  }
+}

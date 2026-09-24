@@ -1,0 +1,325 @@
+{
+  "profile": "aac-lifecycle-root-authority-succession-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "commit": "7796e22",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Parties and standing > Principal binding",
+      "Lifecycle concepts are separate > Authority and dependencies > Target binding",
+      "What changes when a person leaves"
+    ],
+    "invariants": [
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "open_questions": [
+      "Office vacancy and succession"
+    ],
+    "cases": [
+      "LC-C-007"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no subject-binding-mode rule and defines no office-holder registry. Section 3.3 chain verification is the only draft-03 surface any case touches, and every case records its chain_state separately from its verdict."
+  },
+  "description": "One delegation shape written three ways, bound to an office, bound to a person, and silent about which. The office then changes hands, and one office goes vacant. Each vector names the grant, the actor, the action instant, the revocation answer and the office records presented.",
+  "clock_reference": "chain.json .clock",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "cases": [
+    {
+      "id": "LRAS-C-007-a-role-bound-original-occupant",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the role-bound mode. The delegation names an office as its subject and the registry places this actor in that office at the action instant.",
+      "polarity": "positive",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_A_RECORD"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "binding",
+        "code": "role_bound_current_occupant"
+      }
+    },
+    {
+      "id": "LRAS-C-007-b-role-bound-new-occupant-needs-no-reissuance",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "The person filling the office changed and the same delegation, unchanged and unreissued, verifies for the new occupant.",
+      "polarity": "positive",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats every delegation as identity bound returns invalid and passes this vector wrongly, forcing a reissuance sweep on an administrative role that was never meant to depend on who holds it.",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-b",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_A_RECORD",
+        "HOLDER_B_RECORD"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "binding",
+        "code": "role_bound_current_occupant"
+      }
+    },
+    {
+      "id": "LRAS-C-007-c-role-bound-former-occupant",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "The former occupant acting after turnover. The office-holder record that covers this instant names somebody else, which is a positive finding, not a missing one.",
+      "polarity": "negative",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_A_RECORD",
+        "HOLDER_B_RECORD"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "binding",
+        "code": "not_the_current_office_holder"
+      }
+    },
+    {
+      "id": "LRAS-C-007-d-role-bound-with-no-holder-record",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "A role-bound delegation with no trustworthy record of who currently occupies the office. Nothing is invalid here and nothing is established either.",
+      "polarity": "negative",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-b",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "binding",
+        "code": "office_holder_not_established"
+      }
+    },
+    {
+      "id": "LRAS-C-007-e-holder-record-without-standing",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "A correctly signed office-holder record whose own attestor_role member claims the registrar role, from an attestor the registry places elsewhere.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the role off the record body instead of an attestor-role registry accepts this record, returns valid and passes this vector wrongly.",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-b",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_B_RECORD_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "binding",
+        "code": "office_holder_not_established"
+      }
+    },
+    {
+      "id": "LRAS-C-007-f-identity-bound-subject-acting",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control for the identity-bound mode. The named identity acts under its own delegation.",
+      "polarity": "positive",
+      "grant": "G_IDENTITY_BOUND",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_A_RECORD"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "binding",
+        "code": "identity_bound_subject_acting"
+      }
+    },
+    {
+      "id": "LRAS-C-007-g-identity-bound-turnover-does-not-transfer",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "The same office turnover against an identity-bound delegation. Turnover does nothing for the new occupant and a fresh chain is required.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that treats every delegation as role bound returns valid and passes this vector wrongly, quietly handing a departing person's own grant to whoever backfilled the title.",
+      "grant": "G_IDENTITY_BOUND",
+      "actor": "did:aps:example:lras-holder-b",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_B_RECORD"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "binding",
+        "code": "identity_bound_no_transfer"
+      }
+    },
+    {
+      "id": "LRAS-C-007-h-silent-binding-with-the-named-subject-acting",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "A delegation that declares no binding mode, with the very subject it names doing the acting. The missing term does not have to be resolved to answer this.",
+      "polarity": "positive",
+      "grant": "G_SILENT",
+      "actor": "did:aps:example:lras-office-treasurer",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "active",
+      "presented_events": [],
+      "expected": {
+        "verdict": "valid",
+        "stage": "binding",
+        "code": "actor_is_the_named_subject"
+      }
+    },
+    {
+      "id": "LRAS-C-007-i-silent-binding-with-a-new-occupant",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "The headline. The same silent delegation, and an actor who is the office's current occupant but not the delegation's named subject. Which mode applies is a term the record does not carry.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "Two defective configurations pick a default here, one in each direction, and both fail this vector. That is the point: the proposed text states no default, so any implementation that supplies one silently is answering a question the record left open.",
+      "grant": "G_SILENT",
+      "actor": "did:aps:example:lras-holder-b",
+      "action_at": "T_ACTION_UNDER_B",
+      "revocation": "active",
+      "presented_events": [
+        "HOLDER_A_RECORD",
+        "HOLDER_B_RECORD"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "binding",
+        "code": "subject_binding_mode_not_declared"
+      }
+    },
+    {
+      "id": "LRAS-C-007-j-office-vacancy",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "A role-bound delegation over an office with a recorded vacancy covering the action instant. Office vacancy is an open question in the proposed text and the verdict states the gap rather than filling it.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that keeps the last known holder current through a vacancy returns valid and passes this vector wrongly, letting a departed occupant keep exercising the office.",
+      "grant": "G_ROLE_BOUND_VACANT",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_IN_VACANCY",
+      "revocation": "active",
+      "presented_events": [
+        "AUDITOR_HOLDER_A_RECORD",
+        "AUDITOR_VACANCY"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "binding",
+        "code": "office_holder_not_established"
+      }
+    },
+    {
+      "id": "LRAS-C-007-k-same-office-before-the-vacancy",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "The pair to the vector above. The same two records at an instant the vacancy window does not cover.",
+      "polarity": "positive",
+      "grant": "G_ROLE_BOUND_VACANT",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "active",
+      "presented_events": [
+        "AUDITOR_HOLDER_A_RECORD",
+        "AUDITOR_VACANCY"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "binding",
+        "code": "role_bound_current_occupant"
+      }
+    },
+    {
+      "id": "LRAS-CTRL-a-revoked-chain",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. A revoked answer is reported at the chain stage without reaching any binding reasoning.",
+      "polarity": "negative",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "revoked",
+      "presented_events": [
+        "HOLDER_A_RECORD"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED"
+      }
+    },
+    {
+      "id": "LRAS-CTRL-b-unknown-revocation",
+      "case_id": "LC-C-007",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. An unknown revocation answer is indeterminate under draft-03 Section 3.3 and surfaces as not_established, never as valid.",
+      "polarity": "negative",
+      "grant": "G_ROLE_BOUND",
+      "actor": "did:aps:example:lras-holder-a",
+      "action_at": "T_ACTION_UNDER_A",
+      "revocation": "unknown",
+      "presented_events": [
+        "HOLDER_A_RECORD"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN"
+      }
+    }
+  ],
+  "declared_fail_sets": {
+    "defective-silent-binding-defaults-to-role": [
+      "LRAS-C-007-i-silent-binding-with-a-new-occupant"
+    ],
+    "defective-silent-binding-defaults-to-identity": [
+      "LRAS-C-007-i-silent-binding-with-a-new-occupant"
+    ],
+    "defective-role-bound-needs-reissuance": [
+      "LRAS-C-007-a-role-bound-original-occupant",
+      "LRAS-C-007-b-role-bound-new-occupant-needs-no-reissuance",
+      "LRAS-C-007-c-role-bound-former-occupant",
+      "LRAS-C-007-d-role-bound-with-no-holder-record",
+      "LRAS-C-007-e-holder-record-without-standing",
+      "LRAS-C-007-j-office-vacancy",
+      "LRAS-C-007-k-same-office-before-the-vacancy"
+    ],
+    "defective-identity-bound-follows-the-office": [
+      "LRAS-C-007-f-identity-bound-subject-acting",
+      "LRAS-C-007-g-identity-bound-turnover-does-not-transfer"
+    ],
+    "defective-vacancy-defaults-to-last-known-holder": [
+      "LRAS-C-007-c-role-bound-former-occupant",
+      "LRAS-C-007-j-office-vacancy"
+    ],
+    "defective-trusts-self-declared-role": [
+      "LRAS-C-007-e-holder-record-without-standing"
+    ]
+  }
+}

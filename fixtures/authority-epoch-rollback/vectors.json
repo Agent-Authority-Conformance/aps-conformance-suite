@@ -1,0 +1,425 @@
+{
+  "profile": "aps-authority-epoch-rollback-v0",
+  "version": "1",
+  "status": "candidate",
+  "description": "Twelve candidate cases for authority rollback and fencing. A revocation is recorded at epoch 7; a restored snapshot or a lagging replica presents epoch-6 state in which the chain is active; a stale fencing-token holder tries to publish that epoch-6 state after a higher token was issued; and a recorded revocation is later withdrawn by a correction record. Every case is a candidate against proposed text, not a conformance claim.",
+  "proposed_source": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+    "short_commit": "5c1bf09",
+    "documents": ["AUTHORITY-LIFECYCLE.md", "OPEN-QUESTIONS.md"],
+    "note": "The proposed text is the thing under test. It is not cited here as an external source for any factual claim, and nothing in this family is a conformance verdict about it."
+  },
+  "external_sources": {
+    "fencing_token": {
+      "title": "How to do distributed locking",
+      "author": "Martin Kleppmann",
+      "date": "2016-02-08",
+      "url": "https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html",
+      "quote": "a fencing token is simply a number that increases (e.g. incremented by the lock service) every time a client acquires the lock",
+      "second_quote": "Note this requires the storage server to take an active role in checking tokens, and rejecting any writes on which the token has gone backwards.",
+      "used_for": "The write-fencing group's rule: a write carrying a token lower than the highest token already seen is refused, and an equal token is not backwards."
+    },
+    "withdrawal_is_a_separate_record": {
+      "title": "RFC 5280, Internet X.509 Public Key Infrastructure Certificate and CRL Profile, section 5.3.1",
+      "url": "https://www.rfc-editor.org/rfc/rfc5280.txt",
+      "quote": "The removeFromCRL (8) reasonCode value may only appear in delta CRLs and indicates that a certificate is to be removed from a CRL because either the certificate expired or was removed from hold.",
+      "second_quote": "All other reason codes may appear in any CRL and indicate that the specified certificate should be considered revoked.",
+      "used_for": "Evidence that a deployed revocation system represents a withdrawal as its own explicitly coded record rather than as a deletion, and confines it to release from hold. RFC 5280 is about certificates. The translation into agent-authority terms is this fixture's, and nothing here claims RFC 5280 governs AI agents."
+    }
+  },
+  "parameters": {
+    "revocation_epoch": 7,
+    "pre_revocation_epoch": 6,
+    "current_fencing_token": 42,
+    "stale_fencing_token": 41,
+    "higher_fencing_token": 43,
+    "epoch_meaning": "A monotonically increasing generation number on the published authority state. It is a fixture parameter, not an APS field: no delegation, revocation or store in either reference SDK carries one.",
+    "fencing_token_meaning": "A monotonically increasing number handed to whichever holder currently owns the right to publish authority state, per the Kleppmann source above. Also a fixture parameter, with no field or argument for it in either SDK."
+  },
+  "control_policies": {
+    "reference": {
+      "axis": "none, this is the policy under test",
+      "groups": ["epoch_rollback", "write_fencing", "revocation_correction"],
+      "must_match": "every case"
+    },
+    "latest-read": {
+      "defect": "Reads whatever state view is presented and never compares its epoch against what the verifier has already observed. Retained records are not consulted.",
+      "axis": "epoch comparison",
+      "groups": ["epoch_rollback"],
+      "declared_failures": ["AER-03-restored-snapshot-with-retained-record", "AER-04-lagging-replica-epoch-only"]
+    },
+    "unfenced-writer": {
+      "defect": "Accepts every authority-state publication write regardless of the token it carries.",
+      "axis": "fencing token on authority-mutating writes",
+      "groups": ["write_fencing"],
+      "declared_failures": ["AER-08-stale-token-write-refused"]
+    },
+    "correction-as-deletion": {
+      "defect": "Treats an accepted withdrawal as removing the revocation from the record set, so the delegation reads active again.",
+      "axis": "what an accepted withdrawal does to the record set",
+      "groups": ["revocation_correction"],
+      "declared_failures": ["AER-11-withdrawal-does-not-restore-the-chain"]
+    }
+  },
+  "cases": [
+    {
+      "id": "AER-01-epoch7-current-control",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "positive control",
+      "description": "The verifier has observed epoch 7 and is presented the epoch-7 view, which holds the signed root revocation. Nothing is stale. This establishes that the revocation record verifies and the chain fails at the root's own index before any rollback is introduced.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Invariants, L1. Revoking an ancestor invalidates the authority that depends on it",
+        "quote": "Once a verifier can establish, under the applicable status and freshness rules, that an ancestor delegation is revoked, a chain that depends on that ancestor is invalid."
+      },
+      "draft03_anchor": {
+        "section": "3.3, Chain Verification",
+        "quote": "revocation state for every member",
+        "note": "The verdict on this case is plain draft-03 section 3.3 chain verification. Nothing about epochs is exercised here."
+      },
+      "verifier": { "observed_epoch": 7, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-7",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "high_water_mark_after": 7
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-02-epoch6-before-revocation-control",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "positive control",
+      "description": "The verifier has observed nothing later than epoch 6 and is presented the epoch-6 view. The chain is valid. Epoch-6 state is not defective in itself: it is stale only relative to a verifier that has already observed epoch 7, which is what the next two cases add and this one deliberately does not.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Lifecycle concepts are separate, Verification and evidence, Status observation",
+        "quote": "Current authority and observed authority can differ."
+      },
+      "draft03_anchor": {
+        "section": "3.3, Chain Verification",
+        "quote": "revocation state for every member",
+        "note": "Plain chain verification with an active revocation answer."
+      },
+      "verifier": { "observed_epoch": 6, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-6",
+      "expected": {
+        "resolver_answer": "active",
+        "state": "valid",
+        "failure_code": null,
+        "failure_index": null,
+        "high_water_mark_after": 6
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-03-restored-snapshot-with-retained-record",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "negative",
+      "description": "A restored snapshot presents epoch-6 state to a verifier that has observed epoch 7 and retained the records it saw there. The retained signed revocation still verifies against the root, so the answer is revoked and the chain is invalid. A restore does not revive revoked authority.",
+      "proposed_text": {
+        "document": "OPEN-QUESTIONS.md",
+        "section_name": "Authority rollback",
+        "quote": "An authority epoch, or an append-only record of revocations that a restore must replay, would stop a restore from reviving revoked authority."
+      },
+      "draft03_anchor": {
+        "section": "3.5, Cascade Revocation and 3.5.1, Revocation Evidence",
+        "quote": "Revocation is irreversible.",
+        "note": "Section 3.5.1 also separates \"whether a delegation is currently valid, answerable from state\" from \"whether and why a revocation occurred, verifiable from signed records\", and says the two MUST NOT collapse into one mutable lookup. The verdict on this case follows from those two statements. What draft-03 does not state is how a verifier decides that a state source is behind, which is the epoch mechanism this fixture supplies."
+      },
+      "verifier": { "observed_epoch": 7, "retained_records_from_view": "epoch-7" },
+      "publication": null,
+      "presented_view": "epoch-6",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "high_water_mark_after": 7,
+        "presented_view_answer_if_unfenced": "active"
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": true
+    },
+    {
+      "id": "AER-04-lagging-replica-epoch-only",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "negative",
+      "description": "A lagging replica presents epoch-6 state to a verifier that knows epoch 7 exists but no longer holds the records it saw there. The verifier can establish that the answer in front of it is behind, and cannot establish a revocation from records. The result is indeterminate, not invalid and not valid: not established rather than false.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Invariants, L7. Unknown revocation state is not active",
+        "quote": "A revocation answer that is unavailable or stale is indeterminate. It does not become active, and the evidence does not claim a revocation that never happened."
+      },
+      "draft03_anchor": {
+        "section": "3.3, Chain Verification",
+        "quote": "An unavailable or stale revocation result is indeterminate.",
+        "note": "Section 3.3 fixes the verdict once staleness is established, and also states that a caller MUST NOT collapse indeterminate into valid. It does not define how staleness is established. The epoch comparison that establishes it here is the candidate part."
+      },
+      "verifier": { "observed_epoch": 7, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-6",
+      "expected": {
+        "resolver_answer": "unknown",
+        "state": "indeterminate",
+        "failure_code": "REVOCATION_UNKNOWN",
+        "failure_index": 0,
+        "high_water_mark_after": 7,
+        "presented_view_answer_if_unfenced": "active"
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": true
+    },
+    {
+      "id": "AER-05-forward-move-is-not-fenced",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "positive",
+      "description": "The verifier has observed epoch 7 and is presented the epoch-8 view. A later epoch is read normally and the high-water mark advances to 8. The gate fences state that is behind, not state that merely differs.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Lifecycle concepts are separate, Authority lifecycle state, Authority epoch",
+        "quote": "Where a system uses generations, separates current authority from stale authority surviving in sessions, queues, replicas, snapshots or restored state."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": 7, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-8",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "high_water_mark_after": 8
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": true
+    },
+    {
+      "id": "AER-06-first-contact-no-prior-observation",
+      "group": "epoch_rollback",
+      "status": "candidate_against_proposed",
+      "role": "boundary, outcome not determined by the proposed text",
+      "description": "A verifier with no prior observation of any epoch is presented the epoch-6 view. It has nothing to compare against, so this fixture reads the view as current and the chain verifies valid. A fail-closed deployment could as well refuse to read any state source it cannot place against a known epoch and return indeterminate. Neither the proposed text nor draft-03 chooses between those, so the outcome here is this fixture's declared choice and is excluded from the property tally.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Lifecycle concepts are separate, Verification and evidence, Status observation",
+        "quote": "What authority state a verifier could establish, from which source, at what time and with what freshness."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": null, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-6",
+      "expected": {
+        "resolver_answer": "active",
+        "state": "valid",
+        "failure_code": null,
+        "failure_index": null,
+        "high_water_mark_after": 6
+      },
+      "unconstrained_by_source": true,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-07-current-token-write-accepted",
+      "group": "write_fencing",
+      "status": "candidate_against_proposed",
+      "role": "positive control",
+      "description": "The holder of the current fencing token 42 publishes the epoch-7 view. The write is accepted and the verifier, which has observed no epoch of its own, reads what the publication store now holds and finds the chain revoked. Every case in this group gives the verifier no observed epoch on purpose, so that the write-side gate is the only thing that can refuse the stale state and the epoch-comparison axis cannot mask a defect in the fencing axis.",
+      "proposed_text": {
+        "document": "OPEN-QUESTIONS.md",
+        "section_name": "Authority rollback",
+        "quote": "Restoring a backup, a snapshot or a lagging replica can bring back authority state from before a revocation."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": null, "retained_records_from_view": null },
+      "publication": {
+        "seed": null,
+        "writes": [
+          { "token": 42, "view": "epoch-7", "expected": { "accepted": true, "reason": null } }
+        ]
+      },
+      "presented_view": "$published",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "published_epoch_after": 7
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-08-stale-token-write-refused",
+      "group": "write_fencing",
+      "status": "candidate_against_proposed",
+      "role": "negative",
+      "description": "Token 42 publishes the epoch-7 view. The holder of token 41, which was superseded, then tries to publish the epoch-6 view. That write is refused because its token has gone backwards, the publication store still holds epoch 7, and the chain stays invalid. An implementation that does not check tokens accepts the write, publishes pre-revocation state, and the same chain verifies valid.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Invariants, L11. No silent authority resurrection",
+        "quote": "When the authority path an implementation selected becomes invalid, it should not quietly fall back to another stored grant unless that fallback was itself explicitly authorized."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": null, "retained_records_from_view": null },
+      "publication": {
+        "seed": null,
+        "writes": [
+          { "token": 42, "view": "epoch-7", "expected": { "accepted": true, "reason": null } },
+          { "token": 41, "view": "epoch-6", "expected": { "accepted": false, "reason": "stale_fencing_token" } }
+        ]
+      },
+      "presented_view": "$published",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "published_epoch_after": 7,
+        "unfenced_writer_would_publish_epoch": 6,
+        "unfenced_writer_would_return": "valid"
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": true
+    },
+    {
+      "id": "AER-09-higher-token-write-accepted",
+      "group": "write_fencing",
+      "status": "candidate_against_proposed",
+      "role": "positive",
+      "description": "After token 42 publishes epoch 7, the holder of token 43 publishes epoch 8. The write is accepted. The gate refuses writes whose token went backwards, not writes from a token it has not seen before.",
+      "proposed_text": {
+        "document": "OPEN-QUESTIONS.md",
+        "section_name": "Authority rollback",
+        "quote": "We have not specified either or tested what a verifier should return after a restore."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": null, "retained_records_from_view": null },
+      "publication": {
+        "seed": null,
+        "writes": [
+          { "token": 42, "view": "epoch-7", "expected": { "accepted": true, "reason": null } },
+          { "token": 43, "view": "epoch-8", "expected": { "accepted": true, "reason": null } }
+        ]
+      },
+      "presented_view": "$published",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "published_epoch_after": 8
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-10-equal-token-retry-accepted",
+      "group": "write_fencing",
+      "status": "candidate_against_proposed",
+      "role": "positive",
+      "description": "The holder of token 43 publishes epoch 8 twice. The second write carries the same token, which has not gone backwards, so it is accepted and is idempotent. The source phrase the gate implements is about tokens going backwards, and an equal token is the same holder retrying.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Lifecycle concepts are separate, Authority lifecycle state, Authority epoch",
+        "quote": "Where a system uses generations, separates current authority from stale authority surviving in sessions, queues, replicas, snapshots or restored state."
+      },
+      "draft03_anchor": null,
+      "verifier": { "observed_epoch": null, "retained_records_from_view": null },
+      "publication": {
+        "seed": null,
+        "writes": [
+          { "token": 43, "view": "epoch-8", "expected": { "accepted": true, "reason": null } },
+          { "token": 43, "view": "epoch-8", "expected": { "accepted": true, "reason": null } }
+        ]
+      },
+      "presented_view": "$published",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "published_epoch_after": 8
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-11-withdrawal-does-not-restore-the-chain",
+      "group": "revocation_correction",
+      "status": "candidate_against_proposed",
+      "role": "negative",
+      "description": "At epoch 8 the revoker signs a record withdrawing the epoch-7 revocation. The withdrawal is accepted as a record: it verifies, it names the revocation it withdraws, and its signer is the party the revocation names as revoker. It is not a deletion. The epoch-7 revocation record is still held, still verifies byte for byte, and the chain is still invalid. Continuity after this correction would need a fresh grant, which this fixture does not mint.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Invariants, L3. Reauthorization creates new authority",
+        "quote": "Continuity after revocation means a new grant from a principal who currently holds authority. It never means reversing the revocation or re-parenting the old chain."
+      },
+      "draft03_anchor": {
+        "section": "3.5, Cascade Revocation",
+        "quote": "Revocation is irreversible.",
+        "note": "Section 3.6 lists the same rule as INV-5, Revocation Irreversibility. What draft-03 does not define is any record for withdrawing a revocation, or what a verifier does with one. The withdrawal record here is fixture-local for that reason."
+      },
+      "verifier": { "observed_epoch": 8, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-8-corrected",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "high_water_mark_after": 8,
+        "withdrawal": { "accepted": true, "reason": null },
+        "revocation_still_held": true,
+        "revocation_still_verifies": true,
+        "correction_as_deletion_would_return": "valid"
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    },
+    {
+      "id": "AER-12-withdrawal-without-standing-is-not-a-correction",
+      "group": "revocation_correction",
+      "status": "candidate_against_proposed",
+      "role": "negative",
+      "description": "The same withdrawal, genuinely signed, but by the root delegation's subject rather than by the party the revocation names as revoker. The signature verifies and the standing does not, so the record is refused as a correction with a named reason rather than ignored in silence. The revocation stands and the chain is invalid.",
+      "proposed_text": {
+        "document": "AUTHORITY-LIFECYCLE.md",
+        "section_name": "Lifecycle concepts are separate, Parties and standing, Lifecycle standing",
+        "quote": "Who may suspend, revoke, replace or reaffirm an authority artifact. This is not always the issuer."
+      },
+      "draft03_anchor": {
+        "section": "3.5, Cascade Revocation",
+        "quote": "Any delegation MAY be revoked by its issuer.",
+        "note": "Draft-03 names the issuer as the party who may revoke, and the SDKs enforce revoker equals the target's issuer. Who may withdraw a revocation is not stated anywhere in draft-03. This fixture requires the withdrawal's signer to be the revocation's revoker, which is a choice, not a rule read from the text."
+      },
+      "verifier": { "observed_epoch": 8, "retained_records_from_view": null },
+      "publication": null,
+      "presented_view": "epoch-8-unauthorized-correction",
+      "expected": {
+        "resolver_answer": "revoked",
+        "state": "invalid",
+        "failure_code": "REVOKED",
+        "failure_index": 0,
+        "high_water_mark_after": 8,
+        "withdrawal": { "accepted": false, "reason": "withdrawal_signer_is_not_the_revoker" },
+        "revocation_still_held": true,
+        "revocation_still_verifies": true
+      },
+      "unconstrained_by_source": false,
+      "establishes_epoch_property": false
+    }
+  ]
+}

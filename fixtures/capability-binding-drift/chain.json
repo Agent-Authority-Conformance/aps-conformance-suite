@@ -1,0 +1,263 @@
+{
+  "_placeholder": false,
+  "profile": "aps-capability-binding-drift-v0",
+  "generated_at": "2026-09-23",
+  "generator": "fixtures/capability-binding-drift/mint.ts",
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_prefix": "aps-conformance-suite:capability-binding-drift",
+  "now": "2026-09-23T12:00:00.000Z",
+  "metadata_digest_domain": "APS-CBD-TOOL-METADATA-V0",
+  "identities": {
+    "principal": "did:aps:example:cbd-principal",
+    "acting_agent": "did:aps:example:cbd-agent",
+    "tool_attestor": "did:aps:example:cbd-tool-attestor",
+    "other_attestor": "did:aps:example:cbd-other-attestor"
+  },
+  "verification_keys": {
+    "did:aps:example:cbd-principal#key-1": "7ca6c4477a03f595fcfcdb96f6cce0d2531334a5c556d4b31b579e339972596a"
+  },
+  "attestor_keys": {
+    "did:aps:example:cbd-tool-attestor": "e8563c7ecbf7cab86aaf3a4d507f4aa91c8032cb4b757e92b988284b049e450f",
+    "did:aps:example:cbd-other-attestor": "05e7d524ed64db5eb7636bf4dbd9d4046f3590455219f5a06a3f6f59b07e782c"
+  },
+  "tool": {
+    "name": "ledger.export",
+    "target": "https://ledger.example/v1/export",
+    "trusted_attestor": "did:aps:example:cbd-tool-attestor",
+    "implementations": {
+      "v1": "{\"build\":\"ledger-export@1.4.2\",\"endpoint\":\"https://ledger.example/v1/export\",\"method\":\"POST\"}",
+      "v2": "{\"build\":\"ledger-export@2.0.0\",\"endpoint\":\"https://ledger.example/v1/export\",\"method\":\"POST\"}"
+    },
+    "implementation_digests": {
+      "v1": "sha256:cb91c4f70e08ba3fdef5379f01933536551613583367a8da9dde9d760b5b710b",
+      "v2": "sha256:f54fa3ee2f8297fe2cd4ba9473ded1f88997327e021ed4a761d10f2c93ef0b4a"
+    },
+    "metadata": {
+      "v1": {
+        "description": "Export a ledger range as CSV.",
+        "permissions": [
+          "ledger:read"
+        ],
+        "schema": {
+          "properties": {
+            "range": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "range"
+          ],
+          "type": "object"
+        }
+      },
+      "v2": {
+        "description": "Export a ledger range as CSV, optionally purging it after export.",
+        "permissions": [
+          "ledger:delete",
+          "ledger:read"
+        ],
+        "schema": {
+          "properties": {
+            "purge": {
+              "type": "boolean"
+            },
+            "range": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "range"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    "metadata_digests": {
+      "v1": "sha256:8b1a8aa99925f5a4c92932073d228fa6fb39d85b12e5892ee5385c53c75fbcf0",
+      "v2": "sha256:4c3debbce668aacdd572352b9b37983b0b9cd3ec697060e26e694e04b1b949aa"
+    }
+  },
+  "pins": {
+    "grant_tool": "tool:ledger.export",
+    "implementation_pin_prefix": "tool:ledger.export:impl:",
+    "metadata_pin_prefix": "tool:ledger.export:meta:"
+  },
+  "delegations": {
+    "pinned": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:cbd-principal",
+      "subject": "did:aps:example:cbd-agent",
+      "verification_method": "did:aps:example:cbd-principal#key-1",
+      "issued_at": "2026-09-23T09:00:00.000Z",
+      "nonce": "85612cac67b7f8849d07aefd3768e361",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "ledger:read",
+            "tool:ledger.export",
+            "tool:ledger.export:impl:sha256:cb91c4f70e08ba3fdef5379f01933536551613583367a8da9dde9d760b5b710b",
+            "tool:ledger.export:meta:sha256:8b1a8aa99925f5a4c92932073d228fa6fb39d85b12e5892ee5385c53c75fbcf0"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-23T09:00:00.000Z",
+          "not_after": "2026-09-24T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:7facb3c38311a76b3de743c3c45ea58a51379b062b41c55606db0d2f357554bf",
+      "signature": "67a96d72a2518961bacc1e0ff3b69a14519dfac879c73b8ff760ab7f505c2459b474435656dec5e9ae240bda580c99bb05995f47c22cf4a1f2e24baf239fdc08"
+    },
+    "impl_pin_only": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:cbd-principal",
+      "subject": "did:aps:example:cbd-agent",
+      "verification_method": "did:aps:example:cbd-principal#key-1",
+      "issued_at": "2026-09-23T09:00:00.000Z",
+      "nonce": "4529c59e56ad95584666d9da341256f7",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "ledger:read",
+            "tool:ledger.export",
+            "tool:ledger.export:impl:sha256:cb91c4f70e08ba3fdef5379f01933536551613583367a8da9dde9d760b5b710b"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-23T09:00:00.000Z",
+          "not_after": "2026-09-24T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:3dda3b4a2b248ec86afef6175bea54dfb749e5e4cb0ad1a9ca04345977115d5a",
+      "signature": "26fafb85071c5c77a78ac77caff915fb02e336fa0d7ef39b2033003d8492c79ced67298f02524e52c4eb4cdf7068323c586b8ffb6f52ea55ce55d84bd906080b"
+    },
+    "unpinned": {
+      "record_type": "aps:authority-delegation:v1",
+      "version": "1.0",
+      "parent_delegation_id": null,
+      "issuer": "did:aps:example:cbd-principal",
+      "subject": "did:aps:example:cbd-agent",
+      "verification_method": "did:aps:example:cbd-principal#key-1",
+      "issued_at": "2026-09-23T09:00:00.000Z",
+      "nonce": "7d97a8ab6fa535ad10ed375535a20eca",
+      "authority": {
+        "scope": {
+          "profile": "aps-hierarchical-v1",
+          "grants": [
+            "ledger:read",
+            "tool:ledger.export"
+          ]
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "depth": {
+          "remaining": 0
+        },
+        "time": {
+          "not_before": "2026-09-23T09:00:00.000Z",
+          "not_after": "2026-09-24T00:00:00.000Z"
+        },
+        "reputation": {
+          "profile": "aps-score-0-100-v1",
+          "ceiling": 100
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        },
+        "reversibility": {
+          "profile": "aps-tci-v1",
+          "ceiling": "irreversible"
+        }
+      },
+      "delegation_id": "sha256:7bbf59e0e61135a7fbc2b3602226be22b2b9a66f12ca4bbd83e7460dbfd0af07",
+      "signature": "65d77f9e03e36a8bd540cfb756402b7c3ce7b8211fe84868565779082babd76db07b04214d31e858a2dc36471da7cf953b1af58c0c1ab78192a77523cd4e110c"
+    }
+  },
+  "registry_entries": {
+    "v1": {
+      "toolName": "ledger.export",
+      "implementationHash": "sha256:cb91c4f70e08ba3fdef5379f01933536551613583367a8da9dde9d760b5b710b",
+      "attestorId": "did:aps:example:cbd-tool-attestor",
+      "verifiedAt": "2026-09-23T10:00:00.000Z",
+      "signature": "1a1272cca7d2f82bade5904f98e7f73c87e3df169bdc68e25d4453422a824c6535a6b61152570f48f302f414b12cc31ca54da5434fe65b6214b8b745de612e01"
+    },
+    "v2": {
+      "toolName": "ledger.export",
+      "implementationHash": "sha256:f54fa3ee2f8297fe2cd4ba9473ded1f88997327e021ed4a761d10f2c93ef0b4a",
+      "attestorId": "did:aps:example:cbd-tool-attestor",
+      "verifiedAt": "2026-09-23T10:00:00.000Z",
+      "signature": "f7636a5b48fab8d669e97a127fddd9e878d4ee408a3ad1593345f0a4a1e8cf16ca44ce619a6cc13405d65402d4b5e283a42cee6d03f84b681e9e2d72688e1207"
+    },
+    "v1_other_attestor": {
+      "toolName": "ledger.export",
+      "implementationHash": "sha256:cb91c4f70e08ba3fdef5379f01933536551613583367a8da9dde9d760b5b710b",
+      "attestorId": "did:aps:example:cbd-other-attestor",
+      "verifiedAt": "2026-09-23T10:00:00.000Z",
+      "signature": "cebffd10c5beb947d937b8d3ab6b642014ae068eb26910be8378cc7dc33b3b28e036ad5e0a77526e7c74786be86624605c3df1284c2e335fea8d696b8db65c07"
+    }
+  },
+  "action": {
+    "input": {
+      "profile": "aps-action-ref-v2",
+      "agent_id": "did:aps:example:cbd-agent",
+      "action_type": "ledger.export",
+      "target": "https://ledger.example/v1/export",
+      "payload_ref": "53228af4e1fad267328372ff94f94c3c99a43454c4b157339e09bf6d2162197a",
+      "scope_required": [
+        "ledger:read"
+      ],
+      "issued_at": "2026-09-23T11:00:00.000Z",
+      "nonce": "aa403c764146fc245f934d4252f31aea"
+    },
+    "payload": {
+      "range": "2026-Q2"
+    },
+    "payload_ref": "53228af4e1fad267328372ff94f94c3c99a43454c4b157339e09bf6d2162197a",
+    "action_ref": "1766ae648689d0e495c0cd7a8919578fddc73e828fd5a45bb9c4d18a1fd4e0d3"
+  }
+}

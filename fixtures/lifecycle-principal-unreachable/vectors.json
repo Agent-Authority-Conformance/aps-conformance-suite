@@ -1,0 +1,312 @@
+{
+  "profile": "aac-lifecycle-principal-unreachable-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "commit": "7796e22",
+    "version_in_document": "0.1.2-draft",
+    "concepts": [
+      "Lifecycle concepts are separate > Decisions and effects > Approval",
+      "Lifecycle concepts are separate > Decisions and effects > Authorization decision",
+      "Lifecycle concepts are separate > Verification and evidence > Status observation",
+      "Lifecycle concepts are separate > Verification and evidence > Notice",
+      "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+    ],
+    "invariants": [
+      "L7"
+    ],
+    "cases": [
+      "LC-H-012"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no per-action confirmation rule and defines no unreachability record. Section 3.3 chain verification is the only draft-03 surface any case touches. Every vector except the two chain-stage controls answers active to the revocation resolver, so a not_established verdict in this family is never an unknown revocation state."
+  },
+  "description": "One grant whose terms gate one action class behind an agreed confirmation procedure with the principal, and a set of signed records about whether that procedure was completed. Each vector names the action class, the order, the action instant, the revocation answer and the records presented.",
+  "clock_reference": "chain.json .clock",
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "cases": [
+    {
+      "id": "LPU-H-012-a-confirmation-completed",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control. The agreed procedure was completed for this order before the action instant, by the confirmer the grant's terms name.",
+      "polarity": "positive",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_OK"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-b-unreachable-principal-not-established",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "The headline. Repeated attempts to reach the principal are on record and the confirmation step was never completed. The action is neither authorized by default nor denied, and the revocation answer in this vector is active.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "Two defective configurations manufacture a decision here, one reading the unreachability as a denial and the other reading silence past the deadline as approval. Both fail this vector or its deadline sibling. The underlying rule makes neither choice.",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "UNREACHABLE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-c-deadline-passed-with-no-answer",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "The agreed deadline has passed and nothing was confirmed. Time passing is not the principal answering.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads silence past a deadline as approval returns valid and passes this vector wrongly, submitting an order the principal never confirmed.",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION_AFTER_DEADLINE",
+      "revocation": "active",
+      "presented_events": [
+        "UNREACHABLE",
+        "DEADLINE_ELAPSED"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-d-confirmation-after-the-action",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "A confirmation for this order whose own confirmed_at is after this action instant. It does not reach backward to cover an action taken before it.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that accepts any confirmation it can find for the order returns valid and passes this vector wrongly, letting a later answer authorize an earlier act.",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION_AFTER_DEADLINE",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_LATE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_after_action"
+      }
+    },
+    {
+      "id": "LPU-H-012-e-the-same-confirmation-covers-a-later-action",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "The pair to the vector above. The same confirmation record, at an instant it does cover.",
+      "polarity": "positive",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_LATER_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_LATE"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-f-confirmation-for-a-different-order",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "An authentic confirmation from the right confirmer naming a different order. The binding has to match, not merely exist.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that checks the signature and not the binding returns valid and passes this vector wrongly, carrying a confirmation across from an unrelated order.",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_OTHER_ORDER",
+        "UNREACHABLE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-g-confirmation-under-a-different-procedure",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "A confirmation for the right order through a procedure other than the one the terms agreed. What makes the order effective is compliance with the agreed procedure.",
+      "polarity": "negative",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_OTHER_PROCEDURE",
+        "UNREACHABLE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-h-confirmation-from-another-party",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "A correctly signed confirmation, naming the right order and the right procedure, from a party the terms do not name as the confirmer.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that accepts any authentic confirmation returns valid and passes this vector wrongly, completing a procedure with somebody other than the party it named.",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "CONFIRM_FROM_DELEGATE",
+        "UNREACHABLE"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-i-unreachability-record-without-standing",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "The unreachability observation from an attestor the registry does not place in the operations role. The verdict is unchanged, because the observation was never what decided it.",
+      "polarity": "negative",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "UNREACHABLE_NO_STANDING"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "confirmation",
+        "code": "confirmation_procedure_not_completed"
+      }
+    },
+    {
+      "id": "LPU-H-012-j-action-class-outside-the-procedure",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "An action class the confirmation procedure does not cover, while the principal is unreachable. Nothing is gated and the grant is exercisable.",
+      "polarity": "positive",
+      "grant": "G_PAYMENT",
+      "action_class": "statement_read",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_events": [
+        "UNREACHABLE"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "stage": "confirmation",
+        "code": "no_confirmation_required"
+      }
+    },
+    {
+      "id": "LPU-CTRL-a-revoked-chain",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control. A revoked answer is reported at the chain stage without reaching any confirmation reasoning.",
+      "polarity": "negative",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "revoked",
+      "presented_events": [
+        "CONFIRM_OK"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED"
+      }
+    },
+    {
+      "id": "LPU-CTRL-b-unknown-revocation",
+      "case_id": "LC-H-012",
+      "status": "candidate_against_proposed",
+      "tests": "Chain-stage control, and the boundary this family cares about. An unknown revocation answer is indeterminate under draft-03 Section 3.3 and reports at the chain stage. Every other vector answers active, so their not_established verdicts are a different finding entirely.",
+      "polarity": "negative",
+      "grant": "G_PAYMENT",
+      "action_class": "payment_order",
+      "order_ref": "lpu-order-2026-09-21-a",
+      "action_at": "T_ACTION",
+      "revocation": "unknown",
+      "presented_events": [
+        "CONFIRM_OK"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN"
+      }
+    }
+  ],
+  "declared_fail_sets": {
+    "defective-silence-after-deadline-is-approval": [
+      "LPU-H-012-c-deadline-passed-with-no-answer"
+    ],
+    "defective-unreachable-is-denial": [
+      "LPU-H-012-b-unreachable-principal-not-established",
+      "LPU-H-012-c-deadline-passed-with-no-answer",
+      "LPU-H-012-f-confirmation-for-a-different-order",
+      "LPU-H-012-g-confirmation-under-a-different-procedure",
+      "LPU-H-012-h-confirmation-from-another-party"
+    ],
+    "defective-accepts-confirmation-from-any-party": [
+      "LPU-H-012-h-confirmation-from-another-party"
+    ],
+    "defective-ignores-confirmation-binding": [
+      "LPU-H-012-f-confirmation-for-a-different-order",
+      "LPU-H-012-g-confirmation-under-a-different-procedure"
+    ],
+    "defective-accepts-confirmation-after-the-action": [
+      "LPU-H-012-d-confirmation-after-the-action"
+    ]
+  }
+}

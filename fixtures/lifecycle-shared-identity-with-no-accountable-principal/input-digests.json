@@ -1,0 +1,19 @@
+{
+  "family": "lifecycle-shared-identity-with-no-accountable-principal",
+  "algorithm": "sha256 over RFC 8785 (JCS) canonicalization of each case input",
+  "produced_by": "fixtures/lifecycle-shared-identity-with-no-accountable-principal/gen-digests.mjs, via npm agent-passport-system canonicalizeJCS",
+  "inputs": {
+    "LC-I-010-a": "b002d2abf288baa4ecb2e43bfc4f5aed8c449057be65d7ad36344ed53cf4a7c8",
+    "LC-I-010-b": "f16062ced43c422ebf165c2494fa96f5091864e02da2c9b94dc4664fc7b98396",
+    "LC-I-010-c": "d60b7f13c4755ceb74a3bedb205d2db83550e9f0cf499c93f9218bac935e392e",
+    "LC-I-010-d": "9fd7d1b96d5fa669fb7b580848b9435a802b1f44116b7688a559fa83d1bd5c72",
+    "LC-I-010-e": "0968898334b5786a83eb3c244eacbf72d198fc0815d737730ca723902e50c5ee",
+    "LC-I-011-a": "5123353514503789d6320afc1d1bc07e19f82e304f133f2c8e40580d3c96a168",
+    "LC-I-011-b": "0d24b36cfeb43429896085a8c8788d7dee0c29e8e6feac568070c3bedaf3c775",
+    "LC-I-011-c": "1c706cbd70b7745882bcb764a67641563a93445c6d5fddb7770f033ddc956c62",
+    "LC-I-011-d": "8f25341a062502b0fdfe9f1a75bda760da4f885a5f16b39df17f1eb2f0069f15",
+    "LC-I-012-a": "6ea7f208b4216df8262be1cd7301d3d8a843281a020c03a7b2c47db85d10e136",
+    "LC-I-012-b": "79ff57329308b8e3db961a332acb7d1e361cfebcc7cb294c83d03b6d1c38b7e0",
+    "LC-I-012-c": "38867fc154ef3e3a7dde3cfacbde25b7cfab5a2040e1a52c72ce03adeba8d5a3"
+  }
+}

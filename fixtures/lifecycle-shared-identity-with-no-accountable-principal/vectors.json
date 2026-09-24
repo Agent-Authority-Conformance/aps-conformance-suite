@@ -1,0 +1,354 @@
+{
+  "family": "lifecycle-shared-identity-with-no-accountable-principal",
+  "version": "0.1.0",
+  "status": "candidate_against_proposed",
+  "label": "candidate_against_proposed",
+  "description": "Candidate cases for the Shared identity with no accountable principal section of CASES.md. One question in three shapes: when an action arrives under a valid, currently authorized identity that more than one person can drive, what does the record set establish about who is accountable for it. Every case returns two independent verdicts, one for authority and one for accountability, because the section exists to keep them apart. The harness is protocol neutral. It has no APS type, no network call, no randomness and no wall-clock read: every instant in this file is a literal.",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "2bf5c7e",
+    "commit_note": "CASES.md v0.2 at 2bf5c7e, which descends from 7796e22. AUTHORITY-LIFECYCLE.md and OPEN-QUESTIONS.md are unchanged from 5c1bf09 at this commit.",
+    "version_at_commit": "AUTHORITY-LIFECYCLE.md 0.1.2-draft, CASES.md 0.2-draft",
+    "status_of_the_text": "proposed. AUTHORITY-LIFECYCLE.md names the Accountability record concept and states that the grouping and every entry in it are proposed with no public case testing them. All three cases in this CASES.md section carry Status: proposed, and each says that none of L1 to L12 names shared identity as a distinct authority-lifecycle problem."
+  },
+  "cases_source": {
+    "document": "CASES.md",
+    "section": "Shared identity with no accountable principal",
+    "note": "Each vector's case_id is the CASES.md case it was built from. Vector ids embed that case id."
+  },
+  "determinism": {
+    "randomness": "none",
+    "wall_clock_reads": "none",
+    "seeds": "No seed is consumed. Nothing here is generated: every field of every input is a literal in this file, and both runners are pure functions over those literals.",
+    "canonicalization": "RFC 8785 JCS. input-digests.json pins, per case, the SHA-256 of the RFC 8785 canonicalization of that case's input object. Both runners recompute every digest through a published SDK's JCS primitive (npm canonicalizeJCS, PyPI canonicalize_jcs) and fail on a mismatch."
+  },
+  "verdicts": {
+    "vocabulary": ["valid", "invalid", "not_established", "not_yet_effective", "suspended", "restricted"],
+    "authority_verdict": "The state of the authority the acting identity holds. Every case in this family has a valid chain on purpose: the point of the section is that a perfectly good chain says nothing about who is accountable.",
+    "accountability_verdict": "Whether the record set establishes which individual is accountable for this action. valid means it does. not_established means it does not, which is different from naming the wrong person and different from the action being unauthorized.",
+    "anomaly": "A third, non-verdict field. It records whether an unscoped all-powerful identity was used for a task on its own enumerated required-list or off it. not_applicable where the acting identity is not that kind of identity."
+  },
+  "policies": {
+    "reference": "accountability-distinct-from-authentication",
+    "negative_controls": [
+      {
+        "id": "N1-authenticated-is-accountable",
+        "defect": "Treats a valid, currently authorized authenticated identity as the answer to who is accountable. This is the implementation the whole section is about. It has exactly one defect and it is broad: it never separates which credential authenticated an action from who is accountable for it, so it is right only where the acting identity really is bound to one individual. It fails every other case in the family, including the two where its verdict happens to coincide with the reference but its recorded reason names the credential instead of the checkout or the later attribution that actually answered the question.",
+        "declared_fail_set": [
+          "LC-I-010-b",
+          "LC-I-010-c",
+          "LC-I-010-d",
+          "LC-I-010-e",
+          "LC-I-011-a",
+          "LC-I-011-b",
+          "LC-I-011-c",
+          "LC-I-011-d",
+          "LC-I-012-a",
+          "LC-I-012-b"
+        ]
+      },
+      {
+        "id": "N2-shared-flag-only",
+        "defect": "Notices that the identity is shared and looks for a checkout record, but reads the presence of any checkout as an answer. It ignores whether the checkout's interval covers the action, and it ignores a second overlapping checkout. Everything else, including the attribution records and the anomaly flag, it handles as the reference does.",
+        "declared_fail_set": ["LC-I-010-d", "LC-I-010-e"]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "LC-I-010-a",
+      "case_id": "LC-I-010",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "An individually bound identity answers both questions at once",
+      "description": "The control. The acting identity is bound to one individual, so which credential authenticated the action and who is accountable for it are the same answer, and nothing in the record set has to reconcile them. Every other vector in this family differs from this one in exactly one stated way.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "user-ana", "kind": "individual" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r1"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "valid", "reason": "individual_identity_bound", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-010-b",
+      "case_id": "LC-I-010",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A valid shared credential is uninformative about who acted",
+      "description": "The family core, and the first vector a naive implementation passes wrongly. The credential is shared, valid and currently authorized, and no checkout or attribution record exists. The authority verdict is valid and nothing about the action is unauthorized. Accountability is not_established: the record set does not say who was driving. That is a different failure from a revoked or invalid credential and it needs its own answer rather than being folded into either.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "svc-admin", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r1"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "shared_identity_attribution_pending_or_external", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-010-c",
+      "case_id": "LC-I-010",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "A checkout record from a party with standing reconstitutes individual accountability",
+      "description": "The compensating mechanism. One checkout record, signed by a party with standing to issue them, binds an individual to the shared identity over an interval containing the action. Accountability is established, and the reason names the checkout rather than the credential, so a reader of the record can tell which of the two answered the question.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Accountability record",
+          "Lifecycle concepts are separate > Parties and standing > Lifecycle standing"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "svc-admin", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": [],
+        "checkouts": [
+          { "individual": "user-ana", "from": "2026-09-20T10:45:00Z", "to": "2026-09-20T11:30:00Z", "signer_key_id": "broker-a", "signer_has_standing": true }
+        ],
+        "attribution_records": [],
+        "record_sha256": "r1"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "valid", "reason": "individual_bound_by_checkout", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-010-d",
+      "case_id": "LC-I-010",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A checkout that does not cover the action does not attribute it",
+      "description": "The same checkout as LC-I-010-c, ended at 10:50, with the action at 11:00, outside it. A checkout record existing for this identity is not the same fact as this action falling inside one. Accountability is not_established with a reason that says so, rather than naming the individual who happened to hold the credential at some other time.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "svc-admin", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": [],
+        "checkouts": [
+          { "individual": "user-ana", "from": "2026-09-20T10:45:00Z", "to": "2026-09-20T10:50:00Z", "signer_key_id": "broker-a", "signer_has_standing": true }
+        ],
+        "attribution_records": [],
+        "record_sha256": "r1"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "no_checkout_covers_the_action", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-010-e",
+      "case_id": "LC-I-010",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "Two overlapping checkouts do not resolve to one of them",
+      "description": "Two checkout records, both with standing, both covering the action, naming different individuals. The broker was supposed to make the identity exclusive for the interval and did not. Accountability is not_established rather than resolving to the earlier, the later, or the longer. Picking one would name a person the records do not establish acted, which is worse than saying nothing.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Accountability record",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "svc-admin", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": [],
+        "checkouts": [
+          { "individual": "user-ana", "from": "2026-09-20T10:45:00Z", "to": "2026-09-20T11:30:00Z", "signer_key_id": "broker-a", "signer_has_standing": true },
+          { "individual": "user-ben", "from": "2026-09-20T10:55:00Z", "to": "2026-09-20T11:10:00Z", "signer_key_id": "broker-a", "signer_has_standing": true }
+        ],
+        "attribution_records": [],
+        "record_sha256": "r1"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "overlapping_checkouts", "anomaly": "not_applicable" }
+    },
+
+    {
+      "id": "LC-I-011-a",
+      "case_id": "LC-I-011",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "At the first boundary the record says attribution is pending or external, not that the identity is accountable",
+      "description": "A public-facing identity operated by more than one person at an outside firm through shared tooling. An action goes out and, at this boundary, nothing the identity produced says which person sent it. Accountability is not_established. The reason is the wording this family proposes for the record itself: attribution is pending or external, which is a statement about where the answer will come from rather than a claim that there is no answer.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "brand-account", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "publish:post" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r2"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "shared_identity_attribution_pending_or_external", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-011-b",
+      "case_id": "LC-I-011",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "An external investigation closes the gap as a new record referencing the first",
+      "description": "Days later the operating firm's own review establishes which individual acted, and records it, signed by a party with standing, referencing the first boundary's record by digest. Accountability is established at this second boundary. The first record is not rewritten and still says attribution was pending: what changed is that a second record exists. Establishing who acted was an investigative fact the original action's record could not have supplied.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Accountability record",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence attestor"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-25T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "brand-account", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "publish:post" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [
+          { "kind": "external_investigation", "individual": "operator-3", "recorded_at": "2026-09-24T09:00:00Z", "signer_key_id": "operating-firm", "signer_has_standing": true, "references_record_sha256": "r2" }
+        ],
+        "record_sha256": "r2"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "valid", "reason": "attribution_established_by_later_record", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-011-c",
+      "case_id": "LC-I-011",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "An attribution from a party with no declared standing establishes nothing",
+      "description": "The same attribution naming the same individual, genuinely signed, by a party the record set does not place in a position to make it. Someone asserting who acted is not the same fact as someone with standing establishing it. Accountability stays not_established, and the reason names the standing gap rather than restating that the identity is shared.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence attestor"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-25T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "brand-account", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "publish:post" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [
+          { "kind": "external_investigation", "individual": "operator-3", "recorded_at": "2026-09-24T09:00:00Z", "signer_key_id": "bystander", "signer_has_standing": false, "references_record_sha256": "r2" }
+        ],
+        "record_sha256": "r2"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "attribution_without_standing", "anomaly": "not_applicable" }
+    },
+    {
+      "id": "LC-I-011-d",
+      "case_id": "LC-I-011",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "An attribution that references a different record does not attach to this one",
+      "description": "A genuine attribution with standing, referencing a record digest that is not this boundary's. A later record closes a gap in the record it names and no other, which is what keeps later findings attached to specific earlier receipts instead of floating free over everything the identity ever did. Accountability stays not_established.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-25T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "brand-account", "kind": "shared" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "publish:post" },
+        "privileged_task_list": [],
+        "checkouts": [],
+        "attribution_records": [
+          { "kind": "external_investigation", "individual": "operator-3", "recorded_at": "2026-09-24T09:00:00Z", "signer_key_id": "operating-firm", "signer_has_standing": true, "references_record_sha256": "r9" }
+        ],
+        "record_sha256": "r2"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "attribution_does_not_reference_the_record", "anomaly": "not_applicable" }
+    },
+
+    {
+      "id": "LC-I-012-a",
+      "case_id": "LC-I-012",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "An unscoped all-powerful identity used for a task only it can perform is on-list, and still has no accountable individual",
+      "description": "The control for the anomaly axis. The acting identity is the unscoped one that can do everything, and the task is on its own enumerated list of things nothing else can do, so reaching for it is the intended use and the anomaly flag says on_enumerated_list. Accountability is still not_established, because the identity is reached for by whoever holds its credentials and no individual is bound to it by design. The two axes move independently and this vector is where that shows.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "account-root", "kind": "privileged_unscoped" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "account:close" },
+        "privileged_task_list": ["account:close", "account:change-settings", "billing:activate-iam-access"],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r3"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "shared_identity_attribution_pending_or_external", "anomaly": "on_enumerated_list" }
+    },
+    {
+      "id": "LC-I-012-b",
+      "case_id": "LC-I-012",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "The same identity used for an ordinary task is off-list and gets its own flag",
+      "description": "LC-I-012-a with the task changed to an ordinary one that any scoped identity could have performed. Nothing about the authority verdict or the accountability verdict changes, and that is the point: what changes is the anomaly flag, which is the separate evidence trail LC-I-012 asks for. An implementation that audits this exactly like a scoped identity's action records a materially weaker statement about who is accountable without marking it as weaker.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "account-root", "kind": "privileged_unscoped" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": ["account:close", "account:change-settings", "billing:activate-iam-access"],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r3"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "not_established", "reason": "shared_identity_attribution_pending_or_external", "anomaly": "off_enumerated_list" }
+    },
+    {
+      "id": "LC-I-012-c",
+      "case_id": "LC-I-012",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A scoped individual identity performing the same ordinary task is neither anomalous nor unattributed",
+      "description": "The same task as LC-I-012-b, performed by an identity bound to one individual. Accountability is established and the anomaly flag is not_applicable. The three-way comparison with LC-I-012-a and LC-I-012-b pins that the flag comes from the acting identity being unscoped and unbound, not from the task, and that the accountability verdict comes from the binding, not from the flag.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Accountability record"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "chain_state": "valid",
+        "identity": { "identity_id": "user-ana", "kind": "individual" },
+        "action": { "at": "2026-09-20T11:00:00Z", "task": "records:update" },
+        "privileged_task_list": ["account:close", "account:change-settings", "billing:activate-iam-access"],
+        "checkouts": [],
+        "attribution_records": [],
+        "record_sha256": "r3"
+      },
+      "expected": { "authority_verdict": "valid", "accountability_verdict": "valid", "reason": "individual_identity_bound", "anomaly": "not_applicable" }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "family": "lifecycle-evidence-and-record",
+  "algorithm": "sha256 over RFC 8785 (JCS) canonicalization of each case input",
+  "produced_by": "fixtures/lifecycle-evidence-and-record/gen-digests.mjs, via npm agent-passport-system canonicalizeJCS",
+  "inputs": {
+    "LC-G-005-a": "9ac3b38d532fcad638d1791a4bf1a6d91b51917396d161a2965a1ab6f5397130",
+    "LC-G-005-b": "5c330de41f5308bcf951948c65e20a6f282b36929345389c079e9b7009ab2385",
+    "LC-G-005-c": "2a9a5228beb8d742a98819fafa7db2ad97884e429d08506f5e54c19116ef825c",
+    "LC-G-005-d": "5087f786a3ed35597b5c56e9e8f1b8c004a5105906eb0c6cb4ed97290308c47c",
+    "LC-G-005-e": "adeb742b27e8e5650416803fe59cc39ca85fc220324758f5f76fe4e0063490b6",
+    "LC-G-005-f": "b459e8d070f7efaaee41386b1dcb1bc795a3756812a9c9f796fe6379a1b8adb0",
+    "LC-G-006-a": "4344aa5ee7047aac6ddd15fa2d7b1bf3b31606643a14556b1a20a8240168b2d4",
+    "LC-G-006-b": "bf124e7fc6642f663dad629051f8303192f330036fa32f12dedc144c3313cf74",
+    "LC-G-006-c": "5cd9133f82e8d2b38cef8adce65fd44f7e1acfde2d5e2424f75d4822a8b38828",
+    "LC-G-006-d": "3892c5fcd95844943aa60caf1620d471e264aebc83bfe637d0512e0b8f5f3312",
+    "LC-G-006-e": "7e8a76a1707d67d746c5e9cf651f7694438f168745a5c703dfb7dcd79625c35d",
+    "LC-G-006-f": "4644778bdad4fe1fbba7243986cc560a3b578d30dbca73b493985bd70810dba2"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "profile": "aps-chain-selection-no-union-v0",
+  "status": "candidate_against_proposed",
+  "description": "One leaf agent L holds independently rooted AuthorityDelegationV1 chains: one granting read of resource 1, one granting write of resource 2, each with an equal bounded spend ceiling of 5 in the same unit, plus a third chain that also grants read of resource 1 and is used only by the fallback vectors. Each vector names the one chain the action selected, the full set of chains the agent has stored, and a revocation answer for every stored chain. Every vector is decided under four named policies: single_chain, the conformant one, and union_pooled, union_axis and silent_fallback, three models of specific non-conformant behaviors this family exists to discriminate. Only single_chain's column is a claim about the reference SDKs. See README.md, sections 'Decision policies' and 'What a pass establishes'.",
+  "proposed_text": {
+    "document": "aeoess/agent-authority-lifecycle, AUTHORITY-LIFECYCLE.md",
+    "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+    "sections": {
+      "L5": "L5. Independent chains are not combined",
+      "L11": "L11. No silent authority resurrection"
+    }
+  },
+  "policies": {
+    "single_chain": "Conformant. Verify the selected chain alone; require every needed grant to be covered by a grant on that chain's leaf; reserve the amount against that chain alone with InMemoryAuthorityBudgetLedger. Nothing else the agent holds is read.",
+    "union_pooled": "Non-conformant model, authored by this fixture. Verify every stored chain, pool the leaf scope grants of the valid ones as a set, sum their per_action ceilings in the action's unit, and decide against the pool.",
+    "union_axis": "Non-conformant model, authored by this fixture. union_pooled, except that scope coverage splits each pooled grant at its last colon and unions the resource prefixes and the action suffixes as independent axes, so the pool admits a resource-and-action pair neither chain ever granted.",
+    "silent_fallback": "Non-conformant model, authored by this fixture. single_chain on the selected chain; if that does not return valid, retry the agent's other stored chains in stored order and return the first valid result, reporting no switch of its own."
+  },
+  "cases": [
+    {
+      "id": "CSNU-01-accept-read-r1-in-scope-in-budget",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "positive control",
+      "change_from_control": "control",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "valid", "reason": "RESERVED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "valid", "reason": "RESERVED", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-02-accept-write-r2-in-scope-in-budget",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "positive control",
+      "change_from_control": "control",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_write_r2",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource2:write"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "valid", "reason": "RESERVED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "valid", "reason": "RESERVED", "chain": "chain_write_r2", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-03-accept-read-r1-at-its-own-ceiling",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "positive control",
+      "change_from_control": "CSNU-01 with the amount raised from 3 to 5, exactly the selected chain's own ceiling",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "5" },
+      "expected": {
+        "single_chain": { "state": "valid", "reason": "RESERVED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "valid", "reason": "RESERVED", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-04-reject-write-of-resource1-selected-read-r1",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-01 with the needed grant changed from resource1:read to resource1:write, which no chain the agent holds ever granted",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:write"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "scope_not_covered" },
+        "union_pooled": { "state": "invalid", "reason": "scope_not_covered" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "invalid", "reason": "scope_not_covered", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-05-reject-write-of-resource1-selected-write-r2",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-02 with the needed grant changed from resource2:write to resource1:write, keeping the action verb the selected chain grants and changing only the resource",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_write_r2",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:write"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "scope_not_covered" },
+        "union_pooled": { "state": "invalid", "reason": "scope_not_covered" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "invalid", "reason": "scope_not_covered", "chain": "chain_write_r2", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-06-reject-needs-both-chains-grants-selected-read-r1",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-01 with resource2:write added to the needed grants, so the action needs one grant from each chain at once",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:read", "resource2:write"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "scope_not_covered" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "invalid", "reason": "scope_not_covered", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-07-reject-amount-8-above-read-r1-ceiling-5",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-03 with the amount raised from 5 to 8, which is above the selected chain's own ceiling of 5 and below the two chains' ceilings summed, 10",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "8" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-08-reject-amount-8-above-write-r2-ceiling-5",
+      "status": "candidate_against_proposed",
+      "tests": ["L5"],
+      "draft03": { "section": "3.3 Chain Verification", "lines": "594-596" },
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-02 with the amount raised from 3 to 8, the same single change as CSNU-07 made to CSNU-03, on the other chain",
+      "stored_chains": ["chain_read_r1", "chain_write_r2"],
+      "selected_chain": "chain_write_r2",
+      "revocation": { "chain_read_r1": "active", "chain_write_r2": "active" },
+      "action": { "scope_needed": ["resource2:write"], "unit": "iso4217:USD:minor", "amount": "8" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "invalid", "reason": "PER_ACTION_EXCEEDED", "chain": "chain_write_r2", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-09-accept-read-r1-with-second-read-r1-chain-also-stored",
+      "status": "candidate_against_proposed",
+      "tests": ["L11"],
+      "draft03": null,
+      "role": "positive control",
+      "change_from_control": "control for the fallback vectors: the agent now stores a second, independently rooted chain that also grants resource1:read, and nothing is revoked",
+      "stored_chains": ["chain_read_r1", "chain_read_r1_alt"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "active", "chain_read_r1_alt": "active" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "valid", "reason": "RESERVED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "valid", "reason": "RESERVED", "chain": "chain_read_r1", "switched": false }
+      }
+    },
+    {
+      "id": "CSNU-10-reject-selected-chain-revoked-fallback-would-rescue-it",
+      "status": "candidate_against_proposed",
+      "tests": ["L11"],
+      "draft03": null,
+      "role": "negative control a naive implementation passes wrongly",
+      "change_from_control": "CSNU-09 with exactly one change: the selected chain's revocation answer becomes revoked. The other stored chain would still cover the action, which is what makes a quiet switch to it possible",
+      "stored_chains": ["chain_read_r1", "chain_read_r1_alt"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "revoked", "chain_read_r1_alt": "active" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "REVOKED" },
+        "union_pooled": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "union_axis": { "state": "valid", "reason": "RESERVED_POOLED" },
+        "silent_fallback": { "state": "valid", "reason": "RESERVED", "chain": "chain_read_r1_alt", "switched": true }
+      }
+    },
+    {
+      "id": "CSNU-11-reject-both-stored-chains-revoked",
+      "status": "candidate_against_proposed",
+      "tests": ["L11"],
+      "draft03": null,
+      "role": "negative control isolating the fallback",
+      "change_from_control": "CSNU-10 with exactly one change: the other stored chain is revoked too, so silent_fallback has nothing to switch to and stops diverging from single_chain",
+      "stored_chains": ["chain_read_r1", "chain_read_r1_alt"],
+      "selected_chain": "chain_read_r1",
+      "revocation": { "chain_read_r1": "revoked", "chain_read_r1_alt": "revoked" },
+      "action": { "scope_needed": ["resource1:read"], "unit": "iso4217:USD:minor", "amount": "3" },
+      "expected": {
+        "single_chain": { "state": "invalid", "reason": "REVOKED" },
+        "union_pooled": { "state": "invalid", "reason": "no_valid_chain" },
+        "union_axis": { "state": "invalid", "reason": "no_valid_chain" },
+        "silent_fallback": { "state": "invalid", "reason": "REVOKED", "chain": "chain_read_r1", "switched": false }
+      }
+    }
+  ]
+}

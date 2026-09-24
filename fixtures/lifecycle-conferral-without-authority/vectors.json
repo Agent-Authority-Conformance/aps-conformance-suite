@@ -1,0 +1,228 @@
+{
+  "profile": "aps-lifecycle-conferral-without-authority-v0",
+  "status_label": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "2bf5c7e",
+    "commit_note": "later than 5c1bf09. AUTHORITY-LIFECYCLE.md is unchanged between the two",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "version_in_document": "0.1.2-draft",
+    "sections": [
+      "Lifecycle concepts are separate > Authority and dependencies > Delegated authority",
+      "Lifecycle concepts are separate > Authority and dependencies > Authority path and dependency",
+      "Lifecycle concepts are separate > Parties and standing > Issuer standing",
+      "Invariants > L5. Independent chains are not combined",
+      "Invariants > L4. A successor does not inherit the predecessor's delegation tree"
+    ]
+  },
+  "description": "Holding a scope is not the right to confer it. An agent holds a grant that verifies valid, is unrevoked, is inside its time window and is wide in scope, and its grant declares no remaining delegation hop. A child it issues must not verify, even when that child is strictly narrower in every other facet. The variant whose grant does declare conferral authority verifies within narrowing, and is still refused when it widens. Every vector is labelled candidate_against_proposed: the lifecycle claim these vectors are built to test is the proposed text's, not draft-03's. Seven of the ten vectors additionally exercise a rule draft-pidlisnyi-aps-03 Section 3.2 does state, cited per vector in draft03_basis. CWA-07 is the one vector the proposed text and draft-03 answer differently, and it is marked.",
+  "clock": {
+    "now": "2026-09-22T12:00:00.000Z",
+    "note": "One verification instant for every vector. Every record in every presented chain is unrevoked and inside its own time window at this instant, so no reject below can be explained by time or by revocation."
+  },
+  "verifier_configurations": {
+    "reference-verifier": "verifyAuthorityDelegationChain / verify_authority_delegation_chain, called directly on the presented chain with the fixture's key resolver, trust root and revocation resolver. The runner transports inputs and compares outputs, and the SDK decides.",
+    "defective-verifier-narrowing-without-depth": "Enforces monotonic narrowing on what the child receives and never asks who may create one: the reference result with every DEPTH_* failure dropped. This is the implementation the proposed text says is the failure to block.",
+    "defective-verifier-scope-coverage-only": "Verifies each record's signature and checks only that every child scope grant is covered by some parent grant. The shape of a deployment that reads scope and treats the rest of the authority vector as metadata."
+  },
+  "declared_fail_sets": {
+    "defective-verifier-narrowing-without-depth": [
+      "CWA-02",
+      "CWA-03",
+      "CWA-04",
+      "CWA-05",
+      "CWA-08"
+    ],
+    "defective-verifier-scope-coverage-only": [
+      "CWA-02",
+      "CWA-03",
+      "CWA-04",
+      "CWA-05",
+      "CWA-07",
+      "CWA-08"
+    ]
+  },
+  "vectors": [
+    {
+      "id": "CWA-01",
+      "name": "CWA-01-accept-child-under-declared-conferral",
+      "status_label": "candidate_against_proposed",
+      "kind": "positive_control",
+      "tests": "positive control. The agent's grant declares two remaining hops. It confers a strictly narrower child. Conferral authority is declared, so the child stands.",
+      "differs_from": null,
+      "presented_chain": "CWA-01",
+      "chain_length": 2,
+      "parent_depth_remaining": 2,
+      "child_depth_remaining": 1,
+      "expected": {
+        "state": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "draft03_basis": "Section 3.2, Depth: \"remaining is an integer from 0 through 255. A parent with zero remaining cannot issue a child. Otherwise child.remaining MUST be no greater than parent.remaining minus one.\""
+    },
+    {
+      "id": "CWA-02",
+      "name": "CWA-02-reject-conferral-of-exactly-what-is-held",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative",
+      "tests": "the headline case. The agent holds calendar:* on a grant that verifies valid at this instant and declares no remaining hop. It confers calendar:*, exactly what it holds, to a subagent. Possession of the scope is the only thing that could authorize the conferral, and it does not.",
+      "differs_from": "CWA-01: the parent grant declares zero remaining hops instead of two",
+      "presented_chain": "CWA-02",
+      "chain_length": 2,
+      "parent_depth_remaining": 0,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.2, Depth: \"A parent with zero remaining cannot issue a child.\""
+    },
+    {
+      "id": "CWA-03",
+      "name": "CWA-03-reject-strictly-narrower-child-from-exhausted-parent",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative_control_naive_implementation_passes_wrongly",
+      "tests": "the negative control a naive implementation passes wrongly. The child is strictly narrower than its parent in all six non-depth facets: scope, spend, time, reputation, values and reversibility. compareAuthority on this pair returns exactly one failure, DEPTH_EXHAUSTED, recorded in chain.json under mint_time_sdk_observations.compare_authority_cwa_03. An implementation that enforces monotonic narrowing and nothing else admits this child.",
+      "differs_from": "CWA-02: the child narrows every facet it can instead of conferring what the parent holds",
+      "presented_chain": "CWA-03",
+      "chain_length": 2,
+      "parent_depth_remaining": 0,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.2, Depth: \"A parent with zero remaining cannot issue a child.\""
+    },
+    {
+      "id": "CWA-04",
+      "name": "CWA-04-reject-grandchild-after-last-hop-spent",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative",
+      "tests": "the hop is consumed by the act of conferring, not by the scope conferred. The root declares one remaining hop, the agent spends it on a valid child, and that child, still holding a wide scope, confers again. The failure is at index 2, not at index 1: the first conferral was authorized and stays authorized.",
+      "differs_from": "CWA-10: one further record is appended, issued by the subagent whose own grant declares zero remaining hops",
+      "presented_chain": "CWA-04",
+      "chain_length": 3,
+      "parent_depth_remaining": 0,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 2
+      },
+      "draft03_basis": "Section 3.2, Depth: \"A parent with zero remaining cannot issue a child.\""
+    },
+    {
+      "id": "CWA-05",
+      "name": "CWA-05-reject-child-that-consumes-no-hop",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative",
+      "tests": "conferral authority is declared and the child keeps all of it. The parent declares two remaining hops and the child declares two. The child is strictly narrower in every other facet. Conferral authority narrows like every other facet, so a child that hands itself the parent's full remaining delegation right is refused.",
+      "differs_from": "CWA-01: the child declares two remaining hops instead of one",
+      "presented_chain": "CWA-05",
+      "chain_length": 2,
+      "parent_depth_remaining": 2,
+      "child_depth_remaining": 2,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "DEPTH_WIDENING",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.2, Depth: \"Otherwise child.remaining MUST be no greater than parent.remaining minus one.\""
+    },
+    {
+      "id": "CWA-06",
+      "name": "CWA-06-reject-widening-under-declared-conferral",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative",
+      "tests": "declared conferral authority is not a licence to widen. The parent declares two remaining hops and the child correctly consumes one, so the conferral itself is authorized. The child then names a scope grant the parent never held. This vector is what keeps the two questions apart: who may create a child, and what a child may receive.",
+      "differs_from": "CWA-01: the child's scope adds payments:refund, which the parent never granted",
+      "presented_chain": "CWA-06",
+      "chain_length": 2,
+      "parent_depth_remaining": 2,
+      "child_depth_remaining": 1,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "SCOPE_WIDENING",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.2, Scope: \"Every child grant MUST be covered by a parent grant.\""
+    },
+    {
+      "id": "CWA-07",
+      "name": "CWA-07-reject-child-whose-conferral-right-is-undeclared",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative_divergence",
+      "tests": "the undeclared case, which is the limb of the proposed text draft-03 answers differently. The child's authority vector omits the depth facet entirely rather than setting it to zero. The proposed text says conferral is then not established. draft-03 says a missing facet is invalid. The SDKs return invalid with SCHEMA_INVALID, which is draft-03's answer, and this fixture records the divergence rather than asserting the proposed text's answer.",
+      "differs_from": "CWA-01: the child's authority vector has no depth member at all",
+      "presented_chain": "CWA-07",
+      "chain_length": 2,
+      "parent_depth_remaining": 2,
+      "child_depth_remaining": null,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "SCHEMA_INVALID",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.1: \"authority contains exactly seven required facets: scope, spend, depth, time, reputation, values, and reversibility. A missing facet is invalid rather than an implicit unconstrained value.\"",
+      "divergence_from_proposed_text": "The proposed text's undeclared case resolves to not established. draft-03 resolves it to invalid. Both refuse the child. They are not the same verdict, and no vector here can make the SDKs return the proposed text's verdict, because the wire format has no way to express an undeclared conferral right."
+    },
+    {
+      "id": "CWA-08",
+      "name": "CWA-08-reject-self-conferral-from-exhausted-parent",
+      "status_label": "candidate_against_proposed",
+      "kind": "negative",
+      "tests": "a copy of itself. The proposed text names this case explicitly. The agent, holding a grant with no remaining hop, issues a delegation whose subject is the agent itself. An implementation that treats self-issuance as a formality rather than a conferral admits it.",
+      "differs_from": "CWA-03: the child's subject is the issuing agent itself rather than a subagent",
+      "presented_chain": "CWA-08",
+      "chain_length": 2,
+      "parent_depth_remaining": 0,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "invalid",
+        "failure_code": "DEPTH_EXHAUSTED",
+        "failure_index": 1
+      },
+      "draft03_basis": "Section 3.2, Depth: \"A parent with zero remaining cannot issue a child.\""
+    },
+    {
+      "id": "CWA-09",
+      "name": "CWA-09-accept-two-hop-chain-under-declared-conferral",
+      "status_label": "candidate_against_proposed",
+      "kind": "positive_control",
+      "tests": "positive control at chain length three. Two remaining hops, both spent, each consuming exactly one, each child strictly narrower than its parent. This is the variant the proposed text says stands: where the model declares the conferral, the child verifies within narrowing.",
+      "differs_from": "CWA-01: one further record is appended, issued by the subagent under its own declared remaining hop",
+      "presented_chain": "CWA-09",
+      "chain_length": 3,
+      "parent_depth_remaining": 1,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "draft03_basis": "Section 3.2, Depth: \"Otherwise child.remaining MUST be no greater than parent.remaining minus one.\""
+    },
+    {
+      "id": "CWA-10",
+      "name": "CWA-10-accept-last-declared-hop",
+      "status_label": "candidate_against_proposed",
+      "kind": "positive_control",
+      "tests": "positive control and the parent of CWA-04. The root declares exactly one remaining hop and the agent spends it. The conferral is authorized. What CWA-04 then adds is a second conferral by an agent whose own grant declares none.",
+      "differs_from": "CWA-04: the third record is not presented",
+      "presented_chain": "CWA-10",
+      "chain_length": 2,
+      "parent_depth_remaining": 1,
+      "child_depth_remaining": 0,
+      "expected": {
+        "state": "valid",
+        "failure_code": null,
+        "failure_index": null
+      },
+      "draft03_basis": "Section 3.2, Depth: \"Otherwise child.remaining MUST be no greater than parent.remaining minus one.\""
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+{
+  "family": "lifecycle-evidence-and-record",
+  "version": "0.1.0",
+  "status": "candidate_against_proposed",
+  "label": "candidate_against_proposed",
+  "description": "Candidate cases for the Evidence and record section of CASES.md. Two questions: whether a duty to keep evidence of an authority relationship runs on its own clock after that relationship ends, and whether what a boundary decided at one instant can be rewritten by what is learned later. The harness is protocol neutral. It has no APS type, no network call, no randomness and no wall-clock read: every instant in this file is a literal.",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "2bf5c7e",
+    "commit_note": "CASES.md v0.2 at 2bf5c7e, which descends from 7796e22. AUTHORITY-LIFECYCLE.md and OPEN-QUESTIONS.md are unchanged from 5c1bf09 at this commit.",
+    "version_at_commit": "AUTHORITY-LIFECYCLE.md 0.1.2-draft, CASES.md 0.2-draft",
+    "status_of_the_text": "proposed. AUTHORITY-LIFECYCLE.md states that no public case tests these concepts yet, and both cases in the CASES.md section this family covers carry Status: proposed."
+  },
+  "cases_source": {
+    "document": "CASES.md",
+    "section": "Evidence and record",
+    "note": "Each vector's case_id is the CASES.md case it was built from. Vector ids embed that case id."
+  },
+  "determinism": {
+    "randomness": "none",
+    "wall_clock_reads": "none",
+    "seeds": "No seed is consumed. Nothing here is generated: every field of every input is a literal in this file, and both runners are pure functions over those literals.",
+    "canonicalization": "RFC 8785 JCS. input-digests.json pins, per case, the SHA-256 of the RFC 8785 canonicalization of that case's input object. Both runners recompute every digest through a published SDK's JCS primitive (npm canonicalizeJCS, PyPI canonicalize_jcs) and fail on a mismatch."
+  },
+  "verdicts": {
+    "vocabulary": ["valid", "invalid", "not_established", "not_yet_effective", "suspended", "restricted"],
+    "note": "Every case carries two verdicts, because the two are separate facts and the retention group exists to keep them apart. chain_verdict is the state of the authority the requester holds. verdict is the state of the effect being requested under that authority. restricted means the chain stands and this particular effect is blocked from outside the grant chain."
+  },
+  "policies": {
+    "reference": "retention-duty-independent-of-relationship for the retention_restriction group, receipt-not-rewritten for the receipt_immutability group.",
+    "negative_controls": [
+      {
+        "id": "N1-relationship-scoped-retention",
+        "group": "retention_restriction",
+        "defect": "Scopes the retention duty to the life of the authority relationship: while the relationship is open, deletion is blocked; once it ends, deletion is permitted. It does not run the record type's own retention clock from its own trigger, and it does not compose a second, independent restriction on top.",
+        "declared_fail_set": ["LC-G-005-b", "LC-G-005-d"]
+      },
+      {
+        "id": "N2-retroactive-correction",
+        "group": "receipt_immutability",
+        "defect": "Answers every query against what is known now. A prior receipt's recorded verdict is restated as whatever later evidence implies, so a question about what was decided at the decision instant returns the present answer. It also does not check the prior receipt's bytes against its recorded digest, so a rewritten receipt reads as intact.",
+        "declared_fail_set": ["LC-G-006-b", "LC-G-006-d", "LC-G-006-f"]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "LC-G-005-a",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A retention clock that has not started blocks deletion",
+      "description": "The relationship is still open, so the record type's retention trigger, closure of the relationship, has not occurred. The requester's chain is valid and carries the scope the deletion needs. The effect is restricted anyway, for a reason that names the trigger rather than the duration: the clock has not started, so it cannot have run out.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "records:delete",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": null, "retention_years": 6 },
+        "external_holds": []
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "restricted", "reason": "retention_trigger_not_reached" }
+    },
+    {
+      "id": "LC-G-005-b",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "The relationship ending does not end the duty to keep evidence of it",
+      "description": "The family core, and the vector a naive implementation passes wrongly. The relationship closed on 2024-09-20, two years before the evaluation instant, and the record type's own duty runs six years from closure. An implementation that scopes retention to the life of the relationship purges here, destroying exactly the evidence a later dispute, audit or completeness claim about the ended relationship would need. The chain is valid and the effect is restricted.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "records:delete",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": "2024-09-20T00:00:00Z", "retention_years": 6 },
+        "external_holds": []
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "restricted", "reason": "retention_duty_unexpired" }
+    },
+    {
+      "id": "LC-G-005-c",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "A retention duty that has run out no longer restricts",
+      "description": "The same record and the same requester as LC-G-005-b with the closure date moved back to 2019-09-20, seven years before the evaluation instant, past the six-year duty. The restriction lifts and the effect is permitted. The pair pins that what changed is the record's own clock, not anything about the requester's authority, which is identical in both.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Authority lifecycle state > External restriction"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "records:delete",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": "2019-09-20T00:00:00Z", "retention_years": 6 },
+        "external_holds": []
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "retention_duty_elapsed" }
+    },
+    {
+      "id": "LC-G-005-d",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "Two independent restrictions compose, and the expiry of one does not release the other",
+      "description": "The retention duty has run out exactly as in LC-G-005-c, but a separate hold from a different source is active over the same record. Two restrictions on the same effect are released separately, so the effect stays restricted with a reason that names the hold rather than the retention duty. This is the composition question OPEN-QUESTIONS.md raises under Release from suspension, applied to restriction rather than suspension.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+          "OPEN-QUESTIONS.md > Release from suspension"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "records:delete",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": "2019-09-20T00:00:00Z", "retention_years": 6 },
+        "external_holds": [{ "hold_id": "hold-1", "source": "external-proceeding", "released": false }]
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "restricted", "reason": "external_hold_active" }
+    },
+    {
+      "id": "LC-G-005-e",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "Releasing the second restriction, with the first already expired, permits the effect",
+      "description": "LC-G-005-d with the hold released. The retention duty had already elapsed, so with both restrictions gone the effect is permitted. The pair with LC-G-005-d shows the hold was doing the blocking there, which is what makes the composition claim checkable rather than asserted.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+          "OPEN-QUESTIONS.md > Release from suspension"
+        ]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "records:delete",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": "2019-09-20T00:00:00Z", "retention_years": 6 },
+        "external_holds": [{ "hold_id": "hold-1", "source": "external-proceeding", "released": true }]
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "retention_duty_elapsed" }
+    },
+    {
+      "id": "LC-G-005-f",
+      "case_id": "LC-G-005",
+      "group": "retention_restriction",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "Evidence of an ended authority relationship stays readable after that authority ends",
+      "description": "The requested effect is a read of the retained evidence, not a deletion, by a requester whose own chain is currently valid. The authority relationship the records document has ended. AUTHORITY-LIFECYCLE.md's Evidence concept says ending authority does not by itself erase or invalidate evidence of earlier events, and this vector is what that looks like as a verdict: the read is permitted and nothing about the ended relationship restricts it. Retention restricts deletion, not reading.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Evidence"]
+      },
+      "input": {
+        "evaluated_at": "2026-09-20T12:00:00Z",
+        "requester_chain_state": "valid",
+        "requested_effect": "evidence:read",
+        "record": { "record_type": "account-terms", "retention_trigger": "relationship_closed", "trigger_occurred_at": "2024-09-20T00:00:00Z", "retention_years": 6 },
+        "external_holds": []
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "evidence_survives_authority_end" }
+    },
+
+    {
+      "id": "LC-G-006-a",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "positive_control",
+      "label": "candidate_against_proposed",
+      "title": "With no later evidence, the decision-time verdict is the recorded one",
+      "description": "The control. A boundary recorded verdict valid at 2026-01-10 on two named inputs, its bytes match its recorded digest, and nothing has been learned since. Asked what it decided at the decision instant, the answer is what it recorded.",
+      "proposed_text": {
+        "sections": ["Lifecycle concepts are separate > Verification and evidence > Evidence"]
+      },
+      "input": {
+        "query": "verdict_at_decision_time",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "a1"
+        },
+        "later_evidence": { "kind": "none", "known_at": null }
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "decided_on_the_record_then_available" }
+    },
+    {
+      "id": "LC-G-006-b",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "New information does not change what was decided at the decision instant",
+      "description": "The family core, and one of the vectors a naive implementation passes wrongly. Information surfaced on 2026-06-01 that was not available to the boundary on 2026-01-10 and that would have changed the decision. The question asked is what was decided at the decision instant, and the answer is still valid, on the record then available. An implementation that answers every question against what is known now erases the historically accurate fact of what was known and decided at the time.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Decisions and effects > Authorization decision",
+          "Lifecycle concepts are separate > Decisions and effects > Policy version"
+        ]
+      },
+      "input": {
+        "query": "verdict_at_decision_time",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "a1"
+        },
+        "later_evidence": { "kind": "new_information", "known_at": "2026-06-01T00:00:00Z" }
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "decided_on_the_record_then_available" }
+    },
+    {
+      "id": "LC-G-006-c",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "The present-tense question is a different question with a different answer",
+      "description": "Byte-identical to LC-G-006-b except that the query asks about the present rather than the decision instant. Here the later information does decide, the answer is invalid, and the record that says so is a new record referencing the prior receipt rather than an edit of it. The pair with LC-G-006-b is the whole point: two questions, two answers, one unchanged receipt.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Decisions and effects > Authorization decision"
+        ]
+      },
+      "input": {
+        "query": "verdict_now",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "a1"
+        },
+        "later_evidence": { "kind": "new_information", "known_at": "2026-06-01T00:00:00Z" }
+      },
+      "expected": { "chain_verdict": "invalid", "verdict": "invalid", "reason": "new_record_references_prior" }
+    },
+    {
+      "id": "LC-G-006-d",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "Even a finding that an ancestor was never validly issued does not rewrite the receipt",
+      "description": "The second vector a naive implementation passes wrongly, and the one that separates this case from LC-C-006. On 2026-06-01 it emerged that an ancestor was never validly issued, so the chain was defective from inception rather than becoming defective later. The boundary on 2026-01-10 still decided correctly on the record then available: it had no way to see the defect. Asked what was decided at the decision instant, the answer is valid. What changed is what a present-tense query returns, which LC-G-006-e covers.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Parties and standing > Issuer standing"
+        ]
+      },
+      "input": {
+        "query": "verdict_at_decision_time",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "a1"
+        },
+        "later_evidence": { "kind": "void_from_inception", "known_at": "2026-06-01T00:00:00Z" }
+      },
+      "expected": { "chain_verdict": "valid", "verdict": "valid", "reason": "decided_on_the_record_then_available" }
+    },
+    {
+      "id": "LC-G-006-e",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "positive",
+      "label": "candidate_against_proposed",
+      "title": "The two kinds of later evidence give different present-tense reasons",
+      "description": "The present-tense query over the void-from-inception finding. The answer is invalid, as in LC-G-006-c, but for a different recorded reason: the ancestor was never validly issued, rather than new information having come to light about a validly issued one. Both are new records referencing the prior receipt and neither touches its bytes. Keeping the two reasons apart is what lets a reader of the record set tell a chain that went bad from a chain that was never good.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Parties and standing > Issuer standing",
+          "Lifecycle concepts are separate > Verification and evidence > Evidence"
+        ]
+      },
+      "input": {
+        "query": "verdict_now",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "a1"
+        },
+        "later_evidence": { "kind": "void_from_inception", "known_at": "2026-06-01T00:00:00Z" }
+      },
+      "expected": { "chain_verdict": "invalid", "verdict": "invalid", "reason": "ancestor_never_validly_issued" }
+    },
+    {
+      "id": "LC-G-006-f",
+      "case_id": "LC-G-006",
+      "group": "receipt_immutability",
+      "role": "negative",
+      "label": "candidate_against_proposed",
+      "title": "A receipt whose bytes no longer match its recorded digest establishes nothing",
+      "description": "The vector that makes not rewritten checkable instead of asserted. The prior receipt's actual bytes hash to something other than the digest recorded with it, which is what a rewrite looks like from outside. Nothing about the decision can be read off a receipt in that state, so the verdict is not_established for both queries. Without this vector the group would only be testing that the reference implementation happens not to mutate its input.",
+      "proposed_text": {
+        "sections": [
+          "Lifecycle concepts are separate > Verification and evidence > Evidence",
+          "Lifecycle concepts are separate > Verification and evidence > Coverage and completeness"
+        ]
+      },
+      "input": {
+        "query": "verdict_at_decision_time",
+        "prior_receipt": {
+          "receipt_id": "rcpt-1",
+          "decided_at": "2026-01-10T09:00:00Z",
+          "recorded_verdict": "valid",
+          "inputs_available": ["status-a@2026-01-10", "grant-1"],
+          "recorded_bytes_sha256": "a1",
+          "actual_bytes_sha256": "b2"
+        },
+        "later_evidence": { "kind": "none", "known_at": null }
+      },
+      "expected": { "chain_verdict": "not_established", "verdict": "not_established", "reason": "prior_receipt_bytes_do_not_match_digest" }
+    }
+  ]
+}

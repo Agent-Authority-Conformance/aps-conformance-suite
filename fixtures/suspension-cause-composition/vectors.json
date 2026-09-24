@@ -1,0 +1,336 @@
+{
+  "profile": "aac-suspension-cause-composition-v0",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+    "documents": ["AUTHORITY-LIFECYCLE.md", "OPEN-QUESTIONS.md"],
+    "sections": [
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Authority lifecycle state > Suspension",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Authority lifecycle state > External restriction",
+      "AUTHORITY-LIFECYCLE.md > Lifecycle concepts are separate > Parties and standing > Lifecycle standing",
+      "AUTHORITY-LIFECYCLE.md > Invariants > L8. Suspension is not revocation",
+      "OPEN-QUESTIONS.md > Release from suspension"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no suspension, restriction, release or lifecycle-standing rule at all: its RevocationResolution is exactly active, revoked or unknown, and the published plain text contains no suspension concept. So no case here is a draft-03 conformance case for the cause question. Section 3.3 chain verification and Section 3.5 cascade revocation are the only draft-03 surfaces any case touches, and the cases that touch them say so in their own draft_03_surface member."
+  },
+  "description": "Three concurrent lifecycle causes attach to one grant, from three different sources: a regulator-imposed suspension, a firm-internal suspension and a court-imposed restriction. Each carries its own release. Releasing one leaves the grant suspended while another suspension stands, and restricted once only the restriction remains. A release from a party the standing registry does not place over a cause does nothing to that cause, even when the record is genuine and its signature verifies. A release from a source that holds standing over a cause it did not impose is effective. After every cause has been released, a revocation recorded while the grant was suspended still makes the chain invalid.",
+  "clock_reference": "chain.json .clock",
+  "verdict_names": {
+    "note": "exercisable, suspended, restricted, not_established and invalid are this family's own local labels, proposed for discussion. CONTRIBUTING.md reserves failure-class names and verifier semantics to the maintainer as schema owner, so nothing downstream should bind to them.",
+    "values": ["exercisable", "suspended", "restricted", "not_established", "invalid"]
+  },
+  "cases": [
+    {
+      "id": "CR-01-three-causes-no-release-suspended",
+      "status": "candidate_against_proposed",
+      "tests": "Suspension and External restriction: a verifier can hold more than one concurrent cause on one grant and report which ones remain, rather than one state.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": [],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM", "REG"]
+      }
+    },
+    {
+      "id": "CR-02-no-cause-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "Positive control. A grant of the same shape with no cause attached is exercisable, which shows the chain, the keys, the signatures and the time facet are sound before any cause question is asked.",
+      "polarity": "positive",
+      "draft_03_surface": "Section 3.3 chain verification returns valid for this chain at this instant. The cause stage is this fixture's own, not draft-03.",
+      "grant": "GRANT_CLEAN",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": [],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "causes",
+        "code": "no_cause_outstanding",
+        "remaining_causes": [],
+        "chain_state": "valid"
+      }
+    },
+    {
+      "id": "CR-03-one-release-still-suspended",
+      "status": "candidate_against_proposed",
+      "tests": "Release from suspension: releasing the regulator's cause does not clear the firm's unrelated cause, so the grant stays suspended.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_REGULATOR"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM"]
+      }
+    },
+    {
+      "id": "CR-04-two-releases-restricted",
+      "status": "candidate_against_proposed",
+      "tests": "L8: with both suspension causes released and only the court's restriction left, the verdict is restricted rather than suspended, and the remaining cause is named.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM"],
+      "expected": {
+        "verdict": "restricted",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE"]
+      }
+    },
+    {
+      "id": "CR-05-all-three-released-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "Release from suspension: with every cause released by a source holding standing over it, nothing remains outstanding and the grant is exercisable.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM", "REL_DECREE_BY_COURT"],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "causes",
+        "code": "all_causes_released",
+        "remaining_causes": []
+      }
+    },
+    {
+      "id": "CR-06-release-without-standing-does-nothing",
+      "status": "candidate_against_proposed",
+      "tests": "Lifecycle standing, negative control: a genuine, correctly signed release from the regulator naming the firm's cause releases nothing, because the standing registry does not place the regulator over that cause.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that checks only that a release record is well formed, names a real cause on the grant and carries a signature that verifies, admits this case wrongly. Every byte of the record is authentic. Only a standing registry outside the record catches it.",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_FIRM_BY_REGULATOR"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM", "REG"]
+      }
+    },
+    {
+      "id": "CR-07-superior-source-release-effective",
+      "status": "candidate_against_proposed",
+      "tests": "Lifecycle standing: a release of the regulator's cause signed by the court is effective, because the standing registry places the court over that cause even though the court did not impose it. Standing is not authorship.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_COURT"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM"]
+      }
+    },
+    {
+      "id": "CR-08-one-record-two-causes-with-standing",
+      "status": "candidate_against_proposed",
+      "tests": "Release from suspension: one release record naming two causes, from a source holding standing over both, clears both. Composition does not forbid a single record clearing several causes.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_DECREE_BY_COURT"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["FIRM"]
+      }
+    },
+    {
+      "id": "CR-09-one-record-three-causes-partial-standing",
+      "status": "candidate_against_proposed",
+      "tests": "Lifecycle standing: one release record naming all three causes, from a source holding standing over two of them, clears exactly those two. Naming a cause in a release record is not the same as being able to release it.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_ALL_THREE_BY_COURT"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["FIRM"]
+      }
+    },
+    {
+      "id": "CR-10-forged-release-does-nothing",
+      "status": "candidate_against_proposed",
+      "tests": "A release record whose signature does not verify under the key its own verification_method points at releases nothing, and the grant's cause set is unchanged.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_FORGED"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM", "REG"]
+      }
+    },
+    {
+      "id": "CR-11-release-of-unknown-cause-does-nothing",
+      "status": "candidate_against_proposed",
+      "tests": "A release naming a cause id that is not on this grant releases nothing on this grant, and does not clear an unrelated cause that is.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_UNKNOWN_CAUSE"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM", "REG"]
+      }
+    },
+    {
+      "id": "CR-12-revocation-during-suspension-survives-full-release",
+      "status": "candidate_against_proposed",
+      "tests": "Release from suspension: with every cause released, a revocation recorded while the grant was suspended still makes the chain invalid. Releasing the last cause does not restore a revoked grant.",
+      "polarity": "negative",
+      "draft_03_surface": "Section 3.5, 'Revocation is irreversible', and Section 3.3, 'revocation state for every member'. The chain result here is draft-03. That a release record does not reach it is this fixture's reading.",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "revoked",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM", "REL_DECREE_BY_COURT"],
+      "assert_revocation_within_suspension_window": true,
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED",
+        "remaining_causes": [],
+        "chain_state": "invalid",
+        "chain_failure_index": 0
+      }
+    },
+    {
+      "id": "CR-13-unknown-revocation-after-full-release-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "L7 at the release boundary: with every cause released and the revocation answer unresolvable, the verdict is not established rather than exercisable. Missing evidence is not a finding that no revocation happened.",
+      "polarity": "negative",
+      "draft_03_surface": "Section 3.3, 'An unavailable or stale revocation result is indeterminate'. The mapping of indeterminate onto this family's not_established name is not draft-03.",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "unknown",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM", "REL_DECREE_BY_COURT"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN",
+        "remaining_causes": [],
+        "chain_state": "indeterminate",
+        "chain_failure_index": 0
+      }
+    },
+    {
+      "id": "CR-14-release-before-imposition-does-nothing",
+      "status": "candidate_against_proposed",
+      "tests": "A release record dated before the cause it names was imposed releases nothing. A later cause is not cleared by an earlier record.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_FIRM_EARLY"],
+      "expected": {
+        "verdict": "suspended",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE", "FIRM", "REG"]
+      }
+    },
+    {
+      "id": "CR-15-release-after-evaluation-instant-not-effective",
+      "status": "candidate_against_proposed",
+      "tests": "A release recorded after the instant being evaluated is not in evidence at that instant, so the cause it names still stands there.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "evaluated_at": "T_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM", "REL_DECREE_LATE"],
+      "expected": {
+        "verdict": "restricted",
+        "stage": "causes",
+        "code": "causes_outstanding",
+        "remaining_causes": ["DECREE"]
+      }
+    },
+    {
+      "id": "CR-16-same-release-later-instant-effective",
+      "status": "candidate_against_proposed",
+      "tests": "The same three records evaluated at a later instant: the late release is now in evidence and nothing remains outstanding. CR-15 and CR-16 are two independent evaluations over one set of records, not a sequence.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "evaluated_at": "T_LATER_EVAL",
+      "revocation": "active",
+      "presented_releases": ["REL_REG_BY_REGULATOR", "REL_FIRM_BY_FIRM", "REL_DECREE_LATE"],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "causes",
+        "code": "all_causes_released",
+        "remaining_causes": []
+      }
+    }
+  ],
+  "gates": [
+    {
+      "name": "reference-gate",
+      "flaw": "none",
+      "declared_failing_cases": []
+    },
+    {
+      "name": "N1-single-suspension-flag",
+      "flaw": "Holds one suspended flag instead of a set of causes, so any effective release clears everything.",
+      "declared_failing_cases": [
+        "CR-03-one-release-still-suspended",
+        "CR-04-two-releases-restricted",
+        "CR-07-superior-source-release-effective",
+        "CR-08-one-record-two-causes-with-standing",
+        "CR-09-one-record-three-causes-partial-standing",
+        "CR-15-release-after-evaluation-instant-not-effective"
+      ]
+    },
+    {
+      "name": "N2-ignores-cause-standing",
+      "flaw": "Accepts any release whose signature verifies, whoever signed it, so a source with no standing over a cause can clear it.",
+      "declared_failing_cases": [
+        "CR-06-release-without-standing-does-nothing",
+        "CR-09-one-record-three-causes-partial-standing"
+      ]
+    },
+    {
+      "name": "N3-release-clears-revocation",
+      "flaw": "Treats a fully released grant as restored and stops reading the chain's revocation answer.",
+      "declared_failing_cases": [
+        "CR-12-revocation-during-suspension-survives-full-release",
+        "CR-13-unknown-revocation-after-full-release-not-established"
+      ]
+    },
+    {
+      "name": "N4-standing-is-authorship",
+      "flaw": "Reads standing as authorship, so only the source that imposed a cause may release it.",
+      "declared_failing_cases": [
+        "CR-07-superior-source-release-effective",
+        "CR-08-one-record-two-causes-with-standing",
+        "CR-09-one-record-three-causes-partial-standing"
+      ]
+    }
+  ]
+}

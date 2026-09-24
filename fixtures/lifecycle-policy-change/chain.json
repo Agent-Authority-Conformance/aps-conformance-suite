@@ -1,0 +1,268 @@
+{
+  "_placeholder": false,
+  "generated_at": "2026-09-23",
+  "sdk": {
+    "npm": "agent-passport-system@7.1.0"
+  },
+  "seed_prefix": "aps-conformance-suite:lifecycle-policy-change",
+  "now": "2026-09-23T12:00:00.000Z",
+  "policy_id": "ledger-export-policy",
+  "digest_domains": {
+    "policy_version": "APS-LPC-POLICY-VERSION-V0",
+    "policy_rules": "APS-LPC-POLICY-RULES-V0",
+    "operative_pointer": "APS-LPC-OPERATIVE-POINTER-V0",
+    "decision_record": "APS-LPC-DECISION-RECORD-V0"
+  },
+  "parties": {
+    "principal": "did:aps:example:lpc-principal",
+    "agent": "did:aps:example:lpc-agent",
+    "policy_authority": "did:aps:example:lpc-policy-authority",
+    "outsider": "did:aps:example:lpc-outsider",
+    "gateway": "did:aps:example:lpc-gateway"
+  },
+  "policy_standing": [
+    "did:aps:example:lpc-policy-authority"
+  ],
+  "verification_keys": {
+    "did:aps:example:lpc-principal#key-1": "7d86ecc9deb9bee628fb05097f135019390ea52778f40b090266f0a5ee9fa196",
+    "did:aps:example:lpc-agent#key-1": "d22eba83fb4f757cec3af0a32cd0123579d68fe4f92a470d3bbae400fd6cbe68"
+  },
+  "record_keys": {
+    "did:aps:example:lpc-policy-authority": "ba97a1bea13dbc836c864ce0dadc50472734e870459efcaafec2651a99d1e084",
+    "did:aps:example:lpc-outsider": "601298342224cfc1a46109e5d8872c340f0c0697456203f0063b23abe33dc81e",
+    "did:aps:example:lpc-gateway": "7444a321dccdad9ab10f5378da11ee171269577d5b5e9b7736006579f0fd5a5d"
+  },
+  "roles": {
+    "PRINCIPAL_TO_AGENT": "sha256:576907e8d4dfa7805a1b8d4f3c834ed78c2a85ed46a824a4c087d3a9d012ddb8"
+  },
+  "chains": {
+    "GRANT": [
+      {
+        "record_type": "aps:authority-delegation:v1",
+        "version": "1.0",
+        "parent_delegation_id": null,
+        "issuer": "did:aps:example:lpc-principal",
+        "subject": "did:aps:example:lpc-agent",
+        "verification_method": "did:aps:example:lpc-principal#key-1",
+        "issued_at": "2026-09-20T09:00:00.000Z",
+        "nonce": "3fa23a65b4d2e47321b13d32d20fd6a5",
+        "authority": {
+          "scope": {
+            "profile": "aps-hierarchical-v1",
+            "grants": [
+              "ledger:export",
+              "ledger:read"
+            ]
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "depth": {
+            "remaining": 0
+          },
+          "time": {
+            "not_before": "2026-09-20T09:00:00.000Z",
+            "not_after": "2026-09-30T00:00:00.000Z"
+          },
+          "reputation": {
+            "profile": "aps-score-0-100-v1",
+            "ceiling": 100
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          },
+          "reversibility": {
+            "profile": "aps-tci-v1",
+            "ceiling": "irreversible"
+          }
+        },
+        "delegation_id": "sha256:576907e8d4dfa7805a1b8d4f3c834ed78c2a85ed46a824a4c087d3a9d012ddb8",
+        "signature": "be3fa9c76c5dc7e79d82384ec43ba535b817b6aec0670ff404bc2059d7314d7f170b297ffe8a4ae95de0e834d3f78fc3c8d368767f6ee0dbf39f8cea65fc4209"
+      }
+    ]
+  },
+  "policy_versions": {
+    "v1": {
+      "record_type": "aps-lab:policy-version:v0",
+      "policy_id": "ledger-export-policy",
+      "version_id": "v1",
+      "action": "ledger:export",
+      "authored_at": "2026-09-19T08:00:00.000Z",
+      "authority": "did:aps:example:lpc-policy-authority",
+      "rules": {
+        "approval_required": false,
+        "max_amount": 5000
+      },
+      "rules_digest": "sha256:50a0a30067f357aa7e6dcf6787dfeb79a4dcc51158c72e5ef7d04257759bddb8",
+      "version_digest": "sha256:f83261bf6cc0b582dcbefe26bfa35e30a7008289dffab988b0212e47dcf77c90",
+      "signature": "4013724722a6abf472405cb98773868ac384f3209691f94d11b201fc4a7edee6f04aac0e04d46be456c2cc62c93e0c0e7f16e629c00e6ae800bb2f1e2ae54b03"
+    },
+    "v2": {
+      "record_type": "aps-lab:policy-version:v0",
+      "policy_id": "ledger-export-policy",
+      "version_id": "v2",
+      "action": "ledger:export",
+      "authored_at": "2026-09-21T08:00:00.000Z",
+      "authority": "did:aps:example:lpc-policy-authority",
+      "rules": {
+        "approval_required": true,
+        "max_amount": 1000
+      },
+      "rules_digest": "sha256:326f7b6ce9d0a76d03e0370a388ab9abf7e713e25fface140af30e054d68976a",
+      "version_digest": "sha256:0efedf58c2699ce386fb8692ebbf975f18c2a8d88ff06cd3b081789e12333487",
+      "signature": "a67c7ea6dc98c648f720c547031ad85e786d95c2bdbabbe30e6bec6df469d756d410741e81b35d748d6e8184fec8cb8b019beb237e1fa8ba74ac52a7f238fb0a"
+    },
+    "v3": {
+      "record_type": "aps-lab:policy-version:v0",
+      "policy_id": "ledger-export-policy",
+      "version_id": "v3",
+      "action": "ledger:export",
+      "authored_at": "2026-09-22T20:00:00.000Z",
+      "authority": "did:aps:example:lpc-policy-authority",
+      "rules": {
+        "approval_required": false,
+        "max_amount": 5000
+      },
+      "rules_digest": "sha256:50a0a30067f357aa7e6dcf6787dfeb79a4dcc51158c72e5ef7d04257759bddb8",
+      "version_digest": "sha256:410bcb36d41d07e549eb65332497c2376418ee5547df5ae65bf7aa771ff355d0",
+      "signature": "fb74f2f98eb1001f72f81d49d92b63d60a668f27175b127248bf4c02b66a4b1fdbdd855cca2172c8510eea99655663cfa64518dee9c587222978835cf079460a"
+    }
+  },
+  "pointers": {
+    "P1_initial_v1": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v1",
+      "effective_from": "2026-09-19T12:00:00.000Z",
+      "kind": "initial",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-policy-authority",
+      "nonce": "45e1c906ad84f73deb03a9d1aee22719",
+      "pointer_id": "sha256:c685538d4dd6fab5cb529c5b6e215b3ff3a6d81f239f2d6dfa21155ee94243b1",
+      "signature": "ef5b7f22d4f0d0f304c431f4091fc83211d59bf7cf37235edf46062a2efb4b14152bc68a6de7e2159984ee552fa89b650d36386d0531592d10de4703d18dc808"
+    },
+    "P2_upgrade_v2": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v2",
+      "effective_from": "2026-09-21T12:00:00.000Z",
+      "kind": "upgrade",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-policy-authority",
+      "nonce": "df63ee207a2665eb87c790f7e91328d4",
+      "pointer_id": "sha256:83b1e78fda3f1594abe907e48073894c6212c3255ae454940fb4258bb75ff340",
+      "signature": "b3ee35df9fb76f94bb0adc1487e2adaf7da05c713d6ff13658008ffebf2f756b1014b49d742886d4ec4513332fde3f7f642bd707d614c29ddc740b676f4d0206"
+    },
+    "P3_rollback_v1": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v1",
+      "effective_from": "2026-09-22T12:00:00.000Z",
+      "kind": "rollback",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-policy-authority",
+      "nonce": "5dc2abbb0cc750f95ff29226dde43a75",
+      "pointer_id": "sha256:faf861ea57d81d5740d65ffb9e4998f67824d49b7ad8ac81cb80566ea718d94d",
+      "signature": "c6bf2b6e38a64d35ab6911b3c4ffaeef357222cca70e77e0449ec224d2415a9e7def608f92aa7eca43ae6ffe7b09704acd94a53c2e64e14728deaa9929847901"
+    },
+    "P4_competing_v2": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v2",
+      "effective_from": "2026-09-22T12:00:00.000Z",
+      "kind": "rollback",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-policy-authority",
+      "nonce": "194b0e4772b649a9241d4438ba96efaf",
+      "pointer_id": "sha256:224aff2f958f90a0f5d5c8703c30364c5b4154316a79911450289cbd473a0f9d",
+      "signature": "254d2adcc5b7fa7092214f7b71aa5a93eaf89375a0cef5eeddaeb1efe645f1255adce9d1f311edbe7fc1ae777a7c2753f5f107a3b376348a3b41c57f4589a20e"
+    },
+    "P5_claimed_rollback_to_v3": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v3",
+      "effective_from": "2026-09-23T06:00:00.000Z",
+      "kind": "rollback",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-policy-authority",
+      "nonce": "cfad60a8755e42416db3d2885b392fc4",
+      "pointer_id": "sha256:157c8e2dc0d3cde35d6af8d68bbcfdc1ad8c017936e508e539e5e6ea10e77f8d",
+      "signature": "094d3ae56352158946061ccbb75ec39226bf420a4d055be31d85a2c0d8f2d6fce1d367b63e1f8509683b6c8fd25f36afada104b1977be6de3b9fe05fa0d7c804"
+    },
+    "P6_no_standing_v1": {
+      "record_type": "aps-lab:operative-pointer:v0",
+      "policy_id": "ledger-export-policy",
+      "operative_version_id": "v1",
+      "effective_from": "2026-09-23T06:00:00.000Z",
+      "kind": "rollback",
+      "supersedes": null,
+      "authority": "did:aps:example:lpc-outsider",
+      "nonce": "77aef8cb9dc9ea91f8d5f2b61278cb65",
+      "pointer_id": "sha256:0ad34ad3862ec7513f4cc4b07126863cb842324ae8b65c3e382f8ac000a84933",
+      "signature": "0267f65ed7d5e23e3e9b7e41c5a82b750a1cf9d1537c07ca803efb50b4cda8c5fcd64bab69ddaca51edbd14edbfc18c1fcae8ee9a84f634b401611928a4d6a00"
+    }
+  },
+  "decisions": {
+    "D1_allow_under_v1_pinned": {
+      "record_type": "aps-lab:authorization-decision:v0",
+      "policy_id": "ledger-export-policy",
+      "action": "ledger:export",
+      "subject": "did:aps:example:lpc-agent",
+      "amount": 4000,
+      "approval_presented": false,
+      "decided_at": "2026-09-20T12:00:00.000Z",
+      "outcome": "allow",
+      "policy_version_id": "v1",
+      "policy_version_digest": "sha256:f83261bf6cc0b582dcbefe26bfa35e30a7008289dffab988b0212e47dcf77c90",
+      "nonce": "27ad5098959a553290fe9de44a867c33",
+      "decision_id": "sha256:21533697407ed4410a09cd71c9a1662a5bface93be586d65d58716dad4c49cc4",
+      "signature": "283f1d20870325a77e0966a78f4ca845f70e389550129789108b21053c67b07dc90787a8ef448d4eff612168126864998a9527217750e0cb6a7ed19c28b73902"
+    },
+    "D2_deny_under_v2_pinned": {
+      "record_type": "aps-lab:authorization-decision:v0",
+      "policy_id": "ledger-export-policy",
+      "action": "ledger:export",
+      "subject": "did:aps:example:lpc-agent",
+      "amount": 4000,
+      "approval_presented": true,
+      "decided_at": "2026-09-21T18:00:00.000Z",
+      "outcome": "deny",
+      "policy_version_id": "v2",
+      "policy_version_digest": "sha256:0efedf58c2699ce386fb8692ebbf975f18c2a8d88ff06cd3b081789e12333487",
+      "nonce": "9e26ccff0af1e5a95db2b67b0bbae7f4",
+      "decision_id": "sha256:d8a5ce663fc871b85a98b74f62a210b5c4adf475f40a79f1918537ed6a6c00db",
+      "signature": "2b2168994a8f8938697918d0cce48d78422026f20249e22b9c122321abb824f654e519c34d4111b4e2edc6c7becefa94192c83a10b36c799db5f624a01bf0e0a"
+    },
+    "D3_allow_unpinned": {
+      "record_type": "aps-lab:authorization-decision:v0",
+      "policy_id": "ledger-export-policy",
+      "action": "ledger:export",
+      "subject": "did:aps:example:lpc-agent",
+      "amount": 500,
+      "approval_presented": true,
+      "decided_at": "2026-09-20T12:00:00.000Z",
+      "outcome": "allow",
+      "policy_version_id": null,
+      "policy_version_digest": null,
+      "nonce": "0f0e46fa3684e55ed23fe5bab1196c8f",
+      "decision_id": "sha256:17bab7a2a4c3b0bb46ff6355ed27b6f370fc8bca5c81c45a80ea85db5fb12f0e",
+      "signature": "a18ceb1dcb4919ad03e8352dc7430d29e67cc40aef45325c74e20c7ce910a4de05de79089334aefd278f2a8449554c00be71db291f3c5b53ccc11e41db9ad10e"
+    },
+    "D4_allow_pinned_unresolvable": {
+      "record_type": "aps-lab:authorization-decision:v0",
+      "policy_id": "ledger-export-policy",
+      "action": "ledger:export",
+      "subject": "did:aps:example:lpc-agent",
+      "amount": 500,
+      "approval_presented": true,
+      "decided_at": "2026-09-20T12:00:00.000Z",
+      "outcome": "allow",
+      "policy_version_id": "v1",
+      "policy_version_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "nonce": "cd14b969c1922e4924e0deb856e7538d",
+      "decision_id": "sha256:9be74b1d2c3a6b34015d911ab8054eb3e958f3208cfeb4d0cc8a1eb6fd2e1bd8",
+      "signature": "fdf0478ce2ae10c6b99dd7022485a07a01adc98e5b5159a138e00537d2302271699848433303ab6be101198f437ec2b29260b0236fd86f6b6f3c666b374aa203"
+    }
+  }
+}
