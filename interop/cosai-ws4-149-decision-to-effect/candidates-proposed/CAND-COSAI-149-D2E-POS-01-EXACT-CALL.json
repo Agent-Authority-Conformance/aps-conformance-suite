@@ -1,0 +1,46 @@
+{
+ "author_rationale": "Authorized C(args), dispatched C(args): the dispatched digest matches the authorized digest, so exact call is preserved.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "positive control: single admission, single dispatch"
+  },
+  "evidence": {
+   "admission": {
+    "action_id": "act-pos-01",
+    "args_digest": "sha256:pos01-authorized-args",
+    "decision": "authorized",
+    "tool": "wire_transfer"
+   },
+   "closure": {
+    "dispatch": {
+     "args_digest": "sha256:pos01-authorized-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "observed_digest": "sha256:pos01-authorized-args",
+     "status": "agrees"
+    },
+    "ref": "act-pos-01",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "exact_call",
+   "statement": "the dispatched call carries exactly the authorized arguments"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": null,
+  "verdict": "pass"
+ },
+ "id": "CAND-COSAI-149-D2E-POS-01-EXACT-CALL",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "note": "Positive control, lab-authored.",
+  "source": null
+ },
+ "status": "candidate_against_proposed"
+}

@@ -1,0 +1,167 @@
+[
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "fixture_sha256": "a12b322ead39457b3a42b51cec532dc7d8f265cfff6dfe0818999196cc54694c",
+  "id": "CAND-COSAI-149-D2E-POS-01-EXACT-CALL",
+  "observed": {
+   "reason": "dispatched args digest 'sha256:pos01-authorized-args' matches the authorized args digest: exact call preserved",
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "fixture_sha256": "5d12015696031ad2baa3c5d43460b9c8b503678de61683c53c5dd416d342b69d",
+  "id": "CAND-COSAI-149-D2E-POS-01-EFFECT-VERIFIED",
+  "observed": {
+   "reason": "tool self-report (success) agrees with the independent read-back (sha256:pos01-authorized-args): the effect is verified",
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "fixture_sha256": "1a34654749c1dc26d0d1a0c4bef75e406e2803f5ce49b923e6b7daa03c7c9f49",
+  "id": "CAND-COSAI-149-D2E-POS-01-NON-BYPASSABILITY-COVERED",
+  "observed": {
+   "reason": "no bypass was observed, and observation coverage of alternate paths is established for scope 'positive control: single admission, single dispatch' and bound to the evaluated claim 'pos01-claim-1'",
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "observation_coverage",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "5de77389f728ecfd398b8572ce3a8796e961ca738b0b5906ffca1c5820649829",
+  "id": "CAND-COSAI-149-D2E-POS-01-NON-BYPASSABILITY-UNCOVERED",
+  "observed": {
+   "reason": "no bypass was observed, but observation coverage of alternate paths to the protected credential is not established for scope 'positive control: single admission, single dispatch': this shows only that the implementation does not claim enforcement was bypassed within what was observed, not that no alternate path exists",
+   "unmet_obligation": "observation_coverage",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "fixture_sha256": "71c2c886202f3acb1980bf53aadabdbee860437068153c10e393b565e0856b03",
+  "id": "CAND-COSAI-149-D2E-EXACT-01",
+  "observed": {
+   "reason": "dispatched args digest 'sha256:exact01-MUTATED-args' does not match the authorized args digest 'sha256:exact01-authorized-args': dispatch proceeded with arguments mutated after authorization",
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "fixture_sha256": "c396b4b6889a73773fec2628c26eb14681e4d2ac46b18879e5374f129d60a7f3",
+  "id": "CAND-COSAI-149-D2E-EXACT-02",
+  "observed": {
+   "reason": "dispatch was refused, attributed cause is the args mismatch: exact call integrity upheld by the refusal",
+   "unmet_obligation": null,
+   "verdict": "pass"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "fixture_sha256": "546f82e0f75b371b5d3899a26544665cdf0b592455d7db9768299c78bd140090",
+  "id": "CAND-COSAI-149-D2E-BYPASS-01",
+  "observed": {
+   "reason": "closure shows the protected credential 'cred-shared-secret' used via an alternate path with no admission record covering it: an observed bypass within the evaluated scope",
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "observation_coverage",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "07ad56acebc37b9270ca22e5ec8cadebc13012bf996a00269c20b156999980ee",
+  "id": "CAND-COSAI-149-D2E-BYPASS-02",
+  "observed": {
+   "reason": "no bypass was observed, but observation coverage of alternate paths to the protected credential is not established for scope 'no bypass observed, alternate-path coverage not established': this shows only that the implementation does not claim enforcement was bypassed within what was observed, not that no alternate path exists",
+   "unmet_obligation": "observation_coverage",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "fixture_sha256": "659bdbd8bbdfaab08b14179d96b56ba1475b1e53ecb166030cb91e579ce513d1",
+  "id": "CAND-COSAI-149-D2E-EFFECT-01",
+  "observed": {
+   "reason": "tool self-report (success) and independent read-back (sha256:effect01-actual-state-differs) disagree: the effect is not verified",
+   "unmet_obligation": null,
+   "verdict": "fail"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "read_back",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "259e0b682ff3b95cc8a1861ed6205ff1761c1c6da51fc4816465c8bb74253015",
+  "id": "CAND-COSAI-149-D2E-EFFECT-02",
+  "observed": {
+   "reason": "independent read-back could not be performed: downstream ledger read API returned 503 throughout the verification window",
+   "unmet_obligation": "read_back",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ },
+ {
+  "expected_if_adopted": {
+   "unmet_obligation": "read_back",
+   "verdict": "not_established"
+  },
+  "fixture_sha256": "5669d1ad2010972e8e3a19e0622b9a6ffeed54c553bed4402be5180de27e9611",
+  "id": "CAND-COSAI-149-D2E-EFFECT-03",
+  "observed": {
+   "reason": "independent read-back could not be performed: effect state was indeterminate at runtime; independent read-back could not resolve a value within the verification window",
+   "unmet_obligation": "read_back",
+   "verdict": "not_established"
+  },
+  "reproduced_under_proposed_rule": true,
+  "status": "candidate_against_proposed"
+ }
+]

@@ -1,0 +1,51 @@
+{
+ "author_rationale": "No bypass is observed on this closure, and no observation-coverage premise for alternate paths is supplied: absence of an observed bypass is not by itself evidence that no alternate path exists.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "no bypass observed, alternate-path coverage not established"
+  },
+  "evidence": {
+   "admission": {
+    "action_id": "act-bypass-02",
+    "args_digest": "sha256:bypass02-args",
+    "decision": "authorized",
+    "tool": "record_export"
+   },
+   "closure": {
+    "credential_use": {
+     "admission_ref": "act-bypass-02",
+     "credential": "cred-record-export",
+     "path": "governed"
+    },
+    "dispatch": {
+     "args_digest": "sha256:bypass02-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "observed_digest": "sha256:bypass02-args",
+     "status": "agrees"
+    },
+    "ref": "act-bypass-02",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "non_bypassability",
+   "statement": "the protected effect was not reached by a path that bypasses the authorization boundary"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": "observation_coverage",
+  "verdict": "not_established"
+ },
+ "id": "CAND-COSAI-149-D2E-BYPASS-02",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "note": "No REMORA vector expresses non_bypassability. aeoess on #149 (2026-09-09T20:38Z): \"No REMORA vector currently expresses this, because its effectful adapter methods all require the handle returned by authorize.\" New case, lab-authored.",
+  "source": null
+ },
+ "status": "candidate_against_proposed"
+}

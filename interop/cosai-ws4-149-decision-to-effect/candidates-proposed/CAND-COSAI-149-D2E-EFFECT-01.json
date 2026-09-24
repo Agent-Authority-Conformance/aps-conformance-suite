@@ -1,0 +1,48 @@
+{
+ "author_rationale": "Tool self-report says success, but the independent read-back disagrees: the effect is not verified.",
+ "checker_input": {
+  "context": {
+   "evaluation_scope": "REMORA V-13: tool self-report success, independent read-back disagrees"
+  },
+  "evidence": {
+   "admission": {
+    "action_id": "act-effect-01",
+    "args_digest": "sha256:effect01-args",
+    "decision": "authorized",
+    "tool": "ledger_write"
+   },
+   "closure": {
+    "dispatch": {
+     "args_digest": "sha256:effect01-args",
+     "status": "dispatched"
+    },
+    "read_back": {
+     "observed_digest": "sha256:effect01-actual-state-differs",
+     "status": "disagrees"
+    },
+    "ref": "act-effect-01",
+    "tool_self_report": {
+     "status": "success"
+    }
+   }
+  },
+  "property": {
+   "kind": "decision_to_effect",
+   "name": "effect_verified",
+   "statement": "the tool's self-report agrees with an independent read-back"
+  }
+ },
+ "expected_if_adopted": {
+  "unmet_obligation": null,
+  "verdict": "fail"
+ },
+ "id": "CAND-COSAI-149-D2E-EFFECT-01",
+ "proposed_rule": "cosai-oasis/ws4-secure-design-agentic-systems#149 agreed scope (imran-siddique 2026-09-09T04:01Z; aeoess 2026-09-09T04:50Z and 20:38Z and 23:07Z; Levaj2000 2026-09-09T21:13Z; darklordVirtual 2026-09-09T22:27Z) plus the #189 freeze-candidate verdict rule (aeoess 2026-09-11T17:57Z, refined through 2026-09-19); not normative",
+ "provenance": {
+  "commit": "b0e0cbee",
+  "note": "Re-expressed as a new fixture in this corpus, not copied. Same agreement as V-02.",
+  "ref": "decision-to-effect-v1",
+  "source": "darklordVirtual/REMORA-research, vector V-13 (effect mismatch)"
+ },
+ "status": "candidate_against_proposed"
+}
