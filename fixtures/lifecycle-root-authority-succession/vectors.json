@@ -59,6 +59,11 @@
       "case_id": "LC-C-007",
       "status": "candidate_against_proposed",
       "tests": "The person filling the office changed and the same delegation, unchanged and unreissued, verifies for the new occupant.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L2. Identity continuity does not imply authority continuity"
+        ]
+      },
       "polarity": "positive",
       "negative_control": true,
       "negative_control_note": "An implementation that treats every delegation as identity bound returns invalid and passes this vector wrongly, forcing a reissuance sweep on an administrative role that was never meant to depend on who holds it.",
@@ -81,6 +86,11 @@
       "case_id": "LC-C-007",
       "status": "candidate_against_proposed",
       "tests": "The former occupant acting after turnover. The office-holder record that covers this instant names somebody else, which is a positive finding, not a missing one.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L2. Identity continuity does not imply authority continuity"
+        ]
+      },
       "polarity": "negative",
       "grant": "G_ROLE_BOUND",
       "actor": "did:aps:example:lras-holder-a",
@@ -158,6 +168,11 @@
       "case_id": "LC-C-007",
       "status": "candidate_against_proposed",
       "tests": "The same office turnover against an identity-bound delegation. Turnover does nothing for the new occupant and a fresh chain is required.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L4. A successor does not inherit the predecessor's delegation tree"
+        ]
+      },
       "polarity": "negative",
       "negative_control": true,
       "negative_control_note": "An implementation that treats every delegation as role bound returns valid and passes this vector wrongly, quietly handing a departing person's own grant to whoever backfilled the title.",
@@ -196,6 +211,11 @@
       "case_id": "LC-C-007",
       "status": "candidate_against_proposed",
       "tests": "The headline. The same silent delegation, and an actor who is the office's current occupant but not the delegation's named subject. Which mode applies is a term the record does not carry.",
+      "proposed_text": {
+        "sections": [
+          "Invariants > L4. A successor does not inherit the predecessor's delegation tree"
+        ]
+      },
       "polarity": "negative",
       "negative_control": true,
       "negative_control_note": "Two defective configurations pick a default here, one in each direction, and both fail this vector. That is the point: the proposed text states no default, so any implementation that supplies one silently is answering a question the record left open.",

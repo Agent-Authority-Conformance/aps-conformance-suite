@@ -30,6 +30,15 @@ and in each vector's `tests` field. That document is the proposal this family
 is a candidate against. It is not offered here as independent corroboration of
 anything.
 
+Each vector also carries `proposed_text.sections` naming the invariant in the
+full form the rest of the suite writes it, for example `Invariants > L5.
+Independent chains are not combined`. `tests` is the family-local shorthand and
+`proposed_text.sections` is the same attribution spelled out. Both name the same
+invariant for the same vector and neither changes what the vector decides. The
+long form exists because a coverage map built by reading `vectors.json` across
+families matches on it, and without it this family, which is the one built for
+L5, reads as naming no invariant at all.
+
 Where draft-03 does state the rule, each vector names the section. Vectors
 CSNU-01 to CSNU-08 carry `draft03: {"section": "3.3 Chain Verification",
 "lines": "594-596"}`, quoted below. Vectors CSNU-09 to CSNU-11 carry

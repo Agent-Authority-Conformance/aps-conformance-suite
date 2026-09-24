@@ -368,3 +368,28 @@ export function makeDefectiveBoundary(options: BoundaryOptions): AgentSideEventB
     declaredIsConsented: true,
   })
 }
+
+/** The same five removals taken one at a time. Each boundary keeps every other check
+ *  the reference boundary makes and drops exactly one, so the vectors it diverges on
+ *  are the vectors that check that one thing. Nothing new is decided here: the union
+ *  of the five declared sets is the combined control's declared set, and vectors.json
+ *  pins each of them. This is what makes a failing run say which defect an
+ *  implementation has rather than only that it is not the reference. */
+const NO_DEFECTS = {
+  presenterIsWhoeverPresents: false,
+  claimsSupplyScope: false,
+  freshnessOnly: false,
+  skipExecutorLifecycle: false,
+  declaredIsConsented: false,
+} as const
+
+export const SINGLE_DEFECT_BOUNDARIES: ReadonlyArray<{
+  readonly name: string
+  readonly make: (options: BoundaryOptions) => AgentSideEventBoundary
+}> = [
+  { name: 'defective-presenter-is-whoever-presents', make: (o) => new AgentSideEventBoundary('defective-presenter-is-whoever-presents', o, { ...NO_DEFECTS, presenterIsWhoeverPresents: true }) },
+  { name: 'defective-claims-supply-scope', make: (o) => new AgentSideEventBoundary('defective-claims-supply-scope', o, { ...NO_DEFECTS, claimsSupplyScope: true }) },
+  { name: 'defective-freshness-window-only', make: (o) => new AgentSideEventBoundary('defective-freshness-window-only', o, { ...NO_DEFECTS, freshnessOnly: true }) },
+  { name: 'defective-skips-executor-lifecycle', make: (o) => new AgentSideEventBoundary('defective-skips-executor-lifecycle', o, { ...NO_DEFECTS, skipExecutorLifecycle: true }) },
+  { name: 'defective-runtime-declaration-is-consent', make: (o) => new AgentSideEventBoundary('defective-runtime-declaration-is-consent', o, { ...NO_DEFECTS, declaredIsConsented: true }) },
+]

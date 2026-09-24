@@ -109,9 +109,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "default_successor_resolved",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "acting=did:aps:example:lts-incoming-holder"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -131,9 +133,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "no_successor_designation_and_no_declared_default",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "no_successor_designation_and_no_declared_default"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -156,9 +160,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "default_successor_eligibility_not_met",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "tenure_days=21"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -181,9 +187,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "record_without_standing",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "c008_default_rule_self_declared/succession_default"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -205,9 +213,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "default_successor_tenure_not_recorded",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "default_successor_tenure_not_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -226,9 +236,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "authority_retained_pending_acknowledgment",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "authority_retained_pending_acknowledgment"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -247,9 +259,11 @@
       ],
       "expected": {
         "verdict": "not_yet_effective",
-        "reason": "handover_not_acknowledged",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "handover_not_acknowledged"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -269,9 +283,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "handover_acknowledged",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "handover_acknowledged"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -291,9 +307,11 @@
       ],
       "expected": {
         "verdict": "invalid",
-        "reason": "authority_transferred",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "authority_transferred"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -313,9 +331,11 @@
       ],
       "expected": {
         "verdict": "not_yet_effective",
-        "reason": "acknowledgment_without_standing",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "acknowledgment_without_standing"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -335,9 +355,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "live_direction_present",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "live_direction_present"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -358,9 +380,11 @@
       "expected": {
         "verdict": "restricted",
         "reason": "fallback_scope_active",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "fallback=ops:reconcile:read"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -381,9 +405,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "outside_fallback_scope",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "fallback=ops:reconcile:read"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -402,9 +428,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "no_pre_authorized_fallback_and_no_live_direction",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "no_pre_authorized_fallback_and_no_live_direction"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -424,9 +452,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "live_direction_restored",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "live_direction_restored"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -447,9 +477,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "scheduled_swap_pre_authorized",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "slot=2026-09-10T10:00:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -469,9 +501,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "swap_not_in_rotation_schedule",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "swap_not_in_rotation_schedule"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -491,9 +525,11 @@
       ],
       "expected": {
         "verdict": "not_yet_effective",
-        "reason": "required_rest_period_not_elapsed",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "required_rest_period_not_elapsed"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -512,9 +548,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "rest_state_not_established",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "rest_state_not_established"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -534,9 +572,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "departure_and_designation_recorded_atomically",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "departure_and_designation_recorded_atomically"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -557,9 +597,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "no_designated_holder_in_gap",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "no_designated_holder_in_gap"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -580,9 +622,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "designation_recorded",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "designation_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -602,9 +646,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "designee_qualification_not_established",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "designee_qualification_not_established"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -625,9 +671,11 @@
       ],
       "expected": {
         "verdict": "invalid",
-        "reason": "acting_party_is_not_the_designated_holder",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "acting_party_is_not_the_designated_holder"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -649,9 +697,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "permitted_under_selected_policy_version",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "policy_version=1.0.0"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -673,9 +723,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "permitted_under_selected_policy_version",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "policy_version=1.0.0"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -697,9 +749,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "denied_under_selected_policy_version",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "policy_version=2.0.0"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -720,9 +774,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "policy_version_not_pinned",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "policy_version_not_pinned"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -744,9 +800,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "pinned_policy_version_not_resolvable",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "pinned=9.9.9"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -765,9 +823,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "series_owner_resolvable",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "series_owner_resolvable"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -786,9 +846,11 @@
       ],
       "expected": {
         "verdict": "invalid",
-        "reason": "grant_revoked",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "REVOKED"
+        "reason": "grant_revoked"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "REVOKED"
       }
     },
     {
@@ -809,9 +871,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "series_owner_not_resolvable",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "removed_at=2026-09-10T09:00:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -831,9 +895,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "series_disposition_reassignment_recorded",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "series_disposition_reassignment_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -855,9 +921,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "within_the_selected_occurrence_template",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "template_version=1"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -879,9 +947,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "outside_occurrence_template_scope",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "template_version=2"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -902,9 +972,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "occurrence_template_version_not_recorded",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "occurrence_template_version_not_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -926,9 +998,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "within_the_selected_occurrence_template",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "template_version=2"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -948,9 +1022,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "within_wind_down_grace",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "grace_seconds=1800"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -970,9 +1046,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "wind_down_grace_elapsed",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "grace_seconds=1800"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -991,9 +1069,11 @@
       ],
       "expected": {
         "verdict": "invalid",
-        "reason": "grant_revoked",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "REVOKED"
+        "reason": "grant_revoked"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "REVOKED"
       }
     },
     {
@@ -1012,9 +1092,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "wind_down_bound_not_declared",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "wind_down_bound_not_declared"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1034,9 +1116,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "within_current_creator_scope",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "job_scope=ops:batch:write"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1056,9 +1140,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "outside_current_creator_scope",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "job_scope=ops:batch:write"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1078,9 +1164,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "within_current_creator_scope",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "job_scope=ops:batch:read"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1099,9 +1187,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "job_creator_authority_not_recorded",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null
+        "reason": "job_creator_authority_not_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1121,9 +1211,11 @@
       ],
       "expected": {
         "verdict": "valid",
-        "reason": "live_state_clear_at_fire_time",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "live_state_clear_at_fire_time"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1144,9 +1236,11 @@
       "expected": {
         "verdict": "suspended",
         "reason": "suspended_at_fire_time",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "cause=investigation-4711"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1167,9 +1261,11 @@
       ],
       "expected": {
         "verdict": "invalid",
-        "reason": "grant_revoked",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "REVOKED"
+        "reason": "grant_revoked"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "REVOKED"
       }
     },
     {
@@ -1188,9 +1284,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "suspension_state_not_established_at_fire_time",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null
+        "reason": "suspension_state_not_established_at_fire_time"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1210,9 +1308,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "valid_on_the_selected_clock",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "reading=2026-09-10T10:00:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1232,9 +1332,11 @@
       "expected": {
         "verdict": "invalid",
         "reason": "expired_on_the_selected_clock",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "EXPIRED",
         "detail": "reading=2026-09-10T11:30:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "EXPIRED"
       }
     },
     {
@@ -1254,9 +1356,11 @@
       "expected": {
         "verdict": "not_yet_effective",
         "reason": "not_yet_effective_on_the_selected_clock",
-        "sdk_chain_state": "invalid",
-        "sdk_failure_code": "NOT_YET_VALID",
         "detail": "reading=2026-09-10T08:30:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "invalid",
+        "failure_code": "NOT_YET_VALID"
       }
     },
     {
@@ -1274,9 +1378,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "checking_party_clock_not_recorded",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null
+        "reason": "checking_party_clock_not_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1296,9 +1402,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "reading_accepted",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "reading=2026-09-10T10:00:00.000Z"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1318,9 +1426,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "time_source_not_cross_checked",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "source=gnss:legacy-week-counter"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1340,9 +1450,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "time_sources_disagree_past_bound",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "delta_ms=5000"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1361,9 +1473,11 @@
       ],
       "expected": {
         "verdict": "not_established",
-        "reason": "time_source_not_recorded",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null
+        "reason": "time_source_not_recorded"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1384,9 +1498,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "divergence_within_declared_smear_bound",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "delta_ms=400"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     },
     {
@@ -1407,9 +1523,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "divergence_outside_any_declared_window",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "delta_ms=400"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1430,9 +1548,11 @@
       "expected": {
         "verdict": "not_established",
         "reason": "divergence_exceeds_declared_smear_bound",
-        "sdk_chain_state": null,
-        "sdk_failure_code": null,
         "detail": "delta_ms=5000"
+      },
+      "sdk_cross_check": {
+        "chain_state": null,
+        "failure_code": null
       }
     },
     {
@@ -1453,9 +1573,11 @@
       "expected": {
         "verdict": "valid",
         "reason": "divergence_within_declared_smear_bound",
-        "sdk_chain_state": "valid",
-        "sdk_failure_code": null,
         "detail": "delta_ms=0"
+      },
+      "sdk_cross_check": {
+        "chain_state": "valid",
+        "failure_code": null
       }
     }
   ]

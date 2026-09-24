@@ -141,6 +141,19 @@ field whose name matches liability, fault, wrongfulness or breach.
 verdict and code the clean one reaches. Together they hold the separation as a
 run-time property rather than a claim in prose.
 
+### Invariant attribution
+
+`vectors.json` names L3 and L4 at the family header and no vector names either
+in its own record. That is deliberate and it is now stated in the data as well,
+under `proposed_text.invariants_note`. L3 is about whether a revocation can be
+reversed, and no vector here presents a withdrawn renunciation. L4 is about what
+a successor inherits, and this family establishes nothing about who covers the
+work after the agent leaves, which the vagueness section below says in full. The
+two header names are context for the departure scenario, not coverage. A reader
+building an L4 coverage map should read it off
+`fixtures/lifecycle-root-authority-succession`, where `LRAS-C-007-g` and
+`LRAS-C-007-i` name L4 at vector level.
+
 ## Negative controls
 
 Four defective configurations. `declared_fail_sets` names exactly which vectors

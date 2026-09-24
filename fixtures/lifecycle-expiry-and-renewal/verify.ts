@@ -38,9 +38,16 @@ interface ExpectedOutcome {
   verdict: string
   reason: string
   ending: string | null
-  sdk_chain_state: string | null
-  sdk_failure_code: string | null
   detail?: string
+}
+
+// The SDK chain answer is a second assertion, not part of the lifecycle verdict. It sits
+// beside `expected` in vectors.json rather than inside it, because the two are never
+// merged here: the SDK's own `EXPIRED` sits next to the ending kind, not instead of it.
+// Both are still checked on every vector, and a vector passes only when both match.
+interface SdkCrossCheck {
+  chain_state: string | null
+  failure_code: string | null
 }
 
 interface Vector {
@@ -55,6 +62,7 @@ interface Vector {
   revocation: 'active' | 'revoked'
   records: string[]
   expected: ExpectedOutcome
+  sdk_cross_check: SdkCrossCheck
 }
 
 interface Vectors {
@@ -85,15 +93,21 @@ function toEvent(v: Vector): Event {
   return { id: v.id, check: v.check, chain, action, now: v.now, revocation: v.revocation, records }
 }
 
-function matches(a: Outcome, e: ExpectedOutcome): boolean {
+function matchesLifecycle(a: Outcome, e: ExpectedOutcome): boolean {
   return (
     a.verdict === e.verdict &&
     a.reason === e.reason &&
     (a.ending ?? null) === (e.ending ?? null) &&
-    a.sdk_chain_state === e.sdk_chain_state &&
-    a.sdk_failure_code === e.sdk_failure_code &&
     (a.detail ?? null) === (e.detail ?? null)
   )
+}
+
+function matchesSdkCrossCheck(a: Outcome, c: SdkCrossCheck): boolean {
+  return a.sdk_chain_state === c.chain_state && a.sdk_failure_code === c.failure_code
+}
+
+function matches(a: Outcome, v: Vector): boolean {
+  return matchesLifecycle(a, v.expected) && matchesSdkCrossCheck(a, v.sdk_cross_check)
 }
 
 const line = (a: Outcome): string =>
@@ -113,7 +127,7 @@ const referenceResults = runBoundary(makeReferenceBoundary)
 let referenceMatched = 0
 for (const v of vectors.vectors) {
   const actual = referenceResults.get(v.id)!
-  const ok = matches(actual, v.expected)
+  const ok = matches(actual, v)
   if (ok) referenceMatched += 1
   console.log(`  ${ok ? 'MATCH' : 'MISMATCH'} ${v.id}  ${line(actual)}`)
   if (!ok) {
@@ -142,7 +156,7 @@ for (const [name, make] of DEFECTIVE) {
   for (const v of vectors.vectors) {
     const actual = results.get(v.id)!
     const shouldMatch = !declaredSet.has(v.id)
-    const entryOk = shouldMatch ? matches(actual, v.expected) : !matches(actual, v.expected)
+    const entryOk = shouldMatch ? matches(actual, v) : !matches(actual, v)
     if (!entryOk) ok = false
     const label = shouldMatch
       ? entryOk ? 'MATCH' : 'UNDECLARED MISMATCH'

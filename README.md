@@ -88,6 +88,47 @@ Output: pass/fail per vector + per-category summary. Exit code 0 on full pass, 1
 
 Runners exist for TypeScript (`runners/ts`), Go (`runners/go`) and Python (`runners/python` plus the receipt and AAT runners under `runners/`).
 
+### SDK support records are per family and not comparable
+
+Most lifecycle families record what the two reference SDKs, `agent-passport-system` on
+npm and on PyPI, do and do not supply for the questions that family asks. Those records
+are not written in one shape, and a number computed across them would not mean anything.
+There are five shapes in the tree today:
+
+1. **A committed per-claim outcome table**, one row per claim with `supported` or
+   `not_supported` for each SDK. `fixtures/lifecycle-credential-events/SDK-RUNS.md` and
+   `fixtures/activation-not-established/README.md`.
+2. **A committed per-layer table** whose cells name the export that decides the layer, or
+   say **absent**. `fixtures/lifecycle-multiple-principals-and-conflict/README.md` and
+   `fixtures/lifecycle-outside-the-chain-standing/README.md`.
+3. **A support block printed by the runner and pasted verbatim**, so the record is
+   produced by the run rather than typed.
+   `fixtures/lifecycle-legal-regulatory-events/README.md`.
+4. **An export-reachability count from an `sdk-probe` script**, of the form "9 of 16
+   supported". `fixtures/lifecycle-identifier-reuse-and-rename/README.md`.
+5. **Prose plus a pointer to a flag that prints the record on demand**, with nothing
+   per-vector committed. `fixtures/lifecycle-principal-events/README.md` sends a reader
+   to `verify.ts --sdk-support`.
+
+They differ because the unit differs. A family whose gate has named claims records
+claims. A family decided layer by layer records layers. A family whose finding is that an
+export is unreachable records the probe that found it. A family whose per-vector record is
+large and fully reproducible from the committed inputs prints it on demand rather than
+committing it. Shapes 1 and 2 count different things, and shape 5 commits no count at all.
+
+Two consequences, both deliberate:
+
+- **No suite-wide SDK support number can honestly be computed from these records.** Rows
+  from shape 1 and rows from shape 2 are not the same unit, and the families using shape 5
+  contribute no rows. Any total over them would be an artifact of how each family chose to
+  write its record.
+- **A family's own record is authoritative for that family and for nothing else.** Read
+  it in that family's `SDK-RUNS.md` where one exists and in its `README.md` otherwise.
+
+None of these records is a conformance result about either SDK. They state what a fixture
+could and could not get from a published package at a pinned version, which is a statement
+about the package's surface at that version and not a verdict on it.
+
 ## Repository layout
 
 ```
