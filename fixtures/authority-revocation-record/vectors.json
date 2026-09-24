@@ -1,5 +1,6 @@
 {
   "profile": "aps-authority-revocation-record-v0",
+  "status": "candidate_against_proposed",
   "description": "Exercises the shipped aps:authority-revocation:v1 record format: the three domain-separated preimages, the identifier and signature construction over them, the revocation time as a signed member, the closed record_type, the cascade transaction identity bound to the record's own originating content, and the store's first-wins slot for one delegation. Part A runs the record verifier. Part B runs the verifying mutation path into a store.",
   "part_a_record_verification": {
     "description": "Each vector hands one candidate record and the target delegation to the record verifier, with the fixture's key-resolver table. Every reject vector is one named defect from ARR-01, minted with correctly recomputed identifiers and a fresh signature wherever the defect does not forbid it, so exactly one thing is wrong per vector.",
@@ -14,7 +15,8 @@
           "state": "valid",
           "valid": true,
           "failures": []
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-02-reject-revocation-id-wrong-domain",
@@ -31,7 +33,8 @@
               "message": "revocation content address does not match its body"
             }
           ]
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-03-reject-signature-wrong-domain",
@@ -48,7 +51,8 @@
               "message": "Ed25519 signature is invalid"
             }
           ]
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-04-reject-revocation-time-outside-signed-content",
@@ -69,7 +73,8 @@
               "message": "revoked_at must be a canonical UTC-millisecond timestamp"
             }
           ]
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-05-reject-unknown-record-type",
@@ -86,7 +91,8 @@
               "message": "record_type must be aps:authority-revocation:v1"
             }
           ]
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-06-reject-cascade-transaction-id-not-bound",
@@ -103,7 +109,8 @@
               "message": "cascade_transaction_id does not recompute from the record"
             }
           ]
-        }
+        },
+        "status": "candidate_against_proposed"
       }
     ]
   },
@@ -120,7 +127,8 @@
           "recorded": true,
           "inserted": true,
           "stored_record": "control"
-        }
+        },
+        "status": "candidate_against_proposed"
       },
       {
         "id": "ARR-08-reject-duplicate-record-id",
@@ -132,7 +140,8 @@
           "recorded": true,
           "inserted": false,
           "stored_record": "control"
-        }
+        },
+        "status": "candidate_against_proposed"
       }
     ]
   }

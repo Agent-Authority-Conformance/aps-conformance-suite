@@ -1,5 +1,7 @@
 # One revocation record format, checked against its own bytes
 
+Every case in `vectors.json` is labelled `candidate_against_proposed`. The format under test is the one draft-04 specifies in its Revocation Record Format subsection as a Candidate feature. Nothing here is a conformance claim against published draft-03 text, and passing these vectors does not make the format a requirement of APS Core.
+
 Section 3.5.1 names what a revocation record carries and fixes no encoding,
 no identifier construction, no signature construction and no signer rule for
 it. `aps:authority-revocation:v1` is one format that carries those members.
