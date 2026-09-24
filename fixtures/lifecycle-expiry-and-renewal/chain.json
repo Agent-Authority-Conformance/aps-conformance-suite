@@ -1,0 +1,833 @@
+{
+  "actions": {
+    "cert_read": {
+      "action_ref": "cb20e6e36b49683b5532ff7cbcc005c1a9a0c8b00cc9307cd1a1639a0e98a4bf",
+      "input": {
+        "action_type": "cert.read",
+        "agent_id": "did:aps:example:ler-subject-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "10a6f632298db3f6eb1799494d74fa9d",
+        "payload_ref": "c7ba71d877a4210e6607cc44e0c7321f189e7871c9154c1637a82dfed823685d",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:cert:read"
+        ],
+        "target": "https://issuer.example/api/v1/cert/read"
+      },
+      "requested_scope": "ops:cert:read"
+    },
+    "cert_use": {
+      "action_ref": "be5a9fa2033e17ae56351b0d1c2a92bc31baf08903f9117bcc04e23698047996",
+      "input": {
+        "action_type": "cert.use",
+        "agent_id": "did:aps:example:ler-subject-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "f88d2667a8ea8c6876319ac6505008f4",
+        "payload_ref": "2b8fc742d72aa53ee5d9962f655dc7c91849ea54f2c6b2011565372dac630de4",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:cert:use"
+        ],
+        "target": "https://issuer.example/api/v1/cert/use"
+      },
+      "requested_scope": "ops:cert:use"
+    },
+    "grant_use": {
+      "action_ref": "cde239243271005350a38282aecac8b0f0319fa4491d2a839437c2674d4e2ab0",
+      "input": {
+        "action_type": "grant.use",
+        "agent_id": "did:aps:example:ler-subject-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "86415e3fc842d6e6a9b67838b5196f84",
+        "payload_ref": "a1273f56dd632e4973f6ed55a9b9c2bf4bedbfff34e68fd22430c77f4ba2c87b",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:grant:use"
+        ],
+        "target": "https://issuer.example/api/v1/grant/use"
+      },
+      "requested_scope": "ops:grant:use"
+    },
+    "interim_bind": {
+      "action_ref": "1d99aca7b9a15417241ca726e734df7d23863ebf2677f3c32e3fced11494fb25",
+      "input": {
+        "action_type": "interim.bind",
+        "agent_id": "did:aps:example:ler-subject-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "14a802ae312a060be8f28c04b76dda3b",
+        "payload_ref": "0e3c2d9cbb51208ea66d5540ba500778aff50c1dc5526a208e414e67c7a7ce1f",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:interim:bind"
+        ],
+        "target": "https://issuer.example/api/v1/interim/bind"
+      },
+      "requested_scope": "ops:interim:bind"
+    },
+    "interim_routine": {
+      "action_ref": "e29cde98c181e869a8e178d129f552f843b997aff0304c5e7f2940e95aaefe14",
+      "input": {
+        "action_type": "interim.routine",
+        "agent_id": "did:aps:example:ler-subject-agent",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "nonce": "6463105f55be7e12749d227f374c205d",
+        "payload_ref": "7e87c325cefa7656b18c688a945b4c0c2ccd1345bd2dc9099a00d3f1fd007e8b",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "ops:interim:routine"
+        ],
+        "target": "https://issuer.example/api/v1/interim/routine"
+      },
+      "requested_scope": "ops:interim:routine"
+    }
+  },
+  "chains": {
+    "cert_renewal_widened": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:cert:read"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:7716d5a54b0a15f4bf43e33278940d65016a915fb34c6f29c7d9a219dc793c1e",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "6f1fc77f011163465e6129fdbe836984",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "bdc2671c06cfc5827c3d9b694862d602e38f8473716307fb4fa42b8a8d53edc39c84ce8cb4d949337c89afce7f407a7bf99dc6d5977b5c6dec1baef930c5de0c",
+        "subject": "did:aps:example:ler-interim-holder",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:cert:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:aeb0103a3856f78316ba780df1a470c51551bd8295a83f53f08ea443caec25f8",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-interim-holder",
+        "nonce": "7d5e97d5c233bcf743edaecee04fc61b",
+        "parent_delegation_id": "sha256:7716d5a54b0a15f4bf43e33278940d65016a915fb34c6f29c7d9a219dc793c1e",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "ef485bd3cc695ea350f92dadbe27eedb7a9029a16696a0db2bdff222b13c1584a146e789b0e072eb74c7178320acc32b98cbbc4bdf347615339df4e50ec8810c",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-interim-holder#key-1",
+        "version": "1.0"
+      }
+    ],
+    "expiring": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:grant:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:03e2391b0d1726213e5258f5f2d3587531b117c56795dbc8c023317bfac0c8e0",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "64007d99d8a1d32df070e0068983c4c3",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "ac453b75ed775c3876caad120f1182d6f735cf5ba353b4342d4c7ecfb30dca1494d2da2c78d11ff0f0b8950393c99713b5141e001f041e445c52d47f355d3707",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "interim_ok": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:interim:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "95e4a3875f61da0091aec19017177801",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "814d2dffd70dd1d52232a21e6650bd4f7d5609641664f01ed6224d45ff35b2e7bad4ab1427994fc18d1dbf95b4613b4402fb9589db09409554cbd05ea744e40b",
+        "subject": "did:aps:example:ler-interim-holder",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:interim:routine"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:26d6fc0e1448598c3c8dd00264fdb0dc5c66e04c16ed25528c6316bb3ade4080",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-interim-holder",
+        "nonce": "d5c38d4d0fe5ba536df233733e87a4f1",
+        "parent_delegation_id": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "652021ce5f0a9e445afa2e300825a942fea5daad649b53835320e92ae5a35bf8b21131b5237f9236e0bbde2a16b3f61fe64a6e26f5d9fbee6b43015884a78104",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-interim-holder#key-1",
+        "version": "1.0"
+      }
+    ],
+    "interim_time_widened": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 1
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:interim:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "95e4a3875f61da0091aec19017177801",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "814d2dffd70dd1d52232a21e6650bd4f7d5609641664f01ed6224d45ff35b2e7bad4ab1427994fc18d1dbf95b4613b4402fb9589db09409554cbd05ea744e40b",
+        "subject": "did:aps:example:ler-interim-holder",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      },
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:interim:routine"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:55bcf8cac248f9167b800609d36b38456e8ec681fcc887d416fbcd25f6be0ff1",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-interim-holder",
+        "nonce": "d4d58f5a88799e1dbe7f7c89cf5ff2a6",
+        "parent_delegation_id": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "1c2e5f08cff0b1b26f59b329f74ee7616b1df5df3fdc38eb0a915121c559e28bbc64a56102585268a17160771b3a8693ce8e634bf952387d08a9991587792409",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-interim-holder#key-1",
+        "version": "1.0"
+      }
+    ],
+    "new_certificate": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:cert:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-10T10:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:9326d67d563e6f96f557b164496d4f23a79c526d17ea630f84b0e9faf665fc0d",
+        "issued_at": "2026-09-10T10:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "fad3e49fdfe15c719550ed17a1ee48e6",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "3b8159042df80837feb38a870b9480b7e0b842e8115374255b58e32d2aa68d61b26f5889beb72c978f4b7a912e47096bda02205a1f91f5e42d2b14589a6d4c06",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "old_certificate": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:cert:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:05124757257ae75f3989024e8a34d39bb49a8ceb074c03dedb2450d64b21f1b6",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "31cb33233311e04333b0e9c4a59f395c",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "bc8498bc17c902420cd811d48f5e996a2d591b681837b845e1a252672acbbedb112510c97aa8b988a971e054f64f343f341713523edb903428bec7c060b1680b",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "revoked_for_cause": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:grant:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:ef98d15cec76779cdab590809e514990fdadb53754a68f7addc00bd9feb916cb",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "9e68e870cade9325eb94bbd9299561a2",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "35f9a195cf3af35f17ab6c87508330294a63c29a2af6fa2b52a69978380fc24cd9c5325325cbdbf1361c6e8bec17865a7361a70f515c7588a2bcb54ce6e8b104",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "revoked_then_expired": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:grant:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-09-10T11:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:8ce2324a641520868e6300e1cf086f4e989a33fc16bb7a3cf89dd8e06563188f",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "dbd88a740f6fc4f328de7a266a27242f",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "05a66da10a9db5726c6589ef2d6ab5aef1b7ddf8ec1a12ae5e17eb1cf8694133a67abf772952efde3137ffb6b2fc86e20f800258a6c6fe649028d42c682bd804",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ],
+    "tampered_extension": [
+      {
+        "authority": {
+          "depth": {
+            "remaining": 0
+          },
+          "reputation": {
+            "ceiling": 100,
+            "profile": "aps-score-0-100-v1"
+          },
+          "reversibility": {
+            "ceiling": "irreversible",
+            "profile": "aps-tci-v1"
+          },
+          "scope": {
+            "grants": [
+              "ops:cert:*"
+            ],
+            "profile": "aps-hierarchical-v1"
+          },
+          "spend": {
+            "mode": "unbounded"
+          },
+          "time": {
+            "not_after": "2026-10-01T00:00:00.000Z",
+            "not_before": "2026-09-01T00:00:00.000Z"
+          },
+          "values": {
+            "profile": "aps-values-identifiers-v1",
+            "required": []
+          }
+        },
+        "delegation_id": "sha256:05124757257ae75f3989024e8a34d39bb49a8ceb074c03dedb2450d64b21f1b6",
+        "issued_at": "2026-09-01T00:00:00.000Z",
+        "issuer": "did:aps:example:ler-issuing-office",
+        "nonce": "31cb33233311e04333b0e9c4a59f395c",
+        "parent_delegation_id": null,
+        "record_type": "aps:authority-delegation:v1",
+        "signature": "bc8498bc17c902420cd811d48f5e996a2d591b681837b845e1a252672acbbedb112510c97aa8b988a971e054f64f343f341713523edb903428bec7c060b1680b",
+        "subject": "did:aps:example:ler-subject-agent",
+        "verification_method": "did:aps:example:ler-issuing-office#key-1",
+        "version": "1.0"
+      }
+    ]
+  },
+  "description": "Three expiry and renewal lifecycle cases. Nine AuthorityDelegationV1 chains, one signed standing registry, seven fixture-local signed lifecycle records (a fixture-local profile, not a protocol object) and five draft-03 action references, minted and verified with agent-passport-system 7.1.0.",
+  "identities": {
+    "AGENT": "did:aps:example:ler-subject-agent",
+    "BOUNDARY": "did:aps:example:ler-enforcement-boundary",
+    "INTERIM": "did:aps:example:ler-interim-holder",
+    "OFFICE": "did:aps:example:ler-issuing-office",
+    "OUTSIDER": "did:aps:example:ler-outsider"
+  },
+  "mint_time_sdk_observations": {
+    "cert_renewal_widened": {
+      "code": "SCOPE_WIDENING",
+      "state": "invalid"
+    },
+    "expiring_after": {
+      "code": "EXPIRED",
+      "state": "invalid"
+    },
+    "expiring_inside": {
+      "code": null,
+      "state": "valid"
+    },
+    "interim_ok": {
+      "code": null,
+      "state": "valid"
+    },
+    "interim_ok_after_mandate": {
+      "code": "EXPIRED",
+      "state": "invalid"
+    },
+    "interim_time_widened": {
+      "code": "TIME_WIDENING",
+      "state": "invalid"
+    },
+    "new_certificate_inside": {
+      "code": null,
+      "state": "valid"
+    },
+    "old_certificate_after": {
+      "code": "EXPIRED",
+      "state": "invalid"
+    },
+    "revoked_for_cause_active": {
+      "code": null,
+      "state": "valid"
+    },
+    "revoked_for_cause_inside": {
+      "code": "REVOKED",
+      "state": "invalid"
+    },
+    "revoked_then_expired": {
+      "code": "EXPIRED",
+      "state": "invalid"
+    },
+    "tampered_extension": {
+      "code": "ID_MISMATCH",
+      "state": "invalid"
+    }
+  },
+  "minted_by": "fixtures/lifecycle-expiry-and-renewal/mint.ts",
+  "profile": "aps-lifecycle-expiry-and-renewal-v0",
+  "record_profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+  "record_signature_domain": "APS-CONFORMANCE-LIFECYCLE-EXPIRY-RECORD-V0",
+  "records": {
+    "i007_revocation_for_cause": {
+      "body": {
+        "actor": "did:aps:example:ler-issuing-office",
+        "cause": "credential-obtained-through-misstatement",
+        "grant": "sha256:ef98d15cec76779cdab590809e514990fdadb53754a68f7addc00bd9feb916cb",
+        "recorded_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "revocation_notice",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i007_revocation_for_cause",
+      "signature": "2a3aff0c3b9430da67d2292cf6d491f43e36b3997899e4bc0b4bd83ff926d4f62c7696b9f8ebf79a7ea4a89b5b33fd4c749e4635557c57533bcaf8e6af4cbc05",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    },
+    "i007_revocation_then_expiry": {
+      "body": {
+        "actor": "did:aps:example:ler-issuing-office",
+        "cause": "credential-obtained-through-misstatement",
+        "grant": "sha256:8ce2324a641520868e6300e1cf086f4e989a33fc16bb7a3cf89dd8e06563188f",
+        "recorded_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "revocation_notice",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i007_revocation_then_expiry",
+      "signature": "bc06f1a2cef746df0aee42190aa8b2e9381fe4c8f0b71822ed27a0051dca118a83638e3f8863f768d5e0f5efd6c1a76bc8b4b584fc81edde5d62f4f306617607",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    },
+    "i007_revocation_without_standing": {
+      "body": {
+        "actor": "did:aps:example:ler-outsider",
+        "cause": "credential-obtained-through-misstatement",
+        "grant": "sha256:ef98d15cec76779cdab590809e514990fdadb53754a68f7addc00bd9feb916cb",
+        "recorded_at": "2026-09-10T09:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:ler-outsider",
+      "kind": "revocation_notice",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i007_revocation_without_standing",
+      "signature": "f9f4c387488dfa4e03f141b9319668e8e886330cc7c199706be5112fa2940673c2981f326da540749580ae7218856d85ca42c645c6afcfc72327c5c14932eb0c",
+      "verification_method": "did:aps:example:ler-outsider#key-1"
+    },
+    "i008_cached_decision_on_old_artifact": {
+      "body": {
+        "decided_at": "2026-09-10T09:00:00.000Z",
+        "delegation_ref": "sha256:05124757257ae75f3989024e8a34d39bb49a8ceb074c03dedb2450d64b21f1b6",
+        "verdict": "permit"
+      },
+      "issued_at": "2026-09-10T09:00:00.000Z",
+      "issuer": "did:aps:example:ler-enforcement-boundary",
+      "kind": "cached_decision",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i008_cached_decision_on_old_artifact",
+      "signature": "6199a66325ec37776cea499988f4bae9d464d50949bdbdf7ca23f86f5628c7df2a33193dbbfb71569e12537a9f9a762ecf851260eda8e6e401b9b0d5c1088502",
+      "verification_method": "did:aps:example:ler-enforcement-boundary#key-1"
+    },
+    "i008_renewal": {
+      "body": {
+        "issues": "sha256:9326d67d563e6f96f557b164496d4f23a79c526d17ea630f84b0e9faf665fc0d",
+        "mode": "reissue",
+        "supersedes": "sha256:05124757257ae75f3989024e8a34d39bb49a8ceb074c03dedb2450d64b21f1b6"
+      },
+      "issued_at": "2026-09-10T10:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "renewal",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i008_renewal",
+      "signature": "09404f56f3a4b512ac202b61843c8e90b81412fb3ec9e7fe4abab478690d9506ed83831030074b916759ada73ae10519ef9bc61816a5e4423efe1975b7aa130b",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    },
+    "i009_extension_by_office": {
+      "body": {
+        "mandate": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "new_not_after": "2026-10-01T00:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "interim_extension",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i009_extension_by_office",
+      "signature": "15847791d1d25404a7528a13e6259da1b7115535955a482afb0e0aca302edaf4a118ecd33ef449556f948b58c9820d36f52287c355b71ae26cf0cdf98c856a01",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    },
+    "i009_extension_self": {
+      "body": {
+        "mandate": "sha256:4f0d2494e68f028afb2e4036eb727c2522bdfbc41ed2e873cdcb0264cb068e05",
+        "new_not_after": "2026-10-01T00:00:00.000Z"
+      },
+      "issued_at": "2026-09-10T11:00:00.000Z",
+      "issuer": "did:aps:example:ler-interim-holder",
+      "kind": "interim_extension",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i009_extension_self",
+      "signature": "a99529925121515482f9e68d90605136f0cb3e1a3ff90c2be23839d38020f90930de3551016618d938c5c497ef108f43cac8c63cb522a8d3d26d15dd92833806",
+      "verification_method": "did:aps:example:ler-interim-holder#key-1"
+    },
+    "i009_instrument": {
+      "body": {
+        "caretaking_scope": [
+          "ops:interim:routine"
+        ],
+        "interim_holder": "did:aps:example:ler-interim-holder",
+        "mandate_not_after": "2026-09-10T11:00:00.000Z",
+        "may_extend": [
+          "did:aps:example:ler-issuing-office"
+        ],
+        "office": "did:aps:example:ler-issuing-office"
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "interim_instrument",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "i009_instrument",
+      "signature": "2f956055b42ac9765a18095c4875fa817d5d5295ca1a97f7b15e3d31f6308e125180785d94cfabc955fd573afc5557fec633fc3e3c606331e5530f83f96cb305",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    },
+    "standing_registry": {
+      "body": {
+        "decision_attestor": [
+          "did:aps:example:ler-enforcement-boundary"
+        ],
+        "interim_instrument_author": [
+          "did:aps:example:ler-issuing-office"
+        ],
+        "lifecycle_standing": [
+          "did:aps:example:ler-issuing-office"
+        ],
+        "renewal_author": [
+          "did:aps:example:ler-issuing-office"
+        ]
+      },
+      "issued_at": "2026-09-01T00:00:00.000Z",
+      "issuer": "did:aps:example:ler-issuing-office",
+      "kind": "standing_registry",
+      "profile": "aps-conformance-suite:lifecycle-expiry-and-renewal:record-v0",
+      "record_id": "standing_registry",
+      "signature": "11b19b8fd7a786001f49957c3fea1f28b35444896b36a3626edae1a935459975a9c3784c7e3b8df992c5e0c3e9888e5cb29a69b76aa892776e5340f62bf6820b",
+      "verification_method": "did:aps:example:ler-issuing-office#key-1"
+    }
+  },
+  "sdk": {
+    "typescript": "agent-passport-system@7.1.0"
+  },
+  "seed_label_prefix": "aps-conformance-suite:lifecycle-expiry-and-renewal:",
+  "timeline": {
+    "T2": "2026-09-10T09:00:00.000Z",
+    "T3": "2026-09-10T10:00:00.000Z",
+    "T4": "2026-09-10T11:00:00.000Z",
+    "T5": "2026-09-10T12:00:00.000Z",
+    "issued": "2026-09-01T00:00:00.000Z",
+    "not_after": "2026-10-01T00:00:00.000Z"
+  },
+  "verification_keys": {
+    "did:aps:example:ler-enforcement-boundary#key-1": "e14cafaf6ef42e7f2794f7306029c3a0cb2a6a8c665ad65f8e28c758d4906f08",
+    "did:aps:example:ler-interim-holder#key-1": "d4d9c04eae972e111e54f67ea8c0d0617db4b3ef9a61a07f6d128dbdd3e37e54",
+    "did:aps:example:ler-issuing-office#key-1": "97653f02e84122da2289c4d521c30151262c802f626b627b753b85ce56b71bbc",
+    "did:aps:example:ler-outsider#key-1": "a2d3188ed9d2ba0597c20d250e881e0cd9aec4eccb4e88dd889dee8d541620e6",
+    "did:aps:example:ler-subject-agent#key-1": "02cc7d70417a2247d00e1aee7f44c20befcb046a242ae12cfbd328251d4efe0b"
+  }
+}

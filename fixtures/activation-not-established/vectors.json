@@ -1,0 +1,376 @@
+{
+  "profile": "aac-activation-not-established-v0",
+  "fixture_version": "v2",
+  "status": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+    "document": "AUTHORITY-LIFECYCLE.md",
+    "sections": [
+      "Lifecycle concepts are separate > Authority and dependencies > Activation condition",
+      "Invariants > L7. Unknown revocation state is not active"
+    ],
+    "note": "Every case in this file is labelled candidate_against_proposed. draft-pidlisnyi-aps-03 states no activation-condition, attestor-role or attestation-acceptance rule, so no case here is a draft-03 conformance case. Section 3.3 chain verification is the only draft-03 surface any case touches, and the three cases that touch it say so in their own draft_03_surface member."
+  },
+  "version_note": "v2. v1 asserted one negative verdict, not_established, for every unmet activation condition, and built its no-retroactive-activation case on the instant the attestation was written. This version asserts two distinct negative verdicts and builds that case on the instant the condition occurred. not_yet_effective is a positive finding that the condition had not been met at the action instant. not_established is the verifier being unable to tell, including where the only evidence comes from a source the model does not accept for the condition.",
+  "description": "A grant is issued with an activation condition. Where the condition names a recorded event and an attestor role, an acceptable attestation from that role that the event occurred at or before the action instant makes the grant exercisable. An acceptable record establishing that the event had not occurred by that instant, or that it first occurred after it, leaves the action not yet effective. No usable evidence, evidence from a source the model does not accept, and two acceptable records that disagree all leave activation not established. Where the condition names a date, the verifier reads the date and needs no evidence at all. The instant an attestation was written never decides a verdict: a record written after an action can establish a condition that obtained before it, and a condition that first occurred after an action does not reach back to it.",
+  "verdicts": {
+    "exercisable": "The condition is established as met at or before the action instant.",
+    "not_yet_effective": "The verifier establishes from accepted evidence that the condition had not been met at the action instant. Neither invalid nor exercisable. The remedy is to wait.",
+    "not_established": "The verifier cannot tell whether the condition was met. Neither invalid nor exercisable. The remedy is a better source.",
+    "invalid": "The chain is invalid on its own terms, independently of the activation question."
+  },
+  "clock_reference": "chain.json .clock",
+  "cases": [
+    {
+      "id": "AX-01-occurrence-before-action-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "Activation condition, recorded event: an acceptable attestation from the named role that the event occurred before the action instant makes an already valid grant exercisable.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_ON_TIME"],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "activation",
+        "code": "activation_established"
+      }
+    },
+    {
+      "id": "AX-02-no-attestation-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "With nothing presented, activation is not established. The grant is not invalid, and the verdict does not claim the event failed to happen. This is the case not_yet_effective must not be used for.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": [],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "no_attestation_presented"
+      }
+    },
+    {
+      "id": "AX-03-honest-wrong-role-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "An attestation from an attestor whose registered role is not the role the condition names is a source the model does not accept for this condition, so activation is not established rather than not yet effective.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_AUDITOR_HONEST_ROLE"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_attestor_role_mismatch"
+      }
+    },
+    {
+      "id": "AX-04-self-declared-role-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "Negative control: a correctly signed attestation whose own attestor_role member claims the required role, from an attestor the registry places in a different role, leaves activation not established.",
+      "polarity": "negative",
+      "negative_control": true,
+      "negative_control_note": "An implementation that reads the role off the attestation body instead of an attestor-role registry admits this case wrongly. Every byte of the record is authentic and the signature verifies: only the registry disagrees.",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_AUDITOR_CLAIMS_MONITOR_ROLE"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_role_claim_conflict"
+      }
+    },
+    {
+      "id": "AX-05-wrong-event-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "An attestation from the right role naming an event other than the one the condition names leaves activation not established.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_WRONG_EVENT"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_condition_mismatch"
+      }
+    },
+    {
+      "id": "AX-06-unverifiable-signature-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "An attestation naming the right attestor and role whose signature does not verify under the key its verification_method points at leaves activation not established. Unusable evidence is not evidence, and it does not invalidate the grant.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_FORGED_SIGNATURE"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_signature_unverified"
+      }
+    },
+    {
+      "id": "AX-07-occurrence-after-action-not-yet-effective",
+      "status": "candidate_against_proposed",
+      "tests": "No retroactive activation, keyed on the condition's own occurrence instant. An acceptable attestation that the event first occurred after the action instant does not make that action exercisable. Because the record establishes when the event did occur, the verdict is not yet effective and not merely not established.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_AFTER_ACTION"],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "stage": "activation",
+        "code": "condition_first_occurred_after_action"
+      }
+    },
+    {
+      "id": "AX-08-same-attestation-later-action-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "The same record that left AX-07 not yet effective makes a later action exercisable, because the occurrence it reports precedes that later instant. The AX-07 finding is about one action instant and this result does not rewrite it.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "action_at": "T_LATER_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_AFTER_ACTION"],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "activation",
+        "code": "activation_established"
+      }
+    },
+    {
+      "id": "AX-09-attested-after-action-about-earlier-occurrence-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "The other half of the retroactivity rule. An attestation written after the action, reporting an occurrence that precedes the action, makes that action exercisable. Learning later that a condition was met earlier is the normal case, not a defect, and the instant the record was written is not the instant the condition occurred.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_ATTESTED_LATE"],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "activation",
+        "code": "activation_established"
+      }
+    },
+    {
+      "id": "AX-10-accepted-negative-attestation-not-yet-effective",
+      "status": "candidate_against_proposed",
+      "tests": "The known negative. An acceptable record from the required role stating the event had not occurred through the action instant establishes that the condition was unmet. That is not yet effective, a positive finding with its own remedy, and not the same answer as AX-02.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_NOT_OCCURRED_THROUGH_ACTION"],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "stage": "activation",
+        "code": "condition_established_not_yet_occurred"
+      }
+    },
+    {
+      "id": "AX-11-negative-from-unaccepted-source-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "The same negative statement, covering the same instant, from a source the model does not accept for this condition. It does not establish the known negative any more than a positive from that source would establish the condition, so the verdict is not established and not not-yet-effective.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_AUDITOR_NOT_OCCURRED_THROUGH_ACTION"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_attestor_role_mismatch"
+      }
+    },
+    {
+      "id": "AX-12-negative-stopping-short-of-action-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "A negative from the required role whose coverage stops before the action instant says nothing about the interval between where it stops and the action. The verifier cannot tell, so the verdict is not established rather than not yet effective.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_NOT_OCCURRED_STALE"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "attestation_does_not_reach_action"
+      }
+    },
+    {
+      "id": "AX-13-conflicting-accepted-evidence-not-established",
+      "status": "candidate_against_proposed",
+      "tests": "Two acceptable records from the required role that contradict each other about the action instant, one reporting the event occurred before it and one reporting it had not occurred through it. The verifier cannot tell which holds, so the verdict is not established. Neither record is treated as defeating the other and neither is discarded.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": [
+        "ATT_MONITOR_OCCURRED_ON_TIME",
+        "ATT_MONITOR_NOT_OCCURRED_THROUGH_ACTION"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "activation",
+        "code": "condition_evidence_conflict"
+      }
+    },
+    {
+      "id": "AX-14-right-role-alongside-wrong-role-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "One acceptable attestation is enough, and the presence of two records from a source the model does not accept neither blocks activation nor changes the verdict. Unaccepted records are not evidence in either direction, so this is not the conflict AX-13 tests.",
+      "polarity": "positive",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": [
+        "ATT_AUDITOR_HONEST_ROLE",
+        "ATT_AUDITOR_CLAIMS_MONITOR_ROLE",
+        "ATT_MONITOR_OCCURRED_ON_TIME"
+      ],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "activation",
+        "code": "activation_established"
+      }
+    },
+    {
+      "id": "AX-15-date-condition-not-reached-not-yet-effective",
+      "status": "candidate_against_proposed",
+      "tests": "Activation condition, date: an action before the activation date. The verifier reads the date off the condition and needs no attestation, so the condition is established unmet and the verdict is not yet effective. The grant's own chain is valid at this instant, asserted at mint time, so the verdict comes from the condition and not from the chain.",
+      "polarity": "negative",
+      "grant": "GRANT_DATED",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": [],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "stage": "activation",
+        "code": "condition_date_not_reached"
+      }
+    },
+    {
+      "id": "AX-16-date-condition-reached-exercisable",
+      "status": "candidate_against_proposed",
+      "tests": "The same grant at an action instant after its activation date is exercisable. Paired with AX-15 this shows the date condition is a wait and not a defect.",
+      "polarity": "positive",
+      "grant": "GRANT_DATED",
+      "action_at": "T_LATER_ACTION",
+      "revocation": "active",
+      "presented_attestations": [],
+      "expected": {
+        "verdict": "exercisable",
+        "stage": "activation",
+        "code": "activation_established"
+      }
+    },
+    {
+      "id": "AX-17-revoked-grant-is-invalid",
+      "status": "candidate_against_proposed",
+      "draft_03_surface": "draft-pidlisnyi-aps-03 Section 3.3 requires revocation state for every chain member and states that cryptographic or attenuation failure is invalid. The chain result here is plain Section 3.3. What is candidate_against_proposed is only that the gate reports invalid rather than one of the two negative activation verdicts, and never reaches the activation question.",
+      "tests": "A revoked grant is invalid, which is a third thing, different from both negative activation verdicts, and an acceptable attestation does not rescue it.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "revoked",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_ON_TIME"],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "REVOKED",
+        "chain_state": "invalid",
+        "chain_failure_index": 0
+      }
+    },
+    {
+      "id": "AX-18-unknown-revocation-is-not-established",
+      "status": "candidate_against_proposed",
+      "draft_03_surface": "draft-pidlisnyi-aps-03 Section 3.3 states that an unavailable or stale revocation result is indeterminate. The chain result here is plain Section 3.3. What is candidate_against_proposed is only the gate's mapping of that indeterminate chain result onto the verdict name not_established.",
+      "tests": "An indeterminate revocation answer is the verifier being unable to tell, so it maps onto not_established and not onto not_yet_effective. Nothing here is waiting on a condition.",
+      "polarity": "negative",
+      "grant": "GRANT",
+      "action_at": "T_ACTION",
+      "revocation": "unknown",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_ON_TIME"],
+      "expected": {
+        "verdict": "not_established",
+        "stage": "chain",
+        "code": "REVOCATION_UNKNOWN",
+        "chain_state": "indeterminate",
+        "chain_failure_index": 0
+      }
+    },
+    {
+      "id": "AX-19-grant-time-facet-not-yet-reached-is-invalid-in-both-sdks",
+      "status": "candidate_against_proposed",
+      "draft_03_surface": "draft-pidlisnyi-aps-03 Section 3.3 lists current validity among the chain checks but does not state which of valid, invalid, indeterminate or unsupported a not-yet-reached not_before produces. Both reference SDKs return invalid with NOT_YET_VALID. This case pins the observed behaviour; it does not assert that behaviour is required.",
+      "tests": "A grant with no activation condition whose time facet not_before is the same instant as GRANT_DATED's activation_date, evaluated at the same action instant as AX-15. One instant, two mechanisms carrying the wait, two deciders, two answers: the SDK chain verifier says invalid for the time facet, this family's gate says not yet effective for the activation condition. Mint-time assertions pin the two instants equal so the contrast cannot drift.",
+      "polarity": "negative",
+      "grant": "GRANT_FUTURE_WINDOW",
+      "action_at": "T_ACTION",
+      "revocation": "active",
+      "presented_attestations": ["ATT_MONITOR_OCCURRED_ON_TIME"],
+      "expected": {
+        "verdict": "invalid",
+        "stage": "chain",
+        "code": "NOT_YET_VALID",
+        "chain_state": "invalid",
+        "chain_failure_index": 0
+      }
+    }
+  ],
+  "gates": [
+    {
+      "name": "reference-gate",
+      "runs_cases": "all",
+      "declared_failing_cases": []
+    },
+    {
+      "name": "N1-trusts-self-declared-role",
+      "flaw": "Reads the attestor's role from the attestation body's own attestor_role member instead of the attestor-role registry.",
+      "runs_cases": "all",
+      "declared_failing_cases": ["AX-04-self-declared-role-not-established"]
+    },
+    {
+      "name": "N2-keys-on-attestation-date",
+      "flaw": "Treats the instant an attestation was written as the instant the condition occurred. Rejects any occurrence attestation written after the action, and takes any written before it to report an occurrence before it.",
+      "runs_cases": "all",
+      "declared_failing_cases": [
+        "AX-07-occurrence-after-action-not-yet-effective",
+        "AX-09-attested-after-action-about-earlier-occurrence-exercisable"
+      ]
+    },
+    {
+      "name": "N3-collapses-not-established-into-invalid",
+      "flaw": "Runs every reference check, then reports invalid wherever the reference gate reports not_established at the activation stage.",
+      "runs_cases": "all",
+      "declared_failing_cases": [
+        "AX-02-no-attestation-not-established",
+        "AX-03-honest-wrong-role-not-established",
+        "AX-04-self-declared-role-not-established",
+        "AX-05-wrong-event-not-established",
+        "AX-06-unverifiable-signature-not-established",
+        "AX-11-negative-from-unaccepted-source-not-established",
+        "AX-12-negative-stopping-short-of-action-not-established",
+        "AX-13-conflicting-accepted-evidence-not-established"
+      ]
+    },
+    {
+      "name": "N4-collapses-not-yet-effective-into-not-established",
+      "flaw": "Runs every reference check, then reports not_established wherever the reference gate reports not_yet_effective. This is the collapse the two-verdict split exists to prevent: a decidable answer the verifier already had is reported as ignorance.",
+      "runs_cases": "all",
+      "declared_failing_cases": [
+        "AX-07-occurrence-after-action-not-yet-effective",
+        "AX-10-accepted-negative-attestation-not-yet-effective",
+        "AX-15-date-condition-not-reached-not-yet-effective"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1462 @@
+{
+  "profile": "aps-lifecycle-time-and-scheduling-v0",
+  "status_label": "candidate_against_proposed",
+  "proposed_text": {
+    "repository": "aeoess/agent-authority-lifecycle",
+    "commit_or_later": "7796e22",
+    "cases_document": "CASES.md",
+    "cases_commit": "2bf5c7e",
+    "cases_section": "Time and scheduling",
+    "model_document": "AUTHORITY-LIFECYCLE.md",
+    "version_in_document": "0.1.2-draft",
+    "concepts_and_invariants": [
+      "Lifecycle concepts are separate > Authority and dependencies > Activation condition",
+      "Lifecycle concepts are separate > Authority and dependencies > Presented credential or session",
+      "Lifecycle concepts are separate > Authority lifecycle state > Suspension",
+      "Lifecycle concepts are separate > Decisions and effects > Policy version",
+      "Lifecycle concepts are separate > Decisions and effects > In-flight state",
+      "Lifecycle concepts are separate > Verification and evidence > Status observation",
+      "Invariants > L7. Unknown revocation state is not active",
+      "Invariants > L8. Suspension is not revocation",
+      "Invariants > L9. Key rotation is not delegation revocation",
+      "Invariants > L10. Expiry is not revocation",
+      "Invariants > L11. No silent authority resurrection",
+      "OPEN-QUESTIONS.md > Work in flight",
+      "OPEN-QUESTIONS.md > Office vacancy and succession"
+    ],
+    "cases": [
+      "LC-C-008",
+      "LC-C-014",
+      "LC-C-015",
+      "LC-C-017",
+      "LC-C-025",
+      "LC-E-008",
+      "LC-E-014",
+      "LC-E-018",
+      "LC-E-019",
+      "LC-E-020",
+      "LC-E-034",
+      "LC-G-007",
+      "LC-G-008",
+      "LC-G-009"
+    ]
+  },
+  "verdict_vocabulary": [
+    "valid",
+    "invalid",
+    "not_established",
+    "not_yet_effective",
+    "suspended",
+    "restricted"
+  ],
+  "description": "Fourteen time and scheduling lifecycle cases, each as one or more vectors carrying its CASES.md case id. Every vector is independent: each is presented to a freshly constructed boundary instance, so no vector's result depends on the order of the list. Every vector is labelled candidate_against_proposed. No vector here is a draft-pidlisnyi-aps-03 conformance case for the lifecycle rule it tests, because draft-03 states no rule for any of the fourteen. Where draft-03 does decide a step (chain shape, signature, the time facet, revocation state, scope narrowing) the SDK decides it and its answer is reported in sdk_chain_state and sdk_failure_code, never merged into the lifecycle verdict.",
+  "declared_fail_sets": {
+    "defective-boundary-queue-time-only": [
+      "LC-E-034-b-suspension-still-active-at-fire",
+      "LC-E-034-c-revoked-between-queue-and-fire",
+      "LC-E-034-d-suspension-source-silent-at-fire-time"
+    ],
+    "defective-boundary-current-version-only": [
+      "LC-E-008-a-pinned-version-still-permits",
+      "LC-E-008-d-instance-without-a-pin",
+      "LC-E-008-e-pinned-version-not-resolvable",
+      "LC-E-018-a-occurrence-keeps-its-creation-template",
+      "LC-E-018-c-occurrence-template-version-not-recorded"
+    ],
+    "defective-boundary-instant-transfer": [
+      "LC-C-014-a-outgoing-acts-before-acknowledgment",
+      "LC-C-014-b-incoming-acts-before-acknowledgment",
+      "LC-C-014-c-incoming-acts-after-acknowledgment",
+      "LC-C-014-d-outgoing-acts-after-acknowledgment",
+      "LC-C-014-e-acknowledgment-from-a-party-the-offer-does-not-name",
+      "LC-C-025-b-gap-between-departure-and-designation",
+      "LC-E-019-a-inside-the-grace-window",
+      "LC-E-019-b-after-the-grace-window",
+      "LC-E-019-d-no-declared-grace-bound"
+    ],
+    "defective-boundary-issuer-clock": [
+      "LC-G-007-b-expired-by-a-second-checking-party-clock",
+      "LC-G-007-c-not-yet-effective-by-a-third-clock",
+      "LC-G-007-d-no-clock-attestation"
+    ],
+    "defective-boundary-single-clock-trusted": [
+      "LC-G-008-b-wrapped-single-source",
+      "LC-G-008-c-cross-check-disagrees-past-the-bound",
+      "LC-G-008-d-no-source-recorded",
+      "LC-G-009-a-declared-smear-window",
+      "LC-G-009-b-no-declared-window",
+      "LC-G-009-c-divergence-past-the-declared-bound"
+    ]
+  },
+  "vectors": [
+    {
+      "id": "LC-C-008-a-default-successor-resolved",
+      "case": "LC-C-008",
+      "check": "succession_default",
+      "tests": "positive control: the office is vacant, the office's own instrument declares a default successor role and a minimum tenure, and the party directing the grant holds that role well past the minimum",
+      "differs_from": null,
+      "grant": "office",
+      "action": "office_direct",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c008_vacancy",
+        "c008_default_rule",
+        "c008_tenure_eligible",
+        "c008_direction"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "default_successor_resolved",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "acting=did:aps:example:lts-incoming-holder"
+      }
+    },
+    {
+      "id": "LC-C-008-b-no-declared-default",
+      "case": "LC-C-008",
+      "check": "succession_default",
+      "tests": "no explicit successor designation and no declared default rule. Absence of a designation is a missing record, not a revocation and not an unknown revocation answer",
+      "differs_from": "LC-C-008-a: the succession_default record is not presented",
+      "grant": "office",
+      "action": "office_direct",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c008_vacancy",
+        "c008_direction"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "no_successor_designation_and_no_declared_default",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-008-c-eligibility-not-met",
+      "case": "LC-C-008",
+      "check": "succession_default",
+      "tests": "the default rule is declared and the candidate holds the named role, but for fewer days than the rule's own minimum tenure",
+      "differs_from": "LC-C-008-a: a role_tenure record with a later held_since",
+      "grant": "office",
+      "action": "office_direct",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c008_vacancy",
+        "c008_default_rule",
+        "c008_tenure_short",
+        "c008_direction"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "default_successor_eligibility_not_met",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "tenure_days=21"
+      }
+    },
+    {
+      "id": "LC-C-008-d-rule-without-standing",
+      "case": "LC-C-008",
+      "check": "succession_default",
+      "tests": "negative control: the same default rule, signed by the candidate about itself. The signature verifies and the office's standing registry does not name that issuer as a succession rule author",
+      "differs_from": "LC-C-008-a: the succession_default record is issued by the outsider",
+      "grant": "office",
+      "action": "office_direct",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c008_vacancy",
+        "c008_default_rule_self_declared",
+        "c008_tenure_eligible",
+        "c008_direction"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "record_without_standing",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null,
+        "detail": "c008_default_rule_self_declared/succession_default"
+      }
+    },
+    {
+      "id": "LC-C-008-e-direction-from-a-party-with-no-tenure",
+      "case": "LC-C-008",
+      "check": "succession_default",
+      "tests": "the direction for the vacant office comes from a party with no recorded tenure in the role the rule names",
+      "differs_from": "LC-C-008-a: the direction record is issued by the outsider",
+      "grant": "office",
+      "action": "office_direct",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c008_vacancy",
+        "c008_default_rule",
+        "c008_tenure_eligible",
+        "c008_direction_outsider"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "default_successor_tenure_not_recorded",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-014-a-outgoing-acts-before-acknowledgment",
+      "case": "LC-C-014",
+      "check": "acknowledged_handover",
+      "tests": "positive control: the offer is on the record and unacknowledged, and the outgoing holder acts. Authority stays where it was",
+      "differs_from": null,
+      "grant": "position_outgoing",
+      "action": "position_control",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c014_offer"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "authority_retained_pending_acknowledgment",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-014-b-incoming-acts-before-acknowledgment",
+      "case": "LC-C-014",
+      "check": "acknowledged_handover",
+      "tests": "the incoming holder acts on the same unacknowledged offer. Not yet effective, never invalid: nothing on the record says the transfer will not happen",
+      "differs_from": "LC-C-014-a: the acting party is the incoming holder",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T09:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c014_offer"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "reason": "handover_not_acknowledged",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-014-c-incoming-acts-after-acknowledgment",
+      "case": "LC-C-014",
+      "check": "acknowledged_handover",
+      "tests": "the incoming holder acknowledged the offer's own briefing digest, and then acts",
+      "differs_from": "LC-C-014-b: the acknowledgment record is presented",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c014_offer",
+        "c014_ack"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "handover_acknowledged",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-014-d-outgoing-acts-after-acknowledgment",
+      "case": "LC-C-014",
+      "check": "acknowledged_handover",
+      "tests": "the outgoing holder acts after the acknowledgment. The position moved",
+      "differs_from": "LC-C-014-c: the acting party is the outgoing holder",
+      "grant": "position_outgoing",
+      "action": "position_control",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c014_offer",
+        "c014_ack"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "authority_transferred",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-014-e-acknowledgment-from-a-party-the-offer-does-not-name",
+      "case": "LC-C-014",
+      "check": "acknowledged_handover",
+      "tests": "negative control: an acknowledgment for the right offer with the right briefing digest, signed by someone other than the incoming holder the offer names",
+      "differs_from": "LC-C-014-c: the acknowledgment is signed by the outsider",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c014_offer",
+        "c014_ack_wrong_signer"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "reason": "acknowledgment_without_standing",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-015-a-live-direction-present",
+      "case": "LC-C-015",
+      "check": "directed_fallback",
+      "tests": "positive control: contact with the directing principal is current, so the full grant scope applies and the pre-authorized fallback is dormant",
+      "differs_from": null,
+      "grant": "directed",
+      "action": "reconcile_write",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c015_fallback",
+        "c015_contact_live"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "live_direction_present",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-015-b-fallback-scope-active",
+      "case": "LC-C-015",
+      "check": "directed_fallback",
+      "tests": "contact lost for two hours against a declared fifteen-minute threshold, and the action is inside the fallback scope recorded at grant time. Authority narrows rather than stopping",
+      "differs_from": "LC-C-015-a: a contact observation whose last_contact_at is two hours earlier",
+      "grant": "directed",
+      "action": "reconcile_read",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c015_fallback",
+        "c015_contact_lost"
+      ],
+      "expected": {
+        "verdict": "restricted",
+        "reason": "fallback_scope_active",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "fallback=ops:reconcile:read"
+      }
+    },
+    {
+      "id": "LC-C-015-c-outside-the-fallback-scope",
+      "case": "LC-C-015",
+      "check": "directed_fallback",
+      "tests": "the same loss of contact, with an action inside the full grant scope and outside the fallback scope",
+      "differs_from": "LC-C-015-b: the action is the write, not the read",
+      "grant": "directed",
+      "action": "reconcile_write",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c015_fallback",
+        "c015_contact_lost"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "outside_fallback_scope",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "fallback=ops:reconcile:read"
+      }
+    },
+    {
+      "id": "LC-C-015-d-no-fallback-recorded",
+      "case": "LC-C-015",
+      "check": "directed_fallback",
+      "tests": "contact lost with no fallback authorization recorded at grant time. The boundary cannot establish that the action is currently directed, which is not the same as the grant having ended",
+      "differs_from": "LC-C-015-b: the fallback authorization is not presented",
+      "grant": "directed",
+      "action": "reconcile_read",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c015_contact_lost"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "no_pre_authorized_fallback_and_no_live_direction",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-015-e-contact-restored",
+      "case": "LC-C-015",
+      "check": "directed_fallback",
+      "tests": "contact restored. Full live direction resumes without a new grant",
+      "differs_from": "LC-C-015-b: the contact observation carries a restored_at",
+      "grant": "directed",
+      "action": "reconcile_write",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c015_fallback",
+        "c015_contact_restored"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "live_direction_restored",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-017-a-scheduled-swap-pre-authorized",
+      "case": "LC-C-017",
+      "check": "rotation_schedule",
+      "tests": "positive control: a swap at a slot the standing rotation schedule already declared, with the required rest recorded as complete. No fresh authorization event is needed",
+      "differs_from": null,
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c017_schedule",
+        "c017_rest_complete"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "scheduled_swap_pre_authorized",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "slot=2026-09-10T10:00:00.000Z"
+      }
+    },
+    {
+      "id": "LC-C-017-b-swap-off-the-schedule",
+      "case": "LC-C-017",
+      "check": "rotation_schedule",
+      "tests": "the same two parties swapping at an instant the schedule does not declare. This is the anomaly the case says a naive system misses among its own alerts",
+      "differs_from": "LC-C-017-a: the instant is not one of the declared slots",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c017_schedule",
+        "c017_rest_complete"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "swap_not_in_rotation_schedule",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-017-c-required-rest-not-elapsed",
+      "case": "LC-C-017",
+      "check": "rotation_schedule",
+      "tests": "a swap at a declared slot where the incoming holder's rest period has not ended. Not yet effective rather than invalid: the rest period ends on its own",
+      "differs_from": "LC-C-017-a: the rest ledger entry has no rest_ended_at",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c017_schedule",
+        "c017_rest_incomplete"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "reason": "required_rest_period_not_elapsed",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-017-d-rest-state-not-recorded",
+      "case": "LC-C-017",
+      "check": "rotation_schedule",
+      "tests": "a swap at a declared slot with no rest ledger entry at all for the incoming holder",
+      "differs_from": "LC-C-017-a: no rest ledger record is presented",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c017_schedule"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "rest_state_not_established",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-025-a-atomic-relief",
+      "case": "LC-C-025",
+      "check": "continuous_coverage",
+      "tests": "positive control: one record naming the departure and the designation together, so no instant exists in which nobody holds the position",
+      "differs_from": null,
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c025_atomic_relief",
+        "c025_qualification"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "departure_and_designation_recorded_atomically",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-025-b-gap-between-departure-and-designation",
+      "case": "LC-C-025",
+      "check": "continuous_coverage",
+      "tests": "the same relief recorded as two events, evaluated inside the gap. No holder can be established, which is a statement about the record set rather than a verdict against either party",
+      "differs_from": "LC-C-025-a: the atomic record is replaced by a departure and a later designation",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c025_departure",
+        "c025_designation",
+        "c025_qualification"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "no_designated_holder_in_gap",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-025-c-after-the-designation",
+      "case": "LC-C-025",
+      "check": "continuous_coverage",
+      "tests": "the same two-record sequence, evaluated after the designation takes effect",
+      "differs_from": "LC-C-025-b: the instant is after the designation's effective_at",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c025_departure",
+        "c025_designation",
+        "c025_qualification"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "designation_recorded",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-025-d-designee-qualification-not-recorded",
+      "case": "LC-C-025",
+      "check": "continuous_coverage",
+      "tests": "the designation is on the record and the designee's qualification for the position is not",
+      "differs_from": "LC-C-025-c: no qualification record is presented",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c025_departure",
+        "c025_designation"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "designee_qualification_not_established",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-C-025-e-designation-names-another-party",
+      "case": "LC-C-025",
+      "check": "continuous_coverage",
+      "tests": "negative control: the designation names a different party from the one acting",
+      "differs_from": "LC-C-025-c: the designation names the outsider",
+      "grant": "position_incoming",
+      "action": "position_control",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "c025_departure",
+        "c025_designation_unqualified",
+        "c025_qualification"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "acting_party_is_not_the_designated_holder",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-008-a-pinned-version-still-permits",
+      "case": "LC-E-008",
+      "check": "pinned_policy_version",
+      "tests": "an in-flight instance that started under policy 1.0.0 takes its next step after 2.0.0 is deployed. The step resolves against the version the instance pinned",
+      "differs_from": null,
+      "grant": "workflow",
+      "action": "workflow_commit",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e008_policy_v1",
+        "e008_policy_v2",
+        "e008_instance_pinned_v1"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "permitted_under_selected_policy_version",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "policy_version=1.0.0"
+      }
+    },
+    {
+      "id": "LC-E-008-b-control-before-the-cutover",
+      "case": "LC-E-008",
+      "check": "pinned_policy_version",
+      "tests": "positive control: the same pinned instance taking the same step before 2.0.0 is in force at all, where the pinned and the current version are the same record",
+      "differs_from": "LC-E-008-a: the instant is before 2.0.0's effective_from",
+      "grant": "workflow",
+      "action": "workflow_commit",
+      "now": "2026-09-10T08:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e008_policy_v1",
+        "e008_policy_v2",
+        "e008_instance_pinned_v1"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "permitted_under_selected_policy_version",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "policy_version=1.0.0"
+      }
+    },
+    {
+      "id": "LC-E-008-c-new-instance-pinned-to-the-tighter-version",
+      "case": "LC-E-008",
+      "check": "pinned_policy_version",
+      "tests": "an instance started after the cutover pins 2.0.0, and 2.0.0 denies the step",
+      "differs_from": "LC-E-008-a: the instance start record pins 2.0.0",
+      "grant": "workflow",
+      "action": "workflow_commit",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e008_policy_v1",
+        "e008_policy_v2",
+        "e008_instance_pinned_v2"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "denied_under_selected_policy_version",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "policy_version=2.0.0"
+      }
+    },
+    {
+      "id": "LC-E-008-d-instance-without-a-pin",
+      "case": "LC-E-008",
+      "check": "pinned_policy_version",
+      "tests": "an instance whose start record pinned no policy version. The boundary cannot say which rules the instance has been running under",
+      "differs_from": "LC-E-008-a: the instance start record's pinned_policy_version is null",
+      "grant": "workflow",
+      "action": "workflow_commit",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e008_policy_v1",
+        "e008_policy_v2",
+        "e008_instance_unpinned"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "policy_version_not_pinned",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-008-e-pinned-version-not-resolvable",
+      "case": "LC-E-008",
+      "check": "pinned_policy_version",
+      "tests": "an instance pinned to a policy version no presented policy record matches",
+      "differs_from": "LC-E-008-a: the pin names 9.9.9",
+      "grant": "workflow",
+      "action": "workflow_commit",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e008_policy_v1",
+        "e008_policy_v2",
+        "e008_instance_pinned_missing"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "pinned_policy_version_not_resolvable",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "pinned=9.9.9"
+      }
+    },
+    {
+      "id": "LC-E-014-a-before-owner-removal",
+      "case": "LC-E-014",
+      "check": "series_owner",
+      "tests": "positive control: the recurring series fires while its owning identity is still on the register",
+      "differs_from": null,
+      "grant": "series_owner",
+      "action": "series_reconcile",
+      "now": "2026-09-10T08:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e014_series"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "series_owner_resolvable",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-014-b-owner-authority-revoked",
+      "case": "LC-E-014",
+      "check": "series_owner",
+      "tests": "the owner's grant is revoked and the series record is untouched. This ending is visible to chain verification and the SDK's own code says so",
+      "differs_from": "LC-E-014-a: the revocation resolver answers revoked",
+      "grant": "series_owner",
+      "action": "series_reconcile",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "revoked",
+      "records": [
+        "standing_registry",
+        "e014_series"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "grant_revoked",
+        "sdk_chain_state": "invalid",
+        "sdk_failure_code": "REVOKED"
+      }
+    },
+    {
+      "id": "LC-E-014-c-owner-removed-with-nothing-revoked",
+      "case": "LC-E-014",
+      "check": "series_owner",
+      "tests": "the owning identity is removed from the register and nothing is revoked. The series keeps firing under a principal verification can no longer resolve, which is not_established rather than invalid",
+      "differs_from": "LC-E-014-b: an identity_removal record instead of a revocation",
+      "grant": "series_owner",
+      "action": "series_reconcile",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e014_series",
+        "e014_owner_removed"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "series_owner_not_resolvable",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "removed_at=2026-09-10T09:00:00.000Z"
+      }
+    },
+    {
+      "id": "LC-E-014-d-recorded-disposition-reassigns",
+      "case": "LC-E-014",
+      "check": "series_owner",
+      "tests": "a series whose own record declared what happens on owner removal, firing under the organizational principal that record names",
+      "differs_from": "LC-E-014-c: the series record carries a reassignment disposition",
+      "grant": "series_fallback",
+      "action": "series_reconcile",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e014_series_with_disposition",
+        "e014_owner_removed"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "series_disposition_reassignment_recorded",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-018-a-occurrence-keeps-its-creation-template",
+      "case": "LC-E-018",
+      "check": "occurrence_template",
+      "tests": "an occurrence created under template 1 is audited after the job definition is tightened to template 2. The audit checks the template the occurrence was created with",
+      "differs_from": null,
+      "grant": "job",
+      "action": "job_write",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e018_template_v1",
+        "e018_template_v2",
+        "e018_occurrence_under_v1"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "within_the_selected_occurrence_template",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "template_version=1"
+      }
+    },
+    {
+      "id": "LC-E-018-b-next-occurrence-under-the-tightened-template",
+      "case": "LC-E-018",
+      "check": "occurrence_template",
+      "tests": "the next occurrence, created after the edit, does pick up the tightened template",
+      "differs_from": "LC-E-018-a: the occurrence was created under template 2",
+      "grant": "job",
+      "action": "job_write",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e018_template_v1",
+        "e018_template_v2",
+        "e018_occurrence_under_v2"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "outside_occurrence_template_scope",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "template_version=2"
+      }
+    },
+    {
+      "id": "LC-E-018-c-occurrence-template-version-not-recorded",
+      "case": "LC-E-018",
+      "check": "occurrence_template",
+      "tests": "an occurrence that did not record which template version it was created under. An auditor cannot tell, and the boundary says so rather than guessing the current one",
+      "differs_from": "LC-E-018-a: created_under_template_version is null",
+      "grant": "job",
+      "action": "job_write",
+      "now": "2026-09-10T11:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e018_template_v1",
+        "e018_template_v2",
+        "e018_occurrence_unrecorded"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "occurrence_template_version_not_recorded",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-018-d-control-read-under-the-tightened-template",
+      "case": "LC-E-018",
+      "check": "occurrence_template",
+      "tests": "positive control: an action template 2 still permits, so the pinned and the current template agree",
+      "differs_from": "LC-E-018-b: the action is the read, not the write",
+      "grant": "job",
+      "action": "job_read",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e018_template_v1",
+        "e018_template_v2",
+        "e018_occurrence_under_v2"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "within_the_selected_occurrence_template",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "template_version=2"
+      }
+    },
+    {
+      "id": "LC-E-019-a-inside-the-grace-window",
+      "case": "LC-E-019",
+      "check": "wind_down",
+      "tests": "positive control: a termination signal has been sent and the declared grace window has not elapsed. The final in-flight call is authorized exactly as it was before the signal",
+      "differs_from": null,
+      "grant": "workload",
+      "action": "workload_call",
+      "now": "2026-09-10T10:10:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e019_wind_down"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "within_wind_down_grace",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "grace_seconds=1800"
+      }
+    },
+    {
+      "id": "LC-E-019-b-after-the-grace-window",
+      "case": "LC-E-019",
+      "check": "wind_down",
+      "tests": "the same wind-down after the declared bound. The lifecycle verdict and the SDK's chain verdict part company here: the grant itself is still valid and the wind-down window is not",
+      "differs_from": "LC-E-019-a: the instant is past termination_started_at plus grace_seconds",
+      "grant": "workload",
+      "action": "workload_call",
+      "now": "2026-09-10T10:40:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e019_wind_down"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "wind_down_grace_elapsed",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "grace_seconds=1800"
+      }
+    },
+    {
+      "id": "LC-E-019-c-revoked-during-the-wind-down",
+      "case": "LC-E-019",
+      "check": "wind_down",
+      "tests": "a real revocation alongside the termination signal, to keep the two facts apart. Revocation decides, and it is the SDK that says so",
+      "differs_from": "LC-E-019-a: the revocation resolver answers revoked",
+      "grant": "workload",
+      "action": "workload_call",
+      "now": "2026-09-10T10:10:00.000Z",
+      "revocation": "revoked",
+      "records": [
+        "standing_registry",
+        "e019_wind_down"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "grant_revoked",
+        "sdk_chain_state": "invalid",
+        "sdk_failure_code": "REVOKED"
+      }
+    },
+    {
+      "id": "LC-E-019-d-no-declared-grace-bound",
+      "case": "LC-E-019",
+      "check": "wind_down",
+      "tests": "a wind-down record that declares no grace bound. The boundary cannot establish when the window closes",
+      "differs_from": "LC-E-019-a: grace_seconds is null",
+      "grant": "workload",
+      "action": "workload_call",
+      "now": "2026-09-10T10:10:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e019_wind_down_no_bound"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "wind_down_bound_not_declared",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-020-a-creator-grant-unchanged",
+      "case": "LC-E-020",
+      "check": "scheduled_job",
+      "tests": "positive control: a dormant scheduled job firing while the grant it names is the one it was created under",
+      "differs_from": null,
+      "grant": "creator_broad",
+      "action": "batch_write",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e020_job_broad"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "within_current_creator_scope",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "job_scope=ops:batch:write"
+      }
+    },
+    {
+      "id": "LC-E-020-b-creator-narrowed-job-definition-untouched",
+      "case": "LC-E-020",
+      "check": "scheduled_job",
+      "tests": "the job definition is byte for byte what it was, and the grant it executes under has been replaced by a narrower one. The next occurrence is outside the authority it needs",
+      "differs_from": "LC-E-020-a: the job names the narrowed creator grant",
+      "grant": "creator_narrow",
+      "action": "batch_write",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e020_job_narrowed"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "outside_current_creator_scope",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "job_scope=ops:batch:write"
+      }
+    },
+    {
+      "id": "LC-E-020-c-narrowed-but-inside",
+      "case": "LC-E-020",
+      "check": "scheduled_job",
+      "tests": "the same narrowed grant with a job whose declared action stays inside it",
+      "differs_from": "LC-E-020-b: the job's action_scope is the read",
+      "grant": "creator_narrow",
+      "action": "batch_read",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e020_job_reader"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "within_current_creator_scope",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "job_scope=ops:batch:read"
+      }
+    },
+    {
+      "id": "LC-E-020-d-no-creator-grant-recorded",
+      "case": "LC-E-020",
+      "check": "scheduled_job",
+      "tests": "a scheduled job that names no creator grant at all. Its executable permission was always parasitic on a record nobody linked to it",
+      "differs_from": "LC-E-020-c: creator_grant is null",
+      "grant": "creator_narrow",
+      "action": "batch_read",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e020_job_no_creator_grant"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "job_creator_authority_not_recorded",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-034-a-suspension-lifted-before-fire",
+      "case": "LC-E-034",
+      "check": "queued_action",
+      "tests": "the benign timeline, and this family's negative control. The suspension was lifted before the queued action fired, so admitting it is the right answer. The queue-time-only boundary reaches that answer having checked nothing",
+      "differs_from": null,
+      "grant": "queued",
+      "action": "queue_settle",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e034_queued",
+        "e034_suspension_released"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "live_state_clear_at_fire_time",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-E-034-b-suspension-still-active-at-fire",
+      "case": "LC-E-034",
+      "check": "queued_action",
+      "tests": "the same scheduler, the same queued action, one changed timeline: the suspension is still in force when the action fires",
+      "differs_from": "LC-E-034-a: the suspension record has no released_at",
+      "grant": "queued",
+      "action": "queue_settle",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e034_queued",
+        "e034_suspension_active"
+      ],
+      "expected": {
+        "verdict": "suspended",
+        "reason": "suspended_at_fire_time",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "cause=investigation-4711"
+      }
+    },
+    {
+      "id": "LC-E-034-c-revoked-between-queue-and-fire",
+      "case": "LC-E-034",
+      "check": "queued_action",
+      "tests": "the grant is revoked after the action is queued and before it fires. The SDK decides this one, at the instant the boundary chose to ask",
+      "differs_from": "LC-E-034-a: the revocation resolver answers revoked from eleven hundred hours",
+      "grant": "queued",
+      "action": "queue_settle",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "revoked_from": "2026-09-10T11:00:00.000Z",
+      "records": [
+        "standing_registry",
+        "e034_queued",
+        "e034_suspension_released"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "grant_revoked",
+        "sdk_chain_state": "invalid",
+        "sdk_failure_code": "REVOKED"
+      }
+    },
+    {
+      "id": "LC-E-034-d-suspension-source-silent-at-fire-time",
+      "case": "LC-E-034",
+      "check": "queued_action",
+      "tests": "the queued action's own record says its suspension state must be resolved live, and no suspension source answers",
+      "differs_from": "LC-E-034-a: no suspension record is presented",
+      "grant": "queued",
+      "action": "queue_settle",
+      "now": "2026-09-10T12:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "e034_queued"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "suspension_state_not_established_at_fire_time",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-G-007-a-inside-by-the-checking-party-clock",
+      "case": "LC-G-007",
+      "check": "checking_party_clock",
+      "tests": "positive control: one checking party's own clock reads inside the artifact's validity window",
+      "differs_from": null,
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g007_clock_inside"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "valid_on_the_selected_clock",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "reading=2026-09-10T10:00:00.000Z"
+      }
+    },
+    {
+      "id": "LC-G-007-b-expired-by-a-second-checking-party-clock",
+      "case": "LC-G-007",
+      "check": "checking_party_clock",
+      "tests": "a second checking party, same artifact, its own clock past not_after. A different answer from LC-G-007-a and not a contradiction: each answers valid now, by my clock",
+      "differs_from": "LC-G-007-a: the clock attestation reads eleven thirty",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g007_clock_after"
+      ],
+      "expected": {
+        "verdict": "invalid",
+        "reason": "expired_on_the_selected_clock",
+        "sdk_chain_state": "invalid",
+        "sdk_failure_code": "EXPIRED",
+        "detail": "reading=2026-09-10T11:30:00.000Z"
+      }
+    },
+    {
+      "id": "LC-G-007-c-not-yet-effective-by-a-third-clock",
+      "case": "LC-G-007",
+      "check": "checking_party_clock",
+      "tests": "a third checking party whose clock reads before not_before. The lifecycle verdict is not_yet_effective and both pinned SDKs answer invalid with NOT_YET_VALID. Both are reported and neither is folded into the other",
+      "differs_from": "LC-G-007-a: the clock attestation reads eight thirty",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g007_clock_before"
+      ],
+      "expected": {
+        "verdict": "not_yet_effective",
+        "reason": "not_yet_effective_on_the_selected_clock",
+        "sdk_chain_state": "invalid",
+        "sdk_failure_code": "NOT_YET_VALID",
+        "detail": "reading=2026-09-10T08:30:00.000Z"
+      }
+    },
+    {
+      "id": "LC-G-007-d-no-clock-attestation",
+      "case": "LC-G-007",
+      "check": "checking_party_clock",
+      "tests": "no record of which clock the checking party used. There is no default clock to fall back to",
+      "differs_from": "LC-G-007-a: no clock attestation is presented",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "checking_party_clock_not_recorded",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-G-008-a-cross-checked-reading",
+      "case": "LC-G-008",
+      "check": "time_source",
+      "tests": "positive control: the decision names its time source and a second, independent source that agrees inside the declared bound",
+      "differs_from": null,
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g008_cross_checked"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "reading_accepted",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "reading=2026-09-10T10:00:00.000Z"
+      }
+    },
+    {
+      "id": "LC-G-008-b-wrapped-single-source",
+      "case": "LC-G-008",
+      "check": "time_source",
+      "tests": "one external source, no cross-check, and a reading moved back by exactly the legacy GPS week counter's period. The reading is well formed and the device cannot tell from the inside",
+      "differs_from": "LC-G-008-a: cross_check is null and the reading is wrapped",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g008_wrapped_single_source"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "time_source_not_cross_checked",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null,
+        "detail": "source=gnss:legacy-week-counter"
+      }
+    },
+    {
+      "id": "LC-G-008-c-cross-check-disagrees-past-the-bound",
+      "case": "LC-G-008",
+      "check": "time_source",
+      "tests": "a cross-check is recorded and the two sources disagree by more than the bound the record itself declares",
+      "differs_from": "LC-G-008-a: the cross-check reading is five seconds later",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g008_cross_check_disagrees"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "time_sources_disagree_past_bound",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null,
+        "detail": "delta_ms=5000"
+      }
+    },
+    {
+      "id": "LC-G-008-d-no-source-recorded",
+      "case": "LC-G-008",
+      "check": "time_source",
+      "tests": "a decision whose record names no time source at all",
+      "differs_from": "LC-G-008-a: the source field is empty",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g008_no_source"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "time_source_not_recorded",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null
+      }
+    },
+    {
+      "id": "LC-G-009-a-declared-smear-window",
+      "case": "LC-G-009",
+      "check": "clock_divergence",
+      "tests": "two correctly run clocks, one smeared and one not, inside a window both records declare, four hundred milliseconds apart against a five hundred millisecond bound. Neither reading is the wrong one",
+      "differs_from": null,
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g009_smeared",
+        "g009_unsmeared"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "divergence_within_declared_smear_bound",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "delta_ms=400"
+      }
+    },
+    {
+      "id": "LC-G-009-b-no-declared-window",
+      "case": "LC-G-009",
+      "check": "clock_divergence",
+      "tests": "the same four hundred millisecond divergence with no declared window behind it. Not established, which is not a finding of tampering and not a finding that either clock is wrong",
+      "differs_from": "LC-G-009-a: neither attestation carries a smear policy",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g009_smeared_no_window",
+        "g009_unsmeared_no_window"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "divergence_outside_any_declared_window",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null,
+        "detail": "delta_ms=400"
+      }
+    },
+    {
+      "id": "LC-G-009-c-divergence-past-the-declared-bound",
+      "case": "LC-G-009",
+      "check": "clock_divergence",
+      "tests": "a five second divergence inside a window whose declared bound is five hundred milliseconds",
+      "differs_from": "LC-G-009-a: the second reading is five seconds later",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g009_smeared",
+        "g009_far_apart"
+      ],
+      "expected": {
+        "verdict": "not_established",
+        "reason": "divergence_exceeds_declared_smear_bound",
+        "sdk_chain_state": null,
+        "sdk_failure_code": null,
+        "detail": "delta_ms=5000"
+      }
+    },
+    {
+      "id": "LC-G-009-d-two-clocks-that-agree",
+      "case": "LC-G-009",
+      "check": "clock_divergence",
+      "tests": "positive control: two independently run clocks inside the declared window that happen to read the same instant",
+      "differs_from": "LC-G-009-a: the second reading is identical to the first",
+      "grant": "timebound",
+      "action": "timed_call",
+      "now": "2026-09-10T10:00:00.000Z",
+      "revocation": "active",
+      "records": [
+        "standing_registry",
+        "g009_smeared",
+        "g009_smeared_twin"
+      ],
+      "expected": {
+        "verdict": "valid",
+        "reason": "divergence_within_declared_smear_bound",
+        "sdk_chain_state": "valid",
+        "sdk_failure_code": null,
+        "detail": "delta_ms=0"
+      }
+    }
+  ]
+}
