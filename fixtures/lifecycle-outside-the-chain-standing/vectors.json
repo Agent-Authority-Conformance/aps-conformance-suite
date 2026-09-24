@@ -56,7 +56,7 @@
   "label": "candidate_against_proposed",
   "profile": "aac-lifecycle-outside-the-chain-standing-v0",
   "proposed_text_source": {
-    "cases_version": "CASES.md v0.2 (local branch cases-v0.2, commit 2bf5c7e)",
+    "cases_version": "CASES.md v0.2 (commit 2bf5c7e)",
     "commit_floor": "7796e22",
     "repo": "aeoess/agent-authority-lifecycle",
     "section": "Outside-the-chain standing"

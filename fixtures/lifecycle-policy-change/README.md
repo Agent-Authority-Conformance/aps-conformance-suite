@@ -17,7 +17,7 @@ about those records once the policy has moved underneath them.
 
 Three cases from the **Policy change** section of `CASES.md` in
 [`aeoess/agent-authority-lifecycle`](https://github.com/aeoess/agent-authority-lifecycle),
-at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
+at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda`:
 
 | case | vectors |
 |---|---|
@@ -25,9 +25,9 @@ at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
 | LC-I-005, what a past authorization decision is evidenced against has to be the policy version live at the moment it happened | PC-06 to PC-09 |
 | LC-I-006, when a policy tightens after something was approved under the old rule, the old grant does not need to be revoked and the new rule does not reach backward on its own | PC-10 to PC-13 |
 
-That commit was a local branch when this family was built and may not yet be reachable
-from the public default branch. The proposed text the vectors actually test is pinned
-separately, at a commit that is.
+That commit is reachable from the public default branch of that repository. The
+proposed text the vectors actually test is pinned separately, at an earlier commit on
+the same history.
 
 ## What this tests, and against which text
 
@@ -318,7 +318,7 @@ SHA-256 over the exact bytes of this family's files, at this commit:
     f389e36f381c546906069046c2cc41282ccd940855d00953f451597d2454ead0  mint.ts
     9abb9c4ef1edf842dd5f8175e43b5cf4e484f90d0fea94fec84d066d00f8b34c  sdk-probe.mjs
     a5b7d94edd499f315e0b224fdf644e118bf92f162cf5217657e4879ed4b8bd85  sdk-probe.py
-    940b59441565a9c14b2444df30f4f86978ed53089827b140264684664baeea6e  vectors.json
+    98f421bf34a79bb8821914d8baa6db587c2850a4b6c9781f8c1cf4bf98e2d24e  vectors.json
     3ca0925b199cd0577f28797745aa5b6c281b0443402eba99195efb9f87c5881b  verify.py
     6716c9d177640f802803df5856212fc4ca0dda648d1eae368501ad430b039bfc  verify.ts
 

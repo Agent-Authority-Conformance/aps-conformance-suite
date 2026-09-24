@@ -13,9 +13,8 @@
     "repository": "https://github.com/aeoess/agent-authority-lifecycle",
     "document": "CASES.md",
     "commit": "2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda",
-    "branch": "cases-v0.2",
     "section": "Agent-side events",
-    "note": "This commit was a local branch when this family was built and may not yet be reachable from the public default branch. The proposed text the vectors test is pinned separately below, at a commit that is on the public default branch."
+    "note": "This commit is reachable from the public default branch of that repository. The proposed text the vectors test is pinned separately below, at an earlier commit on the same history."
   },
   "proposed_text": {
     "agent-identity": {

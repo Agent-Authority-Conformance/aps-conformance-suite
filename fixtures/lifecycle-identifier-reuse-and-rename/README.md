@@ -17,7 +17,7 @@ delegation-layer event marking the change.
 
 Three cases from the **Identifier reuse and rename** section of `CASES.md` in
 [`aeoess/agent-authority-lifecycle`](https://github.com/aeoess/agent-authority-lifecycle),
-at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
+at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda`:
 
 | case | vectors |
 |---|---|
@@ -25,9 +25,9 @@ at commit `2bf5c7e2d07d41c13611478d6e5e47fcb4d3ceda` on branch `cases-v0.2`:
 | LC-I-002, a rename does not travel with the references that still point at the old name | IRR-05 to IRR-08 |
 | LC-I-003, a recycled identifier reused for a new subject can still unlock the old subject's authority | IRR-09 to IRR-12 |
 
-That commit was a local branch when this family was built and may not yet be reachable
-from the public default branch. The proposed text the vectors actually test is pinned
-separately, at a commit that is.
+That commit is reachable from the public default branch of that repository. The
+proposed text the vectors actually test is pinned separately, at an earlier commit on
+the same history.
 
 ## The real-world shapes behind the three cases
 
@@ -357,7 +357,7 @@ SHA-256 over the exact bytes of this family's files, at this commit:
     82b9758aa2ecebc2cfd82201609366074d9280cc737d4d657729421a2fb0436f  mint.ts
     851f6f85c6906ce0a4ff66e6c130f00c9b0e2d2181d73da90481ea009ecaba44  sdk-probe.mjs
     7ae35ff8582ac1ec9feeb929bc4aea6b62b6cb20a10200e76929a3e207fd3065  sdk-probe.py
-    88de342ac46bc2548834f67277695e9348ebd84a992507974be8f66922043e17  vectors.json
+    7a504f58876d76de25ad4ea6dc1b57cd6acbc13876c07a94399174d5c5d9a0a1  vectors.json
     7e0956dd9fcff90093271250dfa1f3650665433ef7be5139f69de0680ece85a0  verify.py
     5f68381b42487ac76246700e827834ae6d957b17c4871e10592d92ec1e26932c  verify.ts
 
