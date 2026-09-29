@@ -1,0 +1,294 @@
+$ npm run test:aps-priorseal
+
+> priorseal@0.1.0 test:aps-priorseal
+> npm --prefix examples/aps-priorseal-decision-binding-v1 run verify:producer && npm --prefix examples/aps-priorseal-decision-binding-v1 test
+
+
+> verify:producer
+> node aps-inputs/verify-from-package-root.mjs aps-inputs
+
+ok   manifest cases/deny/action-intent-receipt.json
+ok   manifest cases/deny/case.json
+ok   manifest cases/deny/decision-evidence.json
+ok   manifest cases/deny/policy-decision-receipt.json
+ok   manifest cases/expired/action-intent-receipt.json
+ok   manifest cases/expired/case.json
+ok   manifest cases/expired/decision-evidence.json
+ok   manifest cases/expired/policy-decision-receipt.json
+ok   manifest cases/narrow/action-intent-receipt.json
+ok   manifest cases/narrow/case.json
+ok   manifest cases/narrow/decision-evidence.json
+ok   manifest cases/narrow/policy-decision-receipt.json
+ok   manifest cases/permit/action-intent-receipt.json
+ok   manifest cases/permit/case.json
+ok   manifest cases/permit/decision-evidence.json
+ok   manifest cases/permit/policy-decision-receipt.json
+ok   manifest keys.json
+ok   keys.json receipt signers equal the pinned keys
+ok   keys.json delegation key equals the pinned key
+ok   permit: intent receipt verifies from its committed bytes
+ok   permit: decision receipt verifies from its committed bytes
+ok   permit: intent receipt_type is aps:action-intent:v1
+ok   permit: intent issuer equals subject_agent
+ok   permit: intent has no prev and no decision_ref
+ok   permit: intent result is exactly the declared result
+ok   permit: intent is signed by the agent
+ok   permit: decision receipt_type is aps:policy-decision:v1
+ok   permit: decision issuer is not the agent
+ok   permit: decision prev is the intent receipt_id
+ok   permit: decision_ref is present
+ok   permit: both receipts name one agent, action_ref and delegation_ref
+ok   permit: decision is issued after the intent
+ok   permit: decision result equals decision_evidence.decision_output
+ok   permit: decision verdict is permit
+ok   permit: authority_state has the four required members
+ok   permit: composite valid is true
+ok   permit: decision_ref_bound is true
+ok   permit: errors are []  []
+ok   permit: selected delegation chain verifies at the decision time  []
+ok   permit: delegation_ref is the leaf delegation_id and the leaf subject is the agent
+ok   permit: unexpired at reference time is true
+ok   narrow: intent receipt verifies from its committed bytes
+ok   narrow: decision receipt verifies from its committed bytes
+ok   narrow: intent receipt_type is aps:action-intent:v1
+ok   narrow: intent issuer equals subject_agent
+ok   narrow: intent has no prev and no decision_ref
+ok   narrow: intent result is exactly the declared result
+ok   narrow: intent is signed by the agent
+ok   narrow: decision receipt_type is aps:policy-decision:v1
+ok   narrow: decision issuer is not the agent
+ok   narrow: decision prev is the intent receipt_id
+ok   narrow: decision_ref is present
+ok   narrow: both receipts name one agent, action_ref and delegation_ref
+ok   narrow: decision is issued after the intent
+ok   narrow: decision result equals decision_evidence.decision_output
+ok   narrow: decision verdict is narrow
+ok   narrow: authority_state has the four required members
+ok   narrow: composite valid is true
+ok   narrow: decision_ref_bound is true
+ok   narrow: errors are []  []
+ok   narrow: selected delegation chain verifies at the decision time  []
+ok   narrow: delegation_ref is the leaf delegation_id and the leaf subject is the agent
+ok   narrow: unexpired at reference time is true
+ok   deny: intent receipt verifies from its committed bytes
+ok   deny: decision receipt verifies from its committed bytes
+ok   deny: intent receipt_type is aps:action-intent:v1
+ok   deny: intent issuer equals subject_agent
+ok   deny: intent has no prev and no decision_ref
+ok   deny: intent result is exactly the declared result
+ok   deny: intent is signed by the agent
+ok   deny: decision receipt_type is aps:policy-decision:v1
+ok   deny: decision issuer is not the agent
+ok   deny: decision prev is the intent receipt_id
+ok   deny: decision_ref is present
+ok   deny: both receipts name one agent, action_ref and delegation_ref
+ok   deny: decision is issued after the intent
+ok   deny: decision result equals decision_evidence.decision_output
+ok   deny: decision verdict is deny
+ok   deny: authority_state has the four required members
+ok   deny: composite valid is false
+ok   deny: decision_ref_bound is true
+ok   deny: errors are ["valid_until_absent"]  ["valid_until_absent"]
+ok   deny: selected delegation chain verifies at the decision time  []
+ok   deny: delegation_ref is the leaf delegation_id and the leaf subject is the agent
+ok   deny: unexpired at reference time is null
+ok   expired: intent receipt verifies from its committed bytes
+ok   expired: decision receipt verifies from its committed bytes
+ok   expired: intent receipt_type is aps:action-intent:v1
+ok   expired: intent issuer equals subject_agent
+ok   expired: intent has no prev and no decision_ref
+ok   expired: intent result is exactly the declared result
+ok   expired: intent is signed by the agent
+ok   expired: decision receipt_type is aps:policy-decision:v1
+ok   expired: decision issuer is not the agent
+ok   expired: decision prev is the intent receipt_id
+ok   expired: decision_ref is present
+ok   expired: both receipts name one agent, action_ref and delegation_ref
+ok   expired: decision is issued after the intent
+ok   expired: decision result equals decision_evidence.decision_output
+ok   expired: decision verdict is permit
+ok   expired: authority_state has the four required members
+ok   expired: composite valid is true
+ok   expired: decision_ref_bound is true
+ok   expired: errors are []  []
+ok   expired: selected delegation chain verifies at the decision time  []
+ok   expired: delegation_ref is the leaf delegation_id and the leaf subject is the agent
+ok   expired: unexpired at reference time is false
+ok   negative: unresolved key fails at receipt_invalid
+ok   negative: the agent key does not verify a boundary signature
+ok   negative: evidence from another case fails at decision_ref_mismatch
+ok   negative setup: the clean receipt opens with its profile, and the mutation adds exactly one top-level copy
+ok   negative: a duplicated top-level member in the bytes fails at parse_error  ["parse_error","$: duplicate object member"]
+ok   the four decision_ref values are distinct
+ALL CHECKS PASSED
+
+> test
+> node --test adapter.test.mjs
+
+TAP version 13
+# Subtest: committed source bytes and all six offline outcomes
+ok 1 - committed source bytes and all six offline outcomes
+  ---
+  duration_ms: 209.36459
+  type: 'test'
+  ...
+# Subtest: payment-limit pair shares one authorization, crosses the APS cap, and matches the published report
+ok 2 - payment-limit pair shares one authorization, crosses the APS cap, and matches the published report
+  ---
+  duration_ms: 25.230399
+  type: 'test'
+  ...
+# Subtest: changing the signed synthetic over-limit observation invalidates its PriorSeal receipt
+ok 3 - changing the signed synthetic over-limit observation invalidates its PriorSeal receipt
+  ---
+  duration_ms: 6.022971
+  type: 'test'
+  ...
+# Subtest: deny rejects before any principal signing callback
+ok 4 - deny rejects before any principal signing callback
+  ---
+  duration_ms: 3.291739
+  type: 'test'
+  ...
+# Subtest: expired rejects before any principal signing callback
+ok 5 - expired rejects before any principal signing callback
+  ---
+  duration_ms: 2.928315
+  type: 'test'
+  ...
+# Subtest: unknown and incorrect receipt keys fail independently of PriorSeal
+ok 6 - unknown and incorrect receipt keys fail independently of PriorSeal
+  ---
+  duration_ms: 44.556494
+  type: 'test'
+  ...
+# Subtest: wrong delegation key fails the separately verified authority chain
+ok 7 - wrong delegation key fails the separately verified authority chain
+  ---
+  duration_ms: 4.730859
+  type: 'test'
+  ...
+# Subtest: wrong PriorSeal issuer key preserves valid APS evidence
+ok 8 - wrong PriorSeal issuer key preserves valid APS evidence
+  ---
+  duration_ms: 18.981393
+  type: 'test'
+  ...
+# Subtest: duplicate members reject from raw bytes before parsing them into an object
+ok 9 - duplicate members reject from raw bytes before parsing them into an object
+  ---
+  duration_ms: 1.700766
+  type: 'test'
+  ...
+# Subtest: valid generic receipt signatures cannot bypass receipt-type and prev-link rules
+ok 10 - valid generic receipt signatures cannot bypass receipt-type and prev-link rules
+  ---
+  duration_ms: 12.242452
+  type: 'test'
+  ...
+# Subtest: swapped evidence and modified committed call cannot pass composition
+ok 11 - swapped evidence and modified committed call cannot pass composition
+  ---
+  duration_ms: 6.853056
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with missing commitment fails the composition boundary
+ok 12 - validly signed PriorSeal receipt with missing commitment fails the composition boundary
+  ---
+  duration_ms: 29.460706
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with changed digest fails the composition boundary
+ok 13 - validly signed PriorSeal receipt with changed digest fails the composition boundary
+  ---
+  duration_ms: 21.172483
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with duplicate namespace fails the composition boundary
+ok 14 - validly signed PriorSeal receipt with duplicate namespace fails the composition boundary
+  ---
+  duration_ms: 21.529187
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with wrong algorithm fails the composition boundary
+ok 15 - validly signed PriorSeal receipt with wrong algorithm fails the composition boundary
+  ---
+  duration_ms: 16.34527
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with overlong validity fails the composition boundary
+ok 16 - validly signed PriorSeal receipt with overlong validity fails the composition boundary
+  ---
+  duration_ms: 30.461886
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with changed call value fails the composition boundary
+ok 17 - validly signed PriorSeal receipt with changed call value fails the composition boundary
+  ---
+  duration_ms: 38.566303
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with changed target fails the composition boundary
+ok 18 - validly signed PriorSeal receipt with changed target fails the composition boundary
+  ---
+  duration_ms: 19.604617
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with changed calldata fails the composition boundary
+ok 19 - validly signed PriorSeal receipt with changed calldata fails the composition boundary
+  ---
+  duration_ms: 15.563361
+  type: 'test'
+  ...
+# Subtest: validly signed PriorSeal receipt with changed chain fails the composition boundary
+ok 20 - validly signed PriorSeal receipt with changed chain fails the composition boundary
+  ---
+  duration_ms: 17.869057
+  type: 'test'
+  ...
+# Subtest: modified principal signature is rejected even when APS evidence remains valid
+ok 21 - modified principal signature is rejected even when APS evidence remains valid
+  ---
+  duration_ms: 13.89555
+  type: 'test'
+  ...
+# Subtest: unrelated execution cannot be described as correlated execution
+ok 22 - unrelated execution cannot be described as correlated execution
+  ---
+  duration_ms: 19.259974
+  type: 'test'
+  ...
+# Subtest: narrow predicates fail on unknown, missing, wrong-target and over-limit inputs
+ok 23 - narrow predicates fail on unknown, missing, wrong-target and over-limit inputs
+  ---
+  duration_ms: 3.998926
+  type: 'test'
+  ...
+# Subtest: reference time is required to be canonical and rejects before issuance and at expiry
+ok 24 - reference time is required to be canonical and rejects before issuance and at expiry
+  ---
+  duration_ms: 11.096735
+  type: 'test'
+  ...
+# Subtest: an overlong PriorSeal window never invokes signing
+ok 25 - an overlong PriorSeal window never invokes signing
+  ---
+  duration_ms: 7.129967
+  type: 'test'
+  ...
+# Subtest: checkIntent also rejects an already-expired authorization window
+ok 26 - checkIntent also rejects an already-expired authorization window
+  ---
+  duration_ms: 9.102827
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1536.020816
+[exit 0]

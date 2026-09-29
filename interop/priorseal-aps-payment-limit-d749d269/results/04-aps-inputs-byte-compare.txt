@@ -1,0 +1,21 @@
+# byte comparison of PriorSeal's aps-inputs against aeoess/agent-passport-system@948f99b8 fixtures/priorseal-decision-binding
+identical  cases/deny/action-intent-receipt.json
+identical  cases/deny/case.json
+identical  cases/deny/decision-evidence.json
+identical  cases/deny/policy-decision-receipt.json
+identical  cases/expired/action-intent-receipt.json
+identical  cases/expired/case.json
+identical  cases/expired/decision-evidence.json
+identical  cases/expired/policy-decision-receipt.json
+identical  cases/narrow/action-intent-receipt.json
+identical  cases/narrow/case.json
+identical  cases/narrow/decision-evidence.json
+identical  cases/narrow/policy-decision-receipt.json
+identical  cases/permit/action-intent-receipt.json
+identical  cases/permit/case.json
+identical  cases/permit/decision-evidence.json
+identical  cases/permit/policy-decision-receipt.json
+identical  keys.json
+identical  MANIFEST.sha256
+identical  README.md
+differs    verify-from-package-root.mjs

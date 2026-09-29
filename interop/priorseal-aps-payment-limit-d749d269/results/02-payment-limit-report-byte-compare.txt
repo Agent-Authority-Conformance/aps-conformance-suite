@@ -1,0 +1,5 @@
+$ (cd examples/aps-priorseal-decision-binding-v1 && npm run --silent verify:payment-limit > /tmp/plr.json); cmp /tmp/plr.json examples/aps-priorseal-decision-binding-v1/PAYMENT-LIMIT-REPORT.json
+[verify:payment-limit exit 0]
+[cmp exit 0]
+d2c1bea5f0acf0afe06c944376c5a471402ab5d48bf85ca267ed9b5876336ae4  /tmp/plr.json
+d2c1bea5f0acf0afe06c944376c5a471402ab5d48bf85ca267ed9b5876336ae4  examples/aps-priorseal-decision-binding-v1/PAYMENT-LIMIT-REPORT.json
