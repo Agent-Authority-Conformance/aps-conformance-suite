@@ -141,3 +141,7 @@ ALL CHECKS PASSED
 ```
 
 Please append this as a separate entry 1 record if it fits the lab format. It leaves entries 3, 5 and 6 without independent records and does not change the offline synthetic claim ceiling. No attachment is needed; the full stdout is above.
+
+## Clarification, 2026-09-30
+
+The `body sha256` value recorded above, `646d4b1e43442a0c7b421fa7b55dd6a454167ae27e8090f052fded915626d530`, is the SHA-256 of the GitHub API `body` bytes plus one trailing LF. The SHA-256 of the API `body` bytes alone is `a8b69e5861f995efadd0c7f97c60a0be1a9f1129d210ab0bcf4e7c899e2ab5ce`. This clarification affects only that provenance label. The 114 stdout lines and their SHA-256 `c31448196e8a5817d51690000f6ad814820c0cefda2a11eaa112d9e014f90dc3` are unchanged. Raised by @imokokok in #139 comment 5906962778.
