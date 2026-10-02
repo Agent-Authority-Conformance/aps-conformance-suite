@@ -1,0 +1,382 @@
+vector sha256: 4918125741234d749e4ab23cb6ec98c12f6b86b951147eca984b04a76bb53d31 bytes: 4876
+OBSERVED (frozen) sha256: f5e27d0590f125bde42b5adde10e9fb1dc00ee7123e054602c72032148dc94aa
+{
+ "ancestor-active": {
+  "phases": {
+   "1_schema": [
+    {
+     "index": 0,
+     "ok": true,
+     "detail": []
+    },
+    {
+     "index": 1,
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "2_delegation_id": [
+    {
+     "index": 0,
+     "ok": true,
+     "recomputed": "sha256:960847f4885a05807ec445088e811562aaab97e426e95bb4fa3a0a25cb91ac22",
+     "claimed": "sha256:960847f4885a05807ec445088e811562aaab97e426e95bb4fa3a0a25cb91ac22"
+    },
+    {
+     "index": 1,
+     "ok": true,
+     "recomputed": "sha256:a7f18d906f96b818bbea0740167d1a205180b8084d4c6ac0b4ab0f8a37113e92",
+     "claimed": "sha256:a7f18d906f96b818bbea0740167d1a205180b8084d4c6ac0b4ab0f8a37113e92"
+    }
+   ],
+   "3_key_and_signature": [
+    {
+     "index": 0,
+     "verification_method": "aps:agent:test-root-principal#key-1",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "verification_method": "aps:agent:test-parent-agent#key-1",
+     "ok": true
+    }
+   ],
+   "4_duplicates": {
+    "ok": true
+   },
+   "5_root_trust": {
+    "ok": true,
+    "root_issuer": "aps:agent:test-root-principal",
+    "root_subject": "aps:agent:test-parent-agent"
+   },
+   "6_parent_link": [
+    {
+     "index": 0,
+     "ok": true
+    },
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "7_issuer_subject_continuity": [
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "8_child_issuance_time": [
+    {
+     "index": 1,
+     "not_before_not_before_issued_at": true,
+     "issued_while_parent_valid": true
+    }
+   ],
+   "9_attenuation": [
+    {
+     "index": 1,
+     "scope": true,
+     "spend": true,
+     "depth": true,
+     "time_containment": true,
+     "reputation": true,
+     "values": true,
+     "reversibility": true
+    }
+   ],
+   "10_current_validity": [
+    {
+     "index": 0,
+     "ok": true
+    },
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "11_revocation": [
+    {
+     "index": 0,
+     "revoked": false
+    },
+    {
+     "index": 1,
+     "revoked": false
+    }
+   ]
+  },
+  "state": "valid",
+  "valid": true,
+  "failure_codes": []
+ },
+ "ancestor-revoked": {
+  "phases": {
+   "1_schema": [
+    {
+     "index": 0,
+     "ok": true,
+     "detail": []
+    },
+    {
+     "index": 1,
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "2_delegation_id": [
+    {
+     "index": 0,
+     "ok": true,
+     "recomputed": "sha256:960847f4885a05807ec445088e811562aaab97e426e95bb4fa3a0a25cb91ac22",
+     "claimed": "sha256:960847f4885a05807ec445088e811562aaab97e426e95bb4fa3a0a25cb91ac22"
+    },
+    {
+     "index": 1,
+     "ok": true,
+     "recomputed": "sha256:a7f18d906f96b818bbea0740167d1a205180b8084d4c6ac0b4ab0f8a37113e92",
+     "claimed": "sha256:a7f18d906f96b818bbea0740167d1a205180b8084d4c6ac0b4ab0f8a37113e92"
+    }
+   ],
+   "3_key_and_signature": [
+    {
+     "index": 0,
+     "verification_method": "aps:agent:test-root-principal#key-1",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "verification_method": "aps:agent:test-parent-agent#key-1",
+     "ok": true
+    }
+   ],
+   "4_duplicates": {
+    "ok": true
+   },
+   "5_root_trust": {
+    "ok": true,
+    "root_issuer": "aps:agent:test-root-principal",
+    "root_subject": "aps:agent:test-parent-agent"
+   },
+   "6_parent_link": [
+    {
+     "index": 0,
+     "ok": true
+    },
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "7_issuer_subject_continuity": [
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "8_child_issuance_time": [
+    {
+     "index": 1,
+     "not_before_not_before_issued_at": true,
+     "issued_while_parent_valid": true
+    }
+   ],
+   "9_attenuation": [
+    {
+     "index": 1,
+     "scope": true,
+     "spend": true,
+     "depth": true,
+     "time_containment": true,
+     "reputation": true,
+     "values": true,
+     "reversibility": true
+    }
+   ],
+   "10_current_validity": [
+    {
+     "index": 0,
+     "ok": true
+    },
+    {
+     "index": 1,
+     "ok": true
+    }
+   ],
+   "11_revocation": [
+    {
+     "index": 0,
+     "revoked": true
+    },
+    {
+     "index": 1,
+     "revoked": false
+    }
+   ]
+  },
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "REVOKED"
+  ],
+  "failure_index": 0,
+  "failed_phase": "11_revocation"
+ }
+}
+NEGATIVE CONTROLS:
+{
+ "mutate_signature_byte_child": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "SIGNATURE_INVALID"
+  ],
+  "failure_index": 1
+ },
+ "mutate_id_relevant_field_child_nonce": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "DELEGATION_ID_MISMATCH"
+  ],
+  "failure_index": 1
+ },
+ "break_parent_link_child (unresigned)": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "DELEGATION_ID_MISMATCH"
+  ],
+  "failure_index": 1
+ },
+ "evaluated_after_child_not_after_2026-12-15": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "NOT_CURRENTLY_VALID"
+  ],
+  "failure_index": 1
+ },
+ "evaluated_before_child_not_before_2026-01-15": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "NOT_CURRENTLY_VALID"
+  ],
+  "failure_index": 1
+ },
+ "evaluated_exactly_at_child_not_after_2026-12-01 (half-open)": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "NOT_CURRENTLY_VALID"
+  ],
+  "failure_index": 1
+ },
+ "revoke_child_only": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "REVOKED"
+  ],
+  "failure_index": 1
+ },
+ "revoke_both": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "REVOKED"
+  ],
+  "failure_index": 0
+ },
+ "untrusted_root": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ROOT_NOT_TRUSTED"
+  ],
+  "failure_index": 0
+ },
+ "wrong_key_for_parent": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "SIGNATURE_INVALID"
+  ],
+  "failure_index": 1
+ }
+}
+RESIGNED CONTROLS (local throwaway keys):
+{
+ "resigned_baseline_valid": {
+  "state": "valid",
+  "valid": true,
+  "failure_codes": []
+ },
+ "resigned_broken_parent_link": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "BROKEN_PARENT_LINK"
+  ],
+  "failure_index": 1
+ },
+ "resigned_scope_widened": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_depth_not_decremented": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_spend_widened": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_reputation_widened": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_reversibility_widened": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_time_widened": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ATTENUATION_VIOLATION"
+  ],
+  "failure_index": 1
+ },
+ "resigned_issuer_discontinuity": {
+  "state": "invalid",
+  "valid": false,
+  "failure_codes": [
+   "ISSUER_DISCONTINUITY"
+  ],
+  "failure_index": 1
+ }
+}
+COMPARISON (expected read after freeze):
+ancestor-active AGREES observed= {'state': 'valid', 'valid': True, 'failure_codes': []} expected= {'state': 'valid', 'valid': True, 'failure_codes': []}
+ancestor-revoked AGREES observed= {'state': 'invalid', 'valid': False, 'failure_codes': ['REVOKED'], 'failure_index': 0} expected= {'state': 'invalid', 'valid': False, 'failure_codes': ['REVOKED'], 'failure_index': 0}
