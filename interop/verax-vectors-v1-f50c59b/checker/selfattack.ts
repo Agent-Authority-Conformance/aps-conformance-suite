@@ -3,9 +3,12 @@
 // Usage: node checker/selfattack.ts <path to verax test-vectors> <out.json>
 // Falsification of this checker, not of Verax. Each case copies valid-full to
 // a scratch directory, changes one thing, and states the stage this checker
-// must report. Cases 1 to 9 mutate the published bytes. Cases 10 to 15 re-sign
-// the whole ledger under a key generated here, so claim rules the vector set
-// does not exercise can be tested with valid signatures.
+// must report. Cases 1 to 9 mutate the published bytes. Cases 10 to 17 re-sign
+// the whole ledger under a key generated here, so rules the vector set does not
+// exercise can be tested with valid signatures. Case 10 is the control and must
+// be accepted. Case 16 is the regression for a key repeated under a second
+// integer encoding. Case 17 is the same shape in the payload, which the label
+// count also catches.
 
 import { cpSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -52,7 +55,8 @@ const NAMES: Array<[number, string]> = [[-70501, 'decider'], [-70502, 'subject']
 const CT = 'application/cedulon-decision-record+cbor'
 
 // Re-sign every record under a fresh key, applying edit(i, claims) first and relinking the chain.
-function resign(d: string, edit: (i: number, c: any) => { claims: any; drop?: number[]; extra?: Array<[number, any]> } | void) {
+type Raw = { prot?: (kid: Uint8Array) => Uint8Array; payload?: (c: any) => Uint8Array }
+function resign(d: string, edit: (i: number, c: any) => { claims: any; drop?: number[]; extra?: Array<[number, any]>; raw?: Raw } | void) {
   const { publicKey, privateKey } = generateKeyPairSync('ed25519')
   const pem = publicKey.export({ type: 'spki', format: 'pem' }).toString()
   const kid = createHash('sha256').update(publicKey.export({ type: 'spki', format: 'der' })).digest().subarray(0, 8)
@@ -61,10 +65,10 @@ function resign(d: string, edit: (i: number, c: any) => { claims: any; drop?: nu
   let prev: string | null = null
   const outRecs = rs.map((r, i) => {
     let claims = { ...r.claims, prevRecordHash: prev }
-    let drop: number[] = []; let extra: Array<[number, any]> = []
-    const e = edit(i, claims); if (e) { claims = e.claims; drop = e.drop ?? []; extra = e.extra ?? [] }
-    const prot = bytes(enc(M([[1, -19], [3, CT], [4, new Uint8Array(kid)]])))
-    const payload = bytes(enc(M([...NAMES.filter(([l]) => !drop.includes(l)).map(([l, n]) => [l, claims[n]] as [number, any]), ...extra])))
+    let drop: number[] = []; let extra: Array<[number, any]> = []; let raw: Raw = {}
+    const e = edit(i, claims); if (e) { claims = e.claims; drop = e.drop ?? []; extra = e.extra ?? []; raw = e.raw ?? {} }
+    const prot = raw.prot ? raw.prot(new Uint8Array(kid)) : bytes(enc(M([[1, -19], [3, CT], [4, new Uint8Array(kid)]])))
+    const payload = raw.payload ? raw.payload(claims) : bytes(enc(M([...NAMES.filter(([l]) => !drop.includes(l)).map(([l, n]) => [l, claims[n]] as [number, any]), ...extra])))
     const tbs = bytes(enc(['Signature1', prot, new Uint8Array(0), payload]))
     const sig = sign(null, tbs, privateKey)
     const cose = bytes(enc([prot, M([]), payload, new Uint8Array(sig)]))
@@ -103,6 +107,11 @@ const cases: Array<[string, string, (d: string) => void]> = [
   ['13 twelve labels', 'record-claims', d => resign(d, (i, c) => i === 1 ? { claims: c, drop: [-70513] } : undefined)],
   ['14 uppercase hash', 'record-claims', d => resign(d, (i, c) => i === 1 ? { claims: { ...c, policyHash: c.policyHash.toUpperCase() } } : undefined)],
   ['15 timestampMs above 2^53 - 1', 'record-claims', d => resign(d, (i, c) => i === 1 ? { claims: { ...c, timestampMs: 2 ** 53 } } : undefined)],
+  ['16 alg twice, encoded 01 and 18 01', 'record-header', d => resign(d, (i, c) => i === 0 ? { claims: c, raw: {
+    prot: kid => bytes([...head(5, 4), 0x01, ...enc(-19), 0x18, 0x01, ...enc(-8), ...enc(3), ...enc(CT), ...enc(4), ...enc(kid)]) } } : undefined)],
+  ['17 decision twice, second label in 8 bytes', 'record-claims', d => resign(d, (i, c) => i === 3 ? { claims: c, raw: {
+    payload: cl => bytes([...head(5, NAMES.length + 1), ...NAMES.flatMap(([l, n]) => [...enc(l), ...enc(cl[n])]),
+      0x3b, 0, 0, 0, 0, 0, 1, 0x13, 0x69, ...enc(cl.decision === 'deny' ? 'allow' : 'deny')]) } } : undefined)],
 ]
 
 const rows = cases.map(([name, want, mutate]) => {
@@ -117,6 +126,7 @@ const rows = cases.map(([name, want, mutate]) => {
   } finally { rmSync(d, { recursive: true, force: true }) }
 })
 for (const r of rows) console.log(`${r.ok ? 'ok  ' : 'FAIL'} ${r.name.padEnd(38)} want ${r.want.padEnd(17)} got ${r.got.padEnd(17)} ${r.detail}`)
-console.log(`${rows.filter(r => r.ok).length} of ${rows.length} self-attack cases caught at the stated stage`)
+const neg = rows.filter(r => r.want !== 'none'), ctl = rows.filter(r => r.want === 'none')
+console.log(`${neg.filter(r => r.ok).length} of ${neg.length} mutations rejected at the stated stage, ${ctl.filter(r => r.ok).length} of ${ctl.length} re-signed controls accepted`)
 writeFileSync(out, JSON.stringify(rows, null, 2) + '\n')
 process.exit(rows.every(r => r.ok) ? 0 : 1)

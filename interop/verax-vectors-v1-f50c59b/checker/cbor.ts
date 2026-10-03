@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Minimal CBOR decoder (RFC 8949 subset) for the Verax ledger checker.
 // Adapted from interop/scitt-cose-vectors-ietf126/verifier/cbor.ts, with three
-// changes this profile needs: a map that repeats an encoded key is refused
-// (draft-dogru-cedulon-08 Section 6, MUST-T4-18), indefinite lengths and
+// changes this profile needs: a map that repeats a key is refused, judged on
+// the decoded key (draft-dogru-cedulon-08 Section 6, MUST-T4-18), indefinite lengths and
 // floats are refused (deterministic CBOR, RFC 8949 Section 4.2.1), and the
 // encoder is limited to the Sig_structure subset. No external packages.
 
@@ -81,13 +81,19 @@ function decodeItem(r: Reader, depth: number): CborValue {
     case 5: {
       const n = readLength(r, info)
       const m = new CborMap()
+      // Duplicates are judged on the decoded key, not its octets: key 1
+      // encoded as 01 and as 18 01 is one key twice. Integer, text and byte
+      // string keys compare by value. Any other key type falls back to octets.
       const seen = new Set<string>()
       for (let i = 0; i < n; i++) {
         const ks = r.pos
         const k = decodeItem(r, depth + 1)
-        const enc = hexKey(r.buf.subarray(ks, r.pos))
-        if (seen.has(enc)) throw new Error(`cbor: duplicate map key at offset ${ks}`)
-        seen.add(enc)
+        const id = typeof k === 'number' ? `n:${k}`
+          : typeof k === 'string' ? `s:${k}`
+          : k instanceof Uint8Array ? `b:${hexKey(k)}`
+          : `o:${hexKey(r.buf.subarray(ks, r.pos))}`
+        if (seen.has(id)) throw new Error(`cbor: duplicate map key at offset ${ks}`)
+        seen.add(id)
         m.entries.push([k, decodeItem(r, depth + 1)])
       }
       return m

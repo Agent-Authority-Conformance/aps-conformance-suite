@@ -20,7 +20,7 @@ Four of the twelve stages: `record-header`, `record-signature`, `record-claims`,
 
 SHA-256 over each record's COSE_Sign1 octets equals `record_hashes` in `expected.json` for all 16 vectors.
 
-`checker/selfattack.ts` tests this checker, not Verax: 15 of 15 one-change cases were reported at the stated stage. Cases 10 to 15 re-sign the ledger under a key generated in the run, to reach claim rules the vector set does not exercise (allow without `effectClass`, empty `ref`, twelve labels, uppercase hash, `timestampMs` above 2^53 - 1).
+`checker/selfattack.ts` tests this checker, not Verax. It has 17 cases with stated outcomes: 16 single changes, each rejected at the stated stage, and one re-signed control with no change, accepted. Cases 10 to 17 re-sign the ledger under a key generated in the run, to reach rules the vector set does not exercise (allow without `effectClass`, empty `ref`, twelve labels, uppercase hash, `timestampMs` above 2^53 - 1, a header or claim key repeated under a second integer encoding). Case 16 was added after review found that the first version of the decoder judged duplicate keys on their octets and accepted `alg` encoded as `01` with -19 and again as `18 01` with -8. Duplicates are now judged on the decoded key. Generated keys make `results/selfattack.json` differ from run to run in key ids only.
 
 Runner: aeoess, Node v24.11.1, macOS. Outputs in `results/`.
 

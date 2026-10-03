@@ -60,7 +60,7 @@
     "want": "record-header",
     "got": "record-header",
     "ok": true,
-    "detail": "kid 197ab621d878ed2a is not the pinned key's c9ff7c4fa9c7eacd"
+    "detail": "kid 197ab621d878ed2a is not the pinned key's c48e4cb017b03df4"
   },
   {
     "name": "10 re-signed control, no change",
@@ -103,5 +103,19 @@
     "got": "record-claims",
     "ok": true,
     "detail": "payload: cbor: integer beyond 2^53 - 1"
+  },
+  {
+    "name": "16 alg twice, encoded 01 and 18 01",
+    "want": "record-header",
+    "got": "record-header",
+    "ok": true,
+    "detail": "protected header: cbor: duplicate map key at offset 3"
+  },
+  {
+    "name": "17 decision twice, second label in 8 bytes",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "payload: cbor: duplicate map key at offset 461"
   }
 ]
