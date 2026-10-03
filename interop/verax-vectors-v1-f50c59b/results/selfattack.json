@@ -60,7 +60,7 @@
     "want": "record-header",
     "got": "record-header",
     "ok": true,
-    "detail": "kid 197ab621d878ed2a is not the pinned key's c48e4cb017b03df4"
+    "detail": "kid 197ab621d878ed2a is not the pinned key's 28c30e150af0efdf"
   },
   {
     "name": "10 re-signed control, no change",
@@ -117,5 +117,47 @@
     "got": "record-claims",
     "ok": true,
     "detail": "payload: cbor: duplicate map key at offset 461"
+  },
+  {
+    "name": "18 inputs row tampered, record not resigned",
+    "want": "inputs-binding",
+    "got": "inputs-binding",
+    "ok": true,
+    "detail": "inputsHash 0036d5849be297fa3e59c270eeef32af1ef593976241d73b3b525414ea0123d1 does not match SHA-256 of the canonical inputs row, computed 2fa737f157100613c14b3f3f6897aa91019e8a1704528558770ed3d6d9d8da10"
+  },
+  {
+    "name": "19 inputs row removed for a record",
+    "want": "inputs-binding",
+    "got": "inputs-binding",
+    "ok": true,
+    "detail": "no ledger/inputs.jsonl row for ref \"1316a41a-3a6f-4a77-9ea2-605a70977eb9\""
+  },
+  {
+    "name": "20 checkpoint signature byte flipped",
+    "want": "checkpoint-signature",
+    "got": "checkpoint-signature",
+    "ok": true,
+    "detail": "Ed25519 signature does not verify under the pinned key"
+  },
+  {
+    "name": "21 checkpoint re-signed, no change (control)",
+    "want": "none",
+    "got": "none",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "22 checkpoint receiptCount tampered, re-signed",
+    "want": "checkpoint-coverage",
+    "got": "checkpoint-coverage",
+    "ok": true,
+    "detail": "receiptCount 9, 8 attested record(s) fall in [1790974492081, 1790974492255)"
+  },
+  {
+    "name": "23 checkpoint totals tampered, re-signed",
+    "want": "checkpoint-totals",
+    "got": "checkpoint-totals",
+    "ok": true,
+    "detail": "totals.allow 6, computed 5"
   }
 ]

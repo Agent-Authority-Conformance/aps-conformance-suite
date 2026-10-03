@@ -28,16 +28,16 @@
       "id": "fail-checkpoint-signature",
       "expected": "INVALID",
       "expectedStage": "checkpoint-signature",
-      "observed": null,
-      "classification": "CONSISTENT, named stage checkpoint-signature not assessed",
+      "observed": "checkpoint-signature",
+      "classification": "REACHED, earlier stages 6 to 8 not assessed",
       "recordHashes": "equal"
     },
     {
       "id": "fail-checkpoint-totals",
       "expected": "INVALID",
       "expectedStage": "checkpoint-totals",
-      "observed": null,
-      "classification": "CONSISTENT, named stage checkpoint-totals not assessed",
+      "observed": "checkpoint-totals",
+      "classification": "REACHED, earlier stages 6 to 8 not assessed",
       "recordHashes": "equal"
     },
     {
@@ -52,8 +52,8 @@
       "id": "fail-inputs-approver-downgraded",
       "expected": "INVALID",
       "expectedStage": "inputs-binding",
-      "observed": null,
-      "classification": "CONSISTENT, named stage inputs-binding not assessed",
+      "observed": "inputs-binding",
+      "classification": "MATCH",
       "recordHashes": "equal"
     },
     {
@@ -108,8 +108,8 @@
       "id": "fail-tail-truncated",
       "expected": "INVALID",
       "expectedStage": "checkpoint-coverage",
-      "observed": null,
-      "classification": "CONSISTENT, named stage checkpoint-coverage not assessed",
+      "observed": "checkpoint-coverage",
+      "classification": "REACHED, earlier stages 6 to 8 not assessed",
       "recordHashes": "equal"
     },
     {
@@ -130,7 +130,8 @@
     }
   ],
   "tally": {
-    "CONSISTENT": 9,
-    "MATCH": 7
+    "CONSISTENT": 5,
+    "MATCH": 8,
+    "REACHED": 3
   }
 }

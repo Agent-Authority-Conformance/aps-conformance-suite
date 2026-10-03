@@ -8,7 +8,17 @@
 // exercise can be tested with valid signatures. Case 10 is the control and must
 // be accepted. Case 16 is the regression for a key repeated under a second
 // integer encoding. Case 17 is the same shape in the payload, which the label
-// count also catches.
+// count also catches. resign() also re-signs the checkpoint over the
+// re-signed chain, under a second generated witness key, so that cases 10 to
+// 17 do not read as a checkpoint-coverage mismatch against a checkpoint still
+// signed for the original octets. Cases 18 to 23 reach the four stages added
+// after the first run (inputs-binding, checkpoint-signature,
+// checkpoint-coverage, checkpoint-totals). 18 and 19 mutate
+// ledger/inputs.jsonl, which the decision records do not sign over, so no
+// record needs re-signing. 20 to 23 re-sign only the checkpoint, under a
+// witness key generated here, because a changed claim breaks the original
+// witness signature; case 21 is that resigning path's own control and must
+// be accepted.
 
 import { cpSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -76,6 +86,47 @@ function resign(d: string, edit: (i: number, c: any) => { claims: any; drop?: nu
     return { ...r, claims, publicKeyPem: pem, coseHex: Buffer.from(cose).toString('hex') }
   })
   writeLedger(d, outRecs)
+  // Keep the checkpoint consistent with the re-signed chain: recompute
+  // receiptCount, chainHeadHash and totals over the new records (their
+  // timestampMs and decision are untouched by the edits above, so the
+  // window and the counts do not move) and re-sign under a witness key
+  // generated here, since the original witness private key is not held.
+  if (readCheckpoints(d).length) {
+    const counts: Record<string, number> = { allow: 0, deny: 0, defer: 0 }
+    for (const r of outRecs) if (r.claims.decision in counts) counts[r.claims.decision]++
+    const lastCose = bytes([...Buffer.from(outRecs[outRecs.length - 1].coseHex, 'hex')])
+    resignCheckpoint(d, c => ({
+      ...c, receiptCount: outRecs.length, chainHeadHash: sha(lastCose),
+      totals: { allow: String(counts.allow), deny: String(counts.deny), defer: String(counts.defer) },
+    }))
+  }
+}
+
+type CpRec = { claims: any; coseHex: string; encoding: string; publicKeyPem: string }
+const readCheckpoints = (d: string): CpRec[] => readFileSync(join(d, 'ledger', 'checkpoints.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l))
+const writeCheckpoints = (d: string, rs: CpRec[]) => writeFileSync(join(d, 'ledger', 'checkpoints.jsonl'), rs.map(r => JSON.stringify(r)).join('\n') + '\n')
+const CP_NAMES: Array<[number, string]> = [[-70101, 'epoch'], [-70102, 'startMs'], [-70103, 'endMs'],
+  [-70104, 'receiptCount'], [-70105, 'chainHeadHash'], [-70106, 'totals'], [-70107, 'prevCheckpointHash']]
+const CPCT = 'application/cedulon-checkpoint+cbor'
+
+// Re-signs every checkpoint line under a fresh witness key, applying edit(claims) first.
+function resignCheckpoint(d: string, edit: (c: any) => any) {
+  const { publicKey, privateKey } = generateKeyPairSync('ed25519')
+  const pem = publicKey.export({ type: 'spki', format: 'pem' }).toString()
+  const kid = createHash('sha256').update(publicKey.export({ type: 'spki', format: 'der' })).digest().subarray(0, 8)
+  writeFileSync(join(d, 'pins', 'witness-key.pem'), pem)
+  const rs = readCheckpoints(d)
+  const outRecs = rs.map(r => {
+    const claims = edit({ ...r.claims })
+    const prot = bytes(enc(M([[1, -19], [3, CPCT], [4, new Uint8Array(kid)]])))
+    const payload = bytes(enc(M(CP_NAMES.map(([l, n]) =>
+      [l, n === 'totals' ? (claims.totals === null ? null : M(Object.entries(claims.totals))) : claims[n]]))))
+    const tbs = bytes(enc(['Signature1', prot, new Uint8Array(0), payload]))
+    const sig = sign(null, tbs, privateKey)
+    const cose = bytes(enc([prot, M([]), payload, new Uint8Array(sig)]))
+    return { ...r, claims, publicKeyPem: pem, coseHex: Buffer.from(cose).toString('hex') }
+  })
+  writeCheckpoints(d, outRecs)
 }
 
 function patchCose(d: string, i: number, f: (b: Uint8Array) => Uint8Array) {
@@ -112,6 +163,25 @@ const cases: Array<[string, string, (d: string) => void]> = [
   ['17 decision twice, second label in 8 bytes', 'record-claims', d => resign(d, (i, c) => i === 3 ? { claims: c, raw: {
     payload: cl => bytes([...head(5, NAMES.length + 1), ...NAMES.flatMap(([l, n]) => [...enc(l), ...enc(cl[n])]),
       0x3b, 0, 0, 0, 0, 0, 1, 0x13, 0x69, ...enc(cl.decision === 'deny' ? 'allow' : 'deny')]) } } : undefined)],
+  ['18 inputs row tampered, record not resigned', 'inputs-binding', d => {
+    const rows = readFileSync(join(d, 'ledger', 'inputs.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l))
+    rows[1].inputs.principal.brain += '-tampered'
+    writeFileSync(join(d, 'ledger', 'inputs.jsonl'), rows.map(r => JSON.stringify(r)).join('\n') + '\n')
+  }],
+  ['19 inputs row removed for a record', 'inputs-binding', d => {
+    const rows = readFileSync(join(d, 'ledger', 'inputs.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l))
+    rows.splice(1, 1)
+    writeFileSync(join(d, 'ledger', 'inputs.jsonl'), rows.map(r => JSON.stringify(r)).join('\n') + '\n')
+  }],
+  ['20 checkpoint signature byte flipped', 'checkpoint-signature', d => {
+    const rows = readCheckpoints(d)
+    const b = Buffer.from(rows[0].coseHex, 'hex'); b[b.length - 1] ^= 1
+    rows[0].coseHex = b.toString('hex')
+    writeCheckpoints(d, rows)
+  }],
+  ['21 checkpoint re-signed, no change (control)', 'none', d => resignCheckpoint(d, c => c)],
+  ['22 checkpoint receiptCount tampered, re-signed', 'checkpoint-coverage', d => resignCheckpoint(d, c => ({ ...c, receiptCount: c.receiptCount + 1 }))],
+  ['23 checkpoint totals tampered, re-signed', 'checkpoint-totals', d => resignCheckpoint(d, c => ({ ...c, totals: { ...c.totals, allow: String(Number(c.totals.allow) + 1) } }))],
 ]
 
 const rows = cases.map(([name, want, mutate]) => {

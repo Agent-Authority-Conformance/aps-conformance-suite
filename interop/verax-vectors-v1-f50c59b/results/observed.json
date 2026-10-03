@@ -8,16 +8,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
@@ -42,16 +42,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
@@ -76,16 +76,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -95,6 +95,11 @@
           "stage": "chain",
           "record": 3,
           "detail": "prevRecordHash \"ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533\", expected \"dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29\""
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 6 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -115,21 +120,27 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
-      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
-      "firstFailingStage": null,
-      "findings": [],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "checkpoint-signature",
+      "findings": [
+        {
+          "stage": "checkpoint-signature",
+          "record": 0,
+          "detail": "Ed25519 signature does not verify under the pinned key"
+        }
+      ],
       "warnings": [],
       "recordHashes": [
         "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
@@ -149,21 +160,27 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
-      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
-      "firstFailingStage": null,
-      "findings": [],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "checkpoint-totals",
+      "findings": [
+        {
+          "stage": "checkpoint-totals",
+          "record": 0,
+          "detail": "totals.allow 4, computed 5"
+        }
+      ],
       "warnings": [],
       "recordHashes": [
         "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
@@ -183,16 +200,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
@@ -217,21 +234,27 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
-      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
-      "firstFailingStage": null,
-      "findings": [],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "inputs-binding",
+      "findings": [
+        {
+          "stage": "inputs-binding",
+          "record": 1,
+          "detail": "inputsHash 0036d5849be297fa3e59c270eeef32af1ef593976241d73b3b525414ea0123d1 does not match SHA-256 of the canonical inputs row, computed 9b5016197fb628b799909e29684ba871d259bafec946faecb4050c3382575588"
+        }
+      ],
       "warnings": [],
       "recordHashes": [
         "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
@@ -251,16 +274,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -270,6 +293,11 @@
           "stage": "record-header",
           "record": 3,
           "detail": "alg is -8, not -19"
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -291,16 +319,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -310,6 +338,11 @@
           "stage": "record-claims",
           "record": 3,
           "detail": "deny carries a non-null effectHash"
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -331,16 +364,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -350,6 +383,11 @@
           "stage": "record-claims",
           "record": 3,
           "detail": "presented decision \"allow\" differs from signed \"deny\""
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -371,16 +409,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -390,6 +428,11 @@
           "stage": "record-header",
           "record": 3,
           "detail": "content type is \"application/cedulon-decision+cbor\""
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -411,16 +454,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -465,6 +508,11 @@
           "stage": "record-header",
           "record": 7,
           "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 0 attested record(s) fall in [1790974492081, 1790974492255); chainHeadHash \"dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4\", expected null"
         }
       ],
       "warnings": [],
@@ -486,16 +534,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "FAILS_AT_ASSESSED_STAGE",
@@ -505,6 +553,11 @@
           "stage": "record-signature",
           "record": 3,
           "detail": "Ed25519 signature does not verify under the pinned key"
+        },
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255)"
         }
       ],
       "warnings": [],
@@ -526,21 +579,27 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
-      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
-      "firstFailingStage": null,
-      "findings": [],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "checkpoint-coverage",
+      "findings": [
+        {
+          "stage": "checkpoint-coverage",
+          "record": 0,
+          "detail": "receiptCount 8, 7 attested record(s) fall in [1790974492081, 1790974492255); chainHeadHash \"dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4\", expected \"e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf\""
+        }
+      ],
       "warnings": [],
       "recordHashes": [
         "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
@@ -559,16 +618,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
@@ -586,16 +645,16 @@
         "record-header",
         "record-signature",
         "record-claims",
-        "chain"
+        "chain",
+        "inputs-binding",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals"
       ],
       "notAssessed": [
-        "inputs-binding",
         "effect-binding",
         "index",
         "approval-signature",
-        "checkpoint-signature",
-        "checkpoint-coverage",
-        "checkpoint-totals",
         "control"
       ],
       "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
