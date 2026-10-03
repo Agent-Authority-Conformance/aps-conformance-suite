@@ -1,0 +1,617 @@
+{
+  "vectors": 16,
+  "results": [
+    {
+      "id": "fail-allow-while-halted",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "0eebc6632ff0e262afa777827cfcfe969952c9fa19830c48749d8da5ff5504b5",
+        "43687fecaaaed412944dffe81711cfa6706ec8de13e1182b1c855f2193138174",
+        "cb7d055bcb8b855dfb9a1d9572934e4c8de2363ba7a5f020e2dad59086583ef6"
+      ]
+    },
+    {
+      "id": "fail-approval-signature",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "8377c411085f71c61b5b64f1ffb8d49d27ed4c045934ce274841be7ef73816f7",
+        "fa9db8d83615a1d0a9f06f2f840dae953b97d02c844377213d1d02ebbc871a08",
+        "2b3f7bd4a267e67c0a55d5bb940b689188359d04fd90051e3196596892db54ca",
+        "04ec43ca305d222d50543f1b59f761932481feb925eea6f7a7447c181e70526e",
+        "e053796890a7e85ff2f8fd1113d1573827f2846b5c6f69cacbe3c8b4d1bb4986",
+        "e5a18931492527c618b151d2747981610a0b71ec69fdb5a95d67e2c258d466d9",
+        "b978742884c4b9f562afe51674b1ab9ea5ba2082ef3704fd84bc352cfd62b8d7"
+      ]
+    },
+    {
+      "id": "fail-chain-removed",
+      "records": 7,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "chain",
+      "findings": [
+        {
+          "stage": "chain",
+          "record": 3,
+          "detail": "prevRecordHash \"ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533\", expected \"dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29\""
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-checkpoint-signature",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-checkpoint-totals",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-effect-hash",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-inputs-approver-downgraded",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-record-alg-8",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-header",
+      "findings": [
+        {
+          "stage": "record-header",
+          "record": 3,
+          "detail": "alg is -8, not -19"
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "4dd5ab03652eaecc81d84a5b1d8869aae54a482b0bc0b575d0c7850a82524ffa",
+        "7713f5c17efd64d4faa121f13e37262bee123d8e28430dbdf0901ed9bb23f5f2",
+        "9c980096a70bcc7d7220482625ac102ae3129141cb78a594bb873b79bc01d008",
+        "70f1b8160d571c9650dd05bb201a905c2de204cb41483ca6f10ca245cfeb7a73",
+        "dfb1fcf992dc39477701c921d196dc116139b628e47b5c9f0e54691d5a7eec87"
+      ]
+    },
+    {
+      "id": "fail-record-claim-rule",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-claims",
+      "findings": [
+        {
+          "stage": "record-claims",
+          "record": 3,
+          "detail": "deny carries a non-null effectHash"
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "72537c0f4ae214bc6b482b1759790d43673619e1e1594e8c65a863059d525947",
+        "a440a3c006c284ff95f305a397fb92cb13469ac73ccb9146ab95150186b15a82",
+        "ec15e55b9698ea4d5395cf9a7cf0a91ac1be241b28b508d5853c9380207e02ff",
+        "96fefb3c9665f05c7611a7edaf6812a0886033a5fb3aaeacf0ab6f6d2283a63f",
+        "f2ad852f7a40fd4b2f550c1dad5e0325c2e83873cf3cb50458fdd8b2a4d9429d"
+      ]
+    },
+    {
+      "id": "fail-record-claims-mismatch",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-claims",
+      "findings": [
+        {
+          "stage": "record-claims",
+          "record": 3,
+          "detail": "presented decision \"allow\" differs from signed \"deny\""
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-record-content-type",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-header",
+      "findings": [
+        {
+          "stage": "record-header",
+          "record": 3,
+          "detail": "content type is \"application/cedulon-decision+cbor\""
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "010ebd6d05faa509b953f8a16eece0d0eb9d295dff5f9b3d94dc90f6e4e48980",
+        "96072ddad077950153e08908f03e82262db689564e2962acd23461ec33a73d8b",
+        "1ab97943a1abb134a4b0c403034bb634890795973851b94e88d9b2287085cbbd",
+        "10a8bc067bc4fc7647727ff5433be313751a5afeedcec2f881c82a75c0dd7c27",
+        "4ddda11281f1c74f0ca1eeb28a86301bc54da82273ddcd1fb09fda44c774c292"
+      ]
+    },
+    {
+      "id": "fail-record-key-not-pinned",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-header",
+      "findings": [
+        {
+          "stage": "record-header",
+          "record": 0,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 1,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 2,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 3,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 4,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 5,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 6,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        },
+        {
+          "stage": "record-header",
+          "record": 7,
+          "detail": "kid 197ab621d878ed2a is not the pinned key's 3a29106119eeba39"
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    },
+    {
+      "id": "fail-record-signature",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "FAILS_AT_ASSESSED_STAGE",
+      "firstFailingStage": "record-signature",
+      "findings": [
+        {
+          "stage": "record-signature",
+          "record": 3,
+          "detail": "Ed25519 signature does not verify under the pinned key"
+        }
+      ],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "799e58ca60b336c0dd3f9cb8995b326fb5305786290cbea5fbff478e1c4bd9d8",
+        "718604f6fb29b001b19db72adf99c6594c20340687e072a9a42bb956611f20df",
+        "bec6af1ae5c5c05bc173cf246987e29f51ff49eb0c2550c4c546d0c737455c1b",
+        "0483b4ae6f50717072fa678379ead73b92cd3502730e56796e30082c4ab1df89",
+        "2f482770ff42bb4ead5953347430c3f62fb12c6e729c18049955e614f4410ab7"
+      ]
+    },
+    {
+      "id": "fail-tail-truncated",
+      "records": 7,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf"
+      ]
+    },
+    {
+      "id": "valid-deny-only",
+      "records": 1,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "63c064c1180a7aad4e99dc42e65931779674665cc555a0b2715f033bc951651a"
+      ]
+    },
+    {
+      "id": "valid-full",
+      "records": 8,
+      "assessed": [
+        "record-header",
+        "record-signature",
+        "record-claims",
+        "chain"
+      ],
+      "notAssessed": [
+        "inputs-binding",
+        "effect-binding",
+        "index",
+        "approval-signature",
+        "checkpoint-signature",
+        "checkpoint-coverage",
+        "checkpoint-totals",
+        "control"
+      ],
+      "outcome": "NO_FAILURE_IN_ASSESSED_STAGES",
+      "firstFailingStage": null,
+      "findings": [],
+      "warnings": [],
+      "recordHashes": [
+        "aed0c657427552d1ba389ad62da63a5084f151223161a195dbe077fa33b64012",
+        "dd92c6de94f5e5fcae5a97a6a4b661b95168b41a769f0d52d16ccc5c46c68601",
+        "dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29",
+        "ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533",
+        "6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18",
+        "364c7eb81248e3fac0babdc24f1941484c5e8e1ed85474e11b18c8511c7bf321",
+        "e141bcbe2c6236dd2129e5c6eff3fa9612873b42460de3dbbaa32acc5aec16cf",
+        "dd025216ff33d6d9785687ba82d486a8c3ac3e0c0cf3e5b65810259a7bc6a4d4"
+      ]
+    }
+  ]
+}

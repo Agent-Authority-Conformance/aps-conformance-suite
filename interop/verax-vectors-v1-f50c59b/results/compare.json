@@ -1,0 +1,136 @@
+{
+  "rows": [
+    {
+      "id": "fail-allow-while-halted",
+      "expected": "INVALID",
+      "expectedStage": "control",
+      "observed": null,
+      "classification": "CONSISTENT, named stage control not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-approval-signature",
+      "expected": "INVALID",
+      "expectedStage": "approval-signature",
+      "observed": null,
+      "classification": "CONSISTENT, named stage approval-signature not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-chain-removed",
+      "expected": "INVALID",
+      "expectedStage": "chain",
+      "observed": "chain",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-checkpoint-signature",
+      "expected": "INVALID",
+      "expectedStage": "checkpoint-signature",
+      "observed": null,
+      "classification": "CONSISTENT, named stage checkpoint-signature not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-checkpoint-totals",
+      "expected": "INVALID",
+      "expectedStage": "checkpoint-totals",
+      "observed": null,
+      "classification": "CONSISTENT, named stage checkpoint-totals not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-effect-hash",
+      "expected": "INVALID",
+      "expectedStage": "effect-binding",
+      "observed": null,
+      "classification": "CONSISTENT, named stage effect-binding not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-inputs-approver-downgraded",
+      "expected": "INVALID",
+      "expectedStage": "inputs-binding",
+      "observed": null,
+      "classification": "CONSISTENT, named stage inputs-binding not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-alg-8",
+      "expected": "INVALID",
+      "expectedStage": "record-header",
+      "observed": "record-header",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-claim-rule",
+      "expected": "INVALID",
+      "expectedStage": "record-claims",
+      "observed": "record-claims",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-claims-mismatch",
+      "expected": "INVALID",
+      "expectedStage": "record-claims",
+      "observed": "record-claims",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-content-type",
+      "expected": "INVALID",
+      "expectedStage": "record-header",
+      "observed": "record-header",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-key-not-pinned",
+      "expected": "INVALID",
+      "expectedStage": "record-header",
+      "observed": "record-header",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-record-signature",
+      "expected": "INVALID",
+      "expectedStage": "record-signature",
+      "observed": "record-signature",
+      "classification": "MATCH",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "fail-tail-truncated",
+      "expected": "INVALID",
+      "expectedStage": "checkpoint-coverage",
+      "observed": null,
+      "classification": "CONSISTENT, named stage checkpoint-coverage not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "valid-deny-only",
+      "expected": "VALID",
+      "expectedStage": null,
+      "observed": null,
+      "classification": "CONSISTENT, later stages not assessed",
+      "recordHashes": "equal"
+    },
+    {
+      "id": "valid-full",
+      "expected": "VALID",
+      "expectedStage": null,
+      "observed": null,
+      "classification": "CONSISTENT, later stages not assessed",
+      "recordHashes": "equal"
+    }
+  ],
+  "tally": {
+    "CONSISTENT": 9,
+    "MATCH": 7
+  }
+}

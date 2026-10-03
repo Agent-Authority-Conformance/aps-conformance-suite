@@ -1,0 +1,107 @@
+[
+  {
+    "name": "01 signature byte flipped",
+    "want": "record-signature",
+    "got": "record-signature",
+    "ok": true,
+    "detail": "Ed25519 signature does not verify under the pinned key"
+  },
+  {
+    "name": "02 payload byte flipped",
+    "want": "record-signature",
+    "got": "record-signature",
+    "ok": true,
+    "detail": "Ed25519 signature does not verify under the pinned key"
+  },
+  {
+    "name": "03 COSE_Sign1 tag 18 added",
+    "want": "record-header",
+    "got": "record-header",
+    "ok": true,
+    "detail": "tagged (tag 18); the profile requires untagged COSE_Sign1"
+  },
+  {
+    "name": "04 unprotected header not empty",
+    "want": "record-header",
+    "got": "record-header",
+    "ok": true,
+    "detail": "cose-sign1-unprotected: unprotected header is not empty"
+  },
+  {
+    "name": "05 presented nonce changed",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "presented nonce \"1316a41a-3a6f-4a77-9ea2-605a70977eb9x\" differs from signed \"1316a41a-3a6f-4a77-9ea2-605a70977eb9\""
+  },
+  {
+    "name": "06 duplicate alg in protected header",
+    "want": "record-header",
+    "got": "record-header",
+    "ok": true,
+    "detail": "protected header: cbor: duplicate map key at offset 3"
+  },
+  {
+    "name": "07 middle record removed",
+    "want": "chain",
+    "got": "chain",
+    "ok": true,
+    "detail": "prevRecordHash \"6ffebcf57db69cad402f3aaec547cf882171dead3b8ce4792fd0541002ff6a18\", expected \"ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533\""
+  },
+  {
+    "name": "08 two records swapped",
+    "want": "chain",
+    "got": "chain",
+    "ok": true,
+    "detail": "prevRecordHash \"ca479361187b415fff864f8034c39c82f46b211f6f8ce878a8e1d2bf51f9c533\", expected \"dad778ccba9bdd825f79d33d95cfe19511e997a53e528c91a119a5b8bf838a29\""
+  },
+  {
+    "name": "09 different key pinned",
+    "want": "record-header",
+    "got": "record-header",
+    "ok": true,
+    "detail": "kid 197ab621d878ed2a is not the pinned key's c9ff7c4fa9c7eacd"
+  },
+  {
+    "name": "10 re-signed control, no change",
+    "want": "none",
+    "got": "none",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "11 allow without effectClass",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "allow without a non-empty effectClass"
+  },
+  {
+    "name": "12 allow with empty ref",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "allow without a non-empty ref"
+  },
+  {
+    "name": "13 twelve labels",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "12 labels, not 13"
+  },
+  {
+    "name": "14 uppercase hash",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "policyHash breaks the hash grammar"
+  },
+  {
+    "name": "15 timestampMs above 2^53 - 1",
+    "want": "record-claims",
+    "got": "record-claims",
+    "ok": true,
+    "detail": "payload: cbor: integer beyond 2^53 - 1"
+  }
+]
