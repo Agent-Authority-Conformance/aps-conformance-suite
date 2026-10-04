@@ -58,7 +58,7 @@
     "actionref-canonical": {
       "description": "Historical draft-01 action_ref scopeRequired canonicalization: NFC per scope string, Unicode code-point sort, RFC 8785, SHA-256 (draft-pidlisnyi-aps-01 section 4.1). Not the current aps-action-ref-v2 profile. Cross-language byte-parity required.",
       "fixture": "actionref-canonical/actionref-canonical-fixture-v1.json",
-      "vector_count": 4
+      "vector_count": 6
     },
     "bilateral-pair": {
       "description": "Bilateral pair reconciliation verdicts: one reconciled pair plus one vector per mismatch class (payload_changed, recipient_changed, wrong_audience, unilateral_success, action_ref_mismatch).",
