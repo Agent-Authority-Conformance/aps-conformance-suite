@@ -40,15 +40,17 @@ For all five, the consumption boundary is the fixture's own harness. No APS SDK 
 
 ## Revision 4, corrections
 
-Still pinned to suite commit `b0bf645c4f1deb3e7a26411295de6fda98fb80b4`. This revision does not re-pin. Revision 3 recorded 9 EXERCISED, 29 PARTIAL, 44 NOT EXERCISED. Three Section 4.1 rows were rechecked against the aps-action-ref-v2 object using only the tree at that commit. One was demoted and two keep their status with corrected notes. Nothing was promoted.
+Still pinned to suite commit `b0bf645c4f1deb3e7a26411295de6fda98fb80b4`. This revision does not re-pin. Revision 3 recorded 9 EXERCISED, 29 PARTIAL, 44 NOT EXERCISED. Five Section 4.1 rows were rechecked against the aps-action-ref-v2 object using only the tree at that commit. Two were demoted and three keep their status with corrected notes. Nothing was promoted.
 
 | REQ id | rev 3 | rev 4 | Why |
 |---|---|---|---|
 | `REQ-4.1-1` | NOT EXERCISED | NOT EXERCISED | The rev-3 note said the literal "aps-action-ref-v2" occurs nowhere in the tree. At b0bf645c it is the profile member of 48 input objects in seven APS-native families, two of them in fixtures/action-result-binding/chain.json. No reachable test reads their profile or target or presents another profile, so the status stands. |
 | `REQ-4.1-2` | NOT EXERCISED | NOT EXERCISED | Reassessed against those 48 objects, not only the actionref-canonical vectors. All are valid, and valid objects do not show rejection of an empty string or an empty scope array. No test presents either. |
 | `REQ-4.1-3` | PARTIAL | NOT EXERCISED | The rev-3 evidence was negative-duplicate-scope-raw and negative-duplicate-scope-nfc-collision. Those inputs are the draft-01 Section 4.1 four-field form {agentId, actionType, scopeRequired, timestamp}, not an aps-action-ref-v2 object, and rejecting them is implementation-specific behavior (agent-passport-system ca7413c), not a draft rule. They cannot exercise a clause of this requirement. No reachable test presents a v2 object that violates any of the six clauses. The row note lists what was inspected. |
+| `REQ-4.1-7` | PARTIAL | NOT EXERCISED | The rev-3 note said target, payload_ref and nonce are absent from every vector in the corpus. All 48 aps-action-ref-v2 objects carry them. Their payload_ref and action_ref values come from the mint scripts, and no reachable test recomputes either from a payload or an input object. The rev-3 evidence, fixtures/cross-stack/action-ref-v1-negatives, recomputes the Section 4.2 external form, which is not the Section 4.1 object, so it cannot exercise a clause of this requirement. |
+| `REQ-4.1-9` | NOT EXERCISED | NOT EXERCISED | The rev-3 note said no Section 4.1 nonce member exists in any vector. All 48 objects carry one, and two same-agent pairs share a nonce. No reachable test reads a v2 nonce or presents a reuse, so the status stands. |
 
-Counts after this revision: 9 EXERCISED, 28 PARTIAL, 45 NOT EXERCISED.
+Counts after this revision: 9 EXERCISED, 27 PARTIAL, 46 NOT EXERCISED.
 
 ## Requirements
 
@@ -100,9 +102,9 @@ Counts after this revision: 9 EXERCISED, 28 PARTIAL, 45 NOT EXERCISED.
 | `REQ-4.1-4` | 4.1 | 815 | MUST, MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | A parser MUST detect duplicate names before conversion to an ordinary map; it MUST NOT accept the last occurrence silently. | Nothing in the tree parses serialized JSON for duplicate member names. The SDK entry point that could - verifyReceiptV1Serialized - is never called anywhere in fixtures, runners, tests or interop. |
 | `REQ-4.1-5` | 4.1 | 819 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | A string containing an unpaired UTF-16 surrogate has no UTF-8 encoding and MUST be rejected. | No unpaired-surrogate vector. The astral vector "scope:\U00010400" carries a well-formed pair. The Argentum domain negatives (av-003) reject valid surrogate pairs under that profile's ASCII-only domain rule, which is a different rule from the draft's unpaired-surrogate rejection. |
 | `REQ-4.1-6` | 4.1 | 820 | MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | An implementation MUST NOT substitute U+FFFD, delete the code unit, or otherwise repair the string. | Follows REQ-4.1-5: with no unpaired-surrogate input, no vector can observe a U+FFFD substitution, a deletion or any other repair. |
-| `REQ-4.1-7` | 4.1 | 826 | MUST | **PARTIAL** | fixtures/cross-stack/action-ref-v1-negatives/vectors.json | recompute-negative vectors | fixtures/cross-stack/action-ref-v1-negatives/run.mjs (header lines 4-7; two independent recomputation paths) | `npm run cross-stack:action-ref-v1-negatives:verify` | The enforcement boundary MUST recompute payload_ref from the payload it will dispatch and action_ref from the received input object. | Recompute-and-fail-closed is asserted, but over action-ref-v1, the Section 4.2 legacy correlation form, not the Section 4.1 object. payload_ref has no fixture at all: the Section 4.1 preimage members target, payload_ref and nonce are absent from every vector in the corpus. |
+| `REQ-4.1-7` | 4.1 | 826 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | The enforcement boundary MUST recompute payload_ref from the payload it will dispatch and action_ref from the received input object. | Inspected at b0bf645c. The 48 aps-action-ref-v2 input objects listed under REQ-4.1-1 all carry target, payload_ref and nonce. Their payload_ref and action_ref values were computed by computePayloadRefV1 and computeActionRefV2 in each family's mint script, which npm test does not run. Per clause. payload_ref recomputed from the dispatched payload: no test. No reachable verifier reads payload_ref or a payload, and no fixture presents a payload whose digest disagrees with its payload_ref. action_ref recomputed from the received input object: no test on a Section 4.1 object. Outside the mint scripts, computeActionRefV2 appears only in fixtures/capability-binding-drift/sdk-probe.mjs, which checks that the export exists and is not run by npm test, and the verifiers of the seven v2 families read at most action_ref and scope_required. The recompute-and-fail-closed vectors in fixtures/cross-stack/action-ref-v1-negatives (fixtures/cross-stack/action-ref-v1-negatives/run.mjs, `npm run cross-stack:action-ref-v1-negatives:verify`) recompute the Section 4.2 external form through computeExternalActionRefV1. Section 4.2 says that form MUST NOT identify a dispatch, so those vectors do not exercise a clause of this requirement. |
 | `REQ-4.1-8` | 4.1 | 827 | MUST | **PARTIAL** | fixtures/cross-stack/action-ref-v1-negatives/vectors.json | recompute-negative vectors | fixtures/cross-stack/action-ref-v1-negatives/run.mjs (header lines 5-7: "MUST fail closed, before invocation") | `npm run cross-stack:action-ref-v1-negatives:verify` | It MUST reject either mismatch before policy evaluation. | Same evidence and same limit as REQ-4.1-7: the ordering claim is asserted for the v1 form only. |
-| `REQ-4.1-9` | 4.1 | 828 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | It MUST also reject reuse of nonce by the same agent within the deployment's replay window. | No Section 4.1 nonce member exists in any vector, so no reuse can be presented. The "nonce" hits in the tree are AuthorityDelegationV1's own nonce and RFC 9421's. |
+| `REQ-4.1-9` | 4.1 | 828 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | It MUST also reject reuse of nonce by the same agent within the deployment's replay window. | Inspected at b0bf645c. Each of the 48 aps-action-ref-v2 input objects listed under REQ-4.1-1 carries a nonce, 46 distinct (agent_id, nonce) pairs in all. Two pairs repeat. actions.primary.input and actions.alternate.input in fixtures/action-result-binding/chain.json share agent_id and nonce, as do actions.a.input and actions.b.input in fixtures/approval-single-use/chain.json, and each pair differs only in target. No reachable test treats either pair as nonce reuse or presents a reuse within a replay window. The verifiers of the seven v2 families never read the nonce member. The other "nonce" and "replay" hits in reachable code belong to other objects: RFC 9421 signature parameters, read-fidelity-receipt seeds, the arap-binding jti ledger, the lifecycle-agent-side-events credential_id cache and the Argentum scope-replay vectors in runners/ts/sk-function-invocation. |
 | `REQ-4.2-1` | 4.2 | 869 | MUST, MUST NOT | **EXERCISED** | fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v1-domain-negative/action-ref-v1-domain-negative.fixture.json | adn-001, adn-002, adn-003, adn-004, adn-005 | fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v1-domain-negative/validate.py:63-65 | `npm run cross-stack:argentum-action-ref-v1v2:verify` | An implementation MUST reject a timestamp that does not match this shape; it MUST NOT coerce, truncate, extend, or renormalize a non-conforming value. | Five malformed timestamp shapes (lowercase t, lowercase z, +00:00 offset, second precision, six fractional digits), each of which must be rejected; the validator additionally asserts that zero SHA-256 digests are computed for a rejected vector (fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v1-domain-negative/validate.py:15-17), which is the no-coerce/no-renormalize clause. Object check on the corrections pass: the fixture preimage is exactly the four snake_case fields Section 4.2 names (agent_id, action_type, scope, timestamp) with hash_algo sha256 and preimage_format jcs-rfc8785-v1, so it is the same form. The fixture declares its spec as the counterparty document docs/spec/action-ref.md rather than the I-D, and its attribution records the vectors as reported by aeoess and cross-checked against the APS SDK action-ref-v1 conformance set. Also reached by the grammar gate in fixtures/cross-stack/action-ref-v1-negatives/run.mjs. |
 | `REQ-4.2-2` | 4.2 | 879 | MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | It omits the target, payload digest, and nonce, and therefore MUST NOT identify an APS policy decision, approval, dispatch, spend reservation, or receipt. | No vector presents a v1 digest in an APS policy-decision, approval, dispatch, spend-reservation or receipt slot and requires it to be refused. |
 | `REQ-4.2-3` | 4.2 | 881 | MUST, MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | An implementation MUST label it "action-ref-v1-jcs-sha256" and MUST NOT present its digest as an action_ref under Section 4.1. | The literal "action-ref-v1-jcs-sha256" occurs once in the tree, as prose in fixtures/cross-stack/nobulex-bilateral-v0/MAPPING.md:8. No vector carries the label and no runner asserts either the labelling clause or the do-not-present-as-action_ref clause. |
@@ -142,8 +144,8 @@ Counts after this revision: 9 EXERCISED, 28 PARTIAL, 45 NOT EXERCISED.
 | Status | Requirements |
 |---|---|
 | EXERCISED | 9 |
-| PARTIAL | 28 |
-| NOT EXERCISED | 45 |
+| PARTIAL | 27 |
+| NOT EXERCISED | 46 |
 | **Total** | **82** |
 
 Per section:
@@ -162,7 +164,7 @@ Per section:
 | 3.5.1 | Revocation Evidence | 4 | 0 | 0 | 4 |
 | 3.6 | Core Invariants | 2 | 0 | 0 | 2 |
 | 4 | Policy Chain | 4 | 0 | 1 | 3 |
-| 4.1 | Action Reference Computation | 9 | 0 | 2 | 7 |
+| 4.1 | Action Reference Computation | 9 | 0 | 1 | 8 |
 | 4.2 | Legacy External Correlation Form | 3 | 1 | 0 | 2 |
 | 4.3 | Two-Phase Execution | 2 | 2 | 0 | 0 |
 | 5.1 | ReceiptV1 Envelope | 3 | 0 | 3 | 0 |
@@ -210,6 +212,7 @@ Per section:
 - `REQ-4.1-4` (Section 4.1, line 815)
 - `REQ-4.1-5` (Section 4.1, line 819)
 - `REQ-4.1-6` (Section 4.1, line 820)
+- `REQ-4.1-7` (Section 4.1, line 826)
 - `REQ-4.1-9` (Section 4.1, line 828)
 - `REQ-4.2-2` (Section 4.2, line 879)
 - `REQ-4.2-3` (Section 4.2, line 881)
