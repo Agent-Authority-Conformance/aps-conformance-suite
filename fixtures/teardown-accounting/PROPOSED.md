@@ -14,11 +14,12 @@ Adapted from an unpublished maintainer draft of the teardown-completeness case
 originally prepared for agent-authority-lifecycle. That repository is frozen, so
 this lab file owns the candidate text.
 
-The input shape and the eight author development cases follow the exploratory
-prototype danyka-icam posted on Agent-Authority-Conformance/aps-conformance-suite#144
+The input shape is adapted from the exploratory prototype danyka-icam posted on
+Agent-Authority-Conformance/aps-conformance-suite#144
 (`APS_LC_COMPLETENESS_BASIS_EXPLORATORY_v0.1.zip`, SHA-256
-`8eb4690da88e832207dc20ddfeab75e5e2e5e4d7b4ef3323f8b28f7c72309b39`). The rules
-and reason codes are the evaluator proposed on that issue.
+`8eb4690da88e832207dc20ddfeab75e5e2e5e4d7b4ef3323f8b28f7c72309b39`). The rules,
+reason codes and eight author development cases are the maintainer's evaluator
+proposal in #144 comment 5971154023, which danyka-icam accepted in 5980303582.
 
 ## Published counterpart
 
@@ -75,9 +76,9 @@ Definitions used below:
   9999, month 01 to 12, day valid for that month and year in the proleptic
   Gregorian calendar, hour 00 to 23, minute 00 to 59, second 00 to 59 (a leap
   second `60` is rejected), offset hour 00 to 23 and offset minute 00 to 59.
-  `-00:00` is accepted and denotes UTC. Lowercase `t` or `z`, a space
+  `-00:00` is accepted. It denotes a known UTC instant with an unknown local offset, and this model uses that instant for ordering without evaluating the local offset distinction. Lowercase `t` or `z`, a space
   separator, a missing offset, a missing seconds field, and any other deviation
-  are errors. Instants are compared as points on the UTC time line after
+  are errors. This is a restricted subset of RFC 3339. Instants are compared as points on the UTC time line after
   applying the offset, never as strings. Fractions are compared exactly, at
   whatever precision they are written.
 - **integer**: a JSON number whose value is a whole number with magnitude at

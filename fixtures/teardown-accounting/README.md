@@ -17,13 +17,11 @@ claim is a verdict over an input, not a canonical-byte comparison, so the
 generic runner does not check it, and it ships its own verifier wired into
 `npm test` under its own script.
 
-It is not class 4. Class 4 is fixtures the repository generates with a
-published generator and seed. Nothing here is generated: every input is a
-literal in `dev-cases.json`, and both runners are pure functions over those
-literals. `lifecycle-infrastructure-failure` is the precedent, a class 2 family
-whose determinism statement says every input is a literal and nothing is
-generated. It is not class 3 either: nothing here is ingested from an external
-system.
+It is not class 4, which covers fixtures the repository generates with a
+published generator and seed. The committed development cases are literal
+inputs, and verification reads them without running a generator or using
+randomness, time or network access. It is not class 3 either, since nothing
+here is ingested from an external system.
 
 ## Why a separate family
 
