@@ -120,8 +120,8 @@ separate members, so that teardown accounting is not defined by event
 multiplicity.
 
 Missing evidence is not malformed input. A declared sink may have no entry in
-`sink_configurations` or `runtime_bindings`; that is decided by rule 1.
-`cutoff_ordering_evidence` may be `null`; that is decided by rule 3. An entry
+`sink_configurations` or `runtime_bindings`, which rule 1 decides.
+`cutoff_ordering_evidence` may be `null`, which rule 3 decides. An entry
 that is present must be fully well formed. A map entry for a sink outside the
 declared set is validated and then not evaluated. An interval whose start is
 after its end is well formed and simply contains no instant.

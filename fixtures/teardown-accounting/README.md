@@ -75,7 +75,7 @@ against the same literal strings.
 
 `C1-ordering-taken-as-given` shares validation and every check outside rule 3
 with the reference. With ordering evidence present it skips rule 3's interval
-and attestor checks; with `null` evidence it still returns
+and attestor checks. With `null` evidence it still returns
 `cutoff_ordering_not_established`. It runs against every case. On a
 fixture-error case it must refuse identically. Elsewhere its observed fail set
 must equal the declared fail set exactly: `TA-DEV-d`, `TA-DEV-g`, `TA-DEV-h`.
@@ -145,7 +145,7 @@ historical digest set.
 
 No randomness, no wall clock, no network, no seed. Every input is a literal.
 Instants are parsed under the grammar in `PROPOSED.md` and compared as exact
-UTC instants, never as strings; neither runner uses a lenient date parser.
+UTC instants, never as strings. Neither runner uses a lenient date parser.
 
 ## Running
 
