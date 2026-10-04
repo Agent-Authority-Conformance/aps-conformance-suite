@@ -1,0 +1,20 @@
+[package]
+name = "canonical-bytes-crossrun-jcs-admit"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "canonical-bytes-crossrun-jcs-admit"
+path = "src/main.rs"
+
+[dependencies]
+# Exact published versions from crates.io, as in ../rust. No path or git
+# dependency, so a clone of this suite reproduces the run without any sibling
+# checkout.
+jcs-admit = "=0.1.1"
+# raw_value lets the runner hand jcs-admit each input exactly as the fixture
+# file spells it. jcs-admit takes bytes, not a parsed value.
+serde_json = { version = "=1.0.145", features = ["raw_value"] }
+sha2 = "=0.10.9"
+hex = "=0.4.3"

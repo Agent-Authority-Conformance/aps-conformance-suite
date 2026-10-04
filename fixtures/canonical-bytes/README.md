@@ -74,6 +74,7 @@ implementations differ is the point.
 | python | `agent_passport.canonical.canonicalize_jcs` from the `agent-passport-system` PyPI distribution | first party |
 | go | `jcs.Canonicalize` from `github.com/aeoess/agent-passport-go` | first party |
 | rust | `agent_passport::jcs::canonicalize` from the `agent-passport-system` crate | first party |
+| rust-jcs-admit | `jcs_admit::admit` from the `jcs-admit` crate, pinned at 0.1.1 | rfc8785 |
 
 Each is depended on at an exact published version, never a local path, so a clone
 reproduces the run without any sibling checkout.
