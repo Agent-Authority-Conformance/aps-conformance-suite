@@ -38,6 +38,14 @@ jobs:
       # directory and needs no attenu_guard on the runner.
       - run: bash tests/identity-guards.test.sh
 
+      # The teardown-accounting family's second runner, an independent
+      # standard-library Python reimplementation of its evaluator. The
+      # TypeScript runner is in `npm test`; this one is not, for the same reason
+      # as the step above: `npm test` also runs on the Windows job with Node
+      # only. It uses the Python set up above, reads only files in this
+      # checkout, and installs nothing.
+      - run: npm run verify:teardown-accounting:py
+
   # The suite's Python schema validators. Independent second implementations, in
   # Python with jsonschema instead of Node with ajv. Their value is
   # disagreement: if the two libraries reach different verdicts on the same

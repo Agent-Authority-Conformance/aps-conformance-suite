@@ -1,0 +1,2450 @@
+{
+  "family": "teardown-accounting",
+  "status": "candidate_against_proposed",
+  "provenance": "author development cases, not contributed vectors and not independent evidence",
+  "proposed_text": {
+    "path": "fixtures/teardown-accounting/PROPOSED.md",
+    "sha256": "5d9a398bee5f675e95298ae1e1ba1af11068a30e8ba8a7151b5a2f371edf3a0d"
+  },
+  "negative_control": {
+    "id": "C1-ordering-taken-as-given",
+    "defect": "Shares validation and every check outside rule 3 with the reference. Null ordering evidence still returns cutoff_ordering_not_established; present ordering evidence is taken as given, skipping the interval check and the attestor check.",
+    "declared_fail_set": [
+      "TA-DEV-d",
+      "TA-DEV-g",
+      "TA-DEV-h"
+    ]
+  },
+  "cases": [
+    {
+      "id": "TA-DEV-a",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Positive control",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "valid",
+        "reason": "teardown_accounts_for_accepted_set_under_stipulated_basis"
+      }
+    },
+    {
+      "id": "TA-DEV-b",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Runtime binding for sink-b removed",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "runtime_binding_not_established"
+      }
+    },
+    {
+      "id": "TA-DEV-c",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Cutoff ordering evidence removed",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": null,
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "cutoff_ordering_not_established"
+      }
+    },
+    {
+      "id": "TA-DEV-d",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Cutoff ordering attested by the party that asserted the stop",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "boundary-operator-a",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "cutoff_ordering_independence_not_established"
+      }
+    },
+    {
+      "id": "TA-DEV-e",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "An accepted descendant omitted from the teardown",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "invalid",
+        "reason": "accepted_descendant_missing_from_teardown"
+      }
+    },
+    {
+      "id": "TA-DEV-f",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "The cutoff commitment disagrees with the admissions",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "accepted_set_not_committed"
+      }
+    },
+    {
+      "id": "TA-DEV-g",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "The ordering interval misses the cutoff",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T11:02:00Z",
+          "covers_to": "2026-09-20T11:04:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "cutoff_ordering_not_established"
+      }
+    },
+    {
+      "id": "TA-DEV-h",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "The ordering interval covers the cutoff but ends after the stop observation",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:06:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "cutoff_ordering_not_established"
+      }
+    },
+    {
+      "id": "TA-REG-01",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Zero descendants: empty admissions, committed_final_seq 0, empty commitment and empty teardown",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 0,
+          "committed_members": []
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": []
+        }
+      },
+      "expected": {
+        "verdict": "valid",
+        "reason": "teardown_accounts_for_accepted_set_under_stipulated_basis"
+      }
+    },
+    {
+      "id": "TA-REG-02",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "digest and config_digest deleted for every declared sink",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/runtime_bindings/sink-a/config_digest",
+          "/runtime_bindings/sink-b/config_digest",
+          "/sink_configurations/sink-a/digest",
+          "/sink_configurations/sink-b/digest"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-03",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Empty strings for scope and stop epoch and boundary and for the matching configuration fields",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "",
+          "boundary": ""
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "",
+            "accepts_only_through": "",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "",
+            "accepts_only_through": "",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "",
+          "epoch": "",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/scope/boundary",
+          "/scope/epoch",
+          "/sink_configurations/sink-a/accepts_only_through",
+          "/sink_configurations/sink-a/epoch",
+          "/sink_configurations/sink-b/accepts_only_through",
+          "/sink_configurations/sink-b/epoch",
+          "/stop_admitting/boundary",
+          "/stop_admitting/epoch"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-04",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "declared_sinks empty",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/scope/declared_sinks"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-05",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "declared_sinks repeats a sink",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b",
+            "sink-a"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/scope/declared_sinks/2"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-06",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "stop_admitting.asserted_by is the literal __any__",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "__any__",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "valid",
+        "reason": "teardown_accounts_for_accepted_set_under_stipulated_basis"
+      }
+    },
+    {
+      "id": "TA-REG-07",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "sink-b runtime binding removed and covers_from is not a time: malformed input wins over a rule-1 verdict",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "not-a-time",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/cutoff_ordering_evidence/covers_from"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-08",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "committed_members [\"a,b\",\"c\"] against admissions [\"a\",\"b,c\"]: equal when joined, unequal element by element",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "a"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "b,c"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 2,
+          "committed_members": [
+            "a,b",
+            "c"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "a",
+            "b,c"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "not_established",
+        "reason": "accepted_set_not_committed"
+      }
+    },
+    {
+      "id": "TA-REG-09",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "A descendant repeated in admissions",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d1"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d1"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/admissions/2/descendant_id"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-10",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Unknown member at the top level",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "note": "extra"
+      },
+      "expected": {
+        "fixture_error": [
+          "/note"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-11",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Unknown member inside one sink configuration",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1",
+            "note": "extra"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/sink_configurations/sink-a/note"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-12",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "The positive control with every instant written as the same instant in +02:00",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T11:00:00+02:00",
+            "to": "2026-09-20T15:00:00+02:00"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T11:00:00+02:00",
+            "to": "2026-09-20T15:00:00+02:00"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T13:00:00+02:00",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T12:59:00+02:00",
+          "covers_to": "2026-09-20T13:01:00+02:00"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T13:05:00+02:00"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "verdict": "valid",
+        "reason": "teardown_accounts_for_accepted_set_under_stipulated_basis"
+      }
+    },
+    {
+      "id": "TA-REG-13",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "An instant with no offset",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/cutoff/at"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-14",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "An instant on a date that does not exist, 2026-02-30",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-02-30T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/cutoff/at"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-15",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "admits_epoch given as the number 0",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": 0,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/stop_admitting/admits_epoch"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-16",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "admits_epoch given as the string \"false\"",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": "false",
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/stop_admitting/admits_epoch"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-17",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "No stipulations",
+      "input": {
+        "stipulations": [],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/stipulations"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-18",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "Empty attestor identifier",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": 1,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/cutoff_ordering_evidence/attestor"
+        ]
+      }
+    },
+    {
+      "id": "TA-REG-19",
+      "group": "teardown_accounting",
+      "label": "candidate_against_proposed",
+      "title": "An admission seq given as the boolean true",
+      "input": {
+        "stipulations": [
+          "sink configurations and runtime bindings are authentic",
+          "admission sequence is append only",
+          "distinct attestor identifiers denote distinct parties"
+        ],
+        "scope": {
+          "declared_sinks": [
+            "sink-a",
+            "sink-b"
+          ],
+          "epoch": "E0",
+          "boundary": "M"
+        },
+        "sink_configurations": {
+          "sink-a": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-a-v1"
+          },
+          "sink-b": {
+            "epoch": "E0",
+            "accepts_only_through": "M",
+            "digest": "cfg-b-v1"
+          }
+        },
+        "runtime_bindings": {
+          "sink-a": {
+            "config_digest": "cfg-a-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          },
+          "sink-b": {
+            "config_digest": "cfg-b-v1",
+            "from": "2026-09-20T09:00:00Z",
+            "to": "2026-09-20T13:00:00Z"
+          }
+        },
+        "admissions": [
+          {
+            "seq": true,
+            "descendant_id": "d1"
+          },
+          {
+            "seq": 2,
+            "descendant_id": "d2"
+          },
+          {
+            "seq": 3,
+            "descendant_id": "d3"
+          }
+        ],
+        "cutoff": {
+          "at": "2026-09-20T11:00:00Z",
+          "committed_final_seq": 3,
+          "committed_members": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        },
+        "cutoff_ordering_evidence": {
+          "attestor": "time-witness-b",
+          "covers_from": "2026-09-20T10:59:00Z",
+          "covers_to": "2026-09-20T11:01:00Z"
+        },
+        "stop_admitting": {
+          "boundary": "M",
+          "epoch": "E0",
+          "admits_epoch": false,
+          "asserted_by": "boundary-operator-a",
+          "observed_at": "2026-09-20T11:05:00Z"
+        },
+        "teardown": {
+          "processed": [
+            "d1",
+            "d2",
+            "d3"
+          ]
+        }
+      },
+      "expected": {
+        "fixture_error": [
+          "/admissions/0/seq"
+        ]
+      }
+    }
+  ]
+}
