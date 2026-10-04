@@ -58,6 +58,19 @@ validation runs first, and a malformed input is a fixture error that receives
 no verdict. A fixture-error case names the exact set of JSON Pointers the
 validator must report, so a refusal for the wrong reason fails.
 
+Case files for this candidate family must not contain duplicate JSON member
+names after JSON string escape decoding. A file with a duplicate member is
+malformed and is refused before any case is evaluated, as a failure of the
+whole file that names the RFC 6901 pointer of the repeated member. This follows
+the same fail-before-map principle that draft-pidlisnyi-aps-04 Section 5.1
+applies to the action-reference input object, but here it is a rule of this
+family's proposed input contract, not an APS requirement this family exercises.
+This family does not exercise or satisfy any draft parser requirement. The
+TypeScript runner scans the raw text before `JSON.parse`, and the Python runner
+parses with an `object_pairs_hook` that keeps every member and checks the tree
+before building any dict. Each runner also checks its detector directly
+against the same literal strings.
+
 ### Negative control
 
 `C1-ordering-taken-as-given` shares validation and every check outside rule 3
@@ -124,6 +137,9 @@ the dev cases. Both runners always run `dev-cases.json`, also run
 `vectors.json` when it is present under the same checks, and fail when it is
 present but malformed. Each runner checks the `PROPOSED.md` hash against the
 pin in every file it runs.
+
+Each case file pins PROPOSED.md by SHA-256. This candidate family carries no
+historical digest set.
 
 ## Determinism
 

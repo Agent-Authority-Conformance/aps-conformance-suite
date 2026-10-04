@@ -371,6 +371,57 @@ def _reject_constant(name: str):
     raise ValueError(f"non-JSON constant {name}")
 
 
+# Duplicate member names. A dict keeps the last value of a repeated name, so the
+# parse hook never builds one. It wraps every object's member list, in order and
+# with every repeat kept, in a node of its own type, distinct from the lists the
+# parser builds for arrays. json has already decoded each name, escapes and
+# surrogate pairs included, and names are compared exactly, with no Unicode
+# normalization. A second pass walks the tree from the document root and stops at
+# the first repeated name in text order. Only a tree with no repeat is converted
+# to ordinary dicts and lists.
+class _Members:
+    __slots__ = ("pairs",)
+
+    def __init__(self, pairs: list) -> None:
+        self.pairs = pairs
+
+
+def find_duplicate_member(node, pointer: str = "") -> str | None:
+    if isinstance(node, _Members):
+        seen: set[str] = set()
+        for name, value in node.pairs:
+            if name in seen:
+                return ptr(pointer, name)
+            seen.add(name)
+            found = find_duplicate_member(value, ptr(pointer, name))
+            if found is not None:
+                return found
+    elif isinstance(node, list):
+        for k, value in enumerate(node):
+            found = find_duplicate_member(value, ptr(pointer, k))
+            if found is not None:
+                return found
+    return None
+
+
+def _plain(node):
+    if isinstance(node, _Members):
+        return {name: _plain(value) for name, value in node.pairs}
+    if isinstance(node, list):
+        return [_plain(value) for value in node]
+    return node
+
+
+def load_case_text(text: str) -> tuple[object, str | None]:
+    """Parse a case file. Returns (document, None), or (None, pointer) when a
+    member name repeats. Raises ValueError on malformed JSON."""
+    tree = json.loads(text, object_pairs_hook=_Members, parse_constant=_reject_constant)
+    duplicate = find_duplicate_member(tree)
+    if duplicate is not None:
+        return None, duplicate
+    return _plain(tree), None
+
+
 def expected_line(case_id: str, e) -> str | None:
     if not isinstance(e, dict):
         fail(f"{case_id}: expected is not an object")
@@ -402,9 +453,12 @@ def expected_line(case_id: str, e) -> str | None:
 
 def run_file(label: str, path: Path, is_dev: bool) -> None:
     try:
-        doc = json.loads(path.read_text(encoding="utf-8"), parse_constant=_reject_constant)
-    except (OSError, ValueError) as exc:
+        doc, duplicate = load_case_text(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, RecursionError) as exc:
         fail(f"{label}: cannot read or parse {path}: {exc}")
+        return
+    if duplicate is not None:
+        fail(f"{label}: duplicate JSON member name at {json.dumps(duplicate)}, file refused before any case is evaluated")
         return
     say(f"{label}: Python runner")
     top = {"family", "status", "provenance", "proposed_text", "negative_control", "cases"}
@@ -521,6 +575,36 @@ def main() -> int:
             fail(f"same_sequence({a}, {b}) is {got}, expected {want}")
         else:
             say(f"  ok   same_sequence({json.dumps(a)}, {json.dumps(b)}) is {got}")
+
+    # Duplicate-name detection, directly, on the same literals and expected
+    # pointers as verify.ts. Raw strings keep every escape as written.
+    astral = "\U0001D4B3"
+    for text, want in (
+        (r'{"a": 1, "b": 2, "a": 3}', "/a"),
+        (r'{"cases": [{"input": {"scope": {"epoch": "E0", "epoch": "E1"}}}]}', "/cases/0/input/scope/epoch"),
+        (r'{"x": [{"k": 1}, {"k": 1, "k": 2}]}', "/x/1/k"),
+        (r'{"a": 1, "\u0061": 2}', "/a"),
+        ('{"' + astral + r'": 1, "\ud835\udcb3": 2}', "/" + astral),
+        (r'{"x/y~z": 1, "x/y~z": 2}', "/x~1y~0z"),
+        (r'{"q\"": 1, "q\u0022": 2}', '/q"'),
+        (r'{"b\\": 1, "b\u005c": 2}', "/b\\"),
+        (r'{"p": {"a": 1}, "q": {"a": 2}}', None),
+        (r'{"a": {"a": {"a": 1}}}', None),
+        (r'{"s": [{"a": 1}, {"a": 1}], "t": [[{"a": 1}], [{"a": 2}]]}', None),
+        (r'{"t": "\"a\": 1", "a": 1}', None),
+        (r'{"t": "{\"a\": 1, \"a\": 2}", "u": ["\"a\"", "a"], "a": 1}', None),
+        (r'{"k\"{[,:\\]}": "v\"{[,:\\]}", "k\"{[,:\\]}\"": 1, "": 0, "\\": [], "\"": {}}', None),
+    ):
+        try:
+            _, got = load_case_text(text)
+        except ValueError as exc:
+            fail(f"duplicate-name self-test literal does not parse: {json.dumps(text)}: {exc}")
+            continue
+        shown_want = "none" if want is None else json.dumps(want)
+        if got != want:
+            fail(f"find_duplicate_member({json.dumps(text)}) is {'none' if got is None else json.dumps(got)}, expected {shown_want}")
+        else:
+            say(f"  ok   find_duplicate_member({json.dumps(text)}) is {shown_want}")
 
     if problems:
         print(f"\nteardown-accounting Python: FAILED, {len(problems)} problem(s)", file=sys.stderr)

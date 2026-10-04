@@ -4,7 +4,7 @@
   "provenance": "author development cases, not contributed vectors and not independent evidence",
   "proposed_text": {
     "path": "fixtures/teardown-accounting/PROPOSED.md",
-    "sha256": "0e4aa4554ccc68291a35e91deae53f9165e205e4db6385c94995dc0383364d59"
+    "sha256": "bffc035d92ff879ddbe76eaf182de198dd5077c8aeaaa08e39f4afafa18f3e47"
   },
   "negative_control": {
     "id": "C1-ordering-taken-as-given",

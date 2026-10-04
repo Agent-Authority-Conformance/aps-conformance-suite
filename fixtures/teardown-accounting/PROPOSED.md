@@ -129,6 +129,17 @@ after its end is well formed and simply contains no instant.
 An empty admission sequence with `committed_final_seq` 0 and
 `committed_members` `[]` is valid input.
 
+Case files for this candidate family must not contain duplicate JSON member
+names after JSON string escape decoding. A file with a duplicate member is
+malformed and is refused before any case is evaluated. Names are compared
+exactly after decoding, with no Unicode normalization, so `"a"` and `"\u0061"`
+are the same name. The refusal names the RFC 6901 JSON Pointer of the repeated
+member, rooted at the case file. This follows the same fail-before-map
+principle that draft-pidlisnyi-aps-04 Section 5.1 applies to the
+action-reference input object, but here it is a rule of this family's proposed
+input contract, not an APS requirement this family exercises. This family does
+not exercise or satisfy any draft parser requirement.
+
 ## Rules
 
 Applied in this order. The first rule that matches decides.

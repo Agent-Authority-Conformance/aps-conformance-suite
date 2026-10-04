@@ -8,6 +8,11 @@
 //
 // Checks per case file, all of which must pass:
 //
+//   0. Duplicate member names. A case file with a duplicate JSON member name,
+//      compared after string escape decoding, is refused as a whole before any
+//      case is evaluated. The failure names the RFC 6901 pointer of the repeated
+//      member. This is a rule of this family's proposed input contract (see
+//      PROPOSED.md), not an APS requirement this family exercises.
 //   1. Proposed-text pin. The file's proposed_text.sha256 equals the SHA-256 of
 //      the PROPOSED.md bytes it names. An edit to PROPOSED.md that was not
 //      re-pinned fails here.
@@ -22,7 +27,8 @@
 //      observed fail set must equal the declared fail set exactly, and an empty
 //      declared fail set is a failure on its own.
 //
-// Then, once: direct unit checks of the element-wise sequence comparison.
+// Then, once: direct unit checks of the element-wise sequence comparison and of
+// the duplicate-name scanner.
 //
 // Run:  npx tsx fixtures/teardown-accounting/verify.ts
 // Options:
@@ -123,12 +129,166 @@ function matches(r: Result, e: Expected): boolean {
 const formatExpected = (e: Expected) =>
   'fixture_error' in e ? `fixture_error[${e.fixture_error.join(',')}]` : `${e.verdict}/${e.reason}`
 
+// Duplicate member names. JSON.parse keeps the last value of a repeated name and
+// gives no sign that there was a first one, so the raw text is scanned before it
+// is parsed. The scanner follows object and array nesting, tells member names
+// from value strings by position (the string after `{` or after `,` inside an
+// object is a name), decodes each name with JSON string semantics and compares
+// the decoded names exactly, with no Unicode normalization. A \u escape decodes
+// to one UTF-16 code unit, so an escaped surrogate pair and the same astral
+// character written literally decode to the same string. Grammar stays the job
+// of JSON.parse. The scanner returns undefined when it cannot follow the text,
+// and runFile reports JSON.parse's error first whenever the text is malformed.
+type ScanFrame =
+  | { kind: 'object'; pointer: string; names: Set<string>; state: 'name' | 'colon' | 'value' | 'comma'; current: string }
+  | { kind: 'array'; pointer: string; index: number; state: 'value' | 'comma' }
+
+const pointerToken = (name: string) => name.replace(/~/g, '~0').replace(/\//g, '~1')
+
+const STRING_ESCAPES: Record<string, string> = {
+  '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t',
+}
+
+function readJsonString(text: string, start: number): { value: string; end: number } | undefined {
+  let out = ''
+  let j = start + 1
+  while (j < text.length) {
+    const c = text[j]
+    if (c === '"') return { value: out, end: j + 1 }
+    if (c === '\\') {
+      const e = text[j + 1]
+      if (e === 'u') {
+        const hex = text.slice(j + 2, j + 6)
+        if (!/^[0-9A-Fa-f]{4}$/.test(hex)) return undefined
+        out += String.fromCharCode(parseInt(hex, 16))
+        j += 6
+      } else if (e !== undefined && Object.prototype.hasOwnProperty.call(STRING_ESCAPES, e)) {
+        out += STRING_ESCAPES[e]
+        j += 2
+      } else {
+        return undefined
+      }
+      continue
+    }
+    if (c.charCodeAt(0) < 0x20) return undefined
+    out += c
+    j++
+  }
+  return undefined
+}
+
+/** RFC 6901 pointer of the first repeated member name in text order, null when
+ *  there is none, undefined when the text cannot be followed. */
+function findDuplicateMember(text: string): string | null | undefined {
+  const stack: ScanFrame[] = []
+  let rootDone = false
+  const top = () => stack[stack.length - 1]
+  const valueMayStart = (): boolean => {
+    const t = top()
+    return t === undefined ? !rootDone : t.state === 'value'
+  }
+  const valueEnded = () => {
+    const t = top()
+    if (t === undefined) rootDone = true
+    else t.state = 'comma'
+  }
+  const childPointer = (): string => {
+    const t = top()
+    if (t === undefined) return ''
+    return t.kind === 'object' ? `${t.pointer}/${pointerToken(t.current)}` : `${t.pointer}/${t.index}`
+  }
+  let i = 0
+  while (i < text.length) {
+    const ch = text[i]
+    if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
+      i++
+    } else if (ch === '{' || ch === '[') {
+      if (!valueMayStart()) return undefined
+      const pointer = childPointer()
+      stack.push(ch === '{'
+        ? { kind: 'object', pointer, names: new Set(), state: 'name', current: '' }
+        : { kind: 'array', pointer, index: 0, state: 'value' })
+      i++
+    } else if (ch === '}' || ch === ']') {
+      const t = stack.pop()
+      if (t === undefined) return undefined
+      if (ch === '}') {
+        if (t.kind !== 'object') return undefined
+        if (!(t.state === 'comma' || (t.state === 'name' && t.names.size === 0))) return undefined
+      } else {
+        if (t.kind !== 'array') return undefined
+        if (!(t.state === 'comma' || (t.state === 'value' && t.index === 0))) return undefined
+      }
+      valueEnded()
+      i++
+    } else if (ch === ',') {
+      const t = top()
+      if (t === undefined || t.state !== 'comma') return undefined
+      if (t.kind === 'object') t.state = 'name'
+      else {
+        t.index++
+        t.state = 'value'
+      }
+      i++
+    } else if (ch === ':') {
+      const t = top()
+      if (t === undefined || t.kind !== 'object' || t.state !== 'colon') return undefined
+      t.state = 'value'
+      i++
+    } else if (ch === '"') {
+      const s = readJsonString(text, i)
+      if (s === undefined) return undefined
+      const t = top()
+      if (t !== undefined && t.kind === 'object' && t.state === 'name') {
+        if (t.names.has(s.value)) return `${t.pointer}/${pointerToken(s.value)}`
+        t.names.add(s.value)
+        t.current = s.value
+        t.state = 'colon'
+      } else {
+        if (!valueMayStart()) return undefined
+        valueEnded()
+      }
+      i = s.end
+    } else {
+      // A number or a literal. Its exact grammar is JSON.parse's to check.
+      if (!valueMayStart()) return undefined
+      let j = i
+      while (j < text.length && !' \t\n\r,:[]{}"'.includes(text[j])) j++
+      valueEnded()
+      i = j
+    }
+  }
+  return stack.length === 0 && rootDone ? null : undefined
+}
+
+// Pointers are printed as JSON strings with every code unit above U+007F
+// escaped, the same bytes Python's json.dumps writes, so the two runners print
+// identical refusals.
+const printPointer = (p: string) =>
+  JSON.stringify(p).replace(/[\u0080-\uffff]/g, c => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`)
+
 function runFile(label: string, path: string, isDev: boolean): void {
-  let doc: unknown
+  let text: string
   try {
-    doc = JSON.parse(readFileSync(path, 'utf8'))
+    text = readFileSync(path, 'utf8')
   } catch (err) {
     fail(`${label}: cannot read or parse ${path}: ${(err as Error).message}`)
+    return
+  }
+  const duplicate = findDuplicateMember(text)
+  let doc: unknown
+  try {
+    doc = JSON.parse(text)
+  } catch (err) {
+    fail(`${label}: cannot read or parse ${path}: ${(err as Error).message}`)
+    return
+  }
+  if (duplicate === undefined) {
+    fail(`${label}: the duplicate-name scanner could not follow ${path}, which JSON.parse accepted`)
+    return
+  }
+  if (duplicate !== null) {
+    fail(`${label}: duplicate JSON member name at ${printPointer(duplicate)}, file refused before any case is evaluated`)
     return
   }
   say(`${label}: TypeScript runner`)
@@ -242,6 +402,42 @@ for (const [a, b, want] of unit) {
   const got = sameSequence(a, b)
   if (got !== want) fail(`sameSequence(${JSON.stringify(a)}, ${JSON.stringify(b)}) is ${got}, expected ${want}`)
   else say(`  ok   sameSequence(${JSON.stringify(a)}, ${JSON.stringify(b)}) is ${got}`)
+}
+
+// Duplicate-name scanner, directly. Each literal is the raw JSON text, written
+// as an ordinary string with doubled backslashes so that a \u escape reaches the
+// scanner as six characters. Each must also parse, so a scanner verdict is never
+// about malformed input. The same literals and expected pointers are in
+// verify.py.
+const ASTRAL = '\u{1D4B3}'
+const duplicateUnit: [string, string | null][] = [
+  ['{"a": 1, "b": 2, "a": 3}', '/a'],
+  ['{"cases": [{"input": {"scope": {"epoch": "E0", "epoch": "E1"}}}]}', '/cases/0/input/scope/epoch'],
+  ['{"x": [{"k": 1}, {"k": 1, "k": 2}]}', '/x/1/k'],
+  ['{"a": 1, "\\u0061": 2}', '/a'],
+  ['{"' + ASTRAL + '": 1, "\\ud835\\udcb3": 2}', '/' + ASTRAL],
+  ['{"x/y~z": 1, "x/y~z": 2}', '/x~1y~0z'],
+  ['{"q\\"": 1, "q\\u0022": 2}', '/q"'],
+  ['{"b\\\\": 1, "b\\u005c": 2}', '/b\\'],
+  ['{"p": {"a": 1}, "q": {"a": 2}}', null],
+  ['{"a": {"a": {"a": 1}}}', null],
+  ['{"s": [{"a": 1}, {"a": 1}], "t": [[{"a": 1}], [{"a": 2}]]}', null],
+  ['{"t": "\\"a\\": 1", "a": 1}', null],
+  ['{"t": "{\\"a\\": 1, \\"a\\": 2}", "u": ["\\"a\\"", "a"], "a": 1}', null],
+  ['{"k\\"{[,:\\\\]}": "v\\"{[,:\\\\]}", "k\\"{[,:\\\\]}\\"": 1, "": 0, "\\\\": [], "\\"": {}}', null],
+]
+for (const [text, want] of duplicateUnit) {
+  let parses = true
+  try {
+    JSON.parse(text)
+  } catch {
+    parses = false
+  }
+  const got = findDuplicateMember(text)
+  const shown = printPointer(text)
+  if (!parses) fail(`duplicate-name self-test literal does not parse: ${shown}`)
+  else if (got !== want) fail(`findDuplicateMember(${shown}) is ${got === undefined ? 'unscannable' : got === null ? 'none' : printPointer(got)}, expected ${want === null ? 'none' : printPointer(want)}`)
+  else say(`  ok   findDuplicateMember(${shown}) is ${want === null ? 'none' : printPointer(want)}`)
 }
 
 if (failures.length > 0) {
