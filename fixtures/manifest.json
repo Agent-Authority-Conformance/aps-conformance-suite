@@ -120,9 +120,9 @@
     {
       "category": "actionref-canonical",
       "path": "actionref-canonical/actionref-canonical-fixture-v1.json",
-      "canonical_sha256": "a14490dbb712b58a0d20ba07aa016d938d433c0b0bc27833923d41b235081543",
+      "canonical_sha256": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
       "vector_count": 6,
-      "spec_section": "Native action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1)"
+      "spec_section": "Historical draft-01 action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-01 section 4.1). The two duplicate-scope negatives are implementation-specific"
     },
     {
       "category": "bilateral-pair",
@@ -134,7 +134,7 @@
     {
       "category": "bilateral-golden",
       "path": "bilateral-golden/bilateral-golden-fixture-v1.json",
-      "canonical_sha256": "69b0d47beb4262addd30eaf86dd434921518dc38841bd336454736c569aecc69",
+      "canonical_sha256": "54e34c158fedb5065933aef58a0970068e98285d07773997ce90dc89931fa406",
       "vector_count": 2,
       "spec_section": "BilateralReceipt canonical signable bytes with aud and action_ref; independently derived and cross-verified (TypeScript reference plus from-scratch Python RFC 8785)"
     },
