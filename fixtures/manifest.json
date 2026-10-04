@@ -120,9 +120,9 @@
     {
       "category": "actionref-canonical",
       "path": "actionref-canonical/actionref-canonical-fixture-v1.json",
-      "canonical_sha256": "a14490dbb712b58a0d20ba07aa016d938d433c0b0bc27833923d41b235081543",
+      "canonical_sha256": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
       "vector_count": 6,
-      "spec_section": "Native action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-03 section 4.1)"
+      "spec_section": "Historical draft-01 action_ref scopeRequired canonicalization: NFC + Unicode code-point sort (draft-pidlisnyi-aps-01 section 4.1). The two duplicate-scope negatives are implementation-specific"
     },
     {
       "category": "bilateral-pair",

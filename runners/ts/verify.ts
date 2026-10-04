@@ -436,16 +436,18 @@ function compareCodePoints(a: string, b: string): number {
   return aa.length - bb.length
 }
 
-// Native APS action_ref (draft-pidlisnyi-aps-03 section 4.1): NFC-normalize each
-// scope string, sort scopeRequired by Unicode code point, then SHA-256 over the
-// RFC 8785 (JCS) canonicalization of {agentId, actionType, scopeRequired,
-// timestamp}. Reuses the vendored JCS canonicalizer and the accountability lib's
-// SHA-256 helper; no crypto is reimplemented here.
-// Section 4.1 defines scope_required as a duplicate-free array, so a duplicated
-// array has no canonical form and is rejected rather than deduplicated. The
-// check runs AFTER NFC normalization, so two spellings that collide only under
-// NFC reject as well. Thrown before any digest is computed, so a duplicated
-// array can never present as an action_ref mismatch.
+// Historical draft-01 APS action_ref (draft-pidlisnyi-aps-01 section 4.1), not
+// the current aps-action-ref-v2 profile: NFC-normalize each scope string, sort
+// scopeRequired by Unicode code point, then SHA-256 over the RFC 8785 (JCS)
+// canonicalization of {agentId, actionType, scopeRequired, timestamp}. Reuses
+// the vendored JCS canonicalizer and the accountability lib's SHA-256 helper; no
+// crypto is reimplemented here.
+// Duplicate rejection is implementation-specific, not a draft-01 requirement:
+// draft-01 does not define duplicate scopes as invalid. It mirrors
+// agent-passport-system ca7413c, which rejects a duplicated array rather than
+// deduplicating it. The check runs AFTER NFC normalization, so two spellings
+// that collide only under NFC reject as well. Thrown before any digest is
+// computed, so a duplicated array can never present as an action_ref mismatch.
 const DUPLICATE_SCOPE_REQUIRED = 'duplicate_scope_required'
 
 class DuplicateScopeRequiredError extends Error {

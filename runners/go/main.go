@@ -283,7 +283,9 @@ func checkMerkleParityVectors(category, fixture string, raws []json.RawMessage) 
 // hex, but NOT the generic canonical_bytes_hex/canonical_sha256 fields, so
 // checkVector would silently skip them. checkActionRefVectors instead recomputes
 // action_ref via the SDK actionref package (NFC per scope + Unicode code-point
-// sort of scopeRequired, JCS, SHA-256; draft-pidlisnyi-aps-03 §4.1) and asserts
+// sort of scopeRequired, JCS, SHA-256, which is the historical
+// draft-pidlisnyi-aps-01 §4.1 form, not the current aps-action-ref-v2 profile)
+// and asserts
 // byte-identical hex and canonical scope order.
 type actionRefVector struct {
 	Name  string `json:"name"`
@@ -311,9 +313,10 @@ func checkActionRefVectors(category, fixture string, raws []json.RawMessage) []r
 			continue
 		}
 		var problems []string
-		// Negative vector: section 4.1 defines scope_required as duplicate-free, so
-		// the SDK must reject rather than silently deduplicate. Accepting the input
-		// is the failure here; rejecting it with the recorded kind is the pass.
+		// Negative vector, implementation-specific: draft-01 does not define
+		// duplicate scopes as invalid, but the SDK rejects them rather than silently
+		// deduplicating (agent-passport-system ca7413c). Accepting the input is the
+		// failure here; rejecting it with the recorded kind is the pass.
 		if v.ExpectedVerification != nil && !*v.ExpectedVerification {
 			_, err := actionref.CanonicalizeScopes(v.Input.ScopeRequired)
 			switch {
