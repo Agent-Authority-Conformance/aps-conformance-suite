@@ -3,7 +3,7 @@
 This table records which normative requirements of the published Internet-Draft the fixtures and runners in this repository exercise; it makes no claim that a passing run validates the draft.
 
 Draft: `draft-pidlisnyi-aps-03-PUBLISHED.txt`, sha256 `59b9547a20c6d514eceb97d169b92b2f9c70a231f5b914e8fc1b478c7f359fca`.
-Suite: commit `b0bf645c4f1deb3e7a26411295de6fda98fb80b4` (revision 3). Revisions 1 and 2 were pinned to `b46568e8947291e553c6392403226e8d05be31d2`.
+Suite: commit `b0bf645c4f1deb3e7a26411295de6fda98fb80b4` (revisions 3 and 4). Revisions 1 and 2 were pinned to `b46568e8947291e553c6392403226e8d05be31d2`.
 
 Requirement extraction: every sentence in the draft body carrying an RFC 2119 keyword (MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, OPTIONAL), excluding the definition in Section 1.1. Sections 1, 1.1, 3.1, 3.4, 6, 8, 11, 12, 13, 14, 7.2 and Appendix A carry no such sentence and so contribute no rows.
 
@@ -37,6 +37,18 @@ Revision 2 was pinned to suite commit `b46568e8`. `fixtures/approval-single-use`
 | `REQ-5.3.2-3` | NOT EXERCISED | EXERCISED | ASU-06 refuses a deny record presented as an approval. |
 
 For all five, the consumption boundary is the fixture's own harness. No APS SDK exposes a consume-once boundary for a policy-decision record, so these rows describe what the suite exercises, not SDK behavior.
+
+## Revision 4, corrections
+
+Still pinned to suite commit `b0bf645c4f1deb3e7a26411295de6fda98fb80b4`. This revision does not re-pin. Revision 3 recorded 9 EXERCISED, 29 PARTIAL, 44 NOT EXERCISED. Three Section 4.1 rows were rechecked against the aps-action-ref-v2 object using only the tree at that commit. One was demoted and two keep their status with corrected notes. Nothing was promoted.
+
+| REQ id | rev 3 | rev 4 | Why |
+|---|---|---|---|
+| `REQ-4.1-1` | NOT EXERCISED | NOT EXERCISED | The rev-3 note said the literal "aps-action-ref-v2" occurs nowhere in the tree. At b0bf645c it is the profile member of 48 input objects in seven APS-native families, two of them in fixtures/action-result-binding/chain.json. No reachable test reads their profile or target or presents another profile, so the status stands. |
+| `REQ-4.1-2` | NOT EXERCISED | NOT EXERCISED | Reassessed against those 48 objects, not only the actionref-canonical vectors. All are valid, and valid objects do not show rejection of an empty string or an empty scope array. No test presents either. |
+| `REQ-4.1-3` | PARTIAL | NOT EXERCISED | The rev-3 evidence was negative-duplicate-scope-raw and negative-duplicate-scope-nfc-collision. Those inputs are the draft-01 Section 4.1 four-field form {agentId, actionType, scopeRequired, timestamp}, not an aps-action-ref-v2 object, and rejecting them is implementation-specific behavior (agent-passport-system ca7413c), not a draft rule. They cannot exercise a clause of this requirement. No reachable test presents a v2 object that violates any of the six clauses. The row note lists what was inspected. |
+
+Counts after this revision: 9 EXERCISED, 28 PARTIAL, 45 NOT EXERCISED.
 
 ## Requirements
 
@@ -82,9 +94,9 @@ For all five, the consumption boundary is the fixture's own harness. No APS SDK 
 | `REQ-4-2` | 4 | 734 | MAY, SHOULD | **PARTIAL** | fixtures/cross-stack/oracle-safety-check/oracle-safety-check-v1/pass.json | pass | - | `npm run verify:oracle-safety-check` | Deployments handling monetary spend SHOULD require actions to declare their unit, and a profile MAY require the gate to deny when it is undeclared. | The declared-unit case is present as data in every delegation vector. No vector omits the unit, and no assertion fails when it is absent, so neither the SHOULD nor the profile MAY is reached. |
 | `REQ-4-3` | 4 | 742 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | Before dispatch, the boundary MUST atomically reserve the proposed amount against every bounded ancestor in the selected root-to-leaf chain. | No spend reservation anywhere. The SDK exposes BudgetOperationResult with RESERVED/PER_ACTION_EXCEEDED/CUMULATIVE_EXCEEDED, which no fixture reaches; fixtures/receipt-decision-relation/verify.ts:29-32 records spend reservation as out of scope. |
 | `REQ-4-4` | 4 | 744 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | It MUST dispatch only if the reservation succeeds for all of them. | Follows REQ-4-3: no reservation exists whose success could gate a dispatch. |
-| `REQ-4.1-1` | 4.1 | 789 | MUST | **NOT EXERCISED** | fixtures/actionref-canonical/actionref-canonical-fixture-v1.json | - (shape mismatch) | - | `-` | profile MUST equal "aps-action-ref-v2". agent_id is the acting agent's identifier. action_type is the operation identifier. target is the exact resource, tool, or endpoint against which the action will be dispatched; a profile MUST define its target string construction. | The literal "aps-action-ref-v2" occurs nowhere in the tree. The actionref-canonical inputs are {agentId, actionType, scopeRequired, timestamp}: no profile member, no target, no payload_ref, no nonce. The only "action-ref-v2" in the repository is Argentum's own protocol version under fixtures/cross-stack/argentum-action-ref-v1v2/, a different construction. Neither the profile clause nor the target-construction clause has a fixture. |
-| `REQ-4.1-2` | 4.1 | 798 | MAY, MUST | **NOT EXERCISED** | fixtures/actionref-canonical/actionref-canonical-fixture-v1.json | - (no vector) | - | `-` | All string fields MUST be non-empty except that a profile MAY permit an empty scope_required array. | The six vectors are plain-single-scope-ascii, unsorted-multi-scope-ascii, nfd-scope-normalizes-to-nfc, astral-scope-orders-after-bmp-high and the two duplicate negatives. None carries an empty string field and none carries an empty scope_required array. |
-| `REQ-4.1-3` | 4.1 | 813 | MUST | **PARTIAL** | fixtures/actionref-canonical/actionref-canonical-fixture-v1.json | negative-duplicate-scope-raw, negative-duplicate-scope-nfc-collision | runners/ts/verify.ts:459-475 (throw), asserted at runners/ts/verify.ts:496-513 | `npm run verify` | A verifier MUST reject an object with an unknown or duplicate member, a non-I-JSON value, a non-canonical scope array, an invalid timestamp, or an invalid hexadecimal field. | One clause of five is reached: a non-canonical (duplicate, including NFC-collision) scope array is rejected and never deduplicated. Invalid timestamps are exercised only for the Section 4.2 legacy form (see REQ-4.2-1), not for the Section 4.1 object. Unknown member, duplicate member, non-I-JSON value and invalid hexadecimal field have no vector. |
+| `REQ-4.1-1` | 4.1 | 789 | MUST | **NOT EXERCISED** | fixtures/action-result-binding/chain.json | - (data only) | - | `-` | profile MUST equal "aps-action-ref-v2". agent_id is the acting agent's identifier. action_type is the operation identifier. target is the exact resource, tool, or endpoint against which the action will be dispatched; a profile MUST define its target string construction. | At b0bf645c the literal "aps-action-ref-v2" is the profile member of 48 action-reference input objects in seven APS-native families: fixtures/action-result-binding/chain.json (2, actions.primary.input and actions.alternate.input), fixtures/approval-single-use/chain.json (3), fixtures/capability-binding-drift/chain.json (1), fixtures/lifecycle-expiry-and-renewal/chain.json (5), fixtures/lifecycle-legal-regulatory-events/chain.json (14), fixtures/lifecycle-purpose-exhaustion/records-bounds.json (9) and fixtures/lifecycle-time-and-scheduling/chain.json (14). Every one carries the correct profile and a target. Their action_ref values were computed by computeActionRefV2 in each family's mint script, which npm test does not run. No verifier reachable at this commit reads an input object's profile or target, presents an object with any other profile, or checks a profile's target string construction. The actionref-canonical inputs are the draft-01 Section 4.1 four-field form {agentId, actionType, scopeRequired, timestamp} and are not evidence for this row. The Argentum "action-ref-v2" under fixtures/cross-stack/argentum-action-ref-v1v2/ is a different construction. |
+| `REQ-4.1-2` | 4.1 | 798 | MAY, MUST | **NOT EXERCISED** | fixtures/action-result-binding/chain.json and the other aps-action-ref-v2 objects listed under REQ-4.1-1 | - (no violating object) | - | `-` | All string fields MUST be non-empty except that a profile MAY permit an empty scope_required array. | Reassessed against the 48 aps-action-ref-v2 objects at b0bf645c, not only the six actionref-canonical vectors (draft-01 form). Every v2 object carries non-empty agent_id, action_type, target, payload_ref, issued_at and nonce and a non-empty scope_required. Valid objects alone do not show that an empty string or an empty scope array is rejected, and no reachable test presents either or supplies a profile permission for an empty array. |
+| `REQ-4.1-3` | 4.1 | 813 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | A verifier MUST reject an object with an unknown or duplicate member, a non-I-JSON value, a non-canonical scope array, an invalid timestamp, or an invalid hexadecimal field. | Inspected at b0bf645c: the 48 aps-action-ref-v2 input objects listed under REQ-4.1-1, all well-formed (exactly the eight members, string values, NFC scope arrays sorted by UTF-8 bytes without duplicates, issued_at with three fractional digits, 64- and 32-character lowercase hex payload_ref and nonce). Also inspected: the verify.ts of each of the seven families that carry them, all run by npm test, which read at most action_ref and, in capability-binding-drift and lifecycle-legal-regulatory-events, scope_required for scope coverage, and never validate the input object, runners/ts/verify.ts (npm run verify), and the scripts named in fixtures/cross-stack/index.json, none of which consumes an aps-action-ref-v2 object. Per clause. Unknown member: no test. Duplicate member: no test. Non-I-JSON value: no test. Non-canonical scope array: no test on a v2 object. Invalid timestamp: no test on a v2 object (invalid timestamps are exercised only for the Section 4.2 legacy form, see REQ-4.2-1). Invalid hexadecimal field: no test. negative-duplicate-scope-raw and negative-duplicate-scope-nfc-collision in fixtures/actionref-canonical are the draft-01 four-field form, and their duplicate rejection is implementation-specific (agent-passport-system ca7413c), so they do not exercise a clause of this object. ARB-05-action-ref-mismatch in fixtures/action-result-binding presents a well-formed alternate action_ref and tests decision binding (Sections 5.4 and 5.6), not this requirement. |
 | `REQ-4.1-4` | 4.1 | 815 | MUST, MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | A parser MUST detect duplicate names before conversion to an ordinary map; it MUST NOT accept the last occurrence silently. | Nothing in the tree parses serialized JSON for duplicate member names. The SDK entry point that could - verifyReceiptV1Serialized - is never called anywhere in fixtures, runners, tests or interop. |
 | `REQ-4.1-5` | 4.1 | 819 | MUST | **NOT EXERCISED** | n/a | n/a | n/a | n/a | A string containing an unpaired UTF-16 surrogate has no UTF-8 encoding and MUST be rejected. | No unpaired-surrogate vector. The astral vector "scope:\U00010400" carries a well-formed pair. The Argentum domain negatives (av-003) reject valid surrogate pairs under that profile's ASCII-only domain rule, which is a different rule from the draft's unpaired-surrogate rejection. |
 | `REQ-4.1-6` | 4.1 | 820 | MUST NOT | **NOT EXERCISED** | n/a | n/a | n/a | n/a | An implementation MUST NOT substitute U+FFFD, delete the code unit, or otherwise repair the string. | Follows REQ-4.1-5: with no unpaired-surrogate input, no vector can observe a U+FFFD substitution, a deletion or any other repair. |
@@ -130,8 +142,8 @@ For all five, the consumption boundary is the fixture's own harness. No APS SDK 
 | Status | Requirements |
 |---|---|
 | EXERCISED | 9 |
-| PARTIAL | 29 |
-| NOT EXERCISED | 44 |
+| PARTIAL | 28 |
+| NOT EXERCISED | 45 |
 | **Total** | **82** |
 
 Per section:
@@ -150,7 +162,7 @@ Per section:
 | 3.5.1 | Revocation Evidence | 4 | 0 | 0 | 4 |
 | 3.6 | Core Invariants | 2 | 0 | 0 | 2 |
 | 4 | Policy Chain | 4 | 0 | 1 | 3 |
-| 4.1 | Action Reference Computation | 9 | 0 | 3 | 6 |
+| 4.1 | Action Reference Computation | 9 | 0 | 2 | 7 |
 | 4.2 | Legacy External Correlation Form | 3 | 1 | 0 | 2 |
 | 4.3 | Two-Phase Execution | 2 | 2 | 0 | 0 |
 | 5.1 | ReceiptV1 Envelope | 3 | 0 | 3 | 0 |
@@ -194,6 +206,7 @@ Per section:
 - `REQ-4-4` (Section 4, line 744)
 - `REQ-4.1-1` (Section 4.1, line 789)
 - `REQ-4.1-2` (Section 4.1, line 798)
+- `REQ-4.1-3` (Section 4.1, line 813)
 - `REQ-4.1-4` (Section 4.1, line 815)
 - `REQ-4.1-5` (Section 4.1, line 819)
 - `REQ-4.1-6` (Section 4.1, line 820)
