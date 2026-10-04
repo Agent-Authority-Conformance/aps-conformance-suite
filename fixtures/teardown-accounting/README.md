@@ -129,12 +129,16 @@ prototype posted there (ZIP SHA-256
 `8eb4690da88e832207dc20ddfeab75e5e2e5e4d7b4ef3323f8b28f7c72309b39`). The
 regressions `TA-REG-01` to `TA-REG-19` are this lab's.
 
-Contributed vectors, when they arrive, go in `vectors.json` beside it, with
-their own `provenance` and their own `proposed_text` pin. They never replace
-the dev cases. Both runners always run `dev-cases.json`, also run
-`vectors.json` when it is present under the same checks, and fail when it is
-present but malformed. Each runner checks the `PROPOSED.md` hash against the
-pin in every file it runs.
+`vectors.json` holds eight vectors contributed by danyka-icam in #151 and
+added at merge commit `5d4b0672`, with their own `provenance` and
+`proposed_text` pin. `generator.py` produces them as `REGENERATION.md`
+describes. They use the same base input as the development cases, so they show
+that the contract round-trips through the contributor's generator. They add no
+new tested scenarios and are not independent evidence for the evaluator. They
+never replace the dev cases. Both runners always run `dev-cases.json`, also
+run `vectors.json` under the same checks, and fail when it is malformed. Each
+runner checks the `PROPOSED.md` hash against the pin in every file it runs.
+Neither runner executes `generator.py`.
 
 Each case file pins PROPOSED.md by SHA-256. This candidate family carries no
 historical digest set.
