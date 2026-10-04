@@ -1,0 +1,67 @@
+{
+ "canonical-bytes/canonical-bytes-jcs-v1.json": {
+  "sha256": "914803e87ce165f59958835519b30274623f2afab9a8ef5059bd2902ff0c9a8a",
+  "manifest": "914803e87ce165f59958835519b30274623f2afab9a8ef5059bd2902ff0c9a8a",
+  "match": true
+ },
+ "canonical-bytes/canonical-bytes-jcs-v2.json": {
+  "sha256": "9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593",
+  "manifest": "9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593",
+  "match": true
+ },
+ "actionref-canonical/actionref-canonical-fixture-v1.json": {
+  "sha256": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
+  "manifest": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
+  "match": true
+ },
+ "accountability-record/accountability-record-fixture-v1.json": {
+  "sha256": "536a952ebade9c8bfc7e0437d943e5157361cd8bcde83c1983cc8d7d4c865d14",
+  "manifest": "536a952ebade9c8bfc7e0437d943e5157361cd8bcde83c1983cc8d7d4c865d14",
+  "match": true
+ }
+}
+SUMMARY {"canonical-bytes": "18/18", "actionref-canonical": "6/6", "accountability-record": "12/12", "accountability_rejection_layer_as_named": "4/5"}
+CONTROLS
+  {"family": "canonical-bytes", "control": "json.dumps(sort_keys) instead of JCS (code-point key order, Python numbers)", "match": "12/18", "expected": "fewer than 18"}
+  {"family": "actionref-canonical", "control": "scopeRequired sorted by UTF-16 code units", "match": "3/6", "expected": "fewer than 6"}
+  {"family": "actionref-canonical", "control": "no NFC normalisation", "match": "3/6", "expected": "fewer than 6"}
+  {"family": "accountability-record", "control": "first signature byte flipped on every record", "match": "5/12", "expected": "fewer than 12"}
+  {"family": "accountability-record", "control": "sig removed", "match": "5/12", "expected": "fewer than 12"}
+  {"family": "accountability-record", "control": "inline action.type altered (digest must break)", "match": "6/12", "expected": "fewer than 12"}
+  {"family": "accountability-record", "control": "verified under the fixture's wrong_keypair public key", "match": "4/12", "expected": "fewer than 12"}
+match    canonical-bytes/jcs-v1       float-tenth                              
+match    canonical-bytes/jcs-v1       float-1e21-boundary                      
+match    canonical-bytes/jcs-v1       negative-zero                            
+match    canonical-bytes/jcs-v1       integer-above-2pow53                     
+match    canonical-bytes/jcs-v1       small-exponent-vs-decimal                
+match    canonical-bytes/jcs-v1       astral-key-ordering                      
+match    canonical-bytes/jcs-v1       nfd-key-used-as-given                    
+match    canonical-bytes/jcs-v1       nested-object-and-array                  
+match    canonical-bytes/jcs-v2       float-tenth                              
+match    canonical-bytes/jcs-v2       float-1e21-boundary                      
+match    canonical-bytes/jcs-v2       negative-zero                            
+match    canonical-bytes/jcs-v2       integer-above-2pow53                     
+match    canonical-bytes/jcs-v2       small-exponent-vs-decimal                
+match    canonical-bytes/jcs-v2       astral-key-ordering                      
+match    canonical-bytes/jcs-v2       nfd-key-used-as-given                    
+match    canonical-bytes/jcs-v2       nested-object-and-array                  
+match    canonical-bytes/jcs-v2       integer-2pow60-inside-int64              
+match    canonical-bytes/jcs-v2       integer-2pow68-above-int64               
+match    actionref-canonical          plain-single-scope-ascii                 identical in both modes
+match    actionref-canonical          unsorted-multi-scope-ascii               identical in both modes
+match    actionref-canonical          nfd-scope-normalizes-to-nfc              identical in both modes
+match    actionref-canonical          astral-scope-orders-after-bmp-high       identical in both modes
+match    actionref-canonical          negative-duplicate-scope-raw             draft-01 reading accepts (no duplicate rule in -01); the implementation-specific option rejects, as the family now labels it
+match    actionref-canonical          negative-duplicate-scope-nfc-collision   draft-01 reading accepts (no duplicate rule in -01); the implementation-specific option rejects, as the family now labels it
+match    accountability-record        allow-executed-settled                   
+match    accountability-record        deny-no-settlement                       
+match    accountability-record        halt                                     
+match    accountability-record        detached-payload                         
+match    accountability-record        negative-tampered-payload                
+match    accountability-record        negative-wrong-key                       
+match    accountability-record        negative-schema-decision                 
+match    accountability-record        negative-type-relabel                    rejected at layer 'schema', the vector names 'signature'
+match    accountability-record        positive-deny-executed                   
+match    accountability-record        positive-collision-same-second-a         
+match    accountability-record        positive-collision-same-second-b         
+match    accountability-record        negative-sig-alg-lowercase               

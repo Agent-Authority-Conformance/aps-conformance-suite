@@ -229,6 +229,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/cosai-ws4-189-evidence-sufficiency` | [`README.md`](interop/cosai-ws4-189-evidence-sufficiency/README.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a642c17` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a642c17/SOURCE.md) |
 | `interop/crypto-recompute-ctef-v0.3.1-a71b7329` | [`SOURCE.md`](interop/crypto-recompute-ctef-v0.3.1-a71b7329/SOURCE.md) |
+| `interop/cryptovalid-opencore-aps-da95834` | [`run-report.md`](interop/cryptovalid-opencore-aps-da95834/run-report.md) |
 | `interop/ctef-v0.3.1-admissibility-checker-fd256bc4-run-aeoess` | [`SOURCE.md`](interop/ctef-v0.3.1-admissibility-checker-fd256bc4-run-aeoess/SOURCE.md) |
 | `interop/ctef-v0.3.1-admissibility-giskard09-a642c17` | [`SOURCE.md`](interop/ctef-v0.3.1-admissibility-giskard09-a642c17/SOURCE.md) |
 | `interop/ethers-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/ethers-oracle-safety-check-6e8b05b2/SOURCE.md) |
