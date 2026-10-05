@@ -8,7 +8,9 @@
 // APS verifier primitives - verifyDelegation (signature / expiry / notBefore /
 // revocation / depth) and scopeCovers (monotonic narrowing). The decision is
 // real SDK output; this runner only adapts inputs and asserts the expected
-// result + reason code per vector.
+// result + reason code per vector. It also reads the SDK's per-node `valid`
+// flag and fails a vector when that flag disagrees with the node-level
+// conditions the decision was derived from.
 //
 // The repo's existing fixtures use tsx runner scripts (see
 // fixtures/composition/*/verify.ts), not vitest; this runner follows that
@@ -66,6 +68,10 @@ interface Decision {
   result: 'ACCEPT' | 'REJECT'
   reason: string | null
   reason_code: string | null
+  // Per-node SDK `valid` flags, and every node where `valid` disagrees with the
+  // node-level flags this runner decides from. A non-empty list fails the vector.
+  valid: boolean[]
+  disagreements: string[]
 }
 
 // ── Adapter: one AAE credential -> one signed APS delegation ──
@@ -121,7 +127,7 @@ function verifyChain(env: AaeEnvelope): Decision {
   // fail_closed, a node with no evidence is invalid in the SDK's own `valid`
   // flag, so supplying only the revoked case left every other node invalid
   // while this runner still accepted it. Any other or missing status supplies
-  // no evidence, and the SDK reports that node invalid.
+  // no evidence and surfaces as a disagreement below rather than a decision.
   const statuses = creds.map((c, i) => {
     const status = c.validity?.revocation_check?.status
     return verifyDelegation(dels[i], {
@@ -133,6 +139,37 @@ function verifyChain(env: AaeEnvelope): Decision {
     })
   })
 
+  return { ...decideChain(creds, dels, statuses), ...validAgreement(statuses, creds) }
+}
+
+// decideChain reads errors / expired / revoked / notYetValid /
+// depthExceeded. The SDK also reports `valid` (errors.length === 0). For each
+// node, `valid` must equal "none of the node-level reject conditions fired";
+// if it does not, the SDK saw something this runner did not decide on (or the
+// reverse), and the vector fails regardless of the decision it reached.
+function validAgreement(statuses: Array<Record<string, any>>, creds: AaeCredential[]) {
+  const valid = statuses.map((s) => s.valid === true)
+  const disagreements: string[] = []
+  statuses.forEach((s, i) => {
+    const nodeReject =
+      s.errors.includes('Invalid delegation signature') ||
+      s.expired || s.revoked || s.notYetValid || s.depthExceeded
+    if (valid[i] === Boolean(nodeReject)) {
+      disagreements.push(
+        `node ${i} (${creds[i].vc_id}): SDK valid=${valid[i]} but derived node ${nodeReject ? 'reject' : 'ok'}; errors=${JSON.stringify(s.errors)}`,
+      )
+    }
+  })
+  return { valid, disagreements }
+}
+
+type BaseDecision = Omit<Decision, 'valid' | 'disagreements'>
+
+function decideChain(
+  creds: AaeCredential[],
+  dels: Array<ReturnType<typeof aaeToApsDelegation>>,
+  statuses: Array<Record<string, any>>,
+): BaseDecision {
   // 1. Chain-link continuity: child.delegator_did/issuer == parent.subject,
   //    and the keys actually chain (child.delegatedBy == parent.delegatedTo).
   for (let i = 1; i < creds.length; i++) {
@@ -207,7 +244,8 @@ for (const file of VECTORS) {
 
   const resultOk = decision.result === env.expected_result
   const codeOk = (decision.reason_code ?? null) === (env.expected_reason_code ?? null)
-  const pass = resultOk && codeOk
+  const validOk = decision.disagreements.length === 0
+  const pass = resultOk && codeOk && validOk
   if (!pass) failures++
 
   const mode = env.verification_mode ?? 'enforced' // default when absent (backward compatible)
@@ -217,9 +255,11 @@ for (const file of VECTORS) {
   console.log(`        expected: ${env.expected_result}${env.expected_reason_code ? ` / ${env.expected_reason_code}` : ''}`)
   console.log(`        actual:   ${decision.result}${decision.reason_code ? ` / ${decision.reason_code}` : ''}`)
   if (decision.reason) console.log(`        reason:   ${decision.reason}`)
+  console.log(`        valid:    [${decision.valid.join(', ')}] (SDK valid flag per node)`)
   if (!pass) {
     if (!resultOk) console.log(`        >>> RESULT MISMATCH`)
     if (!codeOk) console.log(`        >>> REASON-CODE MISMATCH`)
+    for (const d of decision.disagreements) console.log(`        >>> VALID-FLAG DISAGREEMENT: ${d}`)
   }
   console.log()
 
@@ -228,6 +268,7 @@ for (const file of VECTORS) {
     verification_mode: mode,
     expected: `${env.expected_result}${env.expected_reason_code ? '/' + env.expected_reason_code : ''}`,
     actual: `${decision.result}${decision.reason_code ? '/' + decision.reason_code : ''}`,
+    sdk_valid: decision.valid,
     pass,
   })
 }
