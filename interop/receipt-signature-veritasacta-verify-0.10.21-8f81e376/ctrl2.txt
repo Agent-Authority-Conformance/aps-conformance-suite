@@ -1,0 +1,76 @@
+v0142580fad54af78    accept         PASS          windows: valid; no windows: valid
+v03377fbbac6d12f8    accept         PASS          windows: valid; no windows: valid
+v0340fed8ef07e072    reject         PASS          windows: invalid signature_invalid; no windows: invalid signature_invalid
+v1adc0db0267a742b    reject         PASS          windows: invalid signature_invalid; no windows: invalid signature_invalid
+v2c8c0aabb75e8aa0    reject         PASS          windows: invalid signature_in_signing_input; no windows: invalid signature_in_signing_input
+v2e98d2f14251c8d6    reject         PASS          windows: invalid signature_in_signing_input; no windows: invalid signature_in_signing_input
+v2f0a83c1364e52bc    accept         PASS          windows: valid; no windows: valid
+v3bb98f09b3068de5    reject         PASS          windows: invalid signature_in_signing_input; no windows: invalid signature_in_signing_input
+v4ec9fa36ae77ce07    indeterminate  PASS          windows: invalid key_outside_validity_window; no windows: valid
+v4f9fe96e52a39bfb    accept         PASS          windows: valid; no windows: valid
+v5397adb77c3e6754    reject         PASS          windows: invalid signature_in_signing_input; no windows: invalid signature_in_signing_input
+v6d872b14889dc9e2    gap            FAIL          windows: invalid signature_invalid; no windows: invalid signature_invalid
+    ! answered invalid signature_invalid with the windows and invalid signature_invalid without; the draft's verdicts are valid and valid, and the closing rule's are invalid issued_at_precedes_excluding_commitment and invalid issued_at_precedes_excluding_commitment
+v75158ebfd05a56e5    accept         FAIL          windows: invalid signature_invalid; no windows: invalid signature_invalid
+    ! without the windows: expected valid, answered invalid signature_invalid
+    ! with the windows: expected valid, answered invalid signature_invalid
+v814de39bf68212fc    accept         FAIL          windows: invalid signature_invalid; no windows: invalid signature_invalid
+    ! without the windows: expected valid, answered invalid signature_invalid
+    ! with the windows: expected valid, answered invalid signature_invalid
+v9f2a63a5186a2fa8    gap            PASS          windows: valid; no windows: valid
+vaafe541bbd74c320    accept         PASS          windows: valid; no windows: valid
+vab0c4dde2038340e    accept         FAIL          windows: invalid signature_invalid; no windows: invalid signature_invalid
+    ! without the windows: expected valid, answered invalid signature_invalid
+    ! with the windows: expected valid, answered invalid signature_invalid
+vad088133176d7114    accept         PASS          windows: valid; no windows: valid
+vb19450def8dcc5cd    accept         PASS          windows: valid; no windows: valid
+vbc25ef71da0567f9    indeterminate  PASS          windows: invalid key_outside_validity_window; no windows: valid
+vc4b43c5739979581    indeterminate  PASS          windows: invalid key_outside_validity_window; no windows: valid
+vcc3cdb871ff27027    accept         PASS          windows: valid; no windows: valid
+ve116653dd041dda0    reject         PASS          windows: invalid signature_invalid; no windows: invalid signature_invalid
+ve24bce7210cacee9    reject         FAIL          windows: invalid signature_invalid; no windows: invalid signature_invalid
+    ! without the windows: expected invalid chain_link_mismatch, answered invalid signature_invalid
+    ! with the windows: expected invalid chain_link_mismatch, answered invalid signature_invalid
+vea8370fb85e1b4b1    accept         PASS          windows: valid; no windows: valid
+note: the corpus does not judge clean:
+note: suite: receipt-signature-conformance
+note: members: 25
+note:   accept: 12
+note:   gap: 2
+note:   indeterminate: 3
+note:   reject: 8
+note: FAIL v6d872b14889dc9e2: identifier does not recompute from the member's own bytes
+note: FAIL v6d872b14889dc9e2: with the windowed key set the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v6d872b14889dc9e2: with the windowed key set the reference verification with every gap closed is invalid signature_invalid and the manifest declares invalid issued_at_precedes_excluding_commitment
+note: FAIL v6d872b14889dc9e2: without the windows the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v6d872b14889dc9e2: without the windows the reference verification with every gap closed is invalid signature_invalid and the manifest declares invalid issued_at_precedes_excluding_commitment
+note: FAIL v6d872b14889dc9e2: the signature does not verify over signedInputHex, so the manifest does not say what was signed
+note: FAIL v75158ebfd05a56e5: identifier does not recompute from the member's own bytes
+note: FAIL v75158ebfd05a56e5: with the windowed key set the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v75158ebfd05a56e5: with the windowed key set the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL v75158ebfd05a56e5: without the windows the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v75158ebfd05a56e5: without the windows the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL v75158ebfd05a56e5: the signature does not verify over signedInputHex, so the manifest does not say what was signed
+note: FAIL v814de39bf68212fc: identifier does not recompute from the member's own bytes
+note: FAIL v814de39bf68212fc: with the windowed key set the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v814de39bf68212fc: with the windowed key set the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL v814de39bf68212fc: without the windows the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL v814de39bf68212fc: without the windows the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL v814de39bf68212fc: the signature does not verify over signedInputHex, so the manifest does not say what was signed
+note: FAIL vab0c4dde2038340e: identifier does not recompute from the member's own bytes
+note: FAIL vab0c4dde2038340e: with the windowed key set the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL vab0c4dde2038340e: with the windowed key set the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL vab0c4dde2038340e: without the windows the reference verification is invalid signature_invalid and the manifest declares valid
+note: FAIL vab0c4dde2038340e: without the windows the reference verification with every gap closed is invalid signature_invalid and the manifest declares valid
+note: FAIL vab0c4dde2038340e: the signature does not verify over signedInputHex, so the manifest does not say what was signed
+note: FAIL ve24bce7210cacee9: identifier does not recompute from the member's own bytes
+note: FAIL ve24bce7210cacee9: with the windowed key set the reference verification is invalid signature_invalid and the manifest declares invalid chain_link_mismatch
+note: FAIL ve24bce7210cacee9: with the windowed key set the reference verification with every gap closed is invalid signature_invalid and the manifest declares invalid chain_link_mismatch
+note: FAIL ve24bce7210cacee9: without the windows the reference verification is invalid signature_invalid and the manifest declares invalid chain_link_mismatch
+note: FAIL ve24bce7210cacee9: without the windows the reference verification with every gap closed is invalid signature_invalid and the manifest declares invalid chain_link_mismatch
+note: FAIL ve24bce7210cacee9: the signature does not verify over signedInputHex, so the manifest does not say what was signed
+note: FAIL corpus: corpusDigest does not match the receipt files on disk
+note: FAIL corpus: receipts/v814de39bf68212fc.json is not the upstream bytes of verifier-vectors/timeliness/receipt.json
+note: verdict: 5 member(s) and 2 corpus-level claim(s) do not hold
+totals: 25 vectors, 20 pass, 0 not honouring a SHOULD, 0 closing a gap, 5 fail; report written to conformance-report.json
+verifier: python3 /tmp/rs/aev/vectors-receipt-signature/tools/veritasacta-verify.py ran on 25 of 25 vectors

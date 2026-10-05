@@ -1,0 +1,46 @@
+v0142580fad54af78    accept         PASS          windows: valid; no windows: valid
+v03377fbbac6d12f8    accept         PASS          windows: valid; no windows: valid
+v0340fed8ef07e072    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_invalid, answered valid
+    ! with the windows: expected invalid signature_invalid, answered valid
+v1adc0db0267a742b    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_invalid, answered valid
+    ! with the windows: expected invalid signature_invalid, answered valid
+v2c8c0aabb75e8aa0    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_in_signing_input, answered valid
+    ! with the windows: expected invalid signature_in_signing_input, answered valid
+v2e98d2f14251c8d6    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_in_signing_input, answered valid
+    ! with the windows: expected invalid signature_in_signing_input, answered valid
+v2f0a83c1364e52bc    accept         PASS          windows: valid; no windows: valid
+v3bb98f09b3068de5    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_in_signing_input, answered valid
+    ! with the windows: expected invalid signature_in_signing_input, answered valid
+v4ec9fa36ae77ce07    indeterminate  NOT-HONOURED  windows: valid; no windows: valid
+    - with the windows: answered valid, which does not honour the SHOULD this member tests (expected when honoured: invalid key_outside_validity_window)
+v4f9fe96e52a39bfb    accept         PASS          windows: valid; no windows: valid
+v5397adb77c3e6754    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_in_signing_input, answered valid
+    ! with the windows: expected invalid signature_in_signing_input, answered valid
+v6d872b14889dc9e2    gap            PASS          windows: valid; no windows: valid
+v75158ebfd05a56e5    accept         PASS          windows: valid; no windows: valid
+v814de39bf68212fc    accept         PASS          windows: valid; no windows: valid
+v9f2a63a5186a2fa8    gap            PASS          windows: valid; no windows: valid
+vaafe541bbd74c320    accept         PASS          windows: valid; no windows: valid
+vab0c4dde2038340e    accept         PASS          windows: valid; no windows: valid
+vad088133176d7114    accept         PASS          windows: valid; no windows: valid
+vb19450def8dcc5cd    accept         PASS          windows: valid; no windows: valid
+vbc25ef71da0567f9    indeterminate  NOT-HONOURED  windows: valid; no windows: valid
+    - with the windows: answered valid, which does not honour the SHOULD this member tests (expected when honoured: invalid key_outside_validity_window)
+vc4b43c5739979581    indeterminate  NOT-HONOURED  windows: valid; no windows: valid
+    - with the windows: answered valid, which does not honour the SHOULD this member tests (expected when honoured: invalid key_outside_validity_window)
+vcc3cdb871ff27027    accept         PASS          windows: valid; no windows: valid
+ve116653dd041dda0    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid signature_invalid, answered valid
+    ! with the windows: expected invalid signature_invalid, answered valid
+ve24bce7210cacee9    reject         FAIL          windows: valid; no windows: valid
+    ! without the windows: expected invalid chain_link_mismatch, answered valid
+    ! with the windows: expected invalid chain_link_mismatch, answered valid
+vea8370fb85e1b4b1    accept         PASS          windows: valid; no windows: valid
+totals: 25 vectors, 14 pass, 3 not honouring a SHOULD, 0 closing a gap, 8 fail; report written to conformance-report.json
+verifier: python3 /tmp/rs/always_valid.py ran on 25 of 25 vectors

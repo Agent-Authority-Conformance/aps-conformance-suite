@@ -239,6 +239,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0` | [`SOURCE.md`](interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
 | `interop/priorseal-aps-payment-limit-d749d269` | [`run-report.md`](interop/priorseal-aps-payment-limit-d749d269/run-report.md) |
+| `interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376` | [`RUN.md`](interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376/RUN.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
