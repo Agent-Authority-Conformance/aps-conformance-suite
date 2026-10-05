@@ -27,6 +27,14 @@ Three runs wrote a byte-identical report, SHA-256
 | author-produced or independent | author-produced. The runner wrote `jcs-admit`. Its own parser builds the value it hands to `serde_json_canonicalizer` 0.3.2 for serialization, so the crate as a whole is the recomputation implementation. The runner also wrote the runner script |
 | suspected defective vectors | none |
 
+## Pinned version
+
+Issue #137 reported a run of `jcs-admit` 0.1.0; this record pins 0.1.1, the current release. Between the two
+published crates (https://crates.io/crates/jcs-admit/0.1.0 and https://crates.io/crates/jcs-admit/0.1.1),
+`src/` differs in one line, the `html_root_url` documentation attribute in `src/lib.rs`. 0.1.1 lowers the
+`serde` requirement from 1.0.229 to 1.0.100 and adds tests and CI, as the 0.1.1 entry of the crate's
+`CHANGELOG.md` states. The canonicalization code is the same in both.
+
 ## Input bytes
 
 `jcs-admit` decides on raw bytes before any decode. The runner hands it each vector's `input` exactly as the
