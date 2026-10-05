@@ -8,7 +8,9 @@
 // APS verifier primitives - verifyDelegation (signature / expiry / notBefore /
 // revocation / depth) and scopeCovers (monotonic narrowing). The decision is
 // real SDK output; this runner only adapts inputs and asserts the expected
-// result + reason code per vector.
+// result + reason code per vector. It also reads the SDK's per-node `valid`
+// flag and fails a vector when that flag disagrees with the node-level
+// conditions the decision was derived from.
 //
 // The repo's existing fixtures use tsx runner scripts (see
 // fixtures/composition/*/verify.ts), not vitest; this runner follows that
@@ -18,8 +20,21 @@
 // V4 note: revocation is consulted WHEN THE CHAIN IS VERIFIED (check-time
 // cascade). A revoked parent invalidates the child subtree in the same
 // verification pass - not on a later lookup. Matches NEG-STALE-REVOCATION.
+//
+// Revocation input is fixture-supplied revocation state: the status written in
+// each vector's revocation_check object, handed to the SDK as
+// cachedRevocationState. It is never live revocation resolution. No endpoint is
+// queried, and AAE's revocation_check (an HTTPS URI template) is not read as one.
+//
+// Clock: verifyDelegation reads Date.now() for expiry, notBefore and evidence
+// freshness and takes no evaluation-instant option, so this runner reads the
+// same clock (Date.now) for checkedAt. Results for time-bounded vectors (V3)
+// depend on when the runner is executed.
+//
+// The functions below are exported for runners/ts/aae-envelope-revocation-evidence.test.ts;
+// the vector walk at the bottom runs only when this file is the entry point.
 
-import { readFileSync } from 'node:fs'
+import { readFileSync, realpathSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -34,13 +49,13 @@ const { generateKeyPair, canonicalize, sign, verifyDelegation, scopeCovers } =
   await import(SDK)
 
 // ── AAE envelope types (the bits we read) ──
-interface AaeValidity {
+export interface AaeValidity {
   not_before: string
   not_after: string
   single_use: boolean
   revocation_check: { mechanism?: string; status?: string; revoked_at?: string }
 }
-interface AaeCredential {
+export interface AaeCredential {
   vc_id: string
   issuer: string
   subject: string
@@ -51,7 +66,7 @@ interface AaeCredential {
   constraints?: Record<string, unknown>
   validity: AaeValidity
 }
-interface AaeEnvelope {
+export interface AaeEnvelope {
   vector_id: string
   expected_result: 'ACCEPT' | 'REJECT'
   expected_reason_code: string | null
@@ -62,10 +77,14 @@ interface AaeEnvelope {
   chain: AaeCredential[]
 }
 
-interface Decision {
+export interface Decision {
   result: 'ACCEPT' | 'REJECT'
   reason: string | null
   reason_code: string | null
+  // Per-node SDK `valid` flags, and every node where `valid` disagrees with the
+  // node-level flags this runner decides from. A non-empty list fails the vector.
+  valid: boolean[]
+  disagreements: string[]
 }
 
 // ── Adapter: one AAE credential -> one signed APS delegation ──
@@ -80,7 +99,7 @@ function keyFor(did: string, cache: KeyCache) {
   return cache[did]
 }
 
-function aaeToApsDelegation(
+export function aaeToApsDelegation(
   cred: AaeCredential,
   cache: KeyCache,
   currentDepth: number,
@@ -105,26 +124,94 @@ function aaeToApsDelegation(
   return { ...unsigned, signature }
 }
 
+// ── Fixture-supplied revocation state ──
+// Maps a vector's revocation_check.status to the cachedRevocationState handed
+// to verifyDelegation. This is fixture-supplied revocation state, not live
+// revocation resolution:
+//   "active"  -> { revoked: false, checkedAt }  (fresh evidence of not revoked)
+//   "revoked" -> { revoked: true,  checkedAt }
+//   missing or any other value -> undefined (absent evidence). Under
+//   fail_closed the SDK then reports the node invalid, failClosed rejects the
+//   chain, and validAgreement fails the vector. This is not relaxed to make a vector pass.
+export type FixtureRevocationState = { revoked: boolean; checkedAt: string } | undefined
+export function fixtureRevocationState(status: unknown, checkedAt: string): FixtureRevocationState {
+  if (status === 'active') return { revoked: false, checkedAt }
+  if (status === 'revoked') return { revoked: true, checkedAt }
+  return undefined
+}
+
 // ── Chain verifier: runs APS's existing checks, cascades parent -> child ──
-function verifyChain(env: AaeEnvelope): Decision {
+// `revocationState` defaults to fixtureRevocationState; the regression test
+// substitutes the pre-6fa874a mapping to show what that mapping produced.
+export function verifyChain(
+  env: AaeEnvelope,
+  revocationState: (status: unknown, checkedAt: string) => FixtureRevocationState = fixtureRevocationState,
+): Decision {
   const cache: KeyCache = {}
   const creds = env.chain
-  const nowISO = new Date().toISOString()
+  // Same clock as verifyDelegation (Date.now), so a freshness check never
+  // compares two different clock sources.
+  const nowISO = new Date(Date.now()).toISOString()
 
   const dels = creds.map((c, i) =>
     aaeToApsDelegation(c, cache, i === 0 ? 0 : (c.depth ?? i), c.max_depth ?? 2),
   )
 
-  // Per-node APS verification. Revocation state is supplied at verification
-  // time from the AAE revocation_check (check-time, stateless cache input).
-  const statuses = creds.map((c, i) => {
-    const revoked = c.validity?.revocation_check?.status === 'revoked'
-    return verifyDelegation(dels[i], {
-      revocationCheckPolicy: 'fail_closed',
-      cachedRevocationState: revoked ? { revoked: true, checkedAt: nowISO } : undefined,
-    })
-  })
+  const statuses = verifyNodes(creds, dels, nowISO, revocationState)
+  return {
+    ...failClosed(decideChain(creds, dels, statuses), creds, statuses),
+    ...validAgreement(statuses, creds),
+  }
+}
 
+// Per-node APS verification with fixture-supplied revocation state (see
+// fixtureRevocationState). Policy is fail_closed throughout.
+export function verifyNodes(
+  creds: AaeCredential[],
+  dels: Array<ReturnType<typeof aaeToApsDelegation>>,
+  checkedAt: string,
+  revocationState: (status: unknown, checkedAt: string) => FixtureRevocationState = fixtureRevocationState,
+): Array<Record<string, any>> {
+  return creds.map((c, i) =>
+    verifyDelegation(dels[i], {
+      revocationCheckPolicy: 'fail_closed',
+      cachedRevocationState: revocationState(c.validity?.revocation_check?.status, checkedAt),
+    }),
+  )
+}
+
+// Per-node internal consistency guard. decideChain reads errors / expired /
+// revoked / notYetValid / depthExceeded. The SDK also reports `valid`
+// (errors.length === 0). For each node, `valid` must equal "none of the named
+// node-level reject conditions fired"; if it does not, the SDK saw something
+// this runner has no named condition for (absent revocation evidence is the
+// known case), and the vector fails regardless of the decision it reached.
+// The guard is per node only. It never compares a node's `valid` with the
+// chain verdict: individually valid nodes can still form a scope-widening or
+// broken chain, so all-valid nodes do not imply ACCEPT.
+export function validAgreement(statuses: Array<Record<string, any>>, creds: AaeCredential[]) {
+  const valid = statuses.map((s) => s.valid === true)
+  const disagreements: string[] = []
+  statuses.forEach((s, i) => {
+    const nodeReject =
+      s.errors.includes('Invalid delegation signature') ||
+      s.expired || s.revoked || s.notYetValid || s.depthExceeded
+    if (valid[i] === Boolean(nodeReject)) {
+      disagreements.push(
+        `node ${i} (${creds[i].vc_id}): SDK valid=${valid[i]} but derived node ${nodeReject ? 'reject' : 'ok'}; errors=${JSON.stringify(s.errors)}`,
+      )
+    }
+  })
+  return { valid, disagreements }
+}
+
+export type BaseDecision = Omit<Decision, 'valid' | 'disagreements'>
+
+export function decideChain(
+  creds: AaeCredential[],
+  dels: Array<ReturnType<typeof aaeToApsDelegation>>,
+  statuses: Array<Record<string, any>>,
+): BaseDecision {
   // 1. Chain-link continuity: child.delegator_did/issuer == parent.subject,
   //    and the keys actually chain (child.delegatedBy == parent.delegatedTo).
   for (let i = 1; i < creds.length; i++) {
@@ -180,53 +267,82 @@ function verifyChain(env: AaeEnvelope): Decision {
   return { result: 'ACCEPT', reason: null, reason_code: null }
 }
 
-// ── Run all four vectors ──
-const VECTORS = [
+// Fail closed on any node the SDK reports invalid for a reason decideChain
+// does not name (absent revocation evidence under fail_closed is the known
+// case). decideChain alone let such a node fall through to ACCEPT; that is the
+// decision the runner reported before this step existed. Only an ACCEPT is
+// changed: a named rejection keeps its reason.
+export function failClosed(
+  base: BaseDecision,
+  creds: AaeCredential[],
+  statuses: Array<Record<string, any>>,
+): BaseDecision {
+  if (base.result !== 'ACCEPT') return base
+  for (let i = 0; i < statuses.length; i++) {
+    if (statuses[i].valid !== true) {
+      return { result: 'REJECT', reason: `node ${i} (${creds[i].vc_id}) invalid in the SDK: ${JSON.stringify(statuses[i].errors)}`, reason_code: 'NODE_INVALID' }
+    }
+  }
+  return base
+}
+
+// ── Run all four vectors (only when executed directly) ──
+export const VECTORS = [
   'V1-narrowing-valid.json',
   'V2-widened-scope-reject.json',
   'V3-expired-parent-reject.json',
   'V4-revoked-parent-cascade-reject.json',
 ]
 
-console.log(`aae-envelope: running ${VECTORS.length} chain-envelope vector(s) against the shipped APS verifier\n`)
+const isEntry =
+  process.argv[1] !== undefined &&
+  realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))
 
-let failures = 0
-const summary: Array<Record<string, unknown>> = []
+if (isEntry) {
+  console.log(`aae-envelope: running ${VECTORS.length} chain-envelope vector(s) against the shipped APS verifier\n`)
 
-for (const file of VECTORS) {
-  const env = JSON.parse(readFileSync(join(__dirname, file), 'utf8')) as AaeEnvelope
-  const decision = verifyChain(env)
+  let failures = 0
+  const summary: Array<Record<string, unknown>> = []
 
-  const resultOk = decision.result === env.expected_result
-  const codeOk = (decision.reason_code ?? null) === (env.expected_reason_code ?? null)
-  const pass = resultOk && codeOk
-  if (!pass) failures++
+  for (const file of VECTORS) {
+    const env = JSON.parse(readFileSync(join(__dirname, file), 'utf8')) as AaeEnvelope
+    const decision = verifyChain(env)
 
-  const mode = env.verification_mode ?? 'enforced' // default when absent (backward compatible)
-  const tag = pass ? '\x1b[32m[PASS]\x1b[0m' : '\x1b[31m[FAIL]\x1b[0m'
-  console.log(`${tag} ${env.vector_id}`)
-  console.log(`        mode:     ${mode}`)
-  console.log(`        expected: ${env.expected_result}${env.expected_reason_code ? ` / ${env.expected_reason_code}` : ''}`)
-  console.log(`        actual:   ${decision.result}${decision.reason_code ? ` / ${decision.reason_code}` : ''}`)
-  if (decision.reason) console.log(`        reason:   ${decision.reason}`)
-  if (!pass) {
-    if (!resultOk) console.log(`        >>> RESULT MISMATCH`)
-    if (!codeOk) console.log(`        >>> REASON-CODE MISMATCH`)
+    const resultOk = decision.result === env.expected_result
+    const codeOk = (decision.reason_code ?? null) === (env.expected_reason_code ?? null)
+    const validOk = decision.disagreements.length === 0
+    const pass = resultOk && codeOk && validOk
+    if (!pass) failures++
+
+    const mode = env.verification_mode ?? 'enforced' // default when absent (backward compatible)
+    const tag = pass ? '\x1b[32m[PASS]\x1b[0m' : '\x1b[31m[FAIL]\x1b[0m'
+    console.log(`${tag} ${env.vector_id}`)
+    console.log(`        mode:     ${mode}`)
+    console.log(`        expected: ${env.expected_result}${env.expected_reason_code ? ` / ${env.expected_reason_code}` : ''}`)
+    console.log(`        actual:   ${decision.result}${decision.reason_code ? ` / ${decision.reason_code}` : ''}`)
+    if (decision.reason) console.log(`        reason:   ${decision.reason}`)
+    console.log(`        valid:    [${decision.valid.join(', ')}] (SDK valid flag per node)`)
+    if (!pass) {
+      if (!resultOk) console.log(`        >>> RESULT MISMATCH`)
+      if (!codeOk) console.log(`        >>> REASON-CODE MISMATCH`)
+      for (const d of decision.disagreements) console.log(`        >>> VALID-FLAG DISAGREEMENT: ${d}`)
+    }
+    console.log()
+
+    summary.push({
+      vector: env.vector_id,
+      verification_mode: mode,
+      expected: `${env.expected_result}${env.expected_reason_code ? '/' + env.expected_reason_code : ''}`,
+      actual: `${decision.result}${decision.reason_code ? '/' + decision.reason_code : ''}`,
+      sdk_valid: decision.valid,
+      pass,
+    })
   }
-  console.log()
 
-  summary.push({
-    vector: env.vector_id,
-    verification_mode: mode,
-    expected: `${env.expected_result}${env.expected_reason_code ? '/' + env.expected_reason_code : ''}`,
-    actual: `${decision.result}${decision.reason_code ? '/' + decision.reason_code : ''}`,
-    pass,
-  })
+  console.log('summary:', JSON.stringify(summary, null, 2))
+  if (failures > 0) {
+    console.error(`\naae-envelope: ${failures}/${VECTORS.length} vector(s) FAILED`)
+    process.exit(1)
+  }
+  console.log(`\naae-envelope: all ${VECTORS.length} vector(s) decided as expected by the APS verifier`)
 }
-
-console.log('summary:', JSON.stringify(summary, null, 2))
-if (failures > 0) {
-  console.error(`\naae-envelope: ${failures}/${VECTORS.length} vector(s) FAILED`)
-  process.exit(1)
-}
-console.log(`\naae-envelope: all ${VECTORS.length} vector(s) decided as expected by the APS verifier`)

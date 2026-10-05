@@ -103,3 +103,41 @@ python3 crossverify.py
 # MoltyCel's own suite (overlapping 02/06/07/11)
 cd /tmp/aae-moltycel && python3 examples/python-verify.py
 ```
+
+## Clarification, 2026-10-05
+
+Appended under CONTRIBUTING's rule for files not covered by a published digest set.
+The text above is unchanged and stays as the dated record of what was run.
+
+- **"All four pass" above** was produced by the runner at `f8d6eb4` or earlier. That
+  runner supplied revocation evidence only for `revoked` under `fail_closed`, so the
+  SDK reported every `active` node `valid: false`, and the runner still decided V1
+  ACCEPT because it did not read `valid`. The corrected runner and its run at
+  `910b56c` (`agent-passport-system` 7.1.0, exit 0, 2026-10-05T21:03:37Z) are recorded
+  in [`README.md`](./README.md#clarification-2026-10-05-scope-revocation-input-v3-section-references).
+  Revocation input there is fixture-supplied revocation state, never live revocation
+  resolution.
+- **The canonical V1 to V4 and the cross-encoded set differ.** The canonical vectors
+  carry `constraints.resource`, which makes them non-conforming AAE input under AAE -02
+  section 2.3 and section 5 step 7. The cross-encoded `moltycel-format/` files carry
+  empty `constraints`. The agreement rows above were produced with the cross-encoded
+  set and MoltyCel's verifier, and were not re-run for this note. MoltyCel's own run of
+  the canonical vectors is reported on
+  [decentralized-identity/trusted-ai-agents#37](https://github.com/decentralized-identity/trusted-ai-agents/issues/37#issuecomment-6002011527).
+  In MoltyCel's reported modified run, removing resource made the compared decisions
+  agree.
+- **V3.** Its child window (to 2030-01-01T00:00:00Z) does not nest inside the parent's
+  (to 2026-03-01T00:00:00Z), which AAE -02 section 3 and section 5 step 9 require. The
+  APS adapter does not compare the two windows, so at 2026-02-01T00:00:00Z it accepts
+  V3. The APS verdict in the V3 row holds only for evaluation instants after
+  2026-03-01T00:00:00Z. The cross-encoded `aae-vector-93` does not nest either (child
+  `not_after` 2026-05-20T16:00:00Z, parent 2026-05-20T10:00:00Z, evaluated at the
+  vector's `current_time` 2026-05-20T12:00:00Z); it was not re-run for this note.
+  Details in the README clarification.
+- **Section references** above use `draft-kroehl-agentic-trust-aae-00` numbering. In
+  `draft-kroehl-agentic-trust-aae-02` (2026-09-06): §2.4, §3 and §5 steps 3 and 9 keep
+  their numbers; -00 §6.5 Delegation Revocation is -02 §7.5. Difference 2 quotes -00
+  §6.5, where the relying-party cascade is a SHOULD. In -02 §7.5, a relying party that
+  has determined a parent is revoked MUST treat every descendant as invalid.
+
+Related: [MoltyCel/aae-conformance-vectors#19](https://github.com/MoltyCel/aae-conformance-vectors/issues/19).
