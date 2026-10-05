@@ -1,0 +1,712 @@
+{
+ "suite_commit": "da95834aacbb5b5550872fc85f51d067652c9e7f",
+ "checker": {
+  "package": "cryptovalid-opencore",
+  "version": "0.17.0",
+  "tag": "v0.17.0",
+  "commit": "db7cabf",
+  "python": "3.11.2",
+  "cryptography": "50.0.1"
+ },
+ "fixture_sha256": {
+  "canonical-bytes/canonical-bytes-jcs-v1.json": {
+   "sha256": "914803e87ce165f59958835519b30274623f2afab9a8ef5059bd2902ff0c9a8a",
+   "manifest": "914803e87ce165f59958835519b30274623f2afab9a8ef5059bd2902ff0c9a8a",
+   "match": true
+  },
+  "canonical-bytes/canonical-bytes-jcs-v2.json": {
+   "sha256": "9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593",
+   "manifest": "9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593",
+   "match": true
+  },
+  "actionref-canonical/actionref-canonical-fixture-v1.json": {
+   "sha256": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
+   "manifest": "8dae334a5177e79ce2caef325c8c59e3be68c99aa89886cdf548d7edbb9f454d",
+   "match": true
+  },
+  "accountability-record/accountability-record-fixture-v1.json": {
+   "sha256": "536a952ebade9c8bfc7e0437d943e5157361cd8bcde83c1983cc8d7d4c865d14",
+   "manifest": "536a952ebade9c8bfc7e0437d943e5157361cd8bcde83c1983cc8d7d4c865d14",
+   "match": true
+  }
+ },
+ "vectors": [
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "float-tenth",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a302e317d",
+    "sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a302e317d",
+    "sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "float-1e21-boundary",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a31652b32317d",
+    "sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a31652b32317d",
+    "sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "negative-zero",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a307d",
+    "sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a307d",
+    "sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "integer-above-2pow53",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a393030373139393235343734303939347d",
+    "sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a393030373139393235343734303939347d",
+    "sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "small-exponent-vs-decimal",
+   "expected": {
+    "bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+    "sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1"
+   },
+   "observed": {
+    "bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+    "sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "astral-key-ordering",
+   "expected": {
+    "bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+    "sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047"
+   },
+   "observed": {
+    "bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+    "sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "nfd-key-used-as-given",
+   "expected": {
+    "bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+    "sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df"
+   },
+   "observed": {
+    "bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+    "sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v1",
+   "vector": "nested-object-and-array",
+   "expected": {
+    "bytes_hex": "7b22617272223a5b332c312c325d2c226f75746572223a7b2261223a312c2262223a327d7d",
+    "sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3"
+   },
+   "observed": {
+    "bytes_hex": "7b22617272223a5b332c312c325d2c226f75746572223a7b2261223a312c2262223a327d7d",
+    "sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "float-tenth",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a302e317d",
+    "sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a302e317d",
+    "sha256": "097a678e9d1339735cc744964f1c2b1271b2e650d7c59c72d2ff1c93064ceb6e"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "float-1e21-boundary",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a31652b32317d",
+    "sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a31652b32317d",
+    "sha256": "776bf0d292f3767fdfca3fdc9683d0ba51886b8e6e79cd228a41bafcfa9a1a6f"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "negative-zero",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a307d",
+    "sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a307d",
+    "sha256": "23d7b286bd429460b92a2a1c21b6afc34110446c5034c17363fda363aa0a7c5d"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "integer-above-2pow53",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a393030373139393235343734303939347d",
+    "sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a393030373139393235343734303939347d",
+    "sha256": "ab21889a153140e1e3f9d33a98584898dad088dd462faa45c36b5686cf76aee3"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "small-exponent-vs-decimal",
+   "expected": {
+    "bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+    "sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1"
+   },
+   "observed": {
+    "bytes_hex": "7b22646563223a302e3030303030312c22657870223a31652d377d",
+    "sha256": "4ecf258561293513519a28337ef76c2ebb21c28cbcb13cf2def91616edab7de1"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "astral-key-ordering",
+   "expected": {
+    "bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+    "sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047"
+   },
+   "observed": {
+    "bytes_hex": "7b22f09d8c86223a322c22efbda1223a317d",
+    "sha256": "0ed25e94bd02f7ca63a6019a9671e12af3ce4b0ed0233c786ea424c9dd322047"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "nfd-key-used-as-given",
+   "expected": {
+    "bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+    "sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df"
+   },
+   "observed": {
+    "bytes_hex": "7b2263616665cc81223a312c22706c61696e223a327d",
+    "sha256": "05ba6cbd8fd6ef6e0b64b4cb3d907bb9521369d0f50cb31d55e002460eef77df"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "nested-object-and-array",
+   "expected": {
+    "bytes_hex": "7b22617272223a5b332c312c325d2c226f75746572223a7b2261223a312c2262223a327d7d",
+    "sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3"
+   },
+   "observed": {
+    "bytes_hex": "7b22617272223a5b332c312c325d2c226f75746572223a7b2261223a312c2262223a327d7d",
+    "sha256": "be6fc370ca7efc25ae4b5ee7736507cbbac8fbc8278cb3371d1b8020a2bd0ca3"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "integer-2pow60-inside-int64",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a313135323932313530343630363834373030307d",
+    "sha256": "001814306319dfed540de7a22f61e88baf0288ebe916380796e8995d5db5eb00"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a313135323932313530343630363834373030307d",
+    "sha256": "001814306319dfed540de7a22f61e88baf0288ebe916380796e8995d5db5eb00"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "canonical-bytes/jcs-v2",
+   "vector": "integer-2pow68-above-int64",
+   "expected": {
+    "bytes_hex": "7b2276616c7565223a3239353134373930353137393335323833303030307d",
+    "sha256": "57c82398dfd8be4a4ac903d1d2d01beee4c1d7179c9a5afc574bdf972646783b"
+   },
+   "observed": {
+    "bytes_hex": "7b2276616c7565223a3239353134373930353137393335323833303030307d",
+    "sha256": "57c82398dfd8be4a4ac903d1d2d01beee4c1d7179c9a5afc574bdf972646783b"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "plain-single-scope-ascii",
+   "expected": {
+    "action_ref": "c3828feae93209059a038cd3a39c088493a68e1099a6b4dba3cac0223f66c3bf",
+    "canonical_scope_order": [
+     "repo:write"
+    ]
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "c3828feae93209059a038cd3a39c088493a68e1099a6b4dba3cac0223f66c3bf",
+     "canonical_scope_order": [
+      "repo:write"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": true,
+     "action_ref": "c3828feae93209059a038cd3a39c088493a68e1099a6b4dba3cac0223f66c3bf",
+     "canonical_scope_order": [
+      "repo:write"
+     ]
+    }
+   },
+   "result": "match",
+   "note": "identical in both modes"
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "unsorted-multi-scope-ascii",
+   "expected": {
+    "action_ref": "9f49b6ea908b45f428f554085f57e2f4ec462c87f393d8797d07c29152502c3c",
+    "canonical_scope_order": [
+     "admin:keys",
+     "commerce:read",
+     "repo:write"
+    ]
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "9f49b6ea908b45f428f554085f57e2f4ec462c87f393d8797d07c29152502c3c",
+     "canonical_scope_order": [
+      "admin:keys",
+      "commerce:read",
+      "repo:write"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": true,
+     "action_ref": "9f49b6ea908b45f428f554085f57e2f4ec462c87f393d8797d07c29152502c3c",
+     "canonical_scope_order": [
+      "admin:keys",
+      "commerce:read",
+      "repo:write"
+     ]
+    }
+   },
+   "result": "match",
+   "note": "identical in both modes"
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "nfd-scope-normalizes-to-nfc",
+   "expected": {
+    "action_ref": "8f89060853f7e50fbfaabc5277e025355eb274d7b3fd5e6ed5bb0aa02bb93f92",
+    "canonical_scope_order": [
+     "caf\u00e9:read"
+    ]
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "8f89060853f7e50fbfaabc5277e025355eb274d7b3fd5e6ed5bb0aa02bb93f92",
+     "canonical_scope_order": [
+      "caf\u00e9:read"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": true,
+     "action_ref": "8f89060853f7e50fbfaabc5277e025355eb274d7b3fd5e6ed5bb0aa02bb93f92",
+     "canonical_scope_order": [
+      "caf\u00e9:read"
+     ]
+    }
+   },
+   "result": "match",
+   "note": "identical in both modes"
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "astral-scope-orders-after-bmp-high",
+   "expected": {
+    "action_ref": "2adf3d32f65a24aa65f29f595be88fbd91fccbb980e14ea36a2be2f61bdba433",
+    "canonical_scope_order": [
+     "scope:\uff21",
+     "scope:\ud801\udc00"
+    ]
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "2adf3d32f65a24aa65f29f595be88fbd91fccbb980e14ea36a2be2f61bdba433",
+     "canonical_scope_order": [
+      "scope:\uff21",
+      "scope:\ud801\udc00"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": true,
+     "action_ref": "2adf3d32f65a24aa65f29f595be88fbd91fccbb980e14ea36a2be2f61bdba433",
+     "canonical_scope_order": [
+      "scope:\uff21",
+      "scope:\ud801\udc00"
+     ]
+    }
+   },
+   "result": "match",
+   "note": "identical in both modes"
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "negative-duplicate-scope-raw",
+   "expected": {
+    "expected_verification": false,
+    "rejection_kind": "duplicate_scope_required",
+    "label": "implementation-specific (README at da95834)"
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "4a3ccb54936fefc034cfea340aebc514020d1fdc2006d4a7d7cca8967ad630c8",
+     "canonical_scope_order": [
+      "repo:write",
+      "repo:write"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": false,
+     "rejected": "duplicate scope after NFC (rule of -03 \u00a74.1, applied on request)"
+    }
+   },
+   "result": "match",
+   "note": "draft-01 reading accepts (no duplicate rule in -01); the implementation-specific option rejects, as the family now labels it"
+  },
+  {
+   "family": "actionref-canonical",
+   "vector": "negative-duplicate-scope-nfc-collision",
+   "expected": {
+    "expected_verification": false,
+    "rejection_kind": "duplicate_scope_required",
+    "label": "implementation-specific (README at da95834)"
+   },
+   "observed": {
+    "draft-01": {
+     "accepted": true,
+     "action_ref": "1e60c15732a1b3bc39d997641d96a1faf818fe7aae72a75edc3bce597eac7ad3",
+     "canonical_scope_order": [
+      "caf\u00e9:read",
+      "caf\u00e9:read"
+     ]
+    },
+    "reject_duplicate_scopes": {
+     "accepted": false,
+     "rejected": "duplicate scope after NFC (rule of -03 \u00a74.1, applied on request)"
+    }
+   },
+   "result": "match",
+   "note": "draft-01 reading accepts (no duplicate rule in -01); the implementation-specific option rejects, as the family now labels it"
+  },
+  {
+   "family": "accountability-record",
+   "vector": "allow-executed-settled",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "deny-no-settlement",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "halt",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "detached-payload",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "unverified (detached)"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": false,
+    "why": "schema, signature (detached payload: not verified)"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "negative-tampered-payload",
+   "expected": {
+    "verifies": false,
+    "rejection_kind": "digest_mismatch",
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": false,
+    "layer": "digest_mismatch",
+    "payload_verified": null,
+    "why": "SHA-256(JCS(action)) != action_digest.sha256"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "negative-wrong-key",
+   "expected": {
+    "verifies": false,
+    "rejection_kind": "signature",
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": false,
+    "layer": "signature",
+    "payload_verified": null,
+    "why": "Ed25519 over JCS(record without sig) does not verify"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "negative-schema-decision",
+   "expected": {
+    "verifies": false,
+    "rejection_kind": "schema",
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": false,
+    "layer": "schema",
+    "payload_verified": null,
+    "why": "decision is not one of allow, deny, halt"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "negative-type-relabel",
+   "expected": {
+    "verifies": false,
+    "rejection_kind": "signature",
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": false,
+    "layer": "schema",
+    "payload_verified": null,
+    "why": "record_type is not the const accountability_record"
+   },
+   "result": "match",
+   "note": "rejected at layer 'schema', the vector names 'signature'"
+  },
+  {
+   "family": "accountability-record",
+   "vector": "positive-deny-executed",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "positive-collision-same-second-a",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "positive-collision-same-second-b",
+   "expected": {
+    "verifies": true,
+    "rejection_kind": null,
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": true,
+    "layer": null,
+    "payload_verified": true,
+    "why": "schema, signature, action_digest and action_ref"
+   },
+   "result": "match",
+   "note": ""
+  },
+  {
+   "family": "accountability-record",
+   "vector": "negative-sig-alg-lowercase",
+   "expected": {
+    "verifies": false,
+    "rejection_kind": "schema",
+    "payload": "inline"
+   },
+   "observed": {
+    "verifies": false,
+    "layer": "schema",
+    "payload_verified": null,
+    "why": "sig_alg is not the const Ed25519"
+   },
+   "result": "match",
+   "note": ""
+  }
+ ],
+ "controls": [
+  {
+   "family": "canonical-bytes",
+   "control": "json.dumps(sort_keys) instead of JCS (code-point key order, Python numbers)",
+   "match": "12/18",
+   "expected": "fewer than 18"
+  },
+  {
+   "family": "actionref-canonical",
+   "control": "scopeRequired sorted by UTF-16 code units",
+   "match": "3/6",
+   "expected": "fewer than 6"
+  },
+  {
+   "family": "actionref-canonical",
+   "control": "no NFC normalisation",
+   "match": "3/6",
+   "expected": "fewer than 6"
+  },
+  {
+   "family": "accountability-record",
+   "control": "first signature byte flipped on every record",
+   "match": "5/12",
+   "expected": "fewer than 12"
+  },
+  {
+   "family": "accountability-record",
+   "control": "sig removed",
+   "match": "5/12",
+   "expected": "fewer than 12"
+  },
+  {
+   "family": "accountability-record",
+   "control": "inline action.type altered (digest must break)",
+   "match": "6/12",
+   "expected": "fewer than 12"
+  },
+  {
+   "family": "accountability-record",
+   "control": "verified under the fixture's wrong_keypair public key",
+   "match": "4/12",
+   "expected": "fewer than 12"
+  }
+ ],
+ "summary": {
+  "canonical-bytes": "18/18",
+  "actionref-canonical": "6/6",
+  "accountability-record": "12/12",
+  "accountability_rejection_layer_as_named": "4/5"
+ }
+}
