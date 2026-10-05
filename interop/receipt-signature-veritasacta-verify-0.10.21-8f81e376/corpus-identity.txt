@@ -1,0 +1,7 @@
+shipped corpus: venv13/lib/python3.13/site-packages/agent_evidence_vectors/corpora/vectors-receipt-signature
+pinned tree: probityai/agent-evidence-vectors 8f81e376bcbf58ff0a27ff97a633e0481b148f79 vectors-receipt-signature/
+diff -rq (excluding __pycache__ and the run's own conformance-report.json):
+Only in aev/vectors-receipt-signature: digest.py
+Only in aev/vectors-receipt-signature: gen_vectors.py
+Only in aev/vectors-receipt-signature: tools
+The comparison lists only tooling files present in the pinned tree and not shipped. Every shipped corpus file is byte-identical to its pinned counterpart.
