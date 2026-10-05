@@ -41,5 +41,90 @@
       "aps_reason_code": "DELEGATION_REVOKED",
       "aps_reference": "tests/conformance/golden-fixtures/NEG-STALE-REVOCATION.json; verifyDelegation with cachedRevocationState marks the node revoked at check time"
     }
-  ]
+  ],
+  "clarification_2026_10_05": {
+    "note": "Appended 2026-10-05 under CONTRIBUTING's rule for files not covered by a published digest set. Every member above is unchanged. aae_section values above use draft-kroehl-agentic-trust-aae-00 numbering. README.md section 'Clarification, 2026-10-05' has the full text.",
+    "what_these_are": "APS-encoded vectors in the AAE chain-envelope shape, authored in this repository at 1e75a47, decided by the APS verifier through the adapter in verify.ts. Not AAE-conformant envelopes and not decided by an AAE verifier.",
+    "constraints_resource": "Every vector, parent and child, carries constraints.resource. It is not an AAE constraint type and has no required member, so AAE -02 section 2.3 and section 5 step 7 treat it as an unrecognized required constraint: every vector is non-conforming AAE input as published. Vector files are not edited.",
+    "revocation_check": "AAE -02 section 2.4 defines revocation_check as an HTTPS URI template. The vectors carry an inline status object. verify.ts maps it to fixture-supplied revocation state (active -> fresh revoked:false, revoked -> revoked:true, missing or unrecognized -> absent evidence, rejected under fail_closed). Never live revocation resolution.",
+    "external_run_reported": {
+      "by": "MoltyCel",
+      "record": "https://github.com/decentralized-identity/trusted-ai-agents/issues/37#issuecomment-6002011527",
+      "reported_at": "2026-10-05T20:03:23Z",
+      "suite_commit": "5500a562",
+      "vectors_from_commit": "1e75a47",
+      "aae_reference_verifier_commit": "531f880",
+      "original_vectors": "all four REJECT at step 7, unrecognized_required_constraint",
+      "modified_variant": "In MoltyCel's reported modified run, removing resource made the compared decisions agree: V1 ACCEPT, V2 delegated_actions_not_subset, V3 expired_not_after, V4 ancestor_revoked. The modified variant is MoltyCel's, not a file in this directory.",
+      "reproduced_here": false
+    },
+    "runner_correction": {
+      "defect": "At f8d6eb4 and earlier, verify.ts requested fail_closed but supplied revocation evidence only for revoked. Active nodes were SDK valid=false (fail_closed: no revocation evidence supplied) while the runner decided V1 ACCEPT and reported 4/4. Earlier 4/4 records are kept as that runner's output.",
+      "commits": {
+        "6fa874a": "active status supplied as fresh revoked:false evidence",
+        "fa276f5": "SDK valid flag read per node; per-node consistency guard, not compared with the chain verdict",
+        "78f666f": "SDK-invalid node with no named reason rejects the chain (NODE_INVALID); mapping labeled fixture-supplied revocation state",
+        "910b56c": "regression test runners/ts/aae-envelope-revocation-evidence.test.ts, wired into npm test"
+      }
+    },
+    "run_910b56c": {
+      "revision": "910b56ccf21a80904dd084c26362f621d6e8b75e",
+      "sdk": "agent-passport-system 7.1.0 (installed, pinned in package.json)",
+      "node": "v24.11.1",
+      "command": "node --import tsx interop/aae-envelope/verify.ts",
+      "exit_code": 0,
+      "checked_at": "2026-10-05T21:03:37Z",
+      "results": {
+        "V1-narrowing-valid": "ACCEPT, sdk_valid [true, true]",
+        "V2-widened-scope-reject": "REJECT/SCOPE_WIDENING, sdk_valid [true, true]",
+        "V3-expired-parent-reject": "REJECT/DELEGATION_EXPIRED, sdk_valid [false, true]",
+        "V4-revoked-parent-cascade-reject": "REJECT/DELEGATION_REVOKED, sdk_valid [false, true]"
+      },
+      "classification": "author-produced, Mode A (APS verifier through the adapter); not an AAE verification"
+    },
+    "v3_masked_gap": {
+      "windows": "parent 2026-01-01T00:00:00Z to 2026-03-01T00:00:00Z; child 2026-01-01T00:00:00Z to 2030-01-01T00:00:00Z",
+      "aae_requirement": "AAE -02 section 3 (Validity) and section 5 step 9: child window MUST nest inside the parent's. V3's child does not.",
+      "aae_path_reason": "Per MoltyCel's report, on the AAE verification path a run dated before 2026-03-01 rejects V3 for validity widening rather than expiry. That reason belongs to the AAE path; the APS adapter has no window-nesting check.",
+      "aps_adapter_by_instant": {
+        "2025-12-01T00:00:00Z": "REJECT/DELEGATION_NOT_YET_VALID",
+        "2026-02-01T00:00:00Z": "ACCEPT",
+        "2026-04-01T00:00:00Z": "REJECT/DELEGATION_EXPIRED"
+      },
+      "how_evaluated": "verifyDelegation (agent-passport-system 7.1.0) reads Date.now() at dist/src/core/delegation.js lines 280, 294, 332 and takes no evaluation-instant option (dist/src/core/delegation.d.ts line 116). The regression test overrides Date.now in its own process.",
+      "status": "masked interoperability gap, not a clean ancestor-expiry vector. V3 not edited; no replacement vector added in this change."
+    },
+    "aae_sections_by_revision": {
+      "drafts_read": [
+        {
+          "revision": "draft-kroehl-agentic-trust-aae-00",
+          "dated": "2026-05-21",
+          "url": "https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-00.txt",
+          "sha256": "2847f4daf3f0a088afb1bd1bd3b9c001947a9905426753673d9da8275a038b0a"
+        },
+        {
+          "revision": "draft-kroehl-agentic-trust-aae-02",
+          "dated": "2026-09-06",
+          "url": "https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.txt",
+          "sha256": "08e202ecc06d245b287e60591098c22d8af480fc88cb455defc9e7612a473b4c"
+        }
+      ],
+      "V1-narrowing-valid": {
+        "-00": "section 2.2 MANDATE, 2.3 CONSTRAINTS; actions-subset rule section 3",
+        "-02": "section 2.2 MANDATE, 2.3 CONSTRAINTS; actions-subset rule section 3 and section 5 step 9"
+      },
+      "V2-widened-scope-reject": {
+        "-00": "cited as section 6; -00 section 6 is Security Considerations; amplification section 6.4; subset rule section 3; cycle detection section 5 step 9",
+        "-02": "section 7.4 Delegation Amplification; section 3; section 5 step 9. -02 section 6 is Verdicts and Ratification"
+      },
+      "V3-expired-parent-reject": {
+        "-00": "section 2.4 VALIDITY; nesting section 3",
+        "-02": "section 2.4 VALIDITY; nesting section 3 and section 5 step 9; effective expiry is the minimum not_after over the chain (section 5 step 9)"
+      },
+      "V4-revoked-parent-cascade-reject": {
+        "-00": "section 6.5 Delegation Revocation (relying party SHOULD)",
+        "-02": "section 7.5 Delegation Revocation (relying party that has determined a parent is revoked MUST treat every descendant as invalid)"
+      }
+    }
+  }
 }
