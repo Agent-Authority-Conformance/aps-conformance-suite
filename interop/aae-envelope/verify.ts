@@ -117,11 +117,19 @@ function verifyChain(env: AaeEnvelope): Decision {
 
   // Per-node APS verification. Revocation state is supplied at verification
   // time from the AAE revocation_check (check-time, stateless cache input).
+  // Both declared statuses are evidence: "revoked" and "active" alike. Under
+  // fail_closed, a node with no evidence is invalid in the SDK's own `valid`
+  // flag, so supplying only the revoked case left every other node invalid
+  // while this runner still accepted it. Any other or missing status supplies
+  // no evidence, and the SDK reports that node invalid.
   const statuses = creds.map((c, i) => {
-    const revoked = c.validity?.revocation_check?.status === 'revoked'
+    const status = c.validity?.revocation_check?.status
     return verifyDelegation(dels[i], {
       revocationCheckPolicy: 'fail_closed',
-      cachedRevocationState: revoked ? { revoked: true, checkedAt: nowISO } : undefined,
+      cachedRevocationState:
+        status === 'revoked' || status === 'active'
+          ? { revoked: status === 'revoked', checkedAt: nowISO }
+          : undefined,
     })
   })
 
