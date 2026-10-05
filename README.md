@@ -193,6 +193,7 @@ document for provenance, pins and the verification split.
 | `fixtures/cross-stack/oracle-safety-check` | [`SOURCE.md`](fixtures/cross-stack/oracle-safety-check/SOURCE.md) |
 | `fixtures/cross-stack/receipts-aeoess` | [`SOURCE.md`](fixtures/cross-stack/receipts-aeoess/SOURCE.md) |
 | `fixtures/cross-stack/receipts-amdal` | [`SOURCE.md`](fixtures/cross-stack/receipts-amdal/SOURCE.md) |
+| `fixtures/cross-stack/tool-manifest-digest` | [`SOURCE.md`](fixtures/cross-stack/tool-manifest-digest/SOURCE.md) |
 
 ### Lab-authored regression fixtures
 

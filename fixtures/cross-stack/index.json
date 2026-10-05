@@ -84,6 +84,13 @@
       "verification": {
         "verify": "cross-stack:token-exchange-attenuation-v0:verify"
       }
+    },
+    {
+      "path": "tool-manifest-digest",
+      "kind": "external-system-family",
+      "verification": {
+        "verify": "cross-stack:tool-manifest-digest:verify"
+      }
     }
   ]
 }
