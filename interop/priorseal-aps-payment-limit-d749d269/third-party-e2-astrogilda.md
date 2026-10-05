@@ -1,6 +1,6 @@
 # Third-party implementation run record by @astrogilda
 
-A separate record for this directory. It records a run published by @astrogilda (ProbityAI) of his own checker over the pinned pair. `run-report.md`, `results/` and `independent-entry1-imokokok.md` are unchanged by this file.
+A separate record for this directory. It records a run published by @astrogilda of his own checker over the pinned pair. `run-report.md`, `results/` and `independent-entry1-imokokok.md` are unchanged by this file.
 
 | field | value |
 |---|---|
