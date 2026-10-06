@@ -68,9 +68,10 @@ requirement (lines 11322 to 11324). A verifier that cannot establish the
 association does not report the action as taken for the principal the chain
 names.
 
-**PAA-5 is the seam between the two drafts.** Under AIN-WRP 7.3 and B.7 a source
-competent for this principal, scope and domain settles the question, and here it
-settles it in the negative. The verifier has reached a conclusion, so -04 forbids
+**PAA-5 is the seam between the two drafts.** Under this fixture's profile,
+informed by AIN-WRP 7.3 and B.7, an accepted source competent for the principal,
+scope and domain can establish or contradict the association, and here it
+contradicts it. The verifier has reached a conclusion, so -04 forbids
 reporting not established for it (lines 677 to 678 and 3731 to 3733). -04 gives
 a shape to three negatives only (lines 679 to 686) and defines no artifact for
 the association (lines 11300 to 11307), so it gives this negative no shape. The
