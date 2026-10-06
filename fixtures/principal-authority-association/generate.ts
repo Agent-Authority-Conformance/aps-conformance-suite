@@ -299,13 +299,13 @@ const CASES = [
     expected: {
       ...ACCEPTED,
       association: { result: 'established', reason_code: CODES.established, aps_04_defined_shape: false },
-      boundary: { outcome: 'authorized', reason_code: CODES.boundaryAuthorized, authorized_for_named_principal: true },
+      boundary: { outcome: 'not_decided_by_fixture', reason_code: CODES.boundaryAssociationMet, authorized_for_named_principal: null },
     },
     defined_by: 'fixture-local',
     citations: ['aps-04 19.2.10 lines 11317-11321'],
     notes: [
       'Established under the fixture profile only. -04 defines no artifact for the association, so this result is fixture local as well.',
-      'Authorized here means only that the association check passes. It is subject to every other check this vector does not exercise.',
+      'The fixture decides no boundary outcome here. The association requirement is met, and authorization still depends on every check this vector does not exercise.',
     ],
   },
 ]

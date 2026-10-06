@@ -53,7 +53,7 @@ export const CODES = {
   established: 'X_FIXTURE_ASSOCIATION_ESTABLISHED',
   boundaryNotEstablished: 'X_FIXTURE_BOUNDARY_PRINCIPAL_AUTHORITY_NOT_ESTABLISHED',
   boundaryInconsistent: 'X_FIXTURE_PRINCIPAL_AUTHORITY_INCONSISTENT',
-  boundaryAuthorized: 'X_FIXTURE_BOUNDARY_AUTHORIZED_ASSOCIATION_ESTABLISHED',
+  boundaryAssociationMet: 'X_FIXTURE_BOUNDARY_ASSOCIATION_REQUIREMENT_MET',
   boundaryPrecondition: 'X_FIXTURE_BOUNDARY_BINDING_OR_ROOT_NOT_ACCEPTED',
 } as const
 
@@ -104,9 +104,9 @@ export interface CheckResult {
   root_basis: { result: 'accepted' | 'not_accepted'; sdk_state: string; sdk_failures: string[] }
   association: AssociationResult
   boundary: {
-    outcome: 'authorized' | 'denied' | 'not_established'
+    outcome: 'not_decided_by_fixture' | 'denied' | 'not_established'
     reason_code: string
-    authorized_for_named_principal: boolean
+    authorized_for_named_principal: boolean | null
   }
 }
 
@@ -258,7 +258,7 @@ export async function checkVector(inputs: VectorInputs): Promise<CheckResult> {
   out.association = evaluateAssociation(inputs, binding.principal_id, root.delegation_id)
   switch (out.association.result) {
     case 'established':
-      out.boundary = { outcome: 'authorized', reason_code: CODES.boundaryAuthorized, authorized_for_named_principal: true }
+      out.boundary = { outcome: 'not_decided_by_fixture', reason_code: CODES.boundaryAssociationMet, authorized_for_named_principal: null }
       break
     case 'inconsistent':
       out.boundary = { outcome: 'denied', reason_code: CODES.boundaryInconsistent, authorized_for_named_principal: false }

@@ -61,7 +61,7 @@ basis `accepted` (SDK state `valid`, no failures).
 | PAA-3 stale | registry A says same, evaluated after its `expires_at` | not established, limb freshness, `X_FIXTURE_ASSOCIATION_EXPIRED` | as PAA-1 |
 | PAA-4 conflict | registry A says same, registry B says different | not established, limb source, `X_FIXTURE_ASSOCIATION_SOURCES_CONFLICT` | as PAA-1 |
 | PAA-5 shown wrong | registry A says different, nothing conflicts | `inconsistent`, `aps_04_defined_shape: false`, `X_FIXTURE_ASSOCIATION_DIFFERENT_AUTHORITY_CONTEXT` | denied, `X_FIXTURE_PRINCIPAL_AUTHORITY_INCONSISTENT` |
-| PAA-6 positive control | registry A says same | `established` under the fixture profile, `X_FIXTURE_ASSOCIATION_ESTABLISHED` | authorized, `X_FIXTURE_BOUNDARY_AUTHORIZED_ASSOCIATION_ESTABLISHED`, subject to every check the case does not exercise |
+| PAA-6 positive control | registry A says same | `established` under the fixture profile, `X_FIXTURE_ASSOCIATION_ESTABLISHED` | not decided by the fixture, `X_FIXTURE_BOUNDARY_ASSOCIATION_REQUIREMENT_MET`. The association requirement is met, and authorization still depends on every check the case does not exercise |
 
 For cases 1 to 4 the boundary follows the last sentence of the 19.2.10
 requirement (lines 11322 to 11324). A verifier that cannot establish the
@@ -197,5 +197,5 @@ its author meant. It does not show anyone else would read the drafts the same wa
 - No claim about how either draft will define the association, its negative, or
   its reason codes.
 - Nothing about revocation, scope, spend or any check other than the
-  association. A positive boundary in PAA-6 is conditional on those.
+  association. PAA-6 decides no boundary outcome for that reason.
 - Nothing about the Python SDK, which this family does not use.
