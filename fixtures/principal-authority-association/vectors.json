@@ -1,0 +1,1192 @@
+{
+  "family": "principal-authority-association",
+  "status": "candidate",
+  "conformance": false,
+  "label": "candidate material, not conformance. Not in fixtures/manifest.json and not run by npm test.",
+  "authorship": "author-produced. The vectors, the expected blocks and the checker are by the same author.",
+  "fixture_local": [
+    "the association statement type x-fixture/principal-authority-association/v0",
+    "the association profile type x-fixture/principal-authority-association-profile/v0",
+    "the association values established and inconsistent",
+    "every reason code with the X_FIXTURE_ prefix"
+  ],
+  "references": {
+    "aps-04": "draft-pidlisnyi-aps-04 (line numbers refer to the published text)",
+    "AIN-WRP": "draft-tanase-ain-authoritative-resolution-00"
+  },
+  "generated_at": "2026-10-06",
+  "generator": "fixtures/principal-authority-association/generate.ts",
+  "sdk": {
+    "package": "agent-passport-system",
+    "version": "7.1.0",
+    "principal_binding_module": "dist/src/v2/identity-binding/principal-binding.js",
+    "principal_binding_module_note": "not exported from the package root in this version. Loaded by file URL."
+  },
+  "seeds": {
+    "derivation": "Ed25519 private key = SHA-256(UTF-8 of `${seed_prefix}:${label}`), hex",
+    "seed_prefix": "aps-conformance-suite:principal-authority-association",
+    "labels": {
+      "principal": "principal:v1",
+      "agent": "agent:v1",
+      "root_authority": "root-authority:v1",
+      "registry_a": "registry-a:v1",
+      "registry_b": "registry-b:v1",
+      "registry_hr": "registry-hr:v1"
+    },
+    "nonce_derivation": "first 32 hex characters of SHA-256(`${seed_prefix}:nonce:binding`) and of `nonce:root`"
+  },
+  "statement_signature": {
+    "algorithm": "Ed25519 via the SDK sign and verify",
+    "signing_input": "UTF-8 string \"X-FIXTURE-PRINCIPAL-AUTHORITY-ASSOCIATION-SIG-V0\", one U+0000, then RFC 8785 JCS of the statement without its signature member"
+  },
+  "statement_check_order": [
+    "1 shape, else X_FIXTURE_ASSOCIATION_MALFORMED (source)",
+    "2 signer listed in the profile, else X_FIXTURE_ASSOCIATION_SOURCE_UNRECOGNIZED (source). Signature verifies under its key, else X_FIXTURE_ASSOCIATION_SIGNATURE_UNVERIFIED (source)",
+    "3 principal_ref and root_ref name this binding principal and this root, else X_FIXTURE_ASSOCIATION_REFS_NOT_COVERED (coverage)",
+    "4 signer competent for the context principal, scope and domain, else X_FIXTURE_ASSOCIATION_SOURCE_NOT_COMPETENT (source)",
+    "5 issued_at not after the evaluation instant, else X_FIXTURE_ASSOCIATION_DATED_AFTER_EVALUATION (source)",
+    "6 evaluation instant before expires_at, else X_FIXTURE_ASSOCIATION_EXPIRED (freshness)"
+  ],
+  "aggregation": [
+    "no statements: not_established, source, X_FIXTURE_ASSOCIATION_NOT_PRESENTED",
+    "accepted statements disagree: not_established, source, X_FIXTURE_ASSOCIATION_SOURCES_CONFLICT",
+    "accepted statements all say different_authority_context: inconsistent, X_FIXTURE_ASSOCIATION_DIFFERENT_AUTHORITY_CONTEXT",
+    "accepted statements all say same_authority_context: established, X_FIXTURE_ASSOCIATION_ESTABLISHED",
+    "nothing accepted: not_established with the limb and reason of the statement that got furthest through the checks"
+  ],
+  "pairs": [
+    {
+      "a": "PAA-1",
+      "b": "PAA-6",
+      "element": "statement added",
+      "differing_paths": [
+        "/association_evidence/0"
+      ]
+    },
+    {
+      "a": "PAA-5",
+      "b": "PAA-6",
+      "element": "relation flipped (the signature changes with it)",
+      "differing_paths": [
+        "/association_evidence/0/relation",
+        "/association_evidence/0/signature"
+      ]
+    },
+    {
+      "a": "PAA-2",
+      "b": "PAA-6",
+      "element": "signer changed (source_id and signature change together)",
+      "differing_paths": [
+        "/association_evidence/0/signature",
+        "/association_evidence/0/source_id"
+      ]
+    },
+    {
+      "a": "PAA-3",
+      "b": "PAA-6",
+      "element": "clock moved past expiry",
+      "differing_paths": [
+        "/evaluation_instant"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "PAA-1",
+      "name": "missing",
+      "description": "No association evidence is presented. The binding and the root each verify.",
+      "inputs": {
+        "evaluation_instant": "2026-10-06T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "not_established",
+          "limb": "source",
+          "reason_code": "X_FIXTURE_ASSOCIATION_NOT_PRESENTED",
+          "aps_04_defined_shape": true
+        },
+        "boundary": {
+          "outcome": "not_established",
+          "reason_code": "X_FIXTURE_BOUNDARY_PRINCIPAL_AUTHORITY_NOT_ESTABLISHED",
+          "authorized_for_named_principal": false
+        }
+      },
+      "defined_by": "aps-04",
+      "citations": [
+        "aps-04 19.2.10 lines 11317-11324",
+        "aps-04 2.3 lines 717-724",
+        "aps-04 lines 3726-3738"
+      ],
+      "notes": [
+        "Not established is the evidential verdict of -04 lines 3726-3731: a source is missing.",
+        "The boundary does not report the action as taken for the principal the chain names (-04 19.2.10, lines 11322-11324)."
+      ]
+    },
+    {
+      "id": "PAA-2",
+      "name": "wrong-source",
+      "description": "One statement says same_authority_context. Its signer is in the profile and its signature verifies, but the profile makes that signer competent for domain hr.example, not payments.example.",
+      "inputs": {
+        "evaluation_instant": "2026-10-06T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "same_authority_context",
+            "source_id": "did:aps:example:paa-registry-hr",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "bcdc10b07440023908f8d3bf866d7e1734446f61df3453d65b4fdaea30a7611f60582e8499e1b1aed2b17700f2e2fdc46aa2837477e04a73a16555306f36360d"
+          }
+        ],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "not_established",
+          "limb": "source",
+          "reason_code": "X_FIXTURE_ASSOCIATION_SOURCE_NOT_COMPETENT",
+          "aps_04_defined_shape": true
+        },
+        "boundary": {
+          "outcome": "not_established",
+          "reason_code": "X_FIXTURE_BOUNDARY_PRINCIPAL_AUTHORITY_NOT_ESTABLISHED",
+          "authorized_for_named_principal": false
+        }
+      },
+      "defined_by": "aps-04",
+      "citations": [
+        "aps-04 2.3 lines 719-721",
+        "aps-04 lines 3726-3730",
+        "AIN-WRP 7.3",
+        "AIN-WRP B.7"
+      ],
+      "notes": [
+        "An answer from a source the model does not accept for that state names the source limb (-04 lines 719-721).",
+        "AIN-WRP 7.3 and B.7 make competence depend on principal, scope and domain. Here the domain is what fails.",
+        "A statement signed by the agent itself would stop one check earlier, as an unrecognized source. No vector exercises that."
+      ]
+    },
+    {
+      "id": "PAA-3",
+      "name": "stale",
+      "description": "A competent source said same_authority_context, but the evaluation instant is past the statement expires_at. The binding and the root are still current at that instant.",
+      "inputs": {
+        "evaluation_instant": "2026-10-21T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "same_authority_context",
+            "source_id": "did:aps:example:paa-registry-a",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "2548482dd83b4476342966561e8bffb9eefb787548a62216df0f75e73f3399e34695e540f049d8a0af261e8818f56227da804cb98c432a0957fe2190dbf24d0e"
+          }
+        ],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "not_established",
+          "limb": "freshness",
+          "reason_code": "X_FIXTURE_ASSOCIATION_EXPIRED",
+          "aps_04_defined_shape": true
+        },
+        "boundary": {
+          "outcome": "not_established",
+          "reason_code": "X_FIXTURE_BOUNDARY_PRINCIPAL_AUTHORITY_NOT_ESTABLISHED",
+          "authorized_for_named_principal": false
+        }
+      },
+      "defined_by": "aps-04",
+      "citations": [
+        "aps-04 2.3 lines 721-723",
+        "aps-04 lines 3726-3729"
+      ],
+      "notes": [
+        "Freshness: an answer existed but was older than the bound declared for its source (-04 lines 721-723)."
+      ]
+    },
+    {
+      "id": "PAA-4",
+      "name": "conflict",
+      "description": "Two competent, fresh sources disagree. Registry A says same_authority_context, registry B says different_authority_context.",
+      "inputs": {
+        "evaluation_instant": "2026-10-06T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "same_authority_context",
+            "source_id": "did:aps:example:paa-registry-a",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "2548482dd83b4476342966561e8bffb9eefb787548a62216df0f75e73f3399e34695e540f049d8a0af261e8818f56227da804cb98c432a0957fe2190dbf24d0e"
+          },
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "different_authority_context",
+            "source_id": "did:aps:example:paa-registry-b",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "3068b9be6e46bf69a623adb21a2cd45efd9fcb3a4578b68c4dc8995538226f3a7a873c8ceab1adaa4f53c4dc9e49409f052b7bb2dd8c1c3313ce078bba7a900b"
+          }
+        ],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "not_established",
+          "limb": "source",
+          "reason_code": "X_FIXTURE_ASSOCIATION_SOURCES_CONFLICT",
+          "aps_04_defined_shape": true
+        },
+        "boundary": {
+          "outcome": "not_established",
+          "reason_code": "X_FIXTURE_BOUNDARY_PRINCIPAL_AUTHORITY_NOT_ESTABLISHED",
+          "authorized_for_named_principal": false
+        }
+      },
+      "defined_by": "aps-04",
+      "citations": [
+        "aps-04 2.3 lines 720-721",
+        "aps-04 lines 3729-3730"
+      ],
+      "notes": [
+        "Two accepted sources in unresolved conflict name the source limb (-04 lines 720-721).",
+        "The profile ranks no source above another, so neither statement is discarded."
+      ]
+    },
+    {
+      "id": "PAA-5",
+      "name": "shown-wrong",
+      "description": "One competent, fresh source says different_authority_context, and nothing conflicts with it.",
+      "inputs": {
+        "evaluation_instant": "2026-10-06T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "different_authority_context",
+            "source_id": "did:aps:example:paa-registry-a",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "040231020ea030b6a82d4095d776e1eb9d65fffebe24065bbf8e4bc34e977e2873bf903879477ccd62398e6b30c18bb98ca43202670a873314be50a7470e8709"
+          }
+        ],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "inconsistent",
+          "reason_code": "X_FIXTURE_ASSOCIATION_DIFFERENT_AUTHORITY_CONTEXT",
+          "aps_04_defined_shape": false
+        },
+        "boundary": {
+          "outcome": "denied",
+          "reason_code": "X_FIXTURE_PRINCIPAL_AUTHORITY_INCONSISTENT",
+          "authorized_for_named_principal": false
+        }
+      },
+      "defined_by": "fixture-local",
+      "citations": [
+        "aps-04 lines 677-686",
+        "aps-04 lines 3731-3736",
+        "aps-04 19.2.10 lines 11300-11307",
+        "AIN-WRP 7.3",
+        "AIN-WRP B.7"
+      ],
+      "notes": [
+        "This case is the seam between the two drafts.",
+        "AIN-WRP 7.3 and B.7 let a source competent for this principal, scope and domain settle the question for the relying party, and here it settles it in the negative.",
+        "The verifier has reached a conclusion, so -04 forbids reporting not established for it (lines 677-678 and 3731-3733).",
+        "-04 gives shapes for three negatives only (lines 679-686) and defines no artifact for the association (19.2.10, lines 11300-11307), so it defines no shape for this one.",
+        "The value inconsistent and the boundary reason X_FIXTURE_PRINCIPAL_AUTHORITY_INCONSISTENT are fixture local. They are not a proposal for how either draft should define this negative."
+      ]
+    },
+    {
+      "id": "PAA-6",
+      "name": "positive-control",
+      "description": "One competent, fresh source says same_authority_context.",
+      "inputs": {
+        "evaluation_instant": "2026-10-06T12:00:00.000Z",
+        "context": {
+          "audience": "https://rp.example/payments",
+          "scope": "payments:refund",
+          "domain": "payments.example"
+        },
+        "principal_binding": {
+          "record_type": "aps.principal-binding",
+          "version": "1.0",
+          "agent_id": "did:aps:example:paa-agent",
+          "principal_id": "did:aps:example:paa-principal",
+          "verification_method": "did:aps:example:paa-principal#key-1",
+          "audiences": [
+            "https://rp.example/payments"
+          ],
+          "authority_profiles": [
+            "aps:authority-delegation:v1"
+          ],
+          "status_uri": "https://status.example/paa/principal-bindings",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "expires_at": "2027-01-01T00:00:00.000Z",
+          "nonce": "ea44612a68a5705a5ac3f638fbb34adf",
+          "binding_id": "c7e62b263b89af1ef379d2241c2cdb5ac2f2d9a2e01c4c6932a43f7503b0f60e",
+          "signature": "2ff4538d1ebefef4abbcb7eee3a0628fc772b22223858d0cd095b83b520badb608460d4b1fd128f69e6a5ddb4ea6f8304cce0dad32caade273d9de0cd42c1109"
+        },
+        "root_delegation": {
+          "record_type": "aps:authority-delegation:v1",
+          "version": "1.0",
+          "parent_delegation_id": null,
+          "issuer": "did:aps:example:paa-root-authority",
+          "subject": "did:aps:example:paa-agent",
+          "verification_method": "did:aps:example:paa-root-authority#key-1",
+          "issued_at": "2026-10-01T00:00:00.000Z",
+          "nonce": "6f8e1b6dbca8fde3f33b4bd07c30016a",
+          "authority": {
+            "scope": {
+              "profile": "aps-hierarchical-v1",
+              "grants": [
+                "payments:refund"
+              ]
+            },
+            "spend": {
+              "mode": "unbounded"
+            },
+            "depth": {
+              "remaining": 0
+            },
+            "time": {
+              "not_before": "2026-10-01T00:00:00.000Z",
+              "not_after": "2027-01-01T00:00:00.000Z"
+            },
+            "reputation": {
+              "profile": "aps-score-0-100-v1",
+              "ceiling": 100
+            },
+            "values": {
+              "profile": "aps-values-identifiers-v1",
+              "required": []
+            },
+            "reversibility": {
+              "profile": "aps-tci-v1",
+              "ceiling": "irreversible"
+            }
+          },
+          "delegation_id": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+          "signature": "6eb02e39810fc7d2faf9310034f25d7b26f394ef131ea41460136bb5105163f7a0cc0bc1f3688a8134cc826a5ba5c6fb821871a0d87dcc432c66c02e51188607"
+        },
+        "association_evidence": [
+          {
+            "type": "x-fixture/principal-authority-association/v0",
+            "principal_ref": "did:aps:example:paa-principal",
+            "root_ref": "sha256:fd6c7d93a03a2fcfae1f72fdbde4dbaabb8d8b95804443c01fa1307e9b144567",
+            "relation": "same_authority_context",
+            "source_id": "did:aps:example:paa-registry-a",
+            "issued_at": "2026-10-02T00:00:00.000Z",
+            "expires_at": "2026-10-20T00:00:00.000Z",
+            "signature": "2548482dd83b4476342966561e8bffb9eefb787548a62216df0f75e73f3399e34695e540f049d8a0af261e8818f56227da804cb98c432a0957fe2190dbf24d0e"
+          }
+        ],
+        "trust_anchors": {
+          "root_issuers": [
+            "did:aps:example:paa-root-authority"
+          ],
+          "verification_keys": {
+            "did:aps:example:paa-principal#key-1": "b89fab739b86e43a73659c8ab85698120ff367e21f41a34199d1ed3cbb190f07",
+            "did:aps:example:paa-root-authority#key-1": "c8405ffda0c11e9b7a6bbe39e632fe591b17f42e5ea3042e4bf341af99e7fb1a"
+          }
+        },
+        "revocation_state": {
+          "source": "fixture-supplied: every delegation is active. Revocation is not what this family tests.",
+          "every_delegation": "active"
+        },
+        "association_profile": {
+          "type": "x-fixture/principal-authority-association-profile/v0",
+          "profile_id": "x-fixture:principal-authority-association-profile:v0",
+          "competent_sources": [
+            {
+              "source_id": "did:aps:example:paa-registry-a",
+              "verification_key_hex": "ff8ffdec9404a43f068c2eafff1e27ab900c70943e2ac926d90de7f43b69cff5",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-b",
+              "verification_key_hex": "1e98ed999c8d5fc09b11dd3cac8e69e69f28124253409543b989a4b43bd1c3ad",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "payments.example"
+                ]
+              }
+            },
+            {
+              "source_id": "did:aps:example:paa-registry-hr",
+              "verification_key_hex": "3eb5b84f453288e516abb676b76a2a6accd1eac7388a9e5fa60162cd8d5155cd",
+              "competent_for": {
+                "principals": [
+                  "did:aps:example:paa-principal"
+                ],
+                "scopes": [
+                  "payments:refund"
+                ],
+                "domains": [
+                  "hr.example"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "binding": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_code": "OK"
+        },
+        "root_basis": {
+          "result": "accepted",
+          "sdk_state": "valid",
+          "sdk_failures": []
+        },
+        "association": {
+          "result": "established",
+          "reason_code": "X_FIXTURE_ASSOCIATION_ESTABLISHED",
+          "aps_04_defined_shape": false
+        },
+        "boundary": {
+          "outcome": "authorized",
+          "reason_code": "X_FIXTURE_BOUNDARY_AUTHORIZED_ASSOCIATION_ESTABLISHED",
+          "authorized_for_named_principal": true
+        }
+      },
+      "defined_by": "fixture-local",
+      "citations": [
+        "aps-04 19.2.10 lines 11317-11321"
+      ],
+      "notes": [
+        "Established under the fixture profile only. -04 defines no artifact for the association, so this result is fixture local as well.",
+        "Authorized here means only that the association check passes. It is subject to every other check this vector does not exercise."
+      ]
+    }
+  ]
+}
