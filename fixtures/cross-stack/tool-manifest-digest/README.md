@@ -42,13 +42,13 @@ The v1 packet carries six claims, C1 to C6, inventoried on #155 and recorded per
 | C3 | JCS of the payload equals the signed payload bytes | same candidate |
 | C4 | the EdDSA signature verifies under the pinned, kid-matched JWK | same candidate |
 | C5 | the six axes per case, `not_evaluated` included | same candidate |
-| C6 | each negative fails exactly one axis | **none; pending** |
+| C6 | each negative fails exactly one axis | candidate: `results/04-aeoess-native-mode-a-run/` (Mode A, native verifier) |
 
 `results/03` is a run of Probity's reader (written by astrogilda) at `d759fb4`, made by
 aeoess, who authored neither the vectors nor the reader; it is a candidate independent
-record for C1 to C5. C6 has only author-produced records, because the pinned reader does
-not assert the property, and stays pending on one of the three routes `SOURCE.md` lists.
-v0 has only author-produced records and is recorded separately. Every other run on record
+record for C1 to C5. `results/04` is aeoess's Mode A run of the
+unchanged native verifiers, the candidate independent record for C6 and for v0. It is an
+independently operated run of the producer's verifiers, not an independent implementation. Every other run on record
 (the producer's `verify.mjs`, Probity's reader by its author, heldfast's profile by its
 author, the APS-side consumer by its author) is author-produced.
 
@@ -74,8 +74,10 @@ tool-manifest-digest/
 ├── results/
 │   ├── 01-v0-verify.txt     verbatim producer run (author-produced)
 │   ├── 02-v1-verify.txt     verbatim producer run (author-produced)
-│   └── 03-aeoess-probity-reader-run/
-│                            report.json (raw, unchanged), provenance.json, SHA256SUMS.txt
+│   ├── 03-aeoess-probity-reader-run/
+│   │                        report.json (raw, unchanged), provenance.json, SHA256SUMS.txt
+│   └── 04-aeoess-native-mode-a-run/
+│                            v0-verify.txt, v1-verify.txt, provenance.json, SHA256SUMS.txt
 ├── SOURCE.md                pins, claim inventory, per-claim verification split, the run
 │                            record, claim ceiling, boundaries
 ├── NOTICE                   where the copied files come from and their terms

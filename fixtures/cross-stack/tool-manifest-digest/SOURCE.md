@@ -56,6 +56,8 @@ checks. v1: three per-tool digest recomputations and a tool-count check, thirtee
 byte-identical to the pinned files. Producer-run output is in `results/`
 (`01-v0-verify.txt`, `02-v1-verify.txt`; Node v22.22.0, macOS arm64, 2026-10-05).
 
+In CI the lab first runs `scripts/check-tool-manifest-digest-pins.mjs`, which checks both vector files against the SHA-256 pins above. The native verifiers do not check the `key_encoding` count and do not bind the unsigned `toolDigests` map to the signed payload, so the pin check protects the exact bytes admitted at this pin. It does not change the producer's verifiers. AgentAvow closed both gaps upstream at `cbd33844` (`v1/verify.mjs` now requires the thirteen pairs and binds the unsigned map to the signed one). That verifier is not part of this pin, and a later pin can pick it up.
+
 ## Claim inventory, v1 packet at `36426cf`
 
 Inputs: the pinned attestation, the served `tools/list`, the thirteen name-to-key pairs.
@@ -87,8 +89,8 @@ that the reader at `d759fb4` does not assert the property.
 | C3 | verify.mjs; Probity reader by astrogilda; APS consumer by aeoess | same candidate |
 | C4 | same three | same candidate |
 | C5 | same three | same candidate |
-| C6 | verify.mjs; APS consumer by aeoess | **none; pending** (below) |
-| v0 (all layers) | verify.mjs; APS consumer by aeoess | none; pending (below) |
+| C6 | verify.mjs; APS consumer by aeoess | candidate: aeoess's Mode A run of the unchanged native verifier, `results/04-aeoess-native-mode-a-run/` |
+| v0 (all layers) | verify.mjs; APS consumer by aeoess | candidate: aeoess's Mode A run of the unchanged native verifier, `results/04-aeoess-native-mode-a-run/` |
 
 "Candidate" is the maintainer's word on #155: a candidate record for the covered claims,
 not a family admission. Whether it is accepted as the independent record for C1 to C5 is
@@ -140,19 +142,15 @@ relationship that keeps it from being independent.
 - C5; aeoess (Codex under aeoess's mandate); Mode B; independent; Probity reader at `d759fb4`, `results[*].matches` true for all six cases in `results/03-…/report.json`, with `unknown-tool` reporting `tool_digest_binds: "not_evaluated"`. Candidate independent record for C5.
 - heldfast does not check this claim.
 
-### C6, each negative fails exactly one axis: pending
+### C6, each negative fails exactly one axis
 
 - C6 / every negative case fails exactly one axis; kenneives; Mode A; author-produced; `v1/verify.mjs` (the "every negative fails exactly one axis" property check). kenneives authored the vectors and the verifier.
 - C6; aeoess; Mode B; author-produced; APS-side consumer, each negative failing exactly its own axis. aeoess authored the consumer.
-- No independent record. The Probity reader at `d759fb4` does not assert the property; deriving it from the reader's per-axis output in a runner-written step would make the runner's code decide the claimed result, so the run in `results/03` is not a record for C6 and is not labeled as one. heldfast does not check it.
+- The Probity reader at `d759fb4` does not assert the property; deriving it from the reader's per-axis output in a runner-written step would make the runner's code decide the claimed result, so the run in `results/03` is not a record for C6 and is not labeled as one. heldfast does not check it.
 
-C6 is independently recomputable and so cannot land under the author-produced allowance.
-It stays **pending**: it is not among the claims this family asks to admit until one of
-these produces its record, as the maintainer set out on #155:
+- C6; aeoess (Codex executing under aeoess's mandate, on aeoess's machine, 2026-10-07); Mode A; independent; unchanged `v1/verify.mjs`, "every negative fails exactly one axis" ok in `results/04-aeoess-native-mode-a-run/v1-verify.txt`, exit 0. aeoess authored neither the vectors nor the verifier, and no runner-written code decides the result. It is an independently operated run of the producer's verifier, not an independent implementation. Candidate independent record for C6.
 
-1. the reader at `d759fb4` already asserts it somewhere, which @astrogilda can point to, and then the run in `results/03` covers it;
-2. Probity adds the assertion, and a new pinned run records it;
-3. C6 is dropped from the claims being admitted.
+C6 is independently recomputable, so it lands only with an independent record, and the Mode A run above is that record. An independent implementation record (the reader asserting the property, or a new pinned Probity run) would be appended, not substituted.
 
 Whichever implementation recomputes it, the count excludes the aggregate `rely` result and
 keeps `not_evaluated` distinct from a failure. `verify.mjs` already counts that way: its
@@ -169,7 +167,7 @@ runs on record are:
 - v0 signature and canonical bytes / the Ed25519 signature verifies under the pinned key and `jcs(payload)` equals the payload bytes; kenneives; Mode A; author-produced; `v0/verify.mjs` over `node:crypto`. kenneives authored the vectors and the verifier.
 - v0 gate verdicts / `subject_binds`, `digest_binds`, `fresh` and `rely` for the five cases, each negative failing exactly one axis; kenneives; Mode A; author-produced; `v0/verify.mjs`. Same relationship.
 - v0, both layers; aeoess; Mode B; author-produced; APS-side consumer at `agent-passport-system@fd47f34` `examples/interop/agentavow/`, reading the v0 vector file at `4404df2c` unchanged, 30 of 30 expected axis results, each negative failing exactly its own axis ([comment](https://github.com/aeoess/agent-governance-vocabulary/issues/177#issuecomment-5914989949)). aeoess authored the consumer and the 7.2.0 primitives it uses. The runner's own label: a second implementation, run by the consuming project; a reproduction, not an independent verification record.
-- No independent record for any v0 layer. Neither the Probity reader nor the heldfast profile reads v0. The v0 vectors ship here so that v1 can be read against the boundary it closed; their admission waits on an independent record, as C6's does.
+- v0, both layers; aeoess (Codex executing under aeoess's mandate, on aeoess's machine, 2026-10-07); Mode A; independent; unchanged `v0/verify.mjs`, 30 axis results and six property checks ok in `results/04-aeoess-native-mode-a-run/v0-verify.txt`, exit 0. aeoess authored neither the vectors nor the verifier, and no runner-written code decides the result. It is an independently operated run of the producer's verifier, not an independent implementation. Candidate independent record for v0. Neither the Probity reader nor the heldfast profile reads v0, so no independent implementation record exists for it.
 
 These records are attributed per layer. Merge of this family is not an end-to-end
 verification or a family-level verdict.
@@ -199,6 +197,10 @@ blocks of that comment, taken verbatim, each with one trailing LF.
 The reader's `issuer_binds` axis appears in the report; it is the reader's own and is not
 a claim of this family.
 
+## The run in `results/04-aeoess-native-mode-a-run/`
+
+A Mode A run of the unchanged native verifiers `v0/verify.mjs` and `v1/verify.mjs` over the pinned vector files, operated by aeoess and executed by Codex under his mandate on his machine (macOS arm64, node v24.11.1), 2026-10-07. Both runs exit 0 with empty stderr. `v0-verify.txt` and `v1-verify.txt` are the verbatim stdout, `provenance.json` states the runner, inputs, label basis and limits, and `SHA256SUMS.txt` covers the other four files. Same machine and maintainer as the run in `results/03`. It covers v0 and the native C6 assertion and claims nothing about the verifiers' coverage beyond what they print.
+
 ## Claim ceiling
 
 `rely=true` establishes exactly this: at `evaluation_time`, the named issuer had signed a
@@ -226,7 +228,7 @@ place of the tool clause; a behavioral axis is a separate artifact with its own 
 - Ingestion only. Axis names, case names and the digest profile label are AgentAvow's
   vocabulary, presented as an external system's; this is not a proposal to add names to
   this suite's taxonomy. The family touches no suite verifier or schema; it adds the
-  registry entry in `fixtures/cross-stack/index.json`, one `package.json` script, and the
+  registry entry in `fixtures/cross-stack/index.json`, one `package.json` script (which runs the lab pin check `scripts/check-tool-manifest-digest-pins.mjs` first), and the
   generated README inventory row, as family registration requires.
 - Per CONTRIBUTING, a merge means the fixtures verified as deterministic, in scope and
   correctly labeled, not an endorsement, adoption or partnership by APS or the lab.
