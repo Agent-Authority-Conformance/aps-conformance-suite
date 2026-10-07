@@ -1,0 +1,55 @@
+{
+  "runner": "Tima (aeoess), executed by Codex under Tima's mandate on Tima's machine",
+  "mode": "Mode B for AgentAvow-origin claims recomputed by Probity",
+  "classification": "independent for the covered AgentAvow-origin claims, subject to the recorded authorship relationship",
+  "authorship": "AgentAvow pinned fixture commit names kenneives. Probity reader commits d759fb4/c5622736 name Sankalp Gilda. Tima/Codex authored neither pinned inputs nor this recomputation implementation. Earlier APS consumer is separately author-produced. No new semantic harness was written for this run.",
+  "os": "macOS 26.5 (25F71), arm64",
+  "python": "3.12.13; README asks for Python 3.13, so this is a different runtime",
+  "reader": "d759fb4db68a7fefcc91c2d3ad2a585471d6a53a",
+  "fixture_revision": "36426cfd5152bba6a27766febfac8aaef47b6f34",
+  "fixture_sha256": "488496079155830caf83593be0cafcb21367f72cd70ea363c2400f40eda72647",
+  "report_sha256": "3cf419993ca3cc6de48c9d185abb981d6c02b0742d4dace72b0c90187d03f619",
+  "commands": [
+    {
+      "command": "python3.12 -m venv $ROOT/venv",
+      "exit": 0
+    },
+    {
+      "command": "$ROOT/venv/bin/python -m pip install -r $ROOT/reader/interop/a2a-s3-retain-2026-10-01/requirements.txt",
+      "exit": 0
+    },
+    {
+      "cwd": "$ROOT/reader/interop/agentavow-signed-map-v1",
+      "command": "PYTHONPATH=. $ROOT/venv/bin/python -m pytest -q tests",
+      "exit": 0,
+      "result": "76 passed in 1.25s"
+    },
+    {
+      "cwd": "$ROOT/reader/interop/agentavow-signed-map-v1",
+      "command": "$ROOT/venv/bin/python fetch_fixture.py --output $ROOT/packet.json",
+      "exit": 0
+    },
+    {
+      "cwd": "$ROOT/reader/interop/agentavow-signed-map-v1",
+      "command": "$ROOT/venv/bin/python run_agentavow.py --fixture $ROOT/packet.json > $ROOT/report.json",
+      "exit": 0
+    }
+  ],
+  "coverage": {
+    "key_pairs": "13/13",
+    "definitions": "3/3",
+    "native_cases": "6/6",
+    "payload_digest": true,
+    "tests": 76
+  },
+  "raw_report_caveat": "Published runner hardcodes Probity-operated and same Probity operator. These strings do not describe this execution. Raw output preserved unchanged. This provenance record identifies the actual runner.",
+  "limits": [
+    "Not a family admission or public record",
+    "No AgentAvow native verifier executed",
+    "No full audit of shared 5157-line packaging/run_vectors.py; its JCS helpers lines 1-258 inspected, and pinned hash checked by the published runner",
+    "No runtime effects, production signing trust, or operator adoption established",
+    "No heldfast reproduction run",
+    "Source checkout had clean git status before and after execution"
+  ],
+  "paths_note": "Commands are path-normalized transcriptions of the commands actually run. $ROOT stands for the reproduction directory, which held the venv, the reader checkout at d759fb4, the fetched packet and the report. The report bytes themselves are unchanged."
+}

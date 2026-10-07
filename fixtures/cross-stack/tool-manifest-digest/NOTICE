@@ -1,0 +1,19 @@
+The files under v0/ and v1/ (README.md, source.json, generate.mjs, verify.mjs and the
+vector file in each) are copied from the AgentAvow repository, AgentAvow/AgentAvow, at the
+commits named in SOURCE.md (v0 at 4404df2c, v1 at 36426cf), by their author. The LICENSE
+file in each directory is the Apache License, Version 2.0, as the producer published it for
+both directories at ca6b5551 (2026-10-02); it is the one file in each directory not taken
+from the pin, and the producer's README text written after the pins is not copied.
+
+The AgentAvow repository as a whole is source-available and not open-source licensed. The
+two vector directories carry their own Apache-2.0 LICENSE and are contributed to
+aps-conformance-suite by their copyright holder under those terms, the same terms as this
+repository, as CONTRIBUTING states for contributions. The signed attestations inside the
+vector files were issued by AgentAvow (did:web:agentgraph.co) and are published for
+verification; the private signing key is not part of this contribution.
+
+results/03-aeoess-probity-reader-run/report.json and provenance.json are the two JSON
+blocks Tymofii Pidlisnyi (aeoess) published on this repository's issue #155 on 2026-10-05,
+reproduced verbatim. report.json is the output of the Probity reader
+(probityai/agent-evidence-vectors, Apache-2.0, by Sankalp Gilda) at d759fb4 and carries
+the operator strings that reader writes itself.

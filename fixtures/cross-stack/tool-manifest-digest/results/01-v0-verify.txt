@@ -1,0 +1,46 @@
+$ node v0/verify.mjs
+tool-manifest-digest-v0
+agentgraph (AgentAvow attestation layer, did:web:agentgraph.co).
+subject github:github/github-mcp-server @ sha256:38027bb3e95174e52753e90c0551897c0c8279e4451055bd54d4297b14eaaf2a
+
+  ok    digest-match: signature_valid
+  ok    digest-match: canonical_bytes
+  ok    digest-match: subject_binds
+  ok    digest-match: digest_binds
+  ok    digest-match: fresh
+  ok    digest-match: rely
+  ok    digest-mismatch: signature_valid
+  ok    digest-mismatch: canonical_bytes
+  ok    digest-mismatch: subject_binds
+  ok    digest-mismatch: digest_binds
+  ok    digest-mismatch: fresh
+  ok    digest-mismatch: rely
+  ok    past-expiry: signature_valid
+  ok    past-expiry: canonical_bytes
+  ok    past-expiry: subject_binds
+  ok    past-expiry: digest_binds
+  ok    past-expiry: fresh
+  ok    past-expiry: rely
+  ok    wrong-subject: signature_valid
+  ok    wrong-subject: canonical_bytes
+  ok    wrong-subject: subject_binds
+  ok    wrong-subject: digest_binds
+  ok    wrong-subject: fresh
+  ok    wrong-subject: rely
+  ok    tampered-payload: signature_valid
+  ok    tampered-payload: canonical_bytes
+  ok    tampered-payload: subject_binds
+  ok    tampered-payload: digest_binds
+  ok    tampered-payload: fresh
+  ok    tampered-payload: rely
+
+properties under test
+  ok    positive case relies
+  ok    a valid, fresh grade for the wrong definition does not bind
+  ok    a signed verdict does not verify forever
+  ok    a grade for one tool cannot be re-attached to another
+  ok    canonical form is not authenticity: tampered payload is canonical yet unsigned
+  ok    every negative fails exactly one axis
+
+all checks passed
+[exit 0]
