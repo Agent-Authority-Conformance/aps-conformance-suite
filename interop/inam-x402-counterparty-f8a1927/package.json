@@ -1,0 +1,8 @@
+{
+  "name": "inam-x402-counterparty-f8a1927-recompute",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "canonicalize": "4.0.0"
+  }
+}
