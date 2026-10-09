@@ -1,0 +1,13 @@
+PASS     allow-executed-settled             -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     deny-no-settlement                 -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     halt                               -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     detached-payload                   -         SCHEMA=pass CANONICAL=pass DIGEST=skipped SIGNATURE=pass
+PASS     negative-tampered-payload          DIGEST    SCHEMA=pass CANONICAL=pass DIGEST=fail SIGNATURE=pass
+PASS     negative-wrong-key                 SIGNATURE SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=fail
+PASS     negative-schema-decision           SCHEMA    SCHEMA=fail CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     negative-type-relabel              SCHEMA    SCHEMA=fail CANONICAL=pass DIGEST=pass SIGNATURE=fail
+PASS     positive-deny-executed             -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     positive-collision-same-second-a   -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     positive-collision-same-second-b   -         SCHEMA=pass CANONICAL=pass DIGEST=pass SIGNATURE=pass
+PASS     negative-sig-alg-lowercase         SCHEMA    SCHEMA=fail CANONICAL=pass DIGEST=pass SIGNATURE=pass
+12/12 as expected
