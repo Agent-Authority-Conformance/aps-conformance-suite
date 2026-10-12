@@ -7,11 +7,12 @@
 // This is evidence about this family's own reference boundary, not an SDK conformance
 // result. See README "What this establishes" and "Does not claim".
 
+import { createHash } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { AuthorityDelegationV1 } from 'agent-passport-system'
+import { createReceiptV1, type AuthorityDelegationV1 } from 'agent-passport-system'
 
 import { DispatchBoundary, makeDefectiveBoundary, makeReferenceBoundary, type PolicyDecisionReceipt } from './harness.js'
 
@@ -22,6 +23,7 @@ function readJson<T>(name: string): T {
 }
 
 interface ChainFixture {
+  seed_label_prefix: string
   identities: { principal: string; acting_agent: string; enforcement_boundary: string }
   verification_keys: Record<string, string>
   delegations: { main: AuthorityDelegationV1; for_revocation_case: AuthorityDelegationV1 }
@@ -52,8 +54,13 @@ const vectors = readJson<Vectors>('vectors.json')
 
 const BOUNDARY = fixture.identities.enforcement_boundary
 
-const resolveReceiptSignerKey = (signer: string, keyId: string) => fixture.verification_keys[keyId] && signer ? fixture.verification_keys[keyId] : undefined
-const resolveDelegationVerificationKey = (_issuer: string, method: string) => fixture.verification_keys[method] ?? null
+// A key resolves only for the signer whose identifier prefixes its key id, so a receipt
+// signed with another party's key does not verify as the boundary's. The signer-binding
+// probe below fails if this binding is removed.
+const resolveReceiptSignerKey = (signer: string, keyId: string) =>
+  keyId.startsWith(`${signer}#`) ? fixture.verification_keys[keyId] : undefined
+const resolveDelegationVerificationKey = (issuer: string, method: string) =>
+  method.startsWith(`${issuer}#`) ? fixture.verification_keys[method] ?? null : null
 const trustRoot = () => true
 
 const decisionKeyFor: Record<string, string> = {
@@ -139,11 +146,36 @@ for (const presentation of vectors.presentations) {
 
 const referenceOk = referenceMatched === vectors.presentations.length
 
+// Signer-binding probe. Not a presentation, not in vectors.json, and not counted above.
+// decision_permit_1's fields, re-signed with the principal's published seed key under the
+// principal's key id while still naming the boundary as issuer and signer. A fresh
+// reference boundary must refuse it at step 0. It would be admitted if the receipt key
+// resolver handed out any key in chain.json for any signer.
+const principalKeyId = `${fixture.identities.principal}#key-1`
+const principalPrivate = createHash('sha256').update(`${fixture.seed_label_prefix}principal:v1`, 'utf8').digest('hex')
+const { receipt_id: _receiptId, signatures: _signatures, ...permit1Fields } = fixture.receipts.decision_permit_1
+const forgedPermit = createReceiptV1(permit1Fields as never, [
+  { signer: BOUNDARY, key_id: principalKeyId, private_key: principalPrivate },
+]) as unknown as PolicyDecisionReceipt
+const probeOutcome = makeReferenceBoundary(sharedOptions).consume({
+  label: 'signer-binding-probe',
+  decision: forgedPermit,
+  requestedActionRef: fixture.actions.a.action_ref,
+  now: '2026-09-22T09:00:05.000Z',
+  chain: chainFor('main'),
+  resolveRevocation: () => 'active',
+})
+const probeOk = !probeOutcome.admitted && probeOutcome.reason === 'signature_or_shape_invalid'
+console.log('')
+console.log('signer-binding probe: decision_permit_1 re-signed with the principal key, boundary named as signer')
+console.log(`  ${probeOk ? 'REFUSED' : 'NOT REFUSED'} admitted=${probeOutcome.admitted} reason=${probeOutcome.reason}`)
+
 console.log('')
 console.log(`reference-boundary matched: ${referenceMatched}/${vectors.presentations.length}`)
 console.log(`${defectiveBoundary.name} failed exactly the declared set: ${defectiveOk}`)
+console.log(`signer-binding probe refused: ${probeOk}`)
 
-if (referenceOk && defectiveOk) {
+if (referenceOk && defectiveOk && probeOk) {
   console.log('PASSED: reference-boundary matched every presentation, defective boundary failed exactly the declared set')
   process.exit(0)
 } else {
