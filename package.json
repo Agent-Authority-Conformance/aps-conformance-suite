@@ -44,6 +44,7 @@
     "verify:key-rotation-historical": "tsx fixtures/key-rotation-historical/verify.ts",
     "verify:approval-single-use": "tsx fixtures/approval-single-use/verify.ts",
     "verify:approval-authority-expiry": "tsx fixtures/approval-authority-expiry/verify.ts",
+    "verify:approval-authority-expiry:py": "python3 fixtures/approval-authority-expiry/verify.py",
     "verify:receipt-decision-relation:flip": "tsx fixtures/receipt-decision-relation/verify.ts --flip-check",
     "crossrun:canonical-bytes": "node fixtures/canonical-bytes/crossrun/run.mjs",
     "test:canonical-bytes": "tsx runners/ts/canonical-bytes-qntm-v0.3.2.test.ts",
