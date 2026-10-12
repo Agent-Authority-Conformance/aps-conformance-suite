@@ -23,8 +23,10 @@ Run:
 
 Exit 0 when the reference boundary matches every presentation and the defective boundary
 fails exactly the declared set, 1 otherwise, and 2 on malformed or inconsistent input
-(the same input checks verify.ts makes). Stdlib only. A manual run, not part of
-`npm test`, the same convention fixtures/approval-single-use/verify.py follows.
+(the same input checks verify.ts makes). Stdlib only. Not part of `npm test`, which
+also runs on the Windows job with Node only. CI runs it as
+`npm run verify:approval-authority-expiry:py` in the tests workflow's suite job,
+the same way it runs fixtures/teardown-accounting/verify.py.
 """
 
 from __future__ import annotations
@@ -111,6 +113,9 @@ def check_inputs(chain, vectors):
     ids = [p["id"] for p in presentations]
     if len(set(ids)) != len(ids):
         input_error("vectors.json repeats a presentation id")
+    for earlier, later in zip(presentations, presentations[1:]):
+        if later["now"] < earlier["now"]:
+            input_error(f'{later["id"]} is earlier than the presentation before it')
     for declared_id in declared:
         if declared_id not in ids:
             input_error(f'declared_defective_fail_set names "{declared_id}", which is not presented')

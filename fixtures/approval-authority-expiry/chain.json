@@ -49,6 +49,38 @@
         "target": "https://calendar.example/api/v1/events"
       }
     },
+    "decision_permit_authority_edge": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:44.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "990b166670f3ba1f074ff5fa2b03d64ca9bbee9822165bad7b7dd241ff034c29",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "e4cf569a6a35ad0fdd0c671d9b97fa8a36ec7bb34aa037583262053358f2f5ae",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    },
     "decision_permit_authority_expiry": {
       "authority_state": {
         "authority_basis": "delegation",
@@ -232,7 +264,7 @@
       "version": "1.0"
     }
   },
-  "description": "draft-pidlisnyi-aps-03 section 4.3 lines 914-918: at consumption the boundary MUST re-validate temporal validity. One action-intent, four permit policy-decision receipts, and two one-hop AuthorityDelegationV1 records sharing one validity window, minted and signature-verified with agent-passport-system 7.1.0.",
+  "description": "draft-pidlisnyi-aps-03 section 4.3 lines 914-918: at consumption the boundary MUST re-validate temporal validity. One action-intent, five permit policy-decision receipts, and two one-hop AuthorityDelegationV1 records sharing one validity window, minted and signature-verified with agent-passport-system 7.1.0.",
   "identities": {
     "acting_agent": "did:aps:example:aex-acting-agent",
     "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
@@ -265,6 +297,34 @@
           "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
           "signer": "did:aps:example:aex-enforcement-boundary",
           "value": "ce136c00035056b65d5706f723f03f208d89753faa1ac4add9ac5f549b829c362fc31d998c6b36b19456fd254ae1ab5d35b14c9d90b328fc9ae80b100d33830b"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "decision_permit_authority_edge": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "e4cf569a6a35ad0fdd0c671d9b97fa8a36ec7bb34aa037583262053358f2f5ae",
+      "delegation_ref": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:44.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "1daa6b9e623bb00e99c4530e4647f35310da13f74855f82e11a2a6d071ff7293",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "990b166670f3ba1f074ff5fa2b03d64ca9bbee9822165bad7b7dd241ff034c29",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "0f10d856296a0c4633ae16302698f4480f8a9e2ca23314955cdb43c3ffbb0cdc184ac160bf1e7aace21655f36a5de1a2c45ed0e35308e6ce288411a79b81fa05"
         }
       ],
       "subject_agent": "did:aps:example:aex-acting-agent"

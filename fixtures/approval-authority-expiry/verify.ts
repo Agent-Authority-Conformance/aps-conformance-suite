@@ -1,6 +1,6 @@
 // Copyright 2026 Tymofii Pidlisnyi. Apache-2.0 license. See LICENSE.
 //
-// Runs the four approval-authority-expiry presentations against harness.ts's reference
+// Runs the five approval-authority-expiry presentations against harness.ts's reference
 // boundary and its declared defective negative control, both over chain.json's
 // agent-passport-system 7.1.0-signed decision and delegation records.
 //
@@ -59,9 +59,10 @@ const resolveDelegationVerificationKey = (issuer: string, method: string) =>
 const trustRoot = () => true
 
 // Fail closed on malformed input before any boundary runs: an empty or duplicate-id
-// presentation list, a declared id that is not presented, an unknown decision, chain or
-// action name, or a presentation that pairs a decision with a chain other than the one
-// its delegation_ref names.
+// presentation list, presentations out of clock order (the family runs one forward-moving
+// clock), a declared id that is not presented, an unknown decision, chain or action name,
+// or a presentation that pairs a decision with a chain other than the one its
+// delegation_ref names.
 function inputError(message: string): never {
   console.error(`approval-authority-expiry: ${message}`)
   process.exit(2)
@@ -70,6 +71,9 @@ if (!Array.isArray(vectors.presentations) || vectors.presentations.length === 0)
 if (!Array.isArray(vectors.declared_defective_fail_set)) inputError('vectors.json has no declared_defective_fail_set array')
 const presentedIds = new Set(vectors.presentations.map(p => p.id))
 if (presentedIds.size !== vectors.presentations.length) inputError('vectors.json repeats a presentation id')
+for (let i = 1; i < vectors.presentations.length; i++) {
+  if (vectors.presentations[i].now < vectors.presentations[i - 1].now) inputError(`${vectors.presentations[i].id} is earlier than the presentation before it`)
+}
 for (const id of vectors.declared_defective_fail_set) {
   if (!presentedIds.has(id)) inputError(`declared_defective_fail_set names "${id}", which is not presented`)
 }

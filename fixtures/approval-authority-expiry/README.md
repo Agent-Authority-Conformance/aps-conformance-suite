@@ -39,6 +39,23 @@ including revocation status and temporal validity". Section 3.2 (line 535) write
 time facet as the half-open interval `[not_before, not_after)`, and both runners read
 the authority's temporal validity at an instant against that interval.
 
+## The `not_after` edge
+
+AEX-05 consumes at exactly the authority's `not_after` and expects a refusal. Its
+basis is the text, not the SDK. Section 3.2, line 535:
+
+    535    Time  The half-open child interval [not_before, not_after) MUST be
+
+The interval is named half-open and closed with `)`, so `not_after` is not in it.
+Section 3.3 line 584 lists "current validity" among the chain verification steps and
+gives no other interval for a delegation, so an instant equal to `not_after` is outside
+the authority's validity. One limit on that reading, recorded rather than resolved: the
+draft spells the inequality out in words only for the agent passport (section 2.1 lines
+199-200, "the validity interval is issued_at <= now < expires_at"). For a delegation the
+exclusion comes from the interval notation on line 535 read with "current validity" on
+line 584, not from a sentence that states it. The pinned SDK agrees (`now >=
+time.not_after` returns `EXPIRED`, phase 10), and `mint.ts` asserts that before writing.
+
 ## The gap this closes
 
 `approval-single-use` covers the approval's own expiry (ASU-03) and a revoked authority
@@ -82,16 +99,16 @@ receipt's signature and section 5.3 stage validity (`verifyReceiptV1`), and the 
   2026-09-24T09:00:00.000Z)`. `DELEGATION_MAIN` backs every decision except the one
   AEX-02 presents. That one is backed by `DELEGATION_FOR_REVOCATION_CASE` alone.
 - one action-intent and its action reference.
-- four permit policy-decision receipts for that action, each issued between
-  `08:59:40` and `08:59:43`, inside the authority window. Three carry `valid_until`
+- five permit policy-decision receipts for that action, each issued between
+  `08:59:40` and `08:59:44`, inside the authority window. Four carry `valid_until`
   `2026-09-24T09:00:30.000Z`, thirty seconds after the authority's `not_after`. One
   (`decision_permit_approval_expired`) carries `valid_until` `08:59:44`.
 
 `mint.ts` asserts at mint time, and writes nothing if any assertion fails: the authority
 verifies `valid` at every decision's `evaluated_at`, `DELEGATION_MAIN` verifies `valid`
-at `08:59:50` and `invalid`/`EXPIRED` at `09:00:10`, the revocation-case delegation
-verifies `invalid`/`REVOKED` when its resolver answers `revoked`, `09:00:10` is before
-the permits' `valid_until`, every decision has a distinct `receipt_id`, and every receipt
+at `08:59:50` and `invalid`/`EXPIRED` at both `09:00:00` and `09:00:10`, the
+revocation-case delegation verifies `invalid`/`REVOKED` when its resolver answers
+`revoked`, `09:00:00` and `09:00:10` are before the permits' `valid_until`, every decision has a distinct `receipt_id`, and every receipt
 verifies `status: "valid"` under `verifyReceiptV1`.
 
 `harness.ts` implements `ConsumptionBoundary`, one class with two configurations that
@@ -108,9 +125,10 @@ differ in one thing, the instant the authority chain is re-verified at:
   out: one that rechecks revocation and approval expiry but not the authority's
   temporal validity.
 
-`verify.ts` runs both configurations over the same four ordered presentations. Before
-either boundary runs, it exits 2 if the presentation list is empty or repeats an id, if
-a declared failing id is not presented, if a decision, chain or action name is unknown,
+`verify.ts` runs both configurations over the same five presentations, in clock order.
+Before either boundary runs, it exits 2 if the presentation list is empty or repeats an
+id, if a presentation is earlier than the one before it, if a declared failing id is not
+presented, if a decision, chain or action name is unknown,
 or if a presentation pairs a decision with a chain its `delegation_ref` does not name.
 Its key resolvers return a key only for the signer or issuer whose identifier prefixes
 the key id, so a receipt signed with another party's key does not verify as the
@@ -123,35 +141,40 @@ re-verify any signature. Its module docstring says so.
 
 ## Vectors, timeline style, one clock
 
-Four ordered presentations against one boundary instance per configuration and one
-fixture-pinned clock.
+Five presentations, listed in clock order, against one boundary instance per
+configuration and one fixture-pinned clock. AEX-05 is listed before AEX-04 because it
+is earlier.
 
 | id | covers | differs from AEX-01 by | expected |
 |---|---|---|---|
 | AEX-01-accept-authority-valid-at-consumption | positive control | nothing, consumed at `08:59:50`, authority valid, approval unexpired | admitted, `dispatch_admitted` |
 | AEX-02-reject-authority-revoked-at-consumption | revocation recheck still present | authority answers `revoked` at consumption | not admitted, `authority_chain_not_valid_at_consumption`, `invalid/REVOKED` |
 | AEX-03-reject-approval-expired | approval expiry still present | the approval's own `valid_until` has passed, authority still valid | not admitted, `expired` |
+| AEX-05-reject-authority-at-exact-not-after | the half-open edge | consumed at exactly `09:00:00`, the authority's `not_after`, before the approval's `valid_until` | not admitted, `authority_chain_not_valid_at_consumption`, `invalid/EXPIRED` |
 | AEX-04-reject-authority-expired-approval-unexpired | **the gap** | consumed at `09:00:10`: after the authority's `not_after` (`09:00:00`), before the approval's `valid_until` (`09:00:30`) | not admitted, `authority_chain_not_valid_at_consumption`, `invalid/EXPIRED` |
 
-AEX-01 and AEX-04 present two distinct permits minted identically except for
-`evaluated_at` (`08:59:40` and `08:59:43`), because a single-use ledger would otherwise
+AEX-01, AEX-04 and AEX-05 present three distinct permits minted identically except for
+`evaluated_at` (`08:59:40`, `08:59:43` and `08:59:44`), because a single-use ledger would otherwise
 refuse the second presentation as `already_consumed`. The input that decides the outcome
 is the consumption instant.
 
-AEX-02 and AEX-03 exist so the declared failing set is meaningful. With only AEX-01 and
-AEX-04, a boundary that rechecked nothing would also "fail exactly AEX-04". AEX-02 shows
-the defective boundary still rechecks revocation, and AEX-03 shows it still enforces the
-approval's own expiry, so the one vector it fails isolates the authority-time recheck.
+AEX-02 and AEX-03 exist so the declared failing set is meaningful. With only AEX-01,
+AEX-04 and AEX-05, a boundary that rechecked nothing would also fail exactly the two
+authority-time vectors. AEX-02 shows the defective boundary still rechecks revocation,
+and AEX-03 shows it still enforces the approval's own expiry, so the vectors it fails
+isolate the authority-time recheck. AEX-05 separates a boundary that compares
+`now > not_after` from one that compares `now >= not_after`. AEX-04 alone does not.
 
 ## Negative control
 
-The defective boundary matches the reference on AEX-01, AEX-02 and AEX-03. On AEX-04 it
-re-verifies the chain at `08:59:43`, when the authority was valid, and admits. The
-declared failing set:
+The defective boundary matches the reference on AEX-01, AEX-02 and AEX-03. On AEX-05 and
+AEX-04 it re-verifies the chain at the decision's `issued_at` (`08:59:44` and
+`08:59:43`), when the authority was valid, and admits. The declared failing set:
 
+    AEX-05-reject-authority-at-exact-not-after
     AEX-04-reject-authority-expired-approval-unexpired
 
-Both runners check this in both directions: the declared id must diverge from its
+Both runners check this in both directions. Each declared id must diverge from its
 expected outcome, and every other id must still match.
 
 ## Running
@@ -169,10 +192,11 @@ Regenerating `chain.json` gives the same bytes:
 
     npx tsx fixtures/approval-authority-expiry/mint.ts
 
-Python, separately written, a manual run and not part of `npm test`, following
-`fixtures/approval-single-use/verify.py`:
+Python, separately written, not part of `npm test` (which also runs on the Windows job
+with Node only). The tests workflow's suite job runs it after setting up Python 3.12,
+the same way it runs `fixtures/teardown-accounting/verify.py`:
 
-    python3 fixtures/approval-authority-expiry/verify.py
+    npm run verify:approval-authority-expiry:py
 
 Expected final line:
 
@@ -184,9 +208,9 @@ Both runners were executed locally on the branch rebased onto suite `main` at
 `052d5c2`, after `npm ci --include=dev`. `verify.ts` (Node 24.11.1) ran against the
 pinned TypeScript SDK (`agent-passport-system` 7.1.0, `package-lock.json`), and
 `verify.py` (Python 3.14.6) read `chain.json` and `vectors.json` alone. `reference-boundary`
-matched 4/4 presentations under both runners. `defective-boundary-authority-time-frozen-at-issuance`
-failed exactly the declared set of 1 under both, admitting AEX-04, and matched the other
-3. `mint.ts` run twice produced byte-identical `chain.json`. This is an author-produced
+matched 5/5 presentations under both runners. `defective-boundary-authority-time-frozen-at-issuance`
+failed exactly the declared set of 2 under both, admitting AEX-05 and AEX-04, and matched
+the other 3. `mint.ts` run twice produced byte-identical `chain.json`. This is an author-produced
 record, not an independent one, per `CONTRIBUTING.md`'s admission rules for run records.
 
 ## Provenance
@@ -202,9 +226,10 @@ has reviewed or run either runner.
 For the exact SDK revision run, a pass establishes that, for this family's own reference
 boundary, a permit issued under valid authority and presented before its own
 `valid_until` is not admitted if its backing authority's `not_after` has passed at the
-consumption instant. It also establishes that a boundary that differs only in evaluating
-the authority's temporal validity at issuance predictably fails exactly AEX-04 and none
-of the other three.
+consumption instant, including the instant equal to `not_after` (see "The `not_after`
+edge" for the textual basis of that case). It also establishes that a boundary that
+differs only in evaluating the authority's temporal validity at issuance fails exactly
+AEX-04 and AEX-05 and none of the other three.
 
 ## Does not claim
 
@@ -218,9 +243,13 @@ A pass does **not** establish:
 - anything about a not-yet-valid authority at consumption. An approval issued under
   valid authority cannot meet a not-yet-valid authority later on a forward-moving clock,
   so no vector presents one.
-- anything about the half-open edge itself. AEX-04 is consumed ten seconds after
-  `not_after`, so a boundary that still treated the authority as valid at exactly
-  `not_after` would pass every vector here.
+- that draft-03 states the `not_after` exclusion for a delegation in a sentence. It
+  does for the agent passport (section 2.1 lines 199-200, "the validity interval is
+  issued_at <= now < expires_at"). For a delegation, AEX-05's expected result rests on
+  line 535, "The half-open child interval [not_before, not_after)", read with "current
+  validity" in section 3.3 line 584. If a later draft defines delegation validity
+  differently, AEX-05 is the vector to revisit.
+- anything about the `not_before` edge. No vector consumes at exactly `not_before`.
 - anything about multi-hop chains, ancestor expiry, or a parent expiring before a child.
   Every chain here is one hop.
 - anything about spend reservation (section 4.3 lines 920 onward), single-use

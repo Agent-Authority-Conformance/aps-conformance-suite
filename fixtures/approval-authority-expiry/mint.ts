@@ -11,7 +11,7 @@
 // approval issued while its authority was valid, still unexpired itself at consumption,
 // whose backing authority has passed its not_after by the time it is consumed. This
 // script mints, with the pinned TypeScript SDK, agent-passport-system 7.1.0: two one-hop
-// AuthorityDelegationV1 records sharing one validity window, one action-intent, and four
+// AuthorityDelegationV1 records sharing one validity window, one action-intent, and five
 // permit policy-decision receipts bound to that action. The family's own harness.ts, not
 // the SDK, supplies the consumption boundary.
 //
@@ -76,7 +76,7 @@ const boundaryPublic = publicKeyFromPrivate(boundaryPrivate)
 // AUTHORITY_NOT_AFTER). Every decision is issued inside it, and every permit except
 // decisionPermitApprovalExpired carries a valid_until later than AUTHORITY_NOT_AFTER, so
 // the approval outlives the authority it was issued under. AEX-04 is consumed in the gap
-// between the two.
+// between the two, and AEX-05 at exactly AUTHORITY_NOT_AFTER, the excluded end.
 // ---------------------------------------------------------------------------
 
 const AUTHORITY_NOT_BEFORE = '2026-09-24T08:00:00.000Z'
@@ -85,6 +85,8 @@ const PERMIT_VALID_UNTIL = '2026-09-24T09:00:30.000Z'
 
 const NOW_AUTHORITY_VALID = '2026-09-24T08:59:50.000Z'
 const NOW_AUTHORITY_EXPIRED = '2026-09-24T09:00:10.000Z'
+// AEX-05 consumes at exactly AUTHORITY_NOT_AFTER, the excluded end of the half-open window.
+const NOW_AUTHORITY_EDGE = AUTHORITY_NOT_AFTER
 
 // ---------------------------------------------------------------------------
 // Two one-hop AuthorityDelegationV1 records, principal to acting agent, identical except
@@ -237,6 +239,9 @@ const decisionPermitApprovalExpired = sealDecision(evidencePermitApprovalExpired
 const evidencePermitAuthorityExpiry = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:43.000Z', PERMIT_VALID_UNTIL)
 const decisionPermitAuthorityExpiry = sealDecision(evidencePermitAuthorityExpiry)
 
+const evidencePermitAuthorityEdge = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:44.000Z', PERMIT_VALID_UNTIL)
+const decisionPermitAuthorityEdge = sealDecision(evidencePermitAuthorityEdge)
+
 // ---------------------------------------------------------------------------
 // Mint-time assertions. A failure aborts with nothing written.
 // ---------------------------------------------------------------------------
@@ -255,6 +260,7 @@ const decisionReceiptIds = [
   decisionPermitForRevocation.receipt_id,
   decisionPermitApprovalExpired.receipt_id,
   decisionPermitAuthorityExpiry.receipt_id,
+  decisionPermitAuthorityEdge.receipt_id,
 ]
 assert(new Set(decisionReceiptIds).size === decisionReceiptIds.length, 'two decisions share a receipt_id')
 
@@ -270,7 +276,7 @@ function chainState(delegation: typeof DELEGATION_MAIN, now: string, revocation:
 
 // The authority is valid at every decision's evaluated_at, so every decision in this file
 // was issued under valid authority.
-for (const evidence of [evidencePermitControl, evidencePermitApprovalExpired, evidencePermitAuthorityExpiry]) {
+for (const evidence of [evidencePermitControl, evidencePermitApprovalExpired, evidencePermitAuthorityExpiry, evidencePermitAuthorityEdge]) {
   const at = evidence.decision_context.evaluated_at
   assert(chainState(DELEGATION_MAIN, at, 'active') === 'valid', `DELEGATION_MAIN is not valid at decision time ${at}`)
 }
@@ -287,6 +293,10 @@ assert(
   `DELEGATION_MAIN does not verify invalid/EXPIRED at ${NOW_AUTHORITY_EXPIRED}: ${chainState(DELEGATION_MAIN, NOW_AUTHORITY_EXPIRED, 'active')}`,
 )
 assert(
+  chainState(DELEGATION_MAIN, NOW_AUTHORITY_EDGE, 'active') === 'invalid/EXPIRED',
+  `DELEGATION_MAIN does not verify invalid/EXPIRED at exactly its not_after ${NOW_AUTHORITY_EDGE}: ${chainState(DELEGATION_MAIN, NOW_AUTHORITY_EDGE, 'active')}`,
+)
+assert(
   chainState(DELEGATION_FOR_REVOCATION_CASE, NOW_AUTHORITY_VALID, 'revoked') === 'invalid/REVOKED',
   'DELEGATION_FOR_REVOCATION_CASE does not fail REVOKED when the resolver answers revoked',
 )
@@ -294,6 +304,7 @@ assert(
 // The approval under test is itself still unexpired when the authority has expired.
 assert(NOW_AUTHORITY_EXPIRED < PERMIT_VALID_UNTIL, 'the authority-expiry permit is itself expired at its consumption instant')
 assert(AUTHORITY_NOT_AFTER <= NOW_AUTHORITY_EXPIRED, 'the authority has not expired at the authority-expiry consumption instant')
+assert(NOW_AUTHORITY_EDGE < PERMIT_VALID_UNTIL, 'the authority-edge permit is itself expired at its consumption instant')
 
 // Every minted receipt verifies signature-valid and stage-valid with the SDK's own
 // verifyReceiptV1, the same entrypoint harness.ts calls at consumption time.
@@ -304,6 +315,7 @@ const resolveReceiptSignerKey = (signer: string, keyId: string) => {
 }
 for (const [label, receipt] of Object.entries({
   intentA, decisionPermitControl, decisionPermitForRevocation, decisionPermitApprovalExpired, decisionPermitAuthorityExpiry,
+  decisionPermitAuthorityEdge,
 })) {
   const verification = verifyReceiptV1(receipt as never, resolveReceiptSignerKey, { boundaryIdentity: BOUNDARY })
   assert(verification.status === 'valid', `${label} does not verify valid: ${JSON.stringify(verification)}`)
@@ -329,7 +341,7 @@ const chain = {
   profile: 'aps-approval-authority-expiry-v0',
   description:
     'draft-pidlisnyi-aps-03 section 4.3 lines 914-918: at consumption the boundary MUST ' +
-    're-validate temporal validity. One action-intent, four permit policy-decision receipts, ' +
+    're-validate temporal validity. One action-intent, five permit policy-decision receipts, ' +
     'and two one-hop AuthorityDelegationV1 records sharing one validity window, minted and ' +
     'signature-verified with agent-passport-system 7.1.0.',
   minted_by: 'fixtures/approval-authority-expiry/mint.ts',
@@ -350,12 +362,14 @@ const chain = {
     decision_permit_for_revocation: decisionPermitForRevocation,
     decision_permit_approval_expired: decisionPermitApprovalExpired,
     decision_permit_authority_expiry: decisionPermitAuthorityExpiry,
+    decision_permit_authority_edge: decisionPermitAuthorityEdge,
   },
   decision_evidence: {
     decision_permit_control: evidencePermitControl,
     decision_permit_for_revocation: evidencePermitForRevocation,
     decision_permit_approval_expired: evidencePermitApprovalExpired,
     decision_permit_authority_expiry: evidencePermitAuthorityExpiry,
+    decision_permit_authority_edge: evidencePermitAuthorityEdge,
   },
 }
 
