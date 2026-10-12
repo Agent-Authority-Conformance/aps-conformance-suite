@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # Copyright 2026 Tymofii Pidlisnyi. Apache-2.0 license. See LICENSE.
-"""Independent Python runner for the approval-authority-expiry family.
+"""Second Python runner for the approval-authority-expiry family.
 
-A second, independently written implementation of the boundary rules described in
+A second, separately written implementation of the boundary rules described in
 README.md, built from vectors.json and chain.json rather than by porting harness.ts. It
-does not import harness.ts and does not import the Python agent_passport SDK.
+does not import harness.ts and does not import the Python agent_passport SDK. The same
+lab wrote both runners, so a run of this one is author-produced, not independent, in
+the sense CONTRIBUTING.md defines.
 
 What this runner does NOT do, unlike harness.ts: it does not call verifyReceiptV1 or
 verifyAuthorityDelegationChain, so it re-verifies no Ed25519 signature and none of the
@@ -20,7 +22,8 @@ Run:
     python3 fixtures/approval-authority-expiry/verify.py
 
 Exit 0 when the reference boundary matches every presentation and the defective boundary
-fails exactly the declared set, 1 otherwise. Stdlib only. A manual run, not part of
+fails exactly the declared set, 1 otherwise, and 2 on malformed or inconsistent input
+(the same input checks verify.ts makes). Stdlib only. A manual run, not part of
 `npm test`, the same convention fixtures/approval-single-use/verify.py follows.
 """
 
@@ -92,9 +95,42 @@ def run(boundary, chain, vectors):
     return results
 
 
+def input_error(message):
+    print(f"approval-authority-expiry (python): {message}", file=sys.stderr)
+    sys.exit(2)
+
+
+def check_inputs(chain, vectors):
+    """Fail closed on malformed input before any boundary runs, mirroring verify.ts."""
+    presentations = vectors.get("presentations")
+    if not isinstance(presentations, list) or not presentations:
+        input_error("vectors.json has no presentations")
+    declared = vectors.get("declared_defective_fail_set")
+    if not isinstance(declared, list):
+        input_error("vectors.json has no declared_defective_fail_set array")
+    ids = [p["id"] for p in presentations]
+    if len(set(ids)) != len(ids):
+        input_error("vectors.json repeats a presentation id")
+    for declared_id in declared:
+        if declared_id not in ids:
+            input_error(f'declared_defective_fail_set names "{declared_id}", which is not presented')
+    for p in presentations:
+        decision = chain["receipts"].get(p["decision"])
+        if decision is None or not p["decision"].startswith("decision_"):
+            input_error(f'vectors.json names an unknown decision "{p["decision"]}"')
+        delegation = chain["delegations"].get(p["chain"])
+        if delegation is None:
+            input_error(f'vectors.json names an unknown chain "{p["chain"]}"')
+        if p["requested_action"] not in chain["actions"]:
+            input_error(f'vectors.json names an unknown action "{p["requested_action"]}"')
+        if decision["delegation_ref"] != delegation["delegation_id"]:
+            input_error(f'{p["id"]} pairs {p["decision"]} with chain "{p["chain"]}", which its delegation_ref does not name')
+
+
 def main():
     chain = read_json("chain.json")
     vectors = read_json("vectors.json")
+    check_inputs(chain, vectors)
     presentations = vectors["presentations"]
 
     reference = ConsumptionBoundary("reference-boundary", "consumption")

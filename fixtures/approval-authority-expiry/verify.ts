@@ -50,18 +50,42 @@ interface Vectors {
 const fixture = readJson<ChainFixture>('chain.json')
 const vectors = readJson<Vectors>('vectors.json')
 
-const resolveReceiptSignerKey = (signer: string, keyId: string) => fixture.verification_keys[keyId] && signer ? fixture.verification_keys[keyId] : undefined
-const resolveDelegationVerificationKey = (_issuer: string, method: string) => fixture.verification_keys[method] ?? null
+// A key resolves only for the signer whose identifier prefixes its key id, so a receipt
+// signed with another party's key does not verify as the boundary's.
+const resolveReceiptSignerKey = (signer: string, keyId: string) =>
+  keyId.startsWith(`${signer}#`) ? fixture.verification_keys[keyId] : undefined
+const resolveDelegationVerificationKey = (issuer: string, method: string) =>
+  method.startsWith(`${issuer}#`) ? fixture.verification_keys[method] ?? null : null
 const trustRoot = () => true
+
+// Fail closed on malformed input before any boundary runs: an empty or duplicate-id
+// presentation list, a declared id that is not presented, an unknown decision, chain or
+// action name, or a presentation that pairs a decision with a chain other than the one
+// its delegation_ref names.
+function inputError(message: string): never {
+  console.error(`approval-authority-expiry: ${message}`)
+  process.exit(2)
+}
+if (!Array.isArray(vectors.presentations) || vectors.presentations.length === 0) inputError('vectors.json has no presentations')
+if (!Array.isArray(vectors.declared_defective_fail_set)) inputError('vectors.json has no declared_defective_fail_set array')
+const presentedIds = new Set(vectors.presentations.map(p => p.id))
+if (presentedIds.size !== vectors.presentations.length) inputError('vectors.json repeats a presentation id')
+for (const id of vectors.declared_defective_fail_set) {
+  if (!presentedIds.has(id)) inputError(`declared_defective_fail_set names "${id}", which is not presented`)
+}
+for (const presentation of vectors.presentations) {
+  const decision = fixture.receipts[presentation.decision]
+  if (decision === undefined || !presentation.decision.startsWith('decision_')) inputError(`vectors.json names an unknown decision "${presentation.decision}"`)
+  const delegation = fixture.delegations[presentation.chain]
+  if (delegation === undefined) inputError(`vectors.json names an unknown chain "${presentation.chain}"`)
+  if (fixture.actions[presentation.requested_action] === undefined) inputError(`vectors.json names an unknown action "${presentation.requested_action}"`)
+  if (decision.delegation_ref !== delegation.delegation_id) inputError(`${presentation.id} pairs ${presentation.decision} with chain "${presentation.chain}", which its delegation_ref does not name`)
+}
 
 function runBoundary(boundary: ConsumptionBoundary): Map<string, Outcome> {
   const results = new Map<string, Outcome>()
   for (const presentation of vectors.presentations) {
     const decision = fixture.receipts[presentation.decision]
-    if (decision === undefined || !presentation.decision.startsWith('decision_')) {
-      console.error(`approval-authority-expiry: vectors.json names an unknown decision "${presentation.decision}"`)
-      process.exit(2)
-    }
     const outcome = boundary.consume({
       decision,
       requestedActionRef: fixture.actions[presentation.requested_action].action_ref,
