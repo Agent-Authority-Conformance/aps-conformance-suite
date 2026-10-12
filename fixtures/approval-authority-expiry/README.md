@@ -1,8 +1,13 @@
 # approval-authority-expiry: authority that expires between approval and consumption
 
-**Candidate fixture.** This family is a candidate against the draft-03 text quoted below.
-It is not yet cited by `docs/ID-COVERAGE.md`, and nothing here changes any row of that
-inventory until a revision of it does so.
+This is plain draft-03 conformance, not a proposal. It cites published draft-03 text and
+carries no candidate label. It is built for the temporal-validity clause of `REQ-4.3-1`
+in `docs/ID-COVERAGE.md`, which revision 5 holds at PARTIAL because "no vector presents
+an authority chain that expired between approval issuance and consumption". The same
+vectors bear on the "recheck time" clause of `REQ-5.3.2-1` (section 5.3.2 line 1096),
+whose revision 5 note credits only the expiry, consumption and revocation clauses. This
+family is not yet cited by `docs/ID-COVERAGE.md`, and nothing here changes any row of
+that inventory until a revision of it does so.
 
 This fixture exercises draft-pidlisnyi-aps-03 section 4.3's rule that a boundary
 re-validates temporal validity at consumption, for the one case
@@ -30,15 +35,16 @@ draft-pidlisnyi-aps-03 as published
 
 The requirement sentence this family targets is the one on lines 914-916: "At
 consumption the boundary MUST re-validate what can have changed since issuance,
-including revocation status and temporal validity". Section 3.2 (lines 535-536) defines
-the authority's validity as the half-open interval `[not_before, not_after)`.
+including revocation status and temporal validity". Section 3.2 (line 535) writes the
+time facet as the half-open interval `[not_before, not_after)`, and both runners read
+the authority's temporal validity at an instant against that interval.
 
 ## The gap this closes
 
 `approval-single-use` covers the approval's own expiry (ASU-03) and a revoked authority
 at consumption (ASU-05). Every presentation in it is consumed while its backing
 delegation is inside its validity window (`2026-09-22T08:00:00.000Z` to
-`2026-09-23T00:00:00.000Z`; every presentation is at `09:00:xx` on 2026-09-22). So a
+`2026-09-23T00:00:00.000Z`, and every presentation is at `09:00:xx` on 2026-09-22). So a
 boundary that rechecked revocation at consumption but took the authority's temporal
 validity as fixed at issuance would pass all of it. That family's reference boundary
 does recheck time (its `harness.ts` lines 172-177 call `verifyAuthorityDelegationChain`
@@ -63,7 +69,7 @@ is implemented by this fixture in `harness.ts`, not by any APS SDK.** The pinned
 `agent-passport-system` 7.1.0, is called only for what it establishes: a policy-decision
 receipt's signature and section 5.3 stage validity (`verifyReceiptV1`), and the backing
 `AuthorityDelegationV1` chain's state at a given instant
-(`verifyAuthorityDelegationChain`; the temporal check is phase 10 at
+(`verifyAuthorityDelegationChain`, whose temporal check is phase 10 at
 `node_modules/agent-passport-system/dist/src/v2/authority-delegation/verify.js` lines
 234-242, and revocation is phase 11 starting line 244).
 
@@ -74,7 +80,7 @@ receipt's signature and section 5.3 stage validity (`verifyReceiptV1`), and the 
 - two one-hop `AuthorityDelegationV1` records, principal to acting agent, identical
   except for their nonce, both valid `[2026-09-24T08:00:00.000Z,
   2026-09-24T09:00:00.000Z)`. `DELEGATION_MAIN` backs every decision except the one
-  AEX-02 presents; that one is backed by `DELEGATION_FOR_REVOCATION_CASE` alone.
+  AEX-02 presents. That one is backed by `DELEGATION_FOR_REVOCATION_CASE` alone.
 - one action-intent and its action reference.
 - four permit policy-decision receipts for that action, each issued between
   `08:59:40` and `08:59:43`, inside the authority window. Three carry `valid_until`
@@ -82,10 +88,10 @@ receipt's signature and section 5.3 stage validity (`verifyReceiptV1`), and the 
   (`decision_permit_approval_expired`) carries `valid_until` `08:59:44`.
 
 `mint.ts` asserts at mint time, and writes nothing if any assertion fails: the authority
-verifies `valid` at every decision's `evaluated_at`; `DELEGATION_MAIN` verifies `valid`
-at `08:59:50` and `invalid`/`EXPIRED` at `09:00:10`; the revocation-case delegation
-verifies `invalid`/`REVOKED` when its resolver answers `revoked`; `09:00:10` is before
-the permits' `valid_until`; every decision has a distinct `receipt_id`; and every receipt
+verifies `valid` at every decision's `evaluated_at`, `DELEGATION_MAIN` verifies `valid`
+at `08:59:50` and `invalid`/`EXPIRED` at `09:00:10`, the revocation-case delegation
+verifies `invalid`/`REVOKED` when its resolver answers `revoked`, `09:00:10` is before
+the permits' `valid_until`, every decision has a distinct `receipt_id`, and every receipt
 verifies `status: "valid"` under `verifyReceiptV1`.
 
 `harness.ts` implements `ConsumptionBoundary`, one class with two configurations that
@@ -98,14 +104,22 @@ differ in one thing, the instant the authority chain is re-verified at:
 - **`defective-boundary-authority-time-frozen-at-issuance`**: every step identical,
   except the chain is re-verified at the decision's own `issued_at`. It still uses the
   consumption-time revocation answer and still enforces the approval's own
-  `valid_until`. This is the defect the Revision 5 review described: a boundary that
-  rechecks revocation and approval expiry but not the authority's temporal validity.
+  `valid_until`. This is the boundary the revision 5 note on `REQ-4.3-1` cannot yet rule
+  out: one that rechecks revocation and approval expiry but not the authority's
+  temporal validity.
 
-`verify.ts` runs both configurations over the same four ordered presentations.
-`verify.py` is a second, independently written, stdlib-only implementation of the same
-boundary rules. It applies the half-open window to the delegation's `authority.time`
-directly rather than calling the SDK, and does not re-verify any signature; its module
-docstring says so.
+`verify.ts` runs both configurations over the same four ordered presentations. Before
+either boundary runs, it exits 2 if the presentation list is empty or repeats an id, if
+a declared failing id is not presented, if a decision, chain or action name is unknown,
+or if a presentation pairs a decision with a chain its `delegation_ref` does not name.
+Its key resolvers return a key only for the signer or issuer whose identifier prefixes
+the key id, so a receipt signed with another party's key does not verify as the
+boundary's.
+
+`verify.py` is a second, separately written, stdlib-only implementation of the same
+boundary rules, with the same input checks. It applies the half-open window to the
+delegation's `authority.time` directly rather than calling the SDK, and does not
+re-verify any signature. Its module docstring says so.
 
 ## Vectors, timeline style, one clock
 
@@ -114,9 +128,9 @@ fixture-pinned clock.
 
 | id | covers | differs from AEX-01 by | expected |
 |---|---|---|---|
-| AEX-01-accept-authority-valid-at-consumption | positive control | nothing; consumed at `08:59:50`, authority valid, approval unexpired | admitted, `dispatch_admitted` |
+| AEX-01-accept-authority-valid-at-consumption | positive control | nothing, consumed at `08:59:50`, authority valid, approval unexpired | admitted, `dispatch_admitted` |
 | AEX-02-reject-authority-revoked-at-consumption | revocation recheck still present | authority answers `revoked` at consumption | not admitted, `authority_chain_not_valid_at_consumption`, `invalid/REVOKED` |
-| AEX-03-reject-approval-expired | approval expiry still present | the approval's own `valid_until` has passed; authority still valid | not admitted, `expired` |
+| AEX-03-reject-approval-expired | approval expiry still present | the approval's own `valid_until` has passed, authority still valid | not admitted, `expired` |
 | AEX-04-reject-authority-expired-approval-unexpired | **the gap** | consumed at `09:00:10`: after the authority's `not_after` (`09:00:00`), before the approval's `valid_until` (`09:00:30`) | not admitted, `authority_chain_not_valid_at_consumption`, `invalid/EXPIRED` |
 
 AEX-01 and AEX-04 present two distinct permits minted identically except for
@@ -155,7 +169,7 @@ Regenerating `chain.json` gives the same bytes:
 
     npx tsx fixtures/approval-authority-expiry/mint.ts
 
-Python, independently written, a manual run and not part of `npm test`, following
+Python, separately written, a manual run and not part of `npm test`, following
 `fixtures/approval-single-use/verify.py`:
 
     python3 fixtures/approval-authority-expiry/verify.py
@@ -166,9 +180,11 @@ Expected final line:
 
 ## Results
 
-Both runners were executed locally against the pinned TypeScript SDK
-(`agent-passport-system` 7.1.0, `package-lock.json`). `reference-boundary` matched 4/4
-presentations under both runners. `defective-boundary-authority-time-frozen-at-issuance`
+Both runners were executed locally on the branch rebased onto suite `main` at
+`052d5c2`, after `npm ci --include=dev`. `verify.ts` (Node 24.11.1) ran against the
+pinned TypeScript SDK (`agent-passport-system` 7.1.0, `package-lock.json`), and
+`verify.py` (Python 3.14.6) read `chain.json` and `vectors.json` alone. `reference-boundary`
+matched 4/4 presentations under both runners. `defective-boundary-authority-time-frozen-at-issuance`
 failed exactly the declared set of 1 under both, admitting AEX-04, and matched the other
 3. `mint.ts` run twice produced byte-identical `chain.json`. This is an author-produced
 record, not an independent one, per `CONTRIBUTING.md`'s admission rules for run records.
@@ -202,6 +218,9 @@ A pass does **not** establish:
 - anything about a not-yet-valid authority at consumption. An approval issued under
   valid authority cannot meet a not-yet-valid authority later on a forward-moving clock,
   so no vector presents one.
+- anything about the half-open edge itself. AEX-04 is consumed ten seconds after
+  `not_after`, so a boundary that still treated the authority as valid at exactly
+  `not_after` would pass every vector here.
 - anything about multi-hop chains, ancestor expiry, or a parent expiring before a child.
   Every chain here is one hop.
 - anything about spend reservation (section 4.3 lines 920 onward), single-use
