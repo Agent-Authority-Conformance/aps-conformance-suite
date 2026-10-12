@@ -1,0 +1,545 @@
+{
+  "actions": {
+    "a": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "input": {
+        "action_type": "calendar.write",
+        "agent_id": "did:aps:example:aex-acting-agent",
+        "issued_at": "2026-09-24T08:59:39.000Z",
+        "nonce": "9ba63e83386fd8d735feee7984b5dd9e",
+        "payload_ref": "1ead10d4da24d2a11a4ea4a98d24f88e278d3d38271e843ac388b2fe014957be",
+        "profile": "aps-action-ref-v2",
+        "scope_required": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    }
+  },
+  "chains": {
+    "edge": [
+      "edge_root",
+      "edge_child"
+    ],
+    "for_revocation_case": [
+      "for_revocation_case"
+    ],
+    "main": [
+      "main"
+    ]
+  },
+  "decision_evidence": {
+    "decision_permit_approval_expired": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:42.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "7f6e9c4b18d7a8152f655c4c146b03e85ff135a6fdbff3eb3dacf99425786d46",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T08:59:44.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "74d7817052902e38dc6d53386058ef95dc81d0c4e7fb636559da19a296331821",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    },
+    "decision_permit_authority_edge": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:cae2ee1841d15be0fd8beb74de2dc6116b7032b039a87bd32860f8c71f276b11",
+          "sha256:3a7091ed0da02d8c8311b734c8fa1fc72efaf00c3040b16aa5298a9de9b5e62b"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:44.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "990b166670f3ba1f074ff5fa2b03d64ca9bbee9822165bad7b7dd241ff034c29",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "a9a45b001cb4c2837ff405f71ee94befe09bf41d32a8382674a0214ad1246d5f",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    },
+    "decision_permit_authority_expiry": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:43.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "4309a6ec36030083775b009a55f94e84dc7542de352a8b041befa637c5255dd6",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "534f3de137dcebab5af4796137cd45178967df182fb92b8135784e08d2b2dee9",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    },
+    "decision_permit_control": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:40.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "d775f573ba458f318fe172828787c2bf46362b6138a9f1de4817a5ffddd70eff",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "c42517f38b0066b49a4b9c45734319f9fdbca665737fc6d23985231bec2f895f",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    },
+    "decision_permit_for_revocation": {
+      "authority_state": {
+        "authority_basis": "delegation",
+        "profile": "aps-conformance-suite:approval-authority-expiry:authority-state-v0",
+        "selected_chain": [
+          "sha256:e9215737427b77720a163faca970b7a4f3369ff257c1f53e45300ee932407d13"
+        ],
+        "spend_state": {
+          "mode": "unbounded"
+        }
+      },
+      "decision_context": {
+        "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+        "evaluated_at": "2026-09-24T08:59:41.000Z"
+      },
+      "decision_output": {
+        "constraints": [],
+        "effective_authority_ref": "219395ffdb2eb1c293645072dbaa1c1fdf1d8d05e992b3b02afb2a84c9988a9a",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "decision_ref": "6094899561ce060881004207bfab6c7856b18e3aaf517a3a9b0678050c92bedc",
+      "policy_input": {
+        "policy_id": "calendar-write-v1",
+        "policy_version": "1.0.0",
+        "requested_scope": [
+          "calendar:write"
+        ],
+        "target": "https://calendar.example/api/v1/events"
+      }
+    }
+  },
+  "delegations": {
+    "edge_child": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-24T09:00:00.000Z",
+          "not_before": "2026-09-24T08:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:3a7091ed0da02d8c8311b734c8fa1fc72efaf00c3040b16aa5298a9de9b5e62b",
+      "issued_at": "2026-09-24T08:00:00.000Z",
+      "issuer": "did:aps:example:aex-coordinator",
+      "nonce": "69be387a3e228b54fdb3892271b1ec51",
+      "parent_delegation_id": "sha256:cae2ee1841d15be0fd8beb74de2dc6116b7032b039a87bd32860f8c71f276b11",
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "b7d0734f2e8451097e0e3e7f4c44b4818578c8d863ca40042b41ba5f3bd632cbe735b9025e751b275e1ae364387de32b8851491d4561969ba92b21ffee478b06",
+      "subject": "did:aps:example:aex-acting-agent",
+      "verification_method": "did:aps:example:aex-coordinator#key-1",
+      "version": "1.0"
+    },
+    "edge_root": {
+      "authority": {
+        "depth": {
+          "remaining": 1
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-24T10:00:00.000Z",
+          "not_before": "2026-09-24T08:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:cae2ee1841d15be0fd8beb74de2dc6116b7032b039a87bd32860f8c71f276b11",
+      "issued_at": "2026-09-24T08:00:00.000Z",
+      "issuer": "did:aps:example:aex-principal",
+      "nonce": "a2d47836c8aeb9e8afaffbc7b4a88c2f",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "fa9459d1105356b606080f55be0e0e6a4d0e6c43165163981d5dc6efc70de4868834d505d467b4f60162678f8258506132cdf04b40f8d71263dd5f9c1f6d090a",
+      "subject": "did:aps:example:aex-coordinator",
+      "verification_method": "did:aps:example:aex-principal#key-1",
+      "version": "1.0"
+    },
+    "for_revocation_case": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-24T09:00:00.000Z",
+          "not_before": "2026-09-24T08:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:e9215737427b77720a163faca970b7a4f3369ff257c1f53e45300ee932407d13",
+      "issued_at": "2026-09-24T08:00:00.000Z",
+      "issuer": "did:aps:example:aex-principal",
+      "nonce": "e01c9057aa1a65d78e3f0ce9ba3f02c9",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "a5b25295577071f4b2c3c653a127675278087f9dce9b025950ea6848a9b4be36f6a654950283a23f7fe3f90250de630057222ec5c74b02fc89a8a8378f3d380e",
+      "subject": "did:aps:example:aex-acting-agent",
+      "verification_method": "did:aps:example:aex-principal#key-1",
+      "version": "1.0"
+    },
+    "main": {
+      "authority": {
+        "depth": {
+          "remaining": 0
+        },
+        "reputation": {
+          "ceiling": 100,
+          "profile": "aps-score-0-100-v1"
+        },
+        "reversibility": {
+          "ceiling": "irreversible",
+          "profile": "aps-tci-v1"
+        },
+        "scope": {
+          "grants": [
+            "calendar:write"
+          ],
+          "profile": "aps-hierarchical-v1"
+        },
+        "spend": {
+          "mode": "unbounded"
+        },
+        "time": {
+          "not_after": "2026-09-24T09:00:00.000Z",
+          "not_before": "2026-09-24T08:00:00.000Z"
+        },
+        "values": {
+          "profile": "aps-values-identifiers-v1",
+          "required": []
+        }
+      },
+      "delegation_id": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "issued_at": "2026-09-24T08:00:00.000Z",
+      "issuer": "did:aps:example:aex-principal",
+      "nonce": "a3afb06319b9ae87b5838108cd4a8667",
+      "parent_delegation_id": null,
+      "record_type": "aps:authority-delegation:v1",
+      "signature": "fadbff37f41763923ee19f6321bc4524c21c233ed1ce643c7f17b729bdaa7e8665377df7989af8c0fea5851ca39b1747d1a8969d948688e9b381199c9e445109",
+      "subject": "did:aps:example:aex-acting-agent",
+      "verification_method": "did:aps:example:aex-principal#key-1",
+      "version": "1.0"
+    }
+  },
+  "description": "draft-pidlisnyi-aps-03 section 4.3 lines 914-918: at consumption the boundary MUST re-validate temporal validity. One action-intent, five permit policy-decision receipts, two one-hop AuthorityDelegationV1 chains and one two-hop chain whose child shares their validity window under a longer-lived parent, minted and signature-verified with agent-passport-system 7.1.0.",
+  "identities": {
+    "acting_agent": "did:aps:example:aex-acting-agent",
+    "coordinator": "did:aps:example:aex-coordinator",
+    "enforcement_boundary": "did:aps:example:aex-enforcement-boundary",
+    "principal": "did:aps:example:aex-principal"
+  },
+  "minted_by": "fixtures/approval-authority-expiry/mint.ts",
+  "profile": "aps-approval-authority-expiry-v0",
+  "receipts": {
+    "decision_permit_approval_expired": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "74d7817052902e38dc6d53386058ef95dc81d0c4e7fb636559da19a296331821",
+      "delegation_ref": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:42.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "44f71ad7a9e23fb700f9563813902d14fc0f7de8acb996e82771ad082146f991",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "7f6e9c4b18d7a8152f655c4c146b03e85ff135a6fdbff3eb3dacf99425786d46",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T08:59:44.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "ce136c00035056b65d5706f723f03f208d89753faa1ac4add9ac5f549b829c362fc31d998c6b36b19456fd254ae1ab5d35b14c9d90b328fc9ae80b100d33830b"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "decision_permit_authority_edge": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "a9a45b001cb4c2837ff405f71ee94befe09bf41d32a8382674a0214ad1246d5f",
+      "delegation_ref": "sha256:3a7091ed0da02d8c8311b734c8fa1fc72efaf00c3040b16aa5298a9de9b5e62b",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:44.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "11a3cbef7b79536fe2a2ee975e03fe71819cdc28bad4efb0137b7d867fd98e91",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "990b166670f3ba1f074ff5fa2b03d64ca9bbee9822165bad7b7dd241ff034c29",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "7c00b67542e58dd7ab868951d03836818afc38827dcb24a1bde19672e85da86ddcbb24db9080f0a46be2d2e348eabfdc2446f0a59fd6a5ceb93446cf26680000"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "decision_permit_authority_expiry": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "534f3de137dcebab5af4796137cd45178967df182fb92b8135784e08d2b2dee9",
+      "delegation_ref": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:43.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "fdd72b6cf84eab825be5416dae03497315ba7eb217f41b5456d6d60a3ab70b4e",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "4309a6ec36030083775b009a55f94e84dc7542de352a8b041befa637c5255dd6",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "15dc7e35673ca0686a42af1bba2bf5ab221314a403e35a0201aa651e8e34319de7e92898e54f6f4f5eb98c3ffc1f7b5554c973dfc52ff5f551e9ad60c6e5040f"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "decision_permit_control": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "c42517f38b0066b49a4b9c45734319f9fdbca665737fc6d23985231bec2f895f",
+      "delegation_ref": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:40.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "255de172ef7efe103b08f9d1fba968d5dcf37d9cccbc8682a69605cb368bdb47",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "d775f573ba458f318fe172828787c2bf46362b6138a9f1de4817a5ffddd70eff",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "8578e24f21b0cb8abafda8a2fba291f144cac0294db67ac084e2e55af1b217aaf3d2fdf8ae9fb4f01dfbe1d224b9a773be30012c48326ebc29c9f53dc5061000"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "decision_permit_for_revocation": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "decision_ref": "6094899561ce060881004207bfab6c7856b18e3aaf517a3a9b0678050c92bedc",
+      "delegation_ref": "sha256:e9215737427b77720a163faca970b7a4f3369ff257c1f53e45300ee932407d13",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:41.000Z",
+      "issuer": "did:aps:example:aex-enforcement-boundary",
+      "prev": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "b43fc2e09bef9d0e859a2547b3f46312881f8e8536b40a96b29d98e9b1a8d800",
+      "receipt_type": "aps:policy-decision:v1",
+      "result": {
+        "constraints": [],
+        "effective_authority_ref": "219395ffdb2eb1c293645072dbaa1c1fdf1d8d05e992b3b02afb2a84c9988a9a",
+        "profile": "aps-core-decision-output-v1",
+        "valid_until": "2026-09-24T09:00:30.000Z",
+        "verdict": "permit"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-enforcement-boundary#key-1",
+          "signer": "did:aps:example:aex-enforcement-boundary",
+          "value": "32f6cdb26df3c26bf24e547d498f0ce9fe146da99f862b5ce87523d29d0529e838bf2a0784d0a4a2a870e5dedb1d3b8490e373b0d8c90e969168fc578d15fd03"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    },
+    "intent_a": {
+      "action_ref": "3bbdcae09a93be66c3e2f5cfa9340640f2dc894e27ae6b4a3b3c3bbdb5c95dc2",
+      "delegation_ref": "sha256:87b0f744c39fb250f1496e316142c7307d8e86ce90ac9c180ed6b7ca682b7fa7",
+      "evidence_refs": [],
+      "issued_at": "2026-09-24T08:59:39.500Z",
+      "issuer": "did:aps:example:aex-acting-agent",
+      "profile": "aps-receipt-v1",
+      "receipt_id": "47769821ed70c40fef00b403211250ef3ffe409296fee8b9bf0af6ff318301f7",
+      "receipt_type": "aps:action-intent:v1",
+      "result": {
+        "profile": "aps-action-intent-result-v1",
+        "status": "declared"
+      },
+      "signatures": [
+        {
+          "alg": "Ed25519",
+          "key_id": "did:aps:example:aex-acting-agent#key-1",
+          "signer": "did:aps:example:aex-acting-agent",
+          "value": "2b6fd40ccb1e061ce69ccafdadfae2148a9f1560a78f43869f597a4cfe76b8bbfdfc864174a8c6c98c2ca71e56c20781bb880f06b3488ee2b9128871f271100b"
+        }
+      ],
+      "subject_agent": "did:aps:example:aex-acting-agent"
+    }
+  },
+  "seed_label_prefix": "aps-conformance-suite:approval-authority-expiry:",
+  "verification_keys": {
+    "did:aps:example:aex-acting-agent#key-1": "c3f800dc3779f2d9530641d5c5d19ab6fcbdf6c3798295c12165071f02298c9a",
+    "did:aps:example:aex-coordinator#key-1": "751e9dc893e9ab8fc1a21a33bc979ebbd60d7c625ae819c2e80b201551934741",
+    "did:aps:example:aex-enforcement-boundary#key-1": "99c1f98ba6986a48f229bd91a6f629c8b9006605a83f538055f53d0255a5825b",
+    "did:aps:example:aex-principal#key-1": "33255c8bfb3a12fd8e1e564ca7e7fc7159b366a4889ddc89446502b26b119280"
+  }
+}
