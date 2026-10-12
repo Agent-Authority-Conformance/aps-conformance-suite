@@ -11,9 +11,10 @@
 // approval issued while its authority was valid, still unexpired itself at consumption,
 // whose backing authority has passed its not_after by the time it is consumed. This
 // script mints, with the pinned TypeScript SDK, agent-passport-system 7.1.0: two one-hop
-// AuthorityDelegationV1 records sharing one validity window, one action-intent, and five
-// permit policy-decision receipts bound to that action. The family's own harness.ts, not
-// the SDK, supplies the consumption boundary.
+// AuthorityDelegationV1 records sharing one validity window, a two-hop chain whose child
+// has that same window under a longer-lived parent, one action-intent, and five permit
+// policy-decision receipts bound to that action. The family's own harness.ts, not the
+// SDK, supplies the consumption boundary.
 //
 // Every key is an Ed25519 seed derived from a published label, so the file carries no
 // secret material and anyone can regenerate it. Timestamps, nonces and payloads are pinned
@@ -56,27 +57,32 @@ function seed(label: string): string {
 }
 
 const PRINCIPAL = 'did:aps:example:aex-principal'
+const COORDINATOR = 'did:aps:example:aex-coordinator'
 const ACTING_AGENT = 'did:aps:example:aex-acting-agent'
 const BOUNDARY = 'did:aps:example:aex-enforcement-boundary'
 
 const PRINCIPAL_KEY_ID = `${PRINCIPAL}#key-1`
+const COORDINATOR_KEY_ID = `${COORDINATOR}#key-1`
 const ACTING_AGENT_KEY_ID = `${ACTING_AGENT}#key-1`
 const BOUNDARY_KEY_ID = `${BOUNDARY}#key-1`
 
 const principalPrivate = seed('principal:v1')
+const coordinatorPrivate = seed('coordinator:v1')
 const actingAgentPrivate = seed('acting-agent:v1')
 const boundaryPrivate = seed('boundary:v1')
 
 const principalPublic = publicKeyFromPrivate(principalPrivate)
+const coordinatorPublic = publicKeyFromPrivate(coordinatorPrivate)
 const actingAgentPublic = publicKeyFromPrivate(actingAgentPrivate)
 const boundaryPublic = publicKeyFromPrivate(boundaryPrivate)
 
 // ---------------------------------------------------------------------------
 // The timeline. One authority window, half-open [AUTHORITY_NOT_BEFORE,
-// AUTHORITY_NOT_AFTER). Every decision is issued inside it, and every permit except
-// decisionPermitApprovalExpired carries a valid_until later than AUTHORITY_NOT_AFTER, so
-// the approval outlives the authority it was issued under. AEX-04 is consumed in the gap
-// between the two, and AEX-05 at exactly AUTHORITY_NOT_AFTER, the excluded end.
+// AUTHORITY_NOT_AFTER), shared by both one-hop delegations and by AEX-05's child. Every
+// decision is issued inside it, and every permit except decisionPermitApprovalExpired
+// carries a valid_until later than AUTHORITY_NOT_AFTER, so the approval outlives the
+// authority it was issued under. AEX-04 is consumed in the gap between the two, and
+// AEX-05 at exactly AUTHORITY_NOT_AFTER, the excluded end of its child's interval.
 // ---------------------------------------------------------------------------
 
 const AUTHORITY_NOT_BEFORE = '2026-09-24T08:00:00.000Z'
@@ -85,52 +91,111 @@ const PERMIT_VALID_UNTIL = '2026-09-24T09:00:30.000Z'
 
 const NOW_AUTHORITY_VALID = '2026-09-24T08:59:50.000Z'
 const NOW_AUTHORITY_EXPIRED = '2026-09-24T09:00:10.000Z'
-// AEX-05 consumes at exactly AUTHORITY_NOT_AFTER, the excluded end of the half-open window.
+// AEX-05 consumes at exactly AUTHORITY_NOT_AFTER, the excluded end of the half-open child
+// interval, while the child's parent is still valid.
 const NOW_AUTHORITY_EDGE = AUTHORITY_NOT_AFTER
+
+// The parent of AEX-05's child delegation stays valid an hour longer than the child.
+const EDGE_PARENT_NOT_AFTER = '2026-09-24T10:00:00.000Z'
 
 // ---------------------------------------------------------------------------
 // Two one-hop AuthorityDelegationV1 records, principal to acting agent, identical except
-// for their nonce. DELEGATION_MAIN backs every decision except the one AEX-02 presents;
-// that decision is backed by DELEGATION_FOR_REVOCATION_CASE alone, so marking it revoked
-// cannot leak into any other vector's chain. Minted with the SDK's authority-delegation
-// primitives, the same construction fixtures/approval-single-use/mint.ts uses.
+// for their nonce. DELEGATION_MAIN backs AEX-01, AEX-03 and AEX-04. AEX-02's decision is
+// backed by DELEGATION_FOR_REVOCATION_CASE alone, so marking it revoked cannot leak into
+// any other vector's chain.
+//
+// AEX-05's decision is backed by a two-hop chain: EDGE_ROOT, principal to coordinator,
+// valid [08:00, 10:00), and EDGE_CHILD, coordinator to acting agent, valid [08:00, 09:00).
+// Section 3.2 line 535 writes the half-open interval for a child, so AEX-05 presents the
+// excluded end of a child interval under a parent that is still valid at that instant.
+// Minted with the SDK's authority-delegation primitives, the same construction
+// fixtures/approval-single-use/mint.ts uses.
 // ---------------------------------------------------------------------------
 
-function authorityVector() {
+function authorityVector(depthRemaining: number, notAfter: string) {
   return {
     scope: { profile: 'aps-hierarchical-v1' as const, grants: ['calendar:write'] },
     spend: { mode: 'unbounded' as const },
-    depth: { remaining: 0 },
-    time: { not_before: AUTHORITY_NOT_BEFORE, not_after: AUTHORITY_NOT_AFTER },
+    depth: { remaining: depthRemaining },
+    time: { not_before: AUTHORITY_NOT_BEFORE, not_after: notAfter },
     reputation: { profile: 'aps-score-0-100-v1' as const, ceiling: 100 },
     values: { profile: 'aps-values-identifiers-v1' as const, required: [] as string[] },
     reversibility: { profile: 'aps-tci-v1' as const, ceiling: 'irreversible' as const },
   }
 }
 
-function mintDelegation(nonceLabel: string) {
+interface DelegationSpec {
+  nonceLabel: string
+  parentId: string | null
+  issuer: string
+  issuerKeyId: string
+  issuerPrivate: string
+  subject: string
+  depthRemaining: number
+  notAfter: string
+}
+
+function mintDelegation(spec: DelegationSpec) {
   const body = {
     record_type: 'aps:authority-delegation:v1' as const,
     version: '1.0' as const,
-    parent_delegation_id: null,
-    issuer: PRINCIPAL,
-    subject: ACTING_AGENT,
-    verification_method: PRINCIPAL_KEY_ID,
+    parent_delegation_id: spec.parentId,
+    issuer: spec.issuer,
+    subject: spec.subject,
+    verification_method: spec.issuerKeyId,
     issued_at: AUTHORITY_NOT_BEFORE,
-    nonce: seed(nonceLabel).slice(0, 32),
-    authority: authorityVector(),
+    nonce: seed(spec.nonceLabel).slice(0, 32),
+    authority: authorityVector(spec.depthRemaining, spec.notAfter),
   }
-  const delegation_id = computeAuthorityDelegationId(body)
+  const delegation_id = computeAuthorityDelegationId(body as never)
   const draft = { ...body, delegation_id }
-  const signature = signAuthorityDelegation(draft, principalPrivate)
+  const signature = signAuthorityDelegation(draft as never, spec.issuerPrivate)
   return { ...draft, signature }
 }
 
-const DELEGATION_MAIN = mintDelegation('delegation-main-nonce:v1')
-const DELEGATION_FOR_REVOCATION_CASE = mintDelegation('delegation-revocation-case-nonce:v1')
+const principalToAgent = (nonceLabel: string) =>
+  mintDelegation({
+    nonceLabel,
+    parentId: null,
+    issuer: PRINCIPAL,
+    issuerKeyId: PRINCIPAL_KEY_ID,
+    issuerPrivate: principalPrivate,
+    subject: ACTING_AGENT,
+    depthRemaining: 0,
+    notAfter: AUTHORITY_NOT_AFTER,
+  })
 
-const resolveDelegationKey = (_issuer: string, method: string) =>
-  method === PRINCIPAL_KEY_ID ? principalPublic : null
+const DELEGATION_MAIN = principalToAgent('delegation-main-nonce:v1')
+const DELEGATION_FOR_REVOCATION_CASE = principalToAgent('delegation-revocation-case-nonce:v1')
+
+const EDGE_ROOT = mintDelegation({
+  nonceLabel: 'delegation-edge-root-nonce:v1',
+  parentId: null,
+  issuer: PRINCIPAL,
+  issuerKeyId: PRINCIPAL_KEY_ID,
+  issuerPrivate: principalPrivate,
+  subject: COORDINATOR,
+  depthRemaining: 1,
+  notAfter: EDGE_PARENT_NOT_AFTER,
+})
+const EDGE_CHILD = mintDelegation({
+  nonceLabel: 'delegation-edge-child-nonce:v1',
+  parentId: EDGE_ROOT.delegation_id,
+  issuer: COORDINATOR,
+  issuerKeyId: COORDINATOR_KEY_ID,
+  issuerPrivate: coordinatorPrivate,
+  subject: ACTING_AGENT,
+  depthRemaining: 0,
+  notAfter: AUTHORITY_NOT_AFTER,
+})
+
+type Delegation = typeof DELEGATION_MAIN
+
+const resolveDelegationKey = (issuer: string, method: string) => {
+  if (issuer === PRINCIPAL && method === PRINCIPAL_KEY_ID) return principalPublic
+  if (issuer === COORDINATOR && method === COORDINATOR_KEY_ID) return coordinatorPublic
+  return null
+}
 
 // ---------------------------------------------------------------------------
 // One action. Every decision in this family approves it.
@@ -180,13 +245,13 @@ const intentA = seal(
 // ---------------------------------------------------------------------------
 
 function decisionEvidenceFor(
-  delegation: typeof DELEGATION_MAIN,
+  chain: readonly Delegation[],
   evaluatedAt: string,
   validUntil: string,
 ) {
   const authority_state = {
     profile: 'aps-conformance-suite:approval-authority-expiry:authority-state-v0',
-    selected_chain: [delegation.delegation_id],
+    selected_chain: chain.map(d => d.delegation_id),
     authority_basis: 'delegation',
     spend_state: { mode: 'unbounded' },
   }
@@ -216,7 +281,8 @@ function sealDecision(evidence: ReturnType<typeof decisionEvidenceFor>) {
       issuer: BOUNDARY,
       subject_agent: ACTING_AGENT,
       action_ref: actionRefA,
-      delegation_ref: evidence.authority_state.selected_chain[0],
+      // The leaf of the selected root-to-leaf chain.
+      delegation_ref: evidence.authority_state.selected_chain[evidence.authority_state.selected_chain.length - 1],
       decision_ref: evidence.decision_ref,
       issued_at: evidence.decision_context.evaluated_at,
       evidence_refs: [],
@@ -227,19 +293,23 @@ function sealDecision(evidence: ReturnType<typeof decisionEvidenceFor>) {
   )
 }
 
-const evidencePermitControl = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:40.000Z', PERMIT_VALID_UNTIL)
+const CHAIN_MAIN = [DELEGATION_MAIN] as const
+const CHAIN_FOR_REVOCATION_CASE = [DELEGATION_FOR_REVOCATION_CASE] as const
+const CHAIN_EDGE = [EDGE_ROOT, EDGE_CHILD] as const
+
+const evidencePermitControl = decisionEvidenceFor(CHAIN_MAIN, '2026-09-24T08:59:40.000Z', PERMIT_VALID_UNTIL)
 const decisionPermitControl = sealDecision(evidencePermitControl)
 
-const evidencePermitForRevocation = decisionEvidenceFor(DELEGATION_FOR_REVOCATION_CASE, '2026-09-24T08:59:41.000Z', PERMIT_VALID_UNTIL)
+const evidencePermitForRevocation = decisionEvidenceFor(CHAIN_FOR_REVOCATION_CASE, '2026-09-24T08:59:41.000Z', PERMIT_VALID_UNTIL)
 const decisionPermitForRevocation = sealDecision(evidencePermitForRevocation)
 
-const evidencePermitApprovalExpired = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:42.000Z', '2026-09-24T08:59:44.000Z')
+const evidencePermitApprovalExpired = decisionEvidenceFor(CHAIN_MAIN, '2026-09-24T08:59:42.000Z', '2026-09-24T08:59:44.000Z')
 const decisionPermitApprovalExpired = sealDecision(evidencePermitApprovalExpired)
 
-const evidencePermitAuthorityExpiry = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:43.000Z', PERMIT_VALID_UNTIL)
+const evidencePermitAuthorityExpiry = decisionEvidenceFor(CHAIN_MAIN, '2026-09-24T08:59:43.000Z', PERMIT_VALID_UNTIL)
 const decisionPermitAuthorityExpiry = sealDecision(evidencePermitAuthorityExpiry)
 
-const evidencePermitAuthorityEdge = decisionEvidenceFor(DELEGATION_MAIN, '2026-09-24T08:59:44.000Z', PERMIT_VALID_UNTIL)
+const evidencePermitAuthorityEdge = decisionEvidenceFor(CHAIN_EDGE, '2026-09-24T08:59:44.000Z', PERMIT_VALID_UNTIL)
 const decisionPermitAuthorityEdge = sealDecision(evidencePermitAuthorityEdge)
 
 // ---------------------------------------------------------------------------
@@ -253,7 +323,8 @@ function assert(condition: boolean, message: string): void {
   }
 }
 
-assert(DELEGATION_MAIN.delegation_id !== DELEGATION_FOR_REVOCATION_CASE.delegation_id, 'the two delegations share a delegation_id')
+const delegationIds = [DELEGATION_MAIN, DELEGATION_FOR_REVOCATION_CASE, EDGE_ROOT, EDGE_CHILD].map(d => d.delegation_id)
+assert(new Set(delegationIds).size === delegationIds.length, 'two delegations share a delegation_id')
 
 const decisionReceiptIds = [
   decisionPermitControl.receipt_id,
@@ -264,8 +335,8 @@ const decisionReceiptIds = [
 ]
 assert(new Set(decisionReceiptIds).size === decisionReceiptIds.length, 'two decisions share a receipt_id')
 
-function chainState(delegation: typeof DELEGATION_MAIN, now: string, revocation: 'active' | 'revoked') {
-  const result = verifyAuthorityDelegationChain([delegation], {
+function chainState(chain: readonly Delegation[], now: string, revocation: 'active' | 'revoked') {
+  const result = verifyAuthorityDelegationChain(chain as never, {
     now,
     resolveVerificationKey: resolveDelegationKey,
     trustRoot: () => true,
@@ -274,31 +345,39 @@ function chainState(delegation: typeof DELEGATION_MAIN, now: string, revocation:
   return result.state === 'valid' ? 'valid' : `${result.state}/${result.failures[0]?.code}`
 }
 
-// The authority is valid at every decision's evaluated_at, so every decision in this file
-// was issued under valid authority.
-for (const evidence of [evidencePermitControl, evidencePermitApprovalExpired, evidencePermitAuthorityExpiry, evidencePermitAuthorityEdge]) {
+// Each decision's chain is valid at its evaluated_at, so every decision in this file was
+// issued under valid authority.
+for (const [chain, evidence] of [
+  [CHAIN_MAIN, evidencePermitControl],
+  [CHAIN_FOR_REVOCATION_CASE, evidencePermitForRevocation],
+  [CHAIN_MAIN, evidencePermitApprovalExpired],
+  [CHAIN_MAIN, evidencePermitAuthorityExpiry],
+  [CHAIN_EDGE, evidencePermitAuthorityEdge],
+] as const) {
   const at = evidence.decision_context.evaluated_at
-  assert(chainState(DELEGATION_MAIN, at, 'active') === 'valid', `DELEGATION_MAIN is not valid at decision time ${at}`)
+  assert(chainState(chain, at, 'active') === 'valid', `a decision's chain is not valid at its decision time ${at}`)
 }
+
+// The consumption instants straddle the authority's not_after, and the SDK's own chain
+// verifier says so under the code the harness will report.
+assert(chainState(CHAIN_MAIN, NOW_AUTHORITY_VALID, 'active') === 'valid', 'CHAIN_MAIN is not valid at the control consumption instant')
 assert(
-  chainState(DELEGATION_FOR_REVOCATION_CASE, evidencePermitForRevocation.decision_context.evaluated_at, 'active') === 'valid',
-  'DELEGATION_FOR_REVOCATION_CASE is not valid at decision time',
+  chainState(CHAIN_MAIN, NOW_AUTHORITY_EXPIRED, 'active') === 'invalid/EXPIRED',
+  `CHAIN_MAIN does not verify invalid/EXPIRED at ${NOW_AUTHORITY_EXPIRED}: ${chainState(CHAIN_MAIN, NOW_AUTHORITY_EXPIRED, 'active')}`,
+)
+assert(
+  chainState(CHAIN_FOR_REVOCATION_CASE, NOW_AUTHORITY_VALID, 'revoked') === 'invalid/REVOKED',
+  'CHAIN_FOR_REVOCATION_CASE does not fail REVOKED when the resolver answers revoked',
 )
 
-// The two consumption instants straddle the authority's not_after, and the SDK's own
-// chain verifier says so under the code the harness will report.
-assert(chainState(DELEGATION_MAIN, NOW_AUTHORITY_VALID, 'active') === 'valid', 'DELEGATION_MAIN is not valid at the control consumption instant')
+// AEX-05: the child is the only member outside its interval at exactly its not_after. The
+// parent alone is valid at that instant and the two-hop chain is valid one millisecond
+// earlier, so EXPIRED at 09:00:00.000 comes from the child's excluded endpoint.
+assert(chainState([EDGE_ROOT], NOW_AUTHORITY_EDGE, 'active') === 'valid', 'EDGE_ROOT is not valid at the child edge instant')
+assert(chainState(CHAIN_EDGE, '2026-09-24T08:59:59.999Z', 'active') === 'valid', 'CHAIN_EDGE is not valid one millisecond before the child not_after')
 assert(
-  chainState(DELEGATION_MAIN, NOW_AUTHORITY_EXPIRED, 'active') === 'invalid/EXPIRED',
-  `DELEGATION_MAIN does not verify invalid/EXPIRED at ${NOW_AUTHORITY_EXPIRED}: ${chainState(DELEGATION_MAIN, NOW_AUTHORITY_EXPIRED, 'active')}`,
-)
-assert(
-  chainState(DELEGATION_MAIN, NOW_AUTHORITY_EDGE, 'active') === 'invalid/EXPIRED',
-  `DELEGATION_MAIN does not verify invalid/EXPIRED at exactly its not_after ${NOW_AUTHORITY_EDGE}: ${chainState(DELEGATION_MAIN, NOW_AUTHORITY_EDGE, 'active')}`,
-)
-assert(
-  chainState(DELEGATION_FOR_REVOCATION_CASE, NOW_AUTHORITY_VALID, 'revoked') === 'invalid/REVOKED',
-  'DELEGATION_FOR_REVOCATION_CASE does not fail REVOKED when the resolver answers revoked',
+  chainState(CHAIN_EDGE, NOW_AUTHORITY_EDGE, 'active') === 'invalid/EXPIRED',
+  `CHAIN_EDGE does not verify invalid/EXPIRED at exactly the child not_after ${NOW_AUTHORITY_EDGE}: ${chainState(CHAIN_EDGE, NOW_AUTHORITY_EDGE, 'active')}`,
 )
 
 // The approval under test is itself still unexpired when the authority has expired.
@@ -342,17 +421,30 @@ const chain = {
   description:
     'draft-pidlisnyi-aps-03 section 4.3 lines 914-918: at consumption the boundary MUST ' +
     're-validate temporal validity. One action-intent, five permit policy-decision receipts, ' +
-    'and two one-hop AuthorityDelegationV1 records sharing one validity window, minted and ' +
-    'signature-verified with agent-passport-system 7.1.0.',
+    'two one-hop AuthorityDelegationV1 chains and one two-hop chain whose child shares their ' +
+    'validity window under a longer-lived parent, minted and signature-verified with ' +
+    'agent-passport-system 7.1.0.',
   minted_by: 'fixtures/approval-authority-expiry/mint.ts',
   seed_label_prefix: SEED_PREFIX,
-  identities: { principal: PRINCIPAL, acting_agent: ACTING_AGENT, enforcement_boundary: BOUNDARY },
+  identities: { principal: PRINCIPAL, coordinator: COORDINATOR, acting_agent: ACTING_AGENT, enforcement_boundary: BOUNDARY },
   verification_keys: {
     [PRINCIPAL_KEY_ID]: principalPublic,
+    [COORDINATOR_KEY_ID]: coordinatorPublic,
     [ACTING_AGENT_KEY_ID]: actingAgentPublic,
     [BOUNDARY_KEY_ID]: boundaryPublic,
   },
-  delegations: { main: DELEGATION_MAIN, for_revocation_case: DELEGATION_FOR_REVOCATION_CASE },
+  delegations: {
+    main: DELEGATION_MAIN,
+    for_revocation_case: DELEGATION_FOR_REVOCATION_CASE,
+    edge_root: EDGE_ROOT,
+    edge_child: EDGE_CHILD,
+  },
+  // Root-to-leaf chains, by delegation name. A presentation names one chain.
+  chains: {
+    main: ['main'],
+    for_revocation_case: ['for_revocation_case'],
+    edge: ['edge_root', 'edge_child'],
+  },
   actions: {
     a: { input: actionAInput, action_ref: actionRefA },
   },

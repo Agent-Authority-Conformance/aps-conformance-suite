@@ -22,20 +22,23 @@ function readJson<T>(name: string): T {
 }
 
 interface ChainFixture {
-  identities: { principal: string; acting_agent: string; enforcement_boundary: string }
+  profile: string
+  identities: { enforcement_boundary: string }
   verification_keys: Record<string, string>
-  delegations: { main: AuthorityDelegationV1; for_revocation_case: AuthorityDelegationV1 }
-  actions: Record<'a', { action_ref: string }>
+  delegations: Record<string, AuthorityDelegationV1>
+  chains: Record<string, string[]>
+  actions: Record<string, { action_ref: string }>
   receipts: Record<string, PolicyDecisionReceipt>
+  decision_evidence: Record<string, { authority_state: { selected_chain: string[] } }>
 }
 
 interface Presentation {
   id: string
   differs_from: string | null
   decision: string
-  requested_action: 'a'
+  requested_action: string
   now: string
-  chain: 'main' | 'for_revocation_case'
+  chain: string
   revocation: 'active' | 'revoked'
   expected: { admitted: boolean; reason: string; detail?: string }
 }
@@ -46,6 +49,27 @@ interface Vectors {
   declared_defective_fail_set: string[]
   presentations: Presentation[]
 }
+
+const PROFILE = 'aps-approval-authority-expiry-v0'
+
+// The family's case inventory, in presentation order. AEX-02 and AEX-03 are the controls
+// that give the declared failing set its meaning, so a corpus without them is malformed,
+// not a smaller pass.
+const REQUIRED_IDS = [
+  'AEX-01-accept-authority-valid-at-consumption',
+  'AEX-02-reject-authority-revoked-at-consumption',
+  'AEX-03-reject-approval-expired',
+  'AEX-05-reject-authority-at-exact-not-after',
+  'AEX-04-reject-authority-expired-approval-unexpired',
+]
+const REQUIRED_DECLARED = ['AEX-04-reject-authority-expired-approval-unexpired', 'AEX-05-reject-authority-at-exact-not-after']
+
+// The declared defect is wrongful admission. A declared vector counts as a declared
+// failure only when the defective boundary admits it this way. A refusal for any other
+// reason is a mismatch, not the defect.
+const DECLARED_DEFECT_OUTCOME: Outcome = { admitted: true, reason: 'dispatch_admitted' }
+
+const INSTANT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
 
 const fixture = readJson<ChainFixture>('chain.json')
 const vectors = readJson<Vectors>('vectors.json')
@@ -58,32 +82,77 @@ const resolveDelegationVerificationKey = (issuer: string, method: string) =>
   method.startsWith(`${issuer}#`) ? fixture.verification_keys[method] ?? null : null
 const trustRoot = () => true
 
-// Fail closed on malformed input before any boundary runs: an empty or duplicate-id
-// presentation list, presentations out of clock order (the family runs one forward-moving
-// clock), a declared id that is not presented, an unknown decision, chain or action name,
-// or a presentation that pairs a decision with a chain other than the one its
-// delegation_ref names.
+// Fail closed on malformed input before any boundary runs. Exit 2 on: a profile other than
+// this family's, a presentation list that is not exactly the required inventory in order,
+// a declared failing set other than exactly AEX-04 and AEX-05, a field of the wrong type,
+// a revocation answer other than active or revoked, presentations out of clock order (the
+// family runs one forward-moving clock), an unknown decision, chain or action name, a
+// chain whose leaf is not the decision's delegation_ref, or a chain that differs from the
+// decision evidence's selected_chain.
 function inputError(message: string): never {
   console.error(`approval-authority-expiry: ${message}`)
   process.exit(2)
 }
+const isString = (v: unknown): v is string => typeof v === 'string'
+const isObject = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v)
+
+if (fixture.profile !== PROFILE) inputError(`chain.json profile is not ${PROFILE}`)
+if (vectors.profile !== PROFILE) inputError(`vectors.json profile is not ${PROFILE}`)
 if (!Array.isArray(vectors.presentations) || vectors.presentations.length === 0) inputError('vectors.json has no presentations')
 if (!Array.isArray(vectors.declared_defective_fail_set)) inputError('vectors.json has no declared_defective_fail_set array')
-const presentedIds = new Set(vectors.presentations.map(p => p.id))
-if (presentedIds.size !== vectors.presentations.length) inputError('vectors.json repeats a presentation id')
+if (!isObject(fixture.chains)) inputError('chain.json has no chains map')
+
+for (const [index, p] of vectors.presentations.entries()) {
+  if (!isObject(p)) inputError(`presentation ${index} is not an object`)
+  if (!isString(p.id)) inputError(`presentation ${index} has no string id`)
+  if (!(p.differs_from === null || isString(p.differs_from))) inputError(`${p.id} differs_from is neither null nor a string`)
+  for (const field of ['decision', 'requested_action', 'chain'] as const) {
+    if (!isString(p[field])) inputError(`${p.id} has no string ${field}`)
+  }
+  if (!isString(p.now) || !INSTANT.test(p.now)) inputError(`${p.id} now is not a UTC millisecond instant`)
+  if (p.revocation !== 'active' && p.revocation !== 'revoked') inputError(`${p.id} revocation is neither "active" nor "revoked"`)
+  const expected = p.expected as unknown
+  if (!isObject(expected)) inputError(`${p.id} has no expected object`)
+  if (typeof expected.admitted !== 'boolean') inputError(`${p.id} expected.admitted is not a boolean`)
+  if (!isString(expected.reason)) inputError(`${p.id} expected.reason is not a string`)
+  if (expected.detail !== undefined && !isString(expected.detail)) inputError(`${p.id} expected.detail is not a string`)
+}
+
+const presentedIds = vectors.presentations.map(p => p.id)
+if (presentedIds.length !== REQUIRED_IDS.length || presentedIds.some((id, i) => id !== REQUIRED_IDS[i])) {
+  inputError(`vectors.json presents [${presentedIds.join(', ')}], not the required inventory [${REQUIRED_IDS.join(', ')}]`)
+}
+const declaredIds = vectors.declared_defective_fail_set
+if (
+  declaredIds.length !== REQUIRED_DECLARED.length ||
+  new Set(declaredIds).size !== declaredIds.length ||
+  !REQUIRED_DECLARED.every(id => declaredIds.includes(id))
+) {
+  inputError(`declared_defective_fail_set is not exactly [${REQUIRED_DECLARED.join(', ')}]`)
+}
 for (let i = 1; i < vectors.presentations.length; i++) {
   if (vectors.presentations[i].now < vectors.presentations[i - 1].now) inputError(`${vectors.presentations[i].id} is earlier than the presentation before it`)
 }
-for (const id of vectors.declared_defective_fail_set) {
-  if (!presentedIds.has(id)) inputError(`declared_defective_fail_set names "${id}", which is not presented`)
-}
+
+const chains = new Map<string, AuthorityDelegationV1[]>()
 for (const presentation of vectors.presentations) {
   const decision = fixture.receipts[presentation.decision]
   if (decision === undefined || !presentation.decision.startsWith('decision_')) inputError(`vectors.json names an unknown decision "${presentation.decision}"`)
-  const delegation = fixture.delegations[presentation.chain]
-  if (delegation === undefined) inputError(`vectors.json names an unknown chain "${presentation.chain}"`)
+  const memberNames = fixture.chains[presentation.chain]
+  if (!Array.isArray(memberNames) || memberNames.length === 0) inputError(`vectors.json names an unknown chain "${presentation.chain}"`)
+  const members = memberNames.map(name => {
+    const delegation = fixture.delegations[name]
+    if (delegation === undefined) inputError(`chain "${presentation.chain}" names an unknown delegation "${name}"`)
+    return delegation
+  })
   if (fixture.actions[presentation.requested_action] === undefined) inputError(`vectors.json names an unknown action "${presentation.requested_action}"`)
-  if (decision.delegation_ref !== delegation.delegation_id) inputError(`${presentation.id} pairs ${presentation.decision} with chain "${presentation.chain}", which its delegation_ref does not name`)
+  if (decision.delegation_ref !== members[members.length - 1].delegation_id) inputError(`${presentation.id} pairs ${presentation.decision} with chain "${presentation.chain}", whose leaf its delegation_ref does not name`)
+  const selected = fixture.decision_evidence[presentation.decision]?.authority_state?.selected_chain
+  const memberIds = members.map(d => d.delegation_id)
+  if (!Array.isArray(selected) || selected.length !== memberIds.length || selected.some((id, i) => id !== memberIds[i])) {
+    inputError(`${presentation.id} chain "${presentation.chain}" is not ${presentation.decision}'s selected_chain`)
+  }
+  chains.set(presentation.chain, members)
 }
 
 function runBoundary(boundary: ConsumptionBoundary): Map<string, Outcome> {
@@ -94,7 +163,7 @@ function runBoundary(boundary: ConsumptionBoundary): Map<string, Outcome> {
       decision,
       requestedActionRef: fixture.actions[presentation.requested_action].action_ref,
       now: presentation.now,
-      chain: [fixture.delegations[presentation.chain]],
+      chain: chains.get(presentation.chain)!,
       resolveRevocation: () => presentation.revocation,
     })
     results.set(presentation.id, outcome)
@@ -122,6 +191,10 @@ function matches(actual: Outcome, expected: Presentation['expected']): boolean {
   return true
 }
 
+function isDeclaredDefect(actual: Outcome): boolean {
+  return actual.admitted === DECLARED_DEFECT_OUTCOME.admitted && actual.reason === DECLARED_DEFECT_OUTCOME.reason && actual.detail === undefined
+}
+
 let referenceMatched = 0
 console.log(`approval-authority-expiry: ${vectors.presentations.length} presentations`)
 console.log('')
@@ -138,23 +211,17 @@ for (const presentation of vectors.presentations) {
 }
 
 const declaredFailSet = new Set(vectors.declared_defective_fail_set)
-let defectiveOk = declaredFailSet.size > 0
+let defectiveOk = true
 console.log('')
 console.log(`boundary: ${defectiveBoundary.name}`)
 for (const presentation of vectors.presentations) {
   const actual = defectiveResults.get(presentation.id)!
-  const shouldMatchExpected = !declaredFailSet.has(presentation.id)
-  const actuallyMatches = matches(actual, presentation.expected)
-  const ok = shouldMatchExpected ? actuallyMatches : !actuallyMatches
+  const declared = declaredFailSet.has(presentation.id)
+  const ok = declared ? isDeclaredDefect(actual) : matches(actual, presentation.expected)
   if (!ok) defectiveOk = false
-  const label = shouldMatchExpected ? (ok ? 'MATCH' : 'UNDECLARED MISMATCH') : (ok ? 'DECLARED FAIL' : 'DEFECT DID NOT REPRODUCE')
+  const label = declared ? (ok ? 'DECLARED FAIL' : 'DEFECT DID NOT REPRODUCE') : (ok ? 'MATCH' : 'UNDECLARED MISMATCH')
   console.log(`  ${label} ${presentation.id}  admitted=${actual.admitted} reason=${actual.reason}${actual.detail ? ` detail=${actual.detail}` : ''}`)
-}
-for (const id of declaredFailSet) {
-  if (!referenceResults.has(id)) {
-    console.log(`  DECLARED ID NOT PRESENTED ${id}`)
-    defectiveOk = false
-  }
+  if (declared && !ok) console.log(`    declared defect: ${JSON.stringify(DECLARED_DEFECT_OUTCOME)}`)
 }
 
 const referenceOk = referenceMatched === vectors.presentations.length

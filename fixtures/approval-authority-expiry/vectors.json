@@ -1,6 +1,6 @@
 {
   "profile": "aps-approval-authority-expiry-v0",
-  "description": "draft-pidlisnyi-aps-03 section 4.3 lines 914-918. At consumption the boundary MUST re-validate what can have changed since issuance, including revocation status and temporal validity. Five presentations in clock order against one shared ConsumptionBoundary instance and one shared clock, run through both a reference boundary and a declared defective negative control. Every decision is issued while its authority is valid. AEX-04 is the case approval-single-use does not present: the approval is unexpired at consumption, and its authority is not. AEX-05 presents the same case at exactly the authority's not_after, which the half-open interval [not_before, not_after) of draft-03 section 3.2 excludes.",
+  "description": "draft-pidlisnyi-aps-03 section 4.3 lines 914-918. At consumption the boundary MUST re-validate what can have changed since issuance, including revocation status and temporal validity. Five presentations in clock order against one shared ConsumptionBoundary instance and one shared clock, run through both a reference boundary and a declared defective negative control. Every decision is issued while its authority is valid. AEX-04 is the case approval-single-use does not present: the approval is unexpired at consumption, and its authority is not. AEX-05 presents the same case at exactly a child delegation's not_after, under a parent that is still valid, which the half-open child interval [not_before, not_after) of draft-03 section 3.2 excludes. On AEX-04 and AEX-05 the defective boundary must admit, with reason dispatch_admitted.",
   "declared_defective_fail_set": [
     "AEX-05-reject-authority-at-exact-not-after",
     "AEX-04-reject-authority-expired-approval-unexpired"
@@ -38,11 +38,11 @@
     },
     {
       "id": "AEX-05-reject-authority-at-exact-not-after",
-      "differs_from": "AEX-01: consumed at exactly the authority's not_after, the excluded end of the half-open window, before the approval's own valid_until",
+      "differs_from": "AEX-01: backed by a two-hop chain and consumed at exactly the child delegation's not_after, the excluded end of the half-open child interval, while the parent is still valid and before the approval's own valid_until",
       "decision": "decision_permit_authority_edge",
       "requested_action": "a",
       "now": "2026-09-24T09:00:00.000Z",
-      "chain": "main",
+      "chain": "edge",
       "revocation": "active",
       "expected": { "admitted": false, "reason": "authority_chain_not_valid_at_consumption", "detail": "invalid/EXPIRED" }
     },
