@@ -216,6 +216,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/a2a-go-368-jcs` | [`RUN.md`](interop/a2a-go-368-jcs/RUN.md) |
 | `interop/a2a-go-368-jcs-ea003f9` | [`RUN.md`](interop/a2a-go-368-jcs-ea003f9/RUN.md) |
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
+| `interop/agent-passport-v2-readers-407ca2d5` | [`RUN.md`](interop/agent-passport-v2-readers-407ca2d5/RUN.md) |
 | `interop/arpa-v0.9.5-1ec3008` | [`RUN.md`](interop/arpa-v0.9.5-1ec3008/RUN.md) |
 | `interop/attenu-guard-0.11.0-bundles` | [`SOURCE.md`](interop/attenu-guard-0.11.0-bundles/SOURCE.md) |
 | `interop/attenu-guard-0.13.0-envelopes` | [`SOURCE.md`](interop/attenu-guard-0.13.0-envelopes/SOURCE.md) |
@@ -237,6 +238,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/ethers-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/ethers-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/ethers-oracle-safety-check-9b4ffee` | [`run-report.md`](interop/ethers-oracle-safety-check-9b4ffee/run-report.md) |
 | `interop/hjs-bb6be62` | [`SOURCE.md`](interop/hjs-bb6be62/SOURCE.md) |
+| `interop/inam-x402-counterparty-f8a1927` | [`RUN.md`](interop/inam-x402-counterparty-f8a1927/RUN.md) |
 | `interop/insight-oracle-safety-check-13bd3ed` | [`run-report.md`](interop/insight-oracle-safety-check-13bd3ed/run-report.md) |
 | `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0` | [`SOURCE.md`](interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
@@ -245,6 +247,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
+| `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
 | `interop/wasmagent-aep-2026-09-13-03` | [`RUN.md`](interop/wasmagent-aep-2026-09-13-03/RUN.md) |
 | `interop/x402-receipts-debc94f` | [`RUN.md`](interop/x402-receipts-debc94f/RUN.md) |
 
