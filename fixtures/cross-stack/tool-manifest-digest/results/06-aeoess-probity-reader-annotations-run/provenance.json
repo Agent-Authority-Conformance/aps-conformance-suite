@@ -19,7 +19,7 @@
     "reader_tests": "76 passed, clean checkout",
     "harness": {
       "file": "harness.py",
-      "sha256": "43af3bd859e87285922f7744fe55d62b9e56b80236f8f0edce052fec01c76372"
+      "sha256": "e8a9e47491ddb53ddf8440fa0f7f37ee6be0249453f74fe058fe2c0e9187361e"
     }
   },
   "inputs": {

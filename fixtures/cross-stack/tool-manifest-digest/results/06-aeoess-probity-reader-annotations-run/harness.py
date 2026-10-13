@@ -6,7 +6,7 @@ map_reader.tool_key). The key and issuer come from Probity's committed
 selection.json. run_agentavow.selected_fixture is not used because its lock
 pins the v1 packet; instead this harness checks the packet bytes against the
 SHA-256 kenneives published in lab #155 comment 6150434388.
-Usage: PYTHONPATH=<reader dir> python probity_thin_harness.py <reader dir> <vectors.json>
+Usage: PYTHONPATH=<reader dir> python harness.py <reader dir> <vectors.json>
 """
 import hashlib, json, subprocess, sys
 from pathlib import Path

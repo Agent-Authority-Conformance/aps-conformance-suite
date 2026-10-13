@@ -1,8 +1,8 @@
 # Provenance: tool-manifest-digest
 
 External-system vector family: **AgentAvow tool-manifest-digest vectors, v0, v1 and v1-annotations**,
-ingested as signed, producer-owned fixtures. Nothing here reaches the network; every check
-recomputes from the bytes in this directory with `node` alone. Proposed in lab issue
+ingested as signed, producer-owned fixtures. The family's CI verification runs offline with
+Node alone. The recorded Python runs and their dependencies are documented below. Proposed in lab issue
 [#155](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/issues/155) for
 the boundary on
 [aeoess/agent-governance-vocabulary#177](https://github.com/aeoess/agent-governance-vocabulary/issues/177),
