@@ -1,0 +1,6 @@
+drift-hint-back-true: exit=1 fails=4 caught
+drift-extra-field: exit=1 fails=2 caught
+expect-drift-binds: exit=1 fails=2 caught
+baseline-desc-edit: exit=1 fails=4 caught
+drift-gate-digest: exit=1 fails=3 caught
+all mutants caught

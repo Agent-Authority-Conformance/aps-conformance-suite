@@ -12,6 +12,7 @@ if (!root) { console.error('usage: node check-tool-manifest-digest-pins.mjs <fam
 const pins = {
   'v0/tool-manifest-digest-v0-vectors.json': '2f4632b03305471b3262109dce7db2cf71d029fe6d9ec85fe54e9bf5c82bb9df',
   'v1/tool-manifest-digest-v1-vectors.json': '488496079155830caf83593be0cafcb21367f72cd70ea363c2400f40eda72647',
+  'v1-annotations/tool-manifest-digest-v1-annotations-vectors.json': '3fbe9b22750956623aba5657bcd647d0fcbe2fcc844e2af72011b07f0463a4b2',
 };
 let bad = 0;
 for (const [name, expected] of Object.entries(pins)) {

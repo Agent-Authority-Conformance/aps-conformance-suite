@@ -1,0 +1,75 @@
+provenance
+  ok    source.json jws equals vectors attestation jws
+  ok    source.json observed_tools equals vectors observed_tools
+  ok    source.json jwk equals vectors issuer jwk
+  ok    header alg EdDSA
+  ok    header kid matches pinned jwk
+  ok    payload_sha256 field matches payload bytes
+
+per-tool digests from the served definitions
+  ok    tool:search_cloudflare_documentation
+  ok    tool:migrate_pages_to_workers_guide
+  ok    served tool count equals signed tool count
+
+annotation-only drift
+  ok    baseline readOnlyHint is true
+  ok    drift readOnlyHint is false
+  ok    only differing field
+  ok    annotations key set unchanged
+  ok    drift digest differs from baseline digest
+
+vectors (axes recomputed, compared to expectation)
+  ok    annotation-match: signature_valid
+  ok    annotation-match: canonical_bytes
+  ok    annotation-match: subject_binds
+  ok    annotation-match: tool_binds
+  ok    annotation-match: tool_digest_binds
+  ok    annotation-match: fresh
+  ok    annotation-match: rely
+  ok    annotation-drift: signature_valid
+  ok    annotation-drift: canonical_bytes
+  ok    annotation-drift: subject_binds
+  ok    annotation-drift: tool_binds
+  ok    annotation-drift: tool_digest_binds
+  ok    annotation-drift: fresh
+  ok    annotation-drift: rely
+  ok    unknown-tool: signature_valid
+  ok    unknown-tool: canonical_bytes
+  ok    unknown-tool: subject_binds
+  ok    unknown-tool: tool_binds
+  ok    unknown-tool: tool_digest_binds
+  ok    unknown-tool: fresh
+  ok    unknown-tool: rely
+  ok    wrong-subject: signature_valid
+  ok    wrong-subject: canonical_bytes
+  ok    wrong-subject: subject_binds
+  ok    wrong-subject: tool_binds
+  ok    wrong-subject: tool_digest_binds
+  ok    wrong-subject: fresh
+  ok    wrong-subject: rely
+  ok    past-expiry: signature_valid
+  ok    past-expiry: canonical_bytes
+  ok    past-expiry: subject_binds
+  ok    past-expiry: tool_binds
+  ok    past-expiry: tool_digest_binds
+  ok    past-expiry: fresh
+  ok    past-expiry: rely
+  ok    tampered-payload: signature_valid
+  ok    tampered-payload: canonical_bytes
+  ok    tampered-payload: subject_binds
+  ok    tampered-payload: tool_binds
+  ok    tampered-payload: tool_digest_binds
+  ok    tampered-payload: fresh
+  ok    tampered-payload: rely
+
+gate digests and case shape
+  ok    annotation-match gate digest is the baseline digest
+  ok    annotation-drift gate digest is the drift_definition digest
+  ok    unknown-tool name absent from served tools
+  ok    annotation-drift fails exactly one axis
+  ok    unknown-tool fails exactly one axis
+  ok    wrong-subject fails exactly one axis
+  ok    past-expiry fails exactly one axis
+  ok    tampered-payload fails exactly one axis
+
+result: all checks passed
