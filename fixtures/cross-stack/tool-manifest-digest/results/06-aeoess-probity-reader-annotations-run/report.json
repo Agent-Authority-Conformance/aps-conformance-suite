@@ -1,0 +1,108 @@
+{
+  "harness": "aeoess thin harness over Probity map_reader (transport and comparison only)",
+  "reader_revision": "52403f68b67b039e12349df0f135cccae9dd963f",
+  "map_reader_sha256": "275a9f2d035575e28b572ef6b6da3668a72660f385c0f2cde9ca5c662630a807",
+  "packet_sha256": "3fbe9b22750956623aba5657bcd647d0fcbe2fcc844e2af72011b07f0463a4b2",
+  "packet_sha256_matches_stated": true,
+  "selection_key_kid": "agentgraph-security-v1",
+  "definition_matches": [
+    {
+      "tool": "search_cloudflare_documentation",
+      "matches": true
+    },
+    {
+      "tool": "migrate_pages_to_workers_guide",
+      "matches": true
+    }
+  ],
+  "drift_definition_digest_matches_gate": true,
+  "payload_sha256": "cc91178556e75451ef450f029246ebbb2584ef922e87f93226aebded699c861e",
+  "payload_digest_matches": true,
+  "results": [
+    {
+      "name": "annotation-match",
+      "axes": {
+        "signature_valid": true,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": true,
+        "tool_binds": true,
+        "tool_digest_binds": true,
+        "fresh": true,
+        "rely": true
+      },
+      "matches": true
+    },
+    {
+      "name": "annotation-drift",
+      "axes": {
+        "signature_valid": true,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": true,
+        "tool_binds": true,
+        "tool_digest_binds": false,
+        "fresh": true,
+        "rely": false
+      },
+      "matches": true
+    },
+    {
+      "name": "unknown-tool",
+      "axes": {
+        "signature_valid": true,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": true,
+        "tool_binds": false,
+        "tool_digest_binds": "not_evaluated",
+        "fresh": true,
+        "rely": false
+      },
+      "matches": true
+    },
+    {
+      "name": "wrong-subject",
+      "axes": {
+        "signature_valid": true,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": false,
+        "tool_binds": true,
+        "tool_digest_binds": true,
+        "fresh": true,
+        "rely": false
+      },
+      "matches": true
+    },
+    {
+      "name": "past-expiry",
+      "axes": {
+        "signature_valid": true,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": true,
+        "tool_binds": true,
+        "tool_digest_binds": true,
+        "fresh": false,
+        "rely": false
+      },
+      "matches": true
+    },
+    {
+      "name": "tampered-payload",
+      "axes": {
+        "signature_valid": false,
+        "canonical_bytes": true,
+        "issuer_binds": true,
+        "subject_binds": true,
+        "tool_binds": true,
+        "tool_digest_binds": true,
+        "fresh": true,
+        "rely": false
+      },
+      "matches": true
+    }
+  ],
+  "passed": true
+}

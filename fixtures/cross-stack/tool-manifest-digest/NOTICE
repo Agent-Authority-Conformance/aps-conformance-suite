@@ -17,3 +17,14 @@ blocks Tymofii Pidlisnyi (aeoess) published on this repository's issue #155 on 2
 reproduced verbatim. report.json is the output of the Probity reader
 (probityai/agent-evidence-vectors, Apache-2.0, by Sankalp Gilda) at d759fb4 and carries
 the operator strings that reader writes itself.
+
+The files under v1-annotations/ (LICENSE, README.md, source.json, generate.mjs, time.mjs,
+verify.mjs and the vector file) are copied byte for byte from the AgentAvow repository at
+3fbda96f7c53d6d3f094df483ff6b33c71d70c2e, docs/standards/tool-manifest-digest-vectors-v1-annotations/,
+where that directory carries its own Apache License, Version 2.0. The signed attestation
+inside the vector file was issued by AgentAvow (did:web:agentgraph.co) and is published for
+verification. The private signing key is not part of this contribution.
+
+results/06-aeoess-probity-reader-annotations-run/report.json is the output of harness.py
+calling the Probity reader (probityai/agent-evidence-vectors, Apache-2.0, by Sankalp Gilda)
+at 52403f6. No Probity source is copied here.

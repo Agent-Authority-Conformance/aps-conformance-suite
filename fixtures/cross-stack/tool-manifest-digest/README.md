@@ -15,12 +15,16 @@ a pinned evaluation time) and reports each axis separately. `rely` is all axes.
 - `v0/` — one digest for the whole server (`scan.toolManifestDigest`); five cases, five axes.
 - `v1/` — one digest per served tool, keyed by tool name (`scan.toolDigests`); six cases, six
   axes; the per-tool digest preimage and the key encoding are under test.
+- `v1-annotations/` keeps the v1 derivation, axes and gate shape over a baseline whose
+  served definitions carry annotations. `annotation-drift` changes only `readOnlyHint`, so
+  an annotation change alone is under test. Six cases, six axes, no key pairs.
 
 ## Reproduce (no network, no dependencies)
 
 ```console
 $ node v0/verify.mjs
 $ node v1/verify.mjs
+$ node v1-annotations/verify.mjs
 ```
 
 Node 18+. Exit 0 iff every check passes. Verbatim output of the producer's own run is in
@@ -43,6 +47,19 @@ The v1 packet carries six claims, C1 to C6, inventoried on #155 and recorded per
 | C4 | the EdDSA signature verifies under the pinned, kid-matched JWK | same candidate |
 | C5 | the six axes per case, `not_evaluated` included | same candidate |
 | C6 | each negative fails exactly one axis | candidate: `results/04-aeoess-native-mode-a-run/` (Mode A, native verifier) |
+
+The v1-annotations packet carries its own six claims, A1 to A6, recorded in `SOURCE.md`.
+A1 to A4 are the packet's counterparts of C2 to C5, A5 is each negative failing exactly one
+axis, and A6 is the annotation-only drift (the drift definition differs from the baseline
+only in `annotations.readOnlyHint`, and its digest is the drift gate's digest).
+
+| claim | independent record |
+|---|---|
+| A1 to A6 | candidate: `results/05-aeoess-native-mode-a-annotations-run/` (Mode A, native verifier, independently operated, not an independent implementation) |
+| A1 to A4, digest half of A6 | candidate: `results/06-aeoess-probity-reader-annotations-run/` (Mode B, Probity reader through a thin harness) |
+
+`results/07-aeoess-python-check-annotations-run/` is aeoess's own check of A1 to A6,
+author-produced.
 
 `results/03` is a run of Probity's reader (written by astrogilda) at `d759fb4`, made by
 aeoess, who authored neither the vectors nor the reader; it is a candidate independent
@@ -71,13 +88,20 @@ author, the APS-side consumer by its author) is author-produced.
 tool-manifest-digest/
 ├── v0/                      README, source.json, generate.mjs, verify.mjs, vector file, LICENSE
 ├── v1/                      README, source.json, generate.mjs, verify.mjs, vector file, LICENSE
+├── v1-annotations/          README, source.json, generate.mjs, time.mjs, verify.mjs, vector file, LICENSE
 ├── results/
 │   ├── 01-v0-verify.txt     verbatim producer run (author-produced)
 │   ├── 02-v1-verify.txt     verbatim producer run (author-produced)
 │   ├── 03-aeoess-probity-reader-run/
 │   │                        report.json (raw, unchanged), provenance.json, SHA256SUMS.txt
-│   └── 04-aeoess-native-mode-a-run/
-│                            v0-verify.txt, v1-verify.txt, provenance.json, SHA256SUMS.txt
+│   ├── 04-aeoess-native-mode-a-run/
+│   │                        v0-verify.txt, v1-verify.txt, provenance.json, SHA256SUMS.txt
+│   ├── 05-aeoess-native-mode-a-annotations-run/
+│   │                        v1-annotations-verify.txt, provenance.json, SHA256SUMS.txt
+│   ├── 06-aeoess-probity-reader-annotations-run/
+│   │                        report.json, harness.py, provenance.json, SHA256SUMS.txt
+│   └── 07-aeoess-python-check-annotations-run/
+│                            check.py, check.txt, mutate.py, mutate.txt, provenance.json, SHA256SUMS.txt
 ├── SOURCE.md                pins, claim inventory, per-claim verification split, the run
 │                            record, claim ceiling, boundaries
 ├── NOTICE                   where the copied files come from and their terms

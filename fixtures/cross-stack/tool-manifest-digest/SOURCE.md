@@ -1,8 +1,8 @@
 # Provenance: tool-manifest-digest
 
-External-system vector family: **AgentAvow tool-manifest-digest vectors, v0 and v1**,
-ingested as signed, producer-owned fixtures. Nothing here reaches the network; every check
-recomputes from the bytes in this directory with `node` alone. Proposed in lab issue
+External-system vector family: **AgentAvow tool-manifest-digest vectors, v0, v1 and v1-annotations**,
+ingested as signed, producer-owned fixtures. The family's CI verification runs offline with
+Node alone. The recorded Python runs and their dependencies are documented below. Proposed in lab issue
 [#155](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/issues/155) for
 the boundary on
 [aeoess/agent-governance-vocabulary#177](https://github.com/aeoess/agent-governance-vocabulary/issues/177),
@@ -19,9 +19,12 @@ claim inventory and the per-claim standing below are the ones settled on #155.
 | v1 directory | `docs/standards/tool-manifest-digest-vectors-v1/` at `36426cfd5152bba6a27766febfac8aaef47b6f34` (2026-10-01); every file in `v1/` except `LICENSE` is that commit's byte for byte |
 | v1 vector file | `tool-manifest-digest-v1-vectors.json`, SHA-256 `488496079155830caf83593be0cafcb21367f72cd70ea363c2400f40eda72647` |
 | `LICENSE` in `v0/` and `v1/` | Apache-2.0, added by the producer at `ca6b5551f71ce98aa47f43b7b15ad561bdcc2b7b` (2026-10-02), after both pins; the only file in either directory not taken from its pin. The producer's later README edits (consumer boundaries, a licence paragraph, the Probity CI note) are not copied |
+| v1-annotations directory | `docs/standards/tool-manifest-digest-vectors-v1-annotations/` at `3fbda96f7c53d6d3f094df483ff6b33c71d70c2e` (2026-10-13). Every file in `v1-annotations/`, `LICENSE` included, is that commit's byte for byte |
+| v1-annotations vector file | `tool-manifest-digest-v1-annotations-vectors.json`, SHA-256 `3fbe9b22750956623aba5657bcd647d0fcbe2fcc844e2af72011b07f0463a4b2`, as the producer stated on #155 ([comment 6150434388](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/issues/155#issuecomment-6150434388)) |
 | issuer | `did:web:agentgraph.co`; JWK pinned inside each vector file, kid-matched to the JWS header; `jwks_url` is informational and not on the verification path |
 | v0 subject | `github:github/github-mcp-server`, attestation fetched once on 2026-09-29 |
 | v1 subject | `mcp:https://mcp.deepwiki.com/mcp` (three tools), attestation and the server's `tools/list` fetched in the same minute on 2026-10-01 |
+| v1-annotations subject | `mcp:https://docs.mcp.cloudflare.com/mcp` (two tools), attestation issued 2026-10-13T16:08:39.064Z, `tools/list` fetched immediately before and after the scan with an identical result |
 | digest profile (v1) | `agentavow.mcp-tool-definition.v1`: `sha256(JCS({profile, tool}))` over `name`, `title`, `description`, `inputSchema`, `outputSchema`, `annotations`; key `tool:<encoded name>` per the v1 README derivation |
 | Probity reader | `probityai/agent-evidence-vectors`, `interop/agentavow-signed-map-v1/` (`map_reader.py`, `run_agentavow.py`), PR #43 head `c5622736366fcbb8a40d2ce6800bddcd1f1f7c2b`, merge `d759fb4db68a7fefcc91c2d3ad2a585471d6a53a`; `agent-evidence-vectors` 0.15.0 primitives |
 | heldfast profile | `rufat325/heldfast`, `src/heldfast/profiles.py` at `ca5a872`, `tests/test_profile_agentavow.py` |
@@ -41,10 +44,13 @@ keys were produced by the issuer's implementation.
 |---|---|---|---|
 | v0 | digest-match, digest-mismatch, past-expiry, wrong-subject, tampered-payload | signature_valid, canonical_bytes, subject_binds, digest_binds, fresh | one axis each |
 | v1 | tool-match, unknown-tool, tool-drift, wrong-subject, past-expiry, tampered-payload | signature_valid, canonical_bytes, subject_binds, tool_binds, tool_digest_binds, fresh | one axis each; `tool_digest_binds` is `not_evaluated` when `tool_binds` is false |
+| v1-annotations | annotation-match, annotation-drift, unknown-tool, wrong-subject, past-expiry, tampered-payload | same six as v1 | one axis each, and `annotation-drift` breaks only `tool_digest_binds` |
 
 `tampered-payload` raises the score after signing and re-canonicalizes, keeping the original
 signature: canonical bytes still check, the signature does not. `tool-drift` adds one
-sentence to a served description after the grade.
+sentence to a served description after the grade. `annotation-drift` serves the graded
+definition with only `annotations.readOnlyHint` changed from `true` to `false`. The packet
+carries that definition as `drift_definition` and has no `key_encoding` pairs.
 
 ## Reproduce
 
@@ -56,7 +62,13 @@ checks. v1: three per-tool digest recomputations and a tool-count check, thirtee
 byte-identical to the pinned files. Producer-run output is in `results/`
 (`01-v0-verify.txt`, `02-v1-verify.txt`; Node v22.22.0, macOS arm64, 2026-10-05).
 
-In CI the lab first runs `scripts/check-tool-manifest-digest-pins.mjs`, which checks both vector files against the SHA-256 pins above. The native verifiers do not check the `key_encoding` count and do not bind the unsigned `toolDigests` map to the signed payload, so the pin check protects the exact bytes admitted at this pin. It does not change the producer's verifiers. AgentAvow closed both gaps upstream at `cbd33844` (`v1/verify.mjs` now requires the thirteen pairs and binds the unsigned map to the signed one). That verifier is not part of this pin, and a later pin can pick it up.
+`node v1-annotations/verify.mjs` checks the two per-tool digests, a tool-count check, that the
+unsigned `toolDigests` map equals the signed one, six checks on the annotation-only drift
+definition, 42 expected axis results and seven property checks. `node v1-annotations/generate.mjs`
+rebuilds the vector file from `source.json`, byte-identical to the pinned file (rerun by
+aeoess on 2026-10-13). No producer-run output is on file for this packet.
+
+In CI the lab first runs `scripts/check-tool-manifest-digest-pins.mjs`, which checks the three vector files against the SHA-256 pins above. The v0 and v1 native verifiers do not check the `key_encoding` count and do not bind the unsigned `toolDigests` map to the signed payload, so the pin check protects the exact bytes admitted at this pin. The v1-annotations verifier binds the unsigned map itself, and that packet carries no key pairs. The pin check guards its bytes the same way. It does not change the producer's verifiers. AgentAvow closed both gaps upstream at `cbd33844` (`v1/verify.mjs` now requires the thirteen pairs and binds the unsigned map to the signed one). That verifier is not part of this pin, and a later pin can pick it up.
 
 ## Claim inventory, v1 packet at `36426cf`
 
@@ -169,6 +181,27 @@ runs on record are:
 - v0, both layers; aeoess; Mode B; author-produced; APS-side consumer at `agent-passport-system@fd47f34` `examples/interop/agentavow/`, reading the v0 vector file at `4404df2c` unchanged, 30 of 30 expected axis results, each negative failing exactly its own axis ([comment](https://github.com/aeoess/agent-governance-vocabulary/issues/177#issuecomment-5914989949)). aeoess authored the consumer and the 7.2.0 primitives it uses. The runner's own label: a second implementation, run by the consuming project; a reproduction, not an independent verification record.
 - v0, both layers; aeoess (Codex executing under aeoess's mandate, on aeoess's machine, 2026-10-07); Mode A; independent; unchanged `v0/verify.mjs`, 30 axis results and six property checks ok in `results/04-aeoess-native-mode-a-run/v0-verify.txt`, exit 0. aeoess authored neither the vectors nor the verifier, and no runner-written code decides the result. It is an independently operated run of the producer's verifier, not an independent implementation. Candidate independent record for v0. Neither the Probity reader nor the heldfast profile reads v0, so no independent implementation record exists for it.
 
+### v1-annotations packet at `3fbda96f`
+
+Inputs: the pinned attestation, the served `tools/list` and `drift_definition`. The packet
+reuses the v1 derivation, axes and gate shape, so its claims are numbered on their own
+(A1 to A6) and are not records for C1 to C6. It has no key pairs, so it carries no
+key-encoding claim.
+
+| # | Claim | native `verify.mjs` | Probity reader `52403f6` | aeoess Python check |
+|---|---|---|---|---|
+| A1 | Per-tool digest derivation: both served definitions recompute to their signed digests | yes | yes | yes |
+| A2 | Canonical bytes: JCS of the decoded payload equals the signed payload bytes | yes | yes | yes |
+| A3 | Signature: EdDSA verifies under the pinned JWK, kid-matched | yes | yes | yes |
+| A4 | Case verdicts: the six axes per case for the six cases, `not_evaluated` for unknown-tool's digest axis included | yes | yes | yes |
+| A5 | Each negative fails exactly one axis | yes | no | yes |
+| A6 | Annotation-only drift: `drift_definition` equals the served baseline except `annotations.readOnlyHint` (`true` to `false`), and its digest is the `annotation-drift` gate's digest | yes | digest half only | yes |
+
+- A1 to A6; aeoess (Claude executing under aeoess's mandate, on aeoess's machine, 2026-10-13); Mode A; independent; unchanged `v1-annotations/verify.mjs`, all checks ok in `results/05-aeoess-native-mode-a-annotations-run/v1-annotations-verify.txt`, exit 0. aeoess authored neither the vectors nor the verifier, and no runner-written code decides the result. It is an independently operated run of the producer's verifier, not an independent implementation. Candidate independent record for A1 to A6.
+- A1 to A4 and the digest half of A6; aeoess (Claude executing under aeoess's mandate, on aeoess's machine, 2026-10-13); Mode B; independent; Probity reader `map_reader.py` at `52403f6` through `results/06-aeoess-probity-reader-annotations-run/harness.py`, `passed: true` in `report.json`, exit 0. aeoess authored neither the vectors nor the reader. The harness only passes the packet to the reader's functions and compares their output with the expected values. It replaces the reader's v1 input lock with a check against the producer's stated SHA-256 and keeps the reader's committed key selection. Candidate independent implementation record for those claims. The reader does not assert A5 or the difference half of A6.
+- A1 to A6; aeoess; Mode B; author-produced; aeoess's Python check in `results/07-aeoess-python-check-annotations-run/`, 64 checks ok, five mutants of the vector file each fail it. aeoess authored the check.
+- The A5 count excludes the aggregate `rely` result and keeps `not_evaluated` distinct from a failure, as for C6.
+
 These records are attributed per layer. Merge of this family is not an end-to-end
 verification or a family-level verdict.
 
@@ -201,6 +234,25 @@ a claim of this family.
 
 A Mode A run of the unchanged native verifiers `v0/verify.mjs` and `v1/verify.mjs` over the pinned vector files, operated by aeoess and executed by Codex under his mandate on his machine (macOS arm64, node v24.11.1), 2026-10-07. Both runs exit 0 with empty stderr. `v0-verify.txt` and `v1-verify.txt` are the verbatim stdout, `provenance.json` states the runner, inputs, label basis and limits, and `SHA256SUMS.txt` covers the other four files. Same machine and maintainer as the run in `results/03`. It covers v0 and the native C6 assertion and claims nothing about the verifiers' coverage beyond what they print.
 
+## The runs in `results/05`, `results/06` and `results/07` (v1-annotations)
+
+All three were operated by aeoess and executed by Claude under his mandate on his machine,
+macOS 26.5 arm64, on 2026-10-13, over the pinned `v1-annotations/` files. Each directory has
+a `provenance.json` with the runner, inputs, label basis, covered claims and limits, and a
+`SHA256SUMS.txt` over its other files. Same machine and maintainer as `results/03` and `results/04`.
+
+| record | what ran | result |
+|---|---|---|
+| `05-aeoess-native-mode-a-annotations-run/` | unchanged `v1-annotations/verify.mjs`, node v24.11.1 | exit 0, empty stderr, `all checks passed` |
+| `06-aeoess-probity-reader-annotations-run/` | Probity reader at `52403f68b67b039e12349df0f135cccae9dd963f`, 76 reader tests passing first, through `harness.py`, Python 3.12.13 | exit 0, empty stderr, `passed: true`, and the shared sources the reader's lock names match their locked digests |
+| `07-aeoess-python-check-annotations-run/` | `check.py` and `mutate.py`, Python 3.14.6, `cryptography` 49.0.0 | exit 0, 64 checks, five mutants each caught |
+
+The Probity reader's own runner, `run_agentavow.py`, refuses this file because its lock pins
+the v1 packet. `report.json` in `06` is therefore the harness output, not the reader's
+runner output, and it carries the reader's own `issuer_binds` axis, which is not a claim of
+this family. The live `tools/list` of `docs.mcp.cloudflare.com/mcp` fetched on 2026-10-13
+still matched both pinned digests. That fetch is not part of any record here.
+
 ## Claim ceiling
 
 `rely=true` establishes exactly this: at `evaluation_time`, the named issuer had signed a
@@ -209,6 +261,10 @@ definition the gate was served for that tool is the one the scan graded, and sig
 subject and window all check. It establishes nothing about runtime behavior, nothing about
 what the tool does when invoked, nothing about other tools on the server, and nothing
 about definitions the scan did not observe.
+
+For v1-annotations the same ceiling applies. The packet shows that an annotation change
+alone breaks the per-tool binding. It says nothing about what `readOnlyHint` means for the
+tool, which is a declaration by the server, not a property the scan measured.
 
 For v0 the same ceiling applies with "this subject over this tool-definition digest" in
 place of the tool clause; a behavioral axis is a separate artifact with its own ceiling.
@@ -236,7 +292,8 @@ place of the tool clause; a behavioral axis is a separate artifact with its own 
 ## Licence
 
 `v0/` and `v1/` are Apache-2.0 under the `LICENSE` file in each, as the producer published
-them at `ca6b5551`; `NOTICE` records the copy. The rest of this directory is contributed
+them at `ca6b5551`. `v1-annotations/` is Apache-2.0 under the `LICENSE` in that directory at
+its pin. `NOTICE` records the copies. The rest of this directory is contributed
 under the repository's Apache-2.0 terms. The signed attestations inside the vector files
 were issued by AgentAvow and are published for verification; the private signing key is
 not part of this contribution.
