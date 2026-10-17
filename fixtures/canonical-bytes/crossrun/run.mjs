@@ -202,6 +202,17 @@ const RUNNERS = [
       '--manifest-path', join(CROSSRUN_DIR, 'rust', 'Cargo.toml'), '--', fixturePath],
       { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }),
   },
+  {
+    // A second canonicalizer in an existing language. `id` names its result
+    // file and table row; the report's `runner` field stays the language.
+    id: 'rust-jcs-admit',
+    lang: 'rust',
+    probe: 'cargo',
+    versionArgs: ['--version'],
+    run: () => execFileSync('cargo', ['run', '--quiet',
+      '--manifest-path', join(CROSSRUN_DIR, 'rust-jcs-admit', 'Cargo.toml'), '--', fixturePath],
+      { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }),
+  },
 ]
 
 // ── Run ──────────────────────────────────────────────────────────────────────
@@ -236,8 +247,8 @@ for (const runner of RUNNERS) {
     } catch (err) {
       errors++
       const detail = (err.stderr?.toString?.() || err.message || String(err)).trim().split('\n').slice(-4).join(' | ')
-      rows.push({ lang: runner.lang, state: 'ERROR', detail })
-      console.error(`ERROR ${runner.lang}: ${detail}`)
+      rows.push({ lang: runner.id ?? runner.lang, state: 'ERROR', detail })
+      console.error(`ERROR ${runner.id ?? runner.lang}: ${detail}`)
       continue
     }
     // Absolute paths are normalized to repo-relative before the artifact is
@@ -251,34 +262,35 @@ for (const runner of RUNNERS) {
   }
 
   const problems = validate(report, schema)
-  const outPath = join(RESULTS_DIR, `${runner.lang}.json`)
+  const id = runner.id ?? runner.lang
+  const outPath = join(RESULTS_DIR, `${id}.json`)
   writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n')
   if (problems.length > 0) {
     errors++
-    rows.push({ lang: runner.lang, state: 'SCHEMA', detail: problems[0] })
-    console.error(`SCHEMA ${runner.lang}: ${problems.length} problem(s)`)
+    rows.push({ lang: id, state: 'SCHEMA', detail: problems[0] })
+    console.error(`SCHEMA ${id}: ${problems.length} problem(s)`)
     for (const p of problems.slice(0, 5)) console.error(`  ${p}`)
     continue
   }
   rows.push(report.status === 'SKIP'
-    ? { lang: runner.lang, state: 'SKIP', detail: report.reason }
-    : { lang: runner.lang, state: 'OK', report })
+    ? { lang: id, state: 'SKIP', detail: report.reason }
+    : { lang: id, state: 'OK', report })
 }
 
 // ── Table ────────────────────────────────────────────────────────────────────
 const pad = (s, n) => String(s).padEnd(n)
-console.log(pad('runner', 8) + pad('implementation', 52) + pad('kind', 22) + pad('version', 12) + pad('bytes', 8) + 'sha256')
-console.log('-'.repeat(110))
+console.log(pad('runner', 16) + pad('implementation', 52) + pad('kind', 22) + pad('version', 12) + pad('bytes', 8) + 'sha256')
+console.log('-'.repeat(118))
 for (const row of rows) {
   if (row.state === 'OK') {
     const r = row.report
-    console.log(pad(r.runner, 8) + pad(r.implementation.slice(0, 50), 52) + pad(r.implementation_kind, 22) +
+    console.log(pad(row.lang, 16) + pad(r.implementation.slice(0, 50), 52) + pad(r.implementation_kind, 22) +
       pad(r.implementation_version, 12) +
       pad(`${r.summary.byte_match}/${r.summary.total}`, 8) + `${r.summary.sha256_match}/${r.summary.total}`)
   } else if (row.state === 'SKIP') {
-    console.log(pad(row.lang, 8) + pad('SKIP: ' + row.detail, 52) + pad('-', 22) + pad('-', 12) + pad('-', 8) + '-')
+    console.log(pad(row.lang, 16) + pad('SKIP: ' + row.detail, 52) + pad('-', 22) + pad('-', 12) + pad('-', 8) + '-')
   } else {
-    console.log(pad(row.lang, 8) + pad(`${row.state}: ${row.detail.slice(0, 44)}`, 52) + pad('-', 22) + pad('-', 12) + pad('-', 8) + '-')
+    console.log(pad(row.lang, 16) + pad(`${row.state}: ${row.detail.slice(0, 44)}`, 52) + pad('-', 22) + pad('-', 12) + pad('-', 8) + '-')
   }
 }
 console.log()
@@ -288,7 +300,7 @@ for (const row of rows) {
   if (row.state !== 'OK') continue
   const diverged = row.report.cases.filter(c => !c.byte_match)
   if (diverged.length === 0) continue
-  console.log(`${row.report.runner}: ${diverged.length} case(s) diverged`)
+  console.log(`${row.lang}: ${diverged.length} case(s) diverged`)
   for (const c of diverged) {
     console.log(`  ${pad(c.name, 32)} first differing byte at offset ${c.first_divergent_byte_offset}`)
   }
