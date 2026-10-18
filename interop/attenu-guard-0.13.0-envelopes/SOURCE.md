@@ -169,3 +169,35 @@ The successor record for revision `envelope_vectors_v1.2` and its 19 cases is
 `interop/attenu-guard-0.15.0-envelopes/`.
 
 These records are attributed per layer. Merge of this family is not an end-to-end verification or a family-level verdict.
+
+## Classification clarification (dated append, 2026-10-18)
+
+`CONTRIBUTING.md` defines a record as independent when the runner authored neither the vectors
+nor any claim inputs being checked, and did not author the implementation whose behavior or
+output supplies the recomputation. Under that definition the two direction 1 package layers
+(Python, attenu-guard 0.13.0 wheel, and TypeScript, attenu-guard 0.8.0 on npm) above are
+independent, not author-produced. The runner, aeoess, wrote neither the vectors nor
+attenu-guard. Both are by the attenu-guard author.
+
+The harness that ran them is runner-authored and only transports and compares. It loads the
+vector file, through the package's own loader in the Python run and as the byte-identical file
+in the TypeScript run, takes each case's own `signer` secret and `kid`, `witness_keys` and,
+where the case carries one, `raw_hex` as envelope bytes, calls the package's `verify_bundle` or
+`verifyBundle`, and compares the returned verdicts, failures and states with the declared ones.
+It stringifies state keys and projects failure entries to `{reason, seq, node}` before
+comparing, as noted above. Those values are per-case fields of the vector file, which the lab's
+clean-room verifier reads as well. That the harness passed them through rests on the run
+record's description. The harness decides no verdict, so under the thin harness rule it does not
+make the record author-produced. Its source is not committed in this directory, so this
+classification rests on the description above.
+
+The same reading is recorded for `interop/arpa-v0.9.5-1ec3008` in
+`docs/RUN-CLASSIFICATION-AUDIT-2026-08-29.md`: Mode A on ARPA's own release gate, independent,
+because the runner authored neither the vectors nor the implementation.
+
+What these layers establish is that the published package, run by someone who wrote neither it
+nor its vectors, returned the recorded verdicts. It is not an independently authored
+verification algorithm. The lab's own README-derived verifier run remains author-produced,
+because the lab wrote it. The separately recorded independent Mode B runs are unchanged. The run
+records and results files above are unchanged. This note changes only the label, and the
+reclassified rows are removed from `docs/OPEN-RUNS.md` in the same commit.
