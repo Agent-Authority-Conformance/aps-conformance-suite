@@ -329,9 +329,12 @@ in the TypeScript run, takes each case's own `signer` secret and `kid`, `witness
 where the case carries one, `raw_hex` as envelope bytes, calls the package's `verify_bundle` or
 `verifyBundle`, and compares the returned verdicts, failures and states with the declared ones.
 It stringifies state keys and projects failure entries to `{reason, seq, node}` before
-comparing, as noted above. All key material comes from the vector file. The harness decides no
-verdict, so under the thin harness rule it does not make the record author-produced. Its source
-is not committed in this directory, so this classification rests on the description above.
+comparing, as noted above. Those values are per-case fields of the vector file, which the lab's
+clean-room verifiers read as well. That the harness passed them through, and passed
+`signer=None` where a case's signer is null, rests on the run record's description. The harness
+decides no verdict, so under the thin harness rule it does not make the record author-produced.
+Its source is not committed in this directory, so this classification rests on the description
+above.
 
 The same reading is recorded for `interop/arpa-v0.9.5-1ec3008` in
 `docs/RUN-CLASSIFICATION-AUDIT-2026-08-29.md`: Mode A on ARPA's own release gate, independent,

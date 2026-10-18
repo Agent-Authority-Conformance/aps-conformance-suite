@@ -86,10 +86,11 @@ neither the vectors nor attenu-guard. Both are by the attenu-guard author.
 The harness that ran it is runner-authored and only transports and compares. It loads the vector
 file through the package's own loader, wraps each case's own `signer` secret and `kid` as
 `HS256TestSigner`, calls the package's `verify_bundle`, and compares the returned verdicts and
-failures with the declared ones. All key material comes from the vector file. The harness
-decides no verdict, so under the thin harness rule it does not make the record author-produced.
-Its source is not committed in this directory, so this classification rests on the description
-above.
+failures with the declared ones. Those values are per-case fields of the vector file, which the
+lab's clean-room verifier reads as well. That the harness passed them through rests on the run
+record's description. The harness decides no verdict, so under the thin harness rule it does not
+make the record author-produced. Its source is not committed in this directory, so this
+classification rests on the description above.
 
 The same reading is recorded for `interop/arpa-v0.9.5-1ec3008` in
 `docs/RUN-CLASSIFICATION-AUDIT-2026-08-29.md`: Mode A on ARPA's own release gate, independent,
