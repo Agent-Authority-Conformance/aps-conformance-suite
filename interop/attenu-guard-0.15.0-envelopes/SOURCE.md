@@ -310,19 +310,36 @@ which continues to gate the repository's fixtures rather than these interop runs
 `interop/attenu-guard-0.13.0-envelopes/` was modified except the dated append at the end of its
 SOURCE.md, which that record's own policy permits because it publishes no digest set.
 
-
 ## Classification clarification (dated append, 2026-10-18)
 
 `CONTRIBUTING.md` defines a record as independent when the runner authored neither the vectors
-nor any claim inputs being checked, and did not author the implementation whose behavior or output
-supplies the recomputation. Under that definition the two direction 1 package layers (Python on PyPI attenu-guard 0.15.0, TypeScript on npm attenu-guard 0.9.0) above are independent, not
-author-produced. The runner, aeoess, wrote neither the vectors nor attenu-guard. Both are by the
-attenu-guard author. The reason given in the verification split above, that the implementation is the vectors' own author's, describes the producer, while the definition turns on the runner. The same reading already applies in `docs/OPEN-RUNS.md` to
-`aat-amdal` and `receipts-amdal`, where the lab ran AgentLair's implementation over AgentLair's
-vectors.
+nor any claim inputs being checked, and did not author the implementation whose behavior or
+output supplies the recomputation. Under that definition the two direction 1 package layers
+(Python, attenu-guard 0.15.0 on PyPI, and TypeScript, attenu-guard 0.9.0 on npm) above are
+independent, not author-produced. The runner, aeoess, wrote neither the vectors nor
+attenu-guard. Both are by the attenu-guard author. The reason given in the verification split
+above, that the implementation is the vectors' own author's, describes the producer, while the
+definition turns on the runner. The title's count of three author-produced runners and two
+independent ones is superseded by this note: one author-produced runner and four independent
+ones.
 
-What these layers establish is that the published package, run by someone who wrote neither it nor its
-vectors, returned the recorded verdicts. It is not an independently authored verification
-algorithm. The clean-room layer stays author-produced, because the runner wrote that verifier.
-The run records and results files above are unchanged. This note changes only the label, and the
+The harness that ran them is runner-authored and only transports and compares. It loads the
+vector file, through the package's own loader in the Python run and as the byte-identical file
+in the TypeScript run, takes each case's own `signer` secret and `kid`, `witness_keys` and,
+where the case carries one, `raw_hex` as envelope bytes, calls the package's `verify_bundle` or
+`verifyBundle`, and compares the returned verdicts, failures and states with the declared ones.
+It stringifies state keys and projects failure entries to `{reason, seq, node}` before
+comparing, as noted above. All key material comes from the vector file. The harness decides no
+verdict, so under the thin harness rule it does not make the record author-produced. Its source
+is not committed in this directory, so this classification rests on the description above.
+
+The same reading is recorded for `interop/arpa-v0.9.5-1ec3008` in
+`docs/RUN-CLASSIFICATION-AUDIT-2026-08-29.md`: Mode A on ARPA's own release gate, independent,
+because the runner authored neither the vectors nor the implementation.
+
+What these layers establish is that the published package, run by someone who wrote neither it
+nor its vectors, returned the recorded verdicts. It is not an independently authored
+verification algorithm. The lab's own README-derived verifier run remains author-produced,
+because the lab wrote it. The separately recorded independent Mode B runs are unchanged. The run
+records and results files above are unchanged. This note changes only the label, and the
 reclassified rows are removed from `docs/OPEN-RUNS.md` in the same commit.
