@@ -74,3 +74,20 @@ The token-vector set also moved between 0.8.0 and 0.11.0 (reject_unsafe_integer,
 valid_jcs_big_integer, valid_jcs_unmarked_header are new). The 0.8.0 record's clean-room -00
 verifier was not re-run; that is a separate successor observation. The envelope rows
 rafaelasor announced for a later drop are not in this file.
+
+
+## Classification clarification (dated append, 2026-10-18)
+
+`CONTRIBUTING.md` defines a record as independent when the runner authored neither the vectors
+nor any claim inputs being checked, and did not author the implementation whose behavior or output
+supplies the recomputation. Under that definition the direction 1 package layer (Python, attenu-guard 0.11.0) above is independent, not
+author-produced. The runner, aeoess, wrote neither the vectors nor attenu-guard. Both are by the
+attenu-guard author. The same reading already applies in `docs/OPEN-RUNS.md` to
+`aat-amdal` and `receipts-amdal`, where the lab ran AgentLair's implementation over AgentLair's
+vectors.
+
+What this layer establishes is that the published package, run by someone who wrote neither it nor its
+vectors, returned the recorded verdicts. It is not an independently authored verification
+algorithm. The clean-room layer stays author-produced, because the runner wrote that verifier.
+The run records and results files above are unchanged. This note changes only the label, and the
+reclassified rows are removed from `docs/OPEN-RUNS.md` in the same commit.

@@ -309,3 +309,20 @@ The token vectors were not re-run. The new family is not added to the suite's ow
 which continues to gate the repository's fixtures rather than these interop runs. No file in
 `interop/attenu-guard-0.13.0-envelopes/` was modified except the dated append at the end of its
 SOURCE.md, which that record's own policy permits because it publishes no digest set.
+
+
+## Classification clarification (dated append, 2026-10-18)
+
+`CONTRIBUTING.md` defines a record as independent when the runner authored neither the vectors
+nor any claim inputs being checked, and did not author the implementation whose behavior or output
+supplies the recomputation. Under that definition the two direction 1 package layers (Python on PyPI attenu-guard 0.15.0, TypeScript on npm attenu-guard 0.9.0) above are independent, not
+author-produced. The runner, aeoess, wrote neither the vectors nor attenu-guard. Both are by the
+attenu-guard author. The reason given in the verification split above, that the implementation is the vectors' own author's, describes the producer, while the definition turns on the runner. The same reading already applies in `docs/OPEN-RUNS.md` to
+`aat-amdal` and `receipts-amdal`, where the lab ran AgentLair's implementation over AgentLair's
+vectors.
+
+What these layers establish is that the published package, run by someone who wrote neither it nor its
+vectors, returned the recorded verdicts. It is not an independently authored verification
+algorithm. The clean-room layer stays author-produced, because the runner wrote that verifier.
+The run records and results files above are unchanged. This note changes only the label, and the
+reclassified rows are removed from `docs/OPEN-RUNS.md` in the same commit.
