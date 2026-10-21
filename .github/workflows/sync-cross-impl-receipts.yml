@@ -17,6 +17,14 @@ name: sync cross-impl receipts
 # 2026-05-02. They predate this layout, their paths may already be cited, and
 # this workflow does not touch them.
 #
+# AN UNAVAILABLE UPSTREAM IS A WARNING, NOT A FAILURE. When the upstream
+# repository is blocked or deleted, the run records a warning and changes no
+# file. Snapshots are append only, so the last observation stays valid as the
+# record of what was observed, and there is nothing new to observe. This was
+# prompted by the 2026-10-20 DMCA block of the whole upstream repository. The
+# notice concerns a file this workflow does not sync. Any other failure to
+# reach upstream, such as a 5xx or a rate limit, still fails the run.
+#
 # The daily cadence is a public commitment, agreed with @arian-gogani in
 # A2A#1786 and named in CTEF section A as daily-poll synchronization.
 
@@ -53,6 +61,30 @@ jobs:
           newest=$(find cross-impl-receipts/snapshots -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n1 || true)
           if [ -n "$newest" ]; then baseline="$newest"; fi
           echo "baseline=$baseline"
+
+          # Probe the upstream repository before fetching anything. Only the
+          # HTTP status is read. 451 means blocked and 404 means deleted or
+          # hidden. Either way the existing snapshots are kept unchanged.
+          status=$(curl -s -o /dev/null -w '%{http_code}' "https://api.github.com/repos/${UPSTREAM_REPO}") || true
+          case "$status" in
+            200)
+              echo "upstream=available" >> "$GITHUB_OUTPUT"
+              ;;
+            451|404)
+              msg="upstream ${UPSTREAM_REPO} is unavailable (HTTP ${status}). Existing snapshots are kept unchanged and nothing is fetched."
+              echo "::warning::${msg}"
+              echo "${msg}" >> "$GITHUB_STEP_SUMMARY"
+              {
+                echo "changed=0"
+                echo "upstream=unavailable"
+              } >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+            *)
+              echo "::error::upstream ${UPSTREAM_REPO} probe returned HTTP ${status}"
+              exit 1
+              ;;
+          esac
 
           changed=0
           for f in $FILES; do
