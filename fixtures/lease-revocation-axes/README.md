@@ -31,9 +31,9 @@ There is no renewal event.
 - cached_lease uses the original active observation while evidence is unexpired.
   Its verification path makes no source reads. A later diagnostic after rejection
   is permitted, but cannot renew evidence or repair a grant mismatch.
-- live_standing_read obtains one observation through the instrumented source for
-  every unexpired, correctly bound call. Outage attempts are recorded even when
-  no observation is returned. The synthetic source answers atomically at call
+- live_standing_read attempts one instrumented source read for every unexpired,
+  correctly bound call. An unavailable source returns no observation, but the
+  attempt is still recorded. The synthetic source answers atomically at call
   time. This is not a network freshness guarantee.
 - exclusive expires at T >= 120000. inclusive expires at T > 120000. Both are
   declared alternatives because the discussion does not select one.
