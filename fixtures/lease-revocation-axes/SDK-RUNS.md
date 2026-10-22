@@ -74,3 +74,61 @@ Neither launcher failure is a model or SDK result.
 Files covered by SHA256SUMS.txt are immutable for this record. Corrections to a
 covered record must be appended in CLARIFICATIONS.md, preserving the original.
 A later independent run is appended separately and does not replace these.
+
+## Revision 2 clarification and appended runs, 2026-10-22
+
+The sections above preserve the original revision 1 account. Their 123 checks
+per SDK and 44/164/492 model tallies apply to the unchanged root vectors.json
+and records, not to the repaired revision 2 runner's default corpus.
+
+The historical sentence "No missing feature was simulated to create a successful
+claim" means no missing full-mode capability was simulated into a passing result.
+The bridge supplies synthetic resolver answers to test the chain verifier only.
+Its revocation answers come from timeline events, while its expiry assertions
+compare against frozen expected freshness values. Neither constitutes actual
+status retrieval or complete authority enforcement.
+
+The historical statement that no baseline answer was changed to fit the model
+is an author statement about the initial work. The present source and digest
+alone cannot prove that history. The model and generator are both author-produced.
+
+Revision 2 records are appended under revision-2 with a separate SHA256SUMS.txt.
+The original four pinned files and manifest are unchanged. Record freezing is
+repository policy checked by the digest gate, not protection against changing
+both an artifact and its manifest. Corrections are recorded separately.
+
+Commands run from the repository root:
+
+    node --import tsx fixtures/lease-revocation-axes/verify.ts --json
+    node fixtures/lease-revocation-axes/mutation.test.mjs
+    node fixtures/lease-revocation-axes/sdk-bridge.mjs --json
+    APS_SDK_ROOT=<isolated-8.0.1-package> node fixtures/lease-revocation-axes/sdk-bridge.mjs --json
+
+Each command directly exited 0. The SDK 8.0.1 directory is the existing isolated
+installation from the initial run. No reinstall, lockfile change or dependency
+upgrade was needed. Each SDK matched 132 primitive checks, comprising 44 original
+expiry checks and 88 chain evaluations under supplied status answers. The same
+single signature mutation was rejected. The fixed chain does not correspond to
+each logical grant in the new binding scenario. Evidence-to-grant binding is
+checked in the model only, not established by these SDK primitive runs.
+
+The model matched 48 baseline case/profile runs, 176 calls, 528 axis comparisons
+and 176 separately graded composite verification outcomes. Twelve defective
+variants failed exactly their declared case sets. Twenty permissible diagnostic
+runs and twelve literal oracle checkpoints matched. Six corpus mutations were
+rejected at their intended diagnostics with the original bytes unchanged.
+
+The new per-call read audit also catches sticky-unavailable skipping repeated
+source attempts during continued outages. That revision 2 failure set is
+LRA-03, LRA-07 and LRA-11. The older revision 1 failure set remains preserved.
+The two other original failure sets extended by LRA-12 are deny-after-dispatch
+and blanket denial. New failure sets were reasoned from their code paths before
+the first revision 2 run and matched that run. This is a bounded statement about
+the new run, not a retrospective claim about every original mutation expectation.
+
+The retained model.json is a summary plus per-call read audit and diagnostic
+profile counts. Full answers and failures are reproducible with verify.ts --json.
+The per-worker instances, reads and downstream observations are in-process
+model evidence. No real distributed worker, network source or protected-resource
+boundary was independently reproduced. All new records remain Mode A,
+author-produced, runner aeoess with Codex under Tima's direction.

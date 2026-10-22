@@ -1,184 +1,177 @@
 # lease-revocation-axes
 
-Candidate, lab-authored timelines for three distinct questions: whether the original
-evidence is within its lease, what authority state a verifier can establish, and
-whether a specified action policy permits dispatch. This is a reference model and
-an attributed SDK primitive run. It is not a protocol conformance verdict.
+Revision 2 candidate, lab-authored timelines for original-evidence lease,
+scoped authority validity and an explicitly selected action policy. A separate
+composite result reports verification acceptance. This is a reference model and
+an attributed SDK primitive run, not a protocol conformance verdict.
 
 ## Source and authority
 
-The source is the public-agentprotocol W3C mailing-list discussion of 21 October
-2026. Larry Lewis proposed evidence at T=0, revocation at T=10 seconds, calls at
-T=30, T=60 and T=119, temporary revocation-service unavailability, and separate
-freshness, authority-validity and action-authorization results. ShaoBao Li (Lee)
-described a 120-second cached lease and live standing reads, and explicitly did
-not claim action-time authorization. Tymofii Pidlisnyi offered to host cases and
-run APS first. These are discussion proposals, not an approved W3C specification.
-The source identities and dates are recorded in vectors.json. No participant has
-reviewed or endorsed these vectors. No result for ATP or RTTP/IQA is supplied.
+The source is the public-agentprotocol W3C discussion of 21 October 2026.
+Larry Lewis proposed evidence at T=0, revocation at T=10 seconds, calls at
+T=30/60/119, temporary revocation-service unavailability and three separate axes.
+ShaoBao Li (Lee) described cached lease and live standing-read expectations and
+did not claim action-time authorization. Tymofii Pidlisnyi offered to host cases
+and run APS first. These are proposals, not an approved W3C specification. No
+ATP or RTTP/IQA run or participant endorsement of these vectors is supplied.
 
-Only the named times and cached/live verification expectations come from that
-discussion. The boundary rules, atomic clock, P1 policy, controls, observation
-format and expected matrix are this lab's candidate profile choices. This does
-not define the standing-state mapping of another implementation.
+Boundary rules, atomic timing, P1, extra controls, expected values and the grant
+binding prerequisite are lab choices. The source does not define these as a
+shared contract. Real adapters require separately declared timing, observation,
+authority and action-policy mappings. Model choices cannot establish another
+participant's behavior.
 
-## Fixed candidate profiles
+## Profiles and inputs
 
-The clock is synthetic milliseconds. Evidence e1 and e2 are issued at zero and
-expire at 120000. They refer to different delegations for the same subject and
-permit only `read`. There is no renewal event. Neither using nor retrieving an
-item changes its issuance or expiry. A later authority status observation is
-not replacement evidence and cannot renew the original lease.
+Original evidence e1 and e2 refers to distinct grants for the same subject. Both
+are issued at zero, expire at 120000 synthetic milliseconds and permit read.
+No use, retrieval or new status observation changes that original expiry.
+There is no renewal event.
 
-Every timeline is run under both modes and both declared endpoint rules:
+- cached_lease uses the original active observation while evidence is unexpired.
+  Its verification path makes no source reads. A later diagnostic after rejection
+  is permitted, but cannot renew evidence or repair a grant mismatch.
+- live_standing_read obtains one observation through the instrumented source for
+  every unexpired, correctly bound call. Outage attempts are recorded even when
+  no observation is returned. The synthetic source answers atomically at call
+  time. This is not a network freshness guarantee.
+- exclusive expires at T >= 120000. inclusive expires at T > 120000. Both are
+  declared alternatives because the discussion does not select one.
 
-- `cached_lease` uses the original observation for the original lease. It performs
-  no authority read. Its assessed authority property is acceptance of an observation
-  bounded by that fixed lease, anchored at original evidence issuance.
-- `live_standing_read` reads the source at each call while the original evidence is
-  unexpired. The model source answers atomically as of the synthetic call time.
-  An unreachable source supplies no observation. This is a declared zero-latency
-  model, not a network freshness guarantee.
-- `exclusive` expires at T >= 120000. `inclusive` expires at T > 120000.
-  The discussion does not select either endpoint. Matching a declared endpoint
-  tests internal consistency and is not agreement by a participant on that rule.
+The runner supplies each worker with its own Verifier instance and private
+history maps. Workers share the authoritative source and an independently
+instrumented downstream double. No expected block or ledger truth enters the
+verifier. Hostile getters check that input boundary. The runner retains call,
+worker, grant, time and returned observation for each source read, and checks
+read count, grant, time and observation against the declared mode.
 
-Once original evidence expires, this reference model rejects locally and performs
-no read in either mode. The cases do not require every real implementation to
-avoid such reads. A real implementation may inspect status after rejection, but
-that cannot extend this evidence's lease.
+Known deterministic cases can be hardcoded. The fabricated-live-read control
+returns matching canned semantic answers but still fails the source-read audit.
+This establishes that this runner detects the selected bypass, not resistance
+to every malicious adapter or proof of source authenticity.
 
-## Observable answers and oracle truth
+## Three axes, prerequisites and composite outcome
 
-The tested verifier receives only the call, original evidence and a source-read
-interface. It receives neither expected answers nor the ledger truth. The runner
-owns the ledger, grades the answers and adds truth-comparison labels separately.
-The constructor declaration fixes mode, endpoint, claimed axes and policy before
-any timeline runs.
+Evidence freshness measures the original evidence lease only. It does not
+measure every general meaning of evidence freshness.
 
-Every call record carries original evidence identity and expiry, the observation's
-status, `as_of_ms` and `retrieved_at_ms`, observation age, verifier answer, current
-validity, verification acceptance and separately observed downstream reach. The
-runner adds `truth` and `observation_differs_from_truth` from the ledger.
+Authority validity records the observation, scoped answer and current validity.
+A cached valid answer at T=119 after revocation matches its bounded-observation
+contract, while current validity is not_established. The runner separately
+records ledger truth and the disagreement. Bounded acceptance is not current
+unrevoked authority. The bounded scope has an explicit issuance anchor and
+numeric maximum age, rather than a bounded:<ms> mini-language.
 
-`authority_answer` describes the observation under the declared mode. A cached
-`valid` answer at T=119 after revocation at T=10 matches the bounded-observation
-contract, but `current_validity` is `not_established`, the ledger truth is
-`revoked`, and the disagreement is visible. That match is not evidence that
-current authority remains unrevoked. A live revoked observation can be freshly
-obtained while authority is revoked. Freshness concerns the original evidence
-lease, not a new issuance caused by a network read.
+After expiry, rejection remains mandatory, but a diagnostic status read is
+permitted. Its observation must be backed by the instrumented source. An actual
+revoked diagnostic can establish current revocation while evidence remains
+expired, verification remains rejected and dispatch remains denied. The default
+reference path makes no diagnostic read. Twenty additional positive profile runs
+exercise permissible diagnostics, including outages and both expiry endpoints.
 
-The report calls the bounded scope `bounded_observation` with a numeric
-`max_observation_age_ms` and an explicit anchor. It does not introduce a
-`bounded:<ms>` string syntax or reinterpret a participant's claims automatically.
-Any future participant mapping needs to state what its own claim means.
+Evidence-to-grant binding is a separately checked prerequisite. Verification
+acceptance is a separately graded composite of binding, lease and observed
+validity. It is not counted inside the authority axis. Dependencies between
+these properties are explicit and are not independent demonstrations.
 
-## P1 action policy
+The selected P1-current-observation policy additionally requires an observation
+at the exact call instant and an in-scope operation. The action answer and the
+downstream double are checked separately. A deny returned after dispatch fails.
 
-`P1-current-observation` requires unexpired original evidence, an active authority
-observation as of this exact synthetic call time, and an operation in the grant.
-Unavailable or older observations do not establish current authority, so P1 denies.
-The caller's action decision and the downstream double's recorded dispatch are
-checked separately. A late `deny` cannot hide a dispatch.
+P1 has zero observation-age tolerance. All cached calls after T=0 deny even with
+no revocation. Cached positive action controls exist only at T=0. Consequently,
+this policy provides limited cached-mode action discrimination and cannot rank
+cached and live designs as competing security products. A bounded-lease action
+policy would be a separate future profile, not a reinterpretation of P1 or Lee's
+unclaimed action axis.
 
-P1 deliberately has no nonzero observation-age tolerance. A cached observation
-at T=0 cannot establish current authority at T=30, even if the oracle knows the
-grant was never revoked. It therefore does not authorize that later call under
-P1. A cached call at T=0 does exercise a positive authorization control. A live
-active call has a current observation and permits `read`. Fresh active evidence
-still denies `write` in LRA-09. The implementation never borrows the oracle's
-hidden state to answer these questions.
+## Coverage declarations
 
-P1 is one candidate policy, not a universal rule for systems claiming action
-authorization. A deployment that authorizes use of an unexpired lease despite
-unseen revocation uses a different policy. Such a mapping is `not_supported`
-with a policy-mismatch reason, rather than a failed P1 implementation. A mechanism
-that does not claim action authorization reports `not_claimed`; no action verdict
-or enforcement coverage is credited to it. Lee's verification refusal is never
-reported as his system denying an action.
+Mode, endpoint, claimed axes and policy are declared before replay. The runner
+freezes supported, not_supported and not_claimed mappings before constructing
+any verifier. An unsupported policy makes the entire action axis unmapped.
+A supported axis cannot avoid scoring by returning not_supported on a hard call.
+Unsupported or unclaimed action mappings receive no dispatch coverage.
 
-## Frozen timelines
+Each run has an explicit status. matched means its scored checks matched,
+partial_coverage means at least one claimed axis is unmapped, no_scored_coverage
+means no axes were scored, and failed records a failed check. An empty failure
+list alone does not make a zero-coverage run successful.
 
-| Case | Discriminating concern |
+## Frozen timelines and controls
+
+| Case | Concern |
 |---|---|
-| LRA-01 | No-revocation positive control, including a T=0 action permit |
-| LRA-02 | Shared timeline, retained first observation and later revocation |
-| LRA-03 | Source unreachable before revocation |
-| LRA-04 | Original evidence expired, first source reachable then unreachable |
-| LRA-05 | 119999, 120000 and 120001 under each declared endpoint |
-| LRA-06 | Revoking one delegation leaves a second for the same subject active |
-| LRA-07 | Unreachable source without revocation, including expired evidence |
-| LRA-08 | Two workers receive identical evidence before and after revocation |
-| LRA-09 | Valid authority is not permission for a different operation |
-| LRA-10 | Repeated use does not slide the original expiry |
-| LRA-11 | Temporary outage recovers, for both revoked and active grants |
+| LRA-01 | No-revocation positive control and T=0 permit |
+| LRA-02 | Revocation versus retained original observation |
+| LRA-03 | Source outage with revocation |
+| LRA-04 | Expiry with reachable and unreachable revoked source |
+| LRA-05 | Just before, at and after each expiry endpoint |
+| LRA-06 | Independent grant for the same subject |
+| LRA-07 | Source outage without revocation |
+| LRA-08 | Two distinct verifier instances with worker-local histories |
+| LRA-09 | Valid read authority does not authorize write |
+| LRA-10 | Repeated use does not slide expiry |
+| LRA-11 | Outage recovery with active and revoked grants |
+| LRA-12 | Presenting g1 evidence for a g2 request, then a valid g2 control |
 
-There are 41 calls per profile, 44 model case runs and 164 calls across four
-profiles. Each baseline scores three axes for 492 axis comparisons. These are
-model comparisons, not independent cases or independent implementations. Endpoint
-choices are model profiles, not additional source requirements.
+Revision 2 has 44 calls per profile, 48 baseline case runs and 176 calls over
+four mode/endpoint profiles. It scores 528 axis comparisons and separately
+176 composite verification comparisons. These are author-produced comparisons,
+not independent cases or implementations.
 
-Each worker must meet its declared contract with its own observation history.
-Identical evidence under the model's identical observations produces identical
-answers here. Real workers holding differently dated observations are not required
-to answer identically solely because they are workers in one system.
+Twelve defective variants have exact declared failure sets. Four new variants
+retain stale state only on w2, fabricate live answers without reading, selectively
+return not_supported, and ignore evidence-to-grant binding. The w2 variant must
+fail only w2 calls, with w1 unaffected. The other variants cover ignored or sliding
+expiry, fail-open status, sticky outage, retrieval as renewal, deny after dispatch,
+blanket denial and first-read-only behavior. Each mutant uses one declared profile.
+Overlapping failure sets and twelve killed mutants are not a completeness claim.
 
-`generate.py` is the deterministic authoring procedure for vectors.json. Its
-expected-value construction is separate from harness.ts. It is run only when
-authoring the corpus, never before grading. The frozen JSON holds per-call,
-per-mode and per-endpoint expectations. A hand-reviewed table is still an oracle
-choice, not an independent implementation. Changing it requires reviewing the
-semantics, not making the current implementation pass.
+Six further tests mutate disposable corpus copies and require the intended
+failure diagnostic. The original corpus bytes remain unchanged. Positive checks
+also cover optional diagnostics, unclaimed axes, unsupported policies, zero
+coverage, hostile getters and twelve hand-reasoned checkpoints in ORACLE.md.
 
-## Negative controls and integrity
+The generator and model are separate author-produced implementations of the
+same candidate contract. Agreement does not independently validate that contract.
+The literal oracle-checkpoints.json is not generated from their formulas. Its
+reasoned table surfaces selected semantic choices for review, not independent
+semantic validation.
 
-Eight defective model variants are run deliberately. Their exact failed-case
-sets are authored in vectors.json and checked in both directions. They cover
-ignoring expiry, resetting expiry on use, fail-open reads, sticky outage state,
-renewing evidence on retrieval, denial followed by dispatch, blanket denial and
-performing a live read only on first use. Metadata such as source observation
-time is compared, so stale live answers also fail in no-revocation controls.
-The expiry-reset variants have overlapping failure sets but different causes.
+## SDK primitives and provenance
 
-Four additional tests mutate disposable corpus copies: claiming cached knowledge
-as current validity, hiding dispatch behind denial, dropping a call and extending
-original expiry. Each must fail with the corresponding diagnostic. Original
-expected bytes must remain unchanged. Tests also exercise zero claimed axes,
-statement-only scoring, unsupported policy and hostile oracle-property getters.
-No scored coverage is reported as `no scored coverage`, never as a successful run.
+The bridge uses timeline events to supply revocation answers. Its expiry
+assertions compare SDK output with frozen expected freshness values. It invokes
+the installed package's freshness API and fixed signed-chain verifier. The chain
+is reused from conflicting-status-sources/chain.json. It does not map each fixture
+grant to an independently signed chain or test evidence-to-grant binding.
 
-## SDK support and provenance
+Supplied active/revoked/unknown resolver states test the chain verifier. They do
+not establish SDK status retrieval, complete cached/live modes, observation
+provenance, worker synchronization, P1 dispatch, or inclusive endpoint support.
+These six mappings remain not_supported by this bridge. That is not a claim that
+all SDK APIs lack those capabilities. No missing full-mode capability is simulated
+into a passing result. Primitive results cannot be reported as APS passing the
+family or enforcing an action at its real boundary.
 
-The SDK bridge does not import the model. It gets revocation inputs from timeline
-events, never from expected verdicts. It calls the package's freshness functions
-with explicit dates and verifies a fixed signed chain using supplied
-active/revoked/unknown resolver answers. The signed-chain fixture is reused from
-conflicting-status-sources and its path is explicit in the bridge.
-
-These are primitive checks. The bridge does not implement a complete cached lease
-or live standing-read transport, establish observation provenance, synchronize
-workers, or invoke a protected resource. It cannot claim P1 action enforcement.
-Those full-mode mappings are reported `not_supported` with reasons. This means
-no mapping was established by this bridge, not that no other SDK API could support
-one. A successful primitive invocation must not be presented as a complete mode
-run. The inclusive endpoint is also unmapped for the selected exclusive freshness
-API. Other lease lengths and subsecond expiry times were not assessed.
-
-See SDK-RUNS.md for pins, exact commands, exits and the scope of the retained
-package runs. Network is unnecessary after dependency installation.
+The original revision 1 vectors and three records remain unchanged under their
+original SHA256SUMS.txt. Current vectors and records are in revision-2, with a
+separate manifest. CLARIFICATIONS.md distinguishes the original limitations and
+SDK-RUNS.md retains the historical account and appends the current run details.
+Digest gates enforce comparison with the pinned manifest. Record immutability is
+repository policy, not protection against rewriting both artifact and digest.
 
 ## Verification split
 
 | Layer / claim | Runner | Mode | Relationship | Implementation |
 |---|---|---|---|---|
-| Timeline model, scoring and negative controls | aeoess, Codex under Tima's direction | Mode A | author-produced | this family's harness.ts and verify.ts |
-| SDK expiry and chain primitives | aeoess, Codex under Tima's direction | Mode A | author-produced | pinned npm SDK plus sdk-bridge.mjs |
+| Revision 2 model, source audit and controls | aeoess, Codex under Tima's direction | Mode A | author-produced | harness.ts and verify.ts |
+| SDK expiry and supplied-answer chain primitives | aeoess, Codex under Tima's direction | Mode A | author-produced | pinned npm SDK and sdk-bridge.mjs |
 
-The runner authored the vectors and the bridge. The model is also runner-authored.
-None of these records is independent. No external implementation record exists.
-These records are attributed per layer. Merge of this family is not an end-to-end
-verification or a family-level verdict.
+The runner authored vectors and bridge. The model and checkpoint table are also
+runner-authored. These records are attributed per layer. Merge of this family
+is not an end-to-end verification or a family-level verdict.
 
 ## Run
 
@@ -189,28 +182,23 @@ From the repository root:
     npm run test:lease-revocation-axes
     npm run verify:lease-revocation-axes:sdk
 
-These checks also run in npm test. The model has a dedicated strict TypeScript
-check because the root configuration does not include every standalone family.
-For a machine-readable model record:
-
-    node --import tsx fixtures/lease-revocation-axes/verify.ts --json
-
-For an independently installed, pinned npm package, set APS_SDK_ROOT to its
-agent-passport-system package directory and run sdk-bridge.mjs. The package
-version, entry digest, vector digest and unsupported claims are emitted with
-each JSON record. No credentials or live services are used.
+These checks run in npm test. The model has its own strict TypeScript check.
+For full per-call records, run node --import tsx
+fixtures/lease-revocation-axes/verify.ts --json. Set APS_SDK_ROOT to an isolated,
+pinned agent-passport-system package directory for an additional primitive run.
+Use sdk-bridge.mjs --vectors fixtures/lease-revocation-axes/vectors.json to
+reproduce the historical primitive observations against the unchanged v1 corpus.
+No credentials or live authority services are used.
 
 ## Limits and follow-up
 
-No real protocol, network revocation service, clock skew, credential signature
-model, push invalidation, renewal, ongoing-action cancellation, payment, receipt
-binding or deployment risk taxonomy is exercised by the reference model. Known
-deterministic vectors can be hardcoded, so passing them is agreement with these
-cases, not security certification. The model's downstream double observes only
-the path it instruments. A future real adapter must observe its real execution
-boundary and justify its claim mappings separately.
+There is no real protocol, network delay, clock skew, signed lease, source
+authenticity, renewal, ongoing-action cancellation, payment, receipt binding or
+real execution-boundary verification here. The downstream double observes only
+its instrumented path. Real adapters need justified mappings and independent
+observations at their actual enforcement boundaries. Distinct in-process worker
+instances do not establish distributed cache synchronization.
 
-The proposal's exact endpoint remains open. Candidate profile choices and reports
-remain inspectable. Required next steps before public claims are review of the
-implemented oracle and any participant-specific mapping. Opening a PR and posting
-to W3C require their own authorization.
+The hand-reasoned oracle remains open to independent semantic challenge. The
+repaired candidate needs review before public clearance. Opening a PR and posting
+to W3C require Tima's separate authorization.

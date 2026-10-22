@@ -5,7 +5,7 @@ import {tmpdir} from 'node:os'
 import {join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {spawnSync} from 'node:child_process'
-const source=new URL('./vectors.json',import.meta.url)
+const source=new URL('./revision-2/vectors.json',import.meta.url)
 const original=readFileSync(source)
 const v=JSON.parse(original)
 const dir=mkdtempSync(join(tmpdir(),'lra-mutations-'))
@@ -15,6 +15,8 @@ const mutations=[
  ['deny-hides-dispatch',x=>{call(x,'LRA-02').expected.by_mode.live_standing_read.exclusive.downstream_reached=true},'downstream_reached'],
  ['removed-call',x=>{x.cases[0].timeline.pop()},'frozen call inventory'],
  ['wrong-original-expiry',x=>{x.profile.initial_evidence[0].expires_at_ms=130000},'evidence lease mismatch'],
+ ['binding-substitution',x=>{call(x,'LRA-12').expected.by_mode.live_standing_read.exclusive.evidence_binding='matched'},'evidence_binding'],
+ ['expired-composite-acceptance',x=>{call(x,'LRA-04').expected.by_mode.live_standing_read.exclusive.verification_accepted=true},'verification_accepted'],
 ]
 try {
  for(const [name,edit,diagnostic] of mutations){
@@ -27,5 +29,5 @@ try {
   console.log(`${name}: exit 1 at ${diagnostic}`)
  }
  assert.deepEqual(readFileSync(source),original,'pristine expected file changed')
- console.log('PASSED: four disposable corpus mutations rejected; original bytes unchanged')
+ console.log('PASSED: six disposable corpus mutations rejected; original bytes unchanged')
 } finally {rmSync(dir,{recursive:true,force:true})}
