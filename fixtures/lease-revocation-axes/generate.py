@@ -48,7 +48,7 @@ for cid,description,events in CASES:
             e["expected"]={"by_mode":{mode:{boundary:expected(e["at_ms"],active[e["grant"]],available,e["operation"],mode,boundary=="inclusive") for boundary in ["exclusive","inclusive"]} for mode in ["cached_lease","live_standing_read"]}}
         timeline.append(e)
     result.append({"id":cid,"description":description,"timeline":timeline})
-# Failure sets are specified before running the model, from each mutation's semantics.
+# Failure sets include corrections made after initial model runs; see SDK-RUNS.md.
 mutants={
  "lease-ignores-expiry":["LRA-04","LRA-05","LRA-07","LRA-08","LRA-10"],
  "sliding-lease":["LRA-04","LRA-05","LRA-07","LRA-08","LRA-10"],
