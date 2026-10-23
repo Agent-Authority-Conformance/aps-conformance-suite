@@ -74,6 +74,7 @@ implementations differ is the point.
 | python | `agent_passport.canonical.canonicalize_jcs` from the `agent-passport-system` PyPI distribution | first party |
 | go | `jcs.Canonicalize` from `github.com/aeoess/agent-passport-go` | first party |
 | rust | `agent_passport::jcs::canonicalize` from the `agent-passport-system` crate | first party |
+| rust-jcs-admit | `jcs_admit::admit` from the `jcs-admit` crate, pinned at 0.1.1 | rfc8785 |
 
 Each is depended on at an exact published version, never a local path, so a clone
 reproduces the run without any sibling checkout.
@@ -110,7 +111,7 @@ which is what lets the orchestrator point every runner at an alternative corpus.
 
 ### Result format
 
-One JSON object per runner, written to `crossrun-results/<lang>.json` and validated
+One JSON object per runner, written to `crossrun-results/<runner-id>.json`, where the runner id is the `id` in `run.mjs` (`rust-jcs-admit` for the second Rust runner), and validated
 against [`crossrun-result.schema.json`](crossrun-result.schema.json). Per case the
 report carries `name`, `byte_match`, `sha256_match`, `actual_bytes_hex`,
 `actual_sha256`, and `first_divergent_byte_offset` (zero-based; when one byte sequence
