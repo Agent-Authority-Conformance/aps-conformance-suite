@@ -1,0 +1,42 @@
+name: Propose a new corpus
+description: Propose conformance material for another agent-authority specification.
+title: "[new corpus] "
+labels: ["new corpus"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The lab can host corpora for other agent-authority specifications. Hosting needs a
+        defined normative target and a maintainer who accepts ongoing responsibility. You do not
+        need either to open this issue. A working title and an unknown revision are fine.
+
+  - type: input
+    id: spec
+    attributes:
+      label: Specification
+      description: "Name and link, or a working title. The revision can be unknown."
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: What the corpus would test
+    validations:
+      required: true
+
+  - type: textarea
+    id: material
+    attributes:
+      label: Existing vectors, implementations or results
+      description: "Links, if any."
+    validations:
+      required: false
+
+  - type: input
+    id: maintainer
+    attributes:
+      label: Proposed maintainer
+      description: "Optional at this stage."
+    validations:
+      required: false
