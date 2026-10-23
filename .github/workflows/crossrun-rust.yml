@@ -1,0 +1,44 @@
+name: crossrun rust
+
+# The two Rust canonical-bytes runners are not built by `tests.yml`, so a
+# dependency bump to either crate could pass every other check without the
+# runner ever compiling. This job runs only when those runners, the fixture
+# they read, or this check change, and it asserts each Rust runner's own
+# result rather than the orchestrator's exit code, because the orchestrator
+# records a mismatch or a missing toolchain without failing.
+#
+# Triggered by `pull_request` and `push` only, never `pull_request_target`, with
+# read-only contents and no secrets. Rust comes from the runner image, so this
+# adds no third-party action.
+
+on:
+  pull_request:
+    paths:
+      - 'fixtures/canonical-bytes/crossrun/**'
+      - 'fixtures/canonical-bytes/canonical-bytes-jcs-v2.json'
+      - 'scripts/check-crossrun-results.mjs'
+      - '.github/workflows/crossrun-rust.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'fixtures/canonical-bytes/crossrun/**'
+      - 'fixtures/canonical-bytes/canonical-bytes-jcs-v2.json'
+      - 'scripts/check-crossrun-results.mjs'
+      - '.github/workflows/crossrun-rust.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  rust-runners:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev
+      - run: cargo --version && rustc --version
+      - run: npm run crossrun:canonical-bytes
+      - run: node scripts/check-crossrun-results.mjs rust rust-jcs-admit
