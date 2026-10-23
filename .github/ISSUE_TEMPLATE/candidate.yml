@@ -1,0 +1,67 @@
+name: Propose a candidate
+description: Bring test vectors from your own system for publication as a candidate.
+title: "[candidate] "
+labels: ["candidate"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        docs/CANDIDATES.md explains what a candidate is and what publication review checks.
+        You can use your own protocol's terms. A failing, incomplete or unrun result is fine.
+        Fields you cannot fill yet can say "not yet known". Publication needs them, starting the
+        discussion does not.
+
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter
+      description: "Your GitHub handle or name."
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What the vectors test
+      description: "The claims they exercise, in your own terms."
+    validations:
+      required: true
+
+  - type: input
+    id: target
+    attributes:
+      label: Normative target
+      description: "The specification and revision the vectors test, or not yet known."
+    validations:
+      required: false
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: "Repository and commit or version of the vectors, or not yet known."
+    validations:
+      required: false
+
+  - type: input
+    id: license
+    attributes:
+      label: License
+      description: "Publication needs a license that allows redistribution under Apache 2.0."
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence you have
+      description: "Who ran what, against which revision, with the verbatim output. None yet is fine."
+    validations:
+      required: false
+
+  - type: textarea
+    id: limits
+    attributes:
+      label: Known limitations
+    validations:
+      required: false

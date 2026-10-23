@@ -6,7 +6,7 @@ Run it: `npm ci --include=dev && npm test`. After dependencies are installed, th
 
 Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 
-> **Status:** the corpus carries APS-native vectors, cross-stack fixtures from outside parties, and interop records from independently authored implementations, each labelled by who ran what (Mode A, the author's runner; Mode B, an independent runner) and by whether it was author-produced or independent. The inventory below is generated from the tree; nothing here is a conformance verdict about any implementation.
+> **Status:** the corpus carries APS-native vectors, cross-stack fixtures from outside parties, and interop records from independently authored implementations, each labelled by who ran what (Mode A, a reproduction with this repository's runner, Mode B, a recomputation with another implementation or primitive) and by whether it was author-produced or independent. The inventory below is generated from the tree; nothing here is a conformance verdict about any implementation.
 
 ## What this suite is
 
