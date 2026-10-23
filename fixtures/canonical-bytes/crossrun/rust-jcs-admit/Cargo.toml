@@ -15,6 +15,6 @@ path = "src/main.rs"
 jcs-admit = "=0.1.1"
 # raw_value lets the runner hand jcs-admit each input exactly as the fixture
 # file spells it. jcs-admit takes bytes, not a parsed value.
-serde_json = { version = "=1.0.145", features = ["raw_value"] }
+serde_json = { version = "=1.0.154", features = ["raw_value"] }
 sha2 = "=0.11.1"
 hex = "=0.4.3"
