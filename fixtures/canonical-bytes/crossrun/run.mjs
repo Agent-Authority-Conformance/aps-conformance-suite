@@ -4,7 +4,7 @@
 // Orchestrator for the RFC 8785 canonical-byte cross-run.
 //
 // Runs every language runner whose toolchain is present, validates each report
-// against crossrun-result.schema.json, writes it to crossrun-results/<lang>.json
+// against crossrun-result.schema.json, writes it to crossrun-results/<runner-id>.json
 // and prints a table.
 //
 // EXIT STATUS. Non-zero only on a runner ERROR or a schema failure. A byte or
