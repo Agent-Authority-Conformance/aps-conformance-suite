@@ -8,7 +8,7 @@
 // conformance; it is a byte diff on ten cases.
 //
 // Canonicalizer under test: jcs_admit::admit from the published jcs-admit
-// crate, pinned at exactly 0.1.1 in Cargo.toml. jcs-admit decides on raw bytes
+// crate, pinned at exactly 0.1.3 in Cargo.toml. jcs-admit decides on raw bytes
 // before any decode, so this runner hands it each vector's `input` exactly as
 // the fixture file spells it (`1e+21`, `295147905179352825856`), not a
 // re-serialization through serde_json, which would rewrite those tokens before

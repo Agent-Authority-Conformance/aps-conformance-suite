@@ -241,6 +241,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/inam-x402-counterparty-f8a1927` | [`RUN.md`](interop/inam-x402-counterparty-f8a1927/RUN.md) |
 | `interop/insight-oracle-safety-check-13bd3ed` | [`run-report.md`](interop/insight-oracle-safety-check-13bd3ed/run-report.md) |
 | `interop/jcs-admit-0.1.1-canonical-bytes-da95834` | [`run-report.md`](interop/jcs-admit-0.1.1-canonical-bytes-da95834/run-report.md) |
+| `interop/jcs-admit-0.1.3-canonical-bytes-b9918fc` | [`run-report.md`](interop/jcs-admit-0.1.3-canonical-bytes-b9918fc/run-report.md) |
 | `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0` | [`SOURCE.md`](interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
 | `interop/priorseal-aps-payment-limit-d749d269` | [`run-report.md`](interop/priorseal-aps-payment-limit-d749d269/run-report.md) |
