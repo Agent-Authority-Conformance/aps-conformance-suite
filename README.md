@@ -217,6 +217,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/a2a-go-368-jcs-ea003f9` | [`RUN.md`](interop/a2a-go-368-jcs-ea003f9/RUN.md) |
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
 | `interop/agent-passport-v2-readers-407ca2d5` | [`RUN.md`](interop/agent-passport-v2-readers-407ca2d5/RUN.md) |
+| `interop/aos-catalog-lra-cold-3e882bc` | [`run-report.md`](interop/aos-catalog-lra-cold-3e882bc/run-report.md) |
 | `interop/arpa-v0.9.5-1ec3008` | [`RUN.md`](interop/arpa-v0.9.5-1ec3008/RUN.md) |
 | `interop/attenu-guard-0.11.0-bundles` | [`SOURCE.md`](interop/attenu-guard-0.11.0-bundles/SOURCE.md) |
 | `interop/attenu-guard-0.13.0-envelopes` | [`SOURCE.md`](interop/attenu-guard-0.13.0-envelopes/SOURCE.md) |
