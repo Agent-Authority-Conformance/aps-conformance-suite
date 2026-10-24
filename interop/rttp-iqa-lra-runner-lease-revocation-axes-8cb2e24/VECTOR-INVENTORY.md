@@ -9,7 +9,7 @@ Digests of the frozen family inputs vendored in this directory (`vendor/`), meas
 |---|---|---|
 | `vendor/vectors.json` | `a0a07ea58bcacfd056cbd648e03de4ff14778aa151e8b5d2574e43e31a111ed8` | `a0a07ea58bcacfd056cbd648e03de4ff14778aa151e8b5d2574e43e31a111ed8` — match |
 | `vendor/oracle-checkpoints.json` | `1a0ed8a70bc7e7583c02855953485230261a8aeb5c0adc105292ab4b6e0916ea` | `1a0ed8a70bc7e7583c02855953485230261a8aeb5c0adc105292ab4b6e0916ea` — match |
-| `vendor/SHA256SUMS.txt` | `9e8a43648df97638632dc0785c3b4925b2ad03ab38272125109727607149412c` | (the manifest itself; verbatim copy) |
+| `vendor/SHA256SUMS.txt` | `f953d881da666c5dca8ec25d0c7680f070421cac6908fd58fbea2bc2b863f292` | (the manifest itself; trimmed to the two vendored files) |
 
 The family manifest also pins `model.json`, `sdk-7.1.0.json` and `sdk-8.0.1.json`,
 which this runner does not read (the runner scores against the vectors' expected

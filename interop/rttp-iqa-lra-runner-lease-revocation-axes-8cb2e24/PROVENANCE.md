@@ -27,7 +27,8 @@ The lab pins the revision-2 inputs by digest in
 | vectors.json | `a0a07ea58bcacfd056cbd648e03de4ff14778aa151e8b5d2574e43e31a111ed8` |
 | oracle-checkpoints.json | `1a0ed8a70bc7e7583c02855953485230261a8aeb5c0adc105292ab4b6e0916ea` |
 
-The copies under `vendor/` are verbatim from the pinned commit. This runner enforces
+The data files under `vendor/` are byte-identical to the pinned commit; the vendored
+`SHA256SUMS.txt` is the pinned manifest trimmed to the two vendored files. This runner enforces
 the pinned vectors digest as a hard gate at load time — it refuses to score any vectors
 whose sha256 is not in the manifest — and the gate was verified negatively: a tampered
 copy is rejected before any scoring occurs.

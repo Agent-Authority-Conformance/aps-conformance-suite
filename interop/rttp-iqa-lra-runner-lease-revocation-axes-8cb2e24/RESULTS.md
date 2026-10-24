@@ -46,7 +46,7 @@ output: all field values and `downstream_reached` match; zero failures.
 
 `no_scored_coverage` · `statement_only_matched` · `policy_mismatch_partial` ·
 `unsupported_only_no_coverage` · `oracle_inputs_not_read` — all true, and executed, not
-asserted: during all scoring phases the runner wraps `open()` and records any attempt
+asserted: during all scoring phases the runner wraps `builtins.open` - its only instrumented path - and records any attempt
 to read a file whose name contains `oracle`; the check is the measured result of that
 guard.
 

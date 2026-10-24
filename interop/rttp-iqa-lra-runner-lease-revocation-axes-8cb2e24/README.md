@@ -33,7 +33,7 @@ re-verified against the PR head on 2026-10-24).
 - `SHA256SUMS.txt` — digests of the files in this directory
 - `lra_runner.py` — the runner (the script needed to recompute the result)
 - `vendor/vectors.json`, `vendor/oracle-checkpoints.json`, `vendor/SHA256SUMS.txt` —
-  frozen family inputs, verbatim from the pinned PR #180 revision
+  frozen family inputs, an LF-normalized copy of the pinned PR #180 revision
 - `run-output.json` — machine-readable result of the recorded run
 
 ## Archive of record

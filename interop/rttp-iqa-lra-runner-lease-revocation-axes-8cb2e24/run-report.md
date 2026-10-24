@@ -6,7 +6,7 @@
 | date | 2026-10-24 |
 | run mode | B, alternate recomputation |
 | implementation name | `lra_runner.py` — independent stdlib-only Python runner for the lease-revocation-axes family |
-| implementation repo and commit | https://github.com/Aicent-Stack/conformance — `lra-runner/` @ `8cb2e241419cd03d9be40c5977e0e9caa1d723a4` (code as run; a verbatim copy is included in this directory) |
+| implementation repo and commit | https://github.com/Aicent-Stack/conformance — `lra-runner/` @ `8cb2e241419cd03d9be40c5977e0e9caa1d723a4` (code as run; an LF-normalized copy is included in this directory) |
 | corpus reference | aps-conformance-suite PR #180, commit `b745d252191e89fe123e33411f124a1b67542c2a`; vectors sha256 `a0a07ea58bcacfd056cbd648e03de4ff14778aa151e8b5d2574e43e31a111ed8` re-verified against the PR head `86e5e7a` on 2026-10-24 (commits after the run revision touch the family README and repository CI/docs only — the frozen inputs are unchanged) |
 | per-vector result | 48/48 matched (full per-vector list below) |
 | verbatim command and output | below, uncut |
