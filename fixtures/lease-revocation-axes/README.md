@@ -133,13 +133,13 @@ The rule each variant applies, as `harness.ts` implements it. Each worker has it
 - `lease-ignores-expiry`: in either mode, evidence counts as fresh at every call, whatever its expiry.
 - `sliding-lease`: in either mode, the first call with an evidence id uses its original expiry. Every later call with that id on the same worker uses the previous call's time plus the lease length, whatever the previous call's result.
 - `live-fail-open`: in live mode, for fresh, matched evidence, a source read that gets no answer becomes an `active` observation dated at the call time.
-- `sticky-unavailable`: in live mode, once a source read on a worker gets no answer, that worker stops reading the source and gives no observation for every later fresh, matched call, for every grant.
+- `sticky-unavailable`: in live mode, once a source read on a worker gets no answer, that worker stops reading the source and gives no observation for every later fresh, matched call, for every grant. In LRA-03 and LRA-07 the source is still down, so its answers match the expected ones. It fails there only because it skips the read each of those calls must make, which `source_read_contract` in `verify.ts` checks. Comparing answers alone catches it in LRA-11 only.
 - `retrieval-renews-evidence`: in live mode, for matched evidence, the verifier reads the source before judging freshness, even when the original evidence has expired. If the read answers, freshness becomes `at_ms < retrieved_at_ms + lease length`, whatever the declared boundary. If it gets no answer, the original freshness result stands and there is no observation.
 - `deny-but-dispatch`: in either mode, a deny decision still sends the call to the downstream executor.
 - `deny-everything`: in either mode, every permit becomes deny.
 - `live-first-read-only`: in live mode, for fresh, matched evidence, each worker keeps its first source result for each grant, including no answer, and reuses it with its original timestamps instead of reading again.
 - `second-worker-stale`: the same reuse as `live-first-read-only`, on worker w2 only.
-- `fabricated-live-read`: in live mode, for fresh, matched evidence, the verifier never reads the source. Rules hardcoded from the call id, grant and time give either no observation or an `active` or `revoked` one.
+- `fabricated-live-read`: in live mode, for fresh, matched evidence, the verifier never reads the source. Rules hardcoded from the call id, grant and time give either no observation or an `active` or `revoked` one. In these cases its answers match the expected ones, so it fails only on `source_read_contract`.
 - `selective-not-supported`: in either mode, every deny becomes `not_supported`.
 - `ignore-evidence-binding`: in either mode, evidence counts as matching the call's grant even when it names another grant. The freshness, observation and action checks still apply.
 
