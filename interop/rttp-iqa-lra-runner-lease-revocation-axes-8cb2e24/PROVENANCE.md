@@ -52,3 +52,15 @@ Run mode: **B** (alternate recomputation), per `docs/RUN-REPORT.md`. Record labe
 
 Third-party reproductions of this runner (or independent implementations of the
 family) are the independent records for this layer.
+
+## Artifact of record
+
+The sealed artifact of this run is
+[`lra-runner-20261023c.tar.gz`](https://iqa.org/conformance/files/lra-runner-20261023c.tar.gz)
+(sha256 `94bbaf3c292abf69595bf5782d1db8cbb4178536d53182578b46cff94a5c4b15`), carrying
+two addresses derived from its own digest — one per sister scheme, nothing invented,
+nothing registered, both resolve live:
+[`rttp://94bbaf3c.conformance.iqa`](https://rttp.com/open/?uri=rttp://94bbaf3c.conformance.iqa)
+(the question side, WHERE + WHEN) and
+[`iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa`](https://iqa.org/open/?uri=iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa)
+(the answer side, WHETHER; subject = first 32 hex of the same digest).

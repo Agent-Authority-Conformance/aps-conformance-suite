@@ -35,3 +35,19 @@ re-verified against the PR head on 2026-10-24).
 - `vendor/vectors.json`, `vendor/oracle-checkpoints.json`, `vendor/SHA256SUMS.txt` —
   frozen family inputs, verbatim from the pinned PR #180 revision
 - `run-output.json` — machine-readable result of the recorded run
+
+## Archive of record
+
+The complete artifact (code, frozen inputs, run report, recorded output) is pinned and
+sealed on the archive of record:
+[`lra-runner-20261023c.tar.gz`](https://iqa.org/conformance/files/lra-runner-20261023c.tar.gz),
+sha256 `94bbaf3c292abf69595bf5782d1db8cbb4178536d53182578b46cff94a5c4b15`, at
+[iqa.org/conformance/lra-runner/](https://iqa.org/conformance/lra-runner/). The artifact
+carries two addresses derived from its own digest — one per sister scheme, nothing
+invented, nothing registered, both resolve live:
+
+- [`rttp://94bbaf3c.conformance.iqa`](https://rttp.com/open/?uri=rttp://94bbaf3c.conformance.iqa) —
+  the question side (WHERE + WHEN); intent = first 8 hex of the artifact digest
+- [`iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa`](https://iqa.org/open/?uri=iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa) —
+  the answer side (WHETHER); subject = first 32 hex of the same digest, answering at the
+  [organ endpoint](https://iqa.org/organ-api/v1/production?subject=94bbaf3c292abf69595bf5782d1db8cb)

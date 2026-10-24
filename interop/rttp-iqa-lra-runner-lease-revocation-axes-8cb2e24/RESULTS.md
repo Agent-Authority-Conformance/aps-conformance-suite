@@ -71,3 +71,15 @@ gate before any scoring: `DIGEST GATE FAILED ... refusing to score`.
 | operating system | Windows 11 (10.0.26300) |
 | run date | 2026-10-24 |
 | implementation commit | `8cb2e241419cd03d9be40c5977e0e9caa1d723a4` |
+
+## Artifact of record
+
+The sealed artifact of this run is
+[`lra-runner-20261023c.tar.gz`](https://iqa.org/conformance/files/lra-runner-20261023c.tar.gz)
+(sha256 `94bbaf3c292abf69595bf5782d1db8cbb4178536d53182578b46cff94a5c4b15`), carrying
+two addresses derived from its own digest — one per sister scheme, nothing invented,
+nothing registered, both resolve live:
+[`rttp://94bbaf3c.conformance.iqa`](https://rttp.com/open/?uri=rttp://94bbaf3c.conformance.iqa)
+(the question side, WHERE + WHEN) and
+[`iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa`](https://iqa.org/open/?uri=iqa://94bbaf3c292abf69595bf5782d1db8cb.forge.iqa)
+(the answer side, WHETHER; subject = first 32 hex of the same digest).
