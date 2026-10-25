@@ -49,3 +49,52 @@ Reasons
 
 These checkpoints cover selected conditions. They do not establish every
 possible expected value, real timing, source authenticity or SDK enforcement.
+
+## Revision 3 note
+
+Revision 3, 2026-10-25. The twelve rows above are copied unchanged into
+revision-3/oracle-checkpoints.json and each answer gains two fields. The values
+below were reasoned from the case timeline and the precedence in README.md,
+then compared with the runner. The refusal reason is null for every permit.
+For a deny it is the first that applies of binding mismatch, evidence expired,
+authority not determined, authority revoked, operation not permitted. The grant
+reference records the grant as issued in a fixed input. The pair
+(vectors_sha256 from the result, evidence_id from the grant reference) identifies
+one entry of profile.initial_evidence in the retained frozen vectors file. The
+grant, issued_at_ms and expires_at_ms fields are copied from that entry (here
+g1 or g2, 0 and 120000) and observation_as_of_ms is copied from the decision's
+observation, so a reader can check a row against the input without the harness.
+No case contains a narrowing event, so behaviour under later narrowing is not
+tested here.
+
+| Checkpoint | Refusal reason | Grant reference |
+|---|---|---|
+| Cached, T=0, read | null | g1, e1, observation at 0 |
+| Cached, T=119000 after revocation | authority_not_determined | g1, e1, observation at 0 |
+| Live, T=30000 after revocation | authority_revoked | g1, e1, observation at 30000 |
+| Live, T=30000, source down after revocation | authority_not_determined | g1, e1, no observation |
+| Live, T=121000, no diagnostic | evidence_expired | g1, e1, no observation |
+| Live, T=121000, diagnostic read | evidence_expired | g1, e1, no observation |
+| Live, T=120000, inclusive endpoint | null | g1, e1, observation at 120000 |
+| Live, T=120000, exclusive endpoint | evidence_expired | g1, e1, no observation |
+| Live, T=0, write | operation_not_permitted | g1, e1, observation at 0 |
+| Live, request g2 with e1 for g1 | evidence_binding_mismatch | g1, e1, no observation |
+| Live, g2 after g1 revocation | null | g2, e2, observation at 30000 |
+| Live, T=30000, source down without revocation | authority_not_determined | g1, e1, no observation |
+
+Reasons
+
+- The cached observation at T=119000 is dated 0, not the call instant, so P1
+  could not determine current authority. The reason is not a revocation claim,
+  because the verifier never observed one.
+- An unreachable source gives the same reason as a stale cached observation.
+  Both leave authority undetermined. Neither is authority_revoked.
+- Expiry outranks every later observation. The diagnostic row keeps
+  evidence_expired and its grant reference records no observation, because the
+  diagnostic read happened after the decision and did not enter it. The
+  observation field of that row still carries the diagnostic result.
+- The mismatch row names e1 and g1, the evidence actually presented, not the
+  requested grant g2. A record that named the requested grant would describe
+  authority the verifier never examined.
+- The write row has a current active observation and a correctly bound, fresh
+  grant. Only the operation is outside the grant.

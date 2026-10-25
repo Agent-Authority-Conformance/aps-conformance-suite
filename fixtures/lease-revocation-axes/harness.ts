@@ -12,7 +12,12 @@ export interface Answer {
   evidence_binding: 'matched' | 'mismatch'; evidence_freshness: 'fresh' | 'expired'; observation: Observation | null;
   authority_answer: 'valid' | 'revoked' | 'not_established'; current_validity: 'valid' | 'revoked' | 'not_established';
   verification_accepted: boolean; action_decision: 'permit' | 'deny' | 'not_claimed' | 'not_supported'
+  // Revision 3. refusal_reason is null unless action_decision is deny. grant_ref names the evidence as
+  // issued and the instant of the observation the decision used, null when the decision used none.
+  refusal_reason: RefusalReason; grant_ref: GrantRef
 }
+export type RefusalReason = null | 'evidence_binding_mismatch' | 'evidence_expired' | 'authority_not_determined' | 'authority_revoked' | 'operation_not_permitted'
+export interface GrantRef { grant: string; evidence_id: string; issued_at_ms: number; expires_at_ms: number; observation_as_of_ms: number | null }
 export class Downstream {
   private attempts = new Set<string>()
   execute(id: string): void { this.attempts.add(id) }
@@ -57,6 +62,8 @@ export class Verifier {
       }
       if (this.mutant === 'live-fail-open' && observation === null) observation = {status:'active',as_of_ms:c.at_ms,retrieved_at_ms:c.at_ms}
     }
+    // The decision uses only the observation obtained above. A later diagnostic read is reported but not decided on.
+    const decisionObservation = observation
     // A permissible diagnostic read does not renew expired original evidence.
     if (!fresh && bound && this.mutant === 'post-expiry-diagnostic') observation=this.authority.read(c.grant,c.at_ms)
     this.previousUse.set(e.id,c.at_ms)
@@ -68,9 +75,17 @@ export class Verifier {
       if (this.declaration.action_policy !== 'P1-current-observation') action='not_supported'
       else action=bound && fresh && currentValidity==='valid' && e.allowed_operations.includes(c.operation)?'permit':'deny'
     }
-    if (this.mutant==='deny-everything' && action==='permit') action='deny'
+    let forcedReason: RefusalReason = null
+    if (this.mutant==='deny-everything' && action==='permit') { action='deny'; forcedReason='operation_not_permitted' }
     if (this.mutant==='selective-not-supported' && action==='deny') action='not_supported'
     if (action==='permit' || this.mutant==='deny-but-dispatch' && action==='deny') this.downstream.execute(c.id)
-    return {evidence_binding:bound?'matched':'mismatch',evidence_freshness:fresh?'fresh':'expired',observation,authority_answer:authorityAnswer,current_validity:currentValidity,verification_accepted:bound && fresh && authorityAnswer==='valid',action_decision:action}
+    // Revision 3 refusal reason, first applicable in this fixed order. Null unless the decision is deny.
+    let refusal: RefusalReason = null
+    if (action==='deny') refusal = forcedReason ?? (!bound ? 'evidence_binding_mismatch' : !fresh ? 'evidence_expired'
+      : decisionObservation === null || decisionObservation.as_of_ms !== c.at_ms ? 'authority_not_determined'
+      : decisionObservation.status === 'revoked' ? 'authority_revoked' : 'operation_not_permitted')
+    // Revision 3 grant reference: the evidence actually presented, as issued, and the observation instant the decision used.
+    const grantRef: GrantRef = {grant:e.grant,evidence_id:e.id,issued_at_ms:e.issued_at_ms,expires_at_ms:e.expires_at_ms,observation_as_of_ms:decisionObservation===null?null:decisionObservation.as_of_ms}
+    return {evidence_binding:bound?'matched':'mismatch',evidence_freshness:fresh?'fresh':'expired',observation,authority_answer:authorityAnswer,current_validity:currentValidity,verification_accepted:bound && fresh && authorityAnswer==='valid',action_decision:action,refusal_reason:refusal,grant_ref:grantRef}
   }
 }
