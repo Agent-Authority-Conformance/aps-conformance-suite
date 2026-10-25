@@ -3,7 +3,9 @@
 Revision 2 candidate, lab-authored timelines for original-evidence lease,
 scoped authority validity and an explicitly selected action policy. A separate
 composite result reports verification acceptance. This is a reference model and
-an attributed SDK primitive run, not a protocol conformance verdict.
+an attributed SDK primitive run, not a protocol conformance verdict. Revision 3,
+a local proposal under revision-3, adds a refusal reason and a grant reference to
+every decision record and changes nothing else. See the Revision 3 section.
 
 ## Source and authority
 
@@ -156,6 +158,66 @@ The literal oracle-checkpoints.json is not generated from their formulas. Its
 reasoned table surfaces selected semantic choices for review, not independent
 semantic validation.
 
+## Revision 3
+
+Revision 3 adds two fields to every expected decision record and to every
+answer the reference model returns. The twelve cases, the 44 calls, the twelve
+defective variants and their failure sets are the same as in revision 2.
+
+`refusal_reason` says why a call was denied. It is null whenever the decision is
+permit, not_claimed or not_supported. When the decision is deny, it is the first
+of these that applies, in this order:
+
+1. `evidence_binding_mismatch`: the presented evidence names a different grant
+   from the request.
+2. `evidence_expired`: the call falls outside the original lease under the
+   declared endpoint.
+3. `authority_not_determined`: the decision had no observation, or its
+   observation is not dated at the call instant. This is the value for an
+   unreachable source and for a cached observation under P1, which requires a
+   current observation. It is distinct from `authority_revoked`. An
+   implementation that never reached the source states that it could not
+   determine authority. It does not have to pick a substantive reason it has
+   no evidence for.
+4. `authority_revoked`: the current observation reports the grant revoked.
+5. `operation_not_permitted`: evidence, lease and current authority all hold,
+   and only the requested operation is outside the grant.
+
+`grant_ref` records the grant as issued in a fixed input. It carries the grant,
+the evidence id, the issue and expiry instants of the evidence actually
+presented, and `observation_as_of_ms`, the instant of the observation the
+decision used, or null when the decision used none. A grant_ref resolves like
+this. The result carries `vectors_sha256`, the digest of the retained frozen
+vectors file. The pair (`vectors_sha256`, `evidence_id`) identifies one entry
+of `profile.initial_evidence` in that file. `grant`, `issued_at_ms` and
+`expires_at_ms` are copied from that entry, and `observation_as_of_ms` is
+copied from the decision's observation. A reader can therefore check a record
+against the input without the harness, by opening the vectors file with that
+digest and comparing the four fields to the named entry and to the call. On a
+binding mismatch the record names the evidence's own grant, not the requested
+one. A diagnostic read made after a rejection does not enter
+`observation_as_of_ms`. The reference model writes the evidence's original
+expiry even when a defective variant has slid it. No case in this revision
+contains a narrowing event, so behaviour under later narrowing is not tested
+here.
+
+The runner accepts version 2 or version 3 vectors and reads the oracle table
+from the directory of the vectors file. Before comparing it, the runner checks
+that the table has exactly twelve rows, that their identities (case, call,
+mode, endpoint, diagnostic flag) equal a list frozen in verify.ts with no
+duplicates, and that every answer carries exactly the expected keys, so an
+empty or reshaped table fails instead of passing with fewer checkpoints. Under
+version 3 it adds `refusal_reason` and `grant_ref` checks inside the action
+authorization axis. Three further tests mutate a disposable copy of the
+revision 3 oracle table (empty, one row duplicated over another, one row
+missing `refusal_reason`) and require the inventory guard to fail each. Revision
+2 stays frozen under revision-2/SHA256SUMS.txt and its existing runs stay
+comparable. The revision 3 files are under revision-3 with their own manifest.
+Revision 3 is lab-authored and author-produced, like revision 2. The two fields
+were proposed on the public-agentprotocol list by Lars Kroehl (refusal reason
+value and grant as it stood) with support from ShaoBao Li (Lee), 24 October
+2026.
+
 ## SDK primitives and provenance
 
 The bridge uses timeline events to supply revocation answers. Its expiry
@@ -184,6 +246,7 @@ repository policy, not protection against rewriting both artifact and digest.
 | Layer / claim | Runner | Mode | Relationship | Implementation |
 |---|---|---|---|---|
 | Revision 2 model, source audit and controls | aeoess, Codex under Tima's direction | Mode A | author-produced | harness.ts and verify.ts |
+| Revision 3 refusal reason and grant reference | aeoess, Claude Code under Tima's direction | Mode A | author-produced | harness.ts, verify.ts and revision-3 |
 | SDK expiry and supplied-answer chain primitives | aeoess, Codex under Tima's direction | Mode A | author-produced | pinned npm SDK and sdk-bridge.mjs |
 
 The runner authored vectors and bridge. The model and checkpoint table are also
@@ -196,13 +259,18 @@ From the repository root:
 
     npm ci --include=dev
     npm run verify:lease-revocation-axes
+    npm run verify:lease-revocation-axes:r3
     npm run test:lease-revocation-axes
     npm run verify:lease-revocation-axes:sdk
 
 These checks run in npm test. The model has its own strict TypeScript check.
 For full per-call records, run node --import tsx
-fixtures/lease-revocation-axes/verify.ts --json. Set APS_SDK_ROOT to an isolated,
-pinned agent-passport-system package directory for an additional primitive run.
+fixtures/lease-revocation-axes/verify.ts --json, with --vectors
+fixtures/lease-revocation-axes/revision-3/vectors.json for revision 3.
+python3 fixtures/lease-revocation-axes/generate.py --revision 3 regenerates
+revision-3/vectors.json. Without the flag it regenerates revision 2 unchanged.
+Set APS_SDK_ROOT to an isolated, pinned agent-passport-system package directory
+for an additional primitive run.
 Use sdk-bridge.mjs --vectors fixtures/lease-revocation-axes/vectors.json to
 reproduce the historical primitive observations against the unchanged v1 corpus.
 No credentials or live authority services are used.

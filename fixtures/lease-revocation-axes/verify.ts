@@ -1,8 +1,8 @@
 // Copyright 2026 Tymofii Pidlisnyi. Apache-2.0.
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { Downstream, Verifier, type Answer, type Boundary, type Call, type Declaration, type Evidence, type Mode, type Observation, type Status } from './harness.js'
 interface Expected extends Answer { downstream_reached: boolean; observation_differs_from_truth: boolean }
 interface CallEvent extends Call { evidence_id?: string; truth: Status; expected: { by_mode: Record<Mode, Record<Boundary, Expected>> } }
@@ -15,7 +15,12 @@ const vIndex=process.argv.indexOf('--vectors')
 const path=vIndex>=0?process.argv[vIndex+1]:fileURLToPath(new URL('./revision-2/vectors.json',import.meta.url))
 const bytes=readFileSync(path)
 const v=JSON.parse(bytes.toString()) as Vectors
-assert.equal(v.family,'lease-revocation-axes');assert.equal(v.status,'candidate');assert.equal(v.version,2)
+assert.equal(v.family,'lease-revocation-axes');assert.equal(v.status,'candidate');assert([2,3].includes(v.version),`unsupported vectors version ${v.version}`)
+// Revision 3 adds refusal_reason and grant_ref to every expected decision record. Revision 2 stays frozen.
+const r3=v.version>=3
+// The oracle table sits beside the vectors file. A disposable copy elsewhere falls back to this revision's committed table.
+const besideVectors=new URL('./oracle-checkpoints.json',pathToFileURL(path))
+const oraclePath=existsSync(besideVectors)?besideVectors:new URL(`./revision-${v.version}/oracle-checkpoints.json`,import.meta.url)
 assert.equal(v.profile.lease_ms,120000);assert.equal(v.profile.lease_anchor,'evidence_issued_at_ms')
 assert.equal(v.profile.action_policy,'P1-current-observation');assert.equal(v.profile.current_observation_max_age_ms,0)
 for(const e of v.profile.initial_evidence){assert.equal(e.issued_at_ms,0);assert.equal(e.expires_at_ms-e.issued_at_ms,v.profile.lease_ms,'evidence lease mismatch');assert.deepEqual(e.allowed_operations,['read'])}
@@ -103,6 +108,7 @@ function run(c:Case,mode:Mode,boundary:Boundary,mutant='correct',claimed:Declara
         // Runtime answers cannot opt out of predeclared supported coverage.
         check(event.id,'action_decision',answer.action_decision,expected.action_decision)
         check(event.id,'downstream_reached',downstream.reached(event.id),expected.downstream_reached)
+        if(r3){check(event.id,'refusal_reason',answer.refusal_reason,expected.refusal_reason);check(event.id,'grant_ref',answer.grant_ref,expected.grant_ref)}
       }
       assessment[axis]=failures.length===before && !(axis==='authority_validity' && assessment.source_contract==='failed')?'matched':'failed'
     }
@@ -156,7 +162,21 @@ const verifier=new Verifier({mode:'cached_lease',boundary:'exclusive',claimed_ax
 assert.equal(verifier.call(hostile,v.profile.initial_evidence[0]).action_decision,'deny')
 // This table is authored explicitly alongside ORACLE.md, not generated from formulas.
 interface OracleRow { case:string;call:string;mode:Mode;boundary:Boundary;diagnostic?:boolean;truth:Status;answer:Partial<Answer>;downstream_reached:boolean }
-const oracle=JSON.parse(readFileSync(new URL('./revision-2/oracle-checkpoints.json',import.meta.url),'utf8')) as OracleRow[]
+const oracle=JSON.parse(readFileSync(oraclePath,'utf8')) as OracleRow[]
+// Oracle inventory guard. The table is a frozen set of twelve identities; an empty, shrunken, duplicated
+// or reshaped table must fail here rather than pass with fewer checkpoints.
+const oracleIdentities=Object.freeze(['LRA-01|LRA-01-r1|cached_lease|exclusive|false','LRA-02|LRA-02-r4|cached_lease|exclusive|false','LRA-02|LRA-02-r2|live_standing_read|exclusive|false','LRA-03|LRA-03-r2|live_standing_read|exclusive|false','LRA-04|LRA-04-r1|live_standing_read|exclusive|false','LRA-04|LRA-04-r1|live_standing_read|exclusive|true','LRA-05|LRA-05-r2|live_standing_read|inclusive|false','LRA-05|LRA-05-r2|live_standing_read|exclusive|false','LRA-09|LRA-09-r1|live_standing_read|exclusive|false','LRA-12|LRA-12-r2|live_standing_read|exclusive|false','LRA-06|LRA-06-r3|live_standing_read|exclusive|false','LRA-07|LRA-07-r2|live_standing_read|exclusive|false'])
+const oracleAnswerKeys=['evidence_binding','evidence_freshness','observation','authority_answer','current_validity','verification_accepted','action_decision',...(r3?['refusal_reason','grant_ref']:[])]
+assert(Array.isArray(oracle) && oracle.length===12,`oracle inventory: expected 12 checkpoint rows, found ${Array.isArray(oracle)?oracle.length:'non-array'}`)
+const seen=oracle.map(row=>`${row.case}|${row.call}|${row.mode}|${row.boundary}|${row.diagnostic===true}`)
+assert.equal(new Set(seen).size,12,`oracle inventory: duplicate checkpoint identity in ${JSON.stringify(seen.filter((k,i)=>seen.indexOf(k)!==i))}`)
+assert.deepEqual([...seen].sort(),[...oracleIdentities].sort(),'oracle inventory: checkpoint identities differ from the frozen list')
+for(const row of oracle){
+  assert(row.answer && typeof row.answer==='object' && !Array.isArray(row.answer),`oracle shape: ${row.call} answer is not an object`)
+  const keys=Object.keys(row.answer)
+  for(const k of oracleAnswerKeys)assert(keys.includes(k),`oracle shape: ${row.call} answer missing required key ${k}`)
+  for(const k of keys)assert(oracleAnswerKeys.includes(k),`oracle shape: ${row.call} answer has unknown key ${k}`)
+}
 for(const row of oracle){
   const r=(row.diagnostic?diagnosticRuns:baselines).find(r=>r.case===row.case && r.mode===row.mode && r.boundary===row.boundary)!
   const record=r.records.find(r=>r.call===row.call)!
@@ -164,10 +184,10 @@ for(const row of oracle){
   for(const [key,value] of Object.entries(row.answer))assert.deepEqual(record.answer[key as keyof Answer],value,`manual oracle ${row.call} ${key}`)
   assert.equal(record.downstream_reached,row.downstream_reached)
 }
-const result={family:v.family,revision:2,vectors_sha256:digest,status:'model_checks_matched',provenance:'author-produced',baseline_runs:baselines.length,baseline_calls:baselines.reduce((n,r)=>n+r.records.length,0),baseline_scored_axes:baselines.reduce((n,r)=>n+r.scored,0),composite_comparisons:baselines.reduce((n,r)=>n+r.composite_scored,0),negative_controls:mutations.length,manual_oracle_checkpoints:oracle.length,baselines,mutations,diagnostic_runs:diagnosticRuns,reporting_checks:{no_scored_coverage:none.status,unsupported_only:actionOnlyUnsupported.status,statement_only_not_scored_as_enforcement:true,policy_mismatch_not_supported:true,oracle_inputs_not_read:true}}
+const result={family:v.family,revision:v.version,vectors_sha256:digest,status:'model_checks_matched',provenance:'author-produced',baseline_runs:baselines.length,baseline_calls:baselines.reduce((n,r)=>n+r.records.length,0),baseline_scored_axes:baselines.reduce((n,r)=>n+r.scored,0),composite_comparisons:baselines.reduce((n,r)=>n+r.composite_scored,0),negative_controls:mutations.length,manual_oracle_checkpoints:oracle.length,baselines,mutations,diagnostic_runs:diagnosticRuns,reporting_checks:{no_scored_coverage:none.status,unsupported_only:actionOnlyUnsupported.status,statement_only_not_scored_as_enforcement:true,policy_mismatch_not_supported:true,oracle_inputs_not_read:true}}
 if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2))
 else{
-  console.log(`candidate ${v.family} revision 2, vectors sha256 ${digest}`)
+  console.log(`candidate ${v.family} revision ${v.version}, vectors sha256 ${digest}`)
   console.log(`${result.baseline_runs} model runs, ${result.baseline_calls} calls, ${result.baseline_scored_axes} axis comparisons; ${result.composite_comparisons} separate composite comparisons`)
   for(const m of mutations)console.log(`${m.name}: rejected exactly ${m.failed_cases.join(', ')}`)
   console.log(`${diagnosticRuns.length} optional-diagnostic runs matched; ${oracle.length} hand-reasoned oracle checkpoints matched`)

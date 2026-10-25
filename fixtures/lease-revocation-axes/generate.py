@@ -24,7 +24,20 @@ CASES = [
  ("LRA-11", "temporary outage recovers to active and revoked grants", [revoke(),availability(30000,False),call(30000),call(30000,grant="g2"),availability(45000,True),call(60000),call(60000,grant="g2")]),
  ("LRA-12", "request and evidence must name the same grant", [call(0),revoke(),call(30000,grant="g2",evidence_id="e1"),call(30000,grant="g2")]),
 ]
-def expected(t, active, available, operation, mode, inclusive, bound=True):
+parser=argparse.ArgumentParser()
+parser.add_argument("--output", type=Path, default=None)
+parser.add_argument("--revision", type=int, choices=[2,3], default=2)
+args=parser.parse_args()
+REVISION=args.revision
+# Revision 3 refusal reason, first applicable in this fixed order. Null unless the decision is deny.
+def refusal(bound, fresh, observation, t, permit):
+    if permit: return None
+    if not bound: return "evidence_binding_mismatch"
+    if not fresh: return "evidence_expired"
+    if observation is None or observation["as_of_ms"] != t: return "authority_not_determined"
+    if observation["status"] == "revoked": return "authority_revoked"
+    return "operation_not_permitted"
+def expected(t, active, available, operation, mode, inclusive, bound=True, evidence_id="e1"):
     fresh = t <= 120000 if inclusive else t < 120000
     if not fresh or not bound: observation=None
     elif mode=="cached_lease": observation={"status":"active","as_of_ms":0,"retrieved_at_ms":0}
@@ -34,10 +47,16 @@ def expected(t, active, available, operation, mode, inclusive, bound=True):
     scoped = ("valid" if observation["status"]=="active" else "revoked") if observation else "not_established"
     accepted = bound and fresh and scoped=="valid"
     permit = bound and fresh and current=="valid" and operation=="read"
-    return {"evidence_binding":"matched" if bound else "mismatch", "evidence_freshness":"fresh" if fresh else "expired", "observation":observation,
+    block = {"evidence_binding":"matched" if bound else "mismatch", "evidence_freshness":"fresh" if fresh else "expired", "observation":observation,
       "authority_answer":scoped,"current_validity":current,"verification_accepted":accepted,
       "action_decision":"permit" if permit else "deny","downstream_reached":permit,
       "observation_differs_from_truth":observation is not None and (observation["status"]=="active") != active}
+    if REVISION >= 3:
+        # grant_ref names the evidence actually presented, as issued, and the observation instant the decision used.
+        block["refusal_reason"] = refusal(bound, fresh, observation, t, permit)
+        block["grant_ref"] = {"grant":"g1" if evidence_id=="e1" else "g2","evidence_id":evidence_id,"issued_at_ms":0,"expires_at_ms":120000,
+          "observation_as_of_ms":None if observation is None else observation["as_of_ms"]}
+    return block
 result=[]
 for cid,description,events in CASES:
     active={"g1":True,"g2":True};available=True; timeline=[]; n=0
@@ -47,7 +66,8 @@ for cid,description,events in CASES:
         elif e["event"]=="availability":available=e["available"]
         else:
             n+=1;e["id"]=f"{cid}-r{n}";e["truth"]="active" if active[e["grant"]] else "revoked"
-            e["expected"]={"by_mode":{mode:{boundary:expected(e["at_ms"],active[e["grant"]],available,e["operation"],mode,boundary=="inclusive",e.get("evidence_id", "e1" if e["grant"]=="g1" else "e2")==("e1" if e["grant"]=="g1" else "e2")) for boundary in ["exclusive","inclusive"]} for mode in ["cached_lease","live_standing_read"]}}
+            presented=e.get("evidence_id", "e1" if e["grant"]=="g1" else "e2")
+            e["expected"]={"by_mode":{mode:{boundary:expected(e["at_ms"],active[e["grant"]],available,e["operation"],mode,boundary=="inclusive",presented==("e1" if e["grant"]=="g1" else "e2"),presented) for boundary in ["exclusive","inclusive"]} for mode in ["cached_lease","live_standing_read"]}}
         timeline.append(e)
     result.append({"id":cid,"description":description,"timeline":timeline})
 # Failure sets include corrections made after initial model runs; see SDK-RUNS.md.
@@ -69,12 +89,13 @@ mutants={
 profiles={k:{"mode":"cached_lease" if k in ["lease-ignores-expiry","sliding-lease"] else "live_standing_read","boundary":"exclusive","expected_failed_cases":v} for k,v in mutants.items()}
 # Sliding mutation updates on every attempted use, including refused attempts.
 # LRA04 has a second late attempt; 05/07/08/10 reuse within a lease-sized gap.
-v={"family":"lease-revocation-axes","status":"candidate","version":2,
- "source":{"kind":"discussion_proposals","list":"public-agentprotocol@w3.org","messages":[{"author":"Larry Lewis","date":"2026-10-21","contribution":"three separate axes and T=0/10/30/60/119 timeline"},{"author":"ShaoBao Li (Lee)","date":"2026-10-21","contribution":"120 second lease and named cached/live verification expectations"},{"author":"Tymofii Pidlisnyi","date":"2026-10-21","contribution":"offer to host neutral cases and run APS first"}]},
+messages=[{"author":"Larry Lewis","date":"2026-10-21","contribution":"three separate axes and T=0/10/30/60/119 timeline"},{"author":"ShaoBao Li (Lee)","date":"2026-10-21","contribution":"120 second lease and named cached/live verification expectations"},{"author":"Tymofii Pidlisnyi","date":"2026-10-21","contribution":"offer to host neutral cases and run APS first"}]
+if REVISION >= 3:
+    messages += [{"author":"Lars Kroehl","date":"2026-10-24","contribution":"refusal reason that can state undetermined authority, and a reference to the grant as it stood at the decision"},{"author":"ShaoBao Li (Lee)","date":"2026-10-24","contribution":"support for both revision 3 fields"}]
+v={"family":"lease-revocation-axes","status":"candidate","version":REVISION,
+ "source":{"kind":"discussion_proposals","list":"public-agentprotocol@w3.org","messages":messages},
  "profile":{"lease_ms":120000,"lease_anchor":"evidence_issued_at_ms","action_policy":"P1-current-observation","current_observation_max_age_ms":0,"clock":"synthetic atomic reads; milliseconds","boundary_source_status":"not specified by discussion","initial_evidence":[{"id":"e1","grant":"g1","subject":"same-subject","issued_at_ms":0,"expires_at_ms":120000,"status":"active","allowed_operations":["read"]},{"id":"e2","grant":"g2","subject":"same-subject","issued_at_ms":0,"expires_at_ms":120000,"status":"active","allowed_operations":["read"]}]},
  "cases":result,"mutants":profiles}
-parser=argparse.ArgumentParser()
-parser.add_argument("--output", type=Path, default=P/"revision-2"/"vectors.json")
-output=parser.parse_args().output
+output=args.output or P/f"revision-{REVISION}"/"vectors.json"
 output.parent.mkdir(parents=True,exist_ok=True)
 output.write_text(json.dumps(v,indent=2)+"\n")
