@@ -1,0 +1,27 @@
+{
+  "id": "aae-vector-13",
+  "name": "Unrecognized required constraint \u2014 reject",
+  "description": "Constraints include a constraint type the relying party does not recognize, marked required:true.",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a72.3, \u00a75 step 7",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwZC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMGQiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtMDAxIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIiwiYm9vayIsInBheSJdLCJwdXJwb3NlIjoiQnVzaW5lc3MgdHJhdmVsIGJvb2tpbmciLCJzY29wZSI6InRyYXZlbC12ZXJ0aWNhbCIsInByaW5jaXBhbF9kaWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmVudGVycHJpc2UtY29ycCJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMCwiY3VycmVuY3kiOiJVU0QiLCJyZXF1aXJlZCI6dHJ1ZX0sImdlb19mZW5jZSI6eyJ2YWx1ZSI6WyJDSCIsIkRFIl0sInJlcXVpcmVkIjp0cnVlfX0sInZhbGlkaXR5Ijp7Im5vdF9iZWZvcmUiOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsIm5vdF9hZnRlciI6IjIwMjYtMDUtMjBUMTY6MDA6MDBaIiwic2luZ2xlX3VzZSI6ZmFsc2V9fX19.Dx6lq0UshlfVaV5KfTdk_0B3NoEot02WCo0O36OT99gkrg7dK92CL3_m-RVGjzBkoNtEuIRC_5UCcJUvnVhUBw",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "book",
+      "action_context": {
+        "amount": 300,
+        "currency": "USD"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      }
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 7,
+    "rejection_reason": "unrecognized_required_constraint"
+  },
+  "rationale": "Section 2.3 and \u00a75 step 7 require rejecting an AAE when an unrecognized constraint is marked required:true (or omits required, which defaults to true). 'geo_fence' is unrecognized and required, so the AAE is rejected at step 7.",
+  "verification_mode": "structural"
+}

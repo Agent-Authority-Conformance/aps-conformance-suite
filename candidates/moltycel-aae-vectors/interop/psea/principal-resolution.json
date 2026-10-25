@@ -1,0 +1,30 @@
+{
+  "status": "confirmed at head 8bed788 (Mohamad Khalil-Yossif); WHO linkage established, PSEA conformance not established, kid-to-principal mapping supplied not derived",
+  "note": "Single source for the join_who table. `principal_resolution` is the fully enrolled table; two AAE-side identifiers may map onto one canonical principal, which is what xp-6 exercises. `states` names the relying-party enrollment states a vector may be evaluated in; each derives from the enrolled table by omitting the secondary entries it has not enrolled yet. tools/build_interop_psea.py reads both and embeds the derived table into every vector's input.join_who, so no derivation lives as a literal in code and the vectors cannot drift from this file.",
+  "canonical_space": "urn:interop:aae-psea:principal",
+  "unresolved_rule": "an identifier with no entry in the table is unresolved",
+  "principal_resolution": {
+    "aae": {
+      "did:web:example.com:principal-A": "urn:interop:aae-psea:principal:A",
+      "did:web:example.com:principal-B": "urn:interop:aae-psea:principal:B",
+      "did:web:example.com:principal-A-alias": "urn:interop:aae-psea:principal:A"
+    },
+    "secondary": {
+      "principal-A": "urn:interop:aae-psea:principal:A",
+      "principal-B": "urn:interop:aae-psea:principal:B"
+    }
+  },
+  "default_state": "enrolled",
+  "states": {
+    "enrolled": {
+      "note": "The relying party has enrolled every signer key in the fixture. This is the default state; a vector that does not name a resolution_state is evaluated in it, and its join_who carries no resolution_state field.",
+      "secondary_omits": []
+    },
+    "pending_enrollment": {
+      "note": "The relying party has not yet enrolled the key bound to principal-A, so that binding does not resolve on the secondary side. Nothing about the artifacts differs from the enrolled state - only what the relying party knows. Used by xp-5a; xp-5b is the same artifacts evaluated after enrollment.",
+      "secondary_omits": [
+        "principal-A"
+      ]
+    }
+  }
+}

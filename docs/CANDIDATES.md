@@ -72,4 +72,4 @@ author-produced run does not become independent by being run again elsewhere.
 
 | candidate | submitter | target | publication | evidence | disputes |
 |---|---|---|---|---|---|
-| (none yet) | | | | | |
+| [moltycel-aae-vectors](../candidates/moltycel-aae-vectors/CANDIDATE.md) | Lars Kroehl (MoltyCel) | draft-kroehl-agentic-trust-aae-00 (native, composition), -02 (enforce) | published | author-produced only: Mode A 2026-10-25, Mode B 2026-09-05 (enforce) | none |

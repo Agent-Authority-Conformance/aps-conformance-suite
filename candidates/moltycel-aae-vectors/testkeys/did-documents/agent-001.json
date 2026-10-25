@@ -1,0 +1,25 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:example.com:agent-001",
+  "verificationMethod": [
+    {
+      "id": "did:web:example.com:agent-001#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:example.com:agent-001",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "F81956lYrN1KVc7dOZjn7kt6hlfthyHZAUjlR0ddvOk"
+      }
+    }
+  ],
+  "assertionMethod": [
+    "did:web:example.com:agent-001#key-1"
+  ],
+  "authentication": [
+    "did:web:example.com:agent-001#key-1"
+  ]
+}
