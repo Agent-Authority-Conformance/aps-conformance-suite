@@ -1,0 +1,32 @@
+{
+  "id": "aae-vector-04",
+  "name": "Revocation endpoint 5xx \u2014 fail-closed reject",
+  "description": "AAE with a revocation_check whose endpoint returns HTTP 503 (status indeterminate).",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a72.4 (revocation_check), \u00a75 step 8",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwNC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDQiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtMDAxIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIiwiYm9vayIsInBheSJdLCJwdXJwb3NlIjoiQnVzaW5lc3MgdHJhdmVsIGJvb2tpbmciLCJzY29wZSI6InRyYXZlbC12ZXJ0aWNhbCIsInByaW5jaXBhbF9kaWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmVudGVycHJpc2UtY29ycCJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMCwiY3VycmVuY3kiOiJVU0QiLCJyZXF1aXJlZCI6dHJ1ZX19LCJ2YWxpZGl0eSI6eyJub3RfYmVmb3JlIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJub3RfYWZ0ZXIiOiIyMDI2LTA1LTIwVDE2OjAwOjAwWiIsInNpbmdsZV91c2UiOmZhbHNlLCJyZXZvY2F0aW9uX2NoZWNrIjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS5jb20vYWFlL3Jldm9jYXRpb24ve2lkfSJ9fX19.6aSWAkcaUGCqDAtZKw_D_euwJbBxSzs7VpjEzbym8SBS2M33wFrm-drVPUEoGblN8sdayhh43ePmVWWg2hF2DQ",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "book",
+      "action_context": {
+        "amount": 300,
+        "currency": "USD"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      },
+      "revocation_responses": {
+        "urn:uuid:00000004-0000-4000-8000-000000000004": {
+          "http_status": 503
+        }
+      }
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 8,
+    "rejection_reason": "revocation_status_indeterminate"
+  },
+  "rationale": "Section 2.4 requires that when revocation status cannot be determined \u2014 for example on an HTTP 5xx response \u2014 the relying party MUST reject the AAE. No locally configured fail-open policy applies, so the default fail-closed rule rejects at step 8.",
+  "verification_mode": "runtime"
+}

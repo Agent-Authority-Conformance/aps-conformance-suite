@@ -1,0 +1,30 @@
+{
+  "id": "aae-vector-15",
+  "name": "Delegation currency mismatch \u2014 reject",
+  "description": "Delegated max_transaction_value is denominated in EUR while the parent is USD, with no conversion policy.",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a73 (currency-valued constraints), \u00a75 step 9",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1hI2tleS0xIn0.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwZi0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMGYiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmFnZW50LWEiLCJ2YWxpZEZyb20iOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsImNyZWRlbnRpYWxTdWJqZWN0Ijp7ImlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1iIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIl0sImRlbGVnYXRpb24iOnsiZGVsZWdhdG9yX2RpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtYSIsImRlbGVnYXRvcl9hYWVfaWQiOiJ1cm46dXVpZDowMDAwMDAwZi0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwYWYiLCJkZWxlZ2F0b3JfYWFlX3VyaSI6Imh0dHBzOi8vYWFlLmV4YW1wbGUvcC8wMDAwMDAwZi1hZiIsImRlcHRoIjoxLCJtYXhfZGVwdGgiOjJ9fSwiY29uc3RyYWludHMiOnsibWF4X3RyYW5zYWN0aW9uX3ZhbHVlIjp7InZhbHVlIjozMDAsImN1cnJlbmN5IjoiRVVSIiwicmVxdWlyZWQiOnRydWV9fSwidmFsaWRpdHkiOnsibm90X2JlZm9yZSI6IjIwMjYtMDUtMjBUMDg6MDA6MDBaIiwibm90X2FmdGVyIjoiMjAyNi0wNS0yMFQxNjowMDowMFoiLCJzaW5nbGVfdXNlIjpmYWxzZX19fX0.jhVgtV3788xC0cVCcFMhf8ZUr-SyFOwGi4TGwEU4CBIvuo1uojG7gZw9buqIthiMgyRYgwy5cvR0Zfk7VHU1AQ",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "read",
+      "action_context": {
+        "amount": 50,
+        "currency": "EUR"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      },
+      "delegation_chain": [
+        "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwZi0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwYWYiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtYSIsImFhZSI6eyJtYW5kYXRlIjp7ImFjdGlvbnMiOlsicmVhZCIsImJvb2siXSwicHVycG9zZSI6IkJ1c2luZXNzIHRyYXZlbCBib29raW5nIiwic2NvcGUiOiJ0cmF2ZWwtdmVydGljYWwiLCJwcmluY2lwYWxfZGlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTplbnRlcnByaXNlLWNvcnAiLCJkZWxlZ2F0aW9uX3BvbGljeSI6eyJtYXhfZGVwdGgiOjJ9fSwiY29uc3RyYWludHMiOnsibWF4X3RyYW5zYWN0aW9uX3ZhbHVlIjp7InZhbHVlIjo1MDAsImN1cnJlbmN5IjoiVVNEIiwicmVxdWlyZWQiOnRydWV9fSwidmFsaWRpdHkiOnsibm90X2JlZm9yZSI6IjIwMjYtMDUtMjBUMDg6MDA6MDBaIiwibm90X2FmdGVyIjoiMjAyNi0wNS0yMFQxNjowMDowMFoiLCJzaW5nbGVfdXNlIjpmYWxzZX19fX0.b-RjlvgkDZRl301W-b_ltEvWBIXKeOPffTEGXT25R9hSTxXSHB5E5bEF_1z0Qp0pg4nk528WRYuSlfrugQGHBQ"
+      ]
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 9,
+    "rejection_reason": "delegation_currency_mismatch"
+  },
+  "rationale": "Section 3 requires a currency-valued delegated constraint to use the same currency as the parent unless an explicitly configured conversion policy exists; if the currencies differ and no such policy exists, the delegated AAE MUST be rejected. The child uses EUR against a USD parent, so it is rejected at step 9.",
+  "verification_mode": "structural"
+}

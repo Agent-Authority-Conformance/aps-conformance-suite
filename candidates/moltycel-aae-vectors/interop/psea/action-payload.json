@@ -1,0 +1,28 @@
+{
+  "note": "The single action both profiles bind to. Copied from the counterpart fixture, not re-derived. Integers only (psea-02 Section 2.5).",
+  "source": {
+    "repository": "https://github.com/yuthent/psea-spec",
+    "path": "conformance/interop-aae/psea-fixture-v0.json",
+    "sha256": "f7d89f4df629d0b7318131ddfd8274c58ea96308c8aa557616baa4b88e60d188"
+  },
+  "cleartext": {
+    "operation": "transfer",
+    "target": "iban:CH9300762011623852957",
+    "amount_minor": 250000,
+    "currency": "CHF",
+    "sequence": 1
+  },
+  "jcs_utf8": "{\"amount_minor\":250000,\"currency\":\"CHF\",\"operation\":\"transfer\",\"sequence\":1,\"target\":\"iban:CH9300762011623852957\"}",
+  "jcs_utf8_octets": 114,
+  "join_key": {
+    "octets_hex": "d6583cbc62c1278311ad311a586da207189693a98143f773a8fc960ae59ac606",
+    "base64url_nopad": "1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ_dzqPyWCuWaxgY",
+    "base64_pad": "1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ/dzqPyWCuWaxgY="
+  },
+  "amount_unit": "integer minor units; amount_minor 250000 = 2 500.00 CHF",
+  "aae_action_context_adapter": {
+    "note": "The AAE Section 5 constraint evaluator reads action_context.amount and action_context.currency. The shared payload names the amount amount_minor. The adapter is a rename, not a conversion: the integer value is carried across unchanged, still in minor units.",
+    "amount_minor": "amount",
+    "currency": "currency"
+  }
+}

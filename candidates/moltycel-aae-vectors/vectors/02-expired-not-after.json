@@ -1,0 +1,28 @@
+{
+  "id": "aae-vector-02",
+  "name": "Expired AAE \u2014 current time after not_after",
+  "description": "Well-formed root AAE evaluated after its not_after instant.",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a72.4 (not_after), \u00a75 step 3",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwMi0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtMDAxIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIiwiYm9vayIsInBheSJdLCJwdXJwb3NlIjoiQnVzaW5lc3MgdHJhdmVsIGJvb2tpbmciLCJzY29wZSI6InRyYXZlbC12ZXJ0aWNhbCIsInByaW5jaXBhbF9kaWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmVudGVycHJpc2UtY29ycCJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMCwiY3VycmVuY3kiOiJVU0QiLCJyZXF1aXJlZCI6dHJ1ZX0sImFsbG93ZWRfZG9tYWlucyI6eyJ2YWx1ZSI6WyJmbGlnaHRzLmV4YW1wbGUuY29tIiwiaG90ZWxzLmV4YW1wbGUuY29tIl0sInJlcXVpcmVkIjp0cnVlfX0sInZhbGlkaXR5Ijp7Im5vdF9iZWZvcmUiOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsIm5vdF9hZnRlciI6IjIwMjYtMDUtMjBUMTY6MDA6MDBaIiwic2luZ2xlX3VzZSI6ZmFsc2V9fX19.3dy_vGdhsvWhaNwhReLWP8qx79QkA3s0qMSHKHvp5Ih35yt9iPz_wKKnsDCekJI3CU1G0jA9F0kohNKdSJfXAg",
+    "context": {
+      "current_time": "2026-05-20T17:00:00Z",
+      "requested_action": "book",
+      "action_context": {
+        "amount": 300,
+        "currency": "USD",
+        "domain": "flights.example.com"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      }
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 3,
+    "rejection_reason": "expired_not_after"
+  },
+  "rationale": "Section 2.4 states relying parties MUST reject expired AAEs; \u00a75 step 3 confirms current time is within not_before and not_after. 17:00Z is after the 16:00Z not_after, so the AAE is rejected at step 3.",
+  "verification_mode": "runtime"
+}

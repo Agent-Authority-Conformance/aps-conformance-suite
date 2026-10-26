@@ -1,0 +1,27 @@
+{
+  "id": "aae-vector-14",
+  "name": "Wrong cty protected-header \u2014 reject",
+  "description": "JWS protected header sets cty to application/json instead of aae+json.",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a72.1 (cty), \u00a75 step 2",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFwcGxpY2F0aW9uL2pzb24iLCJraWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5I2tleS0xIn0.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwZS0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMGUiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtMDAxIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIiwiYm9vayIsInBheSJdLCJwdXJwb3NlIjoiQnVzaW5lc3MgdHJhdmVsIGJvb2tpbmciLCJzY29wZSI6InRyYXZlbC12ZXJ0aWNhbCIsInByaW5jaXBhbF9kaWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmVudGVycHJpc2UtY29ycCJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMCwiY3VycmVuY3kiOiJVU0QiLCJyZXF1aXJlZCI6dHJ1ZX19LCJ2YWxpZGl0eSI6eyJub3RfYmVmb3JlIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJub3RfYWZ0ZXIiOiIyMDI2LTA1LTIwVDE2OjAwOjAwWiIsInNpbmdsZV91c2UiOmZhbHNlfX19fQ.ENPCQPTzD8NsJXF3VFzDQGdIelHrcNdRsR60ahTvok71WwCMWPHCZQyjM0gnxVU-kvBQ9PIkg6tIfq8A7I09Aw",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "book",
+      "action_context": {
+        "amount": 300,
+        "currency": "USD"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      }
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 2,
+    "rejection_reason": "cty_not_aae_json"
+  },
+  "rationale": "Section 2.1 requires the protected-header cty parameter to be aae+json, and \u00a75 step 2 rejects the AAE if it is not. The signature is valid but cty is application/json, so the AAE is rejected at step 2.",
+  "verification_mode": "structural"
+}
