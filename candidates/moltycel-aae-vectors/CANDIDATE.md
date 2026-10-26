@@ -132,20 +132,20 @@ AAE reports a revocation status that cannot be determined as its own rejection r
 `revocation_status_indeterminate` at step 8, apart from `revoked` at step 8 and
 `ancestor_revoked` at step 9. The AAE result itself has two values, `ACCEPT` and `REJECT`; the
 distinction lives in the reason and the step. The lab's terms at main
-`7141c6167acfdd5288ec7cc1ca8d2ba9207b3390` compare as follows.
+`7141c6167acfdd5288ec7cc1ca8d2ba9207b3390`, and for revision 3 of lease-revocation-axes at
+`7774daee77a7766f737c6da71265c9e214b47ff5`, compare as follows.
 
 | AAE (vector) | lab value | where in the lab |
 |---|---|---|
 | `REJECT`, step 8, `revocation_status_indeterminate` (`04`, endpoint answers 503) | state `indeterminate`, failure code `REVOCATION_UNKNOWN` | `fixtures/revocation-resolution-forward-compat`, case `C19-13-resolver-throws` |
 | same | authority axis: `current_validity` `not_established` | `fixtures/lease-revocation-axes` revision 2, source outage (`LRA-03`, `LRA-07`) |
-| same | no value: the action decision is `permit` or `deny` only | `fixtures/lease-revocation-axes` revision 2, action record |
+| same | decision record: `refusal_reason` `authority_not_determined` | `fixtures/lease-revocation-axes` revision 3, merged 25 October 2026 as `7774dae` |
 | `REJECT`, step 9, `ancestor_revoked` (`11`) | state `invalid`, failure code `REVOKED` | `fixtures/revocation-resolution-forward-compat`, case `C19-02-revoked-control` |
 
-The first and last rows are mappings onto existing values. For the action record of
-lease-revocation-axes no value exists in revision 2. A refusal reason for that record was
-proposed for revision 3 on public-agentprotocol on 24 October 2026
-([message](https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0029.html)).
-This candidate waits for revision 3 and does not introduce a class of its own.
+Each row is a mapping onto an existing value. Revision 3 of lease-revocation-axes adds
+`refusal_reason` to the decision record, following a proposal on public-agentprotocol on
+24 October 2026 ([message](https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0029.html)).
+This candidate introduces no class of its own.
 
 The lab's `interop/aae-envelope` holds four chain-envelope vectors that APS wrote in AAE's
 shape and decides with the APS verifier through an adapter. That record is the lab's own and
