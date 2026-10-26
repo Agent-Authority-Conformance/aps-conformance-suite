@@ -85,7 +85,7 @@ jobs:
         # is what catches one that was committed.
         run: |
           set -euo pipefail
-          files=$(git ls-files 'fixtures/**' 'interop/**' 'cross-impl-receipts/**')
+          files=$(git ls-files 'fixtures/**' 'interop/**' 'cross-impl-receipts/**' 'candidates/**')
           hits=""
           if [ -n "$files" ]; then
             hits=$(printf '%s\n' "$files" | tr '\n' '\0' | xargs -0 -r grep -l -U -P '\r' 2>/dev/null || true)
