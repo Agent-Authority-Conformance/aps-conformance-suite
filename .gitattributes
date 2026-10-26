@@ -5,4 +5,5 @@
 fixtures/**            -text
 interop/**             -text
 cross-impl-receipts/** -text
+candidates/**          -text
 fixtures/manifest.json -text
