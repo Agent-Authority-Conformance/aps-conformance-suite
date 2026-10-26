@@ -1,10 +1,11 @@
-"""Run a Python script with every network call refused.
+"""Run a Python script or module under an audit hook.
 
     python3 offline.py <script.py> [args...]
     python3 offline.py -m <module> [args...]
 
-An audit hook raises on any socket creation, connection or name lookup, so a
-verifier that tried to reach the network would fail instead of passing quietly.
+offline.py installs an audit hook in the interpreter that runs each
+verification step. Socket and name-lookup calls from that interpreter are
+refused. Child processes are not covered.
 """
 import os
 import runpy

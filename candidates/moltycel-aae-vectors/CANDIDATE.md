@@ -28,8 +28,11 @@ Revision -01 changed no field, no verification step and no normative requirement
 - Commit: `6bb462f578c12d339b8fa964a5b1d8f97dbffa68` (vector set version 1.4.0 plus the
   unreleased verifier changes listed in its README; no vector or expected result changed
   after 1.4.0)
-- Every file here is a byte copy of the same path at that commit. `CHECKSUMS.sha256` lists all
-  64 of them, and `run.sh` compares each one with a fresh clone before it runs anything.
+- The 64 files listed in `CHECKSUMS.sha256` are byte copies of MoltyCel/aae-conformance-vectors
+  at `6bb462f`, each at the same path. `run.sh` compares each one with a fresh clone before it
+  runs anything.
+- Written for this candidate: `CANDIDATE.md`, `CHECKSUMS.sha256`, `offline.py`, `run.sh`.
+  `NOTICE` is changed from the source's `NOTICE`.
 
 Not copied: the generators (`tools/`), the reference verifiers (`examples/`), the verifier unit
 tests (`tests/`) and the test key files (`testkeys/*.json`). The test key files hold the private
@@ -76,12 +79,14 @@ pip install cryptography jsonschema jcs pytest
 sh run.sh
 ```
 
-`run.sh` clones the source at the pinned commit, checks every file here against it byte for
-byte, and then runs each step through `offline.py`, which refuses every socket and name lookup.
+`run.sh` clones the source at the pinned commit, checks the 64 listed files against it byte for
+byte, and then runs each step through `offline.py`. `offline.py` installs an audit hook in the
+interpreter that runs each verification step. Socket and name-lookup calls from that interpreter
+are refused. Child processes are not covered.
 The steps: three schema validations, three reference verifiers (15/15, 26/26, 6/6 row by row),
 the 11 negative controls, the verifier unit tests, the PSEA fixture pin, and all three
-generators, after which the clone must be unchanged. The clone is the only network access.
-Lab CI does not execute any of this.
+generators, after which the clone must be unchanged. The clone is the only network step in
+`run.sh`. Lab CI does not execute any of this.
 
 ## Requirements of CONTRIBUTING.md, one by one
 
@@ -108,8 +113,9 @@ apply to the reviewed corpus.
 3. **Recomputable from the bytes up, without network.** DID resolution is offline against
    `testkeys/did-documents/`. Every runtime fact the documents cannot carry (current time,
    revocation answers by AAE id, consumed ids, the ancestor chain) is in the vector's
-   `input.context`. `run.sh` runs every verification step with network access refused. Only
-   one verifier per set exists here, and it is ours (see Evidence).
+   `input.context`. `run.sh` runs each verification step under the audit hook of `offline.py`.
+   Child processes are not covered. Only one verifier per set exists here, and it is ours (see
+   Evidence).
 4. **No new fields, failure classes or verifier semantics.** This pull request changes only
    this directory and its row in the `docs/CANDIDATES.md` index. The vectors use AAE's own
    schemas and reason codes inside this directory. They are not expressed in the lab's
@@ -149,7 +155,7 @@ covers its own vectors. It is not evidence for this candidate.
 
 | run | candidate revision | claims | mode | authorship | link |
 |---|---|---|---|---|---|
-| Lars Kroehl, 2026-10-25, `run.sh` | source `6bb462f` | all 47 vectors, 11 negative controls, schema validation, byte-identical regeneration, offline | Mode A | author-produced: the runner wrote the vectors, the generators and the verifiers | output in the pull request body |
+| Lars Kroehl, 2026-10-25, `run.sh` | source `6bb462f` | all 47 vectors, 11 negative controls, schema validation, byte-identical regeneration, under `offline.py` | Mode A | author-produced: the runner wrote the vectors, the generators and the verifiers | output in the pull request body |
 | MolTrust, 2026-09-05, enforce set against a second implementation | enforce set 1.4.0 (same vector bytes) | the 26 enforce verdicts and core digests | Mode B | author-produced: the same author wrote both implementations | [vectors/enforce/RESULTS.md at the pin](https://github.com/MoltyCel/aae-conformance-vectors/blob/6bb462f578c12d339b8fa964a5b1d8f97dbffa68/vectors/enforce/RESULTS.md) |
 
 No independent run exists yet.

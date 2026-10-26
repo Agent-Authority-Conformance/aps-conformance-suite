@@ -1,13 +1,20 @@
 #!/bin/sh
-# Check this candidate against its pinned source, then run every verification
-# step with network access refused.
+# Check this candidate against its pinned source, then run each verification
+# step through offline.py.
 #
 #   sh run.sh            needs git, python3 (3.9+), and: pip install cryptography jsonschema jcs pytest
 #
 # The clone is the only network step. It fetches the generators, the reference
-# verifiers and the public test keys at the pinned commit. Every file in this
-# directory is compared byte for byte with the same path in that clone before
-# anything runs, so the verifiers below check exactly the bytes published here.
+# verifiers and the public test keys at the pinned commit.
+#
+# The 64 files listed in CHECKSUMS.sha256 are byte copies of the source at the
+# pin. Each is compared with the same path in that clone before anything runs.
+# Written for this candidate: CANDIDATE.md, CHECKSUMS.sha256, offline.py, run.sh.
+# NOTICE is changed from the source's NOTICE.
+#
+# offline.py installs an audit hook in the interpreter that runs each
+# verification step. Socket and name-lookup calls from that interpreter are
+# refused. Child processes are not covered.
 set -eu
 PIN=6bb462f578c12d339b8fa964a5b1d8f97dbffa68
 HERE=$(cd "$(dirname "$0")" && pwd)

@@ -1,10 +1,14 @@
 AAE Conformance Vectors, candidate copy
 Copyright (c) 2026 CryptoKRI GmbH, Zurich (MolTrust)
 
-Licensed under the Apache License, Version 2.0. The files in this directory are
-copied unchanged from https://github.com/MoltyCel/aae-conformance-vectors at
-commit 6bb462f578c12d339b8fa964a5b1d8f97dbffa68, which carries the full license
-text in its LICENSE file.
+Licensed under the Apache License, Version 2.0. The full license text is in the
+LICENSE file of https://github.com/MoltyCel/aae-conformance-vectors.
+
+The 64 files listed in CHECKSUMS.sha256 are byte copies of
+MoltyCel/aae-conformance-vectors at commit
+6bb462f578c12d339b8fa964a5b1d8f97dbffa68. Written for this candidate:
+CANDIDATE.md, CHECKSUMS.sha256, offline.py, run.sh. This NOTICE is changed
+from the NOTICE in that repository.
 
 One file is third-party material under the MIT License:
 
