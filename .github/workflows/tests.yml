@@ -53,6 +53,13 @@ jobs:
       # nothing.
       - run: npm run verify:approval-authority-expiry:py
 
+      # The argument-designated-resources family's second runner, written
+      # separately from its TypeScript harness against README.md and
+      # vectors.json. Not in `npm test` for the same reason as the steps above.
+      # Standard library only, reads only vectors.json in this checkout, and
+      # installs nothing.
+      - run: npm run verify:argument-designated-resources:py
+
   # The suite's Python schema validators. Independent second implementations, in
   # Python with jsonschema instead of Node with ajv. Their value is
   # disagreement: if the two libraries reach different verdicts on the same
