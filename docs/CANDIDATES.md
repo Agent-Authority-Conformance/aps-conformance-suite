@@ -73,3 +73,4 @@ author-produced run does not become independent by being run again elsewhere.
 | candidate | submitter | target | publication | evidence | disputes |
 |---|---|---|---|---|---|
 | [moltycel-aae-vectors](../candidates/moltycel-aae-vectors/CANDIDATE.md) | Lars Kroehl (MoltyCel) | draft-kroehl-agentic-trust-aae-00 (native, composition), -02 (enforce) | published | author-produced only: Mode A 2026-10-25, Mode B 2026-09-05 (enforce) | none |
+| [tactiq-tpm-bound-key](../candidates/tactiq-tpm-bound-key/CANDIDATE.md) | Andrey Lazarev (TactiQ AI) | OWASP AIMM Pillar 2 working draft, 5.1 L4 and L5, read 2026-10-27 | published | author-produced only: Mode A and Mode B 2026-10-28 | none |

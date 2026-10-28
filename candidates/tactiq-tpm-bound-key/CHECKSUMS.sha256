@@ -1,0 +1,14 @@
+# SHA-256 of the evidence copied from revenue7-eng/tactiq-os at
+# ce65daec5d5352c2d8bd65bd6a3a25b4a65d4bec (source/) and of the files gen.py
+# derives from it (derived/). Paths relative to this directory.
+7305eb2f5c44527681eefff026fcfbd86a98ecbe0565a2b12c721ecd3d4a04bd  source/ak.pub
+70221fd9ae77ccdecd641db2b24f8314a0b6199c87b4944092bf576ea29701bd  source/q02.msg
+96028ab534c6e325ca9b7d234e354eefa8c1762df56f5244e46c67d716d52766  source/q02.pcr
+1cb4db423189eaca45501c340b08f205f7ed86d680f8080f96dbfdd7a7aa5141  source/q02.sig
+d3e2a352ebe51431b077ec853c469f2b5e6e09106c5b09a4a2eabba7b8c1bdad  source/q15.msg
+b4b18805e70cdff4dc5795ce231f16ee991ec855931ef9d183820573cd3ff6fc  source/q15.pcr
+612bd81b47f8f8f0a1804bdb8b267946475e5d233cc6ca9f6d978f1c65ee6beb  source/q15.sig
+ab85648a53a84b4dc98c639b0252b486af8da9dffe0df4cd19b99255165ade88  derived/tqb03.sig
+e5c7fcafa0ffbaa00b1d11598d5ce6897fde8702e900e8f3968e6cb2c159faa4  derived/tqb04.msg
+79de6d3c3001bb6cbba80d40b9a8639a281eb9cc62ffe9085b8ea318604eddb2  derived/tqb05.pcr
+23975b4ba9f89ae2da21d3c22b9db590e6112c1fef288ffa8e47fa9c9da85587  derived/unregistered-ak.pub
