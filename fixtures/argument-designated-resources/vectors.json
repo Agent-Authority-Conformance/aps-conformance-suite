@@ -263,6 +263,32 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-11-refuse-argument-changed-after-decision": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dst",
+              "authority": "cred:alice-r3-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r3": "alpha"
+          }
+        }
       }
     },
     {
@@ -277,12 +303,80 @@
         "unsafe_admission": [],
         "admission_without_forbidden_access": [
           "ADR-07b-refuse-empty-container-not-classified",
-          "ADR-07d-refuse-resource-operand-not-a-string"
+          "ADR-07d-refuse-resource-operand-not-a-string",
+          "ADR-07e-refuse-inherited-property-name-not-classified"
         ],
         "false_refusal": [],
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07b-refuse-empty-container-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-07e-refuse-inherited-property-name-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -296,12 +390,87 @@
         "unsafe_admission": [],
         "admission_without_forbidden_access": [
           "ADR-07-refuse-argument-not-classified-by-contract",
-          "ADR-07b-refuse-empty-container-not-classified"
+          "ADR-07b-refuse-empty-container-not-classified",
+          "ADR-07e-refuse-inherited-property-name-not-classified"
         ],
         "false_refusal": [],
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07-refuse-argument-not-classified-by-contract": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07b-refuse-empty-container-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07e-refuse-inherited-property-name-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -320,6 +489,25 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07c-refuse-required-operand-missing": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        }
       }
     },
     {
@@ -370,6 +558,425 @@
           "ADR-13b-admit-repeated-resource-each-source-selected",
           "ADR-14-admit-service-writes-own-statistics"
         ]
+      },
+      "defective_admissions": {
+        "ADR-02-refuse-destination-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-03-refuse-deputy-holds-destination-caller-does-not": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-04-refuse-nested-designation-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "options.output.path",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "csv:alpha"
+          }
+        },
+        "ADR-05-refuse-one-array-element-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dsts[0]",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dsts[1]",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha",
+            "res:/store/r3": "alpha"
+          }
+        },
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-08-refuse-traversal-resolves-outside-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-08c-refuse-traversal-above-root": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-10b-refuse-capability-held-by-another-party": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10c-refuse-capability-wider-than-issuer-authority": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10d-refuse-capability-operation-narrower-than-tool-operation": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10f-refuse-issuer-may-exercise-but-not-delegate": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10g-refuse-root-issuer-without-standing": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12c-refuse-no-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        },
+        "ADR-14b-refuse-destination-in-service-home": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/bill",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/bill": "alpha",
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/bill"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
       }
     },
     {
@@ -393,6 +1000,64 @@
           "ADR-05b-admit-every-array-element-covered",
           "ADR-05c-admit-then-second-write-fails"
         ]
+      },
+      "defective_admissions": {
+        "ADR-04-refuse-nested-designation-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "options.output.path",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "csv:alpha"
+          }
+        },
+        "ADR-05-refuse-one-array-element-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dsts[0]",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dsts[1]",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha",
+            "res:/store/r3": "alpha"
+          }
+        }
       }
     },
     {
@@ -414,6 +1079,25 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        }
       }
     },
     {
@@ -434,6 +1118,32 @@
         "wrong_attribution": [
           "ADR-13b-admit-repeated-resource-each-source-selected"
         ]
+      },
+      "defective_admissions": {
+        "ADR-13c-refuse-repeated-resource-second-operation-uncovered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
       }
     },
     {
@@ -456,6 +1166,32 @@
         ],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-08-refuse-traversal-resolves-outside-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -476,6 +1212,80 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12c-refuse-no-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
       }
     },
     {
@@ -494,6 +1304,32 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
       }
     },
     {
@@ -514,6 +1350,95 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-03-refuse-deputy-holds-destination-caller-does-not": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:svc-r2-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-14b-refuse-destination-in-service-home": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/bill",
+              "path": "dst",
+              "authority": "cred:svc-home",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/bill": "alpha",
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/bill"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": "cred:svc-home",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
       }
     },
     {
@@ -533,6 +1458,63 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10b-refuse-capability-held-by-another-party": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:mallory-r2-write",
+              "holder": "party:mallory"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
       }
     },
     {
@@ -551,6 +1533,32 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10g-refuse-root-issuer-without-standing": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-from-mallory",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -569,6 +1577,32 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10f-refuse-issuer-may-exercise-but-not-delegate": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-via-bob-not-delegable",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -587,6 +1621,32 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10c-refuse-capability-wider-than-issuer-authority": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-via-drafts",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
       }
     },
     {
@@ -605,7 +1665,8 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
-      }
+      },
+      "defective_admissions": {}
     },
     {
       "name": "resource-not-operation",
@@ -627,6 +1688,121 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-09-refuse-operation-not-granted-on-resource": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "target",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "quarterly figures"
+          }
+        },
+        "ADR-10d-refuse-capability-operation-narrower-than-tool-operation": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        },
+        "ADR-13c-refuse-repeated-resource-second-operation-uncovered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
       }
     },
     {
@@ -645,7 +1821,8 @@
         "wrong_diagnosis": [],
         "wrong_effect": [],
         "wrong_attribution": []
-      }
+      },
+      "defective_admissions": {}
     }
   ],
   "presentations": [
@@ -2157,6 +3334,178 @@
           "verdict": "refused",
           "reason": "argument_resource_identifier_invalid",
           "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07e-refuse-inherited-property-name-not-classified",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-07b: the undeclared argument is named constructor instead of extra.",
+      "note": "constructor is a valid key under the key grammar, and it is also a property every JavaScript object inherits. A contract lookup that reads inherited properties finds something there and treats the argument as declared. The contract declares no such argument, so it is refused as unknown, exactly like extra.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "constructor": {},
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_designation_unknown",
+          "path": "constructor"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07f-refuse-inherited-method-name-invalid-key",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-07e: the undeclared argument is named toString.",
+      "note": "toString is also inherited, but it is not a valid key, because the grammar has no capitals. It is refused at the key check, before any contract lookup. Under the key grammar constructor is the only inherited Object.prototype name a key can spell, so ADR-07e is the case that reaches the lookup.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1",
+          "toString": {}
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_key_invalid",
+          "path": "[\"toString\"]"
         },
         "execution": {
           "status": "not_run"

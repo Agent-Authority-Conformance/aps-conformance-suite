@@ -15,8 +15,10 @@ Hardy's compiler had two sources of authority, and both were legitimate. It wrot
 statistics file under its own license and wrote debugging output to a file its caller
 named. The fault was using the first authority for the second job. This family keeps both.
 A tool here may write its own fixed resources under its own declared credential, and every
-resource the caller names must be authorized by a credential the caller selected for that
-argument.
+resource operand the caller supplies, as the trusted tool contract declares it, must be
+authorized by a credential the caller selected for that operand. A data argument that
+merely holds a resource-shaped string needs no authority over the named resource (ADR-06,
+ADR-06b).
 
 ## Route
 
@@ -33,8 +35,8 @@ in it, and the inventory generator was not changed.
 ### The proposed profile
 
 This family states the text it tests itself. **It is proposed here. It is not specified in
-draft-pidlisnyi-aps-04, in `AUTHORITY-LIFECYCLE.md` or anywhere else.** It is the
-caller-supplied-resource profile, revision 0.2:
+draft-pidlisnyi-aps-04 or in `AUTHORITY-LIFECYCLE.md`.** It is the caller-supplied-resource
+profile, revision 0.2:
 
 > For this family's caller-supplied-resource profile, the boundary identifies every
 > resource operand that the trusted tool contract says will be accessed, and the operation
@@ -78,11 +80,12 @@ statistics write. It survives here only as the defective policy
 The **Target binding** concept is stated twice, in nearly the same words, and attaches no
 rule in either place.
 
-In [`AUTHORITY-LIFECYCLE.md`](https://github.com/aeoess/agent-authority-lifecycle), section
-**Lifecycle concepts are separate > Authority and dependencies**, at commit
+In [`AUTHORITY-LIFECYCLE.md` at commit `5c1bf09`](https://github.com/aeoess/agent-authority-lifecycle/blob/5c1bf09ee29d517f2f19c9bb9212543a7c44b227/AUTHORITY-LIFECYCLE.md#authority-and-dependencies),
+section **Lifecycle concepts are separate > Authority and dependencies**, at commit
 `5c1bf09ee29d517f2f19c9bb9212543a7c44b227` (version 0.1.2-draft, the commit
-`capability-binding-drift` cites), byte-identical at `57eb7421e3437d8d5fc372225dc49a9176c281f4`,
-the head read for this family:
+`capability-binding-drift` cites). The quoted entry is unchanged at
+`57eb7421e3437d8d5fc372225dc49a9176c281f4`, the head read for this family. The two files
+differ elsewhere.
 
 > Target binding. Which resource, counterparty or object the authority applies to.
 > Continuity of a name does not by itself establish continuity of the thing named.
@@ -268,6 +271,13 @@ contains `.`, `[` or `]`, a path has one reading. A refused invalid key is named
 parent path followed by the key in brackets and JSON quotes, for example
 `["options.output.path"]` in ADR-04c.
 
+A contract is a table keyed by pattern, and a call's `authority` is a table keyed by path.
+Both are looked up by own key only. A key the grammar allows can still be the name of a
+property an implementation's objects inherit. In JavaScript that is `constructor`, the only
+`Object.prototype` name the grammar admits. An undeclared `constructor` argument is
+refused as unknown like any other (ADR-07e). `toString` is inherited too, but its capital
+letter fails the grammar, so it is refused as an invalid key before any lookup (ADR-07f).
+
 A contract pattern uses `[]` for any index, so `dsts[]` covers `dsts[0]` and `dsts[1]`.
 The walk is depth first, with object keys in ascending code-unit order and array elements
 in index order. A declared node is not entered, whatever its value. A container on the way
@@ -341,7 +351,7 @@ decided call itself, and both runners recompute its reference.
 
 ## Vectors
 
-Thirty-eight presentations. r1, r2 and r3 are `res:/store/r1`, `res:/store/r2` and
+Forty presentations. r1, r2 and r3 are `res:/store/r1`, `res:/store/r2` and
 `res:/store/r3`. Credential names are shortened to their holder and scope.
 
 | id | call and selection | expected | effect under the reference |
@@ -362,6 +372,8 @@ Thirty-eight presentations. r1, r2 and r3 are `res:/store/r1`, `res:/store/r2` a
 | ADR-07b | `copy` with `extra={}` | refused `argument_designation_unknown` `extra` | none |
 | ADR-07c | `copy` without `dst` | refused `argument_operand_missing` `dst` | none |
 | ADR-07d | `copy` with `dst={}` | refused `argument_resource_identifier_invalid` `dst` | none |
+| ADR-07e | `copy` with `constructor={}` | refused `argument_designation_unknown` `constructor` | none |
+| ADR-07f | `copy` with `toString={}` | refused `argument_key_invalid` `["toString"]` | none |
 | ADR-08 | `copy(dst="res:/store/r1/../r2")`, r1 read-write selected | refused `argument_resource_not_authorized` `dst` r2 write | none |
 | ADR-08b | `copy(dst="RES:/Store/R2")`, r2 write selected | admitted | r2 = alpha |
 | ADR-08c | `copy(dst="res:/store/../../r2")` | refused `argument_resource_identifier_invalid` `dst` | none |
@@ -388,7 +400,7 @@ Thirty-eight presentations. r1, r2 and r3 are `res:/store/r1`, `res:/store/r2` a
 Each vector's `differs_from` field names the one thing that separates it from its
 neighbour, and `note` says why it matters. Every refused vector also names its
 `forbidden_access`, the access that must not happen, or `null` where the refusal is a
-policy refusal with no specific forbidden access (ADR-04c, ADR-07 to 07d, ADR-08c).
+policy refusal with no specific forbidden access (ADR-04c, ADR-07 to 07f, ADR-08c).
 
 Pairs worth reading together:
 
@@ -435,13 +447,22 @@ Each policy's declaration in `vectors.json` lists the vectors in each category, 
 runners require the observed set to equal the declared set in every category. A
 `characteristic_cases` list names the vectors each policy was designed for.
 
+The category is not the whole check for an admission the reference refuses. For each such
+case, in both `unsafe_admission` and `admission_without_forbidden_access`, the declaration's
+`defective_admissions` gives the complete outcome: the execution status, the ordered trace
+with the authority and holder recorded for every access, and the store changes. They are
+written by hand in `generate.ts`, as the reference expectations are, and are not computed
+by `harness.ts`. Both runners require each such admission to equal its declared outcome
+exactly. A defective tool that performed the forbidden access and also wrote the wrong
+content, or one more access, fails. There are 47 of these declarations across 17 policies.
+
 ### The policies
 
 | policy | stage | the one change | unsafe admission | other |
 |---|---|---|---|---|
 | `no-call-binding` | B | a presented decision is not compared | 11 | |
-| `leaf-walk` | V | undeclared-path refusal and designation see only non-container values, as in revision 0.1 | | admission without forbidden access 07b, 07d |
-| `open-schema` | V | an undeclared path is ignored | | admission without forbidden access 07, 07b |
+| `leaf-walk` | V | undeclared-path refusal and designation see only non-container values, as in revision 0.1 | | admission without forbidden access 07b, 07d, 07e |
+| `open-schema` | V | an undeclared path is ignored | | admission without forbidden access 07, 07b, 07e |
 | `no-required-check` | V | required operands are not checked | | admission without forbidden access 07c |
 | `target-only` | E | only the operand at `target` is a designation | 02, 03, 04, 05, 08, 10b, 10c, 10d, 10f, 10g, 12, 12c, 13, 14b, 14c | admission without forbidden access 07d, 08c. Attribution 01, 04b, 05b, 05c, 06, 08b, 10, 10e, 11b, 12b, 13b, 14 |
 | `shallow-args` | E | only top-level operands are designations, nothing inside an object or array | 04, 05 | attribution 04b, 05b, 05c |
@@ -468,7 +489,7 @@ Notes on the sets:
   ADR-07d and ADR-08c, whose malformed destination it never examines, and the tool then
   stops at `dst` with `operand_unresolvable`. Twelve admitted vectors show
   `wrong_attribution`, because their destination ran with no checked authority. Checking
-  the target alone misses 15 of the 25 refusals as real unauthorized accesses.
+  the target alone misses 15 of the 27 refusals as real unauthorized accesses.
 - `no-canonicalization` refuses ADR-08c for the wrong reason. That is a diagnostic defect.
   It does not reproduce an unauthorized access and is reported as `wrong_diagnosis`.
 - `shape-guessing` refuses ADR-06 and 06b because it treats inert data as a read
@@ -510,7 +531,8 @@ Regenerating `vectors.json`:
 
 `vectors.json` is produced by `generate.ts`. Every expected decision, execution, trace,
 store change and forbidden access in it is written by hand in that file, and so is every
-defective policy's category list. None is computed by `harness.ts`. The generator imports
+defective policy's category list and the full outcome of every defective admission. None is
+computed by `harness.ts`. The generator imports
 the harness for two things only: `canonicalizeResource`, to assert that every identifier in
 trusted state is canonical, and `callRef`, to fill in each decision's call reference. There
 is no clock, no randomness, no key and no network.
@@ -532,8 +554,9 @@ This family is lab-authored and protocol neutral, not an ingestion from an exter
 system, so `CONTRIBUTING.md` does not require this section. It is recorded in the same
 format anyway.
 
-- the 38 decisions, executions, traces and final stores, the three invariance mutations,
-  and the categories of 19 defective policies; runner aeoess; Mode A; author-produced,
+- the 40 decisions, executions, traces and final stores, the three invariance mutations,
+  the categories of 19 defective policies and the 47 declared defective-admission
+  outcomes; runner aeoess; Mode A; author-produced,
   because this lab authored the profile, the vectors and both implementations,
   `harness.ts` with `verify.ts` and `verify.py`.
 - decision call references over JCS bytes; runner aeoess; Mode B; author-produced, same
@@ -546,13 +569,14 @@ verification or a family-level verdict.
 ## Results
 
 Both runners were run locally, `verify.ts` under Node 24.11.1 with tsx 4.23.15 and
-`verify.py` under Python 3.14.6 and Python 3.12, with identical output. The reference
-boundary matched 38 of 38 on decision, execution, trace and store under both, the 25
-refused calls performed no access, and the three invariance mutations changed nothing.
-Every defective policy matched its declaration in every category under both. The two
-runners printed the same outcome on all 760 policy and presentation lines. The declared
-categories were written before either runner was run against them, and both runners
-matched them on the first run. These are author-produced records, not independent ones.
+`verify.py` under Python 3.14.6 and Python 3.12. The reference boundary matched 40 of 40 on
+decision, execution, trace and store under both, the 27 refused calls performed no access,
+and the three invariance mutations changed nothing. Every defective policy matched its
+declaration in every category under both, and each of the 47 defective admissions matched
+its declared outcome. The complete outcome objects of all 20 policies on all 40
+presentations, 800 in all, were exported from both implementations and compared equal. The
+author reports writing the categories and the defective-admission outcomes before running
+either runner against them. These are author-produced records, not independent ones.
 
 ## Where the proposed profile was too vague to test
 
@@ -580,12 +604,13 @@ For this reference model, at this revision:
 
 - a boundary that authorizes every declared operand with the credential selected for it,
   and runs declared service effects under their own credential, gives the expected decision
-  on all 38 vectors, and the tool then performs exactly the expected accesses
+  on all 40 vectors, and the tool then performs exactly the expected accesses
 - its outcomes do not depend on unselected credentials, whether the requester's or the
   service's
 - a refused call touches nothing, an admitted call that fails part way keeps its earlier
   effects and says so, and each of 19 single-stage defects lands in exactly its declared
-  categories
+  categories, with every admission of a refused call performing exactly its declared
+  accesses and leaving exactly its declared store
 
 ## What this family does not establish
 
@@ -602,6 +627,14 @@ For this reference model, at this revision:
   proven, expired or revoked, and the holder check assumes an authenticated requester.
   The results say nothing about bearer tokens.
 - **No transactions.** ADR-05c shows that the profile governs authority, not atomicity.
+- **No malformed or cyclic credential graphs.** Trusted state is well formed. A credential
+  whose parent is missing, a chain that loops, an unknown credential identifier and chains
+  deeper than two links are not runtime inputs here. A missing identifier is a harness
+  input error, and a cycle is not detected. The delegation cases are a structural subset.
+- **Stage labels are not validated.** A policy's `stage` and `change` text in
+  `vectors.json` are descriptive. Neither runner checks them against what the policy does.
+  `verify.ts` catches an edit to them only as byte drift from `generate.ts`, and `verify.py`
+  does not catch it.
 - **No claim that the profile is right.** It is proposed in this README.
 - **Lab-authored and author-produced, with no independent run.** The profile, the vectors,
   `harness.ts`, `verify.ts` and `verify.py` were all written in this lab, in one session.
@@ -624,9 +657,10 @@ claims no novelty. Each line was checked against the source at the URL given.
   to a file its caller named, and a caller named `(SYSX)BILL`. In the author's words, "When
   it produces statistics it intends to use the authority granted by its home files
   license. When it produces its debugging output it intends to use authority from its
-  invoker." [Crossref record](https://api.crossref.org/works/10.1145/54289.871709),
-  [author's text](http://cap-lore.com/CapTheory/ConfusedDeputy.html) (fetched over http
-  because the https certificate does not match the host).
+  invoker." The quotation is checked against the copy of the text on the author's own site,
+  [cap-lore.com/CapTheory/ConfusedDeputy.html](http://cap-lore.com/CapTheory/ConfusedDeputy.html),
+  fetched over http on 2026-10-27 because the https certificate does not match the host.
+  The bibliographic details are the publication's, and the ACM copy was not retrieved.
 - C. Ellison, B. Frantz, B. Lampson, R. Rivest, B. Thomas, T. Ylonen, "SPKI Certificate
   Theory", RFC 2693 (Experimental), September 1999.
   [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc2693.txt)
@@ -646,15 +680,18 @@ claims no novelty. Each line was checked against the source at the URL given.
   signed resource token "prevents confused deputy attacks" because "an attacker cannot
   substitute a different resource in the authorization flow". That addresses resource
   substitution in its own authorization flow and is cited here as related work.
-  [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/)
+  [Revision -11, appendix C.3.3](https://datatracker.ietf.org/doc/html/draft-hardt-oauth-aauth-protocol-11#appendix-C.3.3)
 
 ## Credit
 
-The question this family answers was raised by Alan Karp, who asked where these vectors
-test an invocation that passes a resource reference as an argument. The venue (W3C AI Agent
-Protocol Community Group list) and date (2026-10-27) are taken from the brief for this work
-and were not checked against the list archive. Alan did not design, review or endorse the
-profile or the vectors.
+The question this family answers was raised by Alan Karp on the W3C AI Agent Protocol
+Community Group list on 27 October 2026, in the thread "Four open questions on the Agentic
+Web report":
+[public-agentprotocol/2026Oct/0057](https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0057.html).
+He wrote, "One thing that many certificate delegation systems get wrong is invocation, in
+particular passing resource references as arguments," and said he had looked for an
+example in the vectors and not found one. Alan did not design, review or endorse the profile or the
+vectors.
 
 ## Provenance
 

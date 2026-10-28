@@ -17,7 +17,9 @@ Checks:
   4. the reference boundary matches every expected decision, execution, trace
      and final store, and refused calls touch nothing
   5. invariance of the reference under three trusted-state mutations
-  6. every defective policy falls in exactly its declared category per vector
+  6. every defective policy falls in exactly its declared category per vector,
+     and every admission of a call the reference refuses has exactly the
+     declared execution, trace with recorded authority, and final store
 
 Run:
     python3 fixtures/argument-designated-resources/verify.py
@@ -51,6 +53,8 @@ ROSTER = [
     "ADR-07b-refuse-empty-container-not-classified",
     "ADR-07c-refuse-required-operand-missing",
     "ADR-07d-refuse-resource-operand-not-a-string",
+    "ADR-07e-refuse-inherited-property-name-not-classified",
+    "ADR-07f-refuse-inherited-method-name-invalid-key",
     "ADR-08-refuse-traversal-resolves-outside-credential",
     "ADR-08b-admit-cased-alias-resolves-inside-credential",
     "ADR-08c-refuse-traversal-above-root",
@@ -389,10 +393,10 @@ class Boundary:
                     if resource in already:
                         continue
                     already.add(resource)
-                selected = call["authority"].get(path)
-                if selected is None:
+                if path not in call["authority"]:
                     bad = {"verdict": "refused", "reason": "argument_authority_not_selected", "path": path}
                 else:
+                    selected = call["authority"][path]
                     bad = self.problem(self.cred(selected), requester, resource, operation, path)
                 if bad is None:
                     chosen[path] = selected
@@ -532,11 +536,21 @@ def evaluate(policy: dict, vectors: dict, pres: dict) -> dict:
 
 # --- the runner ----------------------------------------------------------------
 
+def final_store(vectors: dict, changes: dict) -> dict:
+    store = dict(vectors["initial_store"])
+    store.update(changes)
+    return dict(sorted(store.items()))
+
+
 def expected_outcome(vectors: dict, p: dict) -> dict:
     e = p["expected"]
-    store = dict(vectors["initial_store"])
-    store.update(e["store_changes"])
-    return {"decision": e["decision"], "execution": e["execution"], "trace": e["trace"], "store": dict(sorted(store.items()))}
+    return {"decision": e["decision"], "execution": e["execution"], "trace": e["trace"], "store": final_store(vectors, e["store_changes"])}
+
+
+def admission_outcome(vectors: dict, e: dict) -> dict:
+    """The declared outcome of a defective admission of a call the reference refuses."""
+    return {"decision": {"verdict": "admitted", "reason": "all_designations_authorized"},
+            "execution": e["execution"], "trace": e["trace"], "store": final_store(vectors, e["store_changes"])}
 
 
 def bare(trace: list) -> list:
@@ -604,6 +618,7 @@ def main() -> int:
         print(f"ok   {message}")
 
     # 2. Structure.
+    structure_failures = len(failures)
     ids = [p["id"] for p in presentations]
     if sorted(ids) != sorted(ROSTER) or len(set(ids)) != len(ids):
         fail(f"roster mismatch: missing {sorted(set(ROSTER) - set(ids))} unexpected {sorted(set(ids) - set(ROSTER))} count {len(ids)}")
@@ -633,6 +648,15 @@ def main() -> int:
             fail(f"{name} declares a case in more than one category")
         if set(d["characteristic_cases"]) - set(listed):
             fail(f"{name} characteristic cases not declared")
+        admitted = sorted(d["declared"]["unsafe_admission"] + d["declared"]["admission_without_forbidden_access"])
+        if sorted(d["defective_admissions"]) != admitted:
+            fail(f"{name} declares admission effects for {sorted(d['defective_admissions'])}, its defective admissions are {admitted}")
+        bad_effects = [i for i, e in d["defective_admissions"].items() if sorted(e) != ["execution", "store_changes", "trace"]]
+        if bad_effects:
+            fail(f"{name} admission effects malformed: {bad_effects}")
+    if len(failures) == structure_failures:
+        count = sum(len(d["defective_admissions"]) for d in vectors["defective_policies"])
+        ok(f"{count} defective admissions each declare an execution, a trace and a store")
     print()
 
     # 3. Determinism.
@@ -720,13 +744,28 @@ def main() -> int:
         policy = {**REFERENCE, **change, "name": name}
         print(f"policy: {name} (stage {d['stage']})")
         seen = {c: [] for c in CATEGORIES}
+        wrong_effects, checked = [], 0
         for p in presentations:
             actual = evaluate(policy, vectors, p)
             c = category(vectors, actual, p)
             if c != "match":
                 seen[c].append(p["id"])
             print(f"  {c:<34} {p['id']}  {show(actual)}")
+            if actual["decision"]["verdict"] == "admitted" and p["expected"]["decision"]["verdict"] == "refused":
+                checked += 1
+                effect = d["defective_admissions"].get(p["id"])
+                want = admission_outcome(vectors, effect) if effect is not None else None
+                if want != actual:
+                    wrong_effects.append(p["id"])
+                    print(f"  {'admission effect differs':<34} {p['id']}")
+                    print(f"  {'declared':<34} {show(want) if want else 'nothing'}  store {json.dumps(want['store']) if want else ''}")
+                    print(f"  {'observed':<34} {show(actual)}  store {json.dumps(actual['store'])}")
         problems = 0
+        if wrong_effects:
+            problems += 1
+            fail(f"{name} defective admissions differ from their declared execution, trace or store: {wrong_effects}")
+        elif checked:
+            ok(f"{name} {checked} defective admissions match their declared execution, trace and store")
         for c in CATEGORIES:
             if sorted(d["declared"][c]) != sorted(seen[c]):
                 problems += 1

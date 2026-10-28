@@ -242,12 +242,20 @@ export const DEFECTIVE: readonly Policy[] = [
 // ---------------------------------------------------------------------------
 // Argument tree helpers.
 
+/** Own-property lookup. Every table keyed by a caller-supplied string goes
+ *  through this, so a key such as `constructor` never reaches Object.prototype. */
+export function own<T>(table: { readonly [key: string]: T }, key: string): T | undefined {
+  return Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined
+}
+
 function isObject(value: Json | undefined): value is { [key: string]: Json } {
   return value !== null && value !== undefined && typeof value === 'object' && !Array.isArray(value)
 }
 
 function isCapabilityRef(value: Json | undefined): value is { capability: string } {
-  return isObject(value) && Object.keys(value).length === 1 && typeof value.capability === 'string'
+  if (!isObject(value)) return false
+  const keys = Object.keys(value)
+  return keys.length === 1 && keys[0] === 'capability' && typeof value.capability === 'string'
 }
 
 interface Node {
@@ -288,7 +296,7 @@ function invalidKeyPath(parent: string, key: string): string {
 function walkNodes(policy: Policy, contract: ToolContract, args: { [key: string]: Json }): Node[] {
   const out: Node[] = []
   const visitChild = (value: Json, path: string, pattern: string): void => {
-    const spec = contract.arguments[pattern]
+    const spec = own(contract.arguments, pattern)
     if (spec !== undefined) {
       out.push({ path, pattern, value, spec })
       return
@@ -320,7 +328,7 @@ function walkNodes(policy: Policy, contract: ToolContract, args: { [key: string]
 function walkLeaves(policy: Policy, contract: ToolContract, args: { [key: string]: Json }): Node[] {
   const out: Node[] = []
   const visit = (value: Json, path: string, pattern: string): void => {
-    const spec = contract.arguments[pattern]
+    const spec = own(contract.arguments, pattern)
     if (path !== '' && spec?.kind === 'capability') {
       out.push({ path, pattern, value, spec })
     } else if (isObject(value)) {
@@ -391,7 +399,7 @@ function chainFailure(ctx: Context, start: Credential): string | null {
   for (;;) {
     if (current.parent === null) {
       if (policy.standing === 'issuer-records') {
-        const owned = ctx.fixture.issuer_records[current.issuer] ?? []
+        const owned = own(ctx.fixture.issuer_records, current.issuer) ?? []
         if (!owned.some((root) => covers(root, current.resource))) return 'authority_issuer_without_standing'
       }
       return null
@@ -480,7 +488,7 @@ export function decide(policy: Policy, fixture: Fixture, presentation: Presentat
     if (policy.binding && presentation.decision !== null && callRef(call) !== presentation.decision.call_ref) {
       refuse('call_does_not_match_decision')
     }
-    const contract = fixture.tools[call.tool]
+    const contract = own(fixture.tools, call.tool)
     if (contract === undefined) throw new Error(`harness input error: unknown tool ${call.tool}`)
 
     // V
@@ -511,7 +519,7 @@ export function decide(policy: Policy, fixture: Fixture, presentation: Presentat
         if (seen.has(resource)) continue
         seen.add(resource)
       }
-      const selected = call.authority[d.path]
+      const selected = own(call.authority, d.path)
       const failure =
         selected === undefined
           ? { verdict: 'refused' as const, reason: 'argument_authority_not_selected', path: d.path }
@@ -550,7 +558,7 @@ export function decide(policy: Policy, fixture: Fixture, presentation: Presentat
         cred = credential(ctx, effect.authority)
         holder = contract.service_identity
       } else {
-        const selected = call.authority[path]
+        const selected = own(call.authority, path)
         if (selected === undefined) refuse('service_effect_not_authorized', detail)
         cred = credential(ctx, selected)
         holder = call.requester
@@ -584,7 +592,7 @@ function sortedStore(store: Record<string, string>): Record<string, string> {
 
 export function execute(fixture: Fixture, presentation: Presentation, admitted: Record<string, string>): Omit<Outcome, 'decision'> {
   const { call } = presentation
-  const contract = fixture.tools[call.tool]!
+  const contract = own(fixture.tools, call.tool)!
   const args = call.arguments
   const credentials = new Map(presentation.trusted_state.credentials.map((c) => [c.id, c]))
   const store: Record<string, string> = { ...fixture.initial_store }
@@ -592,7 +600,7 @@ export function execute(fixture: Fixture, presentation: Presentation, admitted: 
 
   const resolve = (path: string): string | null => {
     const value = valueAt(args, path)
-    const spec = contract.arguments[path.replace(/\[\d+\]/g, '[]')]
+    const spec = own(contract.arguments, path.replace(/\[\d+\]/g, '[]'))
     if (spec?.kind === 'capability') {
       if (!isCapabilityRef(value)) return null
       return credentials.get(value.capability)?.resource ?? null
@@ -600,7 +608,7 @@ export function execute(fixture: Fixture, presentation: Presentation, admitted: 
     return typeof value === 'string' ? canonicalizeResource(value) : null
   }
   const record = (operation: Operation, resource: string, path: string): void => {
-    const authority = admitted[path] ?? null
+    const authority = own(admitted, path) ?? null
     trace.push({ operation, resource, path, authority, holder: authority === null ? null : credentials.get(authority)!.holder })
   }
   const gate = (path: string): void => {

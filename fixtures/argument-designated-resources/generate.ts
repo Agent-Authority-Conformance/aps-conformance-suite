@@ -7,7 +7,9 @@
 // The generator imports the harness only for canonicalizeResource (to assert
 // that every credential and record is already canonical) and callRef (to fill in
 // each decision's call reference). The defective-policy categories were also
-// written by hand, before either runner was run against them. verify.ts imports
+// written by hand, before either runner was run against them, and so is the full
+// effect of every defective admission of a call the reference refuses: its
+// execution, its trace with recorded authority and its store changes. verify.ts imports
 // buildVectors() and requires the committed vectors.json to equal its output
 // byte for byte.
 //
@@ -370,6 +372,24 @@ const CASES: CaseDef[] = [
     expected: refuseWith('argument_resource_identifier_invalid', { path: 'dst' }, null),
   },
   {
+    id: 'ADR-07e-refuse-inherited-property-name-not-classified',
+    tests_proposed_text: [CLOSED],
+    differs_from: 'ADR-07b: the undeclared argument is named constructor instead of extra.',
+    note: 'constructor is a valid key under the key grammar, and it is also a property every JavaScript object inherits. A contract lookup that reads inherited properties finds something there and treats the argument as declared. The contract declares no such argument, so it is refused as unknown, exactly like extra.',
+    credentials: ['cred:alice-r1-read', 'cred:alice-r2-write'],
+    call: call('copy', { constructor: {}, dst: R2, src: R1 }, { dst: 'cred:alice-r2-write', src: 'cred:alice-r1-read' }),
+    expected: refuseWith('argument_designation_unknown', { path: 'constructor' }, null),
+  },
+  {
+    id: 'ADR-07f-refuse-inherited-method-name-invalid-key',
+    tests_proposed_text: [CLOSED],
+    differs_from: 'ADR-07e: the undeclared argument is named toString.',
+    note: 'toString is also inherited, but it is not a valid key, because the grammar has no capitals. It is refused at the key check, before any contract lookup. Under the key grammar constructor is the only inherited Object.prototype name a key can spell, so ADR-07e is the case that reaches the lookup.',
+    credentials: ['cred:alice-r1-read', 'cred:alice-r2-write'],
+    call: call('copy', { dst: R2, src: R1, toString: {} }, { dst: 'cred:alice-r2-write', src: 'cred:alice-r1-read' }),
+    expected: refuseWith('argument_key_invalid', { path: '["toString"]' }, null),
+  },
+  {
     id: 'ADR-08-refuse-traversal-resolves-outside-credential',
     tests_proposed_text: [TB, OPERANDS],
     differs_from: 'ADR-02: dst is spelled res:/store/r1/../r2, which begins with the covered res:/store/r1/ and resolves to res:/store/r2.',
@@ -595,7 +615,25 @@ interface PolicyDef {
   change: string
   characteristic_cases: string[]
   declared: Partial<Record<Category, string[]>>
+  admissions: Record<string, Effect>
 }
+
+// The full effect of a defective admission of a call the reference refuses.
+// Written by hand from the tool programs in README "Tools", the same way the
+// reference expectations are. A null authority marks an access whose operand the
+// policy never checked.
+interface Effect {
+  execution: Execution
+  trace: Access[]
+  store_changes: Record<string, string>
+}
+
+const ran = (trace: Access[], store_changes: Record<string, string>): Effect => ({ execution: { status: 'completed' }, trace, store_changes })
+const stopped = (trace: Access[], path: string, cause: NonNullable<Execution['cause']>): Effect => ({
+  execution: { status: 'partial', stopped_at: path, cause },
+  trace,
+  store_changes: {},
+})
 
 const ids = (...short: string[]): string[] =>
   short.map((s) => {
@@ -604,6 +642,12 @@ const ids = (...short: string[]): string[] =>
     return found.id
   })
 
+const READ_R1 = acc('read', R1, 'src', 'cred:alice-r1-read')
+const READ_R1_RW = acc('read', R1, 'src', 'cred:alice-r1-rw')
+const STATS_EFFECT = acc('write', STATS, 'service_effects[0]', 'cred:svc-stats-write')
+const COPY_R1_R2_RAN = ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-write')], { [R2]: 'alpha' })
+const DST_UNCHECKED_R2 = ran([READ_R1, acc('write', R2, 'dst', null)], { [R2]: 'alpha' })
+
 const POLICIES: PolicyDef[] = [
   {
     name: 'no-call-binding',
@@ -611,20 +655,33 @@ const POLICIES: PolicyDef[] = [
     change: 'A presented decision is not compared with the call.',
     characteristic_cases: ids('11'),
     declared: { unsafe_admission: ids('11') },
+    admissions: {
+      '11': ran([READ_R1, acc('write', R3, 'dst', 'cred:alice-r3-write')], { [R3]: 'alpha' }),
+    },
   },
   {
     name: 'leaf-walk',
     stage: 'V',
     change: 'Undeclared-path refusal and designation see only non-container values, as in revision 0.1. An empty container is invisible, and a declared operand holding one yields no designation.',
     characteristic_cases: ids('07b', '07d'),
-    declared: { admission_without_forbidden_access: ids('07b', '07d') },
+    declared: { admission_without_forbidden_access: ids('07b', '07d', '07e') },
+    admissions: {
+      '07b': COPY_R1_R2_RAN,
+      '07d': stopped([READ_R1], 'dst', 'operand_unresolvable'),
+      '07e': COPY_R1_R2_RAN,
+    },
   },
   {
     name: 'open-schema',
     stage: 'V',
     change: 'An argument path the contract does not declare is ignored instead of refused.',
     characteristic_cases: ids('07'),
-    declared: { admission_without_forbidden_access: ids('07', '07b') },
+    declared: { admission_without_forbidden_access: ids('07', '07b', '07e') },
+    admissions: {
+      '07': COPY_R1_R2_RAN,
+      '07b': COPY_R1_R2_RAN,
+      '07e': COPY_R1_R2_RAN,
+    },
   },
   {
     name: 'no-required-check',
@@ -632,6 +689,9 @@ const POLICIES: PolicyDef[] = [
     change: 'Required operands are not checked for presence.',
     characteristic_cases: ids('07c'),
     declared: { admission_without_forbidden_access: ids('07c') },
+    admissions: {
+      '07c': stopped([READ_R1], 'dst', 'operand_unresolvable'),
+    },
   },
   {
     name: 'target-only',
@@ -643,6 +703,25 @@ const POLICIES: PolicyDef[] = [
       admission_without_forbidden_access: ids('07d', '08c'),
       wrong_attribution: ids('01', '04b', '05b', '05c', '06', '08b', '10', '10e', '11b', '12b', '13b', '14'),
     },
+    admissions: {
+      '02': ran([READ_R1_RW, acc('write', R2, 'dst', null)], { [R2]: 'alpha' }),
+      '03': ran([READ_R1_RW, acc('write', R2, 'dst', null)], { [R2]: 'alpha' }),
+      '04': ran([READ_R1, acc('write', R2, 'options.output.path', null)], { [R2]: 'csv:alpha' }),
+      '05': ran([READ_R1, acc('write', R2, 'dsts[0]', null), acc('write', R3, 'dsts[1]', null)], { [R2]: 'alpha', [R3]: 'alpha' }),
+      '07d': stopped([READ_R1], 'dst', 'operand_unresolvable'),
+      '08': ran([READ_R1_RW, acc('write', R2, 'dst', null)], { [R2]: 'alpha' }),
+      '08c': stopped([READ_R1_RW], 'dst', 'operand_unresolvable'),
+      '10b': DST_UNCHECKED_R2,
+      '10c': DST_UNCHECKED_R2,
+      '10d': DST_UNCHECKED_R2,
+      '10f': DST_UNCHECKED_R2,
+      '10g': DST_UNCHECKED_R2,
+      '12': DST_UNCHECKED_R2,
+      '12c': DST_UNCHECKED_R2,
+      '13': ran([acc('read', R2, 'src', 'cred:alice-r2-rw-via-bob'), acc('write', R2, 'dst', null)], { [R2]: 'BETA' }),
+      '14b': ran([READ_R1, acc('write', BILL, 'dst', null), STATS_EFFECT], { [BILL]: 'alpha', [STATS]: `copy ${R1} -> ${BILL}` }),
+      '14c': ran([READ_R1, acc('write', STATS, 'dst', null), STATS_EFFECT], { [STATS]: `copy ${R1} -> ${STATS}` }),
+    },
   },
   {
     name: 'shallow-args',
@@ -652,6 +731,10 @@ const POLICIES: PolicyDef[] = [
     declared: {
       unsafe_admission: ids('04', '05'),
       wrong_attribution: ids('04b', '05b', '05c'),
+    },
+    admissions: {
+      '04': ran([READ_R1, acc('write', R2, 'options.output.path', null)], { [R2]: 'csv:alpha' }),
+      '05': ran([READ_R1, acc('write', R2, 'dsts[0]', null), acc('write', R3, 'dsts[1]', null)], { [R2]: 'alpha', [R3]: 'alpha' }),
     },
   },
   {
@@ -663,6 +746,9 @@ const POLICIES: PolicyDef[] = [
       admission_without_forbidden_access: ids('07d'),
       false_refusal: ids('06', '06b'),
     },
+    admissions: {
+      '07d': stopped([READ_R1], 'dst', 'operand_unresolvable'),
+    },
   },
   {
     name: 'dedup-by-resource',
@@ -672,6 +758,9 @@ const POLICIES: PolicyDef[] = [
     declared: {
       unsafe_admission: ids('13c'),
       wrong_attribution: ids('13b'),
+    },
+    admissions: {
+      '13c': ran([acc('read', R2, 'src', null), acc('write', R2, 'dst', 'cred:alice-r2-write')], { [R2]: 'BETA' }),
     },
   },
   {
@@ -684,6 +773,9 @@ const POLICIES: PolicyDef[] = [
       false_refusal: ids('08b'),
       wrong_diagnosis: ids('08c'),
     },
+    admissions: {
+      '08': ran([READ_R1_RW, acc('write', R2, 'dst', 'cred:alice-r1-rw')], { [R2]: 'alpha' }),
+    },
   },
   {
     name: 'wallet-search',
@@ -691,6 +783,11 @@ const POLICIES: PolicyDef[] = [
     change: 'When the selected credential fails for a name-form operand, any credential the requester holds in trusted state that passes C and K is used instead.',
     characteristic_cases: ids('12'),
     declared: { unsafe_admission: ids('12', '12c', '13') },
+    admissions: {
+      '12': COPY_R1_R2_RAN,
+      '12c': COPY_R1_R2_RAN,
+      '13': ran([acc('read', R2, 'src', 'cred:alice-r2-rw-via-bob'), acc('write', R2, 'dst', 'cred:alice-r2-rw-via-bob')], { [R2]: 'BETA' }),
+    },
   },
   {
     name: 'pooled-selection',
@@ -698,6 +795,9 @@ const POLICIES: PolicyDef[] = [
     change: 'When the selected credential fails for a name-form operand, any credential selected anywhere in the call that passes C and K is used instead.',
     characteristic_cases: ids('13'),
     declared: { unsafe_admission: ids('13') },
+    admissions: {
+      '13': ran([acc('read', R2, 'src', 'cred:alice-r2-rw-via-bob'), acc('write', R2, 'dst', 'cred:alice-r2-rw-via-bob')], { [R2]: 'BETA' }),
+    },
   },
   {
     name: 'deputy-authority',
@@ -705,6 +805,11 @@ const POLICIES: PolicyDef[] = [
     change: 'When the selected credential fails for a name-form operand, any credential held by the tool\'s service identity that passes C and K for that identity is used instead.',
     characteristic_cases: ids('03'),
     declared: { unsafe_admission: ids('03', '14b', '14c') },
+    admissions: {
+      '03': ran([READ_R1_RW, acc('write', R2, 'dst', 'cred:svc-r2-write')], { [R2]: 'alpha' }),
+      '14b': ran([READ_R1, acc('write', BILL, 'dst', 'cred:svc-home'), STATS_EFFECT], { [BILL]: 'alpha', [STATS]: `copy ${R1} -> ${BILL}` }),
+      '14c': ran([READ_R1, acc('write', STATS, 'dst', 'cred:svc-home'), STATS_EFFECT], { [STATS]: `copy ${R1} -> ${STATS}` }),
+    },
   },
   {
     name: 'holder-unchecked',
@@ -712,6 +817,10 @@ const POLICIES: PolicyDef[] = [
     change: 'The credential\'s holder is not compared with the requester.',
     characteristic_cases: ids('10b'),
     declared: { unsafe_admission: ids('10b', '14c') },
+    admissions: {
+      '10b': ran([READ_R1, acc('write', R2, 'dst', 'cred:mallory-r2-write')], { [R2]: 'alpha' }),
+      '14c': ran([READ_R1, acc('write', STATS, 'dst', 'cred:svc-stats-write'), STATS_EFFECT], { [STATS]: `copy ${R1} -> ${STATS}` }),
+    },
   },
   {
     name: 'self-asserted-issuer',
@@ -719,6 +828,9 @@ const POLICIES: PolicyDef[] = [
     change: 'A root credential\'s issuer is accepted without consulting the trusted issuer records.',
     characteristic_cases: ids('10g'),
     declared: { unsafe_admission: ids('10g') },
+    admissions: {
+      '10g': ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-write-from-mallory')], { [R2]: 'alpha' }),
+    },
   },
   {
     name: 'delegation-equals-exercise',
@@ -726,6 +838,9 @@ const POLICIES: PolicyDef[] = [
     change: 'A parent credential\'s delegable flag is ignored, so holding an exercise right is treated as permission to delegate it.',
     characteristic_cases: ids('10f'),
     declared: { unsafe_admission: ids('10f') },
+    admissions: {
+      '10f': ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-write-via-bob-not-delegable')], { [R2]: 'alpha' }),
+    },
   },
   {
     name: 'no-attenuation-check',
@@ -733,6 +848,9 @@ const POLICIES: PolicyDef[] = [
     change: 'A delegated credential is not compared with its parent\'s resource and operations.',
     characteristic_cases: ids('10c'),
     declared: { unsafe_admission: ids('10c') },
+    admissions: {
+      '10c': ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-write-via-drafts')], { [R2]: 'alpha' }),
+    },
   },
   {
     name: 'strict-attenuation',
@@ -740,6 +858,7 @@ const POLICIES: PolicyDef[] = [
     change: 'A delegated credential must be strictly narrower than its parent, so an equal delegation is refused.',
     characteristic_cases: ids('10e'),
     declared: { false_refusal: ids('10e') },
+    admissions: {},
   },
   {
     name: 'resource-not-operation',
@@ -747,6 +866,13 @@ const POLICIES: PolicyDef[] = [
     change: 'Coverage checks the resource and ignores the operation. Attenuation along the chain is unchanged.',
     characteristic_cases: ids('09'),
     declared: { unsafe_admission: ids('09', '10d', '12', '13', '13c') },
+    admissions: {
+      '09': ran([acc('write', R2, 'target', 'cred:alice-r2-read')], { [R2]: 'quarterly figures' }),
+      '10d': ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-read')], { [R2]: 'alpha' }),
+      '12': ran([READ_R1, acc('write', R2, 'dst', 'cred:alice-r2-read')], { [R2]: 'alpha' }),
+      '13': ran([acc('read', R2, 'src', 'cred:alice-r2-rw-via-bob'), acc('write', R2, 'dst', 'cred:alice-r2-read')], { [R2]: 'BETA' }),
+      '13c': ran([acc('read', R2, 'src', 'cred:alice-r2-write'), acc('write', R2, 'dst', 'cred:alice-r2-write')], { [R2]: 'BETA' }),
+    },
   },
   {
     name: 'caller-authority-for-service-effects',
@@ -754,6 +880,7 @@ const POLICIES: PolicyDef[] = [
     change: 'A service-owned effect needs a credential the caller selects for it, which is revision 0.1\'s rule that service authority is never used. No call selects one.',
     characteristic_cases: ids('14'),
     declared: { false_refusal: ids('14') },
+    admissions: {},
   },
 ]
 
@@ -900,7 +1027,15 @@ export function buildVectors(): unknown {
     for (const id of p.characteristic_cases) {
       if (!CATEGORIES.some((cat) => declared[cat]!.includes(id))) throw new Error(`generate: ${p.name} characteristic ${id} is not declared`)
     }
-    return { name: p.name, stage: p.stage, change: p.change, characteristic_cases: p.characteristic_cases, declared }
+    const defective = [...declared.unsafe_admission!, ...declared.admission_without_forbidden_access!].sort()
+    const authored = Object.entries(p.admissions)
+      .map(([short, effect]): [string, Effect] => [ids(short)[0]!, effect])
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    if (authored.map(([id]) => id).join(',') !== defective.join(',')) {
+      throw new Error(`generate: ${p.name} admission effects [${authored.map(([id]) => id)}] do not match its defective admissions [${defective}]`)
+    }
+    const defective_admissions: Record<string, Effect> = Object.fromEntries(authored)
+    return { name: p.name, stage: p.stage, change: p.change, characteristic_cases: p.characteristic_cases, declared, defective_admissions }
   })
 
   return {

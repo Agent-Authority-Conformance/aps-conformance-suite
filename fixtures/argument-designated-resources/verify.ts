@@ -18,7 +18,9 @@
 //      requester gains unselected credentials over everything
 //   6. each defective policy falls in exactly its declared category on every
 //      vector: unsafe_admission, admission_without_forbidden_access,
-//      false_refusal, wrong_diagnosis, wrong_effect or wrong_attribution
+//      false_refusal, wrong_diagnosis, wrong_effect or wrong_attribution, and
+//      every admission of a call the reference refuses has exactly the declared
+//      execution, trace with recorded authority, and final store
 //
 // Run: npx tsx fixtures/argument-designated-resources/verify.ts
 
@@ -31,6 +33,7 @@ import {
   callRef,
   DEFECTIVE,
   evaluate,
+  own,
   REFERENCE,
   type Access,
   type Credential,
@@ -62,6 +65,8 @@ const ROSTER = [
   'ADR-07b-refuse-empty-container-not-classified',
   'ADR-07c-refuse-required-operand-missing',
   'ADR-07d-refuse-resource-operand-not-a-string',
+  'ADR-07e-refuse-inherited-property-name-not-classified',
+  'ADR-07f-refuse-inherited-method-name-invalid-key',
   'ADR-08-refuse-traversal-resolves-outside-credential',
   'ADR-08b-admit-cased-alias-resolves-inside-credential',
   'ADR-08c-refuse-traversal-above-root',
@@ -121,11 +126,23 @@ interface VectorPresentation extends Presentation {
   expected: Expected
 }
 
+interface Effect {
+  execution: Execution
+  trace: Access[]
+  store_changes: Record<string, string>
+}
+
 interface Vectors extends Fixture {
   status: string
   proposed_text: Record<string, unknown>
   categories: string[]
-  defective_policies: Array<{ name: string; stage: string; characteristic_cases: string[]; declared: Record<string, string[]> }>
+  defective_policies: Array<{
+    name: string
+    stage: string
+    characteristic_cases: string[]
+    declared: Record<string, string[]>
+    defective_admissions: Record<string, Effect>
+  }>
   presentations: VectorPresentation[]
 }
 
@@ -171,6 +188,7 @@ const ok = (message: string): void => console.log(`ok   ${message}`)
 
 // 2. Structure.
 {
+  const structureFailures = failed
   const presented = vectors.presentations.map((p) => p.id)
   const duplicates = presented.filter((id, i) => presented.indexOf(id) !== i)
   const missing = ROSTER.filter((id) => !presented.includes(id))
@@ -200,7 +218,15 @@ const ok = (message: string): void => console.log(`ok   ${message}`)
     if (new Set(all).size !== all.length) fail(`${d.name} declares a case in more than one category`)
     const uncharacteristic = d.characteristic_cases.filter((id) => !all.includes(id))
     if (uncharacteristic.length > 0) fail(`${d.name} characteristic cases not declared: [${uncharacteristic}]`)
+    const admissions = [...(d.declared.unsafe_admission ?? []), ...(d.declared.admission_without_forbidden_access ?? [])].sort()
+    if (sortedKeys(d.defective_admissions) !== admissions.join(',')) {
+      fail(`${d.name} declares admission effects for [${Object.keys(d.defective_admissions).sort()}], its defective admissions are [${admissions}]`)
+    }
+    const badEffects = Object.entries(d.defective_admissions).filter(([, e]) => sortedKeys(e) !== 'execution,store_changes,trace').map(([id]) => id)
+    if (badEffects.length > 0) fail(`${d.name} admission effects malformed: [${badEffects}]`)
   }
+  const effectCount = vectors.defective_policies.reduce((n, d) => n + Object.keys(d.defective_admissions).length, 0)
+  if (failed === structureFailures) ok(`${effectCount} defective admissions each declare an execution, a trace and a store`)
 }
 console.log('')
 
@@ -215,11 +241,20 @@ else ok('vectors.json is byte-identical to generate.ts output')
 console.log('')
 
 // Outcome comparison.
-function expectedOutcome(p: VectorPresentation): Outcome {
-  const store: Record<string, string> = { ...vectors.initial_store, ...p.expected.store_changes }
+function finalStore(changes: Record<string, string>): Record<string, string> {
+  const store: Record<string, string> = { ...vectors.initial_store, ...changes }
   const sorted: Record<string, string> = {}
   for (const k of Object.keys(store).sort()) sorted[k] = store[k]!
-  return { decision: p.expected.decision, execution: p.expected.execution, trace: p.expected.trace, store: sorted }
+  return sorted
+}
+
+function expectedOutcome(p: VectorPresentation): Outcome {
+  return { decision: p.expected.decision, execution: p.expected.execution, trace: p.expected.trace, store: finalStore(p.expected.store_changes) }
+}
+
+/** The declared outcome of a defective admission of a call the reference refuses. */
+function admissionOutcome(e: Effect): Outcome {
+  return { decision: { verdict: 'admitted', reason: 'all_designations_authorized' }, execution: e.execution, trace: e.trace, store: finalStore(e.store_changes) }
 }
 
 const accesses = (t: Access[]): string[] => t.map((a) => `${a.operation} ${a.resource} ${a.path}`)
@@ -268,7 +303,7 @@ const reference = run(REFERENCE)
     if (result === 'match') matched += 1
     console.log(`  ${result === 'match' ? 'MATCH   ' : 'MISMATCH'} ${p.id}  ${show(actual)}`)
     if (result !== 'match') console.log(`             expected ${show(expectedOutcome(p))}`)
-    if (actual.decision.verdict === 'refused' && (actual.trace.length > 0 || !sameJson(actual.store, expectedOutcome(p).store) || actual.execution.status !== 'not_run')) {
+    if (actual.decision.verdict === 'refused' && (actual.trace.length > 0 || !sameJson(actual.store, vectors.initial_store) || actual.execution.status !== 'not_run')) {
       touched.push(p.id)
     }
   }
@@ -318,13 +353,31 @@ for (const policy of DEFECTIVE) {
   console.log(`policy: ${policy.name} (stage ${declaration.stage})`)
   const results = run(policy)
   const observed: Record<Category, string[]> = Object.fromEntries(CATEGORIES.map((c) => [c, [] as string[]])) as Record<Category, string[]>
+  const wrongEffects: string[] = []
+  let admissionsChecked = 0
   for (const p of vectors.presentations) {
     const actual = results.get(p.id)!
     const category = classify(actual, p)
     if (category !== 'match') observed[category].push(p.id)
     console.log(`  ${category.padEnd(34)} ${p.id}  ${show(actual)}`)
+    if (actual.decision.verdict === 'admitted' && p.expected.decision.verdict === 'refused') {
+      admissionsChecked += 1
+      const declared = own(declaration.defective_admissions, p.id)
+      if (declared === undefined || !sameJson(actual, admissionOutcome(declared))) {
+        wrongEffects.push(p.id)
+        console.log(`  ${'admission effect differs'.padEnd(34)} ${p.id}`)
+        console.log(`  ${'declared'.padEnd(34)} ${declared === undefined ? 'nothing' : show(admissionOutcome(declared))}  store ${declared === undefined ? '' : JSON.stringify(finalStore(declared.store_changes))}`)
+        console.log(`  ${'observed'.padEnd(34)} ${show(actual)}  store ${JSON.stringify(actual.store)}`)
+      }
+    }
   }
   let problems = 0
+  if (wrongEffects.length > 0) {
+    problems += 1
+    fail(`${policy.name} defective admissions differ from their declared execution, trace or store: [${wrongEffects}]`)
+  } else if (admissionsChecked > 0) {
+    ok(`${policy.name} ${admissionsChecked} defective admissions match their declared execution, trace and store`)
+  }
   for (const category of CATEGORIES) {
     const want = [...(declaration.declared[category] ?? [])].sort()
     const got = [...observed[category]].sort()
