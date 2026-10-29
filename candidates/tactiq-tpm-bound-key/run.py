@@ -3,7 +3,9 @@
 
 Run from this directory: python3 run.py
 Needs Python 3 and the `cryptography` package. No network, no TPM.
-With --tpm2-tools, also cross-checks every signature with tpm2_checkquote.
+With --tpm2-tools, also runs tpm2_checkquote on every quote and scores its
+result against expected.tpm2_checkquote in the vector; a mismatch is a failure,
+and a missing tpm2_checkquote makes the run NOT ESTABLISHED (exit status 2).
 
 Order of checks, first failure is the reason:
   1. ak_not_registered   presented AK name differs from the registered name,
@@ -15,7 +17,8 @@ Order of checks, first failure is the reason:
   5. state_mismatch      a quoted PCR differs from the reference
 The reference values are themselves taken from a quote that must verify
 under the registered AK; a reference that does not is a harness error.
-Exit status 0 when every vector matched its expectation, 1 otherwise.
+Exit status 0 when every vector matched its expectation, 1 otherwise,
+2 when none failed but tpm2_checkquote was requested and could not run.
 """
 import hashlib, json, os, subprocess, sys
 
@@ -69,34 +72,52 @@ def reference_ok(v, ak):
 
 
 def tpm2_cross_check(v):
+    """tpm2_checkquote over the presented AK, quote, signature and PCR values.
+
+    Returns 'verifies' or 'fails'. It checks the signature and the PCR digest,
+    not registration, key binding or the reference state.
+    """
     q = v['quote']
     a = tpmq.parse_attest(rd(q['msg']))
     r = subprocess.run(['tpm2_checkquote', '-u', v['ak'], '-m', q['msg'], '-s', q['sig'],
                         '-f', q['pcr'], '-g', 'sha256', '-q', a['extra'].hex()],
                        capture_output=True, text=True)
-    return r.returncode == 0
+    return 'verifies' if r.returncode == 0 else 'fails'
 
 
 def main():
     doc = json.load(open('vectors.json'))
     ak = rd('source/ak.pub')
     cross = '--tpm2-tools' in sys.argv
-    bad = 0
+    bad = 0; notrun = 0
     for v in doc['vectors']:
         if not reference_ok(v, ak):
             print(f'HARNESS ERROR {v["id"]}: reference source does not verify'); bad += 1; continue
         got = evaluate(v, doc['trust'], ak)
         exp = (v['expected']['verdict'], v['expected']['reason'])
-        ok = got == exp; bad += not ok
-        line = f'{"ok  " if ok else "FAIL"} {v["id"]}: {got[0]} {got[1]}'
+        ok = got == exp
+        line = f'{v["id"]}: {got[0]} {got[1]}'
         if not ok:
             line += f' (expected {exp[0]} {exp[1]})'
         if cross:
-            line += f'  [tpm2_checkquote: {"verifies" if tpm2_cross_check(v) else "fails"}]'
-        print(line)
+            want = v['expected']['tpm2_checkquote']
+            try:
+                tq = tpm2_cross_check(v)
+                line += f'  [tpm2_checkquote: {tq}'
+                if tq != want:
+                    ok = False; line += f', expected {want}'
+                line += ']'
+            except OSError:
+                notrun += 1; line += '  [tpm2_checkquote: NOT RUN]'
+        bad += not ok
+        print(f'{"ok  " if ok else "FAIL"} {line}')
     if bad:
         print(f'FAILED: {bad} vector(s)'); sys.exit(1)
-    print(f'PASSED: {len(doc["vectors"])} vectors matched their expected results')
+    if notrun:
+        print(f'NOT ESTABLISHED: tpm2_checkquote could not run for {notrun} vector(s), none failed')
+        sys.exit(2)
+    mode = ' (including tpm2_checkquote)' if cross else ''
+    print(f'PASSED: {len(doc["vectors"])} vectors matched their expected results{mode}')
 
 
 if __name__ == '__main__':

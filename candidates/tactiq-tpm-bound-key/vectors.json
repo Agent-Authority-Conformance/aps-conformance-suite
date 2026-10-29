@@ -50,7 +50,8 @@
       },
       "expected": {
         "verdict": "accept",
-        "reason": "all_checks_passed"
+        "reason": "all_checks_passed",
+        "tpm2_checkquote": "verifies"
       }
     },
     {
@@ -80,12 +81,13 @@
       },
       "expected": {
         "verdict": "reject",
-        "reason": "key_not_bound"
+        "reason": "key_not_bound",
+        "tpm2_checkquote": "verifies"
       }
     },
     {
-      "id": "TQB-03-second-device-unregistered-ak",
-      "title": "same quote bytes signed on a second device by an AK that claims the same attributes but is not registered",
+      "id": "TQB-03-simulated-unregistered-ak",
+      "title": "simulated second device: same quote bytes signed by a software AK derived from a published label, claiming the same attributes, not registered",
       "ak": "derived/unregistered-ak.pub",
       "quote": {
         "msg": "source/q15.msg",
@@ -110,7 +112,8 @@
       },
       "expected": {
         "verdict": "reject",
-        "reason": "ak_not_registered"
+        "reason": "ak_not_registered",
+        "tpm2_checkquote": "verifies"
       }
     },
     {
@@ -140,7 +143,8 @@
       },
       "expected": {
         "verdict": "reject",
-        "reason": "signature_invalid"
+        "reason": "signature_invalid",
+        "tpm2_checkquote": "fails"
       }
     },
     {
@@ -170,7 +174,8 @@
       },
       "expected": {
         "verdict": "reject",
-        "reason": "pcr_digest_mismatch"
+        "reason": "pcr_digest_mismatch",
+        "tpm2_checkquote": "fails"
       }
     },
     {
@@ -200,7 +205,8 @@
       },
       "expected": {
         "verdict": "reject",
-        "reason": "state_mismatch"
+        "reason": "state_mismatch",
+        "tpm2_checkquote": "verifies"
       }
     }
   ]

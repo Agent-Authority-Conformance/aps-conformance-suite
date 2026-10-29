@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tpmq
 
 PREFIX = 'aps-conformance-suite:tactiq-tpm-bound-key:'
-# AK name from the signed AK registration record (TactiQ OS rc13 and rc14 L3 evidence).
+# AK name from the signed AK registration record (source repository, rc13 and rc14 L3 evidence).
 REGISTERED_AK_NAME = '000b35c0941662473b6dc78ce636d83dfcaf1bbdfa68bb69121dd9b3c0b414df0a0a'
 # Ed25519 key whose RFC 7638 thumbprint is the qualifying data of source/q15.
 WORKLOAD_X = bytes.fromhex('17aa9dffa8c80335dd534317985569523523e0633a600b93775e5d0b60d18930')
@@ -46,8 +46,9 @@ def main():
     other_x = tpmq.ed25519_x(PREFIX + 'other-workload-key')
     other_jkt = tpmq.thumbprint(other_x)
 
-    # TQB-03: a second device. Its own AK claims the same attributes, is not registered,
-    # and signs a byte-identical TPMS_ATTEST.
+    # TQB-03: a simulated second device. Its AK is a software P-256 key derived from a
+    # published label; its public area claims the same attributes as the registered AK.
+    # It is not registered, and it signs a byte-identical TPMS_ATTEST.
     sk = tpmq.p256_key(PREFIX + 'unregistered-ak')
     uak = tpmq.public_with_key(ak, sk)
     wr('derived/unregistered-ak.pub', uak)
@@ -70,27 +71,27 @@ def main():
     ref02 = {str(i): v02[i].hex() for i in REF_PCRS}
     q15p = {'msg': 'source/q15.msg', 'sig': 'source/q15.sig', 'pcr': 'source/q15.pcr'}
 
-    def vec(vid, title, ak_path, quote, jkt, ref, ref_src, verdict, reason):
+    def vec(vid, title, ak_path, quote, jkt, ref, ref_src, verdict, reason, tq):
         return {'id': vid, 'title': title, 'ak': ak_path, 'quote': quote,
                 'grant_cnf_jkt': jkt.hex(),
                 'reference': {'source': ref_src, 'pcrs': ref},
-                'expected': {'verdict': verdict, 'reason': reason}}
+                'expected': {'verdict': verdict, 'reason': reason, 'tpm2_checkquote': tq}}
 
     vectors = [
         vec('TQB-01-control', 'grant bound to the key the registered device quoted, state equal to the reference',
-            'source/ak.pub', q15p, tpmq.thumbprint(WORKLOAD_X), ref15, 'source/q15', 'accept', 'all_checks_passed'),
+            'source/ak.pub', q15p, tpmq.thumbprint(WORKLOAD_X), ref15, 'source/q15', 'accept', 'all_checks_passed', 'verifies'),
         vec('TQB-02-grant-bound-to-another-key', 'grant bound to a key the device evidence does not name',
-            'source/ak.pub', q15p, other_jkt, ref15, 'source/q15', 'reject', 'key_not_bound'),
-        vec('TQB-03-second-device-unregistered-ak', 'same quote bytes signed on a second device by an AK that claims the same attributes but is not registered',
+            'source/ak.pub', q15p, other_jkt, ref15, 'source/q15', 'reject', 'key_not_bound', 'verifies'),
+        vec('TQB-03-simulated-unregistered-ak', 'simulated second device: same quote bytes signed by a software AK derived from a published label, claiming the same attributes, not registered',
             'derived/unregistered-ak.pub', dict(q15p, sig='derived/tqb03.sig'), tpmq.thumbprint(WORKLOAD_X),
-            ref15, 'source/q15', 'reject', 'ak_not_registered'),
+            ref15, 'source/q15', 'reject', 'ak_not_registered', 'verifies'),
         vec('TQB-04-qualifying-data-retargeted', 'qualifying data rewritten to another key, original signature kept',
-            'source/ak.pub', dict(q15p, msg='derived/tqb04.msg'), other_jkt, ref15, 'source/q15', 'reject', 'signature_invalid'),
+            'source/ak.pub', dict(q15p, msg='derived/tqb04.msg'), other_jkt, ref15, 'source/q15', 'reject', 'signature_invalid', 'fails'),
         vec('TQB-05-pcr-values-edited', 'PCR values edited to match an older reference, quote and signature kept',
             'source/ak.pub', dict(q15p, pcr='derived/tqb05.pcr'), tpmq.thumbprint(WORKLOAD_X),
-            ref02, 'source/q02', 'reject', 'pcr_digest_mismatch'),
+            ref02, 'source/q02', 'reject', 'pcr_digest_mismatch', 'fails'),
         vec('TQB-06-same-device-changed-state', 'same device and AK, measured boot state differs from the reference the grant was issued against',
-            'source/ak.pub', q15p, tpmq.thumbprint(WORKLOAD_X), ref02, 'source/q02', 'reject', 'state_mismatch'),
+            'source/ak.pub', q15p, tpmq.thumbprint(WORKLOAD_X), ref02, 'source/q02', 'reject', 'state_mismatch', 'verifies'),
     ]
     doc = {
         'candidate': 'tactiq-tpm-bound-key',
