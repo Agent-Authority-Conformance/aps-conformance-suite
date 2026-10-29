@@ -145,7 +145,7 @@ distinction lives in the reason and the step. The lab's terms at main
 Each row is a mapping onto an existing value. Revision 3 of lease-revocation-axes adds
 `refusal_reason` to the decision record, following a proposal on public-agentprotocol on
 24 October 2026 ([message](https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0029.html)).
-This candidate introduces no class of its own.
+One case elsewhere in the candidate carries a value outside that set: composition case XP-2 in `interop/psea/psea-fixture-v0.json` carries `refusal_reason` `principal_divergence`, which lies outside the five-value set of lease-revocation-axes revision 3. The fixture's rationale records it as a class neither vector set carries.
 
 The lab's `interop/aae-envelope` holds four chain-envelope vectors that APS wrote in AAE's
 shape and decides with the APS verifier through an adapter. That record is the lab's own and
