@@ -1,0 +1,213 @@
+{
+  "candidate": "tactiq-tpm-bound-key",
+  "trust": {
+    "registered_ak_name": "000b35c0941662473b6dc78ce636d83dfcaf1bbdfa68bb69121dd9b3c0b414df0a0a",
+    "required_ak_attributes": [
+      "fixedTPM",
+      "fixedParent",
+      "restricted",
+      "sign"
+    ]
+  },
+  "reference_pcrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "seed_prefix": "aps-conformance-suite:tactiq-tpm-bound-key:",
+  "vectors": [
+    {
+      "id": "TQB-01-control",
+      "title": "grant bound to the key the registered device quoted, state equal to the reference",
+      "ak": "source/ak.pub",
+      "quote": {
+        "msg": "source/q15.msg",
+        "sig": "source/q15.sig",
+        "pcr": "source/q15.pcr"
+      },
+      "grant_cnf_jkt": "8d61166e0b06211c22559c62d3bcb9d7c5d88b126818cc063ced5babc90288d4",
+      "reference": {
+        "source": "source/q15",
+        "pcrs": {
+          "0": "9bd4ab6216b55c5bbe172f31737ed87c8a585faa3b45c4caf225b0778ac3aafe",
+          "1": "8cfb2be2ef54aa0930eb38441fb6d389b06b39e414690afe331082874a842ce4",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "a6278b42d6d50ec180f4ae9377338d7e8f699e030f6c010736e9c06238d12983",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "b8d6c3885b7ac27ae97f88f5063eb5016c3bfc82cb561de8214b5483256cb5dd",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "b611c2adf14040dfb28e6b758ad6e0237b2be22c17352e2fd8a3e5c42014e8b0",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "accept",
+        "reason": "all_checks_passed",
+        "tpm2_checkquote": "verifies"
+      }
+    },
+    {
+      "id": "TQB-02-grant-bound-to-another-key",
+      "title": "grant bound to a key the device evidence does not name",
+      "ak": "source/ak.pub",
+      "quote": {
+        "msg": "source/q15.msg",
+        "sig": "source/q15.sig",
+        "pcr": "source/q15.pcr"
+      },
+      "grant_cnf_jkt": "95ff736b24aa50a8a52708bc2caecd73527fc057b72f060d32dff88e64a9cc5d",
+      "reference": {
+        "source": "source/q15",
+        "pcrs": {
+          "0": "9bd4ab6216b55c5bbe172f31737ed87c8a585faa3b45c4caf225b0778ac3aafe",
+          "1": "8cfb2be2ef54aa0930eb38441fb6d389b06b39e414690afe331082874a842ce4",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "a6278b42d6d50ec180f4ae9377338d7e8f699e030f6c010736e9c06238d12983",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "b8d6c3885b7ac27ae97f88f5063eb5016c3bfc82cb561de8214b5483256cb5dd",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "b611c2adf14040dfb28e6b758ad6e0237b2be22c17352e2fd8a3e5c42014e8b0",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "key_not_bound",
+        "tpm2_checkquote": "verifies"
+      }
+    },
+    {
+      "id": "TQB-03-simulated-unregistered-ak",
+      "title": "simulated second device: same quote bytes signed by a software AK derived from a published label, claiming the same attributes, not registered",
+      "ak": "derived/unregistered-ak.pub",
+      "quote": {
+        "msg": "source/q15.msg",
+        "sig": "derived/tqb03.sig",
+        "pcr": "source/q15.pcr"
+      },
+      "grant_cnf_jkt": "8d61166e0b06211c22559c62d3bcb9d7c5d88b126818cc063ced5babc90288d4",
+      "reference": {
+        "source": "source/q15",
+        "pcrs": {
+          "0": "9bd4ab6216b55c5bbe172f31737ed87c8a585faa3b45c4caf225b0778ac3aafe",
+          "1": "8cfb2be2ef54aa0930eb38441fb6d389b06b39e414690afe331082874a842ce4",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "a6278b42d6d50ec180f4ae9377338d7e8f699e030f6c010736e9c06238d12983",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "b8d6c3885b7ac27ae97f88f5063eb5016c3bfc82cb561de8214b5483256cb5dd",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "b611c2adf14040dfb28e6b758ad6e0237b2be22c17352e2fd8a3e5c42014e8b0",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "ak_not_registered",
+        "tpm2_checkquote": "verifies"
+      }
+    },
+    {
+      "id": "TQB-04-qualifying-data-retargeted",
+      "title": "qualifying data rewritten to another key, original signature kept",
+      "ak": "source/ak.pub",
+      "quote": {
+        "msg": "derived/tqb04.msg",
+        "sig": "source/q15.sig",
+        "pcr": "source/q15.pcr"
+      },
+      "grant_cnf_jkt": "95ff736b24aa50a8a52708bc2caecd73527fc057b72f060d32dff88e64a9cc5d",
+      "reference": {
+        "source": "source/q15",
+        "pcrs": {
+          "0": "9bd4ab6216b55c5bbe172f31737ed87c8a585faa3b45c4caf225b0778ac3aafe",
+          "1": "8cfb2be2ef54aa0930eb38441fb6d389b06b39e414690afe331082874a842ce4",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "a6278b42d6d50ec180f4ae9377338d7e8f699e030f6c010736e9c06238d12983",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "b8d6c3885b7ac27ae97f88f5063eb5016c3bfc82cb561de8214b5483256cb5dd",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "b611c2adf14040dfb28e6b758ad6e0237b2be22c17352e2fd8a3e5c42014e8b0",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "signature_invalid",
+        "tpm2_checkquote": "fails"
+      }
+    },
+    {
+      "id": "TQB-05-pcr-values-edited",
+      "title": "PCR values edited to match an older reference, quote and signature kept",
+      "ak": "source/ak.pub",
+      "quote": {
+        "msg": "source/q15.msg",
+        "sig": "source/q15.sig",
+        "pcr": "derived/tqb05.pcr"
+      },
+      "grant_cnf_jkt": "8d61166e0b06211c22559c62d3bcb9d7c5d88b126818cc063ced5babc90288d4",
+      "reference": {
+        "source": "source/q02",
+        "pcrs": {
+          "0": "03dbc278ef59afbfaae5409d7a628469aa35ec8852a313426ca78e73b40bbc2a",
+          "1": "fbf3642e972e016e33b8776e33f8ee3656bd7c15eb31c00ac13efa190932a434",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "f28180d7fb02f5914572d0f847f47c28abfe58fa7072889c4e3c6c30d646f7f4",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "8210be46e0d7bdff13f61f15abcd68508c3cf2d4e9960ed113dfc5afb8f157ee",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "baa2204518a0f9e9bd8ec163e428fb94dd4fc0da6f1f713dc6ce8f7a560d4871",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "pcr_digest_mismatch",
+        "tpm2_checkquote": "fails"
+      }
+    },
+    {
+      "id": "TQB-06-same-device-changed-state",
+      "title": "same device and AK, measured boot state differs from the reference the grant was issued against",
+      "ak": "source/ak.pub",
+      "quote": {
+        "msg": "source/q15.msg",
+        "sig": "source/q15.sig",
+        "pcr": "source/q15.pcr"
+      },
+      "grant_cnf_jkt": "8d61166e0b06211c22559c62d3bcb9d7c5d88b126818cc063ced5babc90288d4",
+      "reference": {
+        "source": "source/q02",
+        "pcrs": {
+          "0": "03dbc278ef59afbfaae5409d7a628469aa35ec8852a313426ca78e73b40bbc2a",
+          "1": "fbf3642e972e016e33b8776e33f8ee3656bd7c15eb31c00ac13efa190932a434",
+          "2": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "3": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "4": "f28180d7fb02f5914572d0f847f47c28abfe58fa7072889c4e3c6c30d646f7f4",
+          "5": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "6": "8210be46e0d7bdff13f61f15abcd68508c3cf2d4e9960ed113dfc5afb8f157ee",
+          "7": "e21b703ee69c77476bccb43ec0336a9a1b2914b378944f7b00a10214ca8fea93",
+          "8": "baa2204518a0f9e9bd8ec163e428fb94dd4fc0da6f1f713dc6ce8f7a560d4871",
+          "9": "cfc7d8042593e188c59d2fd523f07a95d06dd3160f0955d8c34b0eb067f517b6"
+        }
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "state_mismatch",
+        "tpm2_checkquote": "verifies"
+      }
+    }
+  ]
+}
