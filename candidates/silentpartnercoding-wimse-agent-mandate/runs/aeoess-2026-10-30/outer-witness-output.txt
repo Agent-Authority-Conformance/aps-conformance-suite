@@ -1,0 +1,48 @@
+profile digest recomputed=ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc published=ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc match=True
+== 00-baseline
+   authority-assertion: sig by as-1 ok
+   root-mandate: sig by mi-1 ok
+   sub-mandate: sig by header jwk ok
+   wit: sig by op-1 ok
+   authority-assertion.jws is the token in presentation.json: True
+   root-mandate.jws is the token in presentation.json: True
+   sub-mandate.jws is the token in presentation.json: True
+   wit.jws is the token in presentation.json: True
+   root cnf.jkt == jkt(sub header jwk): True
+   sub parent.dig == sha256(root-mandate.jws): True
+   root authority dig == sha256(authority-assertion.jws): True
+== 01-root-broader-than-powers
+   authority-assertion: sig by as-1 ok
+   root-mandate: sig by mi-1 ok
+   sub-mandate: sig by header jwk ok
+   wit: sig by op-1 ok
+   authority-assertion.jws is the token in presentation.json: True
+   root-mandate.jws is the token in presentation.json: True
+   sub-mandate.jws is the token in presentation.json: True
+   wit.jws is the token in presentation.json: True
+   root cnf.jkt == jkt(sub header jwk): True
+   sub parent.dig == sha256(root-mandate.jws): True
+   root authority dig == sha256(authority-assertion.jws): True
+== 02-authority-not-presented
+   root-mandate: sig by mi-1 ok
+   sub-mandate: sig by header jwk ok
+   wit: sig by op-1 ok
+   root-mandate.jws is the token in presentation.json: True
+   sub-mandate.jws is the token in presentation.json: True
+   wit.jws is the token in presentation.json: True
+   root cnf.jkt == jkt(sub header jwk): True
+   sub parent.dig == sha256(root-mandate.jws): True
+   root authority dig: assertion not presented (no comparison)
+== 03-authority-expired
+   authority-assertion: sig by as-1 ok
+   root-mandate: sig by mi-1 ok
+   sub-mandate: sig by header jwk ok
+   wit: sig by op-1 ok
+   authority-assertion.jws is the token in presentation.json: True
+   root-mandate.jws is the token in presentation.json: True
+   sub-mandate.jws is the token in presentation.json: True
+   wit.jws is the token in presentation.json: True
+   root cnf.jkt == jkt(sub header jwk): True
+   sub parent.dig == sha256(root-mandate.jws): True
+   root authority dig == sha256(authority-assertion.jws): True
+RESULT all outer checks hold

@@ -1,0 +1,12 @@
+PASS 00-baseline: outcome=valid authority=established errors=[none]
+     root references 1 Authority Assertion(s), 1 presented
+     Authority Assertion Mh6IRjiP12: steps 2-6 passed, parties match, root perms attenuated, max_depth ok
+PASS 01-root-broader-than-powers: outcome=invalid authority=refuted errors=[authority_insufficient]
+     root references 1 Authority Assertion(s), 1 presented
+     Authority Assertion Mh6IRjiP12: steps 2-6 passed, parties match, root perms not attenuated, max_depth ok
+PASS 02-authority-not-presented: outcome=invalid authority=refuted errors=[authority_missing]
+     root references 1 Authority Assertion(s), 0 presented
+PASS 03-authority-expired: outcome=invalid authority=refuted errors=[authority_insufficient, expired]
+     root references 1 Authority Assertion(s), 1 presented
+     Authority Assertion EloxqCZ7Vi: steps 2-6 failed, parties match, root perms attenuated, max_depth ok
+all cases agree with expected results
