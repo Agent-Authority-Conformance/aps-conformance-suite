@@ -1,0 +1,56 @@
+{
+  "mandate_issuer": [
+    {
+      "name": "mi-1",
+      "iss": "https://mandates.treasury.example",
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "XUcsEPKUfKayvcEcGMmx-C6mnnhhda3FtGl5ah0-gSc",
+          "kid": "mi-1"
+        }
+      ],
+      "frameworks": [
+        "https://tf.example/finance"
+      ]
+    }
+  ],
+  "authority_source": [
+    {
+      "name": "as-1",
+      "iss": "https://register.example",
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "Wr4AKjhmZuhLGsx3UT_k9iO-DAHt-0MJ-Qb9BLPv6Ds",
+          "kid": "as-1"
+        }
+      ],
+      "frameworks": [
+        "https://tf.example/finance"
+      ]
+    }
+  ],
+  "operator": [
+    {
+      "name": "op-1",
+      "iss": "https://treasury.example",
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "_KC-Ha68Cl7hqsjWFrPNggCCwJfhbrUPWlFkcxzFF9c",
+          "kid": "op-1"
+        }
+      ],
+      "frameworks": [
+        "https://tf.example/finance"
+      ]
+    }
+  ],
+  "verifier": [],
+  "exposure_observer": [],
+  "status_issuer": []
+}

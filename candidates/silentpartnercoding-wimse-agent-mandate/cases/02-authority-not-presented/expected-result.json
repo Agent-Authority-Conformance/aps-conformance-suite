@@ -1,0 +1,245 @@
+{
+  "outcome": "invalid",
+  "profile": {
+    "uri": "https://bank.example/profiles/agents/3",
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
+  },
+  "time": 1792972800,
+  "tf": "https://tf.example/finance",
+  "chain": [
+    {
+      "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+    },
+    {
+      "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+    }
+  ],
+  "errors": [
+    {
+      "code": "authority_missing",
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      }
+    }
+  ],
+  "diagnostics": [],
+  "authority": "refuted",
+  "claims": [
+    {
+      "claim": "iss",
+      "value": "https://mandates.treasury.example",
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "sub",
+      "value": "spiffe://treasury.example/agents/payments-7",
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "principal",
+      "value": {
+        "id": "J40/0000/2020",
+        "scheme": "urn:example:reg"
+      },
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "delegator",
+      "value": {
+        "id": "p-41f9",
+        "scheme": "urn:example:pairwise"
+      },
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "perms",
+      "value": [
+        {
+          "type": "payment_initiation",
+          "actions": [
+            "initiate"
+          ],
+          "locations": [
+            "https://bank.example/payments"
+          ],
+          "constraints": [
+            {
+              "pred": "eq",
+              "ptr": "/instructedAmount/currency",
+              "value": "EUR"
+            },
+            {
+              "pred": "max",
+              "ptr": "/instructedAmount/amount",
+              "value": "20000.00"
+            },
+            {
+              "pred": "in",
+              "ptr": "/creditorAccount/iban",
+              "value": [
+                "RO49AAAA1B31007593840000",
+                "DE89370400440532013000"
+              ]
+            },
+            {
+              "pred": "sum_max",
+              "ptr": "/instructedAmount/amount",
+              "value": "50000.00",
+              "period": 2592000,
+              "budget": "monthly-out"
+            },
+            {
+              "pred": "cosign_above",
+              "ptr": "/instructedAmount/amount",
+              "value": "10000.00"
+            }
+          ]
+        }
+      ],
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "loa",
+      "value": "substantial",
+      "artifact": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "role": "mandate_issuer"
+    },
+    {
+      "claim": "iss",
+      "value": "spiffe://treasury.example/agents/payments-7",
+      "artifact": {
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+      },
+      "role": "agent_instance"
+    },
+    {
+      "claim": "sub",
+      "value": "spiffe://treasury.example/agents/reconcile-2",
+      "artifact": {
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+      },
+      "role": "agent_instance"
+    },
+    {
+      "claim": "principal",
+      "value": {
+        "id": "J40/0000/2020",
+        "scheme": "urn:example:reg"
+      },
+      "artifact": {
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+      },
+      "role": "agent_instance"
+    },
+    {
+      "claim": "delegator",
+      "value": {
+        "id": "spiffe://treasury.example/agents/payments-7",
+        "scheme": "urn:example:workload"
+      },
+      "artifact": {
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+      },
+      "role": "agent_instance"
+    },
+    {
+      "claim": "perms",
+      "value": [
+        {
+          "type": "payment_initiation",
+          "actions": [
+            "initiate"
+          ],
+          "locations": [
+            "https://bank.example/payments"
+          ],
+          "constraints": [
+            {
+              "pred": "eq",
+              "ptr": "/instructedAmount/currency",
+              "value": "EUR"
+            },
+            {
+              "pred": "max",
+              "ptr": "/instructedAmount/amount",
+              "value": "5000.00"
+            },
+            {
+              "pred": "eq",
+              "ptr": "/creditorAccount/iban",
+              "value": "DE89370400440532013000"
+            },
+            {
+              "pred": "sum_max",
+              "ptr": "/instructedAmount/amount",
+              "value": "20000.00",
+              "period": 2592000,
+              "budget": "monthly-out"
+            },
+            {
+              "pred": "cosign_above",
+              "ptr": "/instructedAmount/amount",
+              "value": "5000.00"
+            }
+          ]
+        }
+      ],
+      "artifact": {
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
+      },
+      "role": "agent_instance"
+    },
+    {
+      "claim": "iss",
+      "value": "https://treasury.example",
+      "artifact": {
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
+      },
+      "role": "operator"
+    },
+    {
+      "claim": "sub",
+      "value": "spiffe://treasury.example/agents/reconcile-2",
+      "artifact": {
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
+      },
+      "role": "operator"
+    }
+  ],
+  "alternatives": [
+    {
+      "perm": 0,
+      "obligations": [
+        {
+          "type": "sum_max",
+          "constraint": 3,
+          "root": "ma-90b2",
+          "budget": "monthly-out",
+          "period": 2592000,
+          "value": "20000.00",
+          "amount": "4000.00"
+        }
+      ]
+    }
+  ],
+  "evidence": [],
+  "rejected": [],
+  "status_evidence": []
+}
