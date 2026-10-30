@@ -1,0 +1,543 @@
+{
+  "label": "candidate against draft-mcguinness-oauth-actor-profile at d76465c (the -01 text) and against d76465c with PR #32 applied; author-produced; not a conformance result",
+  "identifiers": "all example.com values are illustrative",
+  "cases": [
+    {
+      "id": "AC-01",
+      "note": "unique per-agent registration is the basis; agent scope requested",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "openid agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a",
+            "sub_profile": "ai_agent"
+          }
+        }
+      },
+      "expect": {
+        "-01": "conformant",
+        "-01+pr32": "conformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-basis",
+        "-01+pr32": "R-5.2-basis"
+      }
+    },
+    {
+      "id": "AC-02",
+      "note": "same basis, agent scope NOT requested, act still stamped (PR #32: regardless of the requested scope)",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          }
+        }
+      },
+      "expect": {
+        "-01": "conformant",
+        "-01+pr32": "conformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-basis",
+        "-01+pr32": "R-5.2-basis"
+      }
+    },
+    {
+      "id": "AC-03",
+      "note": "basis present, agent scope omitted, act missing. -01: Section 3.5 (MUST be present) conflicts with Section 5.2 (MAY include), so ambiguous. With PR #32: nonconformant",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a"
+        }
+      },
+      "expect": {
+        "-01": "ambiguous",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.5-iff",
+        "-01+pr32": "R-5.2-basis"
+      }
+    },
+    {
+      "id": "AC-04",
+      "note": "no basis; sub differs from client_id; act added anyway",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "web-app",
+        "requested_scope": "calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": null
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "web-app",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "web-app"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.5-iff",
+        "-01+pr32": "R-3.5-iff"
+      }
+    },
+    {
+      "id": "AC-05",
+      "note": "registration shared by several agents is no basis, and no class policy or other basis exists; act must be absent",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-pool",
+        "requested_scope": "agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": false,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-pool"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-pool",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-pool"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-shared",
+        "-01+pr32": "R-5.2-shared"
+      }
+    },
+    {
+      "id": "AC-06",
+      "note": "act without iss: RFC 8693 valid, not profile conformant (Section 3.4)",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "sub": "agent-a",
+            "client_id": "agent-a",
+            "agent_instance_id": "i-1"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.4-iss",
+        "-01+pr32": "R-3.4-iss"
+      }
+    },
+    {
+      "id": "AC-07",
+      "note": "act.sub taken from a key thumbprint instead of the basis actor",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "jkt:NzbLsXh8uDCcd7MNwrnNZpX0ak8ACQ"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-derive",
+        "-01+pr32": "R-5.2-derive"
+      }
+    },
+    {
+      "id": "AC-08",
+      "note": "issuer places client_profile inside act. Issuer-side rule: MUST NOT appear within an act object. The consumer-side choice to reject or ignore is not tested here",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "covers_sub": "user-1",
+          "only_basis": true,
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a",
+            "client_profile": "native_app"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.4-iss",
+        "-01+pr32": "R-3.4-iss"
+      }
+    },
+    {
+      "id": "AC-09",
+      "note": "unique registration exists, but the basis covers a different user than the token subject (Section 5.2: basis for the (sub, actor) relationship)",
+      "request": {
+        "grant_type": "authorization_code",
+        "client_id": "agent-a",
+        "requested_scope": "agent calendar.read"
+      },
+      "as_state": {
+        "delegation_basis": {
+          "kind": "registration",
+          "registration_unique": true,
+          "covers_sub": "user-2",
+          "only_basis": true,
+          "actor": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          },
+          "actor_mapping": "registration records no key; no trusted mapping from agent-a to any thumbprint"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.5-iff",
+        "-01+pr32": "R-3.5-iff"
+      }
+    },
+    {
+      "id": "RT-01",
+      "note": "refresh carries the recorded chain unchanged, extension member included",
+      "request": {
+        "grant_type": "refresh_token",
+        "client_id": "agent-a"
+      },
+      "as_state": {
+        "recorded_act": {
+          "iss": "https://as.example.com",
+          "sub": "agent-a",
+          "agent_instance_id": "i-1"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a",
+            "agent_instance_id": "i-1"
+          }
+        }
+      },
+      "expect": {
+        "-01": "conformant",
+        "-01+pr32": "conformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-refresh",
+        "-01+pr32": "R-5.2-refresh"
+      }
+    },
+    {
+      "id": "RT-02",
+      "note": "refresh drops the chain: delegated token rotated into a non-delegated one",
+      "request": {
+        "grant_type": "refresh_token",
+        "client_id": "agent-a"
+      },
+      "as_state": {
+        "recorded_act": {
+          "iss": "https://as.example.com",
+          "sub": "agent-a"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a"
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-refresh",
+        "-01+pr32": "R-5.2-refresh"
+      }
+    },
+    {
+      "id": "RT-03",
+      "note": "AS cannot carry the chain and rejects. Rejection is allowed; the draft maps no error code for a refresh_token grant rejection, so the code is not checked",
+      "request": {
+        "grant_type": "refresh_token",
+        "client_id": "agent-a"
+      },
+      "as_state": {
+        "recorded_act": {
+          "iss": "https://as.example.com",
+          "sub": "agent-a"
+        }
+      },
+      "outcome": {
+        "error": "invalid_grant"
+      },
+      "expect": {
+        "-01": "conformant",
+        "-01+pr32": "conformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-refresh",
+        "-01+pr32": "R-5.2-refresh"
+      }
+    },
+    {
+      "id": "RT-04",
+      "note": "refresh re-stamps act fresh and loses an inherited extension member: not unchanged",
+      "request": {
+        "grant_type": "refresh_token",
+        "client_id": "agent-a"
+      },
+      "as_state": {
+        "recorded_act": {
+          "iss": "https://as.example.com",
+          "sub": "agent-a",
+          "agent_instance_id": "i-1"
+        }
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "user-1",
+          "client_id": "agent-a",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "agent-a"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-5.2-refresh",
+        "-01+pr32": "R-5.2-refresh"
+      }
+    },
+    {
+      "id": "CC-01",
+      "note": "client_credentials, client acts on its own behalf, no act",
+      "request": {
+        "grant_type": "client_credentials",
+        "client_id": "svc-b"
+      },
+      "as_state": {
+        "client_acts_on_own_behalf": true
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "svc-b",
+          "client_id": "svc-b"
+        }
+      },
+      "expect": {
+        "-01": "conformant",
+        "-01+pr32": "conformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.5-iff",
+        "-01+pr32": "R-3.5-iff"
+      }
+    },
+    {
+      "id": "CC-02",
+      "note": "client_credentials, client acts on its own behalf, act added",
+      "request": {
+        "grant_type": "client_credentials",
+        "client_id": "svc-b"
+      },
+      "as_state": {
+        "client_acts_on_own_behalf": true
+      },
+      "outcome": {
+        "issued": {
+          "iss": "https://as.example.com",
+          "sub": "svc-b",
+          "client_id": "svc-b",
+          "act": {
+            "iss": "https://as.example.com",
+            "sub": "svc-b"
+          }
+        }
+      },
+      "expect": {
+        "-01": "nonconformant",
+        "-01+pr32": "nonconformant"
+      },
+      "expect_rule": {
+        "-01": "R-3.5-iff",
+        "-01+pr32": "R-3.5-iff"
+      }
+    }
+  ]
+}
