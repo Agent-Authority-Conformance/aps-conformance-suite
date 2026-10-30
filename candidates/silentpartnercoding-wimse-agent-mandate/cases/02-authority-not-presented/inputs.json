@@ -1,0 +1,15 @@
+{
+  "case": "Authority reference present, assertion not presented",
+  "change_from_baseline": "The Authority Assertion is left out of mandate_evidence. The root still references it, and delegator differs from principal.",
+  "time": 1792972800,
+  "rp": "https://bank.example",
+  "profile": {
+    "uri": "https://bank.example/profiles/agents/3",
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
+  },
+  "pop": {
+    "outcome": "ok",
+    "nonce": "vector-nonce-0001"
+  },
+  "status_list_tokens": []
+}

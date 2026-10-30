@@ -1,0 +1,15 @@
+{
+  "case": "Supporting assertion past exp",
+  "change_from_baseline": "Authority Assertion exp is 1792886400 instead of 1824336000, so at T it is past exp + max_clock_skew.",
+  "time": 1792972800,
+  "rp": "https://bank.example",
+  "profile": {
+    "uri": "https://bank.example/profiles/agents/3",
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
+  },
+  "pop": {
+    "outcome": "ok",
+    "nonce": "vector-nonce-0001"
+  },
+  "status_list_tokens": []
+}

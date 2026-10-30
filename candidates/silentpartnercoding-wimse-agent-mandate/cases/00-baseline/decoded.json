@@ -1,0 +1,222 @@
+{
+  "authority_assertion": {
+    "header": {
+      "typ": "authority+jwt",
+      "alg": "EdDSA",
+      "kid": "as-1"
+    },
+    "payload": {
+      "iss": "https://register.example",
+      "jti": "aa-5c1e",
+      "iat": 1792800000,
+      "exp": 1824336000,
+      "principal": {
+        "id": "J40/0000/2020",
+        "scheme": "urn:example:reg"
+      },
+      "delegator": {
+        "id": "p-41f9",
+        "scheme": "urn:example:pairwise"
+      },
+      "powers": [
+        {
+          "type": "payment_initiation",
+          "constraints": [
+            {
+              "pred": "eq",
+              "ptr": "/instructedAmount/currency",
+              "value": "EUR"
+            },
+            {
+              "pred": "max",
+              "ptr": "/instructedAmount/amount",
+              "value": "100000.00"
+            }
+          ]
+        }
+      ],
+      "max_depth": 1,
+      "tf": "https://tf.example/finance"
+    }
+  },
+  "root_mandate": {
+    "header": {
+      "typ": "mandate+jwt",
+      "alg": "EdDSA",
+      "kid": "mi-1"
+    },
+    "payload": {
+      "iss": "https://mandates.treasury.example",
+      "sub": "spiffe://treasury.example/agents/payments-7",
+      "jti": "ma-90b2",
+      "iat": 1792886400,
+      "nbf": 1792886400,
+      "exp": 1795478400,
+      "cnf": {
+        "jkt": "N8aKNGo4023KqM-puSWZHXDMtol87u6100ZO-8PGadw"
+      },
+      "principal": {
+        "id": "J40/0000/2020",
+        "scheme": "urn:example:reg"
+      },
+      "delegator": {
+        "id": "p-41f9",
+        "scheme": "urn:example:pairwise"
+      },
+      "authority": [
+        {
+          "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0",
+          "iss": "https://register.example"
+        }
+      ],
+      "perms": [
+        {
+          "type": "payment_initiation",
+          "actions": [
+            "initiate"
+          ],
+          "locations": [
+            "https://bank.example/payments"
+          ],
+          "constraints": [
+            {
+              "pred": "eq",
+              "ptr": "/instructedAmount/currency",
+              "value": "EUR"
+            },
+            {
+              "pred": "max",
+              "ptr": "/instructedAmount/amount",
+              "value": "20000.00"
+            },
+            {
+              "pred": "in",
+              "ptr": "/creditorAccount/iban",
+              "value": [
+                "RO49AAAA1B31007593840000",
+                "DE89370400440532013000"
+              ]
+            },
+            {
+              "pred": "sum_max",
+              "ptr": "/instructedAmount/amount",
+              "value": "50000.00",
+              "period": 2592000,
+              "budget": "monthly-out"
+            },
+            {
+              "pred": "cosign_above",
+              "ptr": "/instructedAmount/amount",
+              "value": "10000.00"
+            }
+          ]
+        }
+      ],
+      "max_depth": 1,
+      "aud": [
+        "https://bank.example"
+      ],
+      "tf": "https://tf.example/finance",
+      "loa": "substantial"
+    }
+  },
+  "sub_mandate": {
+    "header": {
+      "typ": "mandate+jwt",
+      "alg": "EdDSA",
+      "jwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "Bl0XkpKejHz64afcAwC8rCNbbkHsl6dz0iDoBe6KJnM"
+      }
+    },
+    "payload": {
+      "iss": "spiffe://treasury.example/agents/payments-7",
+      "sub": "spiffe://treasury.example/agents/reconcile-2",
+      "jti": "ma-17c4",
+      "iat": 1792890000,
+      "nbf": 1792890000,
+      "exp": 1792976400,
+      "cnf": {
+        "jkt": "5tMZm1nM0jQHv9qvNzz0k-i6rXD4UZIJGjkQsPF8ans"
+      },
+      "principal": {
+        "id": "J40/0000/2020",
+        "scheme": "urn:example:reg"
+      },
+      "delegator": {
+        "id": "spiffe://treasury.example/agents/payments-7",
+        "scheme": "urn:example:workload"
+      },
+      "parent": {
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
+      },
+      "perms": [
+        {
+          "type": "payment_initiation",
+          "actions": [
+            "initiate"
+          ],
+          "locations": [
+            "https://bank.example/payments"
+          ],
+          "constraints": [
+            {
+              "pred": "eq",
+              "ptr": "/instructedAmount/currency",
+              "value": "EUR"
+            },
+            {
+              "pred": "max",
+              "ptr": "/instructedAmount/amount",
+              "value": "5000.00"
+            },
+            {
+              "pred": "eq",
+              "ptr": "/creditorAccount/iban",
+              "value": "DE89370400440532013000"
+            },
+            {
+              "pred": "sum_max",
+              "ptr": "/instructedAmount/amount",
+              "value": "20000.00",
+              "period": 2592000,
+              "budget": "monthly-out"
+            },
+            {
+              "pred": "cosign_above",
+              "ptr": "/instructedAmount/amount",
+              "value": "5000.00"
+            }
+          ]
+        }
+      ],
+      "aud": [
+        "https://bank.example"
+      ],
+      "tf": "https://tf.example/finance"
+    }
+  },
+  "wit": {
+    "header": {
+      "typ": "wit+jwt",
+      "alg": "EdDSA",
+      "kid": "op-1"
+    },
+    "payload": {
+      "iss": "https://treasury.example",
+      "sub": "spiffe://treasury.example/agents/reconcile-2",
+      "jti": "wit-reconcile-2-0001",
+      "iat": 1792969200,
+      "exp": 1792976400,
+      "cnf": {
+        "jwk": {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "QSTZ6aocAU36t8z3ueSYsq9xilLKvwOj_gXVmGPm6j4",
+          "alg": "EdDSA"
+        }
+      }
+    }
+  }
+}
