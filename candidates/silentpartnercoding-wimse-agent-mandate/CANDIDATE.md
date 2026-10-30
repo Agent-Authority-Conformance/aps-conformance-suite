@@ -82,6 +82,18 @@ OK
   (Python 3.13.5, `cryptography` 43.0.0) through `run.sh`: all four cases agree with their
   expected results, regeneration is byte-identical, and the 6 unit tests pass.
   Author-produced: the submitter wrote the vectors, `generate.py` and `check.py`.
+- 2026-10-30, aeoess, source `52653c2`, cases 00 to 03, Mode A with `check.py`
+  (Python 3.14.6, `cryptography` 43.0.0): all four cases agree with their expected results.
+  Independent: the runner wrote neither the vectors, the claim inputs nor `check.py`. This
+  reproduces the submitter's checker and is not a second reading of the draft. Commands and
+  output in `runs/aeoess-2026-10-30/`.
+- 2026-10-30, aeoess, source `52653c2`, cases 00 to 03, Mode B with
+  `runs/aeoess-2026-10-30/outer_witness.py`: the 15 signature checks verify, and the parent
+  references, the presented authority references and the standalone profile-file digest match.
+  Independent for those claims: the harness passes bytes to `cryptography` and `hashlib` and
+  compares their outputs. The root `cnf.jkt` comparison in the same run uses an RFC 7638
+  thumbprint the harness builds itself, so that claim is author-produced. The harness does not
+  read the per-case profile reference and decides no authority result.
 
 ## Known limitations
 
