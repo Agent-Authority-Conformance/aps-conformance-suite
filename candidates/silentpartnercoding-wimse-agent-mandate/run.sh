@@ -36,8 +36,14 @@ echo "== check.py: every case against its expected result"
 
 echo "== regeneration: generate.py rebuilds every case file byte for byte"
 "$PY" generate.py "$WORK/regen" > /dev/null
-if diff -r "$WORK/regen" . | grep -v '^Only in \.'; then
-  echo "FAIL: a rebuild differs from the published bytes"
+for tree in cases keys profile; do
+  if ! diff -qr "$WORK/regen/$tree" "$WORK/src/$tree"; then
+    echo "FAIL: regenerated $tree differs from the published bytes"
+    exit 1
+  fi
+done
+if ! cmp -s "$WORK/regen/trust-anchors.json" "$WORK/src/trust-anchors.json"; then
+  echo "FAIL: regenerated trust anchors differ from the published bytes"
   exit 1
 fi
 echo "ok: rebuild is byte-identical"
