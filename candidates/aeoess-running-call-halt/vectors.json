@@ -1,0 +1,874 @@
+{
+ "label": "aeoess-running-call-halt",
+ "revision": 1,
+ "text_status": "every source is proposed text, not agreed: spec 0.1 and 2.4 say Not agreed, the messages are list proposals",
+ "readings": "receipt and observer values are final, read after every call in the case has ended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from a listed receipt means the receipt does not carry it",
+ "field_names": "outcome field names are this candidate's representation, the texts name values not fields",
+ "sources": {
+  "spec": "nti-transition-contract-spec-v0.1.4.md, attachment to public-agentprotocol 2026Oct/0108, sha256 83d88a70237aedb6bffdb446b8bd8e3e4df41291d2c178f33367a6e10d8fc763",
+  "m0108": "public-agentprotocol 2026Oct/0108 (Xinghua Zhao, 2026-10-30), two finish-or-stop contracts and registry modes",
+  "m0090": "public-agentprotocol 2026Oct/0090 (Larry Lewis, 2026-10-29), tryLater vs timeout, T-30 admission split",
+  "m0088": "public-agentprotocol 2026Oct/0088 (Xinghua Zhao, 2026-10-29), incomplete_check block"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "cases": [
+  {
+   "id": "RC-01",
+   "rule": "R-ADMIT",
+   "basis": [
+    "m0090",
+    "m0108 Q1"
+   ],
+   "note": "revocation effective T=10, seen T=10, a new call at T=30 is admitted",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "new_call_at": 30
+   },
+   "outcome": {
+    "new_call": "ADMITTED"
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-02",
+   "rule": "R-ADMIT",
+   "basis": [
+    "m0090",
+    "m0108 Q1"
+   ],
+   "note": "same timeline, the new call at T=30 is refused",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "new_call_at": 30
+   },
+   "outcome": {
+    "new_call": "DENIED"
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-03",
+   "rule": "R-FTS",
+   "basis": [
+    "m0108",
+    "spec 2.1"
+   ],
+   "note": "admitted non-interruptible call runs to completion, receipt and observer both say completed",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": true
+    },
+    "observer": {
+     "completed": true
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-04",
+   "rule": "R-FTS",
+   "basis": [
+    "m0108",
+    "spec 2.1"
+   ],
+   "note": "the call finished but the receipt says it stopped, a false record",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false
+    },
+    "observer": {
+     "completed": true
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-05",
+   "rule": "R-FTS",
+   "basis": [
+    "m0108",
+    "spec 2.1"
+   ],
+   "note": "the runtime cut a non-interruptible call mid-call; the contract allows no stop inside the call",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false
+    },
+    "observer": {
+     "completed": false
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-06",
+   "rule": "R-SAC",
+   "basis": [
+    "m0108"
+   ],
+   "note": "halt seen T=12, stops at the first checkpoint at or after it (cp2 at T=15)",
+   "input": {
+    "t_effective": 12,
+    "t_observed": 12,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "checkpointable",
+     "contract": "STOP_AT_CHECKPOINT",
+     "checkpoints": {
+      "cp1": 5,
+      "cp2": 15,
+      "cp3": 25,
+      "cp4": 35
+     }
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false,
+     "checkpoint_id": "cp2"
+    },
+    "observer": {
+     "completed": false,
+     "last_checkpoint": "cp2"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-07",
+   "rule": "R-SAC",
+   "basis": [
+    "m0108"
+   ],
+   "note": "halt seen exactly at cp2 (T=15); 'at or after' means cp2, the runtime ran on to cp3",
+   "input": {
+    "t_effective": 15,
+    "t_observed": 15,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "checkpointable",
+     "contract": "STOP_AT_CHECKPOINT",
+     "checkpoints": {
+      "cp1": 5,
+      "cp2": 15,
+      "cp3": 25,
+      "cp4": 35
+     }
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false,
+     "checkpoint_id": "cp3"
+    },
+    "observer": {
+     "completed": false,
+     "last_checkpoint": "cp3"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-08",
+   "rule": "R-SAC",
+   "basis": [
+    "m0108"
+   ],
+   "note": "halt seen T=37, after the last checkpoint (cp4 at T=35); the call ends at T=40 and is reported completed. The text does not say what happens when no checkpoint follows the halt",
+   "input": {
+    "t_effective": 37,
+    "t_observed": 37,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "checkpointable",
+     "contract": "STOP_AT_CHECKPOINT",
+     "checkpoints": {
+      "cp1": 5,
+      "cp2": 15,
+      "cp3": 25,
+      "cp4": 35
+     }
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": true,
+     "checkpoint_id": null
+    },
+    "observer": {
+     "completed": true,
+     "last_checkpoint": "cp4"
+    }
+   },
+   "expect": "ambiguous"
+  },
+  {
+   "id": "RC-09",
+   "rule": "R-OBS",
+   "basis": [
+    "m0108 Q4"
+   ],
+   "note": "receipt says stopped at cp2, the observer log shows work through cp3",
+   "input": {
+    "t_effective": 12,
+    "t_observed": 12,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "checkpointable",
+     "contract": "STOP_AT_CHECKPOINT",
+     "checkpoints": {
+      "cp1": 5,
+      "cp2": 15,
+      "cp3": 25,
+      "cp4": 35
+     }
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false,
+     "checkpoint_id": "cp2"
+    },
+    "observer": {
+     "completed": false,
+     "last_checkpoint": "cp3"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-10",
+   "rule": "R-OBS",
+   "basis": [
+    "m0108 Q4"
+   ],
+   "note": "receipt and observer agree on completion and checkpoint",
+   "input": {
+    "t_effective": 12,
+    "t_observed": 12,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "checkpointable",
+     "contract": "STOP_AT_CHECKPOINT",
+     "checkpoints": {
+      "cp1": 5,
+      "cp2": 15,
+      "cp3": 25,
+      "cp4": 35
+     }
+    }
+   },
+   "outcome": {
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false,
+     "checkpoint_id": "cp2"
+    },
+    "observer": {
+     "completed": false,
+     "last_checkpoint": "cp2"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-11",
+   "rule": "R-NOTDET",
+   "basis": [
+    "m0108",
+    "m0088"
+   ],
+   "note": "registry unreachable: PAUSE with trigger registry_unreachable and authority_not_determined",
+   "input": {
+    "registry": "unreachable"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "trigger": "registry_unreachable",
+     "determination": "authority_not_determined"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-12",
+   "rule": "R-NOTDET",
+   "basis": [
+    "m0108",
+    "m0088"
+   ],
+   "note": "registry unreachable reported as authority_revoked, which states a decision nobody made",
+   "input": {
+    "registry": "unreachable"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "trigger": "revocation",
+     "determination": "authority_revoked"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-13",
+   "rule": "R-NOTDET",
+   "basis": [
+    "m0108"
+   ],
+   "note": "stale root answered and the chain stays ACTIVE",
+   "input": {
+    "registry": "stale_root"
+   },
+   "outcome": {
+    "state": "ACTIVE",
+    "receipt": null
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-14",
+   "rule": "R-INCOMPLETE",
+   "basis": [
+    "m0088",
+    "m0090"
+   ],
+   "note": "responder answered tryLater, recorded as reason tryLater",
+   "input": {
+    "registry": "check_incomplete",
+    "responder": "tryLater"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "incomplete_check": {
+      "reason": "tryLater"
+     }
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-15",
+   "rule": "R-INCOMPLETE",
+   "basis": [
+    "m0090"
+   ],
+   "note": "the request timed out and the receipt records tryLater, inferring an answer that never arrived",
+   "input": {
+    "registry": "check_incomplete",
+    "responder": "timeout"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "incomplete_check": {
+      "reason": "tryLater"
+     }
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-16",
+   "rule": "R-INCOMPLETE",
+   "basis": [
+    "m0088",
+    "m0090"
+   ],
+   "note": "timeout recorded as reason timeout. 0090 says record it separately, 0088's reason set has no value for no response",
+   "input": {
+    "registry": "check_incomplete",
+    "responder": "timeout"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "incomplete_check": {
+      "reason": "timeout"
+     }
+    }
+   },
+   "expect": "ambiguous"
+  },
+  {
+   "id": "RC-17",
+   "rule": "R-EXEMPT",
+   "basis": [
+    "spec 2.4 (proposed, not agreed)"
+   ],
+   "note": "exemption over authority_revoked reaches RESUMED",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "resume_basis": "exemption"
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "exemption"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-18",
+   "rule": "R-EXEMPT",
+   "basis": [
+    "spec 2.4 (proposed, not agreed)"
+   ],
+   "note": "exemption over authority_not_determined reaches RESUMED",
+   "input": {
+    "halt_cause": "authority_not_determined",
+    "trigger_present": false,
+    "resume_basis": "exemption"
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "exemption"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-19",
+   "rule": "R-EXEMPT",
+   "basis": [
+    "spec 2.4 (proposed, not agreed)"
+   ],
+   "note": "exemption over policy_violation reaches RESUMED and the receipt records resume_basis exemption",
+   "input": {
+    "halt_cause": "policy_violation",
+    "trigger_present": false,
+    "resume_basis": "exemption"
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "exemption"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-20",
+   "rule": "R-RESTORE",
+   "basis": [
+    "spec 2.3",
+    "spec 2.4"
+   ],
+   "note": "restore condition without a verifier role, the chain reaches RESUMED",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "restore": {
+     "evidence_list": true,
+     "verifier_role": false,
+     "validity_window": true
+    }
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "evidence"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-21",
+   "rule": "R-RESTORE",
+   "basis": [
+    "spec 2.3"
+   ],
+   "note": "same restore condition, the chain stays PAUSE and the receipt names the missing verifier role",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "restore": {
+     "evidence_list": true,
+     "verifier_role": false,
+     "validity_window": true
+    }
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "missing": [
+      "verifier_role"
+     ]
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-22",
+   "rule": "R-ROLLBACK",
+   "basis": [
+    "spec 2.2"
+   ],
+   "note": "the rollback target fails its integrity check and the chain still reaches RESUMED",
+   "input": {
+    "rollback_target_integrity": false
+   },
+   "outcome": {
+    "state": "RESUMED"
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-23",
+   "rule": "R-ONEWAY",
+   "basis": [
+    "spec 2.3 one-way gate"
+   ],
+   "note": "the regime is declared irreversible for revocation, the restore condition verifies in full, the chain reaches RESUMED",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "regime": "one_way",
+    "restore": {
+     "evidence_list": true,
+     "verifier_role": true,
+     "validity_window": true
+    }
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "evidence"
+    }
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-24",
+   "rule": "R-RECUR",
+   "basis": [
+    "spec 2.3 recurrence"
+   ],
+   "note": "after RESUMED a second registered trigger arrives at the next boundary and the chain stays RESUMED",
+   "input": {
+    "prior_state": "RESUMED",
+    "second_trigger": "expiry"
+   },
+   "outcome": {
+    "state": "RESUMED"
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-25",
+   "rule": "R-ROLLBACK",
+   "basis": [
+    "spec 2.2"
+   ],
+   "note": "the rollback target fails its integrity check and the chain stays in ROLLBACK",
+   "input": {
+    "rollback_target_integrity": false
+   },
+   "outcome": {
+    "state": "ROLLBACK"
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-26",
+   "rule": "R-ONEWAY",
+   "basis": [
+    "spec 2.3 one-way gate",
+    "spec 2.4"
+   ],
+   "note": "the halt was a suspension in a regime that provides temporary suspension, so PAUSE to RESUMED maps onto suspension and the one-way gate does not apply",
+   "input": {
+    "halt_cause": "authority_suspended",
+    "trigger_present": false,
+    "regime": "suspension",
+    "restore": {
+     "evidence_list": true,
+     "verifier_role": true,
+     "validity_window": true
+    }
+   },
+   "outcome": {
+    "state": "RESUMED",
+    "receipt": {
+     "resume_basis": "evidence"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-27",
+   "rule": "R-RECUR",
+   "basis": [
+    "spec 2.3 recurrence"
+   ],
+   "note": "after RESUMED a second registered trigger sends the chain back to PAUSE",
+   "input": {
+    "prior_state": "RESUMED",
+    "second_trigger": "expiry"
+   },
+   "outcome": {
+    "state": "PAUSE"
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-28",
+   "rule": "R-NOTDET",
+   "basis": [
+    "m0108",
+    "m0088"
+   ],
+   "note": "stale root reported as PAUSE with authority_not_determined. 0108 puts stale_root among the not-determined modes, 0088 calls a check against a stale root a completed check that carries its own determination",
+   "input": {
+    "registry": "stale_root"
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "trigger": "stale_root",
+     "determination": "authority_not_determined"
+    }
+   },
+   "expect": "ambiguous"
+  },
+  {
+   "id": "RC-29",
+   "rule": "R-WINDOW",
+   "basis": [
+    "spec 2.3"
+   ],
+   "note": "the validity window closes before the evidence and verifier role verify, and the chain reaches RESUMED",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "regime": "not_one_way",
+    "window_closed_before_verify": true,
+    "depends_on": [
+     "OPEN-4"
+    ]
+   },
+   "outcome": {
+    "state": "RESUMED"
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-30",
+   "rule": "R-WINDOW",
+   "basis": [
+    "spec 2.3"
+   ],
+   "note": "the validity window closes first, the chain stays PAUSE and the receipt records window closure as the reason",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "regime": "not_one_way",
+    "window_closed_before_verify": true,
+    "depends_on": [
+     "OPEN-4"
+    ]
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {
+     "reason": "window_closed"
+    }
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "RC-31",
+   "rule": "R-SPLIT",
+   "basis": [
+    "m0090",
+    "m0108 Q1 Q2"
+   ],
+   "note": "one run: revocation seen at T=10, the call admitted at T=0 finishes under FINISH_THEN_STOP and the new call at T=30 is refused",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    },
+    "new_call_at": 30
+   },
+   "outcome": {
+    "new_call": "DENIED",
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": true
+    },
+    "observer": {
+     "completed": true
+    }
+   },
+   "expect": "conformant",
+   "expect_parts": {
+    "admission": "conformant",
+    "effects": "conformant"
+   }
+  },
+  {
+   "id": "RC-32",
+   "rule": "R-SPLIT",
+   "basis": [
+    "m0090",
+    "m0108 Q1 Q2"
+   ],
+   "note": "same run, the new call is refused but the admitted non-interruptible call was cut mid-call, so one guarantee holds and the other fails",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    },
+    "new_call_at": 30
+   },
+   "outcome": {
+    "new_call": "DENIED",
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": false
+    },
+    "observer": {
+     "completed": false
+    }
+   },
+   "expect": "nonconformant",
+   "expect_parts": {
+    "admission": "conformant",
+    "effects": "nonconformant"
+   }
+  },
+  {
+   "id": "RC-33",
+   "rule": "R-WINDOW",
+   "basis": [
+    "spec 2.3"
+   ],
+   "note": "the window closes first and the chain stays PAUSE, but the receipt gives no reason",
+   "input": {
+    "halt_cause": "authority_revoked",
+    "trigger_present": false,
+    "regime": "not_one_way",
+    "window_closed_before_verify": true,
+    "depends_on": [
+     "OPEN-4"
+    ]
+   },
+   "outcome": {
+    "state": "PAUSE",
+    "receipt": {}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "RC-34",
+   "rule": "R-SPLIT",
+   "basis": [
+    "m0090",
+    "m0108 Q1 Q2"
+   ],
+   "note": "same run, the admitted call finishes correctly but the new call at T=30 is admitted",
+   "input": {
+    "t_effective": 10,
+    "t_observed": 10,
+    "trigger": "revocation",
+    "call": {
+     "admitted_at": 0,
+     "ends_at": 40,
+     "kind": "non_interruptible",
+     "contract": "FINISH_THEN_STOP"
+    },
+    "new_call_at": 30
+   },
+   "outcome": {
+    "new_call": "ADMITTED",
+    "receipt": {
+     "transition": "PAUSE",
+     "operation_completed": true
+    },
+    "observer": {
+     "completed": true
+    }
+   },
+   "expect": "nonconformant",
+   "expect_parts": {
+    "admission": "nonconformant",
+    "effects": "conformant"
+   }
+  }
+ ]
+}
