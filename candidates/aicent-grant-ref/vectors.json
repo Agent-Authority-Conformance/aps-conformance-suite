@@ -1,0 +1,425 @@
+{
+ "label": "aicent-grant-ref",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the reason value and the grant_ref members are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and structure members, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 8.1 (Refusal Reasons) and 8.2 (Grant Reference) are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "cases": [
+  {
+   "id": "GR-P01",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "binding mismatch and expiry both apply; the first value in the list wins, so evidence_binding_mismatch is conformant",
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P02",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "same facts as GR-P01 but the second value in the list is emitted; the priority order is part of the definition",
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-P03",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "expiry and revocation both apply; evidence_expired comes first and is emitted",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P04",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "same facts as GR-P03 but the later value authority_revoked is emitted",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_revoked",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-P05",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "binding mismatch and revocation both apply; evidence_binding_mismatch comes first and is emitted",
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": false,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P06",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "mismatch, expiry and revocation all apply; the first value in the list is emitted",
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P07",
+   "rule": "R-NOTDET",
+   "basis": ["sect-8.1"],
+   "note": "the authority source could not be reached at answer time; the refusal is authority_not_determined and is never read as assent",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": null}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P08",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "no earlier condition applies and the operation is not permitted for the grant; operation_not_permitted is emitted",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": false
+   },
+   "outcome": {
+    "reason": "operation_not_permitted",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-P09",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1"],
+   "note": "no condition in the list applies, so the reason must be null; emitting a refusal value without a condition is not the first value whose condition applies",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "operation_not_permitted",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-N01",
+   "rule": "R-NULLOBS",
+   "basis": ["sect-8.2"],
+   "note": "the answer relied on a fresh observation; the member carries that observation's as-of instant",
+   "input": {
+    "relied_on_observation": {"present": true, "fresh": true, "as_of_ms": 1100},
+    "diagnostic_read": null,
+    "grant_expires_at_ms": 9000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-N02",
+   "rule": "R-NULLOBS",
+   "basis": ["sect-8.2"],
+   "note": "the observation the answer relied on is absent; the member is null",
+   "input": {
+    "relied_on_observation": {"present": false},
+    "diagnostic_read": null,
+    "grant_expires_at_ms": 9000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": null}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-N03",
+   "rule": "R-NULLOBS",
+   "basis": ["sect-8.2"],
+   "note": "the relied-on observation is stale and a later, successful diagnostic read exists at answer time; backfilling the member with the diagnostic instant inflates the answer",
+   "input": {
+    "relied_on_observation": {"present": true, "fresh": false, "as_of_ms": 500},
+    "diagnostic_read": {"as_of_ms": 1150, "successful": true},
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 1150}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-N04",
+   "rule": "R-NOTDET",
+   "basis": ["sect-8.1", "sect-8.2"],
+   "note": "same stale-observation facts as GR-N03, but the diagnostic read is used to answer permit; a diagnostic read does not participate in authorisation, so this reads the answer as assent on facts that establish nothing about the present",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "stale_observation",
+    "operation_permitted": true,
+    "relied_on_observation": {"present": true, "fresh": false, "as_of_ms": 500},
+    "diagnostic_read": {"as_of_ms": 1150, "successful": true}
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 1150}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-N05",
+   "rule": "R-NULLOBS",
+   "basis": ["sect-8.2"],
+   "note": "same stale-observation facts as GR-N03 answered correctly: the member is null and expires_at_ms keeps the grant's original expiry, since the diagnostic read renews nothing",
+   "input": {
+    "relied_on_observation": {"present": true, "fresh": false, "as_of_ms": 500},
+    "diagnostic_read": {"as_of_ms": 1150, "successful": true},
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": null}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-N06",
+   "rule": "R-NULLOBS",
+   "basis": ["sect-8.2"],
+   "note": "same facts as GR-N05 but expires_at_ms is pushed to the diagnostic instant as if the evidence had been renewed; diagnostic reads do not renew evidence",
+   "input": {
+    "relied_on_observation": {"present": true, "fresh": false, "as_of_ms": 500},
+    "diagnostic_read": {"as_of_ms": 1150, "successful": true},
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 1150, "observation_as_of_ms": null}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-C01",
+   "rule": "R-CLOSED",
+   "basis": ["sect-8.1"],
+   "note": "an affirmative \"granted\" value is emitted; a null refusal reason is the only representation of permitted and there is no such value in the set",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": false
+   },
+   "outcome": {
+    "reason": "granted",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-C02",
+   "rule": "R-CLOSED",
+   "basis": ["sect-8.1"],
+   "note": "the response reports a refusal outcome but carries no reason at all; the reason is what makes a refusal auditable",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 900, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-C03",
+   "rule": "R-CLOSED",
+   "basis": ["sect-8.1"],
+   "note": "a sixth value outside the closed set is emitted",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_suspended",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": null}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-C04",
+   "rule": "R-CLOSED",
+   "basis": ["sect-8.1"],
+   "note": "a permit is recorded as a null reason over the closed set; this is the only conformant representation of permitted",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-G01",
+   "rule": "R-GRANTREF",
+   "basis": ["sect-8.2"],
+   "note": "every response names the authorisation it relied on; all five members are present on a permit",
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "GR-G02",
+   "rule": "R-GRANTREF",
+   "basis": ["sect-8.2"],
+   "note": "the observation_as_of_ms member is missing entirely; an absent member is a structural gap, not the null the null rule requires",
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-G03",
+   "rule": "R-GRANTREF",
+   "basis": ["sect-8.2"],
+   "note": "a refusal response with expires_at_ms missing; every response, permit or refusal, carries the structure",
+   "input": {},
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-G04",
+   "rule": "R-GRANTREF",
+   "basis": ["sect-8.2"],
+   "note": "issued_at_ms is missing, so the response does not state when the authority-side facts it relied on were effective",
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "GR-A01",
+   "rule": "R-NOTDET",
+   "basis": ["sect-8.1"],
+   "note": "open question: the value and the never-assent property are conformant, but the outcome states the reason was computed over an operator label rather than authority facts the response carries; the source says producing such a refusal is not a conformance target of the section, and does not say what verdict the response itself earns",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true,
+    "computed_over": "label"
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "computed_over": "operator label, not re-derivable from pinned inputs",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": null}
+   },
+   "expect": "ambiguous",
+   "expect_parts": {"value_and_assent": "conformant", "computation_source": "ambiguous"}
+  },
+  {
+   "id": "GR-A02",
+   "rule": "R-ORDER",
+   "basis": ["sect-8.1", "sect-8.2"],
+   "note": "open question: the revocation became effective one millisecond after the relied-on observation; the wire record is legible and the emitted value matches the declared facts, but whether the answer owed revoked, authority_not_determined, or a permit at that boundary is not settled by sections 8.1 and 8.2, which call it a boundary no protocol erases and defer the call to the evaluation rules the record exists to serve",
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "revoked",
+    "operation_permitted": true,
+    "revoked_at_ms": 1101,
+    "race_boundary": true
+   },
+   "outcome": {
+    "reason": "authority_revoked",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000, "expires_at_ms": 9000, "observation_as_of_ms": 1100}
+   },
+   "expect": "ambiguous",
+   "expect_parts": {"value": "conformant", "boundary_call": "ambiguous"}
+  }
+ ]
+}
