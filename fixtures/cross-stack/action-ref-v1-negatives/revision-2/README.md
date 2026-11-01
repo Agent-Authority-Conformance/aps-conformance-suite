@@ -24,3 +24,12 @@ the SDK throwing, and the run matches `results.json`. The SDK path needs
 
 The vectors and both recomputation paths are by this lab's maintainer, so a run here is
 author-produced, as for revision 1 (`docs/OPEN-RUNS.md`).
+
+## Correction to the source pin, added 2026-11-01
+
+The target named at the top of this file, argentum-core `main` 96931c9, is incorrect, and so are
+the `spec_stable_ref` links to 96931c9 in `vectors.json`. That revision still allows an empty
+`scope` and has no `OUT_OF_PROFILE_DOMAIN` rule. The rules this revision
+tests are in [`docs/spec/action-ref.md` at 623ee0a](https://github.com/giskard09/argentum-core/blob/623ee0a442b9b402e524ae8051bb15dbf4e1f73c/docs/spec/action-ref.md),
+byte-identical at `main` d39821e. Read the target as that text. The vectors, expected stages and
+recorded results are unchanged. Details are in `../CLARIFICATIONS.md`.
