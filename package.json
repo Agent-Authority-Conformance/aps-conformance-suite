@@ -20,7 +20,7 @@
     "verify:oracle-safety-check-flips": "tsx fixtures/cross-stack/oracle-safety-check/verify.ts --flip-check",
     "cross-stack:aat-amdal:verify": "python3 runners/aat_runner.py fixtures/cross-stack/aat-amdal/aat-amdal-2026-08-26.json",
     "cross-stack:argentum-action-ref-v1v2:verify": "PYTHONPATH=fixtures/cross-stack/argentum-action-ref-v1v2 python3 fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v2/validate.py && PYTHONPATH=fixtures/cross-stack/argentum-action-ref-v1v2 python3 fixtures/cross-stack/argentum-action-ref-v1v2/action-ref-v1-domain-negative/validate.py",
-    "cross-stack:action-ref-v1-negatives:verify": "node fixtures/cross-stack/action-ref-v1-negatives/run.mjs",
+    "cross-stack:action-ref-v1-negatives:verify": "node fixtures/cross-stack/action-ref-v1-negatives/revision-2/run.mjs",
     "cross-stack:nobulex-bilateral-v0:verify": "node fixtures/cross-stack/nobulex-bilateral-v0/run.mjs",
     "cross-stack:oracle-safety-check:verify": "npm run verify:oracle-safety-check && npm run verify:oracle-safety-check-consistency",
     "cross-stack:oracle-safety-check:falsify": "npm run verify:oracle-safety-check-flips",
@@ -126,6 +126,6 @@
     "url": "git+https://github.com/Agent-Authority-Conformance/aps-conformance-suite.git"
   },
   "dependencies": {
-    "agent-passport-system": "7.1.0"
+    "agent-passport-system": "8.0.1"
   }
 }
