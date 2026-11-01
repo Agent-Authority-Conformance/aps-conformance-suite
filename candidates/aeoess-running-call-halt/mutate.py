@@ -5,6 +5,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import check
 
+def _drop(parts, key):
+    return check.combine({k: v for k, v in parts.items() if k != key})
+
 M = {
  "R-ADMIT: admit anything": ("R-ADMIT", lambda i, o: "conformant"),
  "R-FTS: trust the receipt only": ("R-FTS", lambda i, o: "conformant" if o["receipt"]["operation_completed"] in (True, False) else "nonconformant"),
@@ -14,16 +17,11 @@ M = {
  "R-SAC: no tail ambiguity": ("R-SAC", lambda i, o: "conformant" if o["receipt"]["operation_completed"] in (True, False) else "nonconformant"),
  "R-OBS: compare completion only": ("R-OBS", lambda i, o: "conformant" if o["receipt"]["operation_completed"] == o["observer"]["completed"] else "nonconformant"),
  "R-NOTDET: any PAUSE passes": ("R-NOTDET", lambda i, o: "conformant" if o.get("state") == "PAUSE" else "nonconformant"),
- "R-NOTDET: any state passes": ("R-NOTDET", lambda i, o: "conformant" if (o.get("receipt") or {}).get("determination") != "authority_revoked" else "nonconformant"),
- "R-INCOMPLETE: any set value passes": ("R-INCOMPLETE", lambda i, o: "conformant" if ((o.get("receipt") or {}).get("incomplete_check") or {}).get("reason") in check.INCOMPLETE_SET else "ambiguous"),
- "R-EXEMPT: exemption covers everything": ("R-EXEMPT", lambda i, o: "conformant"),
- "R-EXEMPT: not_determined coverable": ("R-EXEMPT", lambda i, o: "nonconformant" if (i["halt_cause"] == "authority_revoked" and o.get("state") == "RESUMED") else "conformant"),
- "R-RESTORE: verifier role optional": ("R-RESTORE", lambda i, o: "conformant" if (i["restore"]["evidence_list"] and i["restore"]["validity_window"]) == (o.get("state") == "RESUMED") else "nonconformant"),
- "R-ROLLBACK: failed rollback may resume": ("R-ROLLBACK", lambda i, o: "conformant"),
- "R-ONEWAY: regime ignored": ("R-ONEWAY", lambda i, o: "conformant"),
- "R-RECUR: resume is final": ("R-RECUR", lambda i, o: "conformant"),
- "R-WINDOW: closed window may resume": ("R-WINDOW", lambda i, o: "conformant"),
- "R-WINDOW: reason not recorded": ("R-WINDOW", lambda i, o: "conformant" if o.get("state") == "PAUSE" else "nonconformant"),
+ "R-NOTDET: receipt block not required": ("R-NOTDET", lambda i, o: _drop(check.notdet_parts(i, o), "receipt")),
+ "R-NOTDET: inferred answer accepted": ("R-NOTDET", lambda i, o: check.combine({**check.notdet_parts(i, o), **({"receipt": "conformant"} if check.reason_of(o) in check.ARRIVED else {})})),
+ "R-NOTDET: stale root decided": ("R-NOTDET", lambda i, o: "conformant" if (i["registry"] == "stale_root" and o.get("state") == "PAUSE") else check.RULES["R-NOTDET"](i, o)),
+ "R-INCOMPLETE: any set value passes": ("R-INCOMPLETE", lambda i, o: "conformant" if check.reason_of(o) in check.ARRIVED else "ambiguous"),
+ "R-INCOMPLETE: arrived reason unchecked": ("R-INCOMPLETE", lambda i, o: "conformant" if i["responder"] in check.ARRIVED else check.RULES["R-INCOMPLETE"](i, o)),
  "R-SPLIT: score admission only": ("R-SPLIT", lambda i, o: check.r_admit(i, o)),
  "R-SPLIT: score effects only": ("R-SPLIT", lambda i, o: check.r_fts(i, o)),
 }
