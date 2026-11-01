@@ -1,0 +1,38 @@
+# Clarifications, 2026-11-01
+
+Two positive vectors in this family no longer match the readings their sources now give.
+The original vectors.json, results.json, run.mjs, README.md and SOURCE.md remain unchanged as
+historical records. Their expected passes for 0003 and 0002 are not evidence of compatibility
+with the corrected profile.
+
+## 0003-empty-scope
+
+This positive recomputes an `action_ref` for `scope: ""`. The argentum-core spec now carries an
+erratum dated 2026-08-25 for the tag `action-ref-v1.0`, which this family targets. The tag's
+`scope` row says both "Free-form non-empty string" and "Pass `""` if not applicable", and the
+erratum gives the effective reading as `scope` non-empty with no `""` exception
+(https://github.com/giskard09/argentum-core/blob/main/docs/spec/action-ref.md). PR #48 made the
+same change on `main` on 2026-08-15.
+Under that reading an empty scope is outside the input domain and is rejected before any
+digest, so 0003 should not be a positive.
+
+The recorded run still passes because this repository pins `agent-passport-system` 7.1.0,
+whose `computeExternalActionRefV1` accepts an empty scope. From 8.0.0 (commit 0fb8bb5,
+2026-10-02) the same function rejects it with `OUT_OF_PROFILE_DOMAIN`, and the SDK's own
+`conformance/action-ref-v1` vector av-007 now expects that rejection. Running this family
+against SDK 8.0.0 or later fails on 0003.
+
+## 0002-unicode-fields
+
+This positive uses non-ASCII values. The tag `action-ref-v1.0` allows them. argentum-core
+`main` added an ASCII-only domain rule on 2026-07-29, and SDK 8.0.0 or later rejects non-ASCII
+`agent_id`, `action_type` and `scope` with `OUT_OF_PROFILE_DOMAIN`. 0002 is a correct positive
+for the tag and out of profile for the current text and SDK.
+
+## What follows
+
+A revision that targets the current profile would move 0003 and 0002 to domain negatives
+rejected before hashing, and needs the SDK path to run on 8.0.0 or later. That revision and the
+repository's SDK pin are separate changes. The upstream copy at
+giskard09/argentum-core `examples/conformance/recompute-drift-v1/` carries the same two
+positives.
