@@ -59,7 +59,7 @@ field.
 and line. It is authored from the text, not from any implementation, and no runner
 asserts an SDK result against it.
 
-**`sdk_ts`** is what `agent-passport-system` 7.1.0 actually returns, recorded from real
+**`sdk_ts`** is what `agent-passport-system` 8.0.1 actually returns, recorded from real
 runs, on two separate entrypoints:
 
 - `validateReceiptStageV1(record, { boundaryIdentity })`, the section 5.3 stage rules
@@ -279,7 +279,7 @@ chain, which matches what both stage validators check.
 
 ## Regenerating
 
-From the suite root, with the pinned `agent-passport-system` 7.1.0 installed:
+From the suite root, with the pinned `agent-passport-system` 8.0.1 installed:
 
     npm ci --include=dev
     npx tsx fixtures/action-result-binding/mint.ts
@@ -288,7 +288,10 @@ Regeneration is byte for byte. After a second run, `git diff` on `chain.json` is
 Minting is in TypeScript rather than Python because `verifyReceiptWithDecisionV1`, the
 composite surface this family records, exists only in the TypeScript SDK.
 
-This family was last re-recorded against `agent-passport-system` 7.1.0. Relative to
+This family was last re-recorded against `agent-passport-system` 8.0.1, on 2026-11-01. `chain.json`
+minted byte-identically under 8.0.1, and all nine recorded results matched without any
+change to `vectors.json` beyond the two prose fields naming the release. Before that it was
+re-recorded against 7.1.0. Relative to
 7.0.0, 7.1.0 adds public APIs and one opt-in receipt result field. The family's
 normative expectations are unchanged: `chain.json` minted byte-identically, and every
 recorded field this family already checked still matches. The only new recorded content
@@ -309,7 +312,7 @@ behaviour equals the recorded expectation. It is not a conformance verdict, and 
 runners say so on their first line of output.
 
 The runner refuses to report at all unless the resolved `agent-passport-system` is
-exactly 7.1.0, read from the installed package's own `package.json` by absolute path.
+exactly 8.0.1, read from the installed package's own `package.json` by absolute path.
 `package.json` pins the dependency, but a local override or a changed resolution would
 otherwise redefine what `sdk_ts` means while the runner still printed a match. This
 mirrors `validate.py`'s guard on the Python side and exists for the same reason.
@@ -344,7 +347,7 @@ Either runner also exits nonzero when a case names decision evidence `chain.json
 not carry, or when the `decision_ref` it recomputes for a case does not match the digest
 `vectors.json` pins for it.
 
-`verify.ts` additionally exits nonzero when the resolved SDK is not 7.1.0 and, for case
+`verify.ts` additionally exits nonzero when the resolved SDK is not 8.0.1 and, for case
 3, when the harness reading of `prev` disagrees with what is recorded. The `prev`
 comparison is implemented in `verify.ts` only. `validate.py` does not implement it, and
 its own docstring says so.

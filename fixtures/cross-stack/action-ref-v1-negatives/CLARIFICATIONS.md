@@ -36,3 +36,13 @@ rejected before hashing, and needs the SDK path to run on 8.0.0 or later. That r
 repository's SDK pin are separate changes. The upstream copy at
 giskard09/argentum-core `examples/conformance/recompute-drift-v1/` carries the same two
 positives.
+
+## Revision 2, added 2026-11-01
+
+`revision-2/` targets argentum-core `docs/spec/action-ref.md` at `main` 96931c9. Its runner adds a
+domain gate before hashing (ASCII-only `agent_id`, `action_type` and `scope`, non-empty `scope`),
+keeps 0001, 0004 and 0005 as positives and the nine drift negatives unchanged, and carries 0002
+and 0003 as `dom-0002-unicode-fields` and `dom-0003-empty-scope`, which both paths must reject
+before any digest. The repository's `cross-stack:action-ref-v1-negatives:verify` script now runs
+revision 2 against `agent-passport-system` 8.0.1. The revision 1 runner and record above remain
+unchanged and reproduce only with 7.1.0 installed.
