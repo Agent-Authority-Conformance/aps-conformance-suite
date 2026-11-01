@@ -36,6 +36,17 @@ Every source is proposed text, not agreed text. The cases are candidate cases ag
 - `m0088`: Xinghua Zhao, public-agentprotocol 2026Oct/0088, 2026-10-29. The `incomplete_check`
   block and its reason set.
 
+Two later messages were read against the cases. No case rests on them, and the limitations below
+say where they bear on a case.
+
+- `m0109`: ShaoBao Li, public-agentprotocol 2026Oct/0109, 2026-10-30. The `incomplete_check`
+  reasons map onto authority not determined, the wire value set stays closed at five, and a PAUSE
+  with no receipt attached is still a well-formed record.
+- `m1031`: Xinghua Zhao's reply of 2026-10-31 on public-agentprotocol, quoted in full in
+  2026Oct/0121 and 0122. It accepts m0090's two refinements and m0109's constraint, and states
+  that a receipt saying PAUSE(authority_not_determined) always carries its `incomplete_check`
+  reason.
+
 Each case lists the sources it rests on in `basis`.
 
 ## Source
@@ -117,8 +128,15 @@ author-produced and is not a run.
 - RC-28: m0108 lists stale_root among the modes that report authority not determined. m0088 calls a
   check against a stale root a completed check that carries its own determination. Both reject
   ACTIVE, which RC-13 tests.
-- RC-16: m0090 says a timeout is recorded separately, and m0088's reason set (tryLater,
-  not_authoritative, internal_error) has no value for a missing answer.
+- RC-16: m0090 says a timeout is recorded separately, and m1031 accepts that it is never
+  inferred, which RC-15 tests. m0088's reason set (tryLater, not_authoritative, internal_error)
+  still has no value for a missing answer.
+- RC-11 is scored on state and determination, the fields R-NOTDET reads. m1031 adds that a receipt
+  saying PAUSE(authority_not_determined) always carries its `incomplete_check` reason. RC-11's
+  receipt carries none, and no case tests that requirement, because the reason set has no value
+  for an unreachable registry either. RC-28 has the same gap.
+- No case requires a receipt for a PAUSE to be well formed, which fits m0109. RC-13 has no receipt
+  and is scored on its ACTIVE state.
 - RC-08: no source says what STOP_AT_CHECKPOINT does when no checkpoint follows the halt.
 - STOP_AT_CHECKPOINT stops a call partway, while spec 2.1 says PAUSE happens "between atomic tool
   calls, never mid-call". The two fit only if a checkpoint counts as a tool-call boundary, which
