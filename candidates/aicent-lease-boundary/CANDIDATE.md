@@ -107,6 +107,9 @@ runs.
 - LB-D05 reads the verification procedure of section 7.2 as a rejection floor for the envelope
   frame, distinct from the reliance convention of section 6.1; a revision that fuses the two layers
   would need a new case.
+- LB-D01 to LB-D05 take `at_boundary` as a given input. They test how an implementation handles
+  that boundary, not whether it correctly determines the boundary from the observation time and
+  lease expiry.
 - The window cases test the stated-expiry check only; the 120-second figure itself is a deployment
   observation in the source, not a conformance target.
 - The checker encodes one reading of the source. A correction in a later revision of the draft
