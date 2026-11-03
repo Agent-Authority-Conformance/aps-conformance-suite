@@ -75,3 +75,15 @@ These records are attributed per layer. Merge of this family is not an end-to-en
 
 `./run.sh` packs the pinned tarball, checks its sha256, reruns both verifier versions and checks both result files byte
 for byte, grades run 2, and reruns the candidate cases.
+
+## Maintainer answers and known limits (2026-11-03)
+
+- `mixed`: telleroutlook answered on vocabulary #177 (comment 6591027374) that `mixed` is not a value in
+  `verifier-result-contract.md` section 3, and that the contract has no rule yet for combining authenticity results across
+  the records of one file. In both verifier versions `mixed` is my own aggregation, outside the contract. Neither result
+  file carries it, so no graded result depends on it.
+- Canonical key order: both verifier versions canonicalize with the `rfc8785` Python package (0.1.4 where the runs were
+  made, checked 2026-11-03), which sorts keys by UTF-16 code units as RFC 8785 section 3.2.3 requires. IMPLEMENTER.md
+  describes code point order, and the JS helper sorts by UTF-8 bytes (WasmAgent/wasmagent-protocol#265). None of the 69
+  corpus documents or the 10 candidate case files has a non-ASCII or integer-like key, where these rules differ, so these
+  runs do not show which rule the signed fixtures follow.
