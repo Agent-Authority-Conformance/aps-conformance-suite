@@ -10,9 +10,12 @@ schema, failure classes or verifier behavior.
 The source is a published Internet-Draft rather than a proposal under discussion: the closed
 refusal vocabulary and the priority order are defined by draft-li-rttp-iqa-addressing-02, section
 8.1, and the grant reference structure and the null rule for the observation member by section 8.2.
-The vocabulary has been exercised in public conformance runs recorded by this laboratory, including
-runs by implementers other than the author; the draft's section 8.3 records this. The expected
-values are anchored in the published text itself and were checked against it sentence by sentence.
+The same five refusal values and their priority order appear in the lab's lease-revocation-axes
+revision 3 (#191), based on proposals discussed on the public-agentprotocol list. The lab's
+reference model and the submitter's separately written runner (#194) have both been exercised
+against revision 3. Both results are author-produced under the lab's run classification. The
+expected values are anchored in the published text itself and were checked against it sentence by
+sentence.
 
 ## Submitter
 
