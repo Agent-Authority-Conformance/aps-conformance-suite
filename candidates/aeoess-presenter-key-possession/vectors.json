@@ -1,0 +1,1122 @@
+{
+ "label": "aeoess-presenter-key-possession",
+ "revision": 1,
+ "text_status": "RFC 9449 is a published Proposed Standard. The scope check and the axis names are this candidate's representation, not RFC 9449 text",
+ "readings": "an outcome is the verifier's answer for one request. Each axis is read on its own, whatever the other axes say",
+ "now": 1793750400,
+ "keys": {
+  "agent": {
+   "crv": "Ed25519",
+   "kty": "OKP",
+   "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+  },
+  "attacker": {
+   "crv": "Ed25519",
+   "kty": "OKP",
+   "x": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+  },
+  "seed_rule": "Ed25519 private key = sha256('aeoess-presenter-key-possession/' + label), test keys only"
+ },
+ "cases": [
+  {
+   "id": "PK-01",
+   "title": "Valid proof, bound key, fresh, in scope: accept",
+   "basis": [
+    "4.3",
+    "6.1",
+    "7.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "conformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-02",
+   "title": "Attacker's own key, validly signed, accepted as bound",
+   "basis": [
+    "4.3 item 6",
+    "4.3 item 12",
+    "6.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6Im5TVENOMzZsTDlMcVZxTnMwb2hlcU50MFowV1lVZGFyUFh0aDFtNW53dmcifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.5dmK_Gy8bHuZUtFxF4JHRTJOC7_Cd2FIwRhTbofxo26yl0Q4DHWICxNCfEarKh1_q7G4REP7oalWzws4bo5MDA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-03",
+   "title": "Attacker's own key, refused at key binding",
+   "basis": [
+    "4.3 item 6",
+    "4.3 item 12",
+    "6.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "conformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6Im5TVENOMzZsTDlMcVZxTnMwb2hlcU50MFowV1lVZGFyUFh0aDFtNW53dmcifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.5dmK_Gy8bHuZUtFxF4JHRTJOC7_Cd2FIwRhTbofxo26yl0Q4DHWICxNCfEarKh1_q7G4REP7oalWzws4bo5MDA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": false,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "key_binding"
+   }
+  },
+  {
+   "id": "PK-04",
+   "title": "Attacker's own key, refused but reported as a bad signature",
+   "basis": [
+    "4.3 item 6",
+    "4.3 item 12"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6Im5TVENOMzZsTDlMcVZxTnMwb2hlcU50MFowV1lVZGFyUFh0aDFtNW53dmcifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.5dmK_Gy8bHuZUtFxF4JHRTJOC7_Cd2FIwRhTbofxo26yl0Q4DHWICxNCfEarKh1_q7G4REP7oalWzws4bo5MDA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": false,
+    "key_binding": false,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "proof_signature"
+   }
+  },
+  {
+   "id": "PK-05",
+   "title": "Payload changed after signing, accepted",
+   "basis": [
+    "4.3 item 6"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMXgifQ.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-06",
+   "title": "Payload changed after signing, refused at the signature",
+   "basis": [
+    "4.3 item 6"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "conformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMXgifQ.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": false,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "proof_signature"
+   }
+  },
+  {
+   "id": "PK-07",
+   "title": "Private key inside the jwk header, accepted",
+   "basis": [
+    "4.3 item 7"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5IiwiZCI6IjNhbnd5cjFOeGtvSzFRNDhVVVNPUGVYSklWRUFDd2RkN1pqemE5UldNWEkiLCJrdHkiOiJPS1AiLCJ4IjoiczA4dGdCZWlsR2wzVEFaOTRUM1J3TktzQUNGVmtjRk1nSnRqSUp2RGVhUSJ9LCJ0eXAiOiJkcG9wK2p3dCJ9.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.cCK1RhYHARPzF9aIubyb00XvskO_qmmN5U2IhJCwOMvr3u8Uog73K6g3jNYdOaIah1dWbuEl8_IgqDzGv8kXCA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-08",
+   "title": "alg none with an empty signature, accepted",
+   "basis": [
+    "4.3 item 5"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJub25lIiwiandrIjp7ImNydiI6IkVkMjU1MTkiLCJrdHkiOiJPS1AiLCJ4IjoiczA4dGdCZWlsR2wzVEFaOTRUM1J3TktzQUNGVmtjRk1nSnRqSUp2RGVhUSJ9LCJ0eXAiOiJkcG9wK2p3dCJ9.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-09",
+   "title": "Wrong typ, accepted",
+   "basis": [
+    "4.3 item 4"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiSldUIn0.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.J2U6kQjv0G-gt9cTwgtkXp_t8jCzhXOIZk9DsSRfZ0GgPhgW2NX9GVkx3qj4P93yQEENoEb5XdWqEbf9KUfbAA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-10",
+   "title": "Same key, proof made for another access token, accepted",
+   "basis": [
+    "4.3 item 12",
+    "4.2 ath"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJBWnhtdXVrZTFPcE9TQUptRFBPc05rbFVWeGhPTW5SSkpkbGFidVBGYmpJIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.AbGh3gHYGrjcufDO-j2vspLOr0KinkLpI6dqMuepm3-ZcLaBMvAO14pXlyqkN8DxzBNk9Tya7LkvBnzrqXIHBw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-11",
+   "title": "Bearer token without cnf presented with a valid proof, accepted as bound",
+   "basis": [
+    "7.1",
+    "6.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read"
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-12",
+   "title": "Proof for GET presented on POST, accepted",
+   "basis": [
+    "4.3 item 8"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiR0VUIiwiaHR1IjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS50ZXN0L29yZGVycyIsImlhdCI6MTc5Mzc1MDM5NSwianRpIjoicC0wMDAxIn0.Drg4so2L0MQKDkpswzywRnAO4TrW3sLqIcHMx-EB62SPOfs-89HuYoEEKc7MID8kIPPD3L3uS7Q8gl1TCgmCAA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-13",
+   "title": "htu differs only in its query, accepted",
+   "basis": [
+    "4.3 item 9"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "conformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders?page=2",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-14",
+   "title": "htu names another path, accepted",
+   "basis": [
+    "4.3 item 9"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9yZWZ1bmRzIiwiaWF0IjoxNzkzNzUwMzk1LCJqdGkiOiJwLTAwMDEifQ.aACf2U4jMefw4yM3RnS0EFszi8hOAln9cXugSXfj57qWvxJRWTZL42M9ViTxcDuEPu1pps6J1mWYVkm_X-74CQ",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-15",
+   "title": "Server issued a nonce, proof carries another, accepted",
+   "basis": [
+    "4.3 item 10"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": "n-2026-11-03",
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSIsIm5vbmNlIjoibi1vbGQifQ.B2Xcp8LqQCe9M_3m7XDpIRwGn-dTWFWBiwwiI9idpAK2aI9UTeDHwgAUJwvGi9vTnWrDwkhGHPfPKGYvAatjAg",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-16",
+   "title": "Proof created ten minutes ago with a 300 s window, accepted",
+   "basis": [
+    "4.3 item 11",
+    "11.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NDk4MDAsImp0aSI6InAtMDAwMSJ9.-k4bOneAnl18LDchKH6tCM73OV5cpeqQ-Tv1ZMf53oQE8Hj5VWQdgeTzx3fMiqYVBsuHgGpP3cSzDKlNakRPAg",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-17",
+   "title": "Proof dated 20 s ahead, no future skew declared, accepted",
+   "basis": [
+    "4.3 item 11",
+    "11.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "ambiguous",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTA0MjAsImp0aSI6InAtMDAwMSJ9.iWwrK42bjVizxp184Q0T-PyPU5u5eZGG_ZhiyNjj1Zv6-wwzJ_eVyfECdkEzCrVRlTM5Hl8wnx_bVE6Ysz0zAg",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-18",
+   "title": "Server tracks jti, proof jti already seen at this URI, accepted",
+   "basis": [
+    "11.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [
+      [
+       "https://api.example.test/orders",
+       "p-0001"
+      ]
+     ],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-19",
+   "title": "Possession established, operation outside the token scope, accepted",
+   "basis": [
+    "7.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "refunds:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-20",
+   "title": "Possession established, operation outside the token scope, refused for authority",
+   "basis": [
+    "7.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "conformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "refunds:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": false,
+    "decision": "reject",
+    "reject_axis": "authority"
+   }
+  },
+  {
+   "id": "PK-21",
+   "title": "Operation outside the token scope, refused but blamed on key binding",
+   "basis": [
+    "7.1",
+    "6.1"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "refunds:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": false,
+    "request_binding": true,
+    "authority": false,
+    "decision": "reject",
+    "reject_axis": "key_binding"
+   }
+  },
+  {
+   "id": "PK-22",
+   "title": "Attacker's own key, axes reported correctly, refusal names the signature",
+   "basis": [
+    "4.3 item 6",
+    "4.3 item 12"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6Im5TVENOMzZsTDlMcVZxTnMwb2hlcU50MFowV1lVZGFyUFh0aDFtNW53dmcifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.5dmK_Gy8bHuZUtFxF4JHRTJOC7_Cd2FIwRhTbofxo26yl0Q4DHWICxNCfEarKh1_q7G4REP7oalWzws4bo5MDA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": false,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "proof_signature"
+   }
+  }
+ ]
+}
