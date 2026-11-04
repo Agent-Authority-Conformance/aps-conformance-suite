@@ -15,3 +15,5 @@ for c in meta["cases"]:
     hit = got == c["expected"]; ok += hit
     print(("PASS" if hit else "FAIL"), c["path"], c["layer"], "expected", c["expected"], "got", got, why)
 print(f"{ok}/{len(meta['cases'])}")
+
+sys.exit(0 if ok == len(meta["cases"]) else 1)

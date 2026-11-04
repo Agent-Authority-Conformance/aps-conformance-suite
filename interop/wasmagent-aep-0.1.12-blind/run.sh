@@ -11,7 +11,9 @@ tar -xzf wasmagent-protocol-0.1.12.tgz
 C="$WORK/package/conformance/aep"
 python3 -I "$HERE/verifier/aep_verify_v1_blind.py" "$C" "$HERE/paths.txt" "$WORK/blind-run-1.json"
 python3 -I "$HERE/verifier/aep_verify_v2.py" "$C" "$HERE/paths.txt" "$WORK/run-2.json"
-cmp "$WORK/blind-run-1.json" "$HERE/results/blind-run-1.json" && echo "blind run 1 reproduced byte for byte"
-cmp "$WORK/run-2.json" "$HERE/results/run-2.json" && echo "run 2 reproduced byte for byte"
-python3 -I "$HERE/verifier/grade.py" "$C/manifest.json" "$WORK/run-2.json" | head -5
-python3 -I "$HERE/cases/run_cases.py" "$C" "$HERE/cases" | tail -1
+cmp "$WORK/blind-run-1.json" "$HERE/results/blind-run-1.json"
+echo "blind run 1 reproduced byte for byte"
+cmp "$WORK/run-2.json" "$HERE/results/run-2.json"
+echo "run 2 reproduced byte for byte"
+python3 -I "$HERE/verifier/grade.py" "$C/manifest.json" "$WORK/run-2.json"
+python3 -I "$HERE/cases/run_cases.py" "$C" "$HERE/cases"

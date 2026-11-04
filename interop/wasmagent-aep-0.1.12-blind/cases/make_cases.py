@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Candidate negative cases for checks the 0.1.12 corpus does not reach (per the
-cold-run record's list). Signed with a throwaway key generated here. Expected
+"""Additional candidate cases and controls for missing combinations and checks
+the 0.1.12 corpus does not isolate (following the cold-run record). Signed with a throwaway key generated here. Expected
 outcomes are this author's reading of IMPLEMENTER.md, not corpus verdicts."""
 import base64, copy, hashlib, json, sys
 from pathlib import Path

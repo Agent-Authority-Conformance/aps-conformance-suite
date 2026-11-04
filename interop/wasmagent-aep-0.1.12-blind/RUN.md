@@ -50,7 +50,7 @@ alone here.
 
 ## Candidate cases (`cases/`)
 
-Nine cases for checks no current target reaches, signed with a throwaway key generated for this record
+Nine additional cases, including controls, for missing combinations and checks the corpus does not isolate, signed with a throwaway key generated for this record
 (`cases/extra-verify-key.hex`, key id `extra-key-01`, registered for this run only): X0 positive control, X1 unknown
 keyid, X2 subject digest wrong with the predicate equal to the record, X3 predicate changed with a digest consistent with
 it, X3b predicate changed with a digest that matches the record, X4 two subjects, X5 count below the number of observed
@@ -92,3 +92,22 @@ for byte, grades run 2, and reruns the candidate cases.
 ## Third-party material
 
 `cases/X0` to `cases/X7` are modified copies of `valid/minimal-v05.json` from the `@wasmagent/protocol` 0.1.12 npm package (source repository WasmAgent/wasmagent-protocol), used under the Apache License, Version 2.0. `cases/make_cases.py` applies and records every change to that file. The package files listed in `paths.txt` are read from the package at run time and are not copied here. This repository's LICENSE carries the Apache License 2.0 text.
+
+
+## Reproduction gate and reader limits (2026-11-04)
+
+The wrapper now stops on either frozen-output mismatch, a failed candidate
+expectation or a candidate-process error. The grading report remains diagnostic,
+and its retained evaluation-state differences are described above. The case runner's
+status controls whether its checks passed.
+
+The preserved v1 and v2 readers and their original result files are unchanged.
+They are not general verifier-contract conformance implementations. For example,
+an envelope with a null signature entry or a decoded Statement that is an array
+raises an exception rather than producing a layer outcome. The published corpus
+and the recorded candidate cases do not exercise those malformed shapes.
+
+Direct review probes accepted a correctly JCS-bound record containing Unicode
+and integer-like property names and rejected a signature-valid statement whose
+subject digest used code-point ordering. Those probes check the historical
+reader's hashing choice. They are not additional agreed corpus verdicts.
