@@ -215,6 +215,7 @@ own mode, authorship and pins; open it to read them.
 |---|---|
 | `interop/a2a-go-368-jcs` | [`RUN.md`](interop/a2a-go-368-jcs/RUN.md) |
 | `interop/a2a-go-368-jcs-ea003f9` | [`RUN.md`](interop/a2a-go-368-jcs-ea003f9/RUN.md) |
+| `interop/aae-a2a-client-08f41146` | [`RUN.md`](interop/aae-a2a-client-08f41146/RUN.md) |
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
 | `interop/agent-passport-v2-readers-407ca2d5` | [`RUN.md`](interop/agent-passport-v2-readers-407ca2d5/RUN.md) |
 | `interop/aos-catalog-lra-cold-3e882bc` | [`run-report.md`](interop/aos-catalog-lra-cold-3e882bc/run-report.md) |
