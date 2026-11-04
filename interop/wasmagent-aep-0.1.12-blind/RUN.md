@@ -101,6 +101,11 @@ expectation or a candidate-process error. The grading report remains diagnostic,
 and its retained evaluation-state differences are described above. The case runner's
 status controls whether its checks passed.
 
+`gate-test.sh` keeps this as an executable check. It runs `run.sh` on a clean copy of this directory and on
+three altered copies (a changed frozen result, a failed candidate expectation, a verifier that exits before writing
+output), and exits nonzero unless only the clean copy passes. Against the earlier `run.sh` it reports the first two
+as failures.
+
 The preserved v1 and v2 readers and their original result files are unchanged.
 They are not general verifier-contract conformance implementations. For example,
 an envelope with a null signature entry or a decoded Statement that is an array
