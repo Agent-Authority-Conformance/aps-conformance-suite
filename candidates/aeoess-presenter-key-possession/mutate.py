@@ -63,6 +63,24 @@ def req_future_ok(i):
 def req_no_jti(i):
     return check.request_binding(dict(i, policy=dict(i["policy"], tracks_jti=False)))
 
+def sig_no_required_claims(i):
+    orig = check.required_claims
+    check.required_claims = lambda i: []
+    try:
+        return check.proof_signature(i)
+    finally:
+        check.required_claims = orig
+
+def bind_missing_ath_ok(i):
+    p = check.parse(i["dpop"])
+    return True if (p and "ath" not in p[1]) else check.key_binding(i)
+
+def req_missing_nonce_ok(i):
+    p = check.parse(i["dpop"])
+    if p and "nonce" not in p[1]:
+        return check.request_binding(dict(i, request=dict(i["request"], server_nonce=None)))
+    return check.request_binding(i)
+
 def auth_always(i):
     return True
 
@@ -71,13 +89,16 @@ MUTANTS = {
     "R-SIG: private key in jwk allowed": ("proof_signature", sig_allow_private),
     "R-SIG: alg none allowed": ("proof_signature", sig_allow_none),
     "R-SIG: typ not checked": ("proof_signature", sig_ignore_typ),
+    "R-SIG: required claims not checked": ("proof_signature", sig_no_required_claims),
     "R-BIND: cnf.jkt not compared": ("key_binding", bind_skip_jkt),
     "R-BIND: ath not compared": ("key_binding", bind_skip_ath),
     "R-BIND: bearer token treated as bound": ("key_binding", bind_bearer_ok),
+    "R-BIND: missing ath treated as bound": ("key_binding", bind_missing_ath_ok),
     "R-REQ: htm not compared": ("request_binding", req_no_htm),
     "R-REQ: query not ignored": ("request_binding", req_query_strict),
     "R-REQ: htu path not compared": ("request_binding", req_path_lax),
     "R-REQ: nonce not compared": ("request_binding", req_no_nonce),
+    "R-REQ: missing nonce accepted after the server issued one": ("request_binding", req_missing_nonce_ok),
     "R-REQ: no iat window": ("request_binding", req_no_window),
     "R-REQ: future iat accepted without a declared allowance": ("request_binding", req_future_ok),
     "R-REQ: jti replay not tracked": ("request_binding", req_no_jti),

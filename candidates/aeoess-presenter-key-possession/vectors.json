@@ -179,7 +179,8 @@
    "title": "Attacker's own key, refused but reported as a bad signature",
    "basis": [
     "4.3 item 6",
-    "4.3 item 12"
+    "4.3 item 12",
+    "axis reporting is this candidate's representation"
    ],
    "rules": [
     "R-SIG",
@@ -1021,7 +1022,8 @@
    "title": "Operation outside the token scope, refused but blamed on key binding",
    "basis": [
     "7.1",
-    "6.1"
+    "6.1",
+    "axis reporting is this candidate's representation"
    ],
    "rules": [
     "R-SIG",
@@ -1072,7 +1074,8 @@
    "title": "Attacker's own key, axes reported correctly, refusal names the signature",
    "basis": [
     "4.3 item 6",
-    "4.3 item 12"
+    "4.3 item 12",
+    "axis reporting is this candidate's representation"
    ],
    "rules": [
     "R-SIG",
@@ -1112,6 +1115,310 @@
    "outcome": {
     "proof_signature": true,
     "key_binding": false,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "proof_signature"
+   }
+  },
+  {
+   "id": "PK-23",
+   "title": "Proof without ath presented with an access token, accepted",
+   "basis": [
+    "4.2 ath",
+    "4.3 item 3",
+    "4.3 item 12"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJodG0iOiJQT1NUIiwiaHR1IjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS50ZXN0L29yZGVycyIsImlhdCI6MTc5Mzc1MDM5NSwianRpIjoicC0wMDAxIn0.8vAcmjDd4YKlzP3MgmqEDPwPm0Vbu1Q6-bPsoP03hvOs1gzAlufovQ5OaS5Q-GPOnGhXLltRD3b8FSeIBbo7DA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-24",
+   "title": "Server issued a nonce, proof carries none, accepted",
+   "basis": [
+    "4.2 nonce",
+    "4.3 item 3",
+    "4.3 item 10"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": "n-2026-11-03",
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-25",
+   "title": "DPoP value is not a single well-formed JWT, accepted",
+   "basis": [
+    "4.3 item 2"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "accept",
+    "reject_axis": null
+   }
+  },
+  {
+   "id": "PK-26",
+   "title": "Proof without ath, reported well formed, refused at key binding",
+   "basis": [
+    "4.3 item 3",
+    "axis reporting is this candidate's representation"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJodG0iOiJQT1NUIiwiaHR1IjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS50ZXN0L29yZGVycyIsImlhdCI6MTc5Mzc1MDM5NSwianRpIjoicC0wMDAxIn0.8vAcmjDd4YKlzP3MgmqEDPwPm0Vbu1Q6-bPsoP03hvOs1gzAlufovQ5OaS5Q-GPOnGhXLltRD3b8FSeIBbo7DA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": true,
+    "key_binding": false,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "key_binding"
+   }
+  },
+  {
+   "id": "PK-27",
+   "title": "Proof without ath, refused at the signature, key reported bound",
+   "basis": [
+    "4.3 item 12",
+    "axis reporting is this candidate's representation"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": null,
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJodG0iOiJQT1NUIiwiaHR1IjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS50ZXN0L29yZGVycyIsImlhdCI6MTc5Mzc1MDM5NSwianRpIjoicC0wMDAxIn0.8vAcmjDd4YKlzP3MgmqEDPwPm0Vbu1Q6-bPsoP03hvOs1gzAlufovQ5OaS5Q-GPOnGhXLltRD3b8FSeIBbo7DA",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": false,
+    "key_binding": true,
+    "request_binding": true,
+    "authority": true,
+    "decision": "reject",
+    "reject_axis": "proof_signature"
+   }
+  },
+  {
+   "id": "PK-28",
+   "title": "Server issued a nonce, proof carries none, refused at the signature, request reported bound",
+   "basis": [
+    "4.3 item 10",
+    "axis reporting is this candidate's representation"
+   ],
+   "rules": [
+    "R-SIG",
+    "R-BIND",
+    "R-REQ",
+    "R-AUTH",
+    "R-DECISION"
+   ],
+   "expect": "nonconformant",
+   "input": {
+    "request": {
+     "method": "POST",
+     "uri": "https://api.example.test/orders",
+     "now": 1793750400,
+     "server_nonce": "n-2026-11-03",
+     "seen_jti": [],
+     "required_scope": "orders:write"
+    },
+    "access_token": "at-7f3c1e2a-agent-orders",
+    "token_claims": {
+     "sub": "agent-1",
+     "scope": "orders:write orders:read",
+     "cnf": {
+      "jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+     }
+    },
+    "dpop": "eyJhbGciOiJFZERTQSIsImp3ayI6eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InMwOHRnQmVpbEdsM1RBWjk0VDNSd05Lc0FDRlZrY0ZNZ0p0aklKdkRlYVEifSwidHlwIjoiZHBvcCtqd3QifQ.eyJhdGgiOiJCNWlURnZhRGRtNkd4aWtUQjE4eGU0bXZQcWlEYVkxNmNfb1g0bTZrQUgwIiwiaHRtIjoiUE9TVCIsImh0dSI6Imh0dHBzOi8vYXBpLmV4YW1wbGUudGVzdC9vcmRlcnMiLCJpYXQiOjE3OTM3NTAzOTUsImp0aSI6InAtMDAwMSJ9.nSoFI1xfYuVr2MOi2Guv4dYzpsdiBtDEnDOeVEJpcjjWM9TYFlpKzn8kHLpb7PQvoSFb9GBvd8w2eZ_Z778UCw",
+    "policy": {
+     "accepted_algs": [
+      "EdDSA"
+     ],
+     "iat_window_s": 300,
+     "future_skew_s": null,
+     "tracks_jti": true
+    }
+   },
+   "outcome": {
+    "proof_signature": false,
+    "key_binding": true,
     "request_binding": true,
     "authority": true,
     "decision": "reject",

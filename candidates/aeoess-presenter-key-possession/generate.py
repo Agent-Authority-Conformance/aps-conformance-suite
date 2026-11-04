@@ -32,7 +32,7 @@ def ath(token):
 
 AGENT, ATTACKER = key("agent"), key("attacker")
 AGENT_JWK, ATTACKER_JWK = pub_jwk(AGENT), pub_jwk(ATTACKER)
-NOW = 1793750400  # 2026-11-03T16:00:00Z
+NOW = 1793750400  # 2026-11-04T00:00:00Z
 TOKEN = "at-7f3c1e2a-agent-orders"
 OTHER_TOKEN = "at-90bd44c1-agent-reports"
 URI = "https://api.example.test/orders"
@@ -70,7 +70,7 @@ cases = [
     case("PK-01", "Valid proof, bound key, fresh, in scope: accept", ["4.3", "6.1", "7.1"], good, out(True, True, True, True, "accept"), "conformant", ALL),
     case("PK-02", "Attacker's own key, validly signed, accepted as bound", ["4.3 item 6", "4.3 item 12", "6.1"], attacker, out(True, True, True, True, "accept"), "nonconformant", ALL),
     case("PK-03", "Attacker's own key, refused at key binding", ["4.3 item 6", "4.3 item 12", "6.1"], attacker, out(True, False, True, True, "reject", "key_binding"), "conformant", ALL),
-    case("PK-04", "Attacker's own key, refused but reported as a bad signature", ["4.3 item 6", "4.3 item 12"], attacker, out(False, False, True, True, "reject", "proof_signature"), "nonconformant", ALL),
+    case("PK-04", "Attacker's own key, refused but reported as a bad signature", ["4.3 item 6", "4.3 item 12", "axis reporting is this candidate's representation"], attacker, out(False, False, True, True, "reject", "proof_signature"), "nonconformant", ALL),
     case("PK-05", "Payload changed after signing, accepted", ["4.3 item 6"], tampered, out(True, True, True, True, "accept"), "nonconformant", ["R-SIG", "R-DECISION"]),
     case("PK-06", "Payload changed after signing, refused at the signature", ["4.3 item 6"], tampered, out(False, True, True, True, "reject", "proof_signature"), "conformant", ["R-SIG", "R-DECISION"]),
     case("PK-07", "Private key inside the jwk header, accepted", ["4.3 item 7"], proof(jwk=priv_jwk), out(True, True, True, True, "accept"), "nonconformant", ["R-SIG", "R-DECISION"]),
@@ -87,8 +87,14 @@ cases = [
     case("PK-18", "Server tracks jti, proof jti already seen at this URI, accepted", ["11.1"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(seen_jti=[[URI, "p-0001"]])),
     case("PK-19", "Possession established, operation outside the token scope, accepted", ["7.1"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(required_scope="refunds:write")),
     case("PK-20", "Possession established, operation outside the token scope, refused for authority", ["7.1"], good, out(True, True, True, False, "reject", "authority"), "conformant", ALL, req=request(required_scope="refunds:write")),
-    case("PK-21", "Operation outside the token scope, refused but blamed on key binding", ["7.1", "6.1"], good, out(True, False, True, False, "reject", "key_binding"), "nonconformant", ALL, req=request(required_scope="refunds:write")),
-    case("PK-22", "Attacker's own key, axes reported correctly, refusal names the signature", ["4.3 item 6", "4.3 item 12"], attacker, out(True, False, True, True, "reject", "proof_signature"), "nonconformant", ALL),
+    case("PK-21", "Operation outside the token scope, refused but blamed on key binding", ["7.1", "6.1", "axis reporting is this candidate's representation"], good, out(True, False, True, False, "reject", "key_binding"), "nonconformant", ALL, req=request(required_scope="refunds:write")),
+    case("PK-22", "Attacker's own key, axes reported correctly, refusal names the signature", ["4.3 item 6", "4.3 item 12", "axis reporting is this candidate's representation"], attacker, out(True, False, True, True, "reject", "proof_signature"), "nonconformant", ALL),
+    case("PK-23", "Proof without ath presented with an access token, accepted", ["4.2 ath", "4.3 item 3", "4.3 item 12"], proof(ath=None), out(True, True, True, True, "accept"), "nonconformant", ALL),
+    case("PK-24", "Server issued a nonce, proof carries none, accepted", ["4.2 nonce", "4.3 item 3", "4.3 item 10"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(server_nonce="n-2026-11-03")),
+    case("PK-25", "DPoP value is not a single well-formed JWT, accepted", ["4.3 item 2"], h + "." + p, out(True, True, True, True, "accept"), "nonconformant", ["R-SIG", "R-DECISION"]),
+    case("PK-26", "Proof without ath, reported well formed, refused at key binding", ["4.3 item 3", "axis reporting is this candidate's representation"], proof(ath=None), out(True, False, True, True, "reject", "key_binding"), "nonconformant", ALL),
+    case("PK-27", "Proof without ath, refused at the signature, key reported bound", ["4.3 item 12", "axis reporting is this candidate's representation"], proof(ath=None), out(False, True, True, True, "reject", "proof_signature"), "nonconformant", ALL),
+    case("PK-28", "Server issued a nonce, proof carries none, refused at the signature, request reported bound", ["4.3 item 10", "axis reporting is this candidate's representation"], good, out(False, True, True, True, "reject", "proof_signature"), "nonconformant", ALL, req=request(server_nonce="n-2026-11-03")),
 ]
 
 doc = {

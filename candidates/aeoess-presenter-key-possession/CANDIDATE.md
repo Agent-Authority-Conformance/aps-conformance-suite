@@ -3,8 +3,9 @@
 Cases for one question a verifier must answer before an agent's request goes through: does the
 party presenting the token hold the key the token is bound to, for this request, now. Each case
 gives a real signed DPoP proof, the access token it is presented with, the request, and one answer
-a verifier could give. The case states whether that answer satisfies RFC 9449 and which rule
-decides. This is a candidate under `docs/CANDIDATES.md`. It is not a reviewed fixture and adds
+a verifier could give. The case states whether that answer is conformant under the rules below
+and which rule decides. Whether to accept or reject follows RFC 9449. Which axis a verifier reports
+as failed is this candidate's representation, described under Normative target. This is a candidate under `docs/CANDIDATES.md`. It is not a reviewed fixture and adds
 nothing to the lab's schema, failure classes or verifier behavior.
 
 The answer is read on four separate axes, because each can fail while the others hold.
@@ -20,8 +21,9 @@ The answer is read on four separate axes, because each can fail while the others
 
 A valid signature shows that someone holds a key. It does not show that the key is the one the
 token is bound to, and possession of the bound key does not show authority for the operation. The
-central cases are PK-02 to PK-04 and PK-22: a proof validly signed with the attacker's own key.
-An answer that accepts it, or refuses it for the wrong reason, is nonconformant.
+central cases are PK-02 to PK-04 and PK-22, a proof validly signed with the attacker's own key.
+Accepting it fails RFC 9449 section 4.3 item 12. Refusing it for the wrong reason is nonconformant
+only under this candidate's axis reporting, because RFC 9449 does not define the axes.
 
 This candidate narrows one line of `docs/mappings/owasp-aimm-pillar-2.md`, Remaining gaps:
 "Proof that the presenter holds the bound key (L5). ASE-12 and the token exchange actor check
@@ -44,6 +46,13 @@ checker are author-produced.
 The `authority` axis is not RFC 9449 text. RFC 9449 leaves authorization to the resource server.
 The candidate represents it as the token's space separated `scope` containing the request's
 `required_scope`, so possession and authority can fail separately.
+
+The four axes, and the R-DECISION requirement that a reject name an axis that actually failed, are
+also this candidate's representation. RFC 9449 section 7.1 says a rejection SHOULD carry an error
+parameter, names `invalid_dpop_proof` for a proof that fails the section 4.3 checks, and shows
+`invalid_token` for a failed key binding in its Figure 16. It does not split a rejection into
+axes. PK-04, PK-21, PK-22 and PK-26 to PK-28 reject a request that should be rejected and are
+nonconformant only on the reported axis, and their `basis` says so.
 
 ## Source
 
@@ -80,6 +89,12 @@ and item numbers and short rule summaries.
 | PK-19, PK-20 | possession holds, scope lacks the operation | accept, reject at authority | nonconformant, conformant |
 | PK-21 | same | reject, blamed on key binding | nonconformant |
 | PK-22 | attacker's own key, axes reported correctly | reject naming the signature | nonconformant |
+| PK-23 | proof without `ath`, presented with an access token | accept | nonconformant |
+| PK-24 | server nonce issued, proof carries none | accept | nonconformant |
+| PK-25 | DPoP value with two segments, not a JWT | accept | nonconformant |
+| PK-26 | proof without `ath` | reject at key_binding, proof reported well formed | nonconformant |
+| PK-27 | proof without `ath` | reject at signature, key reported bound | nonconformant |
+| PK-28 | server nonce issued, proof carries none | reject at signature, request reported bound | nonconformant |
 
 Rules: R-SIG, R-BIND, R-REQ and R-AUTH compare each axis of the answer with the axis recomputed
 from the input. R-DECISION requires accept when every axis holds, and otherwise a reject that
@@ -98,10 +113,14 @@ python3 -I mutate.py vectors.json
 ## Evidence
 
 At this revision `generate.py` reproduces `vectors.json` byte for byte, `check.py` prints
-`22/22 agree` and `mutate.py` prints `16/16 mutants killed`, each with exit 0. Each of the 16
+`28/28 agree` and `mutate.py` prints `19/19 mutants killed`, each with exit 0. Each of the 19
 mutants weakens one check (signature not verified, `cnf.jkt` not compared, `ath` not compared,
 query not ignored, `jti` not tracked, scope not checked, any reject axis accepted, and others),
-and at least one case changes its verdict under it. This shows the checker agrees with the
+and at least one case changes its verdict under it. PK-23 and PK-24 are each caught by two
+checks, a missing required claim and the `ath` or nonce comparison, so weakening one of those
+checks does not change their verdicts. PK-26 to PK-28 report one axis wrongly at a time, and they
+are the cases that kill the mutants for the required claims check, the missing `ath` and the
+missing nonce. Like PK-04, PK-21 and PK-22, they are nonconformant only on the reported axis. This shows the checker agrees with the
 expected results and that each rule has a case depending on it. It does not show that the
 expected results are the only reading of RFC 9449, and no implementation has been run against
 these cases.
@@ -120,5 +139,11 @@ these cases.
 - PK-17 is ambiguous by design: section 11.1 lets a server accept a near-future `iat`, and the
   case declares no allowance.
 - The `authority` axis and the axis names are this candidate's representation.
+- Each case carries one DPoP value, so section 4.3 item 1 (more than one DPoP header) is not
+  exercised.
+- `jti` values are short test labels such as `p-0001`. Section 4.2 asks the client for a value
+  with negligible collision probability, which a server cannot check, so no case tests it.
+- PK-07 carries the agent's test private key in its `jwk` header. Like every key here it is
+  derived from a public seed label and is not a credential.
 - Expected results, checker and mutations are written by the lab maintainer. A run by an
   implementation, or an independent checker, would be a separate record.
