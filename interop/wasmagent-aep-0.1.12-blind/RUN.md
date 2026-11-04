@@ -103,8 +103,11 @@ status controls whether its checks passed.
 
 `gate-test.sh` keeps this as an executable check. It runs `run.sh` on a clean copy of this directory and on
 three altered copies (a changed frozen result, a failed candidate expectation, a verifier that exits before writing
-output), and exits nonzero unless only the clean copy passes. Against the earlier `run.sh` it reports the first two
+output), and exits nonzero unless only the clean copy passes and each altered copy fails with the expected
+message. A copy it cannot set up also counts as a failure. Against the earlier `run.sh` it reports the first two
 as failures.
+The lab's CI does not run interop reproductions, which need the npm package, so `gate-test.sh` is run by hand
+when `run.sh` or the case runner changes.
 
 The preserved v1 and v2 readers and their original result files are unchanged.
 They are not general verifier-contract conformance implementations. For example,
