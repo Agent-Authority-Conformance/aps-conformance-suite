@@ -87,3 +87,7 @@ for byte, grades run 2, and reruns the candidate cases.
   describes code point order, and the JS helper sorts by UTF-8 bytes (WasmAgent/wasmagent-protocol#265). None of the 69
   corpus documents or the 10 candidate case files has a non-ASCII or integer-like key, where these rules differ, so these
   runs do not show which rule the signed fixtures follow.
+
+## Third-party material
+
+`cases/X0` to `cases/X7` are modified copies of `valid/minimal-v05.json` from the `@wasmagent/protocol` 0.1.12 npm package (source repository WasmAgent/wasmagent-protocol), used under the Apache License, Version 2.0. `cases/make_cases.py` applies and records every change to that file. The package files listed in `paths.txt` are read from the package at run time and are not copied here. This repository's LICENSE carries the Apache License 2.0 text.
