@@ -84,9 +84,10 @@ for byte, grades run 2, and reruns the candidate cases.
   file carries it, so no graded result depends on it.
 - Canonical key order: both verifier versions canonicalize with the `rfc8785` Python package (0.1.4 where the runs were
   made, checked 2026-11-03), which sorts keys by UTF-16 code units as RFC 8785 section 3.2.3 requires. IMPLEMENTER.md
-  describes code point order, and the JS helper sorts by UTF-8 bytes (WasmAgent/wasmagent-protocol#265). None of the 69
-  corpus documents or the 10 candidate case files has a non-ASCII or integer-like key, where these rules differ, so these
-  runs do not show which rule the signed fixtures follow.
+  in the 0.1.12 package describes code point order. After these runs the maintainers changed it to UTF-16 code units
+  (WasmAgent/wasmagent-protocol#268, merged 2026-11-04 as `3ade5a1`) and closed #265. None of the 69 corpus documents or
+  the 10 candidate case files has a non-ASCII or integer-like key, where these rules differ, so these runs do not show
+  which rule the signed fixtures follow.
 
 ## Third-party material
 
