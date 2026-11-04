@@ -5,6 +5,10 @@ candidate (merged upstream in PR #190): conformance vectors for the Agent Author
 
 The candidate's own evidence table (in `candidates/moltycel-aae-vectors/CANDIDATE.md`) recorded two author-produced runs and the line "No independent run exists yet"; this record is filed to close exactly that gap. The runner here is the candidate's own shipped pipeline, executed unmodified, so the independence of this record rests on the operator rather than on an alternate implementation — the complement of the lab's other RTTP & IQA records (`interop/rttp-iqa-lra-runner-*`), where the implementation is independent and the operator is the author.
 
+## Scope
+
+This run covers the candidate's native, enforce and composition vector sets and the 11 negative controls at source `6bb462f` (published 23 October). The 42 resume vectors and the Python and TypeScript conformance runners added to the source repository after 23 October are outside this record; no independent run of those exists yet.
+
 ## Result
 
 All suites green, exit 0: 64 candidate files byte-verified against the pinned source commit `6bb462f578c12d339b8fa964a5b1d8f97dbffa68` before anything ran; native set 15/15 (5 runtime, 10 structural) plus 14/14 verifier unit tests; enforce set 26/26 (verdicts plus recomputed core digests); composition set 6/6 row-by-row across the eight-stage ladder; 11/11 negative controls; and the regeneration gate rebuilt every vector byte-identically. No suspected defective vector was observed.

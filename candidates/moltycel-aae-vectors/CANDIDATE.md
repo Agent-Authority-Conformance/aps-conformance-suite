@@ -157,8 +157,9 @@ covers its own vectors. It is not evidence for this candidate.
 |---|---|---|---|---|---|
 | Lars Kroehl, 2026-10-25, `run.sh` | source `6bb462f` | all 47 vectors, 11 negative controls, schema validation, byte-identical regeneration, under `offline.py` | Mode A | author-produced: the runner wrote the vectors, the generators and the verifiers | output in the pull request body |
 | MolTrust, 2026-09-05, enforce set against a second implementation | enforce set 1.4.0 (same vector bytes) | the 26 enforce verdicts and core digests | Mode B | author-produced: the same author wrote both implementations | [vectors/enforce/RESULTS.md at the pin](https://github.com/MoltyCel/aae-conformance-vectors/blob/6bb462f578c12d339b8fa964a5b1d8f97dbffa68/vectors/enforce/RESULTS.md) |
+| Lee (ShaoBao Li, @Aicent-com), 2026-11-04, `run.sh` | source `6bb462f` | all 47 vectors, 11 negative controls, schema validation, byte-identical regeneration, under `offline.py` | Mode A | independent: non-author-produced; the operator is unaffiliated with MoltyCel, MolTrust and CryptoKRI and executed the candidate's own pipeline unmodified | [interop/rttp-iqa-aae-moltycel-vectors-6bb462f](../../interop/rttp-iqa-aae-moltycel-vectors-6bb462f/) |
 
-No independent run exists yet.
+One independent run exists: the 2026-11-04 non-author-produced run recorded in [interop/rttp-iqa-aae-moltycel-vectors-6bb462f](../../interop/rttp-iqa-aae-moltycel-vectors-6bb462f/), at source `6bb462f`.
 
 The six composition vectors carry `"status": "confirmed"` in the source. That status records
 the PSEA author's confirmation of the two join tables, as stated in each vector's

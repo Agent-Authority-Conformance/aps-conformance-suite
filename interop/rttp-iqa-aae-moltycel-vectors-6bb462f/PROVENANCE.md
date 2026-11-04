@@ -1,6 +1,6 @@
 # Provenance
 
-- **Record:** independent run of `candidates/moltycel-aae-vectors` (PR #190), 2026-11-04.
+- **Record:** independent run of `candidates/moltycel-aae-vectors` (PR #190), 2026-11-04 (UTC+8).
 - **Operator:** ShaoBao Li (Lee), [@Aicent-com](https://github.com/Aicent-com); repository maintained under [@Aicent-Stack](https://github.com/Aicent-Stack). The operator is not affiliated with MoltyCel, MolTrust or CryptoKRI GmbH, was not involved in authoring the vectors, generators, verifiers or expected values, and had no stake in the outcome.
 - **Authorship class:** non-author-produced. The runner is the candidate's own shipped pipeline (`run.sh` + `offline.py` + the three schema validators, three reference verifiers and three generators), executed unmodified; no lab code, no candidate code, and no expectation was changed or added by the operator.
 - **Corpus:** MoltyCel/aae-conformance-vectors at commit `6bb462f578c12d339b8fa964a5b1d8f97dbffa68` (vector set 1.4.0 plus the pinned verifier changes; no vector or expected result changed after 1.4.0), merged into this repository as PR #190 on 2026-10-26. The candidate's 64 listed files were byte-verified against a fresh clone at that commit before the run.
