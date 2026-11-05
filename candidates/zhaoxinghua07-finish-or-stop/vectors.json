@@ -1,13 +1,14 @@
 {
  "label": "zhaoxinghua07-finish-or-stop",
  "revision": 1,
- "text_status": "the source is the submitter's own proposed specification, published for public comment on the list; it is not agreed text of any working group and a later revision can change it",
+ "text_status": "the source is the submitter's own proposed specification, published for public comment on the list; it is not agreed text of any working group and a later revision can change it. The two behaviors these cases test (rejecting unsigned capability tokens, blocking dispatch when the required quorum is missing) are not defined by specification v0.1.4; they are proposed candidate tests, sourced from the pinned Rust regressions and the submitter's November 3 written input on the list (see sources and basis)",
  "readings": "an outcome is read as the record it presents: the decision and the members it carries are final, and no case asks what the implementation intended",
  "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
  "field_names": "outcome field names are this candidate's own representation; the source names values and rules, not a JSON binding",
  "sources": {
-  "spec": "NTI x LGD transition-contract spec v0.1.4 (proposed, draft for comment), released text as circulated on the list (attachment 2026Oct/att-0108), https://github.com/zhaoxinghua09-cell/nti-lgd-transition-contract at commit 0b9303a, sha256 83d88a70237aedb6bffdb446b8bd8e3e4df41291d2c178f33367a6e10d8fc763 of the retrieved copy (27477 bytes); the failure classes are encoded as Rust regressions in https://github.com/abisheakp197/nti-spec at commit 9193f5bdae54, file conformance/rust/nti_regressions.rs, tests unsigned_capability_cannot_grant_authority and required_quorum_blocks_dispatch_when_one_module_is_available",
-  "list_record": "public-agentprotocol 2026Oct/0108; the two vectors were proposed in the submitter's 2026-11-03 written input, quoted in 2026Nov/0022, and the NTI author formally requested a lab run in 2026Nov/0023"
+  "spec": "NTI x LGD transition-contract spec v0.1.4 (proposed, draft for comment), released text as circulated on the list (attachment 2026Oct/att-0108), https://github.com/zhaoxinghua09-cell/nti-lgd-transition-contract at commit 0b9303a, sha256 83d88a70237aedb6bffdb446b8bd8e3e4df41291d2c178f33367a6e10d8fc763 of the retrieved copy (27477 bytes). NOTE: this specification does not define either behavior these cases test; it is cited only as the context of the proposal, not as the basis of any case",
+  "nti_regressions.rs": "pinned Rust regression tests, https://github.com/abisheakp197/nti-spec at commit 9193f5bdae54a5fe3768c6a705cc24efe631f88f, file conformance/rust/nti_regressions.rs, tests unsigned_capability_cannot_grant_authority and required_quorum_blocks_dispatch_when_one_module_is_available (introduced by merged PR #24); these tests check decisions and execution counts. Permanent file link: https://github.com/abisheakp197/nti-spec/blob/9193f5bdae54a5fe3768c6a705cc24efe631f88f/conformance/rust/nti_regressions.rs",
+  "list_record": "public-agentprotocol 2026Oct/0108; the two vectors and their expected behaviors were proposed in the submitter's November 3 written input, recorded on the list at 2026Nov/0021 (independent restatement by the NTI author: an unsigned token must default to Deny, and an unmet quorum must remain Blocked) and quoted verbatim at 2026Nov/0022; the NTI author formally requested a lab run in 2026Nov/0023. https://lists.w3.org/Archives/Public/public-agentprotocol/2026Nov/0021.html ; https://lists.w3.org/Archives/Public/public-agentprotocol/2026Nov/0022.html"
  },
  "verdicts": [
   "conformant",
@@ -17,7 +18,10 @@
   {
    "id": "ZX-D01",
    "rule": "R-UNSIGNED",
-   "basis": ["spec", "nti_regressions.rs"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "the invited vector: a verifier receives a capability token with no signature and no attestation; denying fail-closed and recording an incomplete check is what the rule owes, because an unsigned token carries no attested capability",
    "input": {
     "capability_token": {
@@ -38,7 +42,10 @@
   {
    "id": "ZX-E01",
    "rule": "R-UNSIGNED",
-   "basis": ["spec", "nti_regressions.rs"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "the failure mode the vector locks out: the verifier returns ALLOW for the same unsigned token, inferring a pass from an unattested token",
    "input": {
     "capability_token": {
@@ -59,7 +66,10 @@
   {
    "id": "ZX-D02",
    "rule": "R-UNSIGNED",
-   "basis": ["spec"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "contrast case: the token is signed and attested, so honoring it is what the rule owes; the rule is about absence of attestation, not about refusal in general",
    "input": {
     "capability_token": {
@@ -80,7 +90,10 @@
   {
    "id": "ZX-E03",
    "rule": "R-UNSIGNED",
-   "basis": ["spec"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "a denial that still lets the action execute is not a fail-closed denial: whatever the decision string says, an execution performed under an unattested token breaks the rule",
    "input": {
     "capability_token": {
@@ -101,11 +114,18 @@
   {
    "id": "ZX-Q01",
    "rule": "R-QUORUM",
-   "basis": ["spec", "nti_regressions.rs"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "the invited vector: quorum is set to 2 and only 1 eligible module is available; the operation must remain blocked with zero executions, because no partial execution may stand in for the quorum guarantee",
    "input": {
-    "quorum": {"required": 2},
-    "eligible_modules": ["mod-a"],
+    "quorum": {
+     "required": 2
+    },
+    "eligible_modules": [
+     "mod-a"
+    ],
     "pending_operation": "export.audit_bundle"
    },
    "outcome": {
@@ -118,11 +138,18 @@
   {
    "id": "ZX-E02",
    "rule": "R-QUORUM",
-   "basis": ["spec", "nti_regressions.rs"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "the failure mode the vector locks out: the single eligible module executes once despite quorum=2, breaking the quorum guarantee",
    "input": {
-    "quorum": {"required": 2},
-    "eligible_modules": ["mod-a"],
+    "quorum": {
+     "required": 2
+    },
+    "eligible_modules": [
+     "mod-a"
+    ],
     "pending_operation": "export.audit_bundle"
    },
    "outcome": {
@@ -135,11 +162,19 @@
   {
    "id": "ZX-Q02",
    "rule": "R-QUORUM",
-   "basis": ["spec"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "contrast case: quorum is 2 and 2 eligible modules are available, so executing is what the rule owes; the rule is about an unmet quorum, not about execution in general",
    "input": {
-    "quorum": {"required": 2},
-    "eligible_modules": ["mod-a", "mod-b"],
+    "quorum": {
+     "required": 2
+    },
+    "eligible_modules": [
+     "mod-a",
+     "mod-b"
+    ],
     "pending_operation": "export.audit_bundle"
    },
    "outcome": {
@@ -152,11 +187,18 @@
   {
    "id": "ZX-E04",
    "rule": "R-QUORUM",
-   "basis": ["spec"],
+   "basis": [
+    "nti_regressions.rs",
+    "list_record"
+   ],
    "note": "with quorum unmet the operation must present the blocked state: an allow, even with zero executions, does not carry the quorum_unmet record the rule owes",
    "input": {
-    "quorum": {"required": 2},
-    "eligible_modules": ["mod-a"],
+    "quorum": {
+     "required": 2
+    },
+    "eligible_modules": [
+     "mod-a"
+    ],
     "pending_operation": "export.audit_bundle"
    },
    "outcome": {
@@ -166,5 +208,6 @@
    },
    "expect": "nonconformant"
   }
- ]
+ ],
+ "reason_strings": "the reason strings in these cases (unsigned_token_no_attested_capability, quorum_unmet) are candidate-defined values, chosen for this candidate's own representation. The Rust regression tests check decisions and execution counts and do not establish reason strings; check.py does not validate them"
 }
