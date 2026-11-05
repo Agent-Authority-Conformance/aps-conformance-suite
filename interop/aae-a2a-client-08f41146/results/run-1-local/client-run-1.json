@@ -1,0 +1,377 @@
+{
+  "format": "aae-a2a-crossrun/1",
+  "profile": "https://moltrust.ch/extensions/aae/v1",
+  "draft": "draft-kroehl-agentic-trust-aae-02",
+  "cases_commit": "08f41146ac0d24d0d3e6212256fd9f3f58079adb",
+  "cases_sha256": "sha256:831afbda4971b96da18d629c2244c79c724e88dae0a393b1034641654330008f",
+  "run_at": "2026-11-02T22:29:57Z",
+  "participant": {
+    "name": "local run (unpublished)"
+  },
+  "client": {
+    "implementation": "aae-client.mjs, independent Node.js client (no reference code)",
+    "repository": "local, unpublished",
+    "commit": "312ac0ef760e978d82cb9cfe40f9c8303702c32a",
+    "dirty": false
+  },
+  "server": {
+    "implementation": "aae-a2a-extension reference supplier",
+    "repository": "https://github.com/MoltyCel/aae-a2a-extension",
+    "commit": "08f41146ac0d24d0d3e6212256fd9f3f58079adb",
+    "dirty": false,
+    "agent_card": "http://127.0.0.1:8790/.well-known/agent-card.json"
+  },
+  "cases": [
+    {
+      "id": "XR-01",
+      "result": "pass",
+      "task_id": "667c8ce4-0279-4889-ac48-344e1fa105d4",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:84559612f1f46ec0a03f8c448905af075ba4edf66e529b15b50f69c85a68b59a",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-02",
+      "result": "pass",
+      "task_id": "9f6c5f36-8836-47f2-aabf-1d82d67f8151",
+      "task_state": "TASK_STATE_FAILED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:97ff82c176abd81ff1260c0885e3e25c2e651f153c6f4bcb8c6263e77d55198b",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-03",
+      "result": "pass",
+      "task_id": "8cd7d2f3-036b-44ed-a7fc-39b7bf1bdb91",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:edf9dc35873b6b0f0c46f8aeead5193a7dc97bcdecc6116ae68899b75e0e86d6",
+      "step": 7,
+      "reason_code": "max_transaction_value_exceeded"
+    },
+    {
+      "id": "XR-04",
+      "result": "pass",
+      "task_id": "5b72f596-f1f6-4635-85c2-24acffc8767d",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:20673ecb3bc45abe8dd1aa5455aa90397eb769e42f9af1cff56680f4204eb0c1",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-05",
+      "result": "pass",
+      "task_id": "59eb1d76-d811-449a-8ccb-ed802ed4cfce",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-06",
+      "result": "pass",
+      "task_id": "9e1fa95d-ad6f-46db-97eb-1006f5ea0a6a",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:84559612f1f46ec0a03f8c448905af075ba4edf66e529b15b50f69c85a68b59a",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-07",
+      "result": "pass",
+      "task_id": "58f90e82-3ad1-4b82-8f24-30df01ef3597",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 1,
+      "reason_code": "invalid_signature"
+    },
+    {
+      "id": "XR-08",
+      "result": "pass",
+      "task_id": "a354e941-1c60-44f4-9e96-6a6ce4e10e20",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 3,
+      "reason_code": "expired_not_after"
+    },
+    {
+      "id": "XR-09",
+      "result": "pass",
+      "task_id": "50dc0c92-ea28-4818-a4bf-e89cc5c9e694",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 4,
+      "reason_code": "challenge_signature_invalid"
+    },
+    {
+      "id": "XR-10",
+      "result": "pass",
+      "task_id": "e51b1432-0751-44b7-93d8-38f885d8f6af",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 6,
+      "reason_code": "action_not_in_mandate"
+    },
+    {
+      "id": "XR-11",
+      "result": "pass",
+      "task_id": "81e106ce-40ea-4eda-9abf-6a54620aa4df",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 7,
+      "reason_code": "domain_not_in_allowlist"
+    },
+    {
+      "id": "XR-12",
+      "result": "pass",
+      "jsonrpc_code": -32008
+    },
+    {
+      "id": "XR-13",
+      "result": "pass",
+      "jsonrpc_code": -32602,
+      "reason_code": "aae_missing"
+    },
+    {
+      "id": "XR-14",
+      "result": "pass",
+      "task_id": "ad05613e-8e73-407d-bcb5-38a99d11e736",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-15",
+      "result": "pass",
+      "task_id": "6a534d4b-4f50-4210-9f78-746c0079d99c",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 4,
+      "reason_code": "iat_too_old"
+    },
+    {
+      "id": "XR-16",
+      "result": "pass",
+      "task_id": "cec491ac-35db-4f1a-9216-2e4a34f72a81",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "XR-17",
+      "result": "pass",
+      "task_id": "45da2dfc-c5e2-466a-8350-5b49ab77b5a7",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 4,
+      "reason_code": "iat_in_future"
+    },
+    {
+      "id": "XR-18",
+      "result": "pass",
+      "task_id": "bbf44e60-294c-4a1d-92b7-abef7db11302",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 2,
+      "reason_code": "payload_not_json"
+    },
+    {
+      "id": "XR-19",
+      "result": "pass",
+      "task_id": "6fee3b35-d622-482d-8638-459a2ae4b3e7",
+      "task_state": "TASK_STATE_REJECTED",
+      "verdict": "REJECT",
+      "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+      "step": 2,
+      "reason_code": "payload_not_json"
+    },
+    {
+      "id": "XR-20",
+      "result": "pass",
+      "attempts": [
+        {
+          "task_id": "2d792e5f-ff54-4ba9-822d-9b622949f483",
+          "task_state": "TASK_STATE_COMPLETED",
+          "verdict": "ACCEPT",
+          "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+          "steps_passed": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "task_id": "932db6fc-5eee-4ac2-b9bc-24217829da98",
+          "task_state": "TASK_STATE_REJECTED",
+          "verdict": "REJECT",
+          "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+          "step": 5,
+          "reason_code": "single_use_already_consumed"
+        }
+      ]
+    },
+    {
+      "id": "XR-21",
+      "result": "pass",
+      "task_id": "3c286a3a-4575-413f-8c20-9afc200e9d2a",
+      "task_state": "TASK_STATE_INPUT_REQUIRED",
+      "verdict": "PENDING",
+      "request_digest": "sha256:91d816ca447777616f133386a3be2d0129be4e7a5edd29b5f7aabd6b2aa26c70",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ]
+    },
+    {
+      "id": "XR-22",
+      "result": "pass",
+      "task_id": "bcfcc49b-c311-4e44-9c88-6823529f1c58",
+      "task_state": "TASK_STATE_COMPLETED",
+      "verdict": "ACCEPT",
+      "request_digest": "sha256:91d816ca447777616f133386a3be2d0129be4e7a5edd29b5f7aabd6b2aa26c70",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ratification_status": "RATIFIED"
+    },
+    {
+      "id": "XR-23",
+      "result": "pass",
+      "task_id": "aacbffea-17a2-4583-94b1-0dad57db2cd0",
+      "task_state": "TASK_STATE_INPUT_REQUIRED",
+      "verdict": "PENDING",
+      "request_digest": "sha256:91d816ca447777616f133386a3be2d0129be4e7a5edd29b5f7aabd6b2aa26c70",
+      "steps_passed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ],
+      "ratification_status": "REJECTED"
+    },
+    {
+      "id": "XR-24",
+      "result": "pass",
+      "attempts": [
+        {
+          "task_id": "f74c064d-c344-449a-9450-488da7fd1223",
+          "task_state": "TASK_STATE_COMPLETED",
+          "verdict": "ACCEPT",
+          "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+          "steps_passed": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "task_id": "307eb078-74e7-4344-a21d-0c658c82e67a",
+          "task_state": "TASK_STATE_COMPLETED",
+          "verdict": "ACCEPT",
+          "request_digest": "sha256:7081684b67799fdd4045a25d028f770a8254746ff279dbabb0486bdb7eeb4176",
+          "steps_passed": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "pass": 24,
+    "fail": 0,
+    "skipped": 0
+  }
+}

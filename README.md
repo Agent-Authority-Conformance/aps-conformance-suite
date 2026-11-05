@@ -215,6 +215,7 @@ own mode, authorship and pins; open it to read them.
 |---|---|
 | `interop/a2a-go-368-jcs` | [`RUN.md`](interop/a2a-go-368-jcs/RUN.md) |
 | `interop/a2a-go-368-jcs-ea003f9` | [`RUN.md`](interop/a2a-go-368-jcs-ea003f9/RUN.md) |
+| `interop/aae-a2a-client-08f41146` | [`RUN.md`](interop/aae-a2a-client-08f41146/RUN.md) |
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
 | `interop/agent-passport-v2-readers-407ca2d5` | [`RUN.md`](interop/agent-passport-v2-readers-407ca2d5/RUN.md) |
 | `interop/aos-catalog-lra-cold-3e882bc` | [`run-report.md`](interop/aos-catalog-lra-cold-3e882bc/run-report.md) |
@@ -248,12 +249,14 @@ own mode, authorship and pins; open it to read them.
 | `interop/priorseal-aps-payment-limit-d749d269` | [`run-report.md`](interop/priorseal-aps-payment-limit-d749d269/run-report.md) |
 | `interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376` | [`RUN.md`](interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376/RUN.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
+| `interop/rttp-iqa-aae-moltycel-vectors-6bb462f` | [`README.md`](interop/rttp-iqa-aae-moltycel-vectors-6bb462f/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417/README.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
 | `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
 | `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
+| `interop/wasmagent-aep-0.1.12-blind` | [`RUN.md`](interop/wasmagent-aep-0.1.12-blind/RUN.md) |
 | `interop/wasmagent-aep-2026-09-13-03` | [`RUN.md`](interop/wasmagent-aep-2026-09-13-03/RUN.md) |
 | `interop/x402-receipts-debc94f` | [`RUN.md`](interop/x402-receipts-debc94f/RUN.md) |
 

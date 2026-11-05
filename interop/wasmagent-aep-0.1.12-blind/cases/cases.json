@@ -1,0 +1,59 @@
+{
+ "extra_key_id": "extra-key-01",
+ "cases": [
+  {
+   "path": "X0-positive-control.json",
+   "layer": "authenticity",
+   "expected": "dsse-valid",
+   "why": "control: correct profile, key extra-key-01 registered for this run only"
+  },
+  {
+   "path": "X1-unknown-keyid.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "keyid absent from verifying_keys.by_keyid"
+  },
+  {
+   "path": "X2-subject-digest-wrong-predicate-right.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "statement predicate equals record, subject digest does not match it"
+  },
+  {
+   "path": "X3-predicate-differs-digest-consistent.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "subject digest matches the statement predicate, but the predicate is not the record"
+  },
+  {
+   "path": "X3b-predicate-differs-digest-matches-record.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "subject digest matches the record, statement predicate is not the record: only the predicate binding check can catch it"
+  },
+  {
+   "path": "X4-two-subjects.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "IMPLEMENTER.md: the Statement carries exactly one subject"
+  },
+  {
+   "path": "X5-count-below-observed-grades.json",
+   "layer": "semantic",
+   "expected": "invalid",
+   "why": "two distinct grades observed but count says one authorization"
+  },
+  {
+   "path": "X6-count-with-floor-consistent.json",
+   "layer": "semantic",
+   "expected": "valid",
+   "why": "count 3, two grades, floor is the weakest"
+  },
+  {
+   "path": "X7-legacy-signature-not-derived.json",
+   "layer": "authenticity",
+   "expected": "invalid",
+   "why": "legacy signature field must derive from signatures[0]; here it differs"
+  }
+ ]
+}
