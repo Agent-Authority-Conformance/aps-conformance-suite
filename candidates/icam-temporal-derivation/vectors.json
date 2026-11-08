@@ -24,7 +24,7 @@
     {
       "id": "TD-B02",
       "rule": "DERIVE",
-      "case_status": "normative",
+      "case_status": "convention_specific",
       "source_time": "explicit",
       "input": {
         "verifier_now_unix_s": 1100,
@@ -72,7 +72,7 @@
     {
       "id": "TD-B05",
       "rule": "DERIVE",
-      "case_status": "normative",
+      "case_status": "convention_specific",
       "source_time": "explicit",
       "input": {
         "verifier_now_unix_s": 1100,
@@ -136,7 +136,7 @@
     {
       "id": "TD-N03",
       "rule": "DERIVE",
-      "case_status": "normative",
+      "case_status": "convention_specific",
       "source_time": "explicit",
       "input": {
         "verifier_now_unix_s": 1100,
@@ -152,7 +152,7 @@
     {
       "id": "TD-N04",
       "rule": "DERIVE",
-      "case_status": "normative",
+      "case_status": "convention_specific",
       "source_time": "explicit",
       "input": {
         "verifier_now_unix_s": 1100,
