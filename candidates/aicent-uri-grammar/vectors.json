@@ -1,0 +1,340 @@
+{
+ "label": "aicent-uri-grammar",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "case_style": "string-level: each case is a URI (or scheme-carrying string) and an expected grammar decision; the checker re-derives the decision from the ABNF and exclusions of the source text",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 4.1 (Syntax) and 4.2 (Reserved Characters and Exclusions) are used"
+ },
+ "verdicts": [
+  "accept",
+  "reject",
+  "ambiguous"
+ ],
+ "tightening_note": "UG-N15 and UG-N16 carry status authoritative-tightening: the leading-hyphen rejection follows the author decision of 2026-11-09 and the -03 revision, not the literal ABNF of -02",
+ "cases": [
+  {
+   "id": "UG-P01",
+   "rule": "R-GRAMMAR",
+   "name": "draft sec. 4.1 example, no action",
+   "uri": "rttp://f3b2a1c4.pillar.example",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "hash-intent (8 lowhex), no action; the default operation applies"
+  },
+  {
+   "id": "UG-P02",
+   "rule": "R-GRAMMAR",
+   "name": "draft sec. 4.1 example with action",
+   "uri": "rttp://f3b2a1c4.pillar.example/vessel",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ]
+  },
+  {
+   "id": "UG-P03",
+   "rule": "R-GRAMMAR",
+   "name": "draft sec. 4.1 name-intent example",
+   "uri": "rttp://organ.pillar.example/verify",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ]
+  },
+  {
+   "id": "UG-P04",
+   "rule": "R-GRAMMAR",
+   "name": "8 non-lowhex letters parse as a name-intent",
+   "uri": "rttp://abcdefgh.pillar.example/status",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "8 characters but 'g' and 'h' are outside lowhex, so the ABNF takes the name-intent branch; both forms are opaque to a client"
+  },
+  {
+   "id": "UG-P05",
+   "rule": "R-GRAMMAR",
+   "name": "8 lowhex digits parse as a hash-intent",
+   "uri": "rttp://12345678.pillar.example/status",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "8 lowhex digits take the hash-intent branch"
+  },
+  {
+   "id": "UG-P06",
+   "rule": "R-GRAMMAR",
+   "name": "hyphens and digits inside every segment",
+   "uri": "rttp://a-b.c-d.0-0/w-1",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "the segment set 1*( %x61-7A / DIGIT / \"-\" ) allows hyphens and digits in every segment and the action"
+  },
+  {
+   "id": "UG-P07",
+   "rule": "R-GRAMMAR",
+   "name": "7 hex-shaped characters are a plain name-intent",
+   "uri": "rttp://f3b2a1c.pillar.example",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "only exactly 8 lowhex digits take the hash-intent branch; shorter hex-shaped labels are ordinary name-intents"
+  },
+  {
+   "id": "UG-P08",
+   "rule": "R-GRAMMAR",
+   "name": "trailing hyphen in a segment (ABNF literal)",
+   "uri": "rttp://organ-.pillar-.example-/look",
+   "expect": "accept",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "note": "1*( ... / \"-\" ) admits a hyphen in any position including last; only the leading-hyphen position was tightened (author decision 2026-11-09, see UG-N15/UG-N16) - the -03 text will state this boundary explicitly"
+  },
+  {
+   "id": "UG-N01",
+   "rule": "R-GRAMMAR",
+   "name": "uppercase intent is invalid input, not a formatting difference",
+   "uri": "rttp://F3B2A1C4.pillar.example/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "uppercase",
+   "note": "the canonical form is lowercase US-ASCII: a parser MUST NOT normalise it, because two distinct strings would then map onto one address"
+  },
+  {
+   "id": "UG-N02",
+   "rule": "R-GRAMMAR",
+   "name": "uppercase action",
+   "uri": "rttp://f3b2a1c4.pillar.example/VESSEL",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "uppercase"
+  },
+  {
+   "id": "UG-N03",
+   "rule": "R-GRAMMAR",
+   "name": "uppercase scheme prefix",
+   "uri": "RTTP://f3b2a1c4.pillar.example/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "uppercase",
+   "note": "the canonical form is lowercase US-ASCII and applies to the scheme too"
+  },
+  {
+   "id": "UG-N04",
+   "rule": "R-GRAMMAR",
+   "name": "no rttps scheme and no fallback",
+   "uri": "rttps://f3b2a1c4.pillar.example/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "scheme",
+   "note": "there is no \"rttps\" scheme and no fallback"
+  },
+  {
+   "id": "UG-N05",
+   "rule": "R-GRAMMAR",
+   "name": "userinfo is not defined",
+   "uri": "rttp://subject@f3b2a1c4.pillar.example/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "userinfo",
+   "note": "neither scheme defines userinfo, port, query or fragment; a URI carrying any of them is not valid"
+  },
+  {
+   "id": "UG-N06",
+   "rule": "R-GRAMMAR",
+   "name": "port is not defined",
+   "uri": "rttp://f3b2a1c4.pillar.example:443/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "port"
+  },
+  {
+   "id": "UG-N07",
+   "rule": "R-GRAMMAR",
+   "name": "query is not defined",
+   "uri": "rttp://f3b2a1c4.pillar.example/vessel?x=1",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "query"
+  },
+  {
+   "id": "UG-N08",
+   "rule": "R-GRAMMAR",
+   "name": "fragment is not defined",
+   "uri": "rttp://f3b2a1c4.pillar.example/vessel#f",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "reject_reason": "fragment",
+   "note": "a fragment MUST NOT be used to address an action"
+  },
+  {
+   "id": "UG-N09",
+   "rule": "R-GRAMMAR",
+   "name": "authority with two segments",
+   "uri": "rttp://a.b",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "segments",
+   "note": "the authority is exactly three dot-separated segments"
+  },
+  {
+   "id": "UG-N10",
+   "rule": "R-GRAMMAR",
+   "name": "authority with four segments",
+   "uri": "rttp://a.b.c.d/e",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "segments"
+  },
+  {
+   "id": "UG-N11",
+   "rule": "R-GRAMMAR",
+   "name": "empty middle segment",
+   "uri": "rttp://a..b",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "segments",
+   "note": "each segment is 1*( ... ) and cannot be empty"
+  },
+  {
+   "id": "UG-N12",
+   "rule": "R-GRAMMAR",
+   "name": "underscore is outside the segment set",
+   "uri": "rttp://a_b.c.d",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "charset",
+   "note": "the segment set is %x61-7A / DIGIT / \"-\""
+  },
+  {
+   "id": "UG-N13",
+   "rule": "R-GRAMMAR",
+   "name": "second path segment",
+   "uri": "rttp://f3b2a1c4.pillar.example/a/b",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "path",
+   "note": "the action is a single path segment"
+  },
+  {
+   "id": "UG-N14",
+   "rule": "R-GRAMMAR",
+   "name": "empty action (trailing slash only)",
+   "uri": "rttp://f3b2a1c4.pillar.example/",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "path",
+   "note": "the action is \"/\" 1*( ... ) and needs at least one character"
+  },
+  {
+   "id": "UG-N17",
+   "rule": "R-GRAMMAR",
+   "name": "leading whitespace before the scheme",
+   "uri": " rttp://f3b2a1c4.pillar.example/vessel",
+   "expect": "reject",
+   "status": "normative",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "whitespace",
+   "note": "whitespace is not in any allowed set of the ABNF, in any position"
+  },
+  {
+   "id": "UG-N15",
+   "rule": "R-GRAMMAR",
+   "name": "leading hyphen in the intent segment",
+   "uri": "rttp://-abc.pillar.example/vessel",
+   "expect": "reject",
+   "status": "authoritative-tightening",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "leading_hyphen",
+   "note": "the sec. 4.1 ABNF literal 1*( %x61-7A / DIGIT / \"-\" ) admits a leading hyphen, but the published conformance vectors reject it; the -03 revision tightens the grammar accordingly (author decision 2026-11-09). Until -03 is posted this case tests the tightened reading, and a strict reading of -02 alone would score it unsettled"
+  },
+  {
+   "id": "UG-N16",
+   "rule": "R-GRAMMAR",
+   "name": "leading hyphen in the pillar segment",
+   "uri": "rttp://abc.-pillar.example/vessel",
+   "expect": "reject",
+   "status": "authoritative-tightening",
+   "basis": [
+    "sect-4.1"
+   ],
+   "reject_reason": "leading_hyphen",
+   "note": "same tightening as UG-N15, applied to every segment position"
+  },
+  {
+   "id": "UG-A01",
+   "rule": "R-GRAMMAR",
+   "name": "percent-encoded octet: MAY reject rather than normalise",
+   "uri": "rttp://f3b2a1c4.pillar.example/%61ction",
+   "expect": "ambiguous",
+   "status": "normative",
+   "basis": [
+    "sect-4.2"
+   ],
+   "note": "a canonical URI contains no percent-encoded octets, and a parser MAY reject such input rather than normalising it; both licensed decisions conform, so the case cannot be settled either way"
+  }
+ ]
+}
