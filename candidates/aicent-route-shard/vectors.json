@@ -1,0 +1,286 @@
+{
+ "label": "aicent-route-shard",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "case_style": "two kinds: R-SHARD cases give an authority and the expected 16-octet ROUTE_SHARD (hex) the checker recomputes; property cases give a derivation input or a pair and an outcome, and state whether the outcome satisfies the source text",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 4.4 (The Address: ROUTE_SHARD Derivation), 4.2 (Reserved Characters and Exclusions) and 9.1 (The rttp scheme, display-form paragraph) are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant"
+ ],
+ "cases": [
+  {
+   "id": "RS-D01",
+   "rule": "R-SHARD",
+   "status": "normative",
+   "name": "the draft sec. 4.1 example authority derives to the sec. 7.2.1 ROUTE_SHARD",
+   "input": {
+    "authority": "f3b2a1c4.pillar.example"
+   },
+   "expect_shard_hex": "557c8154d3780cb78cc5fa1bd72b331c",
+   "basis": [
+    "sect-4.4",
+    "sect-7.2.1"
+   ],
+   "note": "ROUTE_SHARD = SHA-256(ASCII(canonical_authority))[0:16]; the published vector pins the derivation cross-section"
+  },
+  {
+   "id": "RS-D02",
+   "rule": "R-SHARD",
+   "status": "normative",
+   "name": "a name-intent authority derives deterministically",
+   "input": {
+    "authority": "brain.epoekie.example"
+   },
+   "expect_shard_hex": "1c9a4d9520e1a823ad60a7b367a33b8a",
+   "basis": [
+    "sect-4.4"
+   ]
+  },
+  {
+   "id": "RS-D03",
+   "rule": "R-SHARD",
+   "status": "normative",
+   "name": "a digits-and-hyphens authority derives deterministically",
+   "input": {
+    "authority": "0-0.node-7.example-net"
+   },
+   "expect_shard_hex": "4db4cc93f4c9db93270853ddaa22f2e2",
+   "basis": [
+    "sect-4.4"
+   ]
+  },
+  {
+   "id": "RS-B01",
+   "rule": "R-ACTION-INDEPENDENT",
+   "status": "normative",
+   "name": "two actions on one authority yield one address",
+   "input": {
+    "uri_a": "rttp://f3b2a1c4.pillar.example/vessel",
+    "uri_b": "rttp://f3b2a1c4.pillar.example/verify"
+   },
+   "outcome": {
+    "same_route_shard": true
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.4"
+   ],
+   "note": "the derivation takes the authority alone: the scheme name, // and any action are excluded; an address is where, not what"
+  },
+  {
+   "id": "RS-B02",
+   "rule": "R-ACTION-INDEPENDENT",
+   "status": "normative",
+   "name": "actions included in the derivation split one subject into several",
+   "input": {
+    "uri_a": "rttp://f3b2a1c4.pillar.example/vessel",
+    "uri_b": "rttp://f3b2a1c4.pillar.example/verify"
+   },
+   "outcome": {
+    "same_route_shard": false
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-4.4"
+   ],
+   "note": "were the action to participate in derivation, two actions on one subject would become two addresses"
+  },
+  {
+   "id": "RS-B03",
+   "rule": "R-AUTHORITY-ONLY",
+   "status": "normative",
+   "name": "derivation from the bare authority matches the published address",
+   "input": {
+    "derivation_input": "f3b2a1c4.pillar.example"
+   },
+   "outcome": {
+    "route_shard_hex": "557c8154d3780cb78cc5fa1bd72b331c"
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.4"
+   ]
+  },
+  {
+   "id": "RS-B04",
+   "rule": "R-AUTHORITY-ONLY",
+   "status": "normative",
+   "name": "derivation fed the whole URI string (scheme and action included)",
+   "input": {
+    "derivation_input": "rttp://f3b2a1c4.pillar.example/vessel"
+   },
+   "outcome": {
+    "route_shard_hex": "437e89b8d2c646e01f96ff9c84461704"
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-4.4"
+   ],
+   "note": "the authority only: the scheme name, // and any action are excluded"
+  },
+  {
+   "id": "RS-B05",
+   "rule": "R-CANONICAL-FORM",
+   "status": "normative",
+   "name": "uppercase authority is rejected, not lowercased",
+   "input": {
+    "authority": "F3B2A1C4.PILLAR.EXAMPLE"
+   },
+   "outcome": {
+    "derivation_refused": true
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.2",
+    "sect-4.4"
+   ],
+   "note": "the canonical form is lowercase US-ASCII; uppercase is invalid input and a parser MUST NOT normalise it"
+  },
+  {
+   "id": "RS-B06",
+   "rule": "R-CANONICAL-FORM",
+   "status": "normative",
+   "name": "uppercase authority silently lowercased before hashing",
+   "input": {
+    "authority": "F3B2A1C4.PILLAR.EXAMPLE"
+   },
+   "outcome": {
+    "derivation_refused": false,
+    "route_shard_hex": "557c8154d3780cb78cc5fa1bd72b331c"
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-4.2",
+    "sect-4.4"
+   ],
+   "note": "normalising would map two distinct strings onto one address"
+  },
+  {
+   "id": "RS-B07",
+   "rule": "R-CANONICAL-FORM",
+   "status": "normative",
+   "name": "non-ASCII authority is refused",
+   "input": {
+    "authority": "f3b2a1c4.pill\u00e1r.example"
+   },
+   "outcome": {
+    "derivation_refused": true
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.4"
+   ],
+   "note": "canonical_authority is lowercase US-ASCII; ASCII() of non-ASCII input is undefined and the derivation refuses"
+  },
+  {
+   "id": "RS-B08",
+   "rule": "R-CANONICAL-FORM",
+   "status": "normative",
+   "name": "non-ASCII authority coerced into the hash",
+   "input": {
+    "authority": "f3b2a1c4.pill\u00e1r.example"
+   },
+   "outcome": {
+    "derivation_refused": false,
+    "route_shard_hex": "037e28922de2ff474e621313cd68be62"
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-4.4"
+   ]
+  },
+  {
+   "id": "RS-B09",
+   "rule": "R-FULL-AUTHORITY",
+   "status": "normative",
+   "name": "derivation fed the intent segment alone",
+   "input": {
+    "derivation_input": "f3b2a1c4"
+   },
+   "outcome": {
+    "route_shard_hex": "24a1c6f17abb7f9041edeb8db20ea7ac"
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-4.4"
+   ],
+   "note": "canonical_authority is intent.pillar.root; the pillar and root participate in the derivation"
+  },
+  {
+   "id": "RS-B10",
+   "rule": "R-FULL-AUTHORITY",
+   "status": "normative",
+   "name": "derivation fed the full authority (same facts, correct form)",
+   "input": {
+    "derivation_input": "f3b2a1c4.pillar.example"
+   },
+   "outcome": {
+    "route_shard_hex": "557c8154d3780cb78cc5fa1bd72b331c"
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.4"
+   ]
+  },
+  {
+   "id": "RS-B11",
+   "rule": "R-DISTINCT-AUTHORITIES",
+   "status": "normative",
+   "name": "two distinct authorities yield distinct addresses",
+   "input": {
+    "authority_a": "f3b2a1c4.pillar.example",
+    "authority_b": "f3b2a1c4.other.example"
+   },
+   "outcome": {
+    "same_route_shard": false
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-4.4",
+    "sect-9.1"
+   ],
+   "note": "substitution of the authority in use would cost approximately 2^128 operations; this is a spot check, not a collision search"
+  },
+  {
+   "id": "RS-B12",
+   "rule": "R-DISTINCT-AUTHORITIES",
+   "status": "normative",
+   "name": "routing by the 8-hex display form alone",
+   "input": {
+    "authority_a": "f3b2a1c4.pillar.example",
+    "authority_b": "f3b2a1c4.other.example"
+   },
+   "outcome": {
+    "routed_by_display_form": true,
+    "treated_as_same_subject": true
+   },
+   "expect": "nonconformant",
+   "basis": [
+    "sect-9.1"
+   ],
+   "note": "the 8-hex-digit display forms fix a 32-bit space whose birthday bound makes them unfit as sole identifiers; they MUST NOT be used as the sole identifier of a subject"
+  },
+  {
+   "id": "RS-B13",
+   "rule": "R-DISTINCT-AUTHORITIES",
+   "status": "normative",
+   "name": "display form used as a convenience over the full hash form",
+   "input": {
+    "authority_a": "f3b2a1c4.pillar.example",
+    "authority_b": "f3b2a1c4.other.example"
+   },
+   "outcome": {
+    "routed_by_display_form": false,
+    "treated_as_same_subject": false
+   },
+   "expect": "conformant",
+   "basis": [
+    "sect-9.1"
+   ],
+   "note": "the display conveniences ride the full hash forms and the derivation keeps the two authorities distinct"
+  }
+ ]
+}
