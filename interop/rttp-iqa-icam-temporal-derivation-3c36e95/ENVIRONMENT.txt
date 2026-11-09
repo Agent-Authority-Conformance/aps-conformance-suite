@@ -1,0 +1,4 @@
+Windows, CPython 3.14.2
+command: python -I icam_runner.py vendor/vectors.json run-output.json
+exit code: 0
+corpus: lab main candidates/icam-temporal-derivation @ 3c36e95 (PR #218 merged 2026-11-08T17:06:55Z)

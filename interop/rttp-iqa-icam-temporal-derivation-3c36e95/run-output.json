@@ -1,0 +1,353 @@
+{
+ "candidate": {
+  "name": "icam-temporal-derivation",
+  "revision": "0.2.0-prepublication",
+  "vendor_files_sha256": {
+   "CANDIDATE.md": "6a56c305ad76a07860440cf178dca19089f1355cf872cd6b83d4fc68952a1d5a",
+   "CHECKSUMS.sha256": "befa7978f6602a045aabfe88639ac4fcc9c5587590231a8f73736fe3be8e0827",
+   "RUN_REPORT.txt": "7a62f86bc09097c40e2161b136ea8a7d26a7dae7902512cd8ac94fefd9abacb6",
+   "check.py": "7deaa6198b7e93246d8a07c472b9232f85f09a9cb1b8fe5314a77776c8af4451",
+   "metamorphic.py": "104f15bc0ad145037ce8a9bfe2057f9517ac210a0590350bf9c6b478cd48cba8",
+   "mutate.py": "928d63fbf93f3cb94700741dbe0e5f76959cbbe2e08d4753c9ca8956c5e2214c",
+   "vectors.json": "8fa9e4aef50e79a02d03196c0873b8f6cd3e70f382aacda2796d1bff168185e7"
+  },
+  "vendor_ref": "3c36e95"
+ },
+ "mode": "independent (non-author-produced) run of author-produced vectors",
+ "mutation_battery": {
+  "always-expired": [
+   "TD-B01",
+   "TD-B02",
+   "TD-B04",
+   "TD-N02",
+   "TD-N04",
+   "TD-N06",
+   "TD-X01",
+   "TD-X03",
+   "TD-X04",
+   "TD-X05",
+   "TD-X06",
+   "TD-B07"
+  ],
+  "always-fresh": [
+   "TD-B03",
+   "TD-B05",
+   "TD-B06",
+   "TD-N01",
+   "TD-N03",
+   "TD-N05",
+   "TD-X02",
+   "TD-X03",
+   "TD-X04",
+   "TD-X05",
+   "TD-X06",
+   "TD-B08"
+  ],
+  "hardcoded-120s-window": [
+   "TD-B03",
+   "TD-B05",
+   "TD-B06",
+   "TD-N01",
+   "TD-N03",
+   "TD-N05",
+   "TD-X02",
+   "TD-X03",
+   "TD-X06",
+   "TD-B07",
+   "TD-B08"
+  ],
+  "trusts-advisory-flag": [
+   "TD-N01",
+   "TD-N02",
+   "TD-N03",
+   "TD-N04",
+   "TD-X04",
+   "TD-X06",
+   "TD-B08"
+  ],
+  "undeclared-boundary-inclusive": [
+   "TD-X03"
+  ],
+  "wire-gate-rejects-equality": [
+   "TD-B01",
+   "TD-B02",
+   "TD-B03",
+   "TD-B04",
+   "TD-B05",
+   "TD-B06",
+   "TD-N01",
+   "TD-N02",
+   "TD-N03",
+   "TD-N04",
+   "TD-N05",
+   "TD-N06",
+   "TD-X01",
+   "TD-X02",
+   "TD-X03",
+   "TD-X06",
+   "TD-W02",
+   "TD-W04",
+   "TD-B07",
+   "TD-B08"
+  ]
+ },
+ "normative_basis": {
+  "draft": "draft-li-rttp-iqa-addressing-02",
+  "sections": [
+   "6.1",
+   "6.3",
+   "7.2"
+  ],
+  "txt_sha256": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044"
+ },
+ "operator": "ShaoBao Li (Lee) / Aicent Stack",
+ "records": [
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-B01",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "convention_specific",
+   "expected": "fresh",
+   "id": "TD-B02",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-B03",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-B04",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "convention_specific",
+   "expected": "expired",
+   "id": "TD-B05",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-B06",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-N01",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-N02",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "convention_specific",
+   "expected": "expired",
+   "id": "TD-N03",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "convention_specific",
+   "expected": "fresh",
+   "id": "TD-N04",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-N05",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-N06",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-X01",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-X02",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1 (SHOULD declaration, interpretive only)",
+   "case_status": "interpretive",
+   "expected": "boundary_undetermined",
+   "id": "TD-X03",
+   "layer": "reliance",
+   "observed": "boundary_undetermined",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "ICAM-local",
+   "case_status": "local_precondition",
+   "expected": "insufficient_input",
+   "id": "TD-X04",
+   "layer": "reliance",
+   "observed": "insufficient_input",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "ICAM-local",
+   "case_status": "local_precondition",
+   "expected": "insufficient_input",
+   "id": "TD-X05",
+   "layer": "reliance",
+   "observed": "insufficient_input",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "ICAM-local",
+   "case_status": "local_precondition",
+   "expected": "invalid_convention",
+   "id": "TD-X06",
+   "layer": "reliance",
+   "observed": "invalid_convention",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "7.2 step 2",
+   "case_status": "normative",
+   "expected": "time_gate_pass",
+   "id": "TD-W01",
+   "layer": "wire_time_gate_only",
+   "observed": "time_gate_pass",
+   "rule": "WIRE_TIME_GATE"
+  },
+  {
+   "agree": true,
+   "basis": "7.2 step 2",
+   "case_status": "normative",
+   "expected": "time_gate_pass",
+   "id": "TD-W02",
+   "layer": "wire_time_gate_only",
+   "observed": "time_gate_pass",
+   "rule": "WIRE_TIME_GATE"
+  },
+  {
+   "agree": true,
+   "basis": "7.2 step 2",
+   "case_status": "normative",
+   "expected": "time_gate_reject",
+   "id": "TD-W03",
+   "layer": "wire_time_gate_only",
+   "observed": "time_gate_reject",
+   "rule": "WIRE_TIME_GATE"
+  },
+  {
+   "agree": true,
+   "basis": "7.2 step 2",
+   "case_status": "normative",
+   "expected": "time_gate_pass",
+   "id": "TD-W04",
+   "layer": "wire_time_gate_only",
+   "observed": "time_gate_pass",
+   "rule": "WIRE_TIME_GATE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "fresh",
+   "id": "TD-B07",
+   "layer": "reliance",
+   "observed": "fresh",
+   "rule": "DERIVE"
+  },
+  {
+   "agree": true,
+   "basis": "6.1",
+   "case_status": "normative",
+   "expected": "expired",
+   "id": "TD-B08",
+   "layer": "reliance",
+   "observed": "expired",
+   "rule": "DERIVE"
+  }
+ ],
+ "runner": "icam-runner",
+ "summary": {
+  "agree": 24,
+  "cases": 24,
+  "mutants": 6,
+  "mutants_killed": 6
+ }
+}

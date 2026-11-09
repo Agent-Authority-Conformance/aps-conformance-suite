@@ -250,6 +250,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376` | [`RUN.md`](interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376/RUN.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
 | `interop/rttp-iqa-aae-moltycel-vectors-6bb462f` | [`README.md`](interop/rttp-iqa-aae-moltycel-vectors-6bb462f/README.md) |
+| `interop/rttp-iqa-icam-temporal-derivation-3c36e95` | [`README.md`](interop/rttp-iqa-icam-temporal-derivation-3c36e95/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417/README.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
