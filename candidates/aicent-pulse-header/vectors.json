@@ -1,0 +1,431 @@
+{
+ "label": "aicent-pulse-header",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "case_style": "two stages: 'frame' cases are concrete 128-octet headers (hex) whose accept/reject decisions the checker re-derives from the field layout and the fail-closed list; 'behavior' cases give a frame and a role and score the outcome the implementation produced",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 7.1 (The Pulse Header), 7.1.1 (The Extension Block), 7.1.2 (Time Fields of the Pulse), 4.1 (Syntax) and 4.3 (Default Operation) are used"
+ },
+ "params": {
+  "authority": "f3b2a1c4.pillar.example",
+  "route_shard_hex": "557c8154d3780cb78cc5fa1bd72b331c",
+  "aid_origin_hex": "92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db",
+  "sequence_id": 7,
+  "timestamp_ns": 1700000000000000000,
+  "priority": 1
+ },
+ "verdicts": [
+  "accept",
+  "reject",
+  "conformant",
+  "nonconformant"
+ ],
+ "cases": [
+  {
+   "id": "PH-P01",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "URI-anchored frame with action 'verify'",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+   "expect": "accept",
+   "basis": [
+    "sect-7.1",
+    "sect-7.1.1"
+   ],
+   "note": "ROUTE_SHARD is the draft sec. 4.4 derivation of the sec. 4.1 example authority; ACTION is written verbatim with ACTION_LEN=6 and zero padding"
+  },
+  {
+   "id": "PH-P02",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "no action, not URI-anchored (either, both or neither is allowed)",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0100000000000000000000000000000000000000000000000000",
+   "expect": "accept",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "ACTION and URI_ANCHORED are independent: a frame may carry either, both, or neither; ACTION_LEN=0 means the default operation applies"
+  },
+  {
+   "id": "PH-P03",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "pre-extension frame (SPEC_REV=0, block all zero)",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0000000000000000000000000000000000000000000000000000",
+   "expect": "accept",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "the 26 octets at 0x66-0x7F were reserved and all-zero before the extension; such a frame remains valid"
+  },
+  {
+   "id": "PH-N01",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "ACTION_LEN 17 (greater than 16)",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101117665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "action_len",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "'A frame with ACTION_LEN greater than 16 MUST be rejected'"
+  },
+  {
+   "id": "PH-N02",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "ACTION significant byte outside sec. 4.1 set ('V')",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101065665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "action_charset",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "the ACTION field contains a character outside the set of sec. 4.1 (lowercase a-z / DIGIT / '-')"
+  },
+  {
+   "id": "PH-N03",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "ACTION non-zero padding beyond significant length",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790100000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "action_padding",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "remaining bytes after the significant length MUST be 0x00"
+  },
+  {
+   "id": "PH-N04",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "SPEC_REV 2 (outside the known set)",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0201067665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "spec_rev",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "'SPEC_REV is outside the known set'"
+  },
+  {
+   "id": "PH-N05",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "SPEC_REV 0 with non-zero extension block",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0001067665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "spec_rev0_block",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "'SPEC_REV is 0 and the extension block is not all zero'"
+  },
+  {
+   "id": "PH-N06",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "SPEC_REV 1 with RESERVED non-zero",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000001000000000000",
+   "expect": "reject",
+   "reject_reason": "reserved",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "'SPEC_REV is 1 and RESERVED is not all zero'"
+  },
+  {
+   "id": "PH-N07",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "SPEC_REV 1 with unknown FLAGS bit set",
+   "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0102067665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "flags",
+   "basis": [
+    "sect-7.1.1"
+   ],
+   "note": "bit 0 = URI_ANCHORED; all other bits MUST be zero"
+  },
+  {
+   "id": "PH-N08",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "VERSION_ID 131 (this revision pins 130)",
+   "frame_hex": "525454500000000000000000000000000000008300000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "version",
+   "basis": [
+    "sect-7.1"
+   ],
+   "note": "field row: VERSION_ID - format version; 130 in this revision"
+  },
+  {
+   "id": "PH-N09",
+   "rule": "R-FRAME",
+   "stage": "frame",
+   "status": "normative",
+   "name": "RTTP_MAGIC wrong (0x52545458)",
+   "frame_hex": "525454580000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+   "expect": "reject",
+   "reject_reason": "magic",
+   "basis": [
+    "sect-7.1"
+   ],
+   "note": "field row: RTTP_MAGIC - 0x52545450 (ASCII \"RTTP\"); a reader validates a header with fixed comparisons"
+  },
+  {
+   "id": "PH-B01",
+   "rule": "R-ANCHORED-ROUTING",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "router forwards a URI_ANCHORED-clear frame globally",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0100067665726966790000000000000000000000000000000000",
+    "role": "router",
+    "outcome_kind": "forward"
+   },
+   "outcome": {
+    "forwarded_globally": true
+   },
+   "expect": "nonconformant",
+   "note": "implementations that route between nodes MUST require URI_ANCHORED to be set; when it is clear the ROUTE_SHARD carries no globally routable semantics",
+   "basis": [
+    "sect-7.1.1"
+   ]
+  },
+  {
+   "id": "PH-B02",
+   "rule": "R-ANCHORED-ROUTING",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "same frame dispatched locally only",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0100067665726966790000000000000000000000000000000000",
+    "role": "router",
+    "outcome_kind": "forward"
+   },
+   "outcome": {
+    "forwarded_globally": false
+   },
+   "expect": "conformant",
+   "note": "a clear URI_ANCHORED MAY be used only for dispatch local to a single sender",
+   "basis": [
+    "sect-7.1.1"
+   ]
+  },
+  {
+   "id": "PH-B03",
+   "rule": "R-UNKNOWN-VERB",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "unknown verb scored as safe via the default operation",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db01010a66726f626e696361746500000000000000000000000000",
+    "verb_known": false
+   },
+   "outcome": {
+    "inferred_safe_from_default_operation": true
+   },
+   "expect": "nonconformant",
+   "note": "on an unrecognised action verb an implementation MUST NOT infer safety from the default-operation statement of sec. 4.3",
+   "basis": [
+    "sect-7.1.1",
+    "sect-4.3"
+   ]
+  },
+  {
+   "id": "PH-B04",
+   "rule": "R-UNKNOWN-VERB",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "unknown verb held to explicit authorisation",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db01010a66726f626e696361746500000000000000000000000000",
+    "verb_known": false
+   },
+   "outcome": {
+    "inferred_safe_from_default_operation": false,
+    "required_explicit_authorisation": true
+   },
+   "expect": "conformant",
+   "note": "the verb MUST be treated as having unknown safety and either require explicit authorisation under the local security policy or be rejected",
+   "basis": [
+    "sect-7.1.1"
+   ]
+  },
+  {
+   "id": "PH-B05",
+   "rule": "R-UNKNOWN-VERB",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "unknown verb rejected outright",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db01010a66726f626e696361746500000000000000000000000000",
+    "verb_known": false
+   },
+   "outcome": {
+    "inferred_safe_from_default_operation": false,
+    "required_explicit_authorisation": false,
+    "rejected": true
+   },
+   "expect": "conformant",
+   "note": "rejection is the second licensed handling of an unrecognised verb",
+   "basis": [
+    "sect-7.1.1"
+   ]
+  },
+  {
+   "id": "PH-B12",
+   "rule": "R-UNKNOWN-VERB",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "unknown verb silently admitted without authorisation",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00004001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db01010a66726f626e696361746500000000000000000000000000",
+    "verb_known": false
+   },
+   "outcome": {
+    "inferred_safe_from_default_operation": false,
+    "required_explicit_authorisation": false,
+    "rejected": false
+   },
+   "expect": "nonconformant",
+   "note": "the verb MUST be treated as having unknown safety and either require explicit authorisation or be rejected; admitting it silently is neither",
+   "basis": [
+    "sect-7.1.1"
+   ]
+  },
+  {
+   "id": "PH-B06",
+   "rule": "R-TTL",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "receiver forwards a pulse received with TTL 0",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "role": "receiver"
+   },
+   "outcome": {
+    "forwarded": true
+   },
+   "expect": "nonconformant",
+   "note": "a receiver MUST NOT forward a pulse received with TTL_PULSE 0",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  },
+  {
+   "id": "PH-B07",
+   "rule": "R-TTL",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "receiver consumes (does not forward) a TTL-0 pulse",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000001557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "role": "receiver"
+   },
+   "outcome": {
+    "forwarded": false
+   },
+   "expect": "conformant",
+   "note": "the prohibition is on forwarding; consuming the pulse where it is received places no trust in the field",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  },
+  {
+   "id": "PH-B08",
+   "rule": "R-TTL",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "receiver forwards a TTL-2 pulse without decrementing",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000201557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "role": "receiver"
+   },
+   "outcome": {
+    "forwarded": true,
+    "forwarded_ttl": 2
+   },
+   "expect": "nonconformant",
+   "note": "a receiver MUST decrement the field before forwarding",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  },
+  {
+   "id": "PH-B09",
+   "rule": "R-TTL",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "receiver forwards a TTL-2 pulse with the field decremented",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000201557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "role": "receiver"
+   },
+   "outcome": {
+    "forwarded": true,
+    "forwarded_ttl": 1
+   },
+   "expect": "conformant",
+   "note": "forwarding after decrement is what the field is for",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  },
+  {
+   "id": "PH-B10",
+   "rule": "R-TIMESTAMP",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "pulse age read as a statement about the subject's standing",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000201557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "receiver_clock_ns": 1700000000500000000
+   },
+   "outcome": {
+    "computed_age_ns": 500000000,
+    "treated_age_as_standing_statement": true
+   },
+   "expect": "nonconformant",
+   "note": "a receiver MUST NOT treat TIMESTAMP, or the age it yields, as a statement about the subject's standing",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  },
+  {
+   "id": "PH-B11",
+   "rule": "R-TIMESTAMP",
+   "stage": "behavior",
+   "status": "normative",
+   "name": "pulse age computed offline from the bytes alone",
+   "input": {
+    "frame_hex": "525454500000000000000000000000000000008200000000000000000000000000000007000000000000000017979cfe362a00000201557c8154d3780cb78cc5fa1bd72b331c92f2d4ceee86d00deb7e66b3d7d2fc025f4d616d36ecbc1c9846467dd94249db0101067665726966790000000000000000000000000000000000",
+    "receiver_clock_ns": 1700000000500000000
+   },
+   "outcome": {
+    "computed_age_ns": 500000000,
+    "treated_age_as_standing_statement": false
+   },
+   "expect": "conformant",
+   "note": "a receiver that subtracts TIMESTAMP from its own clock obtains the pulse's age offline, from the bytes alone",
+   "basis": [
+    "sect-7.1.2"
+   ]
+  }
+ ]
+}
