@@ -1,0 +1,119 @@
+### aggregate-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/aggregate-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000022 is 94331175s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### delegated-child-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/delegated-child-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000017 is 94331180s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-child')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### delegated-grandchild-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/delegated-grandchild-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000022 is 94331175s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-grandchild')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### delegated-parent-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/delegated-parent-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000012 is 94331185s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-parent')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### single-execution-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/single-execution-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000007 is 94331190s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-solo')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### supplementary-plane-child-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/supplementary-plane-child-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000032 is 94331165s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-supplementary-run/exec/trust-record-vector-supp-child')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
+### supplementary-plane-parent-trust-record.json
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : vectors/supplementary-plane-parent-trust-record.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  FAIL        TR-ENV-002: record is stale: iat 1700000027 is 94331170s old, exceeding the maximum allowed age of 86400s
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-supplementary-run/exec/trust-record-vector-supp-parent')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  PASS        Ed25519 signature verified
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)
+EXIT=1
