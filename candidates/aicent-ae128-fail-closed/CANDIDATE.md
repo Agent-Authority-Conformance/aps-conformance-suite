@@ -55,7 +55,7 @@ implementation.
 
 ## What the cases test
 
-Nineteen cases: 1 positive, 11 parse-negative and 7 tamper-negative. The
+Twenty-one cases: 1 positive, 13 parse-negative and 7 tamper-negative. The
 positive case is the frame published in section 7.2.1; the build step asserts
 it byte for byte against that published frame.
 
@@ -63,15 +63,16 @@ it byte for byte against that published frame.
 |---|---|---|---|
 | AE-P01 | R-REPRODUCE | the published vector AE128-VECTOR-1: parse accepts it and verification passes under the draft-published test key | sect-7.2.1 |
 | AE-N01 to AE-N06, AE-N08 to AE-N10 | R-PARSE-FAIL-CLOSED | the step (1) rejection list of section 7.2: wrong length, wrong magic, wrong version, wrong or undefined algorithm, standing byte outside the closed set, nonzero reserved or extension fields | sect-7.2 |
-| AE-N07, AE-N11 | R-PARSE-FAIL-CLOSED | two fail-closed checks the step (1) list does not name: the unassigned flags bits and the US-ASCII charset of the organ tag; see the disclosure below | sect-7.2 |
+| AE-N07, AE-N11 | R-PARSE-FAIL-CLOSED | two fail-closed checks the step (1) list does not name: the unassigned flags bits and the US-ASCII charset of the organ tag; end-to-end cases — the same mutation also breaks the attestation, so a receiver that reports only a final rejection passes them without attributing the cause; proposed behavior, see the disclosure below | sect-7.2 |
+| AE-N12, AE-N13 | R-PARSE-FAIL-CLOSED | the same two checks with the attestation recomputed and valid under the canonical rule, so a rejection can come only from the parser check, whatever order an implementation checks in: the parser-isolated variants of AE-N07 and AE-N11 | sect-7.2 |
 | AE-T01 to AE-T07 | R-HMAC-COVERS-FRAME | the canonical rule: the attestation field covers the entire frame with the attestation field itself zeroed, so a flipped attestation bit, an altered organ tag, nonce, standing or lease, a swapped intent_shard and an attestation produced under a different key all fail verification | sect-7.2 |
 
 Case statuses in `vectors.json`:
 
 - `normative` — the expected rejection or verification failure follows from
   the step (1) list or the canonical rule as written.
-- `authoritative-tightening` — AE-N07 (flags 0x0001) and AE-N11 (organ tag
-  0xFF) rest on the field rows ("unassigned; sent as 0x0000" / "exactly 8
+- `authoritative-tightening` — AE-N07 and AE-N12 (flags 0x0100) and AE-N11
+  and AE-N13 (organ tag 0xFF) rest on the field rows ("unassigned; sent as 0x0000" / "exactly 8
   octets of US-ASCII") rather than the step (1) list, which does not name
   them. The draft author has decided (2026-11-09) that the -03 revision adds
   both to the MUST-reject list; until that revision is posted these two cases
@@ -98,7 +99,7 @@ unless some case catches each change. Parse mutants are scored against all
 cases; verify mutants only against the cases that reach verification, so a
 kill is never borrowed across stages.
 
-At the revision submitted, the submitter's runs on Python 3 printed `19/19
+At the revision submitted, the submitter's runs on Python 3 printed `21/21
 agree` and `15/15 mutants killed`, each with exit 0. These show that the
 checker agrees with the expected results and that every rule has a case
 depending on it, in both directions. They say nothing about any
@@ -113,7 +114,7 @@ the reviews are author-produced and are not runs.
 
 ## Recorded run and live report
 
-A recorded run of this family ships with this repository: [`family_runner.py`](../../family-runner/family_runner.py) replays every case and the full mutation battery into a single deterministic output — no timestamps, no paths, byte-replayable. The run is author-produced and is presented as such. Recorded totals for this family: 19/19 cases agree, 15/15 mutants killed, exit 0.
+A recorded run of this family ships with this repository: [`family_runner.py`](https://github.com/Aicent-Stack/conformance/blob/590b26b/family-runner/family_runner.py) replays every case and the full mutation battery into a single deterministic output — no timestamps, no paths, byte-replayable. The run is author-produced and is presented as such. Recorded totals for this family: 21/21 cases agree, 15/15 mutants killed, exit 0.
 
 The full recorded-run report — per-case results, the mutation battery, run metadata, and the verbatim console output — lives on the family page at [iqa.org/conformance/aicent-ae128-fail-closed/](https://iqa.org/conformance/aicent-ae128-fail-closed/), sealed as a single-file site freeze ([aicent-ae128-fail-closed-site-20261109c.tar.gz](https://iqa.org/seal/aicent-ae128-fail-closed-site-20261109c.tar.gz)).
 
@@ -127,9 +128,14 @@ The full recorded-run report — per-case results, the mutation battery, run met
 - Step (4) (interpreting the standing byte) is semantics, not wire encoding,
   and is out of scope here; the four values of the closed set are exercised
   only as parse-level accept/reject boundaries.
-- AE-N07 and AE-N11 are `authoritative-tightening` cases (see above); a
-  reader applying only the step (1) list of -02 would not derive their
-  expectations. The -03 revision supersedes this disclosure.
+- AE-N07, AE-N11, AE-N12 and AE-N13 are `authoritative-tightening` cases
+  (see above); a reader applying only the step (1) list of -02 would not
+  derive their expectations. The -03 revision supersedes this disclosure.
+- AE-N07 and AE-N11, as frozen, cannot attribute their rejection: the same
+  mutation breaks the attestation, so the case passes for an implementation
+  that reports only a final rejection. AE-N12 and AE-N13 carry the
+  parser-isolated form; the end-to-end form is kept for the fail-closed
+  discipline itself and overlaps the mutation battery by construction.
 - The HMAC coverage distortions are caught by the positive frame itself (any
   coverage change alters the canonical frame's MAC), so the tamper cases are
   not their only witnesses.

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Recompute each case's parse and verification decisions from the frame bytes,
-compare with the declared expectations. The rules are derived from the pinned
+compare with the declared expectations. Cases whose declared status is not
+"normative" are marked in the output: their expectations are proposed behavior
+that the pinned source text does not require (see vectors.json). The rules are derived from the pinned
 source text (draft-li-rttp-iqa-addressing-02, sections 7.2 and 7.2.1), not from
 any implementation. Standard library only. Exit 0 when every case agrees, 1
 otherwise."""
@@ -64,7 +66,9 @@ def main(path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "vectors.
         got = evaluate(c)
         flag = "BAD" if not got else "ok "
         bad += not got
-        print(f"{flag} {c['id']:7} {c['rule']:20} {c['name'][:44]}")
+        status = c.get("status", "normative")
+        tag = "" if status == "normative" else " [%s]" % status
+        print(f"{flag} {c['id']:7} {c['rule']:20}{tag} {c['name'][:44]}")
     n = len(doc["cases"])
     print(f"{n - bad}/{n} agree")
     return 0 if bad == 0 else 1

@@ -102,14 +102,14 @@
    "id": "AE-N07",
    "rule": "R-PARSE-FAIL-CLOSED",
    "status": "authoritative-tightening",
-   "name": "flags 0x0001 (unassigned bit)",
+   "name": "flags 0x0100 (unassigned bit set)",
    "frame_hex": "4951414501010100000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
    "expect_parse": "reject",
    "reject_reason": "flags",
    "basis": [
     "sect-7.2"
    ],
-   "note": "sec. 7.2 step (1) does not list the flags check; support = field row 'flags - unsigned, big-endian; unassigned; sent as 0x0000'. The -03 revision adds flags to the MUST-reject list (author decision 2026-11-09)"
+   "note": "sec. 7.2 step (1) does not list the flags check; support = field row 'flags - unsigned, big-endian; unassigned; sent as 0x0000'. The -03 revision adds flags to the MUST-reject list (author decision 2026-11-09). As frozen, this frame's attestation is invalid (the mutation breaks the MAC), so a receiver that reports only a final rejection passes it for the wrong reason; the parser-isolated variant with a valid attestation is AE-N12."
   },
   {
    "id": "AE-N08",
@@ -158,7 +158,33 @@
    "basis": [
     "sect-7.2"
    ],
-   "note": "sec. 7.2 step (1) does not list the organ charset check; support = field row 'organ - exactly 8 octets of US-ASCII'. The -03 revision adds it (author decision 2026-11-09)"
+   "note": "sec. 7.2 step (1) does not list the organ charset check; support = field row 'organ - exactly 8 octets of US-ASCII'. The -03 revision adds it (author decision 2026-11-09). As frozen, this frame's attestation is invalid (the mutation breaks the MAC), so a receiver that reports only a final rejection passes it for the wrong reason; the parser-isolated variant with a valid attestation is AE-N13."
+  },
+  {
+   "id": "AE-N12",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "flags 0x0100 (unassigned bit set), valid attestation",
+   "frame_hex": "4951414501010100000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c304a8716ff80bd33e09ca273b3e6d5ceb7ed61a6b13610c44649a7b10446fb954f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "flags",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "parser-isolated variant of AE-N07: the attestation is recomputed over this exact frame under the canonical rule (sec. 7.2), so it verifies, and a conformant receiver's rejection can come only from the flags check, whatever order the implementation checks in. -02 does not require the flags check (the step (1) list omits it); the -03 revision adds it (author decision 2026-11-09). An implementation that does not check flags accepts this frame."
+  },
+  {
+   "id": "AE-N13",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "organ tag non-ASCII (0xFF), valid attestation",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331cfe60f4ccd8b7369daaacfd23336ff4283f12fabcd273b7410262d0cc1ab737ccff52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "organ",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "parser-isolated variant of AE-N11: the attestation is recomputed over this exact frame under the canonical rule (sec. 7.2), so it verifies, and a conformant receiver's rejection can come only from the organ charset check, whatever order the implementation checks in. -02 does not require the organ charset check (the step (1) list omits it); the -03 revision adds it (author decision 2026-11-09). An implementation that does not check the charset accepts this frame."
   },
   {
    "id": "AE-T01",
