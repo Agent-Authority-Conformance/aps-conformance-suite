@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""icam_runner.py -- independent (non-author-produced) runner for the
+"""icam_runner.py -- author-produced Mode B runner over ICAM's vectors for the
 icam-temporal-derivation candidate (lab PR #218, merged at 3c36e95).
 
 Operator: ShaoBao Li (Lee) / Aicent Stack (RTTP CRI 27 / IQA CRI 28).
@@ -94,6 +94,17 @@ def run(vectors):
 
 
 # --- independent mutation battery (ours, distinct from the candidate's) ---
+# each mutant name maps to the rule whose logic it perturbs
+MUTANT_RULES = {
+    'trusts-advisory-flag': 'DERIVE',
+    'always-fresh': 'DERIVE',
+    'always-expired': 'DERIVE',
+    'undeclared-boundary-inclusive': 'DERIVE',
+    'hardcoded-120s-window': 'DERIVE',
+    'wire-gate-rejects-equality': 'WIRE_TIME_GATE',
+}
+
+
 def _mutants():
     def m_trust_flag(inp):
         flag = inp.get('supplied_boundary_classification')
@@ -142,11 +153,11 @@ def run_mutations(vectors):
     for name, fn in _mutants().items():
         killed_by = []
         for c in vectors['cases']:
-            if c['rule'] == 'WIRE_TIME_GATE' and name not in ('wire-gate-rejects-equality',):
-                # mutation battery for DERIVE mutants: only score gate cases
-                # against the gate mutant and vice versa
-                if fn is not wire_time_gate and name != 'wire-gate-rejects-equality':
-                    continue
+            # score each mutant only against cases of the rule it changes
+            # (an expected value written for the other rule cannot detect a
+            # fault it does not exercise)
+            if c['rule'] != MUTANT_RULES[name]:
+                continue
             observed = fn(c['input'])
             if observed != c['expected']:
                 killed_by.append(c['id'])
@@ -164,7 +175,7 @@ def main(argv):
               % ('PASS' if r['agree'] else 'FAIL', r['id'], r['layer'], r['case_status'],
                  r['expected'], r['observed'], '' if r['agree'] else '<< MISMATCH'))
     total = len(records)
-    print('SUMMARY %d/%d agree (independent runner, non-author-produced)' % (total - failures, total))
+    print('SUMMARY %d/%d agree (author-produced Mode B runner)' % (total - failures, total))
 
     mut = run_mutations(doc)
     killed = sum(1 for v in mut.values() if v)
@@ -183,7 +194,7 @@ def main(argv):
         payload = {
             'runner': 'icam-runner',
             'operator': 'ShaoBao Li (Lee) / Aicent Stack',
-            'mode': 'independent (non-author-produced) run of author-produced vectors',
+            'mode': "author-produced Mode B run over ICAM's vectors",
             'candidate': {'name': doc['name'], 'revision': doc.get('revision'),
                           'vendor_ref': VENDOR_REF,
                           'vendor_files_sha256': vendor_files},

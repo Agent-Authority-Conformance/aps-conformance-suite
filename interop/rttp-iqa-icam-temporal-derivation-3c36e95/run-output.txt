@@ -22,11 +22,11 @@ PASS TD-W03 [wire_time_gate_only/normative] expected=time_gate_reject       obse
 PASS TD-W04 [wire_time_gate_only/normative] expected=time_gate_pass         observed=time_gate_pass         
 PASS TD-B07 [reliance/normative] expected=fresh                  observed=fresh                  
 PASS TD-B08 [reliance/normative] expected=expired                observed=expired                
-SUMMARY 24/24 agree (independent runner, non-author-produced)
+SUMMARY 24/24 agree (author-produced Mode B runner)
 MUTANT trusts-advisory-flag           killed by TD-N01,TD-N02,TD-N03,TD-N04,TD-X04,TD-X06,TD-B08
 MUTANT always-fresh                   killed by TD-B03,TD-B05,TD-B06,TD-N01,TD-N03,TD-N05,TD-X02,TD-X03,TD-X04,TD-X05,TD-X06,TD-B08
 MUTANT always-expired                 killed by TD-B01,TD-B02,TD-B04,TD-N02,TD-N04,TD-N06,TD-X01,TD-X03,TD-X04,TD-X05,TD-X06,TD-B07
-MUTANT wire-gate-rejects-equality     killed by TD-B01,TD-B02,TD-B03,TD-B04,TD-B05,TD-B06,TD-N01,TD-N02,TD-N03,TD-N04,TD-N05,TD-N06,TD-X01,TD-X02,TD-X03,TD-X06,TD-W02,TD-W04,TD-B07,TD-B08
+MUTANT wire-gate-rejects-equality     killed by TD-W02,TD-W04
 MUTANT undeclared-boundary-inclusive  killed by TD-X03
 MUTANT hardcoded-120s-window          killed by TD-B03,TD-B05,TD-B06,TD-N01,TD-N03,TD-N05,TD-X02,TD-X03,TD-X06,TD-B07,TD-B08
 MUTATION SUMMARY 6/6 killed (independent battery)

@@ -1,7 +1,7 @@
 # Provenance
 
 - Operator: ShaoBao Li (Lee) / @Aicent-com, Aicent Stack — RTTP CRI 27, IQA CRI 28.
-- Mode: independent implementation over author-produced vectors (non-author-produced relative to the candidate; the operator authored the pinned draft `draft-li-rttp-iqa-addressing-02` but none of the candidate's vectors, checkers, oracles, or expected values).
+- Mode: author-produced Mode B — the recomputation implementation is ours, run over ICAM's vectors (the operator authored the pinned draft `draft-li-rttp-iqa-addressing-02` but none of the candidate's vectors, checkers, oracles, or expected values).
 - Candidate: `icam-temporal-derivation` by Nika Novak (ICAM / aiclavis), merged upstream in PR #218 (2026-11-08T17:06:55Z); corpus pinned at lab main `3c36e95`, frozen under `vendor/` and digest-gated against the candidate's own `CHECKSUMS.sha256` (6/6 before anything ran).
 - Code as run: `icam_runner.py` in this directory (distinct implementation; the candidate's reference oracle is vendored frozen but never executed).
 - Normative basis: draft-li-rttp-iqa-addressing-02, sections 6.1 and 7.2 (step 2), TXT sha256 `02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044`.

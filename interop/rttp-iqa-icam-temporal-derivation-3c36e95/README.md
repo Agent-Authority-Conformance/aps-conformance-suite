@@ -1,6 +1,6 @@
-# RTTP & IQA independent run over icam-temporal-derivation — non-author-produced
+# RTTP & IQA author-produced Mode B run over icam-temporal-derivation
 
-This directory records an independent, non-author-produced run of the `icam-temporal-derivation` candidate (merged upstream in PR #218): temporal-state derivation vectors submitted by Nika Novak (ICAM / aiclavis) — the first third-party candidate anchored to `draft-li-rttp-iqa-addressing-02`. The operator is ShaoBao Li (Lee) / @Aicent-com. The operator is the author of the pinned draft but wrote none of the candidate's vectors, checkers, oracles, or expected values, and is not affiliated with ICAM / aiclavis; the implementation here is a distinct runner, not the candidate's shipped pipeline — the same complement structure as the lab's other RTTP & IQA records (`interop/rttp-iqa-lra-runner-*`, `interop/rttp-iqa-aae-moltycel-vectors-*`).
+This directory records an author-produced Mode B run over ICAM's vectors of the `icam-temporal-derivation` candidate (merged upstream in PR #218): temporal-state derivation vectors submitted by Nika Novak (ICAM / aiclavis) — the first third-party candidate anchored to `draft-li-rttp-iqa-addressing-02`. The operator is ShaoBao Li (Lee) / @Aicent-com. The operator is the author of the pinned draft but wrote none of the candidate's vectors, checkers, oracles, or expected values, and is not affiliated with ICAM / aiclavis; the implementation here is a distinct runner, not the candidate's shipped pipeline — the same complement structure as the lab's other RTTP & IQA records (`interop/rttp-iqa-lra-runner-*`, `interop/rttp-iqa-aae-moltycel-vectors-*`).
 
 The candidate's evidence row already lists a first run of this runner against the PR head (`72a0f72`, 2026-11-07, 24/24 + 6/6, recorded before merge). This record supersedes nothing: it is the complete recorded rerun against the merged mainline bytes (`3c36e95`), so the pin is the merged corpus itself rather than a PR head. The merged corpus changed metadata only (candidate package labels, four `case_status` annotations moved to `convention_specific`, refreshed CHECKSUMS); every executable input and expectation is unchanged, and the verdicts of the two runs are identical case by case.
 
@@ -20,7 +20,7 @@ The runner is self-contained in this directory: `icam_runner.py` reads `vendor/v
 python3 -I icam_runner.py vendor/vectors.json run-output.json
 ```
 
-Expected output ends with `SUMMARY 24/24 agree (independent runner, non-author-produced)` and `MUTATION SUMMARY 6/6 killed (independent battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
+Expected output ends with `SUMMARY 24/24 agree (author-produced Mode B runner)` and `MUTATION SUMMARY 6/6 killed (independent battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
 
 ## Relationship to the candidate's oracle
 
@@ -32,7 +32,7 @@ The runner does not read the candidate's reference oracle (`check.py`); the orac
 - `PROVENANCE.md` — operator, mode, independence statement, environment
 - `RESULTS.md` — per-vector results and the mutation battery, transcribed from the recording
 - `VECTOR-INVENTORY.md` — what the vector set contains
-- `icam_runner.py` — the independent runner, code as run
+- `icam_runner.py` — the Mode B runner, code as run
 - `vendor/` — the frozen merged corpus (7 files), digest-gated
 - `run-output.json` — the machine-readable record of the run
 - `run-output.txt` — the complete console output of the recorded run, uncut
