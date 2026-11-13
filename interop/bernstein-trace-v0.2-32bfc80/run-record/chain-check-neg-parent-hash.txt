@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/private/tmp/negrun-parent-hash/chain_check.py", line 11, in <module>
+    assert dig(P)==want, f'{c}: parent_record_hash does not match the RFC 8785 digest of {p}'
+           ^^^^^^^^^^^^
+AssertionError: delegated-child: parent_record_hash does not match the RFC 8785 digest of delegated-parent

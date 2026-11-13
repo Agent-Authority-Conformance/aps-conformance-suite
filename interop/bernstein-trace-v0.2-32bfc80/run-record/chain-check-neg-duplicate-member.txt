@@ -1,0 +1,9 @@
+delegated-child -> delegated-parent: rfc8785_match=True sort_keys_match=True
+delegated-grandchild -> delegated-child: rfc8785_match=True sort_keys_match=True
+supplementary-plane-child -> supplementary-plane-parent: rfc8785_match=True sort_keys_match=False
+  ref id=spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-parent digest_matches=delegated-parent id_equals_subject=True
+Traceback (most recent call last):
+  File "/private/tmp/negrun-duplicate-member/chain_check.py", line 22, in <module>
+    assert name not in matched, f'duplicate member {name}'
+           ^^^^^^^^^^^^^^^^^^^
+AssertionError: duplicate member delegated-parent
