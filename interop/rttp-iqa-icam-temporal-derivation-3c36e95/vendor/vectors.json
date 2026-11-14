@@ -1,0 +1,387 @@
+{
+  "name": "icam-temporal-derivation",
+  "revision": "0.2.0-prepublication",
+  "normative_target": "draft-li-rttp-iqa-addressing-02 sections 6.1, 6.3, 7.2; experimental Informational draft, not an IETF standard",
+  "scope": "Separate verifier-time derivation (lease reliance) from wire-frame expiry gate; negative controls challenge an untrusted advisory flag, which is not a field of RTTP/IQA.",
+  "note": "Expected values are author-produced; not independent implementation results",
+  "cases": [
+    {
+      "id": "TD-B01",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1099,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "fresh",
+      "note": "strictly before expiry",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-B02",
+      "rule": "DERIVE",
+      "case_status": "convention_specific",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "fresh",
+      "note": "inclusive equality",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-B03",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "after"
+      },
+      "expected": "expired",
+      "note": "strictly after expiry",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-B04",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1099,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "fresh",
+      "note": "before under exclusive",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-B05",
+      "rule": "DERIVE",
+      "case_status": "convention_specific",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "expired",
+      "note": "exclusive equality",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-B06",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "after"
+      },
+      "expected": "expired",
+      "note": "after under exclusive",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N01",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "expired",
+      "note": "negative control: false before flag",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N02",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1099,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "after"
+      },
+      "expected": "fresh",
+      "note": "negative control: false after flag",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N03",
+      "rule": "DERIVE",
+      "case_status": "convention_specific",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "expired",
+      "note": "negative control: false before flag at equality",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N04",
+      "rule": "DERIVE",
+      "case_status": "convention_specific",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "after"
+      },
+      "expected": "fresh",
+      "note": "negative control: false after flag at equality",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N05",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "expired",
+      "note": "negative control: false at flag strictly after",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-N06",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1099,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "fresh",
+      "note": "negative control: false at flag strictly before",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-X01",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1000,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": null
+      },
+      "expected": "fresh",
+      "note": "classification absent: time alone decides",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-X02",
+      "rule": "DERIVE",
+      "case_status": "normative",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": null
+      },
+      "expected": "expired",
+      "note": "classification absent: time alone decides",
+      "layer": "reliance",
+      "basis": "6.1"
+    },
+    {
+      "id": "TD-X03",
+      "rule": "DERIVE",
+      "case_status": "interpretive",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": null,
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "boundary_undetermined",
+      "note": "no declared convention at equality; no single fresh/expired verdict",
+      "layer": "reliance",
+      "basis": "6.1 (SHOULD declaration, interpretive only)"
+    },
+    {
+      "id": "TD-X04",
+      "rule": "DERIVE",
+      "case_status": "local_precondition",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": null,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "insufficient_input",
+      "note": "no verifier clock available; not a protocol refusal reason",
+      "layer": "reliance",
+      "basis": "ICAM-local"
+    },
+    {
+      "id": "TD-X05",
+      "rule": "DERIVE",
+      "case_status": "local_precondition",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": null,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "insufficient_input",
+      "note": "no expiry available; not a protocol refusal reason",
+      "layer": "reliance",
+      "basis": "ICAM-local"
+    },
+    {
+      "id": "TD-X06",
+      "rule": "DERIVE",
+      "case_status": "local_precondition",
+      "source_time": "explicit",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "invalid_convention",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "invalid_convention",
+      "note": "outside proposed two conventions, not necessarily a protocol failure",
+      "layer": "reliance",
+      "basis": "ICAM-local"
+    },
+    {
+      "id": "TD-W01",
+      "rule": "WIRE_TIME_GATE",
+      "layer": "wire_time_gate_only",
+      "case_status": "normative",
+      "basis": "7.2 step 2",
+      "input": {
+        "verifier_now_unix_s": 1099,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "after"
+      },
+      "expected": "time_gate_pass",
+      "note": "Step 2 of 7.2 only; passes time gate, NOT HMAC or full frame validity."
+    },
+    {
+      "id": "TD-W02",
+      "rule": "WIRE_TIME_GATE",
+      "layer": "wire_time_gate_only",
+      "case_status": "normative",
+      "basis": "7.2 step 2",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "time_gate_pass",
+      "note": "Step 2 of 7.2 only; passes time gate, NOT HMAC or full frame validity."
+    },
+    {
+      "id": "TD-W03",
+      "rule": "WIRE_TIME_GATE",
+      "layer": "wire_time_gate_only",
+      "case_status": "normative",
+      "basis": "7.2 step 2",
+      "input": {
+        "verifier_now_unix_s": 1101,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "time_gate_reject",
+      "note": "Step 2 of 7.2 only; passes time gate, NOT HMAC or full frame validity."
+    },
+    {
+      "id": "TD-W04",
+      "rule": "WIRE_TIME_GATE",
+      "layer": "wire_time_gate_only",
+      "case_status": "normative",
+      "basis": "7.2 step 2",
+      "input": {
+        "verifier_now_unix_s": 1100,
+        "lease_expiry_unix_s": 1100,
+        "boundary_convention": "expired_at_instant",
+        "supplied_boundary_classification": "at"
+      },
+      "expected": "time_gate_pass",
+      "note": "Step 2 of 7.2 only; passes time gate, NOT HMAC or full frame validity."
+    },
+    {
+      "id": "TD-B07",
+      "rule": "DERIVE",
+      "layer": "reliance",
+      "case_status": "normative",
+      "basis": "6.1",
+      "input": {
+        "verifier_now_unix_s": 1000000,
+        "lease_expiry_unix_s": 1000300,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "fresh",
+      "note": "Uses stated lease, not a hard-coded 120-second window."
+    },
+    {
+      "id": "TD-B08",
+      "rule": "DERIVE",
+      "layer": "reliance",
+      "case_status": "normative",
+      "basis": "6.1",
+      "input": {
+        "verifier_now_unix_s": 1000301,
+        "lease_expiry_unix_s": 1000300,
+        "boundary_convention": "fresh_at_instant",
+        "supplied_boundary_classification": "before"
+      },
+      "expected": "expired",
+      "note": "Uses stated lease, not a hard-coded 120-second window."
+    }
+  ]
+}
