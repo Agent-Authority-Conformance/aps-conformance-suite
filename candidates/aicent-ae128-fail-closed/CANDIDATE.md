@@ -130,7 +130,9 @@ The full recorded-run report — per-case results, the mutation battery, run met
   only as parse-level accept/reject boundaries.
 - AE-N07, AE-N11, AE-N12 and AE-N13 are `authoritative-tightening` cases
   (see above); a reader applying only the step (1) list of -02 would not
-  derive their expectations. The -03 revision supersedes this disclosure.
+  derive their expectations. These cases remain proposed behavior,
+  clearly distinguished from the requirements of -02; they will be
+  reassessed when the -03 revision is published.
 - AE-N07 and AE-N11, as frozen, cannot attribute their rejection: the same
   mutation breaks the attestation, so the case passes for an implementation
   that reports only a final rejection. AE-N12 and AE-N13 carry the
