@@ -1,6 +1,6 @@
 # Results
 
-All 24 cases agree with the candidate's declared expectations (exit status 0); the runner's independent six-mutant battery killed all six mutants. No suspected defective vector was observed. The tables below are transcribed from the recorded run: `run-output.json` (sha256 `46758452bcf58972371017a746d14bb3274feba0ed5c7a1ff3080c7f1b15b75d`, regenerated 2026-11-14 after the mutation-scoring fix) and the uncut console recording `run-output.txt`.
+All 24 cases agree with the candidate's declared expectations (exit status 0); the runner's own six-mutant battery killed all six mutants. No suspected defective vector was observed. The tables below are transcribed from the recorded run: `run-output.json` (sha256 `46758452bcf58972371017a746d14bb3274feba0ed5c7a1ff3080c7f1b15b75d`, regenerated 2026-11-14 after the mutation-scoring fix) and the uncut console recording `run-output.txt`.
 
 ## Per-vector results
 
@@ -33,7 +33,7 @@ All 24 cases agree with the candidate's declared expectations (exit status 0); t
 
 Rows appear in the order the runner emitted them (`run-output.txt` lines 1-24); every row ends with `PASS` in the console recording.
 
-## Mutation battery (independent, six mutants)
+## Mutation battery (the runner's own, six mutants)
 
 The battery is the runner's own, distinct from the candidate's shipped battery; order below follows the console recording. `killed by` lists the cases whose verdict changed under each mutant.
 

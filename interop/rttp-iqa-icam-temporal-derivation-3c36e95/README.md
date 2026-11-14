@@ -10,7 +10,7 @@ The run covers the full published vector set at source `3c36e95` (merged 2026-11
 
 ## Result
 
-All green, exit 0: the six frozen corpus files verified byte-identical against the candidate's own `CHECKSUMS.sha256` before anything ran; 24/24 cases agree with the candidate's declared expectations; the independent mutation battery (six mutants, distinct from the candidate's own battery) is 6/6 killed, including both global directions and the two adversarial directions the candidate's negative controls target (trusting the advisory `supplied_boundary_classification` flag, and hardcoding a 120-second window). No suspected defective vector was observed.
+All green, exit 0: the runner's vendor-pin gate verifies the six frozen corpus files byte-identical against the candidate's own `CHECKSUMS.sha256` before anything is scored; 24/24 cases agree with the candidate's declared expectations; the runner's own mutation battery (six mutants, distinct from the candidate's shipped battery) is 6/6 killed, including both global directions and the two adversarial directions the candidate's negative controls target (trusting the advisory `supplied_boundary_classification` flag, and hardcoding a 120-second window). No suspected defective vector was observed.
 
 ## Re-run
 
@@ -20,7 +20,7 @@ The runner is self-contained in this directory: `icam_runner.py` reads `vendor/v
 python3 -I icam_runner.py vendor/vectors.json run-output.json
 ```
 
-Expected output ends with `SUMMARY 24/24 agree (author-produced Mode B runner)` and `MUTATION SUMMARY 6/6 killed (independent battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
+Expected output begins with `VENDOR PIN OK 6/6 (CHECKSUMS.sha256)` — the runner fails closed if any vendored file does not match its recorded digest — and ends with `SUMMARY 24/24 agree (author-produced Mode B runner)` and `MUTATION SUMMARY 6/6 killed (the runner's own battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
 
 ## Relationship to the candidate's oracle
 
@@ -29,7 +29,7 @@ The runner does not read the candidate's reference oracle (`check.py`); the orac
 ## Files
 
 - `run-report.md` — the run report (scope, method, results, limitations)
-- `PROVENANCE.md` — operator, mode, independence statement, environment
+- `PROVENANCE.md` — operator, mode, derivation statement, environment
 - `RESULTS.md` — per-vector results and the mutation battery, transcribed from the recording
 - `VECTOR-INVENTORY.md` — what the vector set contains
 - `icam_runner.py` — the Mode B runner, code as run

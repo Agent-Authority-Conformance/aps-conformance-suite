@@ -8,7 +8,7 @@ Two layers, kept separate per the candidate's "bounded question": `DERIVE` (sect
 
 ## Results
 
-Exit 0. 24/24 cases agree with the declared expectations: 18 standard `DERIVE` cases (including equality and the `invalid_convention` / `insufficient_input` local preconditions), 2 nondefault-window `DERIVE` boundary cases (TD-B07, TD-B08), 1 interpretive case (TD-X03, `boundary_undetermined`), and 4 `WIRE_TIME_GATE` cases (TD-W01–TD-W04: equality passes the isolated gate, earlier rejects). The independent mutation battery is 6/6 killed: `always-fresh`, `always-expired`, `trusts-advisory-flag`, `wire-gate-rejects-equality`, `undeclared-boundary-inclusive`, `hardcoded-120s-window` — each killed by at least one frozen case, in both global directions and both adversarial directions.
+Exit 0. 24/24 cases agree with the declared expectations: 18 standard `DERIVE` cases (including equality and the `invalid_convention` / `insufficient_input` local preconditions), 2 nondefault-window `DERIVE` boundary cases (TD-B07, TD-B08), 1 interpretive case (TD-X03, `boundary_undetermined`), and 4 `WIRE_TIME_GATE` cases (TD-W01–TD-W04: equality passes the isolated gate, earlier rejects). The runner's own mutation battery is 6/6 killed: `always-fresh`, `always-expired`, `trusts-advisory-flag`, `wire-gate-rejects-equality`, `undeclared-boundary-inclusive`, `hardcoded-120s-window` — each killed by at least one frozen case, in both global directions and both adversarial directions.
 
 ## Relation to the earlier head-run
 

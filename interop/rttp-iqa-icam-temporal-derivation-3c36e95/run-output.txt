@@ -1,3 +1,4 @@
+VENDOR PIN OK 6/6 (CHECKSUMS.sha256)
 PASS TD-B01 [reliance/normative] expected=fresh                  observed=fresh                  
 PASS TD-B02 [reliance/convention_specific] expected=fresh                  observed=fresh                  
 PASS TD-B03 [reliance/normative] expected=expired                observed=expired                
@@ -29,5 +30,5 @@ MUTANT always-expired                 killed by TD-B01,TD-B02,TD-B04,TD-N02,TD-N
 MUTANT wire-gate-rejects-equality     killed by TD-W02,TD-W04
 MUTANT undeclared-boundary-inclusive  killed by TD-X03
 MUTANT hardcoded-120s-window          killed by TD-B03,TD-B05,TD-B06,TD-N01,TD-N03,TD-N05,TD-X02,TD-X03,TD-X06,TD-B07,TD-B08
-MUTATION SUMMARY 6/6 killed (independent battery)
+MUTATION SUMMARY 6/6 killed (the runner's own battery)
 run output written: run-output.json
