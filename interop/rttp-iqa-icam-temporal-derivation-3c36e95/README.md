@@ -17,10 +17,10 @@ All green, exit 0: the runner's vendor-pin gate verifies the six frozen corpus f
 The runner is self-contained in this directory: `icam_runner.py` reads `vendor/vectors.json`, re-derives every verdict from the published draft text (section 6.1, 7.2 step (2)), embeds the sha256 of every frozen vendor file into the payload, and runs its own six-mutant battery:
 
 ```
-python3 -I icam_runner.py vendor/vectors.json run-output.json
+python3 -I icam_runner.py vendor/vectors.json rerun-output.json
 ```
 
-Expected output begins with `VENDOR PIN OK 6/6 (CHECKSUMS.sha256)` — the runner fails closed if any vendored file does not match its recorded digest — and ends with `SUMMARY 24/24 agree (author-produced Mode B runner)` and `MUTATION SUMMARY 6/6 killed (the runner's own battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
+Expected output begins with `VENDOR PIN OK 6/6 (CHECKSUMS.sha256)` — the runner fails closed if any vendored file does not match its recorded digest — and ends with `SUMMARY 24/24 agree (author-produced Mode B runner)` and `MUTATION SUMMARY 6/6 killed (the runner's own battery)`, exit status 0. A rerun must reproduce the recorded `run-output.json` byte for byte. Write your rerun to a different file, as in the command above, so the committed record is preserved untouched, then compare the two explicitly — for example `cmp run-output.json rerun-output.json` — and treat the run as reproduced only if the comparison reports no difference; the full console output of the recorded run is preserved verbatim in `run-output.txt`.
 
 ## Relationship to the candidate's oracle
 
