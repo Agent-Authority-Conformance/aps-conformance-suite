@@ -82,14 +82,16 @@ RULES = {'DERIVE': derive_reliance, 'WIRE_TIME_GATE': wire_time_gate}
 
 def _verify_vendor_pin(vectors_path):
     """Fail closed before any scoring: every file listed in the candidate's
-    own CHECKSUMS.sha256 must hash to its recorded digest (lab review: the
-    vendor pin check is structural, not procedural)."""
+    own CHECKSUMS.sha256 must hash to its recorded digest, the scored input
+    must itself be named by the manifest, and the manifest must name
+    vectors.json (lab review: the vendor pin check is structural, not
+    procedural -- an unlisted input or an empty manifest must not score)."""
     vdir = Path(vectors_path).parent
     sums = vdir / 'CHECKSUMS.sha256'
     if not sums.exists():
         print('VENDOR PIN MISSING: no CHECKSUMS.sha256 next to the vectors')
         return False
-    ok, fails = 0, []
+    listed, fails = [], []
     for line in sums.read_text(encoding='utf-8').splitlines():
         line = line.strip()
         if not line or line.startswith('#'):
@@ -98,17 +100,23 @@ def _verify_vendor_pin(vectors_path):
         fname = fname.strip().lstrip('*')
         if not digest or not fname:
             continue
+        listed.append(fname)
         p = vdir / fname
         actual = hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None
-        if actual == digest:
-            ok += 1
-        else:
+        if actual != digest:
             fails.append(fname)
     if fails:
         for fname in fails:
             print('VENDOR PIN MISMATCH: %s' % fname)
         return False
-    print('VENDOR PIN OK %d/%d (CHECKSUMS.sha256)' % (ok, ok))
+    if 'vectors.json' not in listed:
+        print('VENDOR PIN INCOMPLETE: CHECKSUMS.sha256 does not name vectors.json')
+        return False
+    scored = Path(vectors_path).name
+    if scored not in listed:
+        print('VENDOR PIN UNLISTED: %s is not named in CHECKSUMS.sha256' % scored)
+        return False
+    print('VENDOR PIN OK %d/%d (CHECKSUMS.sha256)' % (len(listed), len(listed)))
     return True
 
 
