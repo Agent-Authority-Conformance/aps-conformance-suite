@@ -124,6 +124,12 @@ ok   AC-05-live expect=conformant     got=conformant     R-5.2-shared (no act wi
 text -01+pr32: 17/17 cases matched expectation
 ```
 
+### Note on AC-09 (Ilja Radusch, 2026-11-16)
+
+> The `ok` line for AC-09 is the checker reading the candidate's AC-09 fixture as its author expected. It is not a property of this server. AC-09 is not applicable here (maintainer ruling on draft-mcguinness-oauth-actor-profile#31, 2026-10-31).
+
+Added at his request on [#231](https://github.com/Agent-Authority-Conformance/aps-conformance-suite/pull/231), wording his.
+
 ## Notes
 
 - Divergences are recorded, not verdicts; the corpus may be the party at fault.
