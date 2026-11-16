@@ -1,4 +1,4 @@
-f50815bb6ca9392278ec0af67de2f7abed18953f96996a20b39e5d7bee10054b  ./RUN.md
+129d6f83fcc6163585a3de92ff72191c3e3e703866205fbac72cd84eb3dfdc7b  ./RUN.md
 9d5f4e51e82223f5d14876956d1818fd76f50b61d2db693cd015f44db801c97c  ./client/aae-client.mjs
 9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  ./results/run-1-local/baseline-ref-vs-ref.exit
 0d57fbf229d3c875e1ecd6c1f1076d770e6d99828d69f7963d96f683d2ea6686  ./results/run-1-local/baseline-ref-vs-ref.json
@@ -16,8 +16,11 @@ b5d27742a01360d5a5539f01f3a012adc4ad9842a10aa40f819f2e6a529e756e  ./results/run-
 502b932b24e8b86ec4c0da876cb365831013470b977c0d1d9cec49bf47b5ce44  ./results/run-2/check.exit
 d8954b78a2e2e3518e56b09803a7575b980569dcc4361d60343a2cdde569a83f  ./results/run-2/check.log
 ce7aac614069d4e36bc4a6ab97d705e7e2f2e6aa78bf9f25f364c3eac8a33360  ./results/run-2/client-run-2.json
+5a99acd93cadcd39e7c094c8abe737a5029813486c40040a714d3ee39882c2b2  ./results/run-2/client-run-2.receiver-provenance.json
 60ff74e3740a4e262445ecbaf17edf110c040aab2cadf9892f11b95f3305d8e3  ./results/run-2/client.exit
 e09302b666e9b24f2aa1fe78fbe9e882af63287368cd233bdda61c090b24ab23  ./results/run-2/client.stdout.log
+9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  ./results/run-2/receiver-provenance.check.exit
+1c4835279d205216a1eec4f6660178dc8381e4bb74b124933a287f3b2d54421e  ./results/run-2/receiver-provenance.check.log
 0687e7d71da9e3624e8ff611240b595376d71b4f527929f5c7fc8d7bebaa7905  ./results/run-2/supplier-decisions.jsonl
 34844ab0e6d55f4c6cb9d6ed4a9f341449023bb7b82d1d9e0570db5b270ed125  ./results/run-2/supplier.log
 951d4c82f890e037f526c1545fc088dc2dcd224272dba87ab953951183e4d188  ./results/run-2/transcript.jsonl
