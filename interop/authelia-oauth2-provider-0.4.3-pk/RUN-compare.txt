@@ -1,0 +1,30 @@
+ok   PK-01 ref=accept impl=accept ref_failing=-                                impl_axis=-               
+ok   PK-02 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-03 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-04 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-05 ref=reject impl=reject ref_failing=proof_signature                  impl_axis=proof_signature axis ok
+ok   PK-06 ref=reject impl=reject ref_failing=proof_signature                  impl_axis=proof_signature axis ok
+ok   PK-07 ref=reject impl=reject ref_failing=proof_signature                  impl_axis=proof_signature axis ok
+ok   PK-08 ref=reject impl=reject ref_failing=proof_signature                  impl_axis=proof_signature axis ok
+ok   PK-09 ref=reject impl=reject ref_failing=proof_signature                  impl_axis=proof_signature axis ok
+ok   PK-10 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-11 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-12 ref=reject impl=reject ref_failing=request_binding                  impl_axis=request_binding axis ok
+ok   PK-13 ref=accept impl=accept ref_failing=-                                impl_axis=-               
+ok   PK-14 ref=reject impl=reject ref_failing=request_binding                  impl_axis=request_binding axis ok
+ok   PK-15 ref=reject impl=reject ref_failing=request_binding                  impl_axis=request_binding axis ok
+ok   PK-16 ref=reject impl=reject ref_failing=request_binding                  impl_axis=request_binding axis ok
+SKIP PK-17 harness: future iat not exercisable under the time shift
+ok   PK-18 ref=reject impl=reject ref_failing=request_binding                  impl_axis=request_binding axis ok
+ok   PK-19 ref=accept impl=accept ref_failing=-                                impl_axis=-               
+ok   PK-20 ref=accept impl=accept ref_failing=-                                impl_axis=-               
+ok   PK-21 ref=accept impl=accept ref_failing=-                                impl_axis=-               
+ok   PK-22 ref=reject impl=reject ref_failing=key_binding                      impl_axis=key_binding     axis ok
+ok   PK-23 ref=reject impl=reject ref_failing=proof_signature,key_binding      impl_axis=key_binding     axis ok
+ok   PK-24 ref=reject impl=reject ref_failing=proof_signature,request_binding  impl_axis=request_binding axis ok
+ok   PK-25 ref=reject impl=reject ref_failing=proof_signature,key_binding,request_binding impl_axis=proof_signature axis ok
+ok   PK-26 ref=reject impl=reject ref_failing=proof_signature,key_binding      impl_axis=key_binding     axis ok
+ok   PK-27 ref=reject impl=reject ref_failing=proof_signature,key_binding      impl_axis=key_binding     axis ok
+ok   PK-28 ref=reject impl=reject ref_failing=proof_signature,request_binding  impl_axis=request_binding axis ok
+agree=27 differ=0 ambiguous=0 not_run=1 of 28; reject axis named a failing axis: 22, did not: 0
+EXIT=0

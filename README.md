@@ -226,6 +226,8 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.6.0` | [`SOURCE.md`](interop/attenu-guard-0.6.0/SOURCE.md) |
 | `interop/attenu-guard-0.6.1` | [`SOURCE.md`](interop/attenu-guard-0.6.1/SOURCE.md) |
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
+| `interop/authelia-oauth2-provider-0.4.3-pk` | [`RUN.md`](interop/authelia-oauth2-provider-0.4.3-pk/RUN.md) |
+| `interop/bacs-oauth-server-8c61947c` | [`RUN.md`](interop/bacs-oauth-server-8c61947c/RUN.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/cosai-odis-148dc41` | [`README.md`](interop/cosai-odis-148dc41/README.md) |
@@ -256,6 +258,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
 | `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
+| `interop/vaid-a2a-main-abe1448-cleanroom-fa652557` | [`RUN.md`](interop/vaid-a2a-main-abe1448-cleanroom-fa652557/RUN.md) |
 | `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
 | `interop/wasmagent-aep-0.1.12-blind` | [`RUN.md`](interop/wasmagent-aep-0.1.12-blind/RUN.md) |
 | `interop/wasmagent-aep-2026-09-13-03` | [`RUN.md`](interop/wasmagent-aep-2026-09-13-03/RUN.md) |

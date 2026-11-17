@@ -63,6 +63,10 @@ Clone the reference repository at the pinned commit, create its venv per its REA
 
 Two logs in results/run-2 (check.log, client.stdout.log) had the local absolute path of the result file. That prefix is replaced with `<worktree>/`. Nothing else in any result file was changed.
 
+## Receiver provenance
+
+CROSSRUN.md Section 6 in MoltyCel/aae-a2a-extension later made `receiver_provenance` a required member of the result file. For this run the value is `reference_informed`, because the reference `build_aae` was read during a code review before the run, as stated above. `results/run-2/client-run-2.json` is kept as the client produced it on 2026-11-02, without the member. `results/run-2/client-run-2.receiver-provenance.json` is the same result with `receiver_provenance: reference_informed`, copied byte for byte from `crossruns/2026-11-02-tymofii-pidlisnyi-client.json` in that repository at `9db8ce9`. The crossrun checker at `9db8ce9` reports it valid (24 pass, 0 fail, 0 skipped) in `results/run-2/receiver-provenance.check.log`, and reports the original file invalid only for the missing member.
+
 ## Third-party material
 
 These files under `results/` are output of MolTrust software from MoltyCel/aae-a2a-extension at `08f41146`, Copyright (c) 2026 CryptoKRI GmbH, Zurich (MolTrust), Apache License, Version 2.0, run unmodified. They are the reference supplier logs (`*supplier.log`, `*supplier-decisions.jsonl`), the reference buyer against reference supplier baseline (`baseline-ref-vs-ref.*`) and the crossrun checker output (`*check.log`, `*check.exit`). The client, its transcripts and its result JSON are this record's own. The transcripts contain requests the client built from `tests/vectors/crossrun/` in that repository (the crossrun cases and its public test keys, which its NOTICE says are not secrets), read at run time and not copied here.
