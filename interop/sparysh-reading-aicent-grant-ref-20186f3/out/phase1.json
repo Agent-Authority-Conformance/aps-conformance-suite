@@ -1,0 +1,1585 @@
+{
+ "cases": [
+  {
+   "applicable_conditions": [
+    "evidence_binding_mismatch",
+    "evidence_expired"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_expired' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_expired'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_binding_mismatch', 'evidence_expired']; required 'evidence_binding_mismatch'; reason 'evidence_expired'",
+     "held": false,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B01",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_binding_mismatch",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_binding_mismatch",
+    "evidence_expired",
+    "authority_revoked"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_binding_mismatch' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_binding_mismatch', 'evidence_expired', 'authority_revoked']; required 'evidence_binding_mismatch'; reason 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B02",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_binding_mismatch",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_expired",
+    "authority_revoked"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_revoked' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_revoked'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_expired', 'authority_revoked']; required 'evidence_expired'; reason 'authority_revoked'",
+     "held": false,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B03",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_expired",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "authority_not_determined"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_not_determined' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_not_determined'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['authority_not_determined']; required 'authority_not_determined'; reason 'authority_not_determined'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B04",
+   "input_carries_8.1_facts": true,
+   "required_reason": "authority_not_determined",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_expired",
+    "authority_revoked"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_expired' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_expired'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_expired', 'authority_revoked']; required 'evidence_expired'; reason 'evidence_expired'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B05",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_expired",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'operation_not_permitted' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'operation_not_permitted'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The refusal reason is null when there is no refusal: the response is a permit, and the answer may be relied on under the rules of Section 6."
+     },
+     "detail": "no condition applies; reason 'operation_not_permitted'",
+     "held": false,
+     "rule": "R5-null-when-no-condition"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B06",
+   "input_carries_8.1_facts": true,
+   "required_reason": null,
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "The refusal reason is null when there is no refusal: the response is a permit, and the answer may be relied on under the rules of Section 6."
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "operation_not_permitted"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'operation_not_permitted' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'operation_not_permitted'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['operation_not_permitted']; required 'operation_not_permitted'; reason 'operation_not_permitted'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B07",
+   "input_carries_8.1_facts": true,
+   "required_reason": "operation_not_permitted",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_not_determined' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_not_determined'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "*observation_as_of_ms is null whenever the observation the answer relied on is absent or not fresh*, even if a later, successful observation is available at answer time."
+     },
+     "detail": "relied-on observation present=True fresh=False; member=None",
+     "held": true,
+     "rule": "R9-obs-null-when-absent-or-stale"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "expires_at_ms grant expiry instant, Unix milliseconds"
+     },
+     "detail": "grant expiry 900; member=1150",
+     "held": false,
+     "rule": "R11-expires-equals-grant"
+    }
+   ],
+   "id": "B08",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_not_determined' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_not_determined'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "*observation_as_of_ms is null whenever the observation the answer relied on is absent or not fresh*, even if a later, successful observation is available at answer time."
+     },
+     "detail": "relied-on observation present=True fresh=False; member=1150",
+     "held": false,
+     "rule": "R9-obs-null-when-absent-or-stale"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "expires_at_ms grant expiry instant, Unix milliseconds"
+     },
+     "detail": "grant expiry 900; member=900",
+     "held": true,
+     "rule": "R11-expires-equals-grant"
+    }
+   ],
+   "id": "B09",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_binding_mismatch",
+    "authority_revoked"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_binding_mismatch' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_binding_mismatch', 'authority_revoked']; required 'evidence_binding_mismatch'; reason 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B10",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_binding_mismatch",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_not_determined' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_not_determined'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "*observation_as_of_ms is null whenever the observation the answer relied on is absent or not fresh*, even if a later, successful observation is available at answer time."
+     },
+     "detail": "relied-on observation present=True fresh=False; member=None",
+     "held": true,
+     "rule": "R9-obs-null-when-absent-or-stale"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "expires_at_ms grant expiry instant, Unix milliseconds"
+     },
+     "detail": "grant expiry 900; member=900",
+     "held": true,
+     "rule": "R11-expires-equals-grant"
+    }
+   ],
+   "id": "B11",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "missing members ['issued_at_ms']",
+     "held": false,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B12",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "nonconformant"
+  },
+  {
+   "ambiguous_parts": [
+    {
+     "also_cites": {
+      "section": "8.1",
+      "sentence": "A refusal computed over labels, opinions, or unrecorded context alone is not auditable, and producing one is not a conformance target of this section."
+     },
+     "presented": "operator label, not re-derivable from pinned inputs",
+     "reading_A": "the MUST in 8.1 is violated: nonconformant",
+     "reading_B": "the next sentence places such a refusal outside the conformance target of 8.1: the section assigns no verdict",
+     "rule": "R7-computed-over-facts",
+     "scored": "the basis the refusal was computed over"
+    }
+   ],
+   "applicable_conditions": [
+    "authority_not_determined"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_not_determined' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_not_determined'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['authority_not_determined']; required 'authority_not_determined'; reason 'authority_not_determined'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For the same reason, a refusal reason MUST be computed over the authority facts the response carries — facts a third party can re- derive from pinned inputs."
+     },
+     "detail": {
+      "also_cites": {
+       "section": "8.1",
+       "sentence": "A refusal computed over labels, opinions, or unrecorded context alone is not auditable, and producing one is not a conformance target of this section."
+      },
+      "presented": "operator label, not re-derivable from pinned inputs",
+      "reading_A": "the MUST in 8.1 is violated: nonconformant",
+      "reading_B": "the next sentence places such a refusal outside the conformance target of 8.1: the section assigns no verdict",
+      "scored": "the basis the refusal was computed over"
+     },
+     "held": "ambiguous",
+     "rule": "R7-computed-over-facts"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B13",
+   "input_carries_8.1_facts": true,
+   "parts_scored": {
+    "R1-reason-present": true,
+    "R2-closed-set": true,
+    "R3-no-granted": true,
+    "R4-priority": true,
+    "R7-computed-over-facts": "ambiguous",
+    "R8-members-present": true
+   },
+   "required_reason": "authority_not_determined",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "ambiguous"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_expired' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_expired'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "missing members ['expires_at_ms']",
+     "held": false,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B14",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_binding_mismatch",
+    "evidence_expired"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'evidence_binding_mismatch' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['evidence_binding_mismatch', 'evidence_expired']; required 'evidence_binding_mismatch'; reason 'evidence_binding_mismatch'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B15",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_binding_mismatch",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [
+    "evidence_expired"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "outcome carries no reason",
+     "held": false,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B16",
+   "input_carries_8.1_facts": true,
+   "required_reason": "evidence_expired",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The refusal reason is null when there is no refusal: the response is a permit, and the answer may be relied on under the rules of Section 6."
+     },
+     "detail": "no condition applies; reason None",
+     "held": true,
+     "rule": "R5-null-when-no-condition"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B17",
+   "input_carries_8.1_facts": true,
+   "required_reason": null,
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "The refusal reason is null when there is no refusal: the response is a permit, and the answer may be relied on under the rules of Section 6."
+   },
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [
+    "authority_not_determined"
+   ],
+   "basis": [
+    "sect-8.1",
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "conditions ['authority_not_determined'] apply; reason is null",
+     "held": false,
+     "rule": "R6-refuse-when-condition"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "*observation_as_of_ms is null whenever the observation the answer relied on is absent or not fresh*, even if a later, successful observation is available at answer time."
+     },
+     "detail": "relied-on observation present=True fresh=False; member=1150",
+     "held": false,
+     "rule": "R9-obs-null-when-absent-or-stale"
+    }
+   ],
+   "id": "B18",
+   "input_carries_8.1_facts": true,
+   "required_reason": "authority_not_determined",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "ambiguous_parts": [
+    {
+     "also_cites": [
+      {
+       "section": "8.2",
+       "sentence": "observation_as_of_ms the as-of instant of the standing observation the answer relied on, or null"
+      },
+      {
+       "section": "8.1",
+       "sentence": "For the same reason, a refusal reason MUST be computed over the authority facts the response carries — facts a third party can re- derive from pinned inputs."
+      }
+     ],
+     "presented": {
+      "observation_as_of_ms": 1100,
+      "revoked_at_ms": 1101
+     },
+     "reading_A": "8.2 race paragraph: the record states when facts were observed; an observation predating the revocation is the legible boundary record: conformant",
+     "reading_B": "8.2 defines the member as the observation the answer relied on, and 8.1 requires the reason to be computed over facts the response carries; an observation at 1100 cannot establish a revocation at 1101: nonconformant",
+     "rule": "R12-race-observation-vs-revocation",
+     "scored": "observation_as_of_ms against the revocation instant"
+    }
+   ],
+   "applicable_conditions": [
+    "authority_revoked"
+   ],
+   "basis": [
+    "sect-8.1",
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_revoked' in the closed set",
+     "held": true,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_revoked'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['authority_revoked']; required 'authority_revoked'; reason 'authority_revoked'",
+     "held": true,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "A revocation arriving just before or just after an invocation ends is a boundary no protocol erases; what the response owes the relying party is a legible record of it: the members above state when the authority-side facts were effective (issued_at_ms, expires_at_ms) and when they were observed (observation_as_of_ms)."
+     },
+     "detail": {
+      "also_cites": [
+       {
+        "section": "8.2",
+        "sentence": "observation_as_of_ms the as-of instant of the standing observation the answer relied on, or null"
+       },
+       {
+        "section": "8.1",
+        "sentence": "For the same reason, a refusal reason MUST be computed over the authority facts the response carries — facts a third party can re- derive from pinned inputs."
+       }
+      ],
+      "presented": {
+       "observation_as_of_ms": 1100,
+       "revoked_at_ms": 1101
+      },
+      "reading_A": "8.2 race paragraph: the record states when facts were observed; an observation predating the revocation is the legible boundary record: conformant",
+      "reading_B": "8.2 defines the member as the observation the answer relied on, and 8.1 requires the reason to be computed over facts the response carries; an observation at 1100 cannot establish a revocation at 1101: nonconformant",
+      "scored": "observation_as_of_ms against the revocation instant"
+     },
+     "held": "ambiguous",
+     "rule": "R12-race-observation-vs-revocation"
+    }
+   ],
+   "id": "B19",
+   "input_carries_8.1_facts": true,
+   "parts_scored": {
+    "R1-reason-present": true,
+    "R12-race-observation-vs-revocation": "ambiguous",
+    "R2-closed-set": true,
+    "R3-no-granted": true,
+    "R4-priority": true,
+    "R8-members-present": true
+   },
+   "required_reason": "authority_revoked",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "ambiguous"
+  },
+  {
+   "applicable_conditions": [
+    "operation_not_permitted"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'granted' not in the closed set",
+     "held": false,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'granted'",
+     "held": false,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['operation_not_permitted']; required 'operation_not_permitted'; reason 'granted'",
+     "held": false,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B20",
+   "input_carries_8.1_facts": true,
+   "required_reason": "operation_not_permitted",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "*observation_as_of_ms is null whenever the observation the answer relied on is absent or not fresh*, even if a later, successful observation is available at answer time."
+     },
+     "detail": "relied-on observation present=False fresh=None; member=None",
+     "held": true,
+     "rule": "R9-obs-null-when-absent-or-stale"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "expires_at_ms grant expiry instant, Unix milliseconds"
+     },
+     "detail": "grant expiry 9000; member=9000",
+     "held": true,
+     "rule": "R11-expires-equals-grant"
+    }
+   ],
+   "id": "B21",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "observation_as_of_ms the as-of instant of the standing observation the answer relied on, or null"
+     },
+     "detail": "relied-on fresh as_of 1100; member=1100",
+     "held": true,
+     "rule": "R10-obs-equals-relied-on"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "expires_at_ms grant expiry instant, Unix milliseconds"
+     },
+     "detail": "grant expiry 9000; member=9000",
+     "held": true,
+     "rule": "R11-expires-equals-grant"
+    }
+   ],
+   "id": "B22",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B23",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "conformant"
+  },
+  {
+   "applicable_conditions": [],
+   "basis": [
+    "sect-8.2"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is None",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "missing members ['observation_as_of_ms']",
+     "held": false,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B24",
+   "input_carries_8.1_facts": false,
+   "required_reason": "not computed: input carries no 8.1 facts",
+   "required_reason_rests_on": null,
+   "verdict": "nonconformant"
+  },
+  {
+   "applicable_conditions": [
+    "authority_not_determined"
+   ],
+   "basis": [
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+     },
+     "detail": "reason key present",
+     "held": true,
+     "rule": "R1-reason-present"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+     },
+     "detail": "reason 'authority_suspended' not in the closed set",
+     "held": false,
+     "rule": "R2-closed-set"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "A null refusal reason is the only representation of \"permitted\"; there is no affirmative \"granted\" value."
+     },
+     "detail": "reason is 'authority_suspended'",
+     "held": true,
+     "rule": "R3-no-granted"
+    },
+    {
+     "cites": {
+      "section": "8.1",
+      "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+     },
+     "detail": "applicable ['authority_not_determined']; required 'authority_not_determined'; reason 'authority_suspended'",
+     "held": false,
+     "rule": "R4-priority"
+    },
+    {
+     "cites": {
+      "section": "8.2",
+      "sentence": "The grant reference is a structure with the following members:"
+     },
+     "detail": "all five members present",
+     "held": true,
+     "rule": "R8-members-present"
+    }
+   ],
+   "id": "B25",
+   "input_carries_8.1_facts": true,
+   "required_reason": "authority_not_determined",
+   "required_reason_rests_on": {
+    "section": "8.1",
+    "sentence": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+   },
+   "verdict": "nonconformant"
+  }
+ ],
+ "draft_citations_verified": 20,
+ "phase": 1,
+ "reader": "check_reader.py",
+ "rules": [
+  "R1-reason-present",
+  "R2-closed-set",
+  "R3-no-granted",
+  "R4-priority",
+  "R5-null-when-no-condition",
+  "R6-refuse-when-condition",
+  "R7-computed-over-facts",
+  "R8-members-present",
+  "R9-obs-null-when-absent-or-stale",
+  "R10-obs-equals-relied-on",
+  "R11-expires-equals-grant",
+  "R12-race-observation-vs-revocation"
+ ],
+ "tally": {
+  "ambiguous": 2,
+  "conformant": 11,
+  "nonconformant": 12
+ }
+}

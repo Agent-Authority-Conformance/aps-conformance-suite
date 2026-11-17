@@ -1,0 +1,7 @@
+ok  inputs/sealed/vectors.json
+ok  inputs/sealed/CANDIDATE.md
+ok  inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+draft read from: draft-li-rttp-iqa-addressing-02.txt
+blind copy: 25 cases
+done: inputs/SHA256SUMS
+exit code: 0
