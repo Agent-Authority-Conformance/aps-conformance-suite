@@ -71,13 +71,6 @@ def g_path_flexible(uri):
     return got
 
 
-def g_no_tightening(uri):
-    got = G(uri)
-    if isinstance(got, tuple) and got[1] == "leading_hyphen":
-        return "accept"
-    return got
-
-
 def g_whitespace_stripped(uri):
     got = G(uri)
     if isinstance(got, tuple) and got[1] == "whitespace":
@@ -111,7 +104,6 @@ M = {
  "grammar: empty segments allowed": g_empty_segments,
  "grammar: charset widened": g_charset_wide,
  "grammar: path flexible": g_path_flexible,
- "grammar: leading-hyphen tightening dropped": g_no_tightening,
  "grammar: whitespace stripped silently": g_whitespace_stripped,
  "grammar: percent-encoding always rejected": g_percent_reject,
  "grammar: percent-encoding silently normalised": g_percent_normalise,
@@ -121,13 +113,16 @@ M = {
 
 
 def main():
-    cases = json.load(open(os.path.join(HERE, "vectors.json"), encoding="utf-8"))["cases"]
+    all_cases = json.load(open(os.path.join(HERE, "vectors.json"), encoding="utf-8"))["cases"]
+    # the battery tests the -02 normative core; the proposed-tightening cases
+    # are dual-reading and cannot discriminate a mutation
+    cases = [c for c in all_cases if c.get("status") != check.TIGHTENING_STATUS]
     killed = 0
     for name, fn in M.items():
         hits = [c["id"] for c in cases if check.evaluate(c, fn) != c["expect"]]
         killed += bool(hits)
         print(("killed " if hits else "ALIVE  ") + f"{name:45} by {','.join(hits) or '-'}")
-    print(f"{killed}/{len(M)} mutants killed")
+    print(f"{killed}/{len(M)} mutants killed over {len(cases)} normative cases")
     return 0 if killed == len(M) else 1
 
 if __name__ == "__main__":

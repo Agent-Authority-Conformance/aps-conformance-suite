@@ -66,13 +66,13 @@ Case statuses in `vectors.json`:
 
 - `normative` — the expected decision follows from the ABNF and exclusions as
   written in -02.
-- `authoritative-tightening` — UG-N15 and UG-N16. The section 4.1 ABNF literal
-  `1*( %x61-7A / DIGIT / "-" )` admits a leading hyphen, but the published
-  conformance vectors reject it, and the draft author has decided
-  (2026-11-09) that the -03 revision tightens the grammar accordingly. Until
-  -03 is posted these two cases test the tightened reading, and a strict
-  reading of -02 alone would score them unsettled. UG-P08 records the
-  complementary boundary: trailing hyphens remain ABNF-literal accepts.
+- `proposed-tightening` — UG-N15 and UG-N16. The section 4.1 ABNF literal
+  `1*( %x61-7A / DIGIT / "-" )` admits a leading hyphen, so accept is the
+  conformant -02 reading; a rejection naming leading_hyphen is the proposed
+  -03 tightening (author decision 2026-11-09). The checker scores both
+  readings consistent until -03 settles the grammar: an implementation
+  following -02 is not scored wrong. UG-P08 records the complementary
+  boundary: trailing hyphens remain ABNF-literal accepts.
 
 ## How to run
 
@@ -82,21 +82,26 @@ python3 -I mutate.py
 ```
 
 `check.py` re-derives each case's grammar decision from the URI string (the
-section 4.1 ABNF plus the section 4.2 exclusions and the disclosed tightening)
-and compares it with the declared expectation, including the reject reason
-named by the case. To test an implementation, feed it each case's URI and
+section 4.1 ABNF plus the section 4.2 exclusions) and compares it with the
+declared expectation, including the reject reason named by the case. The two
+proposed-tightening cases are scored under a dual reading: accept follows the
+-02 ABNF literal, a leading_hyphen rejection follows the proposed -03
+tightening; both readings are consistent until -03 settles the grammar. To test
+an implementation, feed it each case's URI and
 record the decision it produced. `mutate.py` weakens or distorts one rule of
 `check.py` at a time — uppercase normalised away, any scheme accepted, the
 component exclusions lifted, segment count and emptiness relaxed, the charset
-widened, the path rules relaxed, the tightening dropped, whitespace stripped
+widened, the path rules relaxed, whitespace stripped
 silently, percent-encoding forced to either licensed decision, and
 always-accept / always-reject — and fails unless some case catches each
 change.
 
-At the revision submitted, the submitter's runs on Python 3 printed `26/26
-agree` and `13/13 mutants killed`, each with exit 0. These show that the
-checker agrees with the expected results and that every rule has a case
-depending on it, in both directions. They say nothing about any
+At the revision submitted, the submitter's runs on Python 3 printed `24/24
+normative agree`, `2/2 proposed consistent` and `12/12 mutants killed`, each
+with exit 0. These show that the checker agrees with the expected results on
+the -02 cases, that both readings of the proposed-tightening boundary are
+accepted, and that every remaining rule has a case depending on it, in both
+directions. They say nothing about any
 implementation, and they do not show that the expected results are the right
 reading of the source.
 
@@ -108,9 +113,9 @@ reviews are author-produced and are not runs.
 
 ## Recorded run and live report
 
-A recorded run of this family ships with this repository: [`family_runner.py`](https://github.com/Aicent-Stack/conformance/blob/590b26b/family-runner/family_runner.py) replays every case and the full mutation battery into a single deterministic output — no timestamps, no paths, byte-replayable. The run is author-produced and is presented as such. Recorded totals for this family: 26/26 cases agree, 13/13 mutants killed, exit 0.
+A recorded run of this family ships with this repository: [`family_runner.py`](https://github.com/Aicent-Stack/conformance/blob/3782d81/family-runner/family_runner.py) replays every case and the full mutation battery into a single deterministic output — no timestamps, no paths, byte-replayable. The run is author-produced and is presented as such. Recorded totals for this family: 24/24 normative cases agree, 2/2 proposed-tightening cases consistent, 12/12 mutants killed, exit 0.
 
-The full recorded-run report — per-case results, the mutation battery, run metadata, and the verbatim console output — lives on the family page at [iqa.org/conformance/aicent-uri-grammar/](https://iqa.org/conformance/aicent-uri-grammar/), sealed as a single-file site freeze ([aicent-uri-grammar-site-20261114a.tar.gz](https://iqa.org/seal/aicent-uri-grammar-site-20261114a.tar.gz)).
+The full recorded-run report — per-case results, the mutation battery, run metadata, and the verbatim console output — lives on the family page at [iqa.org/conformance/aicent-uri-grammar/](https://iqa.org/conformance/aicent-uri-grammar/), sealed as a single-file site freeze ([aicent-uri-grammar-site-20261117a.tar.gz](https://iqa.org/seal/aicent-uri-grammar-site-20261117a.tar.gz)).
 
 ## Known limitations
 
