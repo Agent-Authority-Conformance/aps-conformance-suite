@@ -257,6 +257,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417/README.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
+| `interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468` | [`README.md`](interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468/README.md) |
 | `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
 | `interop/vaid-a2a-main-abe1448-cleanroom-fa652557` | [`RUN.md`](interop/vaid-a2a-main-abe1448-cleanroom-fa652557/RUN.md) |
 | `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
