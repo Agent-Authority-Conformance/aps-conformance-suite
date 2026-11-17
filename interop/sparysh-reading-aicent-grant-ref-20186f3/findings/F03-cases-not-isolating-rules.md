@@ -1,9 +1,9 @@
-# F03 — The cases: rules that no single case depends on, under an independent decomposition
+# F03 — The cases: rules that no single case depends on, under this run's decomposition
 
 To: the author of the candidate aicent-grant-ref (revision 1)
 Draft only; not filed.
 
-The independent checker implements 12 rules. Removing each one alone and re-running gave these results; full table in RESULTS.md:
+This run's checker implements 12 rules. Removing each one alone and re-running gave these results; full table in RESULTS.md:
 
 - Closed set (8.1 "MUST NOT emit values outside it") removed: no case changes. GR-C03 (`authority_suspended`) and GR-C01 (`granted`) carry 8.1 input facts, so the priority rule rejects them as well: the required value differs.
 - "No affirmative granted value" removed: no case changes. GR-C01 is also caught by the closed set and the priority rule.

@@ -3,12 +3,27 @@
 who ran it: Andrii Sparysh (GitHub `andreysparish`), using an AI assistant
 date: 2026-11-16
 run mode: B, alternate recomputation
-implementation name: `reader/check_reader.py` (an independent reader of draft-li-rttp-iqa-addressing-02 §8.1–8.2), with `reader/compare.py` for the comparison
+implementation name: `reader/check_reader.py` (a reader of draft-li-rttp-iqa-addressing-02 §8.1–8.2, written by the runner for this run), with `reader/compare.py` for the comparison
 implementation repository and version: this directory, `reader/`; `check_reader.py` sha256 `5eeb294a5e3cd039ff40e94581afc097ac9d1f1e290795a387af7eba405a02f2`; `compare.py` sha256 `1394a8ce0240aabc092e96f427c88cf4c09ab1b2d805f249a3aa75047d97e136`
 corpus reference: `aps-conformance-suite` at `20186f3ebc78de2f34e79a0b4bfe5f828599653b`, candidate `aicent-grant-ref`, revision 1
 environment: Python 3.13.18 (standard library only), Linux 6.18.44-fc-v470 x86_64, Ubuntu 24.04.5 LTS
-author-produced or independent: independent. The runner authored neither the vectors nor any claim input, and the checker that supplies the recomputation was written from the draft's text, not from the candidate's checker.
+author-produced or independent: author-produced, for every claim (see "Labels per claim"). Authorship relationship: the runner wrote `reader/check_reader.py`, which supplies the recomputation, and `reader/compare.py`. The runner authored none of the candidate, its vectors, its checker or the draft. The checker was written from the draft's text and a blind copy of the cases, and its phase-1 output was frozen before the expected verdicts were opened.
 suspected defective vectors: none on verdict grounds. Data observations, which change no verdict in this reading, are in `findings/F03-cases-not-isolating-rules.md` (GR-C01, GR-C03, GR-N04 do not isolate one rule each; no case tests the observation-equals-relied-on rule) and `findings/F04-grant-times.md` (nine cases carry `issued_at_ms` 1000 > `expires_at_ms` 900).
+
+## Labels per claim
+
+The claims are the candidate's expected verdicts, grouped by the rules its CANDIDATE.md names, and the named parts of its two `ambiguous` cases. The runner for every claim is Andrii Sparysh.
+
+| claim (candidate rule) | cases | mode | label | implementation |
+|---|---|---|---|---|
+| R-ORDER: the reason is the first value whose condition applies, null when none applies | GR-P01 to GR-P06, GR-P08, GR-P09 | Mode B | author-produced | `reader/check_reader.py` |
+| R-NOTDET: an unreachable source or a predating observation ends in `authority_not_determined` | GR-P07, GR-N04 | Mode B | author-produced | `reader/check_reader.py` |
+| R-NULLOBS: `observation_as_of_ms` is null when the relied-on observation is absent or not fresh | GR-N01 to GR-N03, GR-N05, GR-N06 | Mode B | author-produced | `reader/check_reader.py` |
+| R-CLOSED: the refusal set is closed | GR-C01 to GR-C04 | Mode B | author-produced | `reader/check_reader.py` |
+| R-GRANTREF: every response carries the five grant-reference members | GR-G01 to GR-G04 | Mode B | author-produced | `reader/check_reader.py` |
+| `ambiguous` verdicts and their four named parts | GR-A01, GR-A02 | Mode B | author-produced | `reader/check_reader.py`; parts grouped by `PART_MAP` in `reader/compare.py` |
+
+For every row, the authorship relationship is that the runner wrote the checker that supplies the result. The sensitivity table, the ambiguity log and the findings are this run's own analysis, not claims of the candidate.
 
 ## Per-vector result
 

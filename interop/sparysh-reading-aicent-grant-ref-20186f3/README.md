@@ -29,9 +29,14 @@ cmp rerun-final.json out/final.json
 
 The fetch script takes the draft from `./draft-li-rttp-iqa-addressing-02.txt` if present, otherwise from the IETF archive. The SHA-256 decides which copy is accepted.
 
-## Independence
+## Verification split
 
-This run was produced independently. Andrii Sparysh authored none of the candidate, its vectors, its checker or the draft. The checker was written from the draft's text before the expected verdicts were opened. The candidate's `check.py` and `mutate.py` were not downloaded or read.
+- R-ORDER, R-NOTDET, R-NULLOBS, R-CLOSED, R-GRANTREF / expected verdicts of the 23 decided cases; Andrii Sparysh; Mode B; author-produced; `reader/check_reader.py`.
+- `ambiguous` verdicts and named parts of GR-A01 and GR-A02; Andrii Sparysh; Mode B; author-produced; `reader/check_reader.py`, with `PART_MAP` in `reader/compare.py`.
+
+Authorship relationship, for both entries: the runner wrote the checker that supplies the recomputation. The per-rule table is in `run-report.md`, "Labels per claim". These records are attributed per claim. This record is not an end-to-end verification or a verdict on the candidate.
+
+What the label does not change: Andrii Sparysh authored none of the candidate, its vectors, its checker or the draft. The checker was written from the draft's text and a blind copy of the cases. Its phase-1 output was frozen and zipped before the expected verdicts were opened. The candidate's `check.py` and `mutate.py` were not downloaded or read.
 
 The lab certifies nothing. This directory is a record of one run. It is not a verdict on the candidate, the draft or any implementation.
 

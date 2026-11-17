@@ -46,9 +46,18 @@
 4. The blind `cases.json` carries the candidate's representation rules (`readings`, `absent_fields`, `field_names`) and `sources`. These are data and representation rules that the boundary of this run permits. No file read before phase 2 contained the candidate's reading of a case, or any code. Ordering rule 3 was not triggered.
 5. The fetch script's text, read before setup, names the withheld fields (`rule`, `note`, `expect`, `expect_parts`) but no values.
 
-## Independence
+## Authorship
 
 - The run was carried out and checked by Andrii Sparysh (GitHub `andreysparish`), using an AI assistant. He authored none of the candidate, its vectors, its checker, the draft, or any claim input.
+- He wrote the checker that supplies the recomputation, so under `CONTRIBUTING.md` every claim in this record is author-produced Mode B (`run-report.md`, "Labels per claim").
 - The recomputation is `reader/check_reader.py`, written from the text of draft sections 8.1/8.2 (and the sections listed above) and the blind cases only. Every check in it cites a sentence of the draft, and the program verifies at start-up that each cited sentence occurs in the draft (20 citations).
 - The candidate's checker (`check.py`) and mutation harness (`mutate.py`) were never obtained. The rule names, rule boundaries and sensitivity design of this run are this run's own. CANDIDATE.md, read after the comparison, uses different rule names (R-ORDER, R-NOTDET, R-NULLOBS, R-CLOSED, R-GRANTREF).
 - The only phase-2 judgement is `PART_MAP` in `reader/compare.py`, which groups phase-1 rules into the candidate's named parts for the two ambiguous cases. It changes no phase-1 result.
+
+## Changes made in review, before merge (2026-11-17)
+
+These change no command, output, log or verdict of the run. `out/` and `logs/` are unchanged.
+
+- `SHA256SUMS.txt`: the entry for `reader/__pycache__/check_reader.cpython-313.pyc` was removed. That file is a local interpreter cache, is not part of this directory as committed, and had been listed by mistake. The digests of every changed file were recomputed.
+- Classification: the record was first labelled independent. Under `CONTRIBUTING.md` it is author-produced Mode B for every claim, because the runner wrote the checker that supplies the recomputation. `run-report.md`, `README.md` (section "Verification split") and this file were corrected.
+- `findings/`: "the independent reading" and "the independent checker" now read "this run's reading" and "this run's checker", so that the prose does not stand in for a label.
