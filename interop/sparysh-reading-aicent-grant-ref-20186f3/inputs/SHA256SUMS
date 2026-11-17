@@ -1,0 +1,6 @@
+60f283c0aa60e492ba1a9302ea82d1f80d19edc162aa4a6514d44514873048c8  ./aicent-grant-ref-reading-1-fetch-inputs.sh
+86c9aa2c2f6151cd5f8ebcf33c01e08a4a19a3cdac7bdd9936fe00ddc0309205  ./blind/cases.json
+02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044  ./draft/draft-li-rttp-iqa-addressing-02.txt
+089091faec6d63e7515f8279b23495866c65438929353a5e7fb8d22daddda0a3  ./sealed/CANDIDATE.md
+04a7f8df180f8841ba534950deec6d06f4dd8ed5cdaa9b139a850fafc7938141  ./sealed/id-map.json
+f1924f07be2b7dcf93c3832938bdb288f0f2868057fe8396c9c5b4935b71a303  ./sealed/vectors.json
