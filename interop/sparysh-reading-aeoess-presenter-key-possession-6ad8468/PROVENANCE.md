@@ -94,9 +94,10 @@
 4. **Other lab files named in `CANDIDATE.md`.** `CANDIDATE.md` (phase 2) names `docs/mappings/owasp-aimm-pillar-2.md` and `tactiq-tpm-bound-key`. Neither was opened.
 5. **Representation statements in the blind copy.** `inputs/blind/cases.json` carries the candidate's representation statements `text_status` and `readings`, which are permitted reading. No file read turned out to contain someone's code. No file read turned out to contain a reading other than these permitted statements.
 
-## Independence
+## Authorship
 
 - **Who.** The run was carried out and checked by Andrii Sparysh (GitHub `andreysparish`), using an AI assistant. He authored none of the candidate, its vectors, its generator, its checker, RFC 9449, or any claim input.
+- **Classification.** He wrote the checker. Under `CONTRIBUTING.md`, Ed25519 signature validity under the embedded key is independent Mode B, because `cryptography` supplies that result. Every other claim is author-produced Mode B (`run-report.md`, "Labels per claim").
 - **What the recomputation is written from.** It is written from the RFC texts listed above, the blind cases, and, in phase 2 only, the candidate's stated axis map.
 - **Citations.** At start-up the checker verifies 54 cited sentences.
 - **Candidate code.** The candidate's code was never obtained.
@@ -104,3 +105,14 @@
   - Choice points A1 and A2 were fixed by `CANDIDATE.md`'s axis definitions (`out/changes.md`).
   - The divergence analysis was done, and findings F01 to F04 were drafted.
   - The phase-2 entry A20 was added to the ambiguity log.
+
+## Changes made in review, before merge (2026-11-17)
+
+- **What did not change.** No command, output, log or verdict of the run. `out/` and `logs/` are unchanged.
+- **Classification.**
+  - The record was first labelled independent as a whole. Under `CONTRIBUTING.md` it is now labelled per claim:
+    - Ed25519 signature validity under the embedded key is independent Mode B;
+    - every other claim is author-produced Mode B, because the runner wrote the checker that supplies it.
+  - Corrected: `run-report.md` (field "author-produced or independent", new section "Labels per claim"), `README.md` (section "Verification split", formerly "Independence") and this file (section "Authorship", formerly "Independence").
+  - `out/changes.md` still refers to the section by its earlier name.
+- **Digests.** The digests of the changed files were recomputed in `SHA256SUMS.txt`.

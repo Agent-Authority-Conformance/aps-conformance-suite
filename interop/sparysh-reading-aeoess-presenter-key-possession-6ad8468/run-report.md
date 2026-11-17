@@ -11,13 +11,38 @@
   - `reader/explore.py` SHA-256 `eafd642ff4a3a78fef12e0320d5e8d5a6acbf2b9618ac53eda9b4a08b9fdfa8e`
 - **corpus reference:** `aps-conformance-suite` at `6ad8468acfff6600356efb05e2a530366b1d9d96`, candidate `aeoess-presenter-key-possession`, revision 1
 - **environment:** Python 3.13.18, `cryptography` 50.0.1 (Ed25519 only), no other third-party package; Ubuntu 24.04.5 LTS, Linux 6.18.44 x86_64
-- **author-produced or independent:** independent. The runner authored neither the vectors nor any claim input. The checker that supplies the recomputation was written from the RFC text, not from the candidate's checker or generator.
+- **author-produced or independent:** labelled per claim; see "Labels per claim".
+  - Ed25519 signature validity under the public key embedded in each proof: independent.
+  - Every other claim: author-produced. The authorship relationship is that the runner wrote the checker (`reader/checker.py`, `reader/phase2.py`) that supplies those results.
+  - The runner authored none of the candidate, its vectors, its generator, its checker or RFC 9449. The checker was written from the RFC text and a blind copy of the cases, and its phase-1 output was frozen before the expected verdicts were opened.
 - **suspected defective vectors:**
   - PK-18. Its expected `nonconformant` rests on reading RFC 9449 11.1 ("servers can store the jti value"; "would be declined") as a requirement. This run reads the text two ways and reports `ambiguous` (F01).
   - Data observations:
     - The axis-to-item map that decides PK-26 and PK-28 is stated only in `CANDIDATE.md` (F02).
     - Four conditions have no case that isolates them under this checker: items 1, 2 and 5, and item 3 for `jti`/`htm`/`htu`/`iat` and for `nonce` (F03).
     - PK-11's `basis` omits 4.3 item 12 (F04).
+
+## Labels per claim
+
+The runner for every claim is Andrii Sparysh.
+
+| claim | cases | mode | label | implementation |
+|---|---|---|---|---|
+| Ed25519 signature validity under the public key in the proof's own `jwk` header (rule R06): 24 valid; PK-05 and PK-06 invalid | the 26 cases in which a verification call was made | Mode B | independent | `cryptography` 50.0.1, `Ed25519PublicKey.verify`. A thin harness in `reader/checker.py` passes it the first two segments of the compact JWT as received (the signing input, not reconstructed), the decoded third segment and the decoded `x`. |
+| Signature fact for PK-08 (`alg` `none`) and PK-25 (two segments), decided before any verification call | PK-08, PK-25 | Mode B | author-produced | `reader/checker.py` |
+| Header and form: single header, well-formed JWT, `typ`, `alg`, no private member in `jwk` (R01, R02, R04, R05, R07) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| Required claims (R03a to R03c) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| JWK thumbprint (RFC 7638, RFC 8037) against `cnf.jkt` (R12b) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| `ath` against the access token (R12a) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| `htm`, and `htu` with URI normalisation (R08, R09) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| Nonce, `iat` window, `jti` replay (R10, R11, R11f, R13) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| Scope contains `required_scope` (RS) | all 28 | Mode B | author-produced | `reader/checker.py` |
+| Axis values, `decision`, `reject_axis` and the 28 verdicts | all 28 | Mode B | author-produced | `reader/checker.py`, `reader/phase2.py` |
+| Key claims K1 to K8: derivation from `keys.seed_rule`, thumbprints of the derived keys, the key in each proof, PK-07's `d`, and the segment checks for PK-05, PK-06, PK-08 and PK-25 | as listed in `RESULTS.md` | Mode B | author-produced | `reader/phase2.py` |
+
+The independent row establishes signature validity under the key embedded in each proof. It does not establish that the key is trusted or that it is bound to the token; that binding is the thumbprint row, which is author-produced.
+
+For every author-produced row, the authorship relationship is that the runner wrote the checker that supplies the result. The sensitivity table, the ambiguity log and the findings are this run's own analysis, not claims of the candidate.
 
 ## Per-vector table
 
