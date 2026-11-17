@@ -1,0 +1,18 @@
+OK  vector 01 unchanged passes                           expected=('pass', None) got=('pass', None) step=None
+OK  re-signed unchanged leaf passes (signer control)     expected=('pass', None) got=('pass', None) step=None
+OK  unknown kind on leaf, S.10                           expected=('fail', 'unknown_scope_kind') got=('fail', 'unknown_scope_kind') step=2a
+OK  unknown kind on chain doc, step 2a                   expected=('fail', 'unknown_scope_kind') got=('fail', 'unknown_scope_kind') step=2a
+OK  extra member in entry, S.8                           expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  bare-string boundary, S.8 before sig_version         expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  bare-string boundary with sig_version 3, S.13        expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  prefix value not a string, S.8                       expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  empty kind, S.8                                      expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  boundary is an object, S.8                           expected=('fail', 'unparseable') got=('fail', 'unparseable') step=1
+OK  typed boundary with sig_version 3 in v4              expected=('fail', 'unsupported_sig_version') got=('fail', 'unsupported_sig_version') step=1
+OK  v4 doc to the v3 verifier, unchanged v3 behaviour    expected=('fail', 'unsupported_sig_version') got=('fail', 'unsupported_sig_version') step=1
+OK  chain [null], input shape                            expected=('fail', 'unparseable') got=('fail', 'unparseable') step=shape
+OK  no leaf, no chain, requireVaid false                 expected=('pass', 'no_vaid') got=('pass', 'no_vaid') step=shape
+OK  no leaf, chain present                               expected=('fail', 'unparseable') got=('fail', 'unparseable') step=shape
+OK  no leaf, requireVaid true                            expected=('fail', 'no_vaid') got=('fail', 'no_vaid') step=shape
+OK  leaf not an object                                   expected=('fail', 'unparseable') got=('fail', 'unparseable') step=shape
+17/17 as expected
