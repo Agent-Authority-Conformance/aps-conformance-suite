@@ -1,0 +1,1992 @@
+{
+ "cases": 28,
+ "fixed_by": "CANDIDATE.md, 'The answer is read on four separate axes': proof_signature covers RFC 9449 4.3 items 2 to 7 (item 3 included); request_binding covers items 8 to 11 and section 11.1",
+ "fixed_readings": {
+  "C1_item3_axis": "B",
+  "C5_freshness_axis": "A"
+ },
+ "key_and_claim_checks": {
+  "K0_blind_equals_sealed": {
+   "cases": 28,
+   "mismatches": [],
+   "result": true
+  },
+  "K1_keys_derive_from_seed_rule": {
+   "keys": {
+    "agent": {
+     "matches": true,
+     "seed_b64url": "3anwyr1NxkoK1Q48UUSOPeXJIVEACwdd7Zjza9RWMXI",
+     "x_derived": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ",
+     "x_in_block": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+    },
+    "attacker": {
+     "matches": true,
+     "seed_b64url": "ci_Pi1fYLaYZ_F70NcTgQbreYbvvZHBBeg4NvCHwI-0",
+     "x_derived": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg",
+     "x_in_block": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+    }
+   },
+   "result": true,
+   "seed_rule_as_applied": "sha256(UTF-8('aeoess-presenter-key-possession/' + label)) as the 32-octet Ed25519 private key (RFC 8032 seed)",
+   "seed_rule_as_stated": "Ed25519 private key = sha256('aeoess-presenter-key-possession/' + label), test keys only"
+  },
+  "K2_cnf_jkt_vs_derived_thumbprints": {
+   "cases_without_cnf": [
+    "PK-11"
+   ],
+   "distinct_cnf_jkt_values": [
+    "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q"
+   ],
+   "jkt_to_key": {
+    "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q": [
+     "agent"
+    ]
+   },
+   "result": true,
+   "thumbprints": {
+    "agent": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "attacker": "kApwaulV5e2dstZEUjq7IumwhCwUtq9f6OguDXDfRCI"
+   }
+  },
+  "K3_every_proof_jwk_is_a_derived_key": {
+   "per_case": {
+    "PK-01": [
+     "agent"
+    ],
+    "PK-02": [
+     "attacker"
+    ],
+    "PK-03": [
+     "attacker"
+    ],
+    "PK-04": [
+     "attacker"
+    ],
+    "PK-05": [
+     "agent"
+    ],
+    "PK-06": [
+     "agent"
+    ],
+    "PK-07": [
+     "agent"
+    ],
+    "PK-08": [
+     "agent"
+    ],
+    "PK-09": [
+     "agent"
+    ],
+    "PK-10": [
+     "agent"
+    ],
+    "PK-11": [
+     "agent"
+    ],
+    "PK-12": [
+     "agent"
+    ],
+    "PK-13": [
+     "agent"
+    ],
+    "PK-14": [
+     "agent"
+    ],
+    "PK-15": [
+     "agent"
+    ],
+    "PK-16": [
+     "agent"
+    ],
+    "PK-17": [
+     "agent"
+    ],
+    "PK-18": [
+     "agent"
+    ],
+    "PK-19": [
+     "agent"
+    ],
+    "PK-20": [
+     "agent"
+    ],
+    "PK-21": [
+     "agent"
+    ],
+    "PK-22": [
+     "attacker"
+    ],
+    "PK-23": [
+     "agent"
+    ],
+    "PK-24": [
+     "agent"
+    ],
+    "PK-25": [
+     "agent"
+    ],
+    "PK-26": [
+     "agent"
+    ],
+    "PK-27": [
+     "agent"
+    ],
+    "PK-28": [
+     "agent"
+    ]
+   },
+   "result": true
+  },
+  "K4_private_d_derives_from_a_stated_seed": {
+   "cases_with_d": [
+    {
+     "case": "PK-07",
+     "d_matches_seed_of": [
+      "agent"
+     ],
+     "d_public_key_equals_jwk_x": true
+    }
+   ],
+   "result": true
+  }
+ },
+ "matches": 27,
+ "results": [
+  {
+   "ambiguity": null,
+   "expect": "conformant",
+   "id": "B16",
+   "match": true,
+   "original_id": "PK-01",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": true,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B15",
+   "match": true,
+   "original_id": "PK-02",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "conformant",
+   "id": "B21",
+   "match": true,
+   "original_id": "PK-03",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B24",
+   "match": true,
+   "original_id": "PK-04",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B01",
+   "match": true,
+   "original_id": "PK-05",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "conformant",
+   "id": "B23",
+   "match": true,
+   "original_id": "PK-06",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R06_signature"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "proof_signature"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B11",
+   "match": true,
+   "original_id": "PK-07",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R07_no_private_key"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R07_no_private_key"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B14",
+   "match": true,
+   "original_id": "PK-08",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R05_alg",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R05_alg",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B25",
+   "match": true,
+   "original_id": "PK-09",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R04_typ"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R04_typ"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B07",
+   "match": true,
+   "original_id": "PK-10",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B08",
+   "match": true,
+   "original_id": "PK-11",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B02",
+   "match": true,
+   "original_id": "PK-12",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R08_htm"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R08_htm"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "conformant",
+   "id": "B09",
+   "match": true,
+   "original_id": "PK-13",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": true,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B22",
+   "match": true,
+   "original_id": "PK-14",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R09_htu"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R09_htu"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B18",
+   "match": true,
+   "original_id": "PK-15",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B20",
+   "match": true,
+   "original_id": "PK-16",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R11_iat_not_too_old"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R11_iat_not_too_old"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C2_future_iat_null_skew",
+      "parts_that_change": [
+       "decision",
+       "request_binding"
+      ],
+      "reading_A": "A: future_skew_s null means no allowance for an iat ahead of now",
+      "reading_B": "B: future_skew_s null means the policy is silent; an iat ahead of now is not a failure (RFC 9449 11.1 MAY)",
+      "verdict_A": "nonconformant",
+      "verdict_B": "conformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "BAAA": "nonconformant",
+     "BABA": "nonconformant",
+     "BBAA": "conformant",
+     "BBBA": "conformant"
+    },
+    "verdicts_over_remaining_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "expect": "ambiguous",
+   "id": "B17",
+   "match": true,
+   "original_id": "PK-17",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R11f_iat_future"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R11f_iat_future"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C3_jti_replay",
+      "parts_that_change": [
+       "decision",
+       "request_binding"
+      ],
+      "reading_A": "A: with tracks_jti, a seen (URI, jti) is a failed check (RFC 9449 11.1 'would be declined')",
+      "reading_B": "B: RFC 9449 11.1 says servers 'can' store jti; no MUST; a replay is not a failed check",
+      "verdict_A": "nonconformant",
+      "verdict_B": "conformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "BAAA": "nonconformant",
+     "BABA": "conformant",
+     "BBAA": "nonconformant",
+     "BBBA": "conformant"
+    },
+    "verdicts_over_remaining_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "expect": "nonconformant",
+   "id": "B27",
+   "match": false,
+   "original_id": "PK-18",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R13_jti_not_replayed"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R13_jti_not_replayed"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B05",
+   "match": true,
+   "original_id": "PK-19",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "conformant",
+   "id": "B04",
+   "match": true,
+   "original_id": "PK-20",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "authority"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "authority",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B10",
+   "match": true,
+   "original_id": "PK-21",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "authority"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B12",
+   "match": true,
+   "original_id": "PK-22",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B03",
+   "match": true,
+   "original_id": "PK-23",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B13",
+   "match": true,
+   "original_id": "PK-24",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B06",
+   "match": true,
+   "original_id": "PK-25",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R02_well_formed_jwt",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R02_well_formed_jwt",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B26",
+   "match": true,
+   "original_id": "PK-26",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "proof_signature",
+      "key_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B19",
+   "match": true,
+   "original_id": "PK-27",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "proof_signature",
+      "key_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "expect": "nonconformant",
+   "id": "B28",
+   "match": true,
+   "original_id": "PK-28",
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "proof_signature",
+      "request_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  }
+ ],
+ "sensitivity_removed_under_final_readings": {
+  "R01_single_header": {
+   "no_case_depends_on_removal": true,
+   "removed": []
+  },
+  "R02_well_formed_jwt": {
+   "no_case_depends_on_removal": true,
+   "removed": []
+  },
+  "R03a_claims_jti_htm_htu_iat": {
+   "no_case_depends_on_removal": true,
+   "removed": []
+  },
+  "R03b_claim_ath": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B26",
+     "from": "nonconformant",
+     "original_id": "PK-26",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R03c_claim_nonce": {
+   "no_case_depends_on_removal": true,
+   "removed": []
+  },
+  "R04_typ": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B25",
+     "from": "nonconformant",
+     "original_id": "PK-09",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R05_alg": {
+   "no_case_depends_on_removal": true,
+   "removed": []
+  },
+  "R06_signature": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B01",
+     "from": "nonconformant",
+     "original_id": "PK-05",
+     "to": "conformant"
+    },
+    {
+     "case": "B23",
+     "from": "conformant",
+     "original_id": "PK-06",
+     "to": "nonconformant"
+    }
+   ]
+  },
+  "R07_no_private_key": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B11",
+     "from": "nonconformant",
+     "original_id": "PK-07",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R08_htm": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B02",
+     "from": "nonconformant",
+     "original_id": "PK-12",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R09_htu": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B22",
+     "from": "nonconformant",
+     "original_id": "PK-14",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R10_nonce": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B18",
+     "from": "nonconformant",
+     "original_id": "PK-15",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R11_iat_not_too_old": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B20",
+     "from": "nonconformant",
+     "original_id": "PK-16",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R11f_iat_future": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B17",
+     "from": "ambiguous",
+     "original_id": "PK-17",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R12a_ath_matches": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B07",
+     "from": "nonconformant",
+     "original_id": "PK-10",
+     "to": "conformant"
+    }
+   ]
+  },
+  "R12b_key_bound_matches": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B08",
+     "from": "nonconformant",
+     "original_id": "PK-11",
+     "to": "conformant"
+    },
+    {
+     "case": "B15",
+     "from": "nonconformant",
+     "original_id": "PK-02",
+     "to": "conformant"
+    },
+    {
+     "case": "B21",
+     "from": "conformant",
+     "original_id": "PK-03",
+     "to": "nonconformant"
+    }
+   ]
+  },
+  "R13_jti_not_replayed": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B27",
+     "from": "ambiguous",
+     "original_id": "PK-18",
+     "to": "conformant"
+    }
+   ]
+  },
+  "RS_scope_contains_required": {
+   "no_case_depends_on_removal": false,
+   "removed": [
+    {
+     "case": "B04",
+     "from": "conformant",
+     "original_id": "PK-20",
+     "to": "nonconformant"
+    },
+    {
+     "case": "B05",
+     "from": "nonconformant",
+     "original_id": "PK-19",
+     "to": "conformant"
+    }
+   ]
+  }
+ },
+ "tally": {
+  "ambiguous": 2,
+  "conformant": 5,
+  "nonconformant": 21
+ }
+}
