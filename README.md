@@ -259,6 +259,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
 | `interop/sparysh-reading-aicent-grant-ref-20186f3` | [`README.md`](interop/sparysh-reading-aicent-grant-ref-20186f3/README.md) |
+| `interop/rttp-iqa-grant-ref-replay-sparysh-20186f3` | [`README.md`](interop/rttp-iqa-grant-ref-replay-sparysh-20186f3/README.md) |
 | `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
 | `interop/vaid-a2a-main-abe1448-cleanroom-fa652557` | [`RUN.md`](interop/vaid-a2a-main-abe1448-cleanroom-fa652557/RUN.md) |
 | `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
