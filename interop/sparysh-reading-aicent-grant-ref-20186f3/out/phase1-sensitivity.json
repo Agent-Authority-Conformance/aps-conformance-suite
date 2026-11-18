@@ -1,0 +1,275 @@
+{
+ "baseline": {
+  "B01": "nonconformant",
+  "B02": "conformant",
+  "B03": "nonconformant",
+  "B04": "conformant",
+  "B05": "conformant",
+  "B06": "nonconformant",
+  "B07": "conformant",
+  "B08": "nonconformant",
+  "B09": "nonconformant",
+  "B10": "conformant",
+  "B11": "conformant",
+  "B12": "nonconformant",
+  "B13": "ambiguous",
+  "B14": "nonconformant",
+  "B15": "conformant",
+  "B16": "nonconformant",
+  "B17": "conformant",
+  "B18": "nonconformant",
+  "B19": "ambiguous",
+  "B20": "nonconformant",
+  "B21": "conformant",
+  "B22": "conformant",
+  "B23": "conformant",
+  "B24": "nonconformant",
+  "B25": "nonconformant"
+ },
+ "variants": [
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B16",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R1-reason-present",
+   "variant": "remove"
+  },
+  {
+   "changed": [],
+   "rule": "R1-reason-present",
+   "variant": "invert"
+  },
+  {
+   "changed": [],
+   "rule": "R2-closed-set",
+   "variant": "remove"
+  },
+  {
+   "changed": [],
+   "rule": "R3-no-granted",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B01",
+     "to": "conformant"
+    },
+    {
+     "from": "nonconformant",
+     "id": "B03",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R4-priority",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B01",
+     "to": "conformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B02",
+     "to": "nonconformant"
+    },
+    {
+     "from": "nonconformant",
+     "id": "B03",
+     "to": "conformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B05",
+     "to": "nonconformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B10",
+     "to": "nonconformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B15",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R4-priority",
+   "variant": "invert"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B06",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R5-null-when-no-condition",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B06",
+     "to": "conformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B17",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R5-null-when-no-condition",
+   "variant": "invert"
+  },
+  {
+   "changed": [],
+   "rule": "R6-refuse-when-condition",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "ambiguous",
+     "id": "B13",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R7-computed-over-facts",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "ambiguous",
+     "id": "B13",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R7-computed-over-facts",
+   "variant": "invert"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B12",
+     "to": "conformant"
+    },
+    {
+     "from": "nonconformant",
+     "id": "B14",
+     "to": "conformant"
+    },
+    {
+     "from": "nonconformant",
+     "id": "B24",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R8-members-present",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B09",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R9-obs-null-when-absent-or-stale",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B09",
+     "to": "conformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B11",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R9-obs-null-when-absent-or-stale",
+   "variant": "invert"
+  },
+  {
+   "changed": [],
+   "rule": "R10-obs-equals-relied-on",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B08",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R11-expires-equals-grant",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "nonconformant",
+     "id": "B08",
+     "to": "conformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B11",
+     "to": "nonconformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B21",
+     "to": "nonconformant"
+    },
+    {
+     "from": "conformant",
+     "id": "B22",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R11-expires-equals-grant",
+   "variant": "invert"
+  },
+  {
+   "changed": [
+    {
+     "from": "ambiguous",
+     "id": "B19",
+     "to": "conformant"
+    }
+   ],
+   "rule": "R12-race-observation-vs-revocation",
+   "variant": "remove"
+  },
+  {
+   "changed": [
+    {
+     "from": "ambiguous",
+     "id": "B19",
+     "to": "nonconformant"
+    }
+   ],
+   "rule": "R12-race-observation-vs-revocation",
+   "variant": "invert"
+  }
+ ]
+}

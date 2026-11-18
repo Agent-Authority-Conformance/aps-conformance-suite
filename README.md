@@ -228,6 +228,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
 | `interop/authelia-oauth2-provider-0.4.3-pk` | [`RUN.md`](interop/authelia-oauth2-provider-0.4.3-pk/RUN.md) |
 | `interop/bacs-oauth-server-8c61947c` | [`RUN.md`](interop/bacs-oauth-server-8c61947c/RUN.md) |
+| `interop/bernstein-trace-v0.2-32bfc80` | [`README.md`](interop/bernstein-trace-v0.2-32bfc80/README.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/cosai-odis-148dc41` | [`README.md`](interop/cosai-odis-148dc41/README.md) |
@@ -258,6 +259,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
 | `interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468` | [`README.md`](interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468/README.md) |
+| `interop/sparysh-reading-aicent-grant-ref-20186f3` | [`README.md`](interop/sparysh-reading-aicent-grant-ref-20186f3/README.md) |
 | `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
 | `interop/vaid-a2a-main-abe1448-cleanroom-fa652557` | [`RUN.md`](interop/vaid-a2a-main-abe1448-cleanroom-fa652557/RUN.md) |
 | `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
