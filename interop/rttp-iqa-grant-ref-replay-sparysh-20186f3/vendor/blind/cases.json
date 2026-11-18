@@ -1,0 +1,582 @@
+{
+ "label": "aicent-grant-ref",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the reason value and the grant_ref members are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and structure members, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 8.1 (Refusal Reasons) and 8.2 (Grant Reference) are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "note_on_this_copy": "blind copy made by the fetch script: per case only basis, input and outcome; identifiers replaced; rule, note, expect and expect_parts withheld until phase 1 is saved",
+ "cases": [
+  {
+   "id": "B01",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B02",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B03",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_revoked",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B04",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B05",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B06",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "operation_not_permitted",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B07",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": false
+   },
+   "outcome": {
+    "reason": "operation_not_permitted",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B08",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {
+    "relied_on_observation": {
+     "present": true,
+     "fresh": false,
+     "as_of_ms": 500
+    },
+    "diagnostic_read": {
+     "as_of_ms": 1150,
+     "successful": true
+    },
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 1150,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B09",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {
+    "relied_on_observation": {
+     "present": true,
+     "fresh": false,
+     "as_of_ms": 500
+    },
+    "diagnostic_read": {
+     "as_of_ms": 1150,
+     "successful": true
+    },
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 1150
+    }
+   }
+  },
+  {
+   "id": "B10",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": false,
+    "authority": "revoked",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B11",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {
+    "relied_on_observation": {
+     "present": true,
+     "fresh": false,
+     "as_of_ms": 500
+    },
+    "diagnostic_read": {
+     "as_of_ms": 1150,
+     "successful": true
+    },
+    "grant_expires_at_ms": 900
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B12",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B13",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true,
+    "computed_over": "label"
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "computed_over": "operator label, not re-derivable from pinned inputs",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B14",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {},
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B15",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": true,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "evidence_binding_mismatch",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B16",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": true,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B17",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B18",
+   "basis": [
+    "sect-8.1",
+    "sect-8.2"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "stale_observation",
+    "operation_permitted": true,
+    "relied_on_observation": {
+     "present": true,
+     "fresh": false,
+     "as_of_ms": 500
+    },
+    "diagnostic_read": {
+     "as_of_ms": 1150,
+     "successful": true
+    }
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 900,
+     "observation_as_of_ms": 1150
+    }
+   }
+  },
+  {
+   "id": "B19",
+   "basis": [
+    "sect-8.1",
+    "sect-8.2"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "revoked",
+    "operation_permitted": true,
+    "revoked_at_ms": 1101,
+    "race_boundary": true
+   },
+   "outcome": {
+    "reason": "authority_revoked",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B20",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "determined",
+    "operation_permitted": false
+   },
+   "outcome": {
+    "reason": "granted",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B21",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {
+    "relied_on_observation": {
+     "present": false
+    },
+    "diagnostic_read": null,
+    "grant_expires_at_ms": 9000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B22",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {
+    "relied_on_observation": {
+     "present": true,
+     "fresh": true,
+     "as_of_ms": 1100
+    },
+    "diagnostic_read": null,
+    "grant_expires_at_ms": 9000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B23",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": 1100
+    }
+   }
+  },
+  {
+   "id": "B24",
+   "basis": [
+    "sect-8.2"
+   ],
+   "input": {},
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000
+    }
+   }
+  },
+  {
+   "id": "B25",
+   "basis": [
+    "sect-8.1"
+   ],
+   "input": {
+    "binding_mismatch": false,
+    "evidence_expired": false,
+    "authority": "unreachable",
+    "operation_permitted": true
+   },
+   "outcome": {
+    "reason": "authority_suspended",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000,
+     "expires_at_ms": 9000,
+     "observation_as_of_ms": null
+    }
+   }
+  }
+ ]
+}

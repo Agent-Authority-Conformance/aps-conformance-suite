@@ -1,0 +1,17 @@
+$ python --version
+Python 3.14.2
+[exit 0]
+$ python -c "import platform; print(platform.platform())"
+Windows-11-10.0.26300-SP0
+[exit 0]
+$ python -I replay/replay-runner/replay_runner.py replay/grant-ref-replay-sparysh replay/grant-ref-replay-sparysh/run-output.json
+VENDOR PIN OK 7/7 (profile.json vendor_pins)
+RECORDED PIN OK 3/3 (profile.json recorded_pins)
+COMMAND phase1   exit=0 stdout=match
+OUTPUT recorded/phase1.json         lf=match canonical=match raw=eol-only-diff (4ec54b036a9be76e...)
+OUTPUT recorded/phase1-sensitivity.json lf=match canonical=match raw=eol-only-diff (688a6822a609d3e9...)
+COMMAND compare  exit=0 stdout=match
+OUTPUT recorded/final.json          lf=match canonical=match raw=eol-only-diff (e61ca93a1f01447a...)
+run output written: replay/grant-ref-replay-sparysh/run-output.json
+REPLAY ok: sparysh-reading-aicent-grant-ref-20186f3 reproduced (pins 7, commands 2, outputs 3)
+[exit 0]
