@@ -1,0 +1,7435 @@
+{
+ "meta": {
+  "harness": "rp2.py",
+  "harness_sha256": "e6e1055a2e2e0070334757b655736d3910ceff80f8cb21c9c8bb49349f57f264",
+  "impl": "permify",
+  "label": "r2-p1-postgres",
+  "bound_s": 0.0,
+  "tolerance_s": 0.5,
+  "bound_class": "documented",
+  "bound_source": "same as m0",
+  "horizon_extra_s": 3.0,
+  "poll_s": 0.25,
+  "scenarios": [
+   "IM",
+   "PR",
+   "RG"
+  ],
+  "strong_mode": "snap_token returned by the write under test (read at least as fresh as that write)",
+  "default_mode": "no snap_token (latest transaction id)",
+  "server_process": [
+   "22453 ../pmf/permify serve --distributed-port 5099 --meter-enabled=false --database-engine postgres --database-uri postgres://postgres@127.0.0.1:55433/postgres?sslmode=disable"
+  ],
+  "started_utc": "2026-11-18T21:06:03Z",
+  "python": "3.14.6",
+  "tally": {
+   "AGREE": 27,
+   "DIFF": 0,
+   "ERROR": 0,
+   "RECORD": 12
+  },
+  "timing_rule": "requests starting at or after ack_end + bound + tolerance must return the post-change answer; earlier samples recorded only; finite sampling, not an all-times proof"
+ },
+ "results": [
+  {
+   "scenario": "IM",
+   "case": "IM-G-01",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 0.0337,
+   "t_end": 0.0365
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-G-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-G-02",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "t_start": 0.5738,
+   "t_end": 0.5759,
+   "start_after_ack_s": 0.0002
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-G-03",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "t_start": 0.5761,
+   "t_end": 0.5786,
+   "start_after_ack_s": 0.0025
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-G-09",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 0.5806,
+   "t_end": 0.5821,
+   "start_after_ack_s": 0.0
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-G-10",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "t_start": 0.5821,
+   "t_end": 0.5837,
+   "start_after_ack_s": 0.0015
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-G-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6,
+   "warm_tail": [
+    "allow",
+    "listed",
+    "allow",
+    "listed",
+    "allow",
+    "listed"
+   ]
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-G-06",
+   "expected": "either",
+   "observed": "deny",
+   "verdict": "RECORD",
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-G-07",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "ack_end": 1.1195,
+   "samples": [
+    [
+     1.1196,
+     1.1226,
+     "deny"
+    ],
+    [
+     1.3797,
+     1.3833,
+     "deny"
+    ],
+    [
+     1.6404,
+     1.6447,
+     "deny"
+    ],
+    [
+     1.9047,
+     1.9091,
+     "deny"
+    ],
+    [
+     2.1686,
+     2.1724,
+     "deny"
+    ],
+    [
+     2.4274,
+     2.4326,
+     "deny"
+    ],
+    [
+     2.6907,
+     2.696,
+     "deny"
+    ],
+    [
+     2.9546,
+     2.9607,
+     "deny"
+    ],
+    [
+     3.2218,
+     3.2246,
+     "deny"
+    ],
+    [
+     3.483,
+     3.486,
+     "deny"
+    ],
+    [
+     3.7435,
+     3.7463,
+     "deny"
+    ],
+    [
+     4.0039,
+     4.0083,
+     "deny"
+    ],
+    [
+     4.2665,
+     4.2709,
+     "deny"
+    ],
+    [
+     4.5305,
+     4.5345,
+     "deny"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-G-08",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "ack_end": 1.1195,
+   "samples": [
+    [
+     1.1227,
+     1.1243,
+     "absent"
+    ],
+    [
+     1.3837,
+     1.3888,
+     "absent"
+    ],
+    [
+     1.6448,
+     1.6495,
+     "absent"
+    ],
+    [
+     1.9092,
+     1.9132,
+     "absent"
+    ],
+    [
+     2.1725,
+     2.1759,
+     "absent"
+    ],
+    [
+     2.4328,
+     2.436,
+     "absent"
+    ],
+    [
+     2.6961,
+     2.7005,
+     "absent"
+    ],
+    [
+     2.961,
+     2.9666,
+     "absent"
+    ],
+    [
+     3.2247,
+     3.2276,
+     "absent"
+    ],
+    [
+     3.4861,
+     3.4883,
+     "absent"
+    ],
+    [
+     3.7464,
+     3.7486,
+     "absent"
+    ],
+    [
+     4.0085,
+     4.0148,
+     "absent"
+    ],
+    [
+     4.2711,
+     4.2751,
+     "absent"
+    ],
+    [
+     4.5346,
+     4.5374,
+     "absent"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-G-W",
+   "expected": "deny",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 12,
+   "warm_tail": [
+    "deny",
+    "absent",
+    "deny",
+    "absent",
+    "deny",
+    "absent"
+   ]
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-G-10",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "ack_end": 5.8712,
+   "samples": [
+    [
+     5.8713,
+     5.8757,
+     "allow"
+    ],
+    [
+     6.135,
+     6.1395,
+     "allow"
+    ],
+    [
+     6.4072,
+     6.4132,
+     "allow"
+    ],
+    [
+     6.6762,
+     6.6794,
+     "allow"
+    ],
+    [
+     6.9328,
+     6.9372,
+     "allow"
+    ],
+    [
+     7.1952,
+     7.1997,
+     "allow"
+    ],
+    [
+     7.4583,
+     7.4596,
+     "allow"
+    ],
+    [
+     7.7163,
+     7.7203,
+     "allow"
+    ],
+    [
+     7.9799,
+     7.9841,
+     "allow"
+    ],
+    [
+     8.2448,
+     8.2488,
+     "allow"
+    ],
+    [
+     8.5076,
+     8.512,
+     "allow"
+    ],
+    [
+     8.7719,
+     8.7777,
+     "allow"
+    ],
+    [
+     9.0362,
+     9.0399,
+     "allow"
+    ],
+    [
+     9.2982,
+     9.3002,
+     "allow"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-G-11",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "ack_end": 5.8712,
+   "samples": [
+    [
+     5.8758,
+     5.8797,
+     "listed"
+    ],
+    [
+     6.1396,
+     6.1518,
+     "listed"
+    ],
+    [
+     6.4135,
+     6.4209,
+     "listed"
+    ],
+    [
+     6.6795,
+     6.6817,
+     "listed"
+    ],
+    [
+     6.9373,
+     6.943,
+     "listed"
+    ],
+    [
+     7.1999,
+     7.2045,
+     "listed"
+    ],
+    [
+     7.4596,
+     7.4611,
+     "listed"
+    ],
+    [
+     7.7204,
+     7.7245,
+     "listed"
+    ],
+    [
+     7.9843,
+     7.9895,
+     "listed"
+    ],
+    [
+     8.249,
+     8.2537,
+     "listed"
+    ],
+    [
+     8.5121,
+     8.5166,
+     "listed"
+    ],
+    [
+     8.7778,
+     8.7839,
+     "listed"
+    ],
+    [
+     9.04,
+     9.043,
+     "listed"
+    ],
+    [
+     9.3003,
+     9.3029,
+     "listed"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-01",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 9.563,
+   "t_end": 9.5651
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-02",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "t_start": 10.0897,
+   "t_end": 10.0915,
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-03",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "t_start": 10.0917,
+   "t_end": 10.0932,
+   "start_after_ack_s": 0.0021
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-09",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 10.0952,
+   "t_end": 10.0972,
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-M-10",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "t_start": 10.0973,
+   "t_end": 10.0995,
+   "start_after_ack_s": 0.0022
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-M-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6,
+   "warm_tail": [
+    "allow",
+    "listed",
+    "allow",
+    "listed",
+    "allow",
+    "listed"
+   ]
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-M-06",
+   "expected": "either",
+   "observed": "deny",
+   "verdict": "RECORD",
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-M-07",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "ack_end": 10.6288,
+   "samples": [
+    [
+     10.6289,
+     10.6303,
+     "deny"
+    ],
+    [
+     10.8854,
+     10.8875,
+     "deny"
+    ],
+    [
+     11.1461,
+     11.1506,
+     "deny"
+    ],
+    [
+     11.4103,
+     11.4132,
+     "deny"
+    ],
+    [
+     11.6706,
+     11.6742,
+     "deny"
+    ],
+    [
+     11.9326,
+     11.9363,
+     "deny"
+    ],
+    [
+     12.1936,
+     12.1972,
+     "deny"
+    ],
+    [
+     12.4558,
+     12.4619,
+     "deny"
+    ],
+    [
+     12.7151,
+     12.719,
+     "deny"
+    ],
+    [
+     12.9754,
+     12.9798,
+     "deny"
+    ],
+    [
+     13.2359,
+     13.2392,
+     "deny"
+    ],
+    [
+     13.4938,
+     13.4979,
+     "deny"
+    ],
+    [
+     13.7569,
+     13.7621,
+     "deny"
+    ],
+    [
+     14.0183,
+     14.0226,
+     "deny"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-M-08",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "ack_end": 10.6288,
+   "samples": [
+    [
+     10.6304,
+     10.6333,
+     "absent"
+    ],
+    [
+     10.8876,
+     10.8912,
+     "absent"
+    ],
+    [
+     11.151,
+     11.1569,
+     "absent"
+    ],
+    [
+     11.4133,
+     11.4153,
+     "absent"
+    ],
+    [
+     11.6743,
+     11.6784,
+     "absent"
+    ],
+    [
+     11.9365,
+     11.9389,
+     "absent"
+    ],
+    [
+     12.1973,
+     12.2004,
+     "absent"
+    ],
+    [
+     12.462,
+     12.4644,
+     "absent"
+    ],
+    [
+     12.7192,
+     12.7215,
+     "absent"
+    ],
+    [
+     12.9801,
+     12.9831,
+     "absent"
+    ],
+    [
+     13.2393,
+     13.2418,
+     "absent"
+    ],
+    [
+     13.498,
+     13.5015,
+     "absent"
+    ],
+    [
+     13.7623,
+     13.7656,
+     "absent"
+    ],
+    [
+     14.0228,
+     14.0277,
+     "absent"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-M-W",
+   "expected": "deny",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 12,
+   "warm_tail": [
+    "deny",
+    "absent",
+    "deny",
+    "absent",
+    "deny",
+    "absent"
+   ]
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-M-10",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "ack_end": 15.3708,
+   "samples": [
+    [
+     15.3708,
+     15.3745,
+     "allow"
+    ],
+    [
+     15.6331,
+     15.6373,
+     "allow"
+    ],
+    [
+     15.8981,
+     15.902,
+     "allow"
+    ],
+    [
+     16.1602,
+     16.1628,
+     "allow"
+    ],
+    [
+     16.4223,
+     16.4285,
+     "allow"
+    ],
+    [
+     16.6825,
+     16.6872,
+     "allow"
+    ],
+    [
+     16.9491,
+     16.9537,
+     "allow"
+    ],
+    [
+     17.2119,
+     17.2154,
+     "allow"
+    ],
+    [
+     17.4748,
+     17.4794,
+     "allow"
+    ],
+    [
+     17.7397,
+     17.7445,
+     "allow"
+    ],
+    [
+     18.0058,
+     18.0105,
+     "allow"
+    ],
+    [
+     18.2663,
+     18.2702,
+     "allow"
+    ],
+    [
+     18.5285,
+     18.533,
+     "allow"
+    ],
+    [
+     18.7918,
+     18.7967,
+     "allow"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-M-11",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "ack_end": 15.3708,
+   "samples": [
+    [
+     15.3746,
+     15.3778,
+     "listed"
+    ],
+    [
+     15.6375,
+     15.6427,
+     "listed"
+    ],
+    [
+     15.9021,
+     15.9048,
+     "listed"
+    ],
+    [
+     16.163,
+     16.1695,
+     "listed"
+    ],
+    [
+     16.4286,
+     16.4311,
+     "listed"
+    ],
+    [
+     16.6873,
+     16.6935,
+     "listed"
+    ],
+    [
+     16.9539,
+     16.9597,
+     "listed"
+    ],
+    [
+     17.2155,
+     17.2194,
+     "listed"
+    ],
+    [
+     17.4795,
+     17.4843,
+     "listed"
+    ],
+    [
+     17.7447,
+     17.7506,
+     "listed"
+    ],
+    [
+     18.0106,
+     18.0154,
+     "listed"
+    ],
+    [
+     18.2703,
+     18.2747,
+     "listed"
+    ],
+    [
+     18.5331,
+     18.538,
+     "listed"
+    ],
+    [
+     18.7969,
+     18.8017,
+     "listed"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-01",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 19.0628,
+   "t_end": 19.0671
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-02",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "t_start": 19.6106,
+   "t_end": 19.6125,
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-03",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "t_start": 19.6127,
+   "t_end": 19.615,
+   "start_after_ack_s": 0.0022
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-09",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "t_start": 19.6171,
+   "t_end": 19.6186,
+   "start_after_ack_s": 0.0001
+  },
+  {
+   "scenario": "IM",
+   "case": "IM-P-10",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "t_start": 19.6187,
+   "t_end": 19.6204,
+   "start_after_ack_s": 0.0017
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-P-W",
+   "expected": "allow",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 6,
+   "warm_tail": [
+    "allow",
+    "listed",
+    "allow",
+    "listed",
+    "allow",
+    "listed"
+   ]
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-P-06",
+   "expected": "either",
+   "observed": "deny",
+   "verdict": "RECORD",
+   "start_after_ack_s": 0.0002
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-P-07",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "ack_end": 20.1562,
+   "samples": [
+    [
+     20.1564,
+     20.1595,
+     "deny"
+    ],
+    [
+     20.416,
+     20.4184,
+     "deny"
+    ],
+    [
+     20.6763,
+     20.6804,
+     "deny"
+    ],
+    [
+     20.9389,
+     20.9434,
+     "deny"
+    ],
+    [
+     21.1991,
+     21.2036,
+     "deny"
+    ],
+    [
+     21.4611,
+     21.4652,
+     "deny"
+    ],
+    [
+     21.7239,
+     21.729,
+     "deny"
+    ],
+    [
+     21.9886,
+     21.9939,
+     "deny"
+    ],
+    [
+     22.253,
+     22.2573,
+     "deny"
+    ],
+    [
+     22.5168,
+     22.5208,
+     "deny"
+    ],
+    [
+     22.7824,
+     22.7865,
+     "deny"
+    ],
+    [
+     23.0447,
+     23.0492,
+     "deny"
+    ],
+    [
+     23.3097,
+     23.3142,
+     "deny"
+    ],
+    [
+     23.5739,
+     23.5777,
+     "deny"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "PR",
+   "case": "PR-P-08",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "ack_end": 20.1562,
+   "samples": [
+    [
+     20.1595,
+     20.1614,
+     "absent"
+    ],
+    [
+     20.4186,
+     20.421,
+     "absent"
+    ],
+    [
+     20.6805,
+     20.6835,
+     "absent"
+    ],
+    [
+     20.9436,
+     20.9482,
+     "absent"
+    ],
+    [
+     21.2037,
+     21.2086,
+     "absent"
+    ],
+    [
+     21.4653,
+     21.47,
+     "absent"
+    ],
+    [
+     21.7291,
+     21.7332,
+     "absent"
+    ],
+    [
+     21.9941,
+     21.999,
+     "absent"
+    ],
+    [
+     22.2576,
+     22.2627,
+     "absent"
+    ],
+    [
+     22.5209,
+     22.5272,
+     "absent"
+    ],
+    [
+     22.7867,
+     22.7908,
+     "absent"
+    ],
+    [
+     23.0494,
+     23.0543,
+     "absent"
+    ],
+    [
+     23.3144,
+     23.3201,
+     "absent"
+    ],
+    [
+     23.5779,
+     23.583,
+     "absent"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-P-W",
+   "expected": "deny",
+   "observed": "warmed",
+   "verdict": "RECORD",
+   "warm_samples": 12,
+   "warm_tail": [
+    "deny",
+    "absent",
+    "deny",
+    "absent",
+    "deny",
+    "absent"
+   ]
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-P-10",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "ack_end": 24.9198,
+   "samples": [
+    [
+     24.9199,
+     24.9231,
+     "allow"
+    ],
+    [
+     25.1807,
+     25.1859,
+     "allow"
+    ],
+    [
+     25.4447,
+     25.4496,
+     "allow"
+    ],
+    [
+     25.7072,
+     25.7112,
+     "allow"
+    ],
+    [
+     25.9746,
+     25.9789,
+     "allow"
+    ],
+    [
+     26.2392,
+     26.2433,
+     "allow"
+    ],
+    [
+     26.5018,
+     26.5061,
+     "allow"
+    ],
+    [
+     26.7674,
+     26.7719,
+     "allow"
+    ],
+    [
+     27.0293,
+     27.0332,
+     "allow"
+    ],
+    [
+     27.2935,
+     27.2978,
+     "allow"
+    ],
+    [
+     27.5584,
+     27.5633,
+     "allow"
+    ],
+    [
+     27.821,
+     27.8253,
+     "allow"
+    ],
+    [
+     28.0858,
+     28.09,
+     "allow"
+    ],
+    [
+     28.3512,
+     28.3567,
+     "allow"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  },
+  {
+   "scenario": "RG",
+   "case": "RG-P-11",
+   "expected": "listed",
+   "observed": "listed",
+   "verdict": "AGREE",
+   "ack_end": 24.9198,
+   "samples": [
+    [
+     24.9232,
+     24.9254,
+     "listed"
+    ],
+    [
+     25.1861,
+     25.1895,
+     "listed"
+    ],
+    [
+     25.4498,
+     25.4541,
+     "listed"
+    ],
+    [
+     25.7113,
+     25.7193,
+     "listed"
+    ],
+    [
+     25.979,
+     25.9839,
+     "listed"
+    ],
+    [
+     26.2434,
+     26.2481,
+     "listed"
+    ],
+    [
+     26.5063,
+     26.5122,
+     "listed"
+    ],
+    [
+     26.7721,
+     26.7769,
+     "listed"
+    ],
+    [
+     27.0334,
+     27.0381,
+     "listed"
+    ],
+    [
+     27.2979,
+     27.303,
+     "listed"
+    ],
+    [
+     27.5635,
+     27.5684,
+     "listed"
+    ],
+    [
+     27.8255,
+     27.8309,
+     "listed"
+    ],
+    [
+     28.0901,
+     28.0965,
+     "listed"
+    ],
+    [
+     28.3569,
+     28.3639,
+     "listed"
+    ]
+   ],
+   "n": 14,
+   "last_stale_start_after_ack_s": null,
+   "last_stale_end_after_ack_s": null,
+   "limit_after_ack_s": 0.5,
+   "n_scored": 12,
+   "n_bad": 0
+  }
+ ],
+ "requests": [
+  {
+   "t_start": 0.0078,
+   "t_end": 0.0235,
+   "url": "v1/tenants/t1/schemas/write",
+   "req": {
+    "schema": "entity user {}\nentity group {\n  relation member @user\n}\nentity folder {\n  relation viewer @user @group#member\n  permission view = viewer\n}\nentity doc {\n  relation parent @folder\n  relation viewer @user\n  permission view = viewer or parent.view\n}"
+   },
+   "status": 200,
+   "resp": "{\"schema_version\":\"dbv16eofvdolfde0sukg\"}"
+  },
+  {
+   "t_start": 0.0236,
+   "t_end": 0.0336,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engiG30a608"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "aliceiG30a608"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xiG30a608"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engiG30a608",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yiG30a608"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xiG30a608"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODI2OjgyNjo4Mjc6ODI2\"}"
+  },
+  {
+   "t_start": 0.0337,
+   "t_end": 0.0365,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODI2OjgyNjo4Mjc6ODI2"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 0.0366,
+   "t_end": 0.0375,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 0.0375,
+   "t_end": 0.0395,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiG30a608\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.2908,
+   "t_end": 0.2962,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 0.2964,
+   "t_end": 0.3027,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiG30a608\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.5531,
+   "t_end": 0.5577,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 0.5578,
+   "t_end": 0.5643,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiG30a608\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.5646,
+   "t_end": 0.5736,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "folder",
+      "ids": [
+       "xiG30a608"
+      ]
+     },
+     "relation": "viewer",
+     "subject": {
+      "type": "group",
+      "ids": [
+       "engiG30a608"
+      ],
+      "relation": "member"
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODI3OjgyNzo4Mjg6ODI3\"}"
+  },
+  {
+   "t_start": 0.5738,
+   "t_end": 0.5759,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODI3OjgyNzo4Mjg6ODI3"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":4}}"
+  },
+  {
+   "t_start": 0.5761,
+   "t_end": 0.5786,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODI3OjgyNzo4Mjg6ODI3"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.5787,
+   "t_end": 0.5806,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xiG30a608"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engiG30a608",
+       "relation": "member"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODI4OjgyODo4Mjk6ODI4\"}"
+  },
+  {
+   "t_start": 0.5806,
+   "t_end": 0.5821,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODI4OjgyODo4Mjk6ODI4"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiG30a608"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 0.5821,
+   "t_end": 0.5837,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODI4OjgyODo4Mjk6ODI4"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiG30a608"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiG30a608\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.5838,
+   "t_end": 0.5851,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engpGa6051a"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicepGa6051a"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xpGa6051a"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engpGa6051a",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "ypGa6051a"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xpGa6051a"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODI5OjgyOTo4MzA6ODI5\"}"
+  },
+  {
+   "t_start": 0.5851,
+   "t_end": 0.5864,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 0.5864,
+   "t_end": 0.5878,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypGa6051a\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 0.8394,
+   "t_end": 0.8441,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 0.8443,
+   "t_end": 0.8513,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypGa6051a\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 1.1047,
+   "t_end": 1.1101,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 1.1102,
+   "t_end": 1.1145,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypGa6051a\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 1.1147,
+   "t_end": 1.1195,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "folder",
+      "ids": [
+       "xpGa6051a"
+      ]
+     },
+     "relation": "viewer",
+     "subject": {
+      "type": "group",
+      "ids": [
+       "engpGa6051a"
+      ],
+      "relation": "member"
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODMwOjgzMDo4MzE6ODMw\"}"
+  },
+  {
+   "t_start": 1.1196,
+   "t_end": 1.1226,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":4}}"
+  },
+  {
+   "t_start": 1.1227,
+   "t_end": 1.1243,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 1.3797,
+   "t_end": 1.3833,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 1.3837,
+   "t_end": 1.3888,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 1.6404,
+   "t_end": 1.6447,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 1.6448,
+   "t_end": 1.6495,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 1.9047,
+   "t_end": 1.9091,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 1.9092,
+   "t_end": 1.9132,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 2.1686,
+   "t_end": 2.1724,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 2.1725,
+   "t_end": 2.1759,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 2.4274,
+   "t_end": 2.4326,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 2.4328,
+   "t_end": 2.436,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 2.6907,
+   "t_end": 2.696,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 2.6961,
+   "t_end": 2.7005,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 2.9546,
+   "t_end": 2.9607,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 2.961,
+   "t_end": 2.9666,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 3.2218,
+   "t_end": 3.2246,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 3.2247,
+   "t_end": 3.2276,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 3.483,
+   "t_end": 3.486,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 3.4861,
+   "t_end": 3.4883,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 3.7435,
+   "t_end": 3.7463,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 3.7464,
+   "t_end": 3.7486,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 4.0039,
+   "t_end": 4.0083,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 4.0085,
+   "t_end": 4.0148,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 4.2665,
+   "t_end": 4.2709,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 4.2711,
+   "t_end": 4.2751,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 4.5305,
+   "t_end": 4.5345,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypGa6051a"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 4.5346,
+   "t_end": 4.5374,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepGa6051a"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 4.7934,
+   "t_end": 4.7993,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engrG35564e"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicerG35564e"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xrG35564e"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engrG35564e",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yrG35564e"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xrG35564e"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODMxOjgzMTo4MzI6ODMx\"}"
+  },
+  {
+   "t_start": 4.7995,
+   "t_end": 4.8034,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 4.8034,
+   "t_end": 4.8078,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.0631,
+   "t_end": 5.0659,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 5.066,
+   "t_end": 5.0704,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.3239,
+   "t_end": 5.3284,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 5.3285,
+   "t_end": 5.3359,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.3361,
+   "t_end": 5.3431,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "folder",
+      "ids": [
+       "xrG35564e"
+      ]
+     },
+     "relation": "viewer",
+     "subject": {
+      "type": "group",
+      "ids": [
+       "engrG35564e"
+      ],
+      "relation": "member"
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODMyOjgzMjo4MzM6ODMy\"}"
+  },
+  {
+   "t_start": 5.3432,
+   "t_end": 5.3456,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":4}}"
+  },
+  {
+   "t_start": 5.3456,
+   "t_end": 5.3489,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.5993,
+   "t_end": 5.6016,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 5.6017,
+   "t_end": 5.6046,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.8576,
+   "t_end": 5.8628,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 5.863,
+   "t_end": 5.8673,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 5.8676,
+   "t_end": 5.8712,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xrG35564e"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engrG35564e",
+       "relation": "member"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODMzOjgzMzo4MzQ6ODMz\"}"
+  },
+  {
+   "t_start": 5.8713,
+   "t_end": 5.8757,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 5.8758,
+   "t_end": 5.8797,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 6.135,
+   "t_end": 6.1395,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 6.1396,
+   "t_end": 6.1518,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 6.4072,
+   "t_end": 6.4132,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 6.4135,
+   "t_end": 6.4209,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 6.6762,
+   "t_end": 6.6794,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 6.6795,
+   "t_end": 6.6817,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 6.9328,
+   "t_end": 6.9372,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 6.9373,
+   "t_end": 6.943,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 7.1952,
+   "t_end": 7.1997,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 7.1999,
+   "t_end": 7.2045,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 7.4583,
+   "t_end": 7.4596,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 7.4596,
+   "t_end": 7.4611,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 7.7163,
+   "t_end": 7.7203,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 7.7204,
+   "t_end": 7.7245,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 7.9799,
+   "t_end": 7.9841,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 7.9843,
+   "t_end": 7.9895,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 8.2448,
+   "t_end": 8.2488,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 8.249,
+   "t_end": 8.2537,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 8.5076,
+   "t_end": 8.512,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 8.5121,
+   "t_end": 8.5166,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 8.7719,
+   "t_end": 8.7777,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 8.7778,
+   "t_end": 8.7839,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 9.0362,
+   "t_end": 9.0399,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 9.04,
+   "t_end": 9.043,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 9.2982,
+   "t_end": 9.3002,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrG35564e"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 9.3003,
+   "t_end": 9.3029,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerG35564e"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrG35564e\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 9.5585,
+   "t_end": 9.5628,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engiM3c10f0"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "aliceiM3c10f0"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xiM3c10f0"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engiM3c10f0",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yiM3c10f0"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xiM3c10f0"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM0OjgzNDo4MzU6ODM0\"}"
+  },
+  {
+   "t_start": 9.563,
+   "t_end": 9.5651,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODM0OjgzNDo4MzU6ODM0"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 9.5653,
+   "t_end": 9.5667,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 9.5667,
+   "t_end": 9.5694,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiM3c10f0\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 9.8239,
+   "t_end": 9.8267,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 9.8268,
+   "t_end": 9.8299,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiM3c10f0\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.082,
+   "t_end": 10.0847,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 10.0848,
+   "t_end": 10.0872,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiM3c10f0\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.0873,
+   "t_end": 10.0896,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "group",
+      "ids": [
+       "engiM3c10f0"
+      ]
+     },
+     "relation": "member",
+     "subject": {
+      "type": "user",
+      "ids": [
+       "aliceiM3c10f0"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM1OjgzNTo4MzY6ODM1\"}"
+  },
+  {
+   "t_start": 10.0897,
+   "t_end": 10.0915,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODM1OjgzNTo4MzY6ODM1"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 10.0917,
+   "t_end": 10.0932,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODM1OjgzNTo4MzY6ODM1"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.0933,
+   "t_end": 10.0951,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engiM3c10f0"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "aliceiM3c10f0"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM2OjgzNjo4Mzc6ODM2\"}"
+  },
+  {
+   "t_start": 10.0952,
+   "t_end": 10.0972,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODM2OjgzNjo4Mzc6ODM2"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiM3c10f0"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 10.0973,
+   "t_end": 10.0995,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODM2OjgzNjo4Mzc6ODM2"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiM3c10f0"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiM3c10f0\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.0997,
+   "t_end": 10.1011,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engpM5d588f"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicepM5d588f"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xpM5d588f"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engpM5d588f",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "ypM5d588f"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xpM5d588f"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM3OjgzNzo4Mzg6ODM3\"}"
+  },
+  {
+   "t_start": 10.1012,
+   "t_end": 10.1021,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 10.1022,
+   "t_end": 10.103,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypM5d588f\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.3584,
+   "t_end": 10.3629,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 10.363,
+   "t_end": 10.3673,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypM5d588f\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.6199,
+   "t_end": 10.6232,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 10.6233,
+   "t_end": 10.6264,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypM5d588f\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.6268,
+   "t_end": 10.6288,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "group",
+      "ids": [
+       "engpM5d588f"
+      ]
+     },
+     "relation": "member",
+     "subject": {
+      "type": "user",
+      "ids": [
+       "alicepM5d588f"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM4OjgzODo4Mzk6ODM4\"}"
+  },
+  {
+   "t_start": 10.6289,
+   "t_end": 10.6303,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 10.6304,
+   "t_end": 10.6333,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 10.8854,
+   "t_end": 10.8875,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 10.8876,
+   "t_end": 10.8912,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 11.1461,
+   "t_end": 11.1506,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 11.151,
+   "t_end": 11.1569,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 11.4103,
+   "t_end": 11.4132,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 11.4133,
+   "t_end": 11.4153,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 11.6706,
+   "t_end": 11.6742,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 11.6743,
+   "t_end": 11.6784,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 11.9326,
+   "t_end": 11.9363,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 11.9365,
+   "t_end": 11.9389,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 12.1936,
+   "t_end": 12.1972,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 12.1973,
+   "t_end": 12.2004,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 12.4558,
+   "t_end": 12.4619,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 12.462,
+   "t_end": 12.4644,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 12.7151,
+   "t_end": 12.719,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 12.7192,
+   "t_end": 12.7215,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 12.9754,
+   "t_end": 12.9798,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 12.9801,
+   "t_end": 12.9831,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 13.2359,
+   "t_end": 13.2392,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 13.2393,
+   "t_end": 13.2418,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 13.4938,
+   "t_end": 13.4979,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 13.498,
+   "t_end": 13.5015,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 13.7569,
+   "t_end": 13.7621,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 13.7623,
+   "t_end": 13.7656,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 14.0183,
+   "t_end": 14.0226,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypM5d588f"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 14.0228,
+   "t_end": 14.0277,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepM5d588f"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 14.2834,
+   "t_end": 14.2893,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engrMfa842d"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicerMfa842d"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xrMfa842d"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engrMfa842d",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yrMfa842d"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xrMfa842d"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODM5OjgzOTo4NDA6ODM5\"}"
+  },
+  {
+   "t_start": 14.2894,
+   "t_end": 14.2955,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 14.2956,
+   "t_end": 14.3,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 14.5553,
+   "t_end": 14.5598,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 14.56,
+   "t_end": 14.565,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 14.8167,
+   "t_end": 14.8213,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 14.8215,
+   "t_end": 14.8276,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 14.8277,
+   "t_end": 14.8317,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "group",
+      "ids": [
+       "engrMfa842d"
+      ]
+     },
+     "relation": "member",
+     "subject": {
+      "type": "user",
+      "ids": [
+       "alicerMfa842d"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQwOjg0MDo4NDE6ODQw\"}"
+  },
+  {
+   "t_start": 14.8318,
+   "t_end": 14.835,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 14.8351,
+   "t_end": 14.8379,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 15.0932,
+   "t_end": 15.0975,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 15.0977,
+   "t_end": 15.1018,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 15.3568,
+   "t_end": 15.3628,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 15.363,
+   "t_end": 15.3669,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 15.3672,
+   "t_end": 15.3708,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engrMfa842d"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicerMfa842d"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQxOjg0MTo4NDI6ODQx\"}"
+  },
+  {
+   "t_start": 15.3708,
+   "t_end": 15.3745,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 15.3746,
+   "t_end": 15.3778,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 15.6331,
+   "t_end": 15.6373,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 15.6375,
+   "t_end": 15.6427,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 15.8981,
+   "t_end": 15.902,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 15.9021,
+   "t_end": 15.9048,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 16.1602,
+   "t_end": 16.1628,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 16.163,
+   "t_end": 16.1695,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 16.4223,
+   "t_end": 16.4285,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 16.4286,
+   "t_end": 16.4311,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 16.6825,
+   "t_end": 16.6872,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 16.6873,
+   "t_end": 16.6935,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 16.9491,
+   "t_end": 16.9537,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 16.9539,
+   "t_end": 16.9597,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 17.2119,
+   "t_end": 17.2154,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 17.2155,
+   "t_end": 17.2194,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 17.4748,
+   "t_end": 17.4794,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 17.4795,
+   "t_end": 17.4843,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 17.7397,
+   "t_end": 17.7445,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 17.7447,
+   "t_end": 17.7506,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 18.0058,
+   "t_end": 18.0105,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 18.0106,
+   "t_end": 18.0154,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 18.2663,
+   "t_end": 18.2702,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 18.2703,
+   "t_end": 18.2747,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 18.5285,
+   "t_end": 18.533,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 18.5331,
+   "t_end": 18.538,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 18.7918,
+   "t_end": 18.7967,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrMfa842d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 18.7969,
+   "t_end": 18.8017,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerMfa842d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrMfa842d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.0558,
+   "t_end": 19.0626,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engiPe5d97d"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "aliceiPe5d97d"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xiPe5d97d"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engiPe5d97d",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yiPe5d97d"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xiPe5d97d"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQyOjg0Mjo4NDM6ODQy\"}"
+  },
+  {
+   "t_start": 19.0628,
+   "t_end": 19.0671,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODQyOjg0Mjo4NDM6ODQy"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 19.0673,
+   "t_end": 19.0699,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 19.07,
+   "t_end": 19.074,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiPe5d97d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.3293,
+   "t_end": 19.3338,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 19.3339,
+   "t_end": 19.3401,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiPe5d97d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.5955,
+   "t_end": 19.5993,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 19.5995,
+   "t_end": 19.6063,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiPe5d97d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.6066,
+   "t_end": 19.6105,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "doc",
+      "ids": [
+       "yiPe5d97d"
+      ]
+     },
+     "relation": "parent",
+     "subject": {
+      "type": "folder",
+      "ids": [
+       "xiPe5d97d"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQzOjg0Mzo4NDQ6ODQz\"}"
+  },
+  {
+   "t_start": 19.6106,
+   "t_end": 19.6125,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODQzOjg0Mzo4NDQ6ODQz"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":2}}"
+  },
+  {
+   "t_start": 19.6127,
+   "t_end": 19.615,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODQzOjg0Mzo4NDQ6ODQz"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.6151,
+   "t_end": 19.617,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yiPe5d97d"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xiPe5d97d"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQ0Ojg0NDo4NDU6ODQ0\"}"
+  },
+  {
+   "t_start": 19.6171,
+   "t_end": 19.6186,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODQ0Ojg0NDo4NDU6ODQ0"
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yiPe5d97d"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 19.6187,
+   "t_end": 19.6204,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20,
+     "snap_token": "ODQ0Ojg0NDo4NDU6ODQ0"
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "aliceiPe5d97d"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yiPe5d97d\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.6205,
+   "t_end": 19.6221,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engpP71c688"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicepP71c688"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xpP71c688"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engpP71c688",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "ypP71c688"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xpP71c688"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQ1Ojg0NTo4NDY6ODQ1\"}"
+  },
+  {
+   "t_start": 19.6221,
+   "t_end": 19.6234,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 19.6235,
+   "t_end": 19.6249,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypP71c688\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 19.8803,
+   "t_end": 19.8849,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 19.885,
+   "t_end": 19.8894,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypP71c688\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 20.1402,
+   "t_end": 20.1444,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 20.1445,
+   "t_end": 20.1519,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"ypP71c688\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 20.1523,
+   "t_end": 20.1562,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "doc",
+      "ids": [
+       "ypP71c688"
+      ]
+     },
+     "relation": "parent",
+     "subject": {
+      "type": "folder",
+      "ids": [
+       "xpP71c688"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQ2Ojg0Njo4NDc6ODQ2\"}"
+  },
+  {
+   "t_start": 20.1564,
+   "t_end": 20.1595,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":2}}"
+  },
+  {
+   "t_start": 20.1595,
+   "t_end": 20.1614,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 20.416,
+   "t_end": 20.4184,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 20.4186,
+   "t_end": 20.421,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 20.6763,
+   "t_end": 20.6804,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 20.6805,
+   "t_end": 20.6835,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 20.9389,
+   "t_end": 20.9434,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 20.9436,
+   "t_end": 20.9482,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 21.1991,
+   "t_end": 21.2036,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 21.2037,
+   "t_end": 21.2086,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 21.4611,
+   "t_end": 21.4652,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 21.4653,
+   "t_end": 21.47,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 21.7239,
+   "t_end": 21.729,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 21.7291,
+   "t_end": 21.7332,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 21.9886,
+   "t_end": 21.9939,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 21.9941,
+   "t_end": 21.999,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 22.253,
+   "t_end": 22.2573,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 22.2576,
+   "t_end": 22.2627,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 22.5168,
+   "t_end": 22.5208,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 22.5209,
+   "t_end": 22.5272,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 22.7824,
+   "t_end": 22.7865,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 22.7867,
+   "t_end": 22.7908,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 23.0447,
+   "t_end": 23.0492,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 23.0494,
+   "t_end": 23.0543,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 23.3097,
+   "t_end": 23.3142,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 23.3144,
+   "t_end": 23.3201,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 23.5739,
+   "t_end": 23.5777,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "ypP71c688"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 23.5779,
+   "t_end": 23.583,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicepP71c688"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 23.8385,
+   "t_end": 23.8419,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "group",
+       "id": "engrP603e39"
+      },
+      "relation": "member",
+      "subject": {
+       "type": "user",
+       "id": "alicerP603e39"
+      }
+     },
+     {
+      "entity": {
+       "type": "folder",
+       "id": "xrP603e39"
+      },
+      "relation": "viewer",
+      "subject": {
+       "type": "group",
+       "id": "engrP603e39",
+       "relation": "member"
+      }
+     },
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yrP603e39"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xrP603e39"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQ4Ojg0ODo4NDk6ODQ4\"}"
+  },
+  {
+   "t_start": 23.842,
+   "t_end": 23.8443,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 23.8444,
+   "t_end": 23.8462,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.1015,
+   "t_end": 24.1056,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 24.1057,
+   "t_end": 24.1116,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.3661,
+   "t_end": 24.3703,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 24.3704,
+   "t_end": 24.3736,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.3737,
+   "t_end": 24.379,
+   "url": "v1/tenants/t1/data/delete",
+   "req": {
+    "tuple_filter": {
+     "entity": {
+      "type": "doc",
+      "ids": [
+       "yrP603e39"
+      ]
+     },
+     "relation": "parent",
+     "subject": {
+      "type": "folder",
+      "ids": [
+       "xrP603e39"
+      ],
+      "relation": ""
+     }
+    },
+    "attribute_filter": {}
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODQ5Ojg0OTo4NTA6ODQ5\"}"
+  },
+  {
+   "t_start": 24.3791,
+   "t_end": 24.3818,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":2}}"
+  },
+  {
+   "t_start": 24.3818,
+   "t_end": 24.3862,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.6415,
+   "t_end": 24.6456,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 24.6458,
+   "t_end": 24.6505,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.9058,
+   "t_end": 24.9098,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_DENIED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 24.9099,
+   "t_end": 24.9151,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 24.9155,
+   "t_end": 24.9198,
+   "url": "v1/tenants/t1/data/write",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg"
+    },
+    "tuples": [
+     {
+      "entity": {
+       "type": "doc",
+       "id": "yrP603e39"
+      },
+      "relation": "parent",
+      "subject": {
+       "type": "folder",
+       "id": "xrP603e39"
+      }
+     }
+    ]
+   },
+   "status": 200,
+   "resp": "{\"snap_token\":\"ODUwOjg1MDo4NTE6ODUw\"}"
+  },
+  {
+   "t_start": 24.9199,
+   "t_end": 24.9231,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":5}}"
+  },
+  {
+   "t_start": 24.9232,
+   "t_end": 24.9254,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 25.1807,
+   "t_end": 25.1859,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 25.1861,
+   "t_end": 25.1895,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 25.4447,
+   "t_end": 25.4496,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 25.4498,
+   "t_end": 25.4541,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 25.7072,
+   "t_end": 25.7112,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 25.7113,
+   "t_end": 25.7193,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 25.9746,
+   "t_end": 25.9789,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 25.979,
+   "t_end": 25.9839,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 26.2392,
+   "t_end": 26.2433,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 26.2434,
+   "t_end": 26.2481,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 26.5018,
+   "t_end": 26.5061,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 26.5063,
+   "t_end": 26.5122,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 26.7674,
+   "t_end": 26.7719,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 26.7721,
+   "t_end": 26.7769,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 27.0293,
+   "t_end": 27.0332,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 27.0334,
+   "t_end": 27.0381,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 27.2935,
+   "t_end": 27.2978,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 27.2979,
+   "t_end": 27.303,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 27.5584,
+   "t_end": 27.5633,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 27.5635,
+   "t_end": 27.5684,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 27.821,
+   "t_end": 27.8253,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 27.8255,
+   "t_end": 27.8309,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 28.0858,
+   "t_end": 28.09,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 28.0901,
+   "t_end": 28.0965,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  },
+  {
+   "t_start": 28.3512,
+   "t_end": 28.3567,
+   "url": "v1/tenants/t1/permissions/check",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity": {
+     "type": "doc",
+     "id": "yrP603e39"
+    },
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"can\":\"CHECK_RESULT_ALLOWED\",\"metadata\":{\"check_count\":1}}"
+  },
+  {
+   "t_start": 28.3569,
+   "t_end": 28.3639,
+   "url": "v1/tenants/t1/permissions/lookup-entity",
+   "req": {
+    "metadata": {
+     "schema_version": "dbv16eofvdolfde0sukg",
+     "depth": 20
+    },
+    "entity_type": "doc",
+    "permission": "view",
+    "subject": {
+     "type": "user",
+     "id": "alicerP603e39"
+    }
+   },
+   "status": 200,
+   "resp": "{\"entity_ids\":[\"yrP603e39\"],\"continuous_token\":\"\"}"
+  }
+ ]
+}
