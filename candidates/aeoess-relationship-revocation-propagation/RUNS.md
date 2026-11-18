@@ -14,7 +14,7 @@ All runs are author-produced, Mode A. The submitter wrote the cases and the harn
 
 ## Commands and exits
 
-`harness/run_all.sh` started each server, ran the harness, and stopped the server. `runs/driver.log` holds every command and its direct exit code. Harness hashes at launch are in `runs/harness-sha256-at-launch.txt` and in each result file (`meta.harness_sha256`). Each result file keeps every request with its monotonic start and end time, status and response body (10,161 requests in total).
+`harness/run_all.sh` started each server, ran the harness, and stopped the server. It is the historical driver as run: its paths are the submitter's scratch layout (`~/scanwork-1118/lab/r2`, PostgreSQL binaries under `~/scanwork-1117`), so it does not run from a fresh checkout unchanged. `runs/driver.log` holds every command and its direct exit code. Harness hashes at launch are in `runs/harness-sha256-at-launch.txt` and in each result file (`meta.harness_sha256`). Each of the nine rp2.py result files keeps every request with its monotonic start and end time, status and response body (10,161 requests in total). The r2.1 conditional result file keeps per-case results only, with the CX-09 response body in its note, and no raw request log.
 
 | step | exit |
 |---|---|
@@ -63,4 +63,4 @@ The totals count scored case instances across ten result files from nine server 
 
 ## Reproduce
 
-Start a server with the flags in the table, then run `python3 -I harness/rp2.py <impl> <label> --bound <s> --tolerance 0.5 --bound-class <class>`. Exit 0 means no DIFF and no ERROR. `python3 -I harness/summarize.py runs` rebuilds the table from the result files.
+The recorded runs used `harness/` (r2.1). Use `harness-r2.2/` for new runs. It scores valid samples the same way and fixes three failure paths, see `CLARIFICATIONS.md`. Start a server with the flags in the table, then run `python3 -I harness-r2.2/rp2.py <impl> <label> --bound <s> --tolerance 0.5 --bound-class <class> --out <dir>`. The output directory is created if missing. Exit 0 means no DIFF and no ERROR, 1 means a DIFF or ERROR, 2 means the run stopped early and saved what it had. `python3 -I harness/summarize.py runs` rebuilds the table from the result files. `python3 -I harness-r2.2/rescore.py` rescores the saved windows offline.

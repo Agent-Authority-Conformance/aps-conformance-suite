@@ -1,6 +1,6 @@
 {
   "family": "aeoess-relationship-revocation-propagation",
-  "revision": "r2",
+  "revision": "r2.1 cases (wording of the warm-up steps corrected 2026-11-18, see CLARIFICATIONS.md)",
   "date": "2026-11-18",
   "scope": "Inherited permission through a relationship chain in a relationship-based authorization server. No signed agent delegation is minted or validated, no protected operation is invoked, no effect is observed.",
   "chain": {
@@ -24,7 +24,7 @@
       "purpose": "Immediate reads after an acknowledged write, in the strongest mode the implementation names. Default-mode caches are warmed first on the same chain.",
       "cases": [
         {"id": "IM-E-01", "step": "strongest check before revoke", "expected": "allow"},
-        {"id": "IM-E-W", "step": "default-mode reads until allow is seen 3 times, and 3 default lookups", "expected": "warmed (precondition, recorded)"},
+        {"id": "IM-E-W", "step": "default check and default lookup together until both show allow and listed 3 times in a row", "expected": "warmed (precondition, recorded)"},
         {"id": "IM-E-02", "step": "first request after the revoke is acknowledged: strongest check", "expected": "deny"},
         {"id": "IM-E-03", "step": "next request: strongest lookup", "expected": "absent"},
         {"id": "IM-E-04", "step": "SpiceDB only: at_least_as_fresh(revoke token) check", "expected": "deny"},
@@ -37,7 +37,7 @@
     "PR": {
       "purpose": "Default-mode propagation of a revoke. No strongest-mode read touches this chain.",
       "cases": [
-        {"id": "PR-E-W", "step": "default checks until allow 3 times in a row, then 3 default lookups listed", "expected": "warmed (precondition; a failed warm-up is ERROR)"},
+        {"id": "PR-E-W", "step": "default check and default lookup together until both show allow and listed 3 times in a row", "expected": "warmed (precondition, a failed warm-up is ERROR)"},
         {"id": "PR-E-06", "step": "first default check after the revoke is acknowledged", "expected": "either (recorded)"},
         {"id": "PR-E-07", "step": "default checks every 0.25 s until ack + bound + tolerance + horizon_extra", "expected": "deny for every request that starts at or after ack + bound + tolerance"},
         {"id": "PR-E-08", "step": "default lookups interleaved with PR-E-07", "expected": "absent under the same rule"}
@@ -46,7 +46,7 @@
     "RG": {
       "purpose": "Default-mode recovery from a cached deny after a re-grant. No strongest-mode read touches this chain.",
       "cases": [
-        {"id": "RG-E-W", "step": "grant visible, revoke, default checks until deny 3 times in a row, then 3 default lookups absent", "expected": "warmed (precondition)"},
+        {"id": "RG-E-W", "step": "check and lookup together show allow and listed 3 times in a row, revoke, then check and lookup together show deny and absent 3 times in a row", "expected": "warmed (precondition, a failed warm-up is ERROR)"},
         {"id": "RG-E-10", "step": "default checks after the re-grant is acknowledged", "expected": "allow for every request that starts at or after ack + bound + tolerance"},
         {"id": "RG-E-11", "step": "default lookups interleaved", "expected": "listed under the same rule"}
       ]

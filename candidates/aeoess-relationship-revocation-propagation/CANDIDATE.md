@@ -41,20 +41,21 @@ This tests relationship-based authorization. It does not mint or validate signed
 Start the server with the flags listed in `RUNS.md`, then run, for example:
 
 ```
-python3 -I harness/rp2.py openfga c1 --bound 10 --tolerance 0.5 --bound-class configured-setting
-python3 -I harness/rp_cond2.py c1
-python3 -I harness/selftest.py harness/rp2.py
+python3 -I harness-r2.2/rp2.py openfga c1 --bound 10 --tolerance 0.5 --bound-class configured-setting --out out
+python3 -I harness-r2.2/rp_cond2.py c1 --out out
+python3 -I harness-r2.2/selftest.py
+python3 -I harness-r2.2/rescore.py
 ```
 
-`harness/run_all.sh` is the driver used for the recorded runs. `selftest.py` needs no server. It checks that malformed and error responses cannot pass as denials, and that a stale answer past the bound is reported.
+The recorded runs used `harness/` (r2.1), kept unchanged. `harness-r2.2/` fixes three failure paths found after the runs and scores valid samples the same way (`CLARIFICATIONS.md`). `harness/run_all.sh` is the historical driver and uses the submitter's scratch paths. `selftest.py` needs no server. It checks that malformed, error and transport failures cannot pass as denials in any bound class, that a stale answer past the bound is reported, that the CX-09 oracle reads only the error message, and that output directories are created before any server work. `rescore.py` reproduces the saved verdicts offline.
 
 ## Evidence
 
-See `RUNS.md`. Author-produced Mode A, 2026-11-18, harness r2.1 (`rp2.py` sha256 `e6e1055a2e2e0070334757b655736d3910ceff80f8cb21c9c8bb49349f57f264`, `rp_cond2.py` sha256 `0d175942a5b0c25d0c676f10552b8718c3627db196e9a08d468bcc60fd9835ce`). Nine result files, one per server configuration (OpenFGA 3, SpiceDB 4, Permify 2), and one for the conditional cases on the OpenFGA c1 server: 289 scored case instances agree, 0 differ, 0 errors, 108 recorded observations. In every configuration the strongest read returned the post-change answer on the first request after the change. In the default mode, OpenFGA with 10 s cache TTLs served the pre-change answer for up to 9.47 s, and SpiceDB for up to 4.43 s at a 5 s quantization interval and 20.01 s at 20 s. Permify without a snap token served no stale answer in the sampled requests. No stale answer was observed past a bound plus the 0.5 s tolerance. `selftest.py` exit 0.
+See `RUNS.md`. Author-produced Mode A, 2026-11-18, harness r2.1 (`rp2.py` sha256 `e6e1055a2e2e0070334757b655736d3910ceff80f8cb21c9c8bb49349f57f264`, `rp_cond2.py` sha256 `0d175942a5b0c25d0c676f10552b8718c3627db196e9a08d468bcc60fd9835ce`). Nine result files, one per server configuration (OpenFGA 3, SpiceDB 4, Permify 2), and one for the conditional cases on the OpenFGA c1 server: 289 scored case instances agree, 0 differ, 0 errors, 108 recorded observations. In every configuration the strongest read returned the post-change answer on the first request after the change. In the default mode, OpenFGA with 10 s cache TTLs served the pre-change answer for up to 9.47 s, and SpiceDB for up to 4.43 s at a 5 s quantization interval and 20.01 s at 20 s. Permify without a snap token served no stale answer in the sampled requests. No stale answer was observed in the sampled requests beyond the declared bound plus the 0.5 s tolerance. r2.1 `selftest.py` exit 0. After the runs, r2.2 offline rescoring reproduced all 108 saved window verdicts and the CX-09 verdict (`checks-r2.2/rescore.txt`, exit 0).
 
 ## Revision history
 
-r2.1 (this candidate). Earlier local revisions were not published. r1 could count a malformed response as a deny, scored the default mode only once after the window, ran its strongest-mode checks after the default-mode poll and did not check that warm-ups succeeded. r2.0 confirmed the check and lookup warm-ups one after the other. SpiceDB default reads are not monotonic, so one precondition failed there, and r2.1 confirms them together. Only r2.1 results are reported here.
+r2.1 (this candidate). Earlier local revisions were not published. r1 could count a malformed response as a deny, scored the default mode only once after the window, ran its strongest-mode checks after the default-mode poll and did not check that warm-ups succeeded. r2.0 confirmed the check and lookup warm-ups one after the other. SpiceDB default reads are not monotonic, so one precondition failed there, and r2.1 confirms them together. Only r2.1 results are reported here. r2.2 (2026-11-18, after a second review) changes the harness only: poll errors become ERROR in every bound class instead of being recorded or crashing the scorer, CX-09 reads only the error message, and output directories are created up front. The r2.1 records were not rerun. See `CLARIFICATIONS.md`.
 
 ## Known limitations
 
