@@ -29,13 +29,13 @@ ok   too few samples past the limit -> ERROR
 ok   malformed sample in window -> ERROR
 PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
 PR-G-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0
-PR-G-07   expected=deny     observed=violation DIFF ack_end=0.5074 n=11 last_stale_start_after_ack_s=1.5189 last_stale_end_after_ack_s=1.5189 limit_after_ack_s=1.2 n_scored=6 n_bad=2
-PR-G-08   expected=absent   observed=violation DIFF ack_end=0.5074 n=11 last_stale_start_after_ack_s=1.5191 last_stale_end_after_ack_s=1.5191 limit_after_ack_s=1.2 n_scored=6 n_bad=2
+PR-G-07   expected=deny     observed=violation DIFF ack_end=0.5097 n=11 last_stale_start_after_ack_s=1.5264 last_stale_end_after_ack_s=1.5264 limit_after_ack_s=1.2 n_scored=6 n_bad=2
+PR-G-08   expected=absent   observed=violation DIFF ack_end=0.5097 n=11 last_stale_start_after_ack_s=1.5268 last_stale_end_after_ack_s=1.5268 limit_after_ack_s=1.2 n_scored=6 n_bad=2
 ok   fake stale 1.6 s, bound 1.0 s -> DIFF
 PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
 PR-G-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0001
-PR-G-07   expected=deny     observed=deny      AGREE ack_end=3.8019 n=11 last_stale_start_after_ack_s=0.2553 last_stale_end_after_ack_s=0.2553 limit_after_ack_s=1.2 n_scored=6 n_bad=0
-PR-G-08   expected=absent   observed=absent    AGREE ack_end=3.8019 n=11 last_stale_start_after_ack_s=0.2554 last_stale_end_after_ack_s=0.2554 limit_after_ack_s=1.2 n_scored=6 n_bad=0
+PR-G-07   expected=deny     observed=deny      AGREE ack_end=3.8155 n=11 last_stale_start_after_ack_s=0.2549 last_stale_end_after_ack_s=0.2549 limit_after_ack_s=1.2 n_scored=6 n_bad=0
+PR-G-08   expected=absent   observed=absent    AGREE ack_end=3.8155 n=11 last_stale_start_after_ack_s=0.255 last_stale_end_after_ack_s=0.255 limit_after_ack_s=1.2 n_scored=6 n_bad=0
 ok   fake stale 0.5 s, bound 1.0 s -> AGREE
 PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
    protocol ERROR: HTTP 500 {}
@@ -51,8 +51,8 @@ PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=[
    protocol ERROR: HTTP 500 {}
    protocol ERROR: HTTP 500 {}
 PR-G-06   expected=either   observed=ERROR     RECORD start_after_ack_s=None
-PR-G-07   expected=deny     observed=see samples RECORD ack_end=7.1313 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
-PR-G-08   expected=absent   observed=see samples RECORD ack_end=7.1313 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-07   expected=deny     observed=see samples RECORD ack_end=7.1496 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-08   expected=absent   observed=see samples RECORD ack_end=7.1496 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
    protocol ERROR: HTTP 500 {}
    protocol ERROR: HTTP 500 {}
 PR-M-W    expected=allow    observed=not-warmed ERROR warm_samples=2 warm_tail=['ERROR', 'ERROR']
@@ -89,8 +89,8 @@ PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=[
    protocol MALFORMED: check body {}
    protocol MALFORMED: list-objects body {}
 PR-G-06   expected=either   observed=MALFORMED RECORD start_after_ack_s=None
-PR-G-07   expected=deny     observed=see samples RECORD ack_end=11.1976 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
-PR-G-08   expected=absent   observed=see samples RECORD ack_end=11.1976 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-07   expected=deny     observed=see samples RECORD ack_end=11.2197 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-08   expected=absent   observed=see samples RECORD ack_end=11.2197 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
    protocol MALFORMED: check body {}
    protocol MALFORMED: list-objects body {}
 PR-M-W    expected=allow    observed=not-warmed ERROR warm_samples=2 warm_tail=['MALFORMED', 'MALFORMED']
@@ -127,8 +127,8 @@ PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=[
    protocol ERROR: transport ConnectionRefusedError (synthetic)
    protocol ERROR: transport ConnectionRefusedError (synthetic)
 PR-G-06   expected=either   observed=ERROR     RECORD start_after_ack_s=None
-PR-G-07   expected=deny     observed=see samples RECORD ack_end=15.2722 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
-PR-G-08   expected=absent   observed=see samples RECORD ack_end=15.2722 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-07   expected=deny     observed=see samples RECORD ack_end=15.2865 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
+PR-G-08   expected=absent   observed=see samples RECORD ack_end=15.2865 n=6 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None
    protocol ERROR: transport ConnectionRefusedError (synthetic)
    protocol ERROR: transport ConnectionRefusedError (synthetic)
 PR-M-W    expected=allow    observed=not-warmed ERROR warm_samples=2 warm_tail=['ERROR', 'ERROR']
@@ -152,6 +152,9 @@ PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=[
 PR-G-06   expected=either   observed=ERROR     RECORD start_after_ack_s=None
 FAIL transport during poll, configured-setting: exit raised TypeError("'>=' not supported between instances of 'NoneType' and 'float'"), saved=False, ERROR rows=None
 FAIL unwritable output fails before server contact (raised=False, requests=1)
+FAIL openfga unreachable at startup: exit raised ProtocolError, saved=False, aborted=False
+FAIL spicedb unreachable at startup: exit raised ProtocolError, saved=False, aborted=False
+FAIL permify unreachable at startup: exit raised ProtocolError, saved=False, aborted=False
 ok   SpiceDB empty stream -> absent
 ok   CX-09 judge accepts the documented error
 ok   CX-09 judge rejects current_time outside the message
@@ -181,4 +184,4 @@ CX-08  expected=allow     observed=allow     AGREE default, back inside the gran
 CX-09  expected=ERROR400-names-current_time observed=status=400 code='validation_error' message='something unrelated' DIFF default, current_time omitted, body={"code": "validation_error", "message": "something unrelated", "unrelated_field": "current_time"}
 TOTAL 10 AGREE 9 DIFF 1 ERROR 0
 ok   rp_cond2 full path, decoy field: exit 1 (want 1), requests logged 18
-SELFTEST FAIL 7
+SELFTEST FAIL 10

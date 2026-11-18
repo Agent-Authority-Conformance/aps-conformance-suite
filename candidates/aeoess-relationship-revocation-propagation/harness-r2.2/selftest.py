@@ -149,6 +149,25 @@ except Exception as e:  # an OSError is the expected outcome, anything else is a
 expect(f"unwritable output fails before server contact (raised={raised}, requests={len(calls)})",
        raised and not calls)
 
+# a server that is unreachable at startup gives a saved aborted record and exit 2
+def refused(*a, **k):
+    raise rp2.ProtocolError("ERROR", "transport ConnectionRefusedError (synthetic)")
+
+
+for impl in ("openfga", "spicedb", "permify"):
+    rp2.RESULTS.clear(); rp2.LOG.clear()
+    rp2.CALL = refused
+    out = os.path.join(tmp, "startup-" + impl, "nested")
+    try:
+        code = rp2.main([impl, "probe", "--bound", "0", "--tolerance", "0.5", "--bound-class", "documented", "--out", out])
+    except Exception as e:
+        code = f"raised {type(e).__name__}"
+    path = os.path.join(out, f"{impl}-probe.json")
+    saved = json.load(open(path)) if os.path.exists(path) and os.path.getsize(path) else None
+    aborted = saved["meta"]["aborted"] if saved else None
+    expect(f"{impl} unreachable at startup: exit {code}, saved={saved is not None}, aborted={bool(aborted)}",
+           code == 2 and saved is not None and bool(aborted))
+
 # a genuine empty SpiceDB stream is absence, not an error
 rp2.CALL = lambda m, u, b=None, h=None: (200, "", 0.0, 0.0)
 o = object.__new__(rp2.SpiceDB)

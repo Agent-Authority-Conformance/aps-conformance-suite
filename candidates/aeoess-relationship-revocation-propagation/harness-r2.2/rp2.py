@@ -6,7 +6,8 @@ that is an ERROR or MALFORMED, or has no timestamps, makes the window ERROR in
 every bound class (r2.1 recorded it in observational mode and crashed in timed
 mode). The output directory is created before any server is contacted, and a
 run that stops on an unexpected exception still writes its partial results and
-exits 2. Scoring of valid samples is unchanged.
+exits 2, including a failure while setting up the store or schema at startup.
+Scoring of valid samples is unchanged.
 
 r2.1 changes only the warm-up preconditions: check and lookup are confirmed
 together 3 times in a row, because SpiceDB minimize_latency reads are not
@@ -517,11 +518,12 @@ def main(argv=None):
     out_path = f"{args.out}/{args.impl}-{args.label}.json"
     with open(out_path, "a"):
         pass  # fail here, before any server work, if the destination is not writable
-    impl = {"openfga": OpenFGA, "spicedb": SpiceDB, "permify": Permify}[args.impl]()
+    impl = None
     horizon = args.bound + args.tolerance + args.horizon_extra
     scns = args.scenarios.split(",")
     aborted = None
     try:
+        impl = {"openfga": OpenFGA, "spicedb": SpiceDB, "permify": Permify}[args.impl]()
         for E, edge in (("G", "grant"), ("M", "member"), ("P", "parent")):
             if "IM" in scns:
                 scenario_im(impl, E, edge, "i" + E + uuid.uuid4().hex[:6], horizon)
@@ -537,7 +539,7 @@ def main(argv=None):
             "impl": args.impl, "label": args.label, "bound_s": args.bound, "tolerance_s": args.tolerance,
             "bound_class": args.bound_class, "bound_source": args.bound_source,
             "horizon_extra_s": args.horizon_extra, "poll_s": POLL_S, "scenarios": scns,
-            "strong_mode": impl.strong_name, "default_mode": impl.default_name,
+            "strong_mode": getattr(impl, "strong_name", None), "default_mode": getattr(impl, "default_name", None),
             "server_process": server_args(args.server_pattern),
             "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - (time.monotonic() - T0))),
             "python": sys.version.split()[0], "tally": tally, "aborted": aborted,

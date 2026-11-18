@@ -1,14 +1,14 @@
 # SHA-256 of every file in this candidate directory except this file. Paths relative to this directory.
 5f2adafecb8e6019bbebd4864978311b6c34dd285d1bf0cde911eb4dde5e4665  CANDIDATE.md
-fd9aa63c07d6da0ff4d9f36cfd448ef41c980979223a0992df098c09b1debfc3  CLARIFICATIONS.md
+d2cebf09d5bc348ac9f70b6f0940c4befdbf58efe7d6655a791cebb32f6ca51d  CLARIFICATIONS.md
 89ac26ffb8fe8d34f860387fb3bc5bf97395fe69e62309c6256200cad2f8e9dc  RUNS.md
 9071d284c2a630d2ebed476b905ec8a6dbe169dee0eb6c7b6b508d8234d5afcd  checks-r2.2/rescore.txt
-6f1a95df89fc47a1e432f1b7c820db2d2cd14e8f1f00d2883522f961411b958a  checks-r2.2/selftest-r2.2-against-r2.1-rp2.txt
-6999ebb3fe88246cdd183e15c44d2f081464c5c01be7b3e15e73e342b593b152  checks-r2.2/selftest-r2.2.txt
+56ce183921fe3f610c7e8853d59ca12aaad26f1df72ba53abcf1d486fecb5206  checks-r2.2/selftest-r2.2-against-r2.1-rp2.txt
+bae4bae7d65ec238ffa4ca9ac400e8a07c8792091eafc18d46b3c287378c50a5  checks-r2.2/selftest-r2.2.txt
 8dcd585df6d77a8c003e49a04cdd4481e9af9fb28f883cbe4b194e63afa6ade2  harness-r2.2/rescore.py
-6410c8c4425370c9b56d34ed2192f50d306b97e178002b7534cde109a45cb3e2  harness-r2.2/rp2.py
+e13a068e9c329a0514d241f715424751a08f6f518674a7cd1f9c7b5d3ad2617d  harness-r2.2/rp2.py
 a4d8abfa3f9ffcc566d9cf3089acf7959660106390adeb27bb7651bf597a1cc0  harness-r2.2/rp_cond2.py
-cc3f59a2ecb96f3e011e7264e3613f6a93629ee4b294695d167cd1ddbbf0076f  harness-r2.2/selftest.py
+58302c73ed3416237b48beb725f74e89eda7eff53d74b8094c1ce38de917862d  harness-r2.2/selftest.py
 e6e1055a2e2e0070334757b655736d3910ceff80f8cb21c9c8bb49349f57f264  harness/rp2.py
 0d175942a5b0c25d0c676f10552b8718c3627db196e9a08d468bcc60fd9835ce  harness/rp_cond2.py
 7866b418a3c65efee825d32af42aa396eaec675918d4b7cd587b4f71bbe33056  harness/run_all.sh
