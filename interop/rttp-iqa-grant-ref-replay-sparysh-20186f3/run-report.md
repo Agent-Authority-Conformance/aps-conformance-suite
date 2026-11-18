@@ -8,7 +8,7 @@ The replay runner is `replay/replay-runner/replay_runner.py` — a generic thin 
 
 ## Results
 
-Exit 0, status `replay_matched`. Both commands exit 0 with stdout exactly as the record's run report transcribed (`{"ambiguous": 2, "conformant": 11, "nonconformant": 12}` for phase 1). All three produced outputs match the recorded artifacts byte for byte modulo line endings and canonically as JSON — on Windows during recording (CRLF) and on Linux (LF), the LF-normalized digests are identical, which is the machine form of the statement "these are the record's bytes". The recorded comparison itself reproduces: verdict agreement 25/25, named-part divergences 0, tally 11 conformant / 12 nonconformant / 2 ambiguous. Per-case rows are in `RESULTS.md`, transcribed from the record's own comparison output.
+Exit 0, status `replay_matched`. Both commands exit 0 with stdout exactly as the record's run report transcribed (`{"ambiguous": 2, "conformant": 11, "nonconformant": 12}` for phase 1). All three produced outputs match the recorded artifacts byte for byte modulo line endings and canonically as JSON — the record's host wrote LF (Linux), the replay host wrote CRLF (Windows); the LF-normalized digests are identical, which is the machine form of the statement "these are the record's bytes". The recorded comparison itself reproduces: verdict agreement 25/25, named-part divergences 0, tally 11 conformant / 12 nonconformant / 2 ambiguous. Per-case rows are in `RESULTS.md`, transcribed from the record's own comparison output.
 
 ## What the match shows, and what it does not
 

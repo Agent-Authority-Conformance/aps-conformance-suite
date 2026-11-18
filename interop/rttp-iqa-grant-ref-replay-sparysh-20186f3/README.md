@@ -6,7 +6,7 @@ A replay is a verification of bytes, not a second opinion: this directory adds n
 
 ## Result
 
-Exit 0, status `replay_matched`: 7 vendor pins and 3 recorded pins verified byte-exact before anything executes (the wrapper fails closed on any mismatch); both commands exit 0 with stdout exactly as the record's run report transcribed (`{"ambiguous": 2, "conformant": 11, "nonconformant": 12}`); all three produced outputs are byte-identical to the recorded artifacts after line-ending normalization (CRLF during recording, LF here) and canonically equal as JSON; the recorded comparison reproduces verdict agreement 25/25 with zero named-part divergences. No suspected defective vector was observed.
+Exit 0, status `replay_matched`: 7 vendor pins and 3 recorded pins verified byte-exact before anything executes (the wrapper fails closed on any mismatch); both commands exit 0 with stdout exactly as the record's run report transcribed (`{"ambiguous": 2, "conformant": 11, "nonconformant": 12}`); all three produced outputs are byte-identical to the recorded artifacts after line-ending normalization (the record's Linux host wrote LF, the replay host on Windows wrote CRLF) and canonically equal as JSON; the recorded comparison reproduces verdict agreement 25/25 with zero named-part divergences. No suspected defective vector was observed.
 
 ## Re-run
 
