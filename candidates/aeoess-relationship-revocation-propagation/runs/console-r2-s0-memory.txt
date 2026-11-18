@@ -1,0 +1,49 @@
+IM-G-01   expected=allow    observed=allow     AGREE t_start=0.1747 t_end=0.1786
+IM-G-W    expected=allow    observed=warmed    RECORD warm_samples=6
+IM-G-02   expected=deny     observed=deny      AGREE t_start=0.6991 t_end=0.7 start_after_ack_s=0.0
+IM-G-03   expected=absent   observed=absent    AGREE t_start=0.7 t_end=0.7008 start_after_ack_s=0.0009
+IM-G-04   expected=deny     observed=deny      AGREE t_start=0.7009 t_end=0.7016 start_after_ack_s=0.0018
+IM-G-05   expected=allow    observed=allow     AGREE t_start=0.7016 t_end=0.7022 start_after_ack_s=0.0025
+IM-G-09   expected=allow    observed=allow     AGREE t_start=0.703 t_end=0.7037 start_after_ack_s=0.0
+IM-G-10   expected=listed   observed=listed    AGREE t_start=0.7038 t_end=0.7045 start_after_ack_s=0.0008
+IM-G-11   expected=allow    observed=allow     AGREE t_start=0.7046 t_end=0.705 start_after_ack_s=0.0016
+PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
+PR-G-06   expected=either   observed=deny      RECORD start_after_ack_s=0.0001
+PR-G-07   expected=deny     observed=deny      AGREE ack_end=1.2299 n=35 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None limit_after_ack_s=6.0 n_scored=11 n_bad=0
+PR-G-08   expected=absent   observed=absent    AGREE ack_end=1.2299 n=35 last_stale_start_after_ack_s=None last_stale_end_after_ack_s=None limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-G-W    expected=deny     observed=warmed    RECORD warm_samples=84 warm_tail=['deny', 'absent', 'deny', 'absent', 'deny', 'absent']
+RG-G-10   expected=allow    observed=allow     AGREE ack_end=20.7421 n=35 last_stale_start_after_ack_s=4.146 last_stale_end_after_ack_s=4.1481 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-G-11   expected=listed   observed=listed    AGREE ack_end=20.7421 n=35 last_stale_start_after_ack_s=3.8917 last_stale_end_after_ack_s=3.8939 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+IM-M-01   expected=allow    observed=allow     AGREE t_start=29.8049 t_end=29.806
+IM-M-W    expected=allow    observed=warmed    RECORD warm_samples=48
+IM-M-02   expected=deny     observed=deny      AGREE t_start=35.7793 t_end=35.7803 start_after_ack_s=0.0001
+IM-M-03   expected=absent   observed=absent    AGREE t_start=35.7804 t_end=35.7812 start_after_ack_s=0.0012
+IM-M-04   expected=deny     observed=deny      AGREE t_start=35.7813 t_end=35.7819 start_after_ack_s=0.0021
+IM-M-05   expected=allow    observed=allow     AGREE t_start=35.7819 t_end=35.7832 start_after_ack_s=0.0027
+IM-M-09   expected=allow    observed=allow     AGREE t_start=35.7839 t_end=35.7846 start_after_ack_s=0.0
+IM-M-10   expected=listed   observed=listed    AGREE t_start=35.7847 t_end=35.7855 start_after_ack_s=0.0008
+IM-M-11   expected=allow    observed=allow     AGREE t_start=35.7856 t_end=35.7861 start_after_ack_s=0.0017
+PR-M-W    expected=allow    observed=warmed    RECORD warm_samples=38 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
+PR-M-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0
+PR-M-07   expected=deny     observed=deny      AGREE ack_end=40.4667 n=35 last_stale_start_after_ack_s=4.3899 last_stale_end_after_ack_s=4.3937 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+PR-M-08   expected=absent   observed=absent    AGREE ack_end=40.4667 n=35 last_stale_start_after_ack_s=4.3939 last_stale_end_after_ack_s=4.3968 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-M-W    expected=deny     observed=warmed    RECORD warm_samples=52 warm_tail=['deny', 'absent', 'deny', 'absent', 'deny', 'absent']
+RG-M-10   expected=allow    observed=allow     AGREE ack_end=55.7803 n=35 last_stale_start_after_ack_s=3.8845 last_stale_end_after_ack_s=3.8934 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-M-11   expected=listed   observed=listed    AGREE ack_end=55.7803 n=35 last_stale_start_after_ack_s=4.1546 last_stale_end_after_ack_s=4.1575 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+IM-P-01   expected=allow    observed=allow     AGREE t_start=64.8689 t_end=64.8708
+IM-P-W    expected=allow    observed=warmed    RECORD warm_samples=48
+IM-P-02   expected=deny     observed=deny      AGREE t_start=70.8364 t_end=70.8372 start_after_ack_s=0.0001
+IM-P-03   expected=absent   observed=absent    AGREE t_start=70.8372 t_end=70.838 start_after_ack_s=0.0009
+IM-P-04   expected=deny     observed=deny      AGREE t_start=70.8381 t_end=70.8392 start_after_ack_s=0.0018
+IM-P-05   expected=allow    observed=allow     AGREE t_start=70.8393 t_end=70.8408 start_after_ack_s=0.003
+IM-P-09   expected=allow    observed=allow     AGREE t_start=70.8425 t_end=70.8433 start_after_ack_s=0.0001
+IM-P-10   expected=listed   observed=listed    AGREE t_start=70.8433 t_end=70.844 start_after_ack_s=0.0009
+IM-P-11   expected=allow    observed=allow     AGREE t_start=70.8441 t_end=70.8445 start_after_ack_s=0.0017
+PR-P-W    expected=allow    observed=warmed    RECORD warm_samples=40 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
+PR-P-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0001
+PR-P-07   expected=deny     observed=deny      AGREE ack_end=75.7921 n=35 last_stale_start_after_ack_s=3.8886 last_stale_end_after_ack_s=3.892 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+PR-P-08   expected=absent   observed=absent    AGREE ack_end=75.7921 n=35 last_stale_start_after_ack_s=4.4066 last_stale_end_after_ack_s=4.4073 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-P-W    expected=deny     observed=warmed    RECORD warm_samples=88 warm_tail=['deny', 'absent', 'deny', 'absent', 'deny', 'absent']
+RG-P-10   expected=allow    observed=allow     AGREE ack_end=95.8133 n=35 last_stale_start_after_ack_s=4.4059 last_stale_end_after_ack_s=4.4086 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+RG-P-11   expected=listed   observed=listed    AGREE ack_end=95.8133 n=35 last_stale_start_after_ack_s=3.8883 last_stale_end_after_ack_s=3.8914 limit_after_ack_s=6.0 n_scored=11 n_bad=0
+TALLY {"AGREE": 36, "DIFF": 0, "ERROR": 0, "RECORD": 12}

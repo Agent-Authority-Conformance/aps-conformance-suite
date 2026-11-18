@@ -1,0 +1,81 @@
+{
+ "impl": "openfga",
+ "label": "r2-c1-cache",
+ "harness": "rp_cond2.py",
+ "harness_sha256": "0d175942a5b0c25d0c676f10552b8718c3627db196e9a08d468bcc60fd9835ce",
+ "agree": 10,
+ "diff": 0,
+ "error": 0,
+ "results": [
+  {
+   "case": "CX-01",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "note": "strongest, inside the grant"
+  },
+  {
+   "case": "CX-W",
+   "expected": "warmed",
+   "observed": "warmed",
+   "verdict": "AGREE",
+   "note": "cache warm-up, each response validated"
+  },
+  {
+   "case": "CX-02",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "note": "default, inside the grant, cache warm"
+  },
+  {
+   "case": "CX-03",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "note": "default, after expiry, same chain, cache warm for 00:30"
+  },
+  {
+   "case": "CX-04",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "note": "strongest, after expiry"
+  },
+  {
+   "case": "CX-05",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "note": "default, one second before expiry"
+  },
+  {
+   "case": "CX-06",
+   "expected": "deny",
+   "observed": "deny",
+   "verdict": "AGREE",
+   "note": "default, at expiry, strict less-than"
+  },
+  {
+   "case": "CX-07",
+   "expected": "absent",
+   "observed": "absent",
+   "verdict": "AGREE",
+   "note": "default lookup after expiry, cache warm for 00:30"
+  },
+  {
+   "case": "CX-08",
+   "expected": "allow",
+   "observed": "allow",
+   "verdict": "AGREE",
+   "note": "default, back inside the grant after the expired checks"
+  },
+  {
+   "case": "CX-09",
+   "expected": "ERROR400-names-current_time",
+   "observed": "ERROR400-names-current_time",
+   "verdict": "AGREE",
+   "note": "default, current_time omitted, body={\"code\": \"validation_error\", \"message\": \"failed to evaluate relationship condition: 'not_expired' - tuple 'folder:x#viewer@group:eng#member' is missing context parameters '[current_time]'\"}"
+  }
+ ]
+}

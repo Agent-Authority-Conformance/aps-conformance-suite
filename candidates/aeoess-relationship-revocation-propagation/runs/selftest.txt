@@ -1,0 +1,40 @@
+ok   OpenFGA check empty object -> MALFORMED
+ok   OpenFGA lookup empty object -> MALFORMED
+ok   SpiceDB check empty object -> MALFORMED
+ok   SpiceDB lookup empty object -> MALFORMED
+ok   Permify check empty object -> MALFORMED
+ok   Permify lookup empty object -> MALFORMED
+ok   OpenFGA check server error -> ERROR
+ok   OpenFGA lookup server error -> ERROR
+ok   SpiceDB check server error -> ERROR
+ok   SpiceDB lookup server error -> ERROR
+ok   Permify check server error -> ERROR
+ok   Permify lookup server error -> ERROR
+ok   OpenFGA check not json -> MALFORMED
+ok   OpenFGA lookup not json -> MALFORMED
+ok   SpiceDB check not json -> MALFORMED
+ok   SpiceDB lookup not json -> MALFORMED
+ok   Permify check not json -> MALFORMED
+ok   Permify lookup not json -> MALFORMED
+ok   OpenFGA check wrong enum -> MALFORMED
+ok   OpenFGA lookup wrong enum -> MALFORMED
+ok   SpiceDB check wrong enum -> MALFORMED
+ok   SpiceDB lookup wrong enum -> MALFORMED
+ok   Permify check wrong enum -> MALFORMED
+ok   Permify lookup wrong enum -> MALFORMED
+ok   SpiceDB stream error record
+ok   stale until 11 s, bound 10 s, tol 0.5 s -> DIFF (2 bad)
+ok   stale until 10.25 s, bound 10 s, tol 0.5 s -> AGREE
+ok   too few samples past the limit -> ERROR
+ok   malformed sample in window -> ERROR
+PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
+PR-G-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0001
+PR-G-07   expected=deny     observed=violation DIFF ack_end=0.5188 n=11 last_stale_start_after_ack_s=1.5306 last_stale_end_after_ack_s=1.5306 limit_after_ack_s=1.2 n_scored=6 n_bad=2
+PR-G-08   expected=absent   observed=violation DIFF ack_end=0.5188 n=11 last_stale_start_after_ack_s=1.5308 last_stale_end_after_ack_s=1.5308 limit_after_ack_s=1.2 n_scored=6 n_bad=2
+ok   fake stale 1.6 s, bound 1.0 s -> DIFF
+PR-G-W    expected=allow    observed=warmed    RECORD warm_samples=6 warm_tail=['allow', 'listed', 'allow', 'listed', 'allow', 'listed']
+PR-G-06   expected=either   observed=allow     RECORD start_after_ack_s=0.0
+PR-G-07   expected=deny     observed=deny      AGREE ack_end=3.8468 n=11 last_stale_start_after_ack_s=0.2602 last_stale_end_after_ack_s=0.2602 limit_after_ack_s=1.2 n_scored=6 n_bad=0
+PR-G-08   expected=absent   observed=absent    AGREE ack_end=3.8468 n=11 last_stale_start_after_ack_s=0.2603 last_stale_end_after_ack_s=0.2603 limit_after_ack_s=1.2 n_scored=6 n_bad=0
+ok   fake stale 0.5 s, bound 1.0 s -> AGREE
+SELFTEST PASS
