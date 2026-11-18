@@ -167,8 +167,9 @@ the PSEA author's confirmation of the two join tables, as stated in each vector'
 
 ## Known limitations
 
-- Only author-produced runs, and one reference verifier per set. Both enforce implementations
-  come from the same author.
+- One independent run, Lee's 2026-11-04 Mode A run of the candidate's own pipeline at source
+  `6bb462f` (see Evidence). Every other run is author-produced, and each set has one reference
+  verifier. Both enforce implementations come from the same author.
 - The JWS payloads are not in JCS form (requirement 2).
 - The test keys are committed, not derived from a recorded seed (requirement 1).
 - Native vectors state where a verifier must stop, not a full trace. Two verifiers that stop at
