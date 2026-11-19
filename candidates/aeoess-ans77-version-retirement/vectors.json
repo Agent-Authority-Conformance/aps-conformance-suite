@@ -1,0 +1,667 @@
+{
+  "candidate": "aeoess-ans77-version-retirement",
+  "status": "candidate_against_proposed",
+  "t0": 1800000000,
+  "sources": {
+    "ans6": "agentnameservice/ans-spec 9284c7edd622e80d50eca092339f33e3918bded5, spec/ans-6-agent-authentication.md",
+    "ans1": "agentnameservice/ans-spec 9284c7edd622e80d50eca092339f33e3918bded5, spec/ans-1-registration.md",
+    "i77": "agentnameservice/ans-spec issue #77, body as of 2026-10-17T19:07:48Z, sha256 c032c5f4fbef3611dac1a193e85b6c50ce9d588db79d6e4ff21a2df01c68401c",
+    "i77c1": "agentnameservice/ans-spec issue #77 comment 6178618043 (2026-10-14)",
+    "i77c2": "agentnameservice/ans-spec issue #77 comment 6239228769 (2026-10-17)"
+  },
+  "readings": {
+    "current": "ans-spec at 9284c7e as written. AGENT_DEPRECATED is reserved and not emitted (ANS-1 6.3), so deleting the _ans-badge record is the only retirement signal.",
+    "proposed": "The change proposed in #77. Not merged. The RA emits AGENT_DEPRECATED, the AHP keeps the _ans-badge record until revocation, and a missing record does not by itself mean retired.",
+    "alternative": "Revocation with reason SUPERSEDED followed by DNS cleanup, as #77 comment 6178618043 proposes instead."
+  },
+  "model": "Synthetic. The badge tier reads status and identity certificates from the TL entry the _ans-badge record selects. The SCITT tier reads the last status token the caller holds. Fingerprints are synthetic strings. No signature, receipt, DNS lookup or certificate is constructed or verified.",
+  "cases": [
+    {
+      "id": "A77-01",
+      "status": "candidate_against_proposed",
+      "reading": "current",
+      "tests": "Control. Both versions ACTIVE, both _ans-badge records present, token current. Both tiers accept the v1.0.0 caller.",
+      "sources": [
+        "ans6:6.2",
+        "ans6:6.3",
+        "ans6:8.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "scitt_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "tiers_agree": true
+      }
+    },
+    {
+      "id": "A77-02",
+      "status": "candidate_against_proposed",
+      "reading": "current",
+      "tests": "The AHP retires v1.0.0 by deleting its _ans-badge record. No RA operation changes the TL status, so the status token still says ACTIVE. The badge tier finds no matching record and rejects. The SCITT tier never reads DNS and accepts. This is the disagreement #77 describes.",
+      "sources": [
+        "ans6:6.2",
+        "ans6:6.3",
+        "ans6:8.1",
+        "ans1:6.3",
+        "i77:problem"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "no_badge_match"
+        },
+        "scitt_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "tiers_agree": false
+      }
+    },
+    {
+      "id": "A77-03",
+      "status": "candidate_against_proposed",
+      "reading": "proposed",
+      "tests": "Under the #77 proposal the RA emits AGENT_DEPRECATED, repeating the previous event's certificate arrays, and the AHP keeps the _ans-badge record. Both tiers read DEPRECATED and accept with a migration signal.",
+      "sources": [
+        "i77:proposed",
+        "i77c2",
+        "ans6:4.1",
+        "ans6:8.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "DEPRECATED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "DEPRECATED",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "accept_with_warning",
+          "reason": "migration_signal"
+        },
+        "scitt_tier": {
+          "decision": "accept_with_warning",
+          "reason": "migration_signal"
+        },
+        "tiers_agree": true
+      }
+    },
+    {
+      "id": "A77-04",
+      "status": "candidate_against_proposed",
+      "reading": "proposed",
+      "tests": "AGENT_DEPRECATED carries only the status change and no certificate arrays. A TL that serves the badge and status token from the latest event, as #77 comment 6239228769 describes, then lists no identity certificates, so both tiers reject the caller instead of warning. The intended outcome under the proposal is accept_with_warning, and this case shows why the event has to repeat the arrays.",
+      "sources": [
+        "i77:proposed",
+        "i77c2"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "DEPRECATED",
+          "identity_certs": []
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "DEPRECATED",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": []
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "fingerprint_not_listed"
+        },
+        "scitt_tier": {
+          "decision": "reject",
+          "reason": "fingerprint_not_listed"
+        },
+        "tiers_agree": true
+      }
+    },
+    {
+      "id": "A77-05",
+      "status": "candidate_against_proposed",
+      "reading": "proposed",
+      "tests": "The TL says DEPRECATED, but the AHP deleted the _ans-badge record before revocation, which the proposal says it keeps until then. The SCITT tier accepts with a migration signal. For the badge tier the texts point two ways. ANS-6 8.1 says reject when no badge matches. The proposal says a verifier MUST NOT conclude the version is retired from a missing record while TL status is not terminal, and the record is what tells the badge tier which TL entry to read. Either way the badge tier does not accept, so the tiers still disagree. The case records the outcome as not accepted and leaves the reason open.",
+      "sources": [
+        "ans6:8.1",
+        "i77:proposed"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "DEPRECATED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "DEPRECATED",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": [
+            "reject"
+          ],
+          "reason": null
+        },
+        "scitt_tier": {
+          "decision": "accept_with_warning",
+          "reason": "migration_signal"
+        },
+        "tiers_agree": false
+      },
+      "note": "Open point. The model reports no_badge_match. A badge-tier verifier could instead treat the missing record as unable to verify and apply its 9.1 failure policy. Neither reading accepts."
+    },
+    {
+      "id": "A77-06",
+      "status": "candidate_against_proposed",
+      "reading": "alternative",
+      "tests": "The sequence #77 comment 6178618043 proposes instead. The AHP revokes v1.0.0 with reason SUPERSEDED at T0+600, then removes DNS records. At T0+900 the badge is still present and the badge tier reads REVOKED from the TL and rejects. The caller still holds the status token minted at T0, which says ACTIVE until T0+3600, so the SCITT tier accepts. The tiers disagree inside the 11.1 revocation-latency bound.",
+      "sources": [
+        "i77c1",
+        "ans1:revocation-reasons",
+        "ans6:6.3",
+        "ans6:11.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "REVOKED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000900,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "status_terminal"
+        },
+        "scitt_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "tiers_agree": false
+      }
+    },
+    {
+      "id": "A77-07",
+      "status": "candidate_against_proposed",
+      "reading": "alternative",
+      "tests": "Same as A77-06 at T0+4201, one second past token exp plus the 10 minute skew allowance, with no 9.4 grace. A fresh token request for a revoked registration returns 410, so the caller can only present the old token. Both tiers reject.",
+      "sources": [
+        "ans6:4.4",
+        "ans6:9.4",
+        "ans6:11.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "REVOKED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800004201,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "status_terminal"
+        },
+        "scitt_tier": {
+          "decision": "reject",
+          "reason": "token_expired"
+        },
+        "tiers_agree": true
+      }
+    },
+    {
+      "id": "A77-08",
+      "status": "candidate_against_proposed",
+      "reading": "alternative",
+      "tests": "Same instant as A77-07, but the verifier runs the 9.4 grace window at 1x TTL. The SCITT tier still accepts, so the disagreement lasts longer.",
+      "sources": [
+        "ans6:9.4",
+        "ans6:11.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "REVOKED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800004201,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 3600,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "status_terminal"
+        },
+        "scitt_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "tiers_agree": false
+      }
+    },
+    {
+      "id": "A77-09",
+      "status": "candidate_against_proposed",
+      "reading": "alternative",
+      "tests": "With the 9.4 grace at 1x TTL, one second past the old token's exp plus the 10 minute skew plus 1 hour of grace. For a one hour token that is 2 hours 10 minutes after its iat, the 11.1 example at the defaults. Both tiers reject.",
+      "sources": [
+        "ans6:9.4",
+        "ans6:11.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "REVOKED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800007801,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 3600,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "status_terminal"
+        },
+        "scitt_tier": {
+          "decision": "reject",
+          "reason": "token_expired"
+        },
+        "tiers_agree": true
+      }
+    },
+    {
+      "id": "A77-11",
+      "status": "candidate_against_proposed",
+      "reading": "proposed",
+      "tests": "Under the proposal the RA has emitted AGENT_DEPRECATED, with certificate arrays, at T0+600. The badge tier reads the new TL status on its next uncached read and accepts with a migration signal. The caller still presents the status token it obtained at T0, which says ACTIVE until T0+3600, so the SCITT tier accepts without the signal. Both tiers admit the caller but report different status until the old token stops being accepted.",
+      "sources": [
+        "i77:proposed",
+        "ans6:4.4",
+        "ans6:6.3",
+        "ans6:11.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "DEPRECATED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "ACTIVE",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000900,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "warn"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "accept_with_warning",
+          "reason": "migration_signal"
+        },
+        "scitt_tier": {
+          "decision": "accept",
+          "reason": "ok"
+        },
+        "tiers_agree": false
+      }
+    },
+    {
+      "id": "A77-10",
+      "status": "candidate_against_proposed",
+      "reading": "proposed, open question",
+      "tests": "The state of A77-03 with a verifier that rejects DEPRECATED as local policy, the option the issue's open question asks about. ANS-6 4.1 and 8.1 today say accept with a migration signal, so this is not conformant to the current text. Both tiers reject.",
+      "sources": [
+        "i77:open-question",
+        "ans6:4.1",
+        "ans6:8.1"
+      ],
+      "caller": {
+        "ans_name": "ans://v1.0.0.agent.example.com",
+        "version": "v1.0.0",
+        "fingerprint": "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      },
+      "dns_badge_versions": [
+        "v1.0.0",
+        "v1.1.0"
+      ],
+      "tl": {
+        "v1.0.0": {
+          "status": "DEPRECATED",
+          "identity_certs": [
+            "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+          ]
+        },
+        "v1.1.0": {
+          "status": "ACTIVE",
+          "identity_certs": [
+            "SHA256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+          ]
+        }
+      },
+      "status_token": {
+        "status": "DEPRECATED",
+        "iat": 1800000000,
+        "exp": 1800003600,
+        "valid_identity_certs": [
+          "SHA256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        ]
+      },
+      "now": 1800000060,
+      "policy": {
+        "skew_s": 600,
+        "grace_s": 0,
+        "deprecated": "reject"
+      },
+      "expected": {
+        "badge_tier": {
+          "decision": "reject",
+          "reason": "deprecated_by_local_policy"
+        },
+        "scitt_tier": {
+          "decision": "reject",
+          "reason": "deprecated_by_local_policy"
+        },
+        "tiers_agree": true
+      }
+    }
+  ]
+}
