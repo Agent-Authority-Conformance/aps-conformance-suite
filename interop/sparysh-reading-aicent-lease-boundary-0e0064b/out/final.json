@@ -1,0 +1,207 @@
+{
+ "cases": [
+  {
+   "blind_id": "B11",
+   "candidate_rule": "R-DECLARED",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-D01",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B15",
+   "candidate_rule": "R-DECLARED",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-D02",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B03",
+   "candidate_rule": "R-DECLARED",
+   "expect": "nonconformant",
+   "final_verdict": "nonconformant",
+   "original_id": "LB-D03",
+   "phase1_verdict": "nonconformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B04",
+   "candidate_rule": "R-DECLARED",
+   "expect": "ambiguous",
+   "final_verdict": "ambiguous",
+   "original_id": "LB-D04",
+   "parts": {
+    "expect_parts": {
+     "answer_within_a_convention": "conformant",
+     "declaration": "ambiguous"
+    },
+    "parts_of_this_run": {
+     "grant_ref member present": "held",
+     "reason": "ambiguous",
+     "reason is null or in the closed set": "held",
+     "reason member present": "held"
+    },
+    "same_part_names": []
+   },
+   "phase1_verdict": "ambiguous",
+   "result": "match"
+  },
+  {
+   "blind_id": "B06",
+   "candidate_rule": "R-DECLARED",
+   "expect": "conformant",
+   "final_verdict": "ambiguous",
+   "original_id": "LB-D05",
+   "parts": {
+    "expect_parts": null,
+    "parts_of_this_run": {
+     "grant_ref member present": "held",
+     "reason": "ambiguous",
+     "reason is null or in the closed set": "held",
+     "reason member present": "held"
+    },
+    "same_part_names": []
+   },
+   "phase1_verdict": "ambiguous",
+   "readings_of_this_run": [
+    {
+     "agrees_with_expect": true,
+     "reading": "6.1 declared convention governs: expired",
+     "verdict": "conformant"
+    },
+    {
+     "agrees_with_expect": false,
+     "reading": "7.2 step (2) acceptance at equality governs: fresh",
+     "verdict": "nonconformant"
+    }
+   ],
+   "result": "diverge"
+  },
+  {
+   "blind_id": "B01",
+   "candidate_rule": "R-NOEXTEND",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-E01",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B09",
+   "candidate_rule": "R-NOEXTEND",
+   "expect": "nonconformant",
+   "final_verdict": "nonconformant",
+   "original_id": "LB-E02",
+   "phase1_verdict": "nonconformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B10",
+   "candidate_rule": "R-NOEXTEND",
+   "expect": "nonconformant",
+   "final_verdict": "nonconformant",
+   "original_id": "LB-E03",
+   "phase1_verdict": "nonconformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B08",
+   "candidate_rule": "R-MODE",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-M01",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B02",
+   "candidate_rule": "R-MODE",
+   "expect": "nonconformant",
+   "final_verdict": "nonconformant",
+   "original_id": "LB-M02",
+   "phase1_verdict": "nonconformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B13",
+   "candidate_rule": "R-MODE",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-M03",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B12",
+   "candidate_rule": "R-MODE",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-M04",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B07",
+   "candidate_rule": "R-MODE",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-M05",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B14",
+   "candidate_rule": "R-WINDOW",
+   "expect": "conformant",
+   "final_verdict": "conformant",
+   "original_id": "LB-W01",
+   "phase1_verdict": "conformant",
+   "result": "match"
+  },
+  {
+   "blind_id": "B05",
+   "candidate_rule": "R-WINDOW",
+   "expect": "nonconformant",
+   "final_verdict": "nonconformant",
+   "original_id": "LB-W02",
+   "phase1_verdict": "nonconformant",
+   "result": "match"
+  }
+ ],
+ "changes_after_phase1": {},
+ "diverge": 1,
+ "inputs": {
+  "idmap": {
+   "file": "id-map.json",
+   "sha256": "1410ed0293112ef7db1d498428e7fc4405fa5e4912865feccea129d10b5216ac"
+  },
+  "phase1": {
+   "file": "phase1.json",
+   "sha256": "0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f"
+  },
+  "vectors": {
+   "file": "vectors.json",
+   "sha256": "71735739303dcbc248e3939535d754c702d00109cb4c6f1b4a02316ff29d773c"
+  }
+ },
+ "match": 14,
+ "record": "final, after comparison with the candidate's expectations",
+ "tally_expected": {
+  "ambiguous": 1,
+  "conformant": 9,
+  "nonconformant": 5
+ },
+ "tally_final": {
+  "ambiguous": 2,
+  "conformant": 8,
+  "nonconformant": 5
+ },
+ "tally_phase1": {
+  "ambiguous": 2,
+  "conformant": 8,
+  "nonconformant": 5
+ }
+}

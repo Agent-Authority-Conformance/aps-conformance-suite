@@ -1,0 +1,6 @@
+ok  inputs/sealed/vectors.json
+ok  inputs/sealed/CANDIDATE.md
+ok  inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+draft read from: https://www.ietf.org/archive/id/draft-li-rttp-iqa-addressing-02.txt
+blind copy: 15 cases
+done: inputs/SHA256SUMS
