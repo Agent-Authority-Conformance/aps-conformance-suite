@@ -11,4 +11,4 @@
 {"kind":"decision","request":"R6-unmapped-path","caller":"did:example:docs-subagent","presented_leaf_subject":"did:example:docs-subagent","claimed_scope":null,"decision":"deny","reason":"path_unmapped","chain_state":"valid","chain_code":null,"required_scope":null,"expected_decision":"deny","expected_reason":"path_unmapped"}
 {"kind":"effect","request":"R6-unmapped-path","path":"src/app.js","target_before":"v1","target_after":"v1","other_paths_unchanged":true,"executor_calls":0,"expected_target_after":"v1","pass":true}
 {"kind":"note","orchestrator_grant_covers_pipeline":true,"subagent_grant_covers_pipeline":false}
-{"kind":"summary","all_expectations_met":true,"executor_calls_total":1,"written_paths":["docs/README.md"],"clock":"wall","run_at_utc":"2026-11-19T01:22:36.498Z"}
+{"kind":"summary","all_expectations_met":true,"executor_calls_total":1,"written_paths":["docs/README.md"],"clock":"wall","run_at_utc":"2026-11-19T01:43:28.948Z"}

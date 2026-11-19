@@ -134,7 +134,7 @@ for (const req of requests) {
   const decision = enforce(subagent.did, req.presented, req)
   const after = snapshot()
   // The effect record is read from the resource and the executor, not from the decision.
-  const otherPathsUnchanged = [...before.keys()].filter((k) => k !== req.path).every((k) => before.get(k) === after.get(k))
+  const otherPathsUnchanged = [...new Set([...before.keys(), ...after.keys()])].filter((k) => k !== req.path).every((k) => before.has(k) === after.has(k) && before.get(k) === after.get(k))
   const effect = {
     target_before: before.get(req.path),
     target_after: after.get(req.path),

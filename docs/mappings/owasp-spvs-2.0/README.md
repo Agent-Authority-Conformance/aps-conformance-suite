@@ -20,7 +20,7 @@ v2.0-V3.10.2 (Sub-Agent Permission Bounding, L3) asks that sub-agents are techni
 | R5 | Present a root the sub-agent issued to itself | deny, `chain_invalid` with `ROOT_UNTRUSTED` | stays v1 |
 | R6 | Write `src/app.js`, a path the policy does not map | deny, `path_unmapped` | stays v1 |
 
-For every request the test also checks the exact decision reason, the target file's contents and that no other file changed. An allowed request must call the executor once and a refused one must not call it.
+For every request the test also checks the exact decision reason, the target file's contents, and that no other file changed and no new file appeared. An allowed request must call the executor once and a refused one must not call it.
 
 ## Run
 
@@ -33,7 +33,7 @@ Exit 0 means every expectation held. Each request produces a `decision` line and
 
 ## Checks that the example can fail
 
-Each of these single changes to the enforcement point or executor was run on 2026-11-19 (UTC), and each run exits 1. The requests that catch it are listed.
+Each of these single changes to the enforcement point or executor was run on 2026-11-19 (UTC), and each run exits 1. The last one was added after review found that the earlier check missed a new file. The requests that catch it are listed.
 
 | Change | Caught by |
 |---|---|
@@ -47,6 +47,7 @@ Each of these single changes to the enforcement point or executor was run on 202
 | Executor writes a different file | R1, R6 |
 | Write before checking scope | R1 onward |
 | Allow paths the policy does not map | R6 |
+| Executor also creates a file it was not asked to write | R1 |
 
 ## Limits
 
