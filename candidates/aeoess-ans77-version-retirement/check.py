@@ -21,9 +21,15 @@ def badge_tier(case, m):
     """ANS-6 6.2 and 8.1, read at ans-spec 9284c7e. The badge is computed by the TL from the
     registration's latest event, so status and identity certs come from that event."""
     caller = case["caller"]
-    if caller["version"] not in case["dns_badge_versions"] and not m.get("badge_ignores_missing_record"):
-        return {"decision": "reject", "reason": "no_badge_match"}
     entry = case["tl"][caller["version"]]
+    if caller["version"] not in case["dns_badge_versions"]:
+        if case.get("badge_rule") == "missing_record_not_retirement" and not m.get("missing_record_is_retirement"):
+            # #77 comment 7010705683: a missing record MUST NOT be read as retirement while the
+            # TL status is non-terminal, so the badge tier decides from the TL entry.
+            if entry["status"] in TERMINAL:
+                return {"decision": "reject", "reason": "status_terminal"}
+        elif not m.get("badge_ignores_missing_record"):
+            return {"decision": "reject", "reason": "no_badge_match"}
     if not m.get("skip_fingerprint") and caller["fingerprint"] not in entry["identity_certs"]:
         return {"decision": "reject", "reason": "fingerprint_not_listed"}
     return status_rule(entry["status"], case["policy"], m)
@@ -82,6 +88,7 @@ MUTANTS = {
     "SCITT tier applies no skew or grace allowance": {"no_skew_or_grace": True},
     "DEPRECATED treated as ACTIVE, no migration signal": {"deprecated_as_active": True},
     "identity certificate fingerprint not checked": {"skip_fingerprint": True},
+    "badge tier reads a missing record as retirement under the comment 7010705683 rule": {"missing_record_is_retirement": True},
 }
 
 
