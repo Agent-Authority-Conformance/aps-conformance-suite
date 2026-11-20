@@ -1,0 +1,7 @@
+# SHA-256 of every file of this candidate other than CANDIDATE.md, NOTICE and this file, paths relative
+# to this directory. inputs/ and expected.json are written by split.py from the two source files NOTICE names.
+ad7476204bf3e9b467ea87dc2a800b0bac89cc550de1f8918e44fb361aa64437  inputs/cases.json
+f94c181319d48b4019231e6b8eb33ad4962989e6b5ee8040e69b204844d01fef  inputs/keys.json
+8e6c10d0f0fc7a4cf7cea55a70414a9327334c95df68d0e70cd52f4150e65d99  inputs/family_model.json
+5b8563f77fcf56410ab4cf06e47b8667ab0864c88641f170358c41025ad118bc  expected.json
+05ffab257307fb88a90e6b44999f200f838b157fe07f98cf9477f88f1ceb781a  split.py
