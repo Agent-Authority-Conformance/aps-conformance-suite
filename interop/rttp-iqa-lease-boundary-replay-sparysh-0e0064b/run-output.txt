@@ -1,0 +1,139 @@
+VENDOR PIN OK 7/7 (profile.json vendor_pins)
+RECORDED PIN OK 3/3 (profile.json recorded_pins)
+COMMAND phase1   exit=0 stdout=match
+OUTPUT recorded/phase1.json         lf=match canonical=match raw=eol-only-diff (0f73cf7473512183...)
+OUTPUT recorded/phase1-sensitivity.json lf=match canonical=match raw=eol-only-diff (bcbc23295b3a3231...)
+COMMAND compare  exit=0 stdout=match
+OUTPUT recorded/final.json          lf=match canonical=match raw=eol-only-diff (eba83874c48b5be3...)
+{
+ "commands": [
+  {
+   "argv": [
+    "vendor/reader/checker.py",
+    "--draft",
+    "vendor/draft/draft-li-rttp-iqa-addressing-02.txt",
+    "--cases",
+    "vendor/blind/cases.json",
+    "--out",
+    "{out}/phase1.json",
+    "--sensitivity",
+    "{out}/phase1-sensitivity.json"
+   ],
+   "exit_code": 0,
+   "name": "phase1",
+   "produced": [
+    {
+     "byte_match_lf": true,
+     "canonical_match": true,
+     "produced": "recorded/phase1.json",
+     "recorded_from": "{out}/phase1.json",
+     "sha256_produced_lf": "0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f",
+     "sha256_recorded_lf": "0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f"
+    },
+    {
+     "byte_match_lf": true,
+     "canonical_match": true,
+     "produced": "recorded/phase1-sensitivity.json",
+     "recorded_from": "{out}/phase1-sensitivity.json",
+     "sha256_produced_lf": "bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6",
+     "sha256_recorded_lf": "bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6"
+    }
+   ],
+   "stdout_expected": "citations verified: 27\ntally: conformant 8, nonconformant 5, ambiguous 2\nB01 conformant\nB02 nonconformant\nB03 nonconformant\nB04 ambiguous\nB05 nonconformant\nB06 ambiguous\nB07 conformant\nB08 conformant\nB09 nonconformant\nB10 nonconformant\nB11 conformant\nB12 conformant\nB13 conformant\nB14 conformant\nB15 conformant",
+   "stdout_match": true
+  },
+  {
+   "argv": [
+    "vendor/reader/compare.py",
+    "--phase1",
+    "recorded/phase1.json",
+    "--vectors",
+    "vendor/sealed/vectors.json",
+    "--idmap",
+    "vendor/sealed/id-map.json",
+    "--out",
+    "{out}/final.json"
+   ],
+   "exit_code": 0,
+   "name": "compare",
+   "produced": [
+    {
+     "byte_match_lf": true,
+     "canonical_match": true,
+     "produced": "recorded/final.json",
+     "recorded_from": "{out}/final.json",
+     "sha256_produced_lf": "eba83874c48b5be358f7a42ed4d06239d5b8ea965ccdcaa0d2652903855ca77b",
+     "sha256_recorded_lf": "eba83874c48b5be358f7a42ed4d06239d5b8ea965ccdcaa0d2652903855ca77b"
+    }
+   ],
+   "stdout_expected": "LB-D01 B11 conformant    conformant    match\nLB-D02 B15 conformant    conformant    match\nLB-D03 B03 nonconformant nonconformant match\nLB-D04 B04 ambiguous     ambiguous     match\nLB-D05 B06 ambiguous     conformant    diverge\nLB-E01 B01 conformant    conformant    match\nLB-E02 B09 nonconformant nonconformant match\nLB-E03 B10 nonconformant nonconformant match\nLB-M01 B08 conformant    conformant    match\nLB-M02 B02 nonconformant nonconformant match\nLB-M03 B13 conformant    conformant    match\nLB-M04 B12 conformant    conformant    match\nLB-M05 B07 conformant    conformant    match\nLB-W01 B14 conformant    conformant    match\nLB-W02 B05 nonconformant nonconformant match\nmatch 14, diverge 1",
+   "stdout_match": true
+  }
+ ],
+ "corpus": {
+  "candidate": "aicent-lease-boundary",
+  "candidate_revision": 1,
+  "draft": {
+   "name": "draft-li-rttp-iqa-addressing-02",
+   "sections": [
+    "6.1",
+    "6.2",
+    "6.3",
+    "7.2"
+   ],
+   "txt_sha256": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044"
+  },
+  "lab_commit": "0e0064bf2cc6b221bb0b22c893964e389fa7aa3d"
+ },
+ "expected": {
+  "diverge": 1,
+  "match": 14,
+  "tally_final": {
+   "ambiguous": 2,
+   "conformant": 8,
+   "nonconformant": 5
+  }
+ },
+ "mode": "pipeline replay of a merged lab record \u2014 our pipeline executes the record's own checker as code-as-run and compares the outputs against the recorded bytes",
+ "operator": "ShaoBao Li (Lee) / Aicent Stack",
+ "profile_version": 1,
+ "record": {
+  "classification": "the replayed run was blind to the candidate's expected results; its semantic verdicts are labeled author-produced Mode B because Andrii wrote the checker \u2014 a reading record, not a certification, not an independent run",
+  "merged": {
+   "merge_commit_sha": "87256d7911e70c9c676dcab1dd3bef5855ef0866",
+   "merged_at": "2026-11-23T15:42:40Z",
+   "pr": 238
+  },
+  "name": "sparysh-reading-aicent-lease-boundary-0e0064b",
+  "record_dir_upstream": "interop/sparysh-reading-aicent-lease-boundary-0e0064b",
+  "record_operator": "Andrii Sparysh (andreysparish)",
+  "repository": "Agent-Authority-Conformance/aps-conformance-suite"
+ },
+ "recorded_pins": {
+  "recorded/final.json": "eba83874c48b5be358f7a42ed4d06239d5b8ea965ccdcaa0d2652903855ca77b",
+  "recorded/phase1-sensitivity.json": "bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6",
+  "recorded/phase1.json": "0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f"
+ },
+ "runner": "replay-runner",
+ "runner_path": "replay/replay-runner/replay_runner.py",
+ "status": "replay_matched",
+ "summary": {
+  "diverge": 1,
+  "match": 14,
+  "tally_final": {
+   "ambiguous": 2,
+   "conformant": 8,
+   "nonconformant": 5
+  }
+ },
+ "vendor_pins": {
+  "vendor/blind/cases.json": "9f94b748437c0544e5b02bf35fb14f99be80f88774f85e992387b2219a8c0e46",
+  "vendor/draft/draft-li-rttp-iqa-addressing-02.txt": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044",
+  "vendor/reader/checker.py": "f9ae67010db2edac0cdf10ac99f6e184f08ff15389830d78276cd54b08fc3d55",
+  "vendor/reader/compare.py": "40075b71e176a6abf10bca440d3dc81097701a0e3d5ceb170806aae4f8fd7dfa",
+  "vendor/sealed/CANDIDATE.md": "076693695c6142dabe98046ca4c47bb80bee733309726316f5902a793d56ad6f",
+  "vendor/sealed/id-map.json": "1410ed0293112ef7db1d498428e7fc4405fa5e4912865feccea129d10b5216ac",
+  "vendor/sealed/vectors.json": "71735739303dcbc248e3939535d754c702d00109cb4c6f1b4a02316ff29d773c"
+ }
+}
+REPLAY ok: sparysh-reading-aicent-lease-boundary-0e0064b reproduced (pins 7, commands 2, outputs 3)

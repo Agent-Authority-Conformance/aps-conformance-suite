@@ -1,0 +1,2240 @@
+
+
+
+
+Independent Submission                                             S. Li
+Internet-Draft                                   RTTP & IQA Organization
+Intended status: Informational                           1 November 2026
+Expires: 5 May 2027
+
+
+  The rttp and iqa URI Schemes: Derived-Address Intent and Attestation
+                               Addressing
+                    draft-li-rttp-iqa-addressing-02
+
+Abstract
+
+   This document specifies two companion URI schemes built on one shared
+   addressing model, in which the address of a subject is derived by
+   computation from the authority and no lookup service, registry, or
+   name-resolution system is consulted when the URI is used.  The "rttp"
+   scheme names a claim of intent directed at an identified subject; the
+   "iqa" scheme names the attestation standing of an identified subject,
+   as reported by one of three named organs, and carries no proof and no
+   credential.  The two are deliberately paired: intent addressing
+   carries the claim, attestation carries whether the claimant is
+   verified.
+
+   Both schemes parse fail-closed, and the document states the
+   requirements a client MUST satisfy when it handles such URIs, to
+   avoid the failure modes that short, user-embeddable strings invite:
+   using the authority as a navigation target (open redirect), using a
+   registered handler as a general-purpose launcher, and, for "iqa", a
+   parse that looks like a certification.
+
+   The document specifies three components that companion
+   implementations already run: a trust lease, which carries the
+   freshness of every attestation answer in-band and is checked against
+   the verifier's own clock, offline; two fixed-length wire formats, the
+   128-octet pulse header of the "rttp" scheme and the 128-octet
+   attestation envelope of the "iqa" scheme; and a closed refusal
+   vocabulary with grant references for attestation responses.  This
+   revision adds to these the rules for when the facts a verification
+   consumes are evaluated — at the moment of use, not the moment of
+   grant — and how any policy interpreter relates to the answer it
+   consumes.
+
+   This document is not an Internet Standard.  It is an Informational
+   specification of two experimental addressing schemes, published for
+   the public record.
+
+Disclaimer
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 1]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   This document is not on the Internet Standards Track.  It is not a
+   standard, does not propose a standard, and acquires no
+   standardisation status from publication.  The two URI schemes it
+   defines are experimental addressing schemes.  As IANA URI schemes,
+   "rttp" holds CRI scheme number 27 and "iqa" holds CRI scheme number
+   28.  The registration status of both schemes is recorded in
+   Section 11.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 5 May 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   2.  Conventions and Terminology . . . . . . . . . . . . . . . . .   5
+   3.  The Shared Addressing Model . . . . . . . . . . . . . . . . .   7
+   4.  The rttp URI Scheme . . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  Syntax  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     4.2.  Reserved Characters and Exclusions  . . . . . . . . . . .   8
+     4.3.  Default Operation . . . . . . . . . . . . . . . . . . . .   8
+     4.4.  The Address: ROUTE_SHARD Derivation . . . . . . . . . . .   9
+     4.5.  Client Requirements . . . . . . . . . . . . . . . . . . .   9
+       4.5.1.  No Navigation to the URI  . . . . . . . . . . . . . .  10
+
+
+
+Li                         Expires 5 May 2027                   [Page 2]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+       4.5.2.  Scheme Prefix Check . . . . . . . . . . . . . . . . .  10
+       4.5.3.  Consent, Never Silence  . . . . . . . . . . . . . . .  10
+       4.5.4.  No Lookup . . . . . . . . . . . . . . . . . . . . . .  10
+   5.  The iqa URI Scheme  . . . . . . . . . . . . . . . . . . . . .  10
+     5.1.  Syntax  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     5.2.  Reserved Characters and Exclusions  . . . . . . . . . . .  11
+     5.3.  Default Operation . . . . . . . . . . . . . . . . . . . .  12
+     5.4.  Action Safety Classes . . . . . . . . . . . . . . . . . .  12
+     5.5.  Client Requirements . . . . . . . . . . . . . . . . . . .  13
+       5.5.1.  Parsing Is Not Attestation  . . . . . . . . . . . . .  13
+   6.  Trust Lease and Freshness . . . . . . . . . . . . . . . . . .  13
+     6.1.  The Lease . . . . . . . . . . . . . . . . . . . . . . . .  14
+     6.2.  Answer Modes  . . . . . . . . . . . . . . . . . . . . . .  14
+     6.3.  Evaluation at the Moment of Use . . . . . . . . . . . . .  15
+     6.4.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .  16
+   7.  Wire Formats  . . . . . . . . . . . . . . . . . . . . . . . .  16
+     7.1.  The Pulse Header (rttp) . . . . . . . . . . . . . . . . .  16
+       7.1.1.  The Extension Block . . . . . . . . . . . . . . . . .  17
+       7.1.2.  Time Fields of the Pulse  . . . . . . . . . . . . . .  18
+     7.2.  The Attestation Envelope (iqa)  . . . . . . . . . . . . .  19
+       7.2.1.  Test Vector AE128-VECTOR-1  . . . . . . . . . . . . .  20
+   8.  Attestation Response Semantics  . . . . . . . . . . . . . . .  21
+     8.1.  Refusal Reasons . . . . . . . . . . . . . . . . . . . . .  21
+     8.2.  Grant Reference . . . . . . . . . . . . . . . . . . . . .  22
+     8.3.  Provenance of the Vocabulary  . . . . . . . . . . . . . .  23
+     8.4.  Interpreters Consume the Answer . . . . . . . . . . . . .  23
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
+     9.1.  The rttp scheme . . . . . . . . . . . . . . . . . . . . .  25
+     9.2.  The iqa scheme  . . . . . . . . . . . . . . . . . . . . .  25
+   10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  27
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
+     11.1.  The "rttp" URI Scheme  . . . . . . . . . . . . . . . . .  28
+     11.2.  The "iqa" URI Scheme . . . . . . . . . . . . . . . . . .  28
+   12. Related Work  . . . . . . . . . . . . . . . . . . . . . . . .  29
+   13. Internationalization Considerations . . . . . . . . . . . . .  31
+   14. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  31
+   15. Normative References  . . . . . . . . . . . . . . . . . . . .  32
+   16. Informative References  . . . . . . . . . . . . . . . . . . .  33
+   Appendix A.  Comparison with Alternative Agent-to-Agent Stacks  .  35
+     A.1.  Delegation and Attenuation  . . . . . . . . . . . . . . .  37
+   Appendix B.  Changes from draft-li-rttp-iqa-addressing-01 . . . .  39
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  40
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 3]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+1.  Introduction
+
+   Most URI schemes name a location: the authority identifies a host to
+   be contacted.  This document specifies two schemes that name
+   something else.  The "rttp" scheme names a claim of intent directed
+   at an identified subject.  The "iqa" scheme names the attestation
+   standing of an identified subject, as reported by a named organ.  In
+   both cases, what a client does with what the URI names is defined by
+   the scheme; where the subject might be reached is not part of the URI
+   and is not resolved through any lookup service.
+
+   The two schemes share one addressing model and are deliberately
+   paired: intent addressing carries the claim, attestation carries
+   whether the claimant is verified.  Implementations and deployments
+   should treat them as one model rather than as two unrelated
+   namespaces.
+
+   Four properties follow from the shared model and are normative in
+   this document:
+
+   *  the address is *derived by computation* from the authority
+      (Sections 4.4 and 5.1);
+
+   *  there is *no lookup*: no DNS, no registry query, no fetch
+      (Sections 4.5 and 5.5);
+
+   *  the URI is a *claim, not a proof* (Sections 5.2 and 9);
+
+   *  both schemes fail closed: non-conforming input is rejected, never
+      repaired (Sections 4 and 5).
+
+   *Naming note.* IQA denotes *Identity* Quality Assurance.  It is not
+   affiliated with the *Institute* of Quality Assurance (which became
+   the Chartered Quality Institute in 2007), nor is it the computer-
+   vision field of *Image* Quality Assessment.  RTTP denotes *Resonant
+   Time Transfer Protocol*.  It is not RTP: what it names is a claim,
+   not a session or a data stream.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 4]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   Addressing alone leaves two questions unanswered: how fresh is the
+   answer a verifier relies on, and in what bytes do the schemes travel?
+   This document answers both.  Section 6 defines the trust lease, the
+   freshness semantics that the schemes' name promises and that deployed
+   implementations already perform; Section 7 defines the two fixed-
+   length wire formats; Section 8 defines the response vocabulary of an
+   attestation.  All three components are codifications of behaviour
+   that implementations already exhibit; this document defines no new
+   mechanism for its own sake.  This revision adds no mechanism either:
+   it fixes when the facts those components consume are evaluated — at
+   the moment of use, not the moment of grant (Section 6.3) — and how a
+   policy interpreter relates to the answer it consumes (Section 8.4).
+
+2.  Conventions and Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document uses the ABNF notation of [RFC5234] and the URI syntax
+   of [RFC3986].
+
+   Terminology:
+
+   *authority* — The three-segment component of either scheme:
+   <intent>.<pillar>.<root> for "rttp" (Section 4.1) and
+   <subject>.<organ>.<root> for "iqa" (Section 5.1).  It is a name, not
+   a host name, and is never resolved.
+
+   *subject* — The entity a URI names or is directed at.  It is a claim
+   about which identity is of interest, not a proof of that identity.
+
+   *organ* — The segment that identifies the subject or answers for it:
+   in "rttp", a readable token (readable form of intent) or a fixed-
+   width derived value (hash form); in "iqa", one of three defined names
+   (Section 5.1).
+
+   *root* — The root label of the "iqa" authority.  It is a name and is
+   not resolved.
+
+   *claim of intent* — A statement that a subject intends an action.  It
+   is a claim, not evidence, and establishes no identity by itself.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 5]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *standing* — The attestation answer an organ returns for a subject.
+   The values it may take form the closed set fixed in Section 7.2;
+   their semantics are the business of the reference specification
+   [IQA-SPEC].  It carries the attestation algorithm, the standing
+   vocabulary and the conformance material.
+
+   *standing read* — A read of a subject's current attestation answer
+   from the named organ, as in the default operation of Section 5.3.  It
+   is a safe, read-only operation.
+
+   *trust lease* — The freshness window carried in-band by an
+   attestation answer, and the mechanism of Section 6 by which a
+   verifier decides whether an answer may be relied on.
+
+   *pulse header* — The fixed-length wire format that carries the "rttp"
+   scheme (Section 7.1).
+
+   *attestation envelope* — The fixed-length wire format that carries an
+   "iqa" attestation answer (Section 7.2).
+
+   *refusal reason* — The closed vocabulary by which an attestation
+   response states that, and only that, an answer was refused
+   (Section 8.1).
+
+   *grant reference* — The structure by which an attestation response
+   names the authorisation it relied on (Section 8.2).
+
+   *action* — The optional final path segment naming what is claimed to
+   be intended ("rttp") or an operation requested of the organ ("iqa").
+
+   *fail closed* — To reject non-conforming input rather than repair,
+   normalise, or fall back: both schemes fail closed at parse time
+   (Sections 4 and 5), and both wire formats fail closed on length,
+   magic, and version (Section 7).
+
+   *derived address* — The 16-octet value computed from the authority
+   alone (Section 4.4): the first 16 octets of the SHA-256 digest of the
+   canonical authority.  It is deterministic, pure computation, one-way,
+   and action-independent, and it is an entry fingerprint, not a proof
+   of identity.  The same value appears at a fixed offset in both wire
+   formats (Section 7).
+
+   *ROUTE_SHARD* — The 16-byte value derived from the "rttp" authority
+   as specified in Section 4.4.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 6]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *AID* — A self-certifying subject identifier defined outside this
+   document.  Nothing here depends on an AID registry or authority, and
+   no assumption is made about its length or encoding beyond what
+   Sections 4.2, 5.2 and 9 require.
+
+3.  The Shared Addressing Model
+
+   Both schemes defined in this document instantiate one addressing
+   model, whose four properties are stated in Section 1 and made
+   normative per scheme in Sections 4 and 5: the address is derived by
+   computation rather than assigned; every segment of an authority is a
+   name, never a host; a URI is a claim, never a proof; and both schemes
+   fail closed.
+
+   The model is deliberately minimal: no discovery mechanism, no
+   transport, no key directory, no authorisation decision, and no
+   registry of any kind is defined.  What is defined is the grammar, the
+   derivation, and the minimum client behaviour that make the two
+   schemes safe to embed.
+
+4.  The rttp URI Scheme
+
+   The rttp scheme is the where and the when of a claim.  Its authority
+   is the derived address of a subject (Section 4.4), and its action
+   names what is claimed to be intended (Section 4.1).  The when of the
+   claim is not part of the URI: it is stated by the pulse that carries
+   the derived address on the wire (Section 7.1.2).  Where the pulse and
+   an attestation answer agree, action begins (Section 7).
+
+4.1.  Syntax
+
+   The general form of an rttp URI is:
+
+   rttp://<intent>.<pillar>.<root>[/<action>]
+
+   The authority is exactly three dot-separated segments:
+
+   *  intent: 8 lowercase hexadecimal digits (a derived value), or a
+      readable operator-chosen label; both forms are opaque to a client.
+
+   *  pillar: an operator-chosen label.  No enumeration of pillar labels
+      and no registry for them is defined.
+
+   *  root: an operator-chosen label matching 1*( %x61-7A / DIGIT / "-"
+      ).
+
+   The action, when present, is a single path segment: "/" 1*( %x61-7A /
+   DIGIT / "-" ).
+
+
+
+Li                         Expires 5 May 2027                   [Page 7]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   ABNF:
+
+   rttp-URI     = "rttp://" authority [ "/" action ]
+   authority    = intent "." pillar "." root
+   intent       = hash-intent / name-intent
+   hash-intent  = 8 lowhex
+   name-intent  = 1*( %x61-7A / DIGIT / "-" )
+   pillar       = 1*( %x61-7A / DIGIT / "-" )
+   root         = 1*( %x61-7A / DIGIT / "-" )
+   action       = 1*( %x61-7A / DIGIT / "-" )
+   lowhex       = %x30-39 / %x61-66
+
+   The examples below use reserved names per [RFC2606]; operators use
+   labels they control:
+
+   rttp://f3b2a1c4.pillar.example/vessel
+   rttp://organ.pillar.example/verify
+   rttp://f3b2a1c4.pillar.example
+
+4.2.  Reserved Characters and Exclusions
+
+   These exclusions apply to both schemes.  Section 5.2 adds the ones
+   specific to "iqa".
+
+   *  The canonical form is *lowercase US-ASCII*.  Uppercase is *invalid
+      input*, not a formatting difference: a parser MUST NOT normalise
+      it, because two distinct strings would then map onto one address.
+
+   *  ., / and :// are the delimiters defined by these schemes.
+
+   *  Neither scheme defines *userinfo, port, query or fragment*.  A URI
+      carrying any of them is not valid, and a fragment MUST NOT be used
+      to address an action.  Credentials cannot appear in such a URI,
+      and there is no field in which to exfiltrate data.
+
+   *  Percent-encoding follows Section 2.1 of [RFC3986].  No component
+      requires characters outside the unreserved set, so a canonical URI
+      contains no percent-encoded octets; a parser MAY reject such input
+      rather than normalising it.
+
+   *  There is *no "rttps"* scheme and no fallback.  A client that does
+      not implement this scheme fails closed (Section 4.5).
+
+4.3.  Default Operation
+
+   Dereferencing an rttp URI without an action requests the *default
+   operation*: one single round-trip semantic request against the
+   subject named by the authority.
+
+
+
+Li                         Expires 5 May 2027                   [Page 8]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   The default operation is *safe* in the sense of Section 9.2.1 of
+   [RFC9110]: it creates no obligations and mutates no state of the
+   subject.
+
+   When an action is present, the default operation is not implied for
+   it.  An action names _what_ is claimed to be intended; the safety of
+   a given action is not defined by this document, and a client MUST NOT
+   infer safety from this section; see Section 9.
+
+4.4.  The Address: ROUTE_SHARD Derivation
+
+   The routing address of an rttp URI is derived from the authority
+   alone:
+
+   canonical_authority = intent "." pillar "." root
+                         (lowercase, US-ASCII)
+   ROUTE_SHARD         = SHA-256(ASCII(canonical_authority))[0:16]
+
+   The *authority only*: the scheme name, "//" and any action are
+   excluded.
+
+   The derived address has four properties: it is *deterministic* (the
+   same authority always yields the same address); it is *pure
+   computation* (no DNS, no registry, no network access, no lookup
+   service); it is *one-way* (the authority cannot be recovered from the
+   address); and it is *action-independent* (different actions on one
+   authority yield the same address).
+
+   The last property is why an action is not part of the addressing
+   component: *an address is _where_, not _what_ — and not _when_*; the
+   pulse that carries the address states when the claim was made
+   (Section 7.1.2).  Were the action to participate in derivation, two
+   actions on one subject would become two addresses, splitting one
+   subject into several.
+
+   A client MUST NOT perform a lookup in order to use an rttp URI
+   (Section 4.5).
+
+4.5.  Client Requirements
+
+   A client that handles an rttp or iqa URI (including a resolver page,
+   a protocol handler, and a library that renders one) MUST satisfy the
+   requirements below.  They follow from Section 9: either URI may be
+   supplied by an untrusted party, and what it names is a claim rather
+   than a proof.  Section 5.5 adds the one requirement specific to
+   "iqa".
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 9]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+4.5.1.  No Navigation to the URI
+
+   A client MUST NOT use any component of an rttp or iqa URI as a
+   navigation target.  A client that renders a link, redirect, or fetch
+   derived from any such URI is an *open redirect* and is non-
+   conformant; a client MAY navigate only to a destination that is fixed
+   in advance by the client itself.
+
+4.5.2.  Scheme Prefix Check
+
+   A protocol handler MUST reject any input whose scheme is neither rttp
+   nor iqa nor the exact scheme name under which that handler was itself
+   registered; without this check it becomes a general-purpose launcher
+   that any page can use to open an arbitrary URI of any scheme.
+
+4.5.3.  Consent, Never Silence
+
+   The ability to handle rttp or iqa URIs MUST NOT be acquired without
+   an explicit action by the user, and a client MUST NOT simulate, pre-
+   select, or otherwise bypass that consent.  Where the platform exposes
+   the list of registered handlers, that list MUST NOT be exposed to the
+   network.
+
+4.5.4.  No Lookup
+
+   A client MUST NOT perform a lookup in order to use an rttp or iqa
+   URI: no DNS query, no registry query, and no fetch of any resource
+   named or implied by the URI.  Use of either scheme is a local
+   computation (Section 3); there is no resolver to poison and no
+   registration to hijack (Section 9).
+
+5.  The iqa URI Scheme
+
+   The iqa scheme is the whether of a claim: it names a subject and the
+   organ to ask about that subject's standing.  The URI itself carries
+   no verdict and no credential (Section 5.5.1); the verdict arrives as
+   an attestation answer whose freshness is the lease of Section 6.
+
+5.1.  Syntax
+
+   The general form of an iqa URI is:
+
+   iqa://<subject>.<organ>.<root>[/<action>]
+
+   The authority comprises exactly three dot-separated segments, in this
+   order:
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 10]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  subject: 8, 32 or 64 lowercase hexadecimal digits (a derived
+      routing hash), or a readable label; both forms are opaque to a
+      client.
+
+   *  organ: one of the three organ names, forge, tss or gateway.  This
+      is a *closed set*; no other value is valid.
+
+   *  root: the root label of this scheme.  Like every other segment it
+      is a name and is never resolved.
+
+   The action, when present, is a single path segment and is one of the
+   four operation names verify, audit, attest or revoke.  This is also a
+   *closed set*.
+
+   ABNF:
+
+   iqa-URI       = "iqa://" iqa-authority [ "/" iqa-action ]
+   iqa-authority = subject "." organ "." iqa-root
+   subject       = hash-subject / name-subject
+   hash-subject  = 8( iqa-lowhex ) / 32( iqa-lowhex ) / 64( iqa-lowhex )
+   name-subject  = 1*( %x61-7A / DIGIT / "-" )
+   organ         = "forge" / "tss" / "gateway"
+   iqa-root      = 1*( %x61-7A / DIGIT / "-" )
+   iqa-action    = "verify" / "audit" / "attest" / "revoke"
+   iqa-lowhex    = DIGIT / %x61-66
+
+   Examples (the examples use the root label of this specification and
+   placeholder subjects):
+
+   iqa://3f9a1b2c.gateway.iqa (routing hash, standing read)
+   iqa://0000004149434e531c5b21d80403358b.forge.iqa
+   iqa://3f9a1b2c.tss.iqa/audit (explicit fidelity audit)
+   iqa://master-authority.gateway.iqa/verify (readable label form)
+
+5.2.  Reserved Characters and Exclusions
+
+   The exclusions of Section 4.2 apply to iqa URIs as they do to rttp
+   URIs.  Two are specific to this scheme:
+
+   *  There is *no "iqas"* scheme and no protocol fallback.  A client
+      that does not implement this scheme fails closed (Section 5.5).
+
+   *  The hexadecimal subject form is a *routing hint, not evidence*. It
+      carries no verification weight; identity is bound outside the URI
+      and is never established by parsing one (Section 9).
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 11]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+5.3.  Default Operation
+
+   Dereferencing an iqa URI without an action requests the *default
+   operation*: a standing read, returning the subject's current
+   attestation answer as reported by the named organ.
+
+   The default operation is *safe* in the sense of Section 9.2.1 of
+   [RFC9110]: it creates no obligation, transfers no value, and mutates
+   no state.
+
+   The following rule is normative:
+
+   *Dereferencing an iqa URI, by itself, MUST NOT transition any
+   subject's standing state.*
+
+   When an action is present, the default operation is not implied for
+   it.  Which actions are safe is stated in Section 5.4; a client MUST
+   NOT infer safety for an unrecognised verb (Section 9).
+
+5.4.  Action Safety Classes
+
+   The four defined actions, and the omitted-action form, have the
+   following classes:
+
+   audit is not classified safe because the measurement it requests can
+   itself change the outcome it measures.  audit, attest and revoke MUST
+   be requested explicitly and MUST NOT be reachable by dereferencing a
+   URI that omits the action.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 12]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+      +===========+==========================+=====================+
+      | Action    | Semantics                | Class               |
+      +===========+==========================+=====================+
+      | (omitted) | Read the current         | *SAFE*, read-only   |
+      |           | standing.                |                     |
+      +-----------+--------------------------+---------------------+
+      | verify    | Compare a presented seal | *SAFE*, read-only   |
+      |           | against the subject.  No | comparison          |
+      |           | state is written.        |                     |
+      +-----------+--------------------------+---------------------+
+      | audit     | Request a fidelity       | *NOT SAFE*, a       |
+      |           | measurement of the       | failed measurement  |
+      |           | subject's execution.     | may change standing |
+      +-----------+--------------------------+---------------------+
+      | attest    | Request that a seal be   | *NOT SAFE*, state   |
+      |           | issued for the subject.  | transition          |
+      +-----------+--------------------------+---------------------+
+      | revoke    | Withdraw the subject's   | *NOT SAFE*, state   |
+      |           | standing.                | transition          |
+      +-----------+--------------------------+---------------------+
+
+                                 Table 1
+
+5.5.  Client Requirements
+
+   The client requirements of Section 4.5 apply to iqa URIs as they do
+   to rttp URIs: no navigation to the URI, a scheme prefix check, no
+   lookup, and consent that is never silent.  One requirement is
+   specific to this scheme: parsing is not attestation.
+
+5.5.1.  Parsing Is Not Attestation
+
+   A client that displays a parsed or rendered iqa URI MUST NOT present
+   the result as evidence of standing.  Reading the syntax establishes
+   nothing about any subject; standing is established only by the answer
+   of the named organ, under the rules of the reference specification
+   [IQA-SPEC].
+
+6.  Trust Lease and Freshness
+
+   An attestation answer is only useful for as long as it is fresh.
+   This section defines how freshness is carried and checked.  The
+   mechanism described here is the one companion implementations already
+   perform; what this section adds is the name and the rules.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 13]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+6.1.  The Lease
+
+   Every attestation answer produced under the iqa scheme carries its
+   freshness window in-band: the answer states the instant until which
+   it may be relied on, in a field of the answer itself (the
+   lease_expiry field of Section 7.2), not in a cache header, a lookup
+   result, or an out-of-band agreement.
+
+   A verifier checks the stated expiry against its own clock.  The check
+   is local and offline: no network call is involved in deciding whether
+   an answer is fresh.  An answer whose lease has expired MUST be
+   treated as expired; a verifier MUST NOT extend, renew, or reinterpret
+   an expired lease except by obtaining a new answer.
+
+   The window is short by design.  Current deployments use 120 seconds.
+   The number constrains the verifier's honesty, not the speed of any
+   channel: a verifier that accepts a statement older than its lease is
+   asserting more than it knows.  Operators MAY configure other window
+   lengths; the mechanism does not depend on this value.  Whether the
+   lease instant itself counts as fresh or as expired is a deployment
+   convention; implementations SHOULD declare which boundary they use,
+   and conformance material MAY test both.
+
+6.2.  Answer Modes
+
+   A deployment declares one of two modes for standing reads, and each
+   run or deployment SHOULD state which mode it operates in.  The two
+   modes are distinguishable by more than a flag: under the same
+   revocation timeline they yield different answers, because the live
+   read reports the revocation itself while the cached answer can only
+   report that current validity is not established.
+
+   *cached-lease mode* — The verifier relies on a previously obtained
+   answer whose lease (Section 6.1) has not expired, checked locally and
+   offline: establishing that the evidence is fresh requires no network
+   call, and this property is the design point of the mode, not a
+   degradation.  A cached answer is, however, as-of an earlier instant:
+   it does not by itself establish the subject's current validity, and
+   the mode makes no claim that it does.  Whether an action proceeds on
+   lease-fresh evidence is decided by the calling layer's action policy,
+   not by this document: a policy that demands a current observation
+   refuses the call with authority_not_determined (Section 8.1); a
+   policy that accepts lease-fresh evidence may admit it, with any
+   exposure bounded by the lease itself.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 14]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *live-standing-read mode* — The verifier consults the named organ at
+   the time of each request.  If the organ cannot be reached, the read
+   fails closed: an organ that cannot be reached is not read as silent
+   consent.  Every call in this mode is expected to be refused when the
+   organ is unreachable, regardless of the age of any cached answer.
+
+   In both modes the following rules are normative: an answer whose
+   lease has expired MUST be refused; and an organ that cannot be
+   reached MUST NOT be read as affirmative standing (Section 9.2).
+
+   The modes also settle the mid-task case.  A condition that only has
+   to hold when the delegation is made can be checked once; a condition
+   that has to hold at every later use is re-checked at each use, and
+   the lease is what makes the re-check possible without a network call.
+   When a lease expires mid-task — an employee whose authority has
+   ended, a grant whose window has closed — the next verification
+   answers authority_revoked or evidence_expired (Section 8.1); the
+   caller that holds the answer has held its expiry timestamp since that
+   first answer, and can arm its halt at the boundary before the
+   boundary arrives.  The physical act of halting remains enforcement
+   and stays with the calling layer.  The condition may belong to the
+   delegator's policy; the freshness of the facts that policy consumes
+   comes from the wire.
+
+6.3.  Evaluation at the Moment of Use
+
+   An access policy is expressed when the delegation is made; the
+   condition it states is judged when the resource is invoked.  This
+   document fixes only the second moment: the facts a condition consumes
+   — who the subject is, and whether that subject's authority stands
+   verified — MUST be re-derivable at the moment of use, and the lease
+   and its expiry timestamp (Section 6.1) are what carry that re-
+   derivability.  A condition evaluated only at grant time says nothing
+   about the state of the world at invocation.
+
+   The boundary case is stated honestly rather than wished away.  A
+   revocation that arrives just before, or just after, an invocation
+   ends is a boundary no protocol can erase; the wire's job is to make
+   that boundary legible.  An answer read past its expiry MUST be
+   answered as expired (Section 8.1), never replayed as fresh.  Where an
+   answer cannot arrive in time, the deployment's declared mode
+   (Section 6.2) and the residual treatment of Section 6.4 apply: the
+   bytes state how old the claim is, so the caller decides with the age
+   on the table instead of on a silent assumption.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 15]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+6.4.  Out of Scope
+
+   Store-and-forward and archival uses — cases in which a statement is
+   verified long after its lease has expired, with its age stated in the
+   bytes rather than checked against a window — are the lease's residual
+   treatment; they are not defined by this document.  They do not
+   contradict the lease: a statement that makes no freshness claim is
+   never falsified by one.
+
+7.  Wire Formats
+
+   The two schemes are carried by two fixed-length wire formats, one per
+   scheme.  Both are 128 octets long, both encode multi-octet integers
+   as unsigned big-endian (network byte order), and both fail closed: a
+   receiver MUST reject any frame whose length is not exactly 128
+   octets, or whose magic or version it does not know.
+
+   They share one design decision: the derived address of a subject
+   appears at a fixed offset in both formats, and it is the same
+   16-octet value derived in Section 4.4.  One subject has one derived
+   address and two carriers.  This overlap is by design and is not a
+   compatibility claim.
+
+   The two formats also split the WHEN of a claim between them, and the
+   split is the pairing in miniature.  The pulse states when it was
+   emitted: TIMESTAMP is an absolute time in nanoseconds
+   (Section 7.1.2).  The answer states until when it may be relied on:
+   lease_expiry (Section 7.2), checked under the rules of Section 6.1.
+   Neither field authorizes anything by itself.  An action begins where
+   the two agree: the subject named by the pulse and the subject bound
+   by the answer are the same 16-octet derived address, and the moment
+   the pulse claims falls within the answer's lease.  What proceeds from
+   that agreement is the calling layer's decision (Sections 6.2 and 8);
+   the schemes' job is to make the where, the when, and the whether
+   trustworthy and cheap.
+
+7.1.  The Pulse Header (rttp)
+
+   The pulse header is the fixed 128-octet structure that carries an
+   rttp pulse.  Its fields are fixed-offset, so a reader validates a
+   header with fixed comparisons rather than by parsing a variable
+   layout.
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 16]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   Offset  Len  Field         Description
+   0x00     4   RTTP_MAGIC    0x52545450 (ASCII "RTTP")
+   0x04    16   VERSION_ID    Format version; 130 in this revision
+   0x14    16   SEQUENCE_ID   Monotonic per-sender pulse index
+   0x24    16   TIMESTAMP     Absolute emission time in nanoseconds
+   0x34     1   TTL_PULSE     Hop count; a receiver decrements and
+                              drops the pulse at zero
+   0x35     1   PRIORITY      Operator-assigned scheduling weight
+   0x36    16   ROUTE_SHARD   The derived address of the subject
+                              (Section 4.4)
+   0x46    32   AID_ORIGIN    The subject's AID (Section 2)
+   0x66    26   (extension)   The extension block of Section 7.1.1;
+                              all zero when absent
+
+7.1.1.  The Extension Block
+
+   The 26 octets at offsets 0x66-0x7F were reserved and all-zero in
+   versions before the extension.  The extension block occupies them
+   without moving or redefining any earlier field, and VERSION_ID is not
+   incremented: implementations that read only offsets 0x00-0x65
+   continue to validate unchanged, because the bytes they have not read
+   were previously zero and remain ignorable.
+
+   Offset  Len  Field         Description
+   0x66     1   SPEC_REV      0 = pre-extension (block all zero);
+                              1 = this revision
+   0x67     1   FLAGS         bit 0 = URI_ANCHORED; all other bits
+                              MUST be zero
+   0x68     1   ACTION_LEN    Significant ACTION bytes; 0 = action
+                              omitted
+   0x69    16   ACTION        The action token (Section 4.1),
+                              lowercase US-ASCII, right-padded with
+                              0x00
+   0x79     7   RESERVED      MUST be all zero
+
+   *URI_ANCHORED.* Set when the frame's ROUTE_SHARD was derived from a
+   URI authority (Section 4.4) rather than from any local artefact.
+   Implementations that route between nodes MUST require URI_ANCHORED to
+   be set; when it is clear, the ROUTE_SHARD carries no globally
+   routable semantics and MAY be used only for dispatch local to a
+   single sender.
+
+   *The ACTION field.* The action of an rttp URI is an open set
+   (Section 4.1); this document deliberately defines no enumeration of
+   verbs, because enumerating an open set would close it.  Permitted
+   characters are written to the field verbatim as US-ASCII; the
+   significant length is written to ACTION_LEN; remaining bytes MUST be
+   0x00.  A frame with ACTION_LEN greater than 16 MUST be rejected.
+
+
+
+Li                         Expires 5 May 2027                  [Page 17]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   ACTION_LEN = 0 means the action is omitted and the default operation
+   of Section 4.3 applies.  ACTION and URI_ANCHORED are independent: a
+   frame may carry either, both, or neither.
+
+   *Unknown verbs.* Because the action space is open, a receiver will
+   encounter verbs it does not recognise.  On encountering an
+   unrecognised action verb, an implementation MUST NOT infer safety
+   from the default-operation statement of Section 4.3: the verb MUST be
+   treated as having unknown safety and either require explicit
+   authorisation under the local security policy or be rejected
+   (Section 9).
+
+   *Rejection rules (fail closed).* A receiver MUST reject a frame if
+   any of the following holds: the ACTION field contains characters
+   outside the set of Section 4.1, exceeds 16 significant bytes, or
+   carries non-zero padding; SPEC_REV is outside the known set; SPEC_REV
+   is 0 and the extension block is not all zero; or SPEC_REV is 1 and
+   RESERVED is not all zero or unknown FLAGS bits are set.
+
+7.1.2.  Time Fields of the Pulse
+
+   Three fields of the pulse header carry time and order.  Their
+   semantics are deliberately narrow: a pulse is a claim of intent, and
+   the only freshness that can authorize anything rides the answer side
+   (Section 6); the pulse's time fields make the claim's moment
+   checkable, not the subject's validity.
+
+   *TIMESTAMP.* The 16-octet field at offset 0x24 is an unsigned big-
+   endian count of nanoseconds since the Unix epoch
+   (1970-01-01T00:00:00Z), the instant at which the pulse was emitted.
+   A receiver that subtracts TIMESTAMP from its own clock obtains the
+   pulse's age offline, from the bytes alone: a pulse states how old it
+   is, whatever channel carried it.  A receiver MUST NOT treat
+   TIMESTAMP, or the age it yields, as a statement about the subject's
+   standing; the moment a pulse claims becomes decision-relevant only
+   when it is checked against the lease of an answer.  Deployments MAY
+   refuse pulses older than a locally configured bound; the bound is a
+   deployment choice, as the lease window of Section 6.1 is.
+
+   *TTL_PULSE.* The one-octet hop count bounds a pulse's forwarding
+   life.  A sender MUST set TTL_PULSE to at least 1 when the pulse is
+   intended to be forwarded; a receiver MUST NOT forward a pulse
+   received with TTL_PULSE 0, and MUST decrement the field before
+   forwarding.  Verification deployments that consume pulses where they
+   receive them place no trust in this field.
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 18]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *SEQUENCE_ID.* The 16-octet monotonic per-sender pulse index orders a
+   sender's own emissions.  A sender SHOULD assign values that never
+   repeat and never decrease over the life of the AID_ORIGIN; a receiver
+   MAY use the (AID_ORIGIN, SEQUENCE_ID) pair to detect duplicate or
+   reordered delivery among the pulses it has observed.  The field
+   carries no cross-sender meaning and no global ordering.
+
+7.2.  The Attestation Envelope (iqa)
+
+   The attestation envelope is the fixed 128-octet answer frame that
+   carries an iqa attestation answer: the standing verdict, its lease,
+   and its authentication.
+
+   Offset  Len  Field         Description
+     0      4   magic         0x49 0x51 0x41 0x45 (ASCII "IQAE")
+     4      1   version       0x01 (this revision)
+     5      1   algorithm     0x01 = HMAC-SHA256; 0x00 invalid;
+                              other values undefined in version 1
+     6      2   flags         unsigned, big-endian; unassigned;
+                              sent as 0x0000
+     8      8   lease_expiry  unsigned, big-endian; Unix seconds;
+                              the instant until which the answer
+                              counts as fresh (Section 6.1)
+    16     16   intent_shard  ROUTE_SHARD of the subject
+                              (Section 4.4)
+    32     32   attestation   HMAC-SHA256 over the frame (below)
+    64      8   organ         exactly 8 octets of US-ASCII
+    72      8   nonce         unsigned, big-endian; unique per
+                              verdict issued
+    80      1   standing      the verdict state (below)
+    81     15   reserved      MUST be all zeros
+    96     32   extension     MUST be all zeros in version 1
+
+   *The standing byte.* The octet at offset 80 takes one of four values,
+   a closed set fixed in this document: 0x00 (ghost), 0x01 (probation),
+   0x02 (radiant), 0x03 (genesis).  No other value is valid.  A receiver
+   MUST reject a frame whose standing byte is outside this set.  The set
+   is closed in version 1; extending it requires a revision of this
+   document.  The semantics of the states — what each means, and whether
+   and how a subject moves between them — are the business of the
+   reference specification, not of this document; this document fixes
+   only the wire encoding.
+
+   *Canonical rule.* The attestation field covers the entire frame with
+   the attestation field itself zeroed, keyed as specified by HMAC
+   [RFC2104]:
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 19]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   attestation = HMAC-SHA256(key,
+       frame[0:32] || 0x00*32 || frame[64:128])
+
+   Covering the full frame authenticates the organ tag, the nonce, and
+   the standing byte as well: a rewrite of the named answerer, the
+   verdict state, or a replayed frame with a swapped standing does not
+   survive verification.
+
+   *Verification procedure.* A receiver: (1) rejects the frame if its
+   length is not 128, its magic is not "IQAE", its version is not 1, its
+   algorithm is not 0x01, its standing byte is outside the closed set,
+   its reserved or extension fields are not all zero; (2) rejects the
+   frame if lease_expiry is earlier than the current time, checked
+   against the receiver's own clock (Section 6.1); (3) copies the frame,
+   zeroes bytes 32..63, computes HMAC-SHA256 with the organ's key
+   material — carried by the verifier per [IQA-SPEC], with no directory
+   and no network call — and compares in constant time; (4) interprets
+   the standing byte.
+
+   *Security properties.* Replay is mitigated by lease_expiry and by
+   nonce uniqueness per organ; receivers SHOULD reject a repeated
+   (organ, nonce) pair within one lease window.  The algorithm byte
+   exists so that the keyed hash can be replaced without a frame
+   redesign; 0x01 is the only defined value of version 1.  Section 12
+   compares this construction with portable attestation formats built on
+   general parser stacks: the envelope trades expressiveness for fixed-
+   offset determinism, so that a verifier with nothing but SHA-256
+   [FIPS180] and a key can verify with zero dependencies.
+
+7.2.1.  Test Vector AE128-VECTOR-1
+
+   Any implementation MUST reproduce the following frame byte for byte
+   from the parameters alone, and MUST accept the frame after a round
+   trip.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 20]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   authority      = f3b2a1c4.pillar.example   (the example of
+                                               Section 4.1)
+   ROUTE_SHARD    = SHA-256(ASCII(authority))[0:16]
+                  = 557c8154d3780cb78cc5fa1bd72b331c
+   organ key      = 32-byte US-ASCII test key:
+                    "PLSF-TEST-ORG-KEY-00012345678901"
+                    (a label, not a name dependency)
+   version        = 0x01        algorithm = 0x01
+   standing       = 0x02 (radiant)          flags = 0x0000
+   lease_expiry   = 1798761600              (2027-01-01T00:00:00Z)
+   organ          = "ORG-TEST"              nonce = 1
+   reserved/extension/attestation fields = zero before signing
+   magic          = "IQAE"
+
+   Resulting frame (128 octets):
+
+     0  49 51 41 45 01 01 00 00 00 00 00 00 6b 36 ec 80
+    16  55 7c 81 54 d3 78 0c b7 8c c5 fa 1b d7 2b 33 1c
+    32  4b d1 4b 6a e7 b0 09 04 98 62 94 a3 26 a0 f0 25
+    48  58 47 18 4f f2 c9 18 55 39 d4 86 3e fb 84 59 6a
+    64  4f 52 47 2d 54 45 53 54 00 00 00 00 00 00 00 01
+    80  02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    96  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+   112  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+   attestation (bytes 32..63) =
+     4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a
+
+8.  Attestation Response Semantics
+
+   An attestation response — the outcome of the verification of
+   Section 7.2 as consumed by clients of Section 5.5 — carries two
+   fields: a refusal reason and a grant reference.  This section defines
+   both; the vocabulary has been exercised by deployed implementations
+   and public conformance runs (Section 12).
+
+8.1.  Refusal Reasons
+
+   The refusal reason is null when there is no refusal: the response is
+   a permit, and the answer may be relied on under the rules of
+   Section 6.  A null refusal reason is the only representation of
+   "permitted"; there is no affirmative "granted" value.
+
+   For a refusal, the reason is exactly one value from the following
+   closed set, and it is the first value in the list whose condition
+   applies (the priority order is part of this definition):
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 21]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *evidence_binding_mismatch* — The presented evidence is bound to a
+   different grant or subject than the one in the request.
+
+   *evidence_expired* — The lease of the presented evidence has expired
+   (Section 6.1).
+
+   *authority_not_determined* — The authority for the subject could not
+   be determined at answer time — because the organ or the authority
+   source could not be reached, or because the only observation
+   available predates the request and therefore establishes nothing
+   about the present.  An unreachable source is refused under this
+   value, never read as assent.
+
+   *authority_revoked* — The authority for the subject has been revoked.
+
+   *operation_not_permitted* — The requested operation is not permitted
+   for this subject or grant, for reasons other than the four above.
+
+   The set is closed: implementations MUST NOT emit values outside it,
+   and MUST NOT reinterpret an emitted value to mean something else.  A
+   response that reports an outcome without its reason is not
+   conformant: the reason is what makes a refusal auditable.
+
+   The closed set also answers an argument from deployment practice: if
+   a refusal is fatal and unexplained, sharing credentials becomes the
+   rational shortcut for the blocked party.  A legible refusal — a
+   closed set of reasons with an auditable receipt — gives the caller
+   something to read, degrade on, retry, or reroute, and attenuation
+   survives precisely because a refusal can be read, re-derived by a
+   third party, and answered to.
+
+   For the same reason, a refusal reason MUST be computed over the
+   authority facts the response carries — facts a third party can re-
+   derive from pinned inputs.  A refusal computed over labels, opinions,
+   or unrecorded context alone is not auditable, and producing one is
+   not a conformance target of this section.
+
+8.2.  Grant Reference
+
+   Every response — permit or refusal — names the authorisation it
+   relied on.  The grant reference is a structure with the following
+   members:
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 22]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   grant                identifier of the grant as issued
+   evidence_id          identifier of the evidence bound to it
+   issued_at_ms         grant issue instant, Unix milliseconds
+   expires_at_ms        grant expiry instant, Unix milliseconds
+   observation_as_of_ms the as-of instant of the standing
+                        observation the answer relied on, or
+                        null
+
+   The observation member deserves its own rule, because it is where an
+   implementation can quietly inflate an answer: *observation_as_of_ms
+   is null whenever the observation the answer relied on is absent or
+   not fresh*, even if a later, successful observation is available at
+   answer time.  A diagnostic or opportunistic read performed after the
+   relied-on evidence expired does not backfill the member: diagnostic
+   reads do not participate in authorisation and do not renew evidence.
+   The member states the age of what the answer actually relied on, not
+   the freshness of the freshest thing the implementation happened to
+   see.
+
+   The grant reference is also where the race boundary lives.  A
+   revocation arriving just before or just after an invocation ends is a
+   boundary no protocol erases; what the response owes the relying party
+   is a legible record of it: the members above state when the
+   authority-side facts were effective (issued_at_ms, expires_at_ms) and
+   when they were observed (observation_as_of_ms).  Together with the
+   evaluation rules of Section 6.3, this lets the caller decide with the
+   age of its inputs on the table — an expired read is answered as
+   expired, never replayed as fresh.
+
+8.3.  Provenance of the Vocabulary
+
+   The closed set and the priority order of Section 8.1 are defined by
+   this document.  The vocabulary has been exercised in public
+   conformance runs recorded by the Agent-Authority-Conformance
+   laboratory of the Linux Foundation Decentralized Trust, including
+   runs by implementers other than the author (Section 12); the
+   laboratory records runs and certifies nothing.
+
+8.4.  Interpreters Consume the Answer
+
+   The refusal reason and the standing bytes of this section are what
+   clocks and revocation lists compute: a lease has expired or it has
+   not, the authority was revoked or it was not.  A reader that
+   interprets policy — a rule engine, a human, or a probabilistic
+   program — MAY consume the answer as an input and rank what is
+   permitted within it; it MUST NOT overrule it.  Policy interpretation
+   sorts choices among operations the authority layer has already
+   allowed; it does not get a vote on whether the claimant stands.
+
+
+
+Li                         Expires 5 May 2027                  [Page 23]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   Two properties follow.  First, the audit target is the wire record:
+   the answer is bytes a third party can re-derive from pinned inputs,
+   while a model's reading of a mandate is an opinion about what the
+   mandate meant — no reader can argue a timestamp into the future.
+   Second, the split is what makes the schemes usable where no
+   interpreter exists at all: air-gapped, degraded, and store-and-
+   forward deployments have no model to ask, and fail-closed behaviour
+   there requires the closed wire semantics this section defines.  If
+   interpretation by language models works, it works one layer up —
+   exactly where this document already places policy.
+
+9.  Security Considerations
+
+   The security properties of the two schemes share one foundation, and
+   the following statements apply to both of them.
+
+   *  *No lookup.* Neither scheme resolves through DNS, and neither
+      performs a lookup when a URI is used: there is no resolver to
+      poison, no registration to hijack, and no query metadata to
+      observe on a resolution path.
+
+   *  *No secrets in the URI.* Neither scheme defines userinfo, so
+      credentials cannot be carried in one.  Operators and deployments
+      MUST NOT place secrets in any component: a URI is expected to be
+      logged, quoted, and rendered.
+
+   *  *Unknown actions carry unknown safety.* The safe default
+      operations of Sections 4.3 and 5.3 apply to the omitted-action
+      forms only.  An implementation MUST NOT infer safety for an
+      unrecognised action verb; it MUST treat the verb as having unknown
+      safety and either require explicit authorisation under the local
+      security policy or reject it.
+
+   *  *No confidentiality, authentication, or transport security.*
+      Neither scheme protects a URI in transit, and neither turns a URI
+      into a proof: signing is not encryption, and a URI is not a
+      signature.
+
+   *  *Parsing establishes nothing.* Neither the syntax nor any
+      component of a URI of either scheme is evidence about its subject,
+      and a client MUST NOT present a parsed or rendered URI as if it
+      were evidence (Sections 4.5 and 5.5).
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 24]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  *Fail closed, everywhere.* Both wire formats of Section 7 reject
+      unknown versions, unknown fields, and wrong lengths rather than
+      skipping them; the response semantics of Section 8 report an
+      unreachable source as a refusal rather than as assent; and the
+      lease of Section 6 expires by default.  At no decision point does
+      silence, absence, or an unrecognised input resolve to "yes".
+
+   The scheme-specific considerations follow.
+
+9.1.  The rttp scheme
+
+   *  An rttp URI is a *claim of intent directed at a subject*.  The
+      derived address is an *entry fingerprint, not a proof of
+      identity*.  Identity is carried by the subject's AID, and any
+      attestation of it is carried separately.
+
+   *  *The 128-bit truncation, stated honestly.* The derived address is
+      the first 16 octets of a SHA-256 digest (Section 4.4).  What the
+      construction defends against is substitution of the authority in
+      use — finding a second authority that yields the same address —
+      which costs approximately 2^128 operations.  It does not defend
+      against collision search in the abstract: a birthday collision
+      exists at approximately 2^64, and reaching it additionally
+      requires a second, independent party to adopt the colliding label
+      — two gates, not one.  These bounds are the design's honest
+      account, not a guarantee of collision-freedom.
+
+   *  *Display forms are not identifiers.* The 8-hex-digit display forms
+      of both schemes (the rttp hash-intent and the short iqa subject
+      form) fix a 32-bit space, whose birthday bound — collisions
+      expected after roughly 2^16 adoptions — makes them unfit as sole
+      identifiers.  They are display conveniences over the full hash
+      forms and MUST NOT be used as the sole identifier of a subject
+      (Sections 4.1 and 5.1).
+
+   *  The authority is *pseudonymous, not anonymous*.  It is a stable
+      name and will appear in logs, in caches, and in anything that
+      quotes the URI.  Whether that name is linkable to a subject is a
+      property of the operator's naming choices, not of the scheme.
+
+9.2.  The iqa scheme
+
+   *  An iqa URI is a *claim about the attestation standing of a named
+      subject*.  Neither the syntax nor any component of the URI is
+      evidence of standing.
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 25]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  *Seal forgery.* Standing is carried by a keyed message
+      authentication code over the subject's identity material and its
+      deployment parameters (Section 7.2), not by the URI; no key
+      material is ever present in an iqa URI.
+
+   *  *Subject spoofing.* A seal presented for one subject fails binding
+      when replayed for another, because the binding covers hardware and
+      deployment parameters of the subject; a client MUST NOT treat a
+      syntactically valid subject as a verified one.
+
+   *  *Silence is not assent.* An endpoint that is unreachable, times
+      out, or returns an error MUST NOT be read as affirmative standing:
+      absence of evidence is not evidence of compliance.  The refusal
+      vocabulary of Section 8.1 gives this rule a wire representation:
+      the value authority_not_determined.
+
+   *  *Lease and replay.* The lease of Section 6 bounds how long an
+      answer may be relied on; the nonce of Section 7.2 makes each
+      verdict unique per organ.  A repeated (organ, nonce) pair within
+      one lease window SHOULD be rejected.
+
+   *  *Linkability and disclosure of interest.* An iqa URI names the
+      subject being attested, so citing one discloses which identity is
+      of interest, and querying several organs for the same subject is
+      trivially correlatable.  *This scheme cannot be used for anonymous
+      reference.* Deployments SHOULD prefer the routing-hash form over
+      readable labels, SHOULD NOT encode personal identifiers in the
+      action, and SHOULD treat iqa URIs in logs as an identity
+      assertion.
+
+   *  *Downgrade and scheme confusion.* No "iqas" variant exists and no
+      fallback is defined.  A client that does not implement this scheme
+      MUST fail closed and MUST NOT silently rewrite an iqa URI as some
+      other scheme.
+
+   *  *Detection of observers.* A measurement requested by the audit
+      action compares observed execution timing against an expected
+      path: execution slower than predicted is treated as evidence of an
+      attached observer, and measurable deviation is itself the
+      detector.  This is a property of the answering organ, not of the
+      URI syntax.
+
+   *  *Replay across epochs.* Standing material is rotated on a defined
+      cycle, so a previously valid answer can become invalid without any
+      change to the URI; a client MUST NOT treat a cached answer as
+      current indefinitely.
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 26]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  *Cryptographic suite.* The current construction uses a keyed
+      symmetric hash rather than a public-key signature, and is
+      therefore not directly affected by quantum algorithms that break
+      factoring or discrete logarithms.
+
+10.  Privacy Considerations
+
+   The privacy properties of the two schemes share one foundation: no
+   component is defined for a query string, so neither scheme offers a
+   channel for a page to smuggle unrelated data into a request, and
+   using a URI of either scheme does not by itself cause network traffic
+   to a third party; the authority is a stable pseudonym, expected to be
+   logged, quoted and rendered, and readable labels are a naming choice
+   rather than a scheme property.
+
+   Derivation, not assignment, has a privacy consequence of its own:
+   because addresses are computed from labels an operator already
+   controls and no registry assigns or lists them, the set of
+   participants is not enumerable from the scheme, and there is no
+   registration record to subpoena, scrape, or leak.  And because using
+   a URI involves no query, use leaves no resolution-time trail: nothing
+   observes that a particular authority was derived or cited.
+
+   What remains correlatable is stated plainly.  The authority itself is
+   a stable pseudonym whose linkability is the operator's choice
+   (Section 9.1).  For "iqa", citing a URI discloses which subject is of
+   interest, and the disclosure considerations of Section 9.2 apply.
+   The lease of Section 6 bounds how long a cached attestation answer
+   remains reliable inside a verifier; it does not bound how long a log
+   retains the URI that produced the request, which is the deployer's
+   retention policy.
+
+   A client that renders such a URI SHOULD avoid prefetching, handing
+   the string to third-party services, or otherwise distributing it
+   beyond what the user's action requires.
+
+11.  IANA Considerations
+
+   IANA is requested to register the two URI schemes below, "rttp" and
+   "iqa", in the "Uniform Resource Identifier (URI) Schemes" registry,
+   following the template of Section 7.4 of [RFC7595] and the guidance
+   of [RFC8126].  The templates below are complete.  If this document is
+   approved for publication as an RFC, IANA is requested to point both
+   registry entries at that RFC.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 27]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   This document creates no new IANA registries.  The wire formats of
+   Section 7 are self-describing — each begins with a fixed magic value
+   and an explicit version field — and the refusal vocabulary of
+   Section 8 is a closed set defined entirely within this document.
+
+11.1.  The "rttp" URI Scheme
+
+   Scheme name: rttp
+
+   Status: Provisional
+
+   Applications/protocols that use this scheme name: URIs of this scheme
+   name a claim of intent directed at an identified subject.
+   Applications include intent-addressed requests between autonomous
+   software agents and the client-side handling of such URIs by protocol
+   handlers in browsers and operating systems.  The scheme defines
+   addressing only; it does not define a transport or a discovery
+   mechanism.
+
+   Contact: ShaoBao Li <mailto:lee@rttp.com>
+
+   Change controller: RTTP.COM Organization
+
+   References: This document, and AICENT-002, the reference
+   specification of the scheme [RTTP-SPEC].
+
+   Registered with CRI scheme number 27.
+
+11.2.  The "iqa" URI Scheme
+
+   Scheme name: iqa
+
+   Status: Provisional
+
+   Applications/protocols that use this scheme name: URIs of this scheme
+   name are subject-attestation references: an iqa URI names the
+   attestation standing of a subject as reported by one of three named
+   authority organs, without carrying the underlying cryptographic
+   proof.  It is used by the reference implementations and by tools that
+   cite an attestation in a document, a configuration file or a log.
+   The scheme defines addressing and client behaviour only; it does not
+   define a transport, a discovery mechanism, or the attestation
+   algorithm.
+
+   Contact: ShaoBao Li <mailto:lee@iqa.org>
+
+   Change controller: IQA.ORG Organization
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 28]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   References: This document, and AICENT-009, the reference
+   specification of the scheme [IQA-SPEC].
+
+   Registered with CRI scheme number 28.
+
+12.  Related Work
+
+   This section positions the two schemes against the specifications
+   they are most often compared with.  None of the relationships below
+   is a normative dependency.
+
+   *Intent-Based Networking* [RFC9315] establishes intent as a first-
+   class concept: a declarative statement of what a system should
+   achieve, verified by assurance loops rather than assumed.  The
+   schemes of this document take the next step on the same path: they
+   make an intent addressable and attestable rather than merely stated.
+   The relationship is complementary: IBN defines what an intent is; the
+   schemes define where an intent claim is addressed and whether the
+   claimant stands verified, and they carry no network configuration
+   semantics.
+
+   *Decentralized Identifiers (DIDs)* [W3C-DID] anchor a subject's
+   identity in a resolvable, method-specific identifier, paired with
+   Verifiable Credentials for portable claims.  The schemes of this
+   document answer different questions: an rttp address is not assigned
+   and not resolvable — it is derived from the authority string and
+   consulted through no method, no registry, and no network call — and
+   an iqa answer is bound to a named organ rather than to a credential
+   issuer.  The two compose rather than compete: a deployment MAY anchor
+   operator identity in DIDs while rttp addresses intents and iqa
+   answers standing.
+
+   *Transport and authorization infrastructure.* The schemes define
+   addressing and verification semantics, not transport: the frames of
+   Section 7 may be carried by HTTP [RFC9110], TLS [RFC9846], QUIC
+   [RFC9000], gRPC, or any channel that preserves frame integrity; no
+   transport is required and none is excluded.  Deployment authorization
+   machinery — identity providers, OAuth 2.0 scopes and grants
+   [RFC6749], mTLS client authentication, or capability tokens — belongs
+   to the calling layer (Section 6.2); the frames carry intent claims
+   and verification answers, and no bearer credential.
+
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 29]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *CBOR Web Token (CWT)* [RFC8392] and *Remote Attestation procedures
+   (RATS)* [RFC9334] solve portable attestation and evidence with
+   general parser stacks and rich claim vocabularies.  The attestation
+   envelope of Section 7.2 trades expressiveness for fixed-offset
+   determinism: a verifier with nothing but SHA-256 and a key can verify
+   with zero dependencies.  Where rich claims are needed, those formats
+   remain the right tools.
+
+   *The W3C AI Agent Protocol Community Group* [W3C-AP-CG] has discussed
+   the distinction this document's claims follow: evidence freshness,
+   authority validity, and action-time authorization as three separately
+   scoreable axes.  This document claims the first two (Sections 6 and
+   8) and deliberately does not claim the third: authorization decisions
+   belong to the calling layer, and the schemes' job is to make the
+   verification answers trustworthy and cheap.  For the same reason this
+   document defines no open enumeration of action verbs — the actions of
+   "iqa" are a closed set of organ operations (Section 5.4), and the
+   action of "rttp" is an open token that this document deliberately
+   leaves unpopulated — it defines no vocabulary for policy text:
+   standardizing the constraints someone happened to think of first
+   would close an open set.  Policy vocabularies are deployments' own
+   and belong to the calling layer.  Appendix A complements this section
+   with a per-exchange cost comparison against alternative stacks.
+
+   *Agent Authorization Envelope (AAE)* [AAE] specifies a machine-
+   evaluable authorization container for autonomous agents: what the
+   agent is mandated to do, under what constraints, and for how long.
+   AAE answers what an agent may do; the schemes of this document answer
+   where intent is addressed and whether the claimant is verified.  The
+   two compose naturally — an authorization envelope can name actions on
+   subjects addressed by rttp URIs and cite iqa attestations as evidence
+   — and neither depends on the other.
+
+   *Delegation policy.* Known delegation systems express constraints in
+   the delegation certificate itself — caveats in one family, policy in
+   another — and report a refusal to the invoker.  No deployed system
+   this document is aware of reports to the delegator, and none carries
+   a standard place for the reason a specific policy was violated or
+   excepted.  This document does not fill that slot either, and the
+   omission is deliberate: the delegator's standing instructions and
+   their exceptions are calling-layer artifacts, not authority facts.
+   What the schemes contribute is the receipt side: when an exception is
+   exercised, the grant reference (Section 8.2) records what the answer
+   relied on and when, so the exception is auditable after the fact by
+   whoever is entitled to read it — the delegator learns from the
+   receipt when the delegator chooses to look, not because the verifier
+   pushes.  Naming the delegator-reporting slot as an open problem is,
+   as of this revision, where the problem stands.
+
+
+
+Li                         Expires 5 May 2027                  [Page 30]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *Agent Passport System (APS)* [APS] specifies verifiable authority,
+   lifecycle, enforcement and evidence for AI agents, separating agent
+   identity, represented principal, delegated authority, policy approval
+   and observed results.  The attestation response vocabulary of
+   Section 8 is stated in the form in which it was exercised by the
+   lease-revocation-axes corpus of the Agent-Authority-Conformance
+   laboratory of the Linux Foundation Decentralized Trust, whose initial
+   corpus builds on this family of specifications; independent runs
+   against that corpus, including the author's own, are public.  Run
+   records for the corpus, including independent re-executions, are
+   publicly archived.  The laboratory records runs and does not certify
+   implementations; the citation reflects that posture.
+
+13.  Internationalization Considerations
+
+   The canonical form of a URI in either scheme is lowercase US-ASCII,
+   and no international form is defined: a client MUST NOT map a Unicode
+   label to its ASCII form (for example, by case folding or by applying
+   an IDNA-style transformation) in order to accept it, and MUST NOT
+   render such a URI as an IRI.  This is deliberate: with no host to
+   resolve there is no need for a label-to-ASCII transformation, and
+   permitting one would introduce a second way to write one address.
+
+14.  Acknowledgements
+
+   The author thanks those who commented on earlier revisions of this
+   document for their attention to the client-behaviour requirements,
+   which are the part of this specification most likely to be
+   misimplemented.
+
+   The author further thanks the independent implementers and reviewers
+   who have exercised the schemes and the response vocabulary of
+   Section 8 in public conformance runs; the runs are cited in
+   Section 12, and the reviewers of this revision will be recorded here
+   as their reports arrive.
+
+   The author thanks Alan Karp for three days of head-on public
+   engagement.  He pressed this revision's claims directly and
+   successively, and his questions and corrections shaped it: the
+   credential-sharing argument that the rationale of Section 8.1 now
+   records; the observation that no deployed system carries the
+   delegator's standing policy — the gap that Section 12 names and
+   deliberately leaves open; and the correction that separated the
+   moment a policy is expressed from the moment its condition is judged,
+   which this revision adopts as the evaluation rule of Section 6.3.
+   The revision is stronger for the pressure.
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 31]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   The author thanks Larry Lewis, chair of the W3C Agent Trust Protocol
+   Community Group, for keeping the public examination of these schemes
+   concrete and ordered; for the joint experiment he proposed —
+   observation times fixed in advance and revocation treated as
+   unreachable — which became the lease-revocation-axes family on which
+   the response vocabulary of Section 8 was exercised (Section 12); and
+   for his independent reproduction of the runner, recorded in the
+   laboratory's records beside the author's own runs.
+
+   The author thanks Tymofii Pidlisnyi, maintainer of the Agent-
+   Authority-Conformance laboratory of the Linux Foundation
+   Decentralized Trust, for reviewing the author's runs closely enough
+   to surface two reporting defects, both fixed in the corrected
+   revision; for recording each independent run — the author's and a
+   third party's alike — under its own authorship label; and for holding
+   the frozen corpus on which every run in this family stands
+   (Section 12).
+
+   The author thanks Lars Kersten Kroehl, author of the Agent
+   Authorization Envelope: his observation that a refusal recorded only
+   as permitted or refused makes an undetermined authority look like a
+   decided one is the separation Section 8.1 fixes as a value of its
+   own; his requirement that a recorded decision name the grant as it
+   stood when it was made is the rule Section 8.2 codifies; and his
+   refinement that one window opens per successful read is the sharper
+   form of the fail-closed rules of Section 6.2.
+
+   The author also thanks Tetsuroh Hori, whose clean-room recomputation
+   over the frozen vectors of the family, filed in the laboratory's
+   records without any prior contact with the author, is the strongest
+   kind of external treatment the schemes can receive — and the one
+   publishing the vectors byte-replayably was for.
+
+15.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
+              Hashing for Message Authentication", RFC 2104,
+              DOI 10.17487/RFC2104, February 1997,
+              <https://www.rfc-editor.org/info/rfc2104>.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 32]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/info/rfc3986>.
+
+   [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/info/rfc5234>.
+
+   [RFC7595]  Thaler, D., Hansen, T., and T. Hardie, "Guidelines and
+              Registration Procedures for URI Schemes", BCP 35,
+              RFC 7595, DOI 10.17487/RFC7595, June 2015,
+              <https://www.rfc-editor.org/info/rfc7595>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC9110]  Fielding, R., Nottingham, M., and J. Reschke, "HTTP
+              Semantics", STD 97, RFC 9110, DOI 10.17487/RFC9110, June
+              2022, <https://www.rfc-editor.org/info/rfc9110>.
+
+   [FIPS180]  National Institute of Standards and Technology (NIST),
+              "Secure Hash Standard (SHS)", DOI 10.6028/NIST.FIPS.180-4,
+              August 2015, <https://doi.org/10.6028/NIST.FIPS.180-4>.
+
+16.  Informative References
+
+   [RTTP-SPEC]
+              Li, S., "Resonant Time Transfer Protocol, the rttp URI
+              scheme specification", September 2026,
+              <https://rttp.com/URI/>.
+
+   [IQA-SPEC] Li, S., "Identity Quality Assurance, the iqa URI scheme
+              specification", November 2026, <https://iqa.org/URI/>.
+
+   [DEMOS]    Li, S., "Live demonstrations of the rttp and iqa schemes",
+              2026, <https://iqa.org/demo/>.
+
+   [AAE]      Kroehl, L., "Agent Authorization Envelope (AAE): A
+              Machine-Evaluable Authorization Structure for Autonomous
+              AI Agents", Work in Progress, Internet-Draft, draft-
+              kroehl-agentic-trust-aae-02, September 2026,
+              <https://datatracker.ietf.org/doc/draft-kroehl-agentic-
+              trust-aae/>.
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 33]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   [APS]      Pidlisnyi, T., "Agent Passport System (APS): Verifiable
+              Authority, Lifecycle, Enforcement, and Evidence for AI
+              Agents", Work in Progress, Internet-Draft, draft-
+              pidlisnyi-aps-04, September 2026,
+              <https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/>.
+
+   [RFC9315]  Clemm, A., Ciavaglia, L., Granville, L. Z., and J.
+              Tantsura, "Intent-Based Networking - Concepts and
+              Definitions", RFC 9315, DOI 10.17487/RFC9315, October
+              2022, <https://www.rfc-editor.org/info/rfc9315>.
+
+   [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
+              "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
+              May 2018, <https://www.rfc-editor.org/info/rfc8392>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote Attestation Procedures (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/info/rfc9334>.
+
+   [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <https://www.rfc-editor.org/info/rfc6749>.
+
+   [RFC9846]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 9846, DOI 10.17487/RFC9846, July 2026,
+              <https://www.rfc-editor.org/info/rfc9846>.
+
+   [RFC9000]  Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
+              and Secure Transport", RFC 9000, DOI 10.17487/RFC9000, May
+              2021, <https://www.rfc-editor.org/info/rfc9000>.
+
+   [RFC2606]  Eastlake 3rd, D. and A. Panitz, "Reserved Top Level DNS
+              Names", BCP 32, RFC 2606, DOI 10.17487/RFC2606, June 1999,
+              <https://www.rfc-editor.org/info/rfc2606>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/info/rfc8126>.
+
+   [W3C-AP-CG]
+              World Wide Web Consortium (W3C), "AI Agent Protocol
+              Community Group", 2026,
+              <https://www.w3.org/community/agentprotocol/>.
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 34]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   [W3C-DID]  World Wide Web Consortium (W3C), "Decentralized
+              Identifiers (DIDs) v1.0", W3C Recommendation did-core-
+              20220719, July 2022,
+              <https://www.w3.org/TR/2022/REC-did-core-20220719/>.
+
+Appendix A.  Comparison with Alternative Agent-to-Agent Stacks
+
+   This appendix is informational.  It compares one concrete question-
+   and-answer exchange — "may this subject, identified only by its
+   shard, perform this intent?" — across four agent-to-agent stacks: A2A
+   over HTTPS with OAuth 2.0, A2A with DID/VC identity, A2A with a
+   capability token, and the rttp/iqa pair specified in this document.
+   Each stack is scored across eleven fields that a trust-bearing
+   exchange must address: discovery, identity, intent, authentication,
+   attestation, authorization, delegation, replay, revocation, audit,
+   and routing.
+
+   The counts are per single exchange and assume a cold, honest
+   deployment of each stack.  "Network round-trips" counts messages that
+   leave the verifying party.  "Third parties" counts distinct online
+   services whose response the exchange depends on.  "Real cryptographic
+   steps" counts operations whose inputs and keys are local and whose
+   result is checkable offline afterwards.
+
+   +=============+=============+=========+========+====================+
+   | Stack       | Network     | Third   | Real   | Offline-verifiable |
+   |             | round-trips | parties | crypto | result             |
+   |             |             |         | steps  |                    |
+   +=============+=============+=========+========+====================+
+   | A2A +       | 5           | 8       | 0      | no                 |
+   | HTTPS/      |             |         |        |                    |
+   | OAuth       |             |         |        |                    |
+   +-------------+-------------+---------+--------+--------------------+
+   | A2A + DID/  | 6           | 8       | 0      | no                 |
+   | VC          |             |         |        |                    |
+   +-------------+-------------+---------+--------+--------------------+
+   | A2A +       | 2           | 3       | 0      | no                 |
+   | capability  |             |         |        |                    |
+   | token       |             |         |        |                    |
+   +-------------+-------------+---------+--------+--------------------+
+   | A2A +       | 0           | 0       | 7      | yes                |
+   | rttp/iqa    |             |         |        |                    |
+   | (this       |             |         |        |                    |
+   | document)   |             |         |        |                    |
+   +-------------+-------------+---------+--------+--------------------+
+
+                  Table 2: Totals per stack (one exchange)
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 35]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+     +================+=============+========+============+==========+
+     | Field          | HTTPS/OAuth | DID/VC | Capability | rttp/iqa |
+     +================+=============+========+============+==========+
+     | discovery      | 1 · 3       | 1 · 2  | 1 · 2      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | identity       | 0 · 0       | 1 · 1  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | intent         | 0 · 0       | 0 · 0  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | authentication | 1 · 2       | 1 · 1  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | attestation    | 0 · 0       | 0 · 1  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | authorization  | 0 · 0       | 0 · 0  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | delegation     | 1 · 1       | 0 · 0  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | replay         | 0 · 0       | 1 · 1  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | revocation     | 1 · 1       | 1 · 1  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | audit          | 0 · 0       | 0 · 0  | 0 · 0      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | routing        | 1 · 1       | 1 · 1  | 1 · 1      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+     | totals         | 5 · 8       | 6 · 8  | 2 · 3      | 0 · 0    |
+     +----------------+-------------+--------+------------+----------+
+
+       Table 3: Per-field cost (network round-trips · third parties)
+
+   Three caveats keep the comparison honest.  First, the capability-
+   token stack is also offline at verification time; its weakness is
+   different — a capability confers authority but states nothing about
+   the bearer's standing, and its only revocation is expiry.  Second,
+   DID/VC provides strong identity and portable audit artifacts; its
+   freshness and revocation paths re-introduce network calls to the
+   issuer or a status list.  Third, rttp/iqa intentionally omits
+   discovery and delegation in this revision: routing is derived rather
+   than resolved, and delivery of a frame to its shard remains an
+   operator concern.  The counts describe the verification of one
+   answer, not the provisioning of the system that produced it.
+
+   The structural claim the tables support is narrow: in the rttp/iqa
+   stack the material needed to decide — and, after the fact, to re-
+   verify — a standing verdict is contained entirely in the two frames,
+   so no online party is required at either moment.  Whether that
+   property is worth the corresponding loss of discovery infrastructure
+   is a deployment decision, not a claim of this document.
+
+
+
+Li                         Expires 5 May 2027                  [Page 36]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+A.1.  Delegation and Attenuation
+
+   The single-exchange comparison above deliberately excludes
+   delegation.  This section records a second, harder experiment: Agent
+   A grants Agent B authority to approve invoices up to EUR 10,000;
+   Agent B attenuates that grant to EUR 2,000 and further delegates
+   execution to a Payment Agent.  Each stack is observed on nine
+   delegation-specific fields: the grant, the attenuation, the further
+   delegation, chain verification, subject binding, standing, replay,
+   revocation, and the audit artifact.  The scorecard below records all
+   nine fields, together with one cross-cutting observation — where each
+   stack's delegation root lives.  A live demonstration of this
+   delegation experiment, covering all nine fields, is public at the
+   reference specification's site [DEMOS], among the further live
+   demonstrations hosted there.  The observations are informational and
+   indicate typical deployments, not normative requirements of any
+   stack.
+
+   +============+=============+============+===========+===============+
+   |Field       |HTTPS/OAuth  |DID/VC      |Capability | rttp/iqa      |
+   +============+=============+============+===========+===============+
+   |the grant   |a coarse     |A issues a  |a root     | an intent     |
+   |            |scope string;|Verifiable  |capability | claim on a    |
+   |            |amounts are  |Credential  |minted by  | derived       |
+   |            |not          |to B; the   |the issuer | subject; no   |
+   |            |representable|issuer must |— fully    | amount field  |
+   |            |             |be          |offline    | in the frame  |
+   |            |             |reachable   |           |               |
+   +------------+-------------+------------+-----------+---------------+
+   |the         |only as      |chained     |yes —      | no — the      |
+   |attenuation |custom claims|credential; |first-class| frame carries |
+   |            |at the       |B becomes   |caveat     | no amount     |
+   |            |authorization|issuer of   |           | field         |
+   |            |server       |record      |           |               |
+   +------------+-------------+------------+-----------+---------------+
+   |the further |token        |yes,        |yes —      | not specified |
+   |delegation  |exchange,    |chained     |third-party| in this       |
+   |            |provider-    |credentials |caveats    | revision      |
+   |            |specific     |            |           |               |
+   +------------+-------------+------------+-----------+---------------+
+   |chain       |no —         |signatures  |yes        | yes —         |
+   |verification|introspection|yes;        |           | envelopes     |
+   |            |required     |freshness   |           | verify        |
+   |            |             |needs the   |           | offline       |
+   |            |             |status list |           |               |
+   +------------+-------------+------------+-----------+---------------+
+   |subject     |binds to a   |DID subject |bearer     | the derived   |
+   |binding     |server       |— strong    |possession,| shard inside  |
+
+
+
+Li                         Expires 5 May 2027                  [Page 37]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   |            |identity, not|binding     |not an     | each frame —  |
+   |            |to a derived |            |identity   | self-         |
+   |            |subject      |            |assertion  | certifying on |
+   |            |             |            |           | arrival       |
+   +------------+-------------+------------+-----------+---------------+
+   |standing    |no           |only via a  |no         | yes — organ-  |
+   |            |             |cached      |           | relative      |
+   |            |             |issuer      |           | standing in   |
+   |            |             |credential  |           | the frame     |
+   +------------+-------------+------------+-----------+---------------+
+   |replay      |token        |re-query    |expiry plus| lease expiry  |
+   |            |lifetime; in-|the issuer  |nonce; in- | and a nonce   |
+   |            |window replay|or fetch    |window     | unique per    |
+   |            |is the       |the status  |replay     | verdict       |
+   |            |application's|list        |possible   |               |
+   |            |job          |            |           |               |
+   +------------+-------------+------------+-----------+---------------+
+   |revocation  |at the IdP   |status-list |expiry only| caught at the |
+   |            |(network);   |fetch       |— online   | next verified |
+   |            |the presented|(network)   |revocation | read;         |
+   |            |token only,  |            |would      | exposure      |
+   |            |not the chain|            |undermine  | bounded by    |
+   |            |             |            |the offline| the lease     |
+   |            |             |            |model      |               |
+   +------------+-------------+------------+-----------+---------------+
+   |the audit   |no           |yes         |yes        | yes — whole-  |
+   |artifact    |             |            |           | frame MAC     |
+   +------------+-------------+------------+-----------+---------------+
+   |delegation  |the identity |issuer B    |the issuer | the organ     |
+   |root        |provider     |            |           | (application- |
+   |            |             |            |           | layer         |
+   |            |             |            |           | composition)  |
+   +------------+-------------+------------+-----------+---------------+
+
+        Table 4: Delegation scorecard (EUR 10,000 granted, EUR 2,000
+                             delegated onward)
+
+   Three observations.  First, the capability stack is the only one in
+   which attenuation is a native operation; its corresponding weakness
+   is that the credential carries authority without context — no
+   standing, no identity assertion, and revocation only by expiry.
+   Second, in the rttp and iqa stack the delegation gap is explicit and
+   stated: the AE-128 layout (Section 7.2) allocates no amount field,
+   and delegation is not specified in this revision, so attenuation
+   cannot enter the frame and must be performed at the application
+   layer.  Two compositions have been demonstrated in that role: re-
+   attestation, in which the organ issues a fresh envelope for the
+   delegatee's own subject; and a capability wrapper whose root caveat
+
+
+
+Li                         Expires 5 May 2027                  [Page 38]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   embeds the (subject, intent, organ, standing, time, proof) audit
+   tuple, so that the standing context travels with the attenuated
+   grant.  Both are application-layer work; neither is specified here.
+   Third, the re-attestation chain has an honest shape limitation worth
+   stating plainly: two envelopes anchored at the same organ are two
+   independent attestations, not a linked proof that B's attenuation
+   authorized the Payment Agent's envelope.
+
+   The practical conclusion is narrow and symmetrical: for attenuation,
+   the capability construction is the natural tool; for carrying
+   verifiable standing with the grant, the envelopes specified in this
+   document are.  The two are composable, and the composition does not
+   require changes to either frame format.
+
+Appendix B.  Changes from draft-li-rttp-iqa-addressing-01
+
+   This appendix is informational and is intended to be removed if this
+   document is published as an RFC.
+
+   *  Added Section 6.3, Evaluation at the Moment of Use: the
+      delegation-time and invocation-time moments are separated, and the
+      boundary race around revocation is stated with its receipt-side
+      treatment.
+
+   *  Added to Section 6.2 the mid-task statement: conditions that must
+      hold at every use are re-checked at each use, armed by the lease
+      expiry the verifier already holds.
+
+   *  Added to Section 8.1 the rationale for legible refusal —
+      credential sharing as the failure mode of fatal silence — and the
+      rule that refusal reasons are computed over re-derivable authority
+      facts.
+
+   *  Added to Section 8.2 the statement that the grant reference
+      records when the authority-side facts were effective and when they
+      were observed.
+
+   *  Added Section 8.4, Interpreters Consume the Answer: policy
+      interpreters rank within the answer and do not overrule it; the
+      audit target is the wire record; the closed wire semantics cover
+      deployments without interpreters.
+
+   *  Added to Section 12 the policy-vocabulary open-set note, the
+      delegator-reporting open problem, and a note that corpus run
+      records, including independent re-executions, are publicly
+      archived.
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 39]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  Added to Section 12 the Intent-Based Networking paragraph
+      [RFC9315], positioning the schemes as making intents addressable
+      and attestable rather than merely stated.
+
+   *  Extended the references: added the rttp scheme reference
+      specification [RTTP-SPEC] and [RFC9315], retargeted [IQA-SPEC] at
+      its canonical site, and retitled [DEMOS] to cover both schemes.
+
+   *  Added to the Acknowledgements the public discussion that produced
+      the above.
+
+   *  Added Section 4.5.4, No Lookup: the requirement asserted in
+      Section 4.4 now has its client-requirements home, and
+      Section 5.5's summary lists it.  A sentence in the introduction of
+      Section 4.5, carried over from earlier revisions with its
+      beginning lost, is repaired.
+
+   *  Corrected the standing-state sentence of Section 7.2: whether a
+      subject moves between states is itself deferred to the reference
+      specification, not asserted; the wire encoding is unchanged.
+
+Author's Address
+
+   ShaoBao Li
+   RTTP & IQA Organization
+   Email: lee@iqa.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 40]
