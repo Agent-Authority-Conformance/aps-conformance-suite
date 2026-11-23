@@ -1,0 +1,283 @@
+{
+ "baseline": {
+  "B01": "conformant",
+  "B02": "nonconformant",
+  "B03": "nonconformant",
+  "B04": "ambiguous",
+  "B05": "nonconformant",
+  "B06": "ambiguous",
+  "B07": "conformant",
+  "B08": "conformant",
+  "B09": "nonconformant",
+  "B10": "nonconformant",
+  "B11": "conformant",
+  "B12": "conformant",
+  "B13": "conformant",
+  "B14": "conformant",
+  "B15": "conformant"
+ },
+ "record": "phase 1 sensitivity",
+ "rules_no_case_depends_on": [
+  "R03-strict-compare",
+  "R13-reason-present",
+  "R14-closed-set",
+  "R15-grant-ref-present"
+ ],
+ "variants": [
+  {
+   "changed": {
+    "B01": {
+     "from": "conformant",
+     "to": "nonconformant"
+    },
+    "B04": {
+     "from": "ambiguous",
+     "to": "conformant"
+    },
+    "B06": {
+     "from": "ambiguous",
+     "to": "nonconformant"
+    },
+    "B07": {
+     "from": "conformant",
+     "to": "nonconformant"
+    },
+    "B09": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B10": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B15": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 7,
+   "rule": "R01-expired-refused",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B05": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B14": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 2,
+   "rule": "R02-stated-expiry",
+   "variant": "inverted"
+  },
+  {
+   "changed": {},
+   "n_changed": 0,
+   "rule": "R03-strict-compare",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B10": {
+     "from": "nonconformant",
+     "to": "conformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R04-no-extend",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B04": {
+     "from": "ambiguous",
+     "to": "conformant"
+    },
+    "B06": {
+     "from": "ambiguous",
+     "to": "nonconformant"
+    },
+    "B15": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 3,
+   "rule": "R05-declared-boundary",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B03": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B06": {
+     "from": "ambiguous",
+     "to": "nonconformant"
+    },
+    "B11": {
+     "from": "conformant",
+     "to": "nonconformant"
+    },
+    "B15": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 4,
+   "rule": "R05-declared-boundary",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B06": {
+     "from": "ambiguous",
+     "to": "conformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R06-boundary-vs-7.2",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B06": {
+     "from": "ambiguous",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R06-boundary-vs-7.2",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B04": {
+     "from": "ambiguous",
+     "to": "conformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R07-undeclared-boundary",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B04": {
+     "from": "ambiguous",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R07-undeclared-boundary",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B02": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B08": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 2,
+   "rule": "R08-live-fail-closed",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B13": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R09-cached-policy",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B12": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R09-cached-policy",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B12": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R10-cached-admit-specific",
+   "variant": "inverted"
+  },
+  {
+   "changed": {},
+   "n_changed": 0,
+   "rule": "R11-priority",
+   "variant": "removed"
+  },
+  {
+   "changed": {
+    "B07": {
+     "from": "conformant",
+     "to": "nonconformant"
+    }
+   },
+   "n_changed": 1,
+   "rule": "R11-priority",
+   "variant": "inverted"
+  },
+  {
+   "changed": {
+    "B03": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B05": {
+     "from": "nonconformant",
+     "to": "conformant"
+    },
+    "B06": {
+     "from": "ambiguous",
+     "to": "conformant"
+    }
+   },
+   "n_changed": 3,
+   "rule": "R12-condition-holds",
+   "variant": "removed"
+  },
+  {
+   "changed": {},
+   "n_changed": 0,
+   "rule": "R13-reason-present",
+   "variant": "removed"
+  },
+  {
+   "changed": {},
+   "n_changed": 0,
+   "rule": "R14-closed-set",
+   "variant": "removed"
+  },
+  {
+   "changed": {},
+   "n_changed": 0,
+   "rule": "R15-grant-ref-present",
+   "variant": "removed"
+  }
+ ]
+}

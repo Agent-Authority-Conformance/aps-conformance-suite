@@ -1,0 +1,1489 @@
+{
+ "cases": [
+  {
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": true,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "stated expiry against the clock",
+     "refusal_required": true,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B01",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "stated expiry against the clock",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.2"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "authority_not_determined"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"authority_not_determined\"]",
+       "held": false,
+       "rests_on": [
+        "C62-both",
+        "C62-live-closed",
+        "C62-live-refused",
+        "C81-and",
+        "C81-and-assent",
+        "C92-silence"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "cached answer lease",
+     "refusal_required": true,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B02",
+   "requires": {
+    "answer_mode": "live-standing-read",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode",
+     "C62-live-def"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "cached answer lease",
+      "reason_allowed": [
+       "authority_not_determined"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": false,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "declared fresh_at_instant",
+     "refusal_required": false,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B03",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "declared fresh_at_instant",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "ambiguous_detail": {
+    "ambiguous_part": [
+     "reason"
+    ],
+    "parts_scored": {
+     "grant_ref member present": "held",
+     "reason": "ambiguous",
+     "reason is null or in the closed set": "held",
+     "reason member present": "held"
+    },
+    "readings": [
+     {
+      "reading": "7.2 step (2) as the default: fresh",
+      "verdict": "conformant"
+     },
+     {
+      "reading": "undeclared convention may be expired_at_instant: expired",
+      "verdict": "nonconformant"
+     }
+    ]
+   },
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": true,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "7.2 step (2) as the default: fresh",
+     "refusal_required": false,
+     "verdict": "conformant"
+    },
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": false,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "undeclared convention may be expired_at_instant: expired",
+     "refusal_required": true,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B04",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "7.2 step (2) as the default: fresh",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     },
+     {
+      "lease_expired": true,
+      "reading": "undeclared convention may be expired_at_instant: expired",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "ambiguous"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": false,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "stated expiry against the clock",
+     "refusal_required": false,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B05",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "stated expiry against the clock",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "ambiguous_detail": {
+    "ambiguous_part": [
+     "reason"
+    ],
+    "parts_scored": {
+     "grant_ref member present": "held",
+     "reason": "ambiguous",
+     "reason is null or in the closed set": "held",
+     "reason member present": "held"
+    },
+    "readings": [
+     {
+      "reading": "6.1 declared convention governs: expired",
+      "verdict": "conformant"
+     },
+     {
+      "reading": "7.2 step (2) acceptance at equality governs: fresh",
+      "verdict": "nonconformant"
+     }
+    ]
+   },
+   "basis": [
+    "sect-6.1",
+    "sect-7.2"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": true,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "6.1 declared convention governs: expired",
+     "refusal_required": true,
+     "verdict": "conformant"
+    },
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": false,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "7.2 step (2) acceptance at equality governs: fresh",
+     "refusal_required": false,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B06",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "6.1 declared convention governs: expired",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     },
+     {
+      "lease_expired": false,
+      "reading": "7.2 step (2) acceptance at equality governs: fresh",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "ambiguous"
+  },
+  {
+   "basis": [
+    "sect-6.1",
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": true,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-and",
+        "C81-ee",
+        "C81-first"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "cached answer lease",
+     "refusal_required": true,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B07",
+   "requires": {
+    "answer_mode": "cached-lease",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode",
+     "C62-cached-def"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "cached answer lease",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "authority_not_determined"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"authority_not_determined\"]",
+       "held": true,
+       "rests_on": [
+        "C62-both",
+        "C62-live-closed",
+        "C62-live-refused",
+        "C81-and",
+        "C81-and-assent",
+        "C92-silence"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "cached answer lease",
+     "refusal_required": true,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B08",
+   "requires": {
+    "answer_mode": "live-standing-read",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode",
+     "C62-live-def"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "cached answer lease",
+      "reason_allowed": [
+       "authority_not_determined"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": false,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "stated expiry against the clock",
+     "refusal_required": true,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B09",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "stated expiry against the clock",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": false,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "stated expiry against the clock",
+     "refusal_required": true,
+     "verdict": "nonconformant"
+    }
+   ],
+   "id": "B10",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "stated expiry against the clock",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "nonconformant"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": true,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "declared fresh_at_instant",
+     "refusal_required": false,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B11",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "declared fresh_at_instant",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.2"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "authority_not_determined",
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"authority_not_determined\", null]",
+       "held": true,
+       "rests_on": [
+        "C62-policy"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "cached answer lease",
+     "refusal_required": false,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B12",
+   "requires": {
+    "answer_mode": "cached-lease",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode",
+     "C62-cached-def"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "cached answer lease",
+      "reason_allowed": [
+       "authority_not_determined",
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "authority_not_determined"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"authority_not_determined\"]",
+       "held": true,
+       "rests_on": [
+        "C62-policy"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "cached answer lease",
+     "refusal_required": true,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B13",
+   "requires": {
+    "answer_mode": "cached-lease",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode",
+     "C62-cached-def"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "cached answer lease",
+      "reason_allowed": [
+       "authority_not_determined"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      null
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [null]",
+       "held": true,
+       "rests_on": [
+        "C81-null"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": false,
+     "reading": "stated expiry against the clock",
+     "refusal_required": false,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B14",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": false,
+      "reading": "stated expiry against the clock",
+      "reason_allowed": [
+       null
+      ],
+      "refusal_required": false
+     }
+    ]
+   },
+   "verdict": "conformant"
+  },
+  {
+   "basis": [
+    "sect-6.1"
+   ],
+   "checks": [
+    {
+     "allowed_reason": [
+      "evidence_expired"
+     ],
+     "checks": [
+      {
+       "check": "reason member present",
+       "held": true,
+       "rests_on": [
+        "C81-without-reason"
+       ]
+      },
+      {
+       "check": "reason is null or in the closed set",
+       "held": true,
+       "rests_on": [
+        "C81-closed"
+       ]
+      },
+      {
+       "check": "reason is one of [\"evidence_expired\"]",
+       "held": true,
+       "rests_on": [
+        "C61-expired",
+        "C62-both",
+        "C63-expired",
+        "C81-ee"
+       ]
+      },
+      {
+       "check": "grant_ref member present",
+       "held": true,
+       "rests_on": [
+        "C81-facts",
+        "C2-grant-ref"
+       ]
+      }
+     ],
+     "lease_expired": true,
+     "reading": "declared expired_at_instant",
+     "refusal_required": true,
+     "verdict": "conformant"
+    }
+   ],
+   "id": "B15",
+   "requires": {
+    "answer_mode": "not stated in the input",
+    "members": [
+     "reason (C81-without-reason)",
+     "grant_ref (C81-facts, C2-grant-ref; mapping chosen in this run)"
+    ],
+    "mode_rests_on": [
+     "C62-declare-mode"
+    ],
+    "readings": [
+     {
+      "lease_expired": true,
+      "reading": "declared expired_at_instant",
+      "reason_allowed": [
+       "evidence_expired"
+      ],
+      "refusal_required": true
+     }
+    ]
+   },
+   "verdict": "conformant"
+  }
+ ],
+ "citations": {
+  "C2-grant-ref": {
+   "section": "2",
+   "text": "*grant reference* — The structure by which an attestation response names the authorisation it relied on (Section 8.2)."
+  },
+  "C61-120": {
+   "section": "6.1",
+   "text": "Current deployments use 120 seconds."
+  },
+  "C61-boundary": {
+   "section": "6.1",
+   "text": "Whether the lease instant itself counts as fresh or as expired is a deployment convention; implementations SHOULD declare which boundary they use, and conformance material MAY test both."
+  },
+  "C61-clock": {
+   "section": "6.1",
+   "text": "A verifier checks the stated expiry against its own clock."
+  },
+  "C61-expired": {
+   "section": "6.1",
+   "text": "An answer whose lease has expired MUST be treated as expired; a verifier MUST NOT extend, renew, or reinterpret an expired lease except by obtaining a new answer."
+  },
+  "C61-inband": {
+   "section": "6.1",
+   "text": "Every attestation answer produced under the iqa scheme carries its freshness window in-band: the answer states the instant until which it may be relied on, in a field of the answer itself (the lease_expiry field of Section 7.2), not in a cache header, a lookup result, or an out-of-band agreement."
+  },
+  "C61-other-windows": {
+   "section": "6.1",
+   "text": "Operators MAY configure other window lengths; the mechanism does not depend on this value."
+  },
+  "C62-as-of": {
+   "section": "6.2",
+   "text": "A cached answer is, however, as-of an earlier instant: it does not by itself establish the subject's current validity, and the mode makes no claim that it does."
+  },
+  "C62-both": {
+   "section": "6.2",
+   "text": "In both modes the following rules are normative: an answer whose lease has expired MUST be refused; and an organ that cannot be reached MUST NOT be read as affirmative standing (Section 9.2)."
+  },
+  "C62-cached-def": {
+   "section": "6.2",
+   "text": "The verifier relies on a previously obtained answer whose lease (Section 6.1) has not expired, checked locally and offline: establishing that the evidence is fresh requires no network call, and this property is the design point of the mode, not a degradation."
+  },
+  "C62-declare-mode": {
+   "section": "6.2",
+   "text": "A deployment declares one of two modes for standing reads, and each run or deployment SHOULD state which mode it operates in."
+  },
+  "C62-live-closed": {
+   "section": "6.2",
+   "text": "If the organ cannot be reached, the read fails closed: an organ that cannot be reached is not read as silent consent."
+  },
+  "C62-live-def": {
+   "section": "6.2",
+   "text": "The verifier consults the named organ at the time of each request."
+  },
+  "C62-live-refused": {
+   "section": "6.2",
+   "text": "Every call in this mode is expected to be refused when the organ is unreachable, regardless of the age of any cached answer."
+  },
+  "C62-policy": {
+   "section": "6.2",
+   "text": "Whether an action proceeds on lease-fresh evidence is decided by the calling layer's action policy, not by this document: a policy that demands a current observation refuses the call with authority_not_determined (Section 8.1); a policy that accepts lease-fresh evidence may admit it, with any exposure bounded by the lease itself."
+  },
+  "C63-expired": {
+   "section": "6.3",
+   "text": "An answer read past its expiry MUST be answered as expired (Section 8.1), never replayed as fresh."
+  },
+  "C72-step2": {
+   "section": "7.2",
+   "text": "(2) rejects the frame if lease_expiry is earlier than the current time, checked against the receiver's own clock (Section 6.1);"
+  },
+  "C72-table": {
+   "section": "7.2",
+   "text": "the instant until which the answer counts as fresh (Section 6.1)"
+  },
+  "C81-and": {
+   "section": "8.1",
+   "text": "*authority_not_determined* — The authority for the subject could not be determined at answer time — because the organ or the authority source could not be reached, or because the only observation available predates the request and therefore establishes nothing about the present."
+  },
+  "C81-and-assent": {
+   "section": "8.1",
+   "text": "An unreachable source is refused under this value, never read as assent."
+  },
+  "C81-closed": {
+   "section": "8.1",
+   "text": "The set is closed: implementations MUST NOT emit values outside it, and MUST NOT reinterpret an emitted value to mean something else."
+  },
+  "C81-ee": {
+   "section": "8.1",
+   "text": "*evidence_expired* — The lease of the presented evidence has expired (Section 6.1)."
+  },
+  "C81-facts": {
+   "section": "8.1",
+   "text": "For the same reason, a refusal reason MUST be computed over the authority facts the response carries — facts a third party can re- derive from pinned inputs."
+  },
+  "C81-first": {
+   "section": "8.1",
+   "text": "For a refusal, the reason is exactly one value from the following closed set, and it is the first value in the list whose condition applies (the priority order is part of this definition):"
+  },
+  "C81-null": {
+   "section": "8.1",
+   "text": "The refusal reason is null when there is no refusal: the response is a permit, and the answer may be relied on under the rules of Section 6."
+  },
+  "C81-without-reason": {
+   "section": "8.1",
+   "text": "A response that reports an outcome without its reason is not conformant: the reason is what makes a refusal auditable."
+  },
+  "C92-silence": {
+   "section": "9.2",
+   "text": "An endpoint that is unreachable, times out, or returns an error MUST NOT be read as affirmative standing: absence of evidence is not evidence of compliance."
+  }
+ },
+ "citations_verified": 27,
+ "derived_from_text": {
+  "refusal_set_in_priority_order": [
+   "evidence_binding_mismatch",
+   "evidence_expired",
+   "authority_not_determined",
+   "authority_revoked",
+   "operation_not_permitted"
+  ],
+  "stated_deployment_window_seconds": 120
+ },
+ "input_field_mapping": {
+  "at_boundary": "true: the verifier's clock equals the stated lease instant",
+  "cache_fresh": "true: the lease of the cached answer has not expired (C62-cached-def); false: it has expired (C62-both)",
+  "declared_boundary": "the boundary convention the deployment declares under C61-boundary: 'fresh_at_instant', 'expired_at_instant', or null for not declared",
+  "frame_accepted_at_equality": "true: the envelope verification of 7.2 step (2) accepted the frame at equality (C72-step2)",
+  "grace_added": "true: the verifier extended the lease locally beyond the stated expiry (C61-expired, 'MUST NOT extend')",
+  "issued_at_ms": "the instant the answer was issued; the text has no such field in the envelope and the checker does not use it except in the R02 inverted variant (C61-120, C61-other-windows)",
+  "lease_expiry_ms": "the stated lease_expiry of the answer (C61-inband, C72-table), in milliseconds rather than Unix seconds",
+  "mode": "the declared answer mode of 6.2: 'live' = live-standing-read mode, 'cached' = cached-lease mode (C62-declare-mode)",
+  "now_ms": "the verifier's own clock at answer time (C61-clock, C72-step2), in milliseconds",
+  "organ_unreachable": "true: the named organ cannot be reached at answer time (C62-live-closed, C62-both, C81-and, C92-silence)",
+  "policy": "the calling layer's action policy of C62-policy: 'current' = demands a current observation; 'lease_fresh' = accepts lease-fresh evidence"
+ },
+ "inputs": {
+  "cases": {
+   "file": "cases.json",
+   "sha256": "9f94b748437c0544e5b02bf35fb14f99be80f88774f85e992387b2219a8c0e46"
+  },
+  "draft": {
+   "file": "draft-li-rttp-iqa-addressing-02.txt",
+   "sha256": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044"
+  }
+ },
+ "outcome_field_mapping": {
+  "grant_ref": "taken as the authority facts the response carries (C81-facts); its members are defined in section 8.2, which was not read, so only its presence is scored",
+  "lease_note": "part of the record the outcome presents; not scored as a string; the extension it describes is scored from the input fact grace_added",
+  "reason": "the refusal reason of 8.1; null is a permit (C81-null); an absent key means no reason is reported (C81-without-reason)"
+ },
+ "record": "phase 1, blind",
+ "rules": {
+  "R01-expired-refused": {
+   "rests_on": [
+    "C61-expired",
+    "C62-both",
+    "C63-expired",
+    "C81-ee"
+   ],
+   "rule": "an expired lease requires a refusal with evidence_expired"
+  },
+  "R02-stated-expiry": {
+   "rests_on": [
+    "C61-inband",
+    "C61-clock",
+    "C61-other-windows"
+   ],
+   "rule": "freshness is judged from the stated lease_expiry, not from issuance plus a fixed window"
+  },
+  "R03-strict-compare": {
+   "rests_on": [
+    "C72-step2"
+   ],
+   "rule": "expired iff the stated expiry is earlier than the clock (equality is decided by R05 to R07)"
+  },
+  "R04-no-extend": {
+   "rests_on": [
+    "C61-expired"
+   ],
+   "rule": "a local grace period does not change the lease"
+  },
+  "R05-declared-boundary": {
+   "rests_on": [
+    "C61-boundary"
+   ],
+   "rule": "at the lease instant the declared boundary convention decides fresh or expired"
+  },
+  "R06-boundary-vs-7.2": {
+   "rests_on": [
+    "C61-boundary",
+    "C72-step2",
+    "C72-table"
+   ],
+   "rule": "declared expired_at_instant with the frame accepted at equality admits two readings"
+  },
+  "R07-undeclared-boundary": {
+   "rests_on": [
+    "C61-boundary",
+    "C72-step2"
+   ],
+   "rule": "at the lease instant with no declared convention, fresh and expired are both readings"
+  },
+  "R08-live-fail-closed": {
+   "rests_on": [
+    "C62-live-closed",
+    "C62-live-refused",
+    "C62-both",
+    "C81-and",
+    "C81-and-assent",
+    "C92-silence"
+   ],
+   "rule": "live mode with the organ unreachable requires a refusal with authority_not_determined"
+  },
+  "R09-cached-policy": {
+   "rests_on": [
+    "C62-policy"
+   ],
+   "rule": "cached mode, lease fresh: policy 'current' requires authority_not_determined; policy 'lease_fresh' may admit"
+  },
+  "R10-cached-admit-specific": {
+   "rests_on": [
+    "C62-policy",
+    "C62-cached-def",
+    "C62-both",
+    "C81-and-assent"
+   ],
+   "rule": "in cached mode the may-admit of C62-policy governs over the general unreachable rules"
+  },
+  "R11-priority": {
+   "rests_on": [
+    "C81-first"
+   ],
+   "rule": "of the refusal conditions that apply, the first in the 8.1 list is the reason"
+  },
+  "R12-condition-holds": {
+   "rests_on": [
+    "C81-first",
+    "C81-closed"
+   ],
+   "rule": "a refusal reason may be emitted only where its condition applies"
+  },
+  "R13-reason-present": {
+   "rests_on": [
+    "C81-without-reason"
+   ],
+   "rule": "the response carries the reason member"
+  },
+  "R14-closed-set": {
+   "rests_on": [
+    "C81-closed"
+   ],
+   "rule": "the reason is null or a value of the closed set"
+  },
+  "R15-grant-ref-present": {
+   "rests_on": [
+    "C81-facts",
+    "C2-grant-ref"
+   ],
+   "rule": "the response carries the authority facts it was computed over (grant_ref)"
+  }
+ },
+ "tally": {
+  "ambiguous": 2,
+  "conformant": 8,
+  "nonconformant": 5
+ }
+}

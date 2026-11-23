@@ -255,6 +255,7 @@ own mode, authorship and pins; open it to read them.
 | `interop/rttp-iqa-aae-moltycel-vectors-6bb462f` | [`README.md`](interop/rttp-iqa-aae-moltycel-vectors-6bb462f/README.md) |
 | `interop/rttp-iqa-grant-ref-replay-sparysh-20186f3` | [`README.md`](interop/rttp-iqa-grant-ref-replay-sparysh-20186f3/README.md) |
 | `interop/rttp-iqa-icam-temporal-derivation-3c36e95` | [`README.md`](interop/rttp-iqa-icam-temporal-derivation-3c36e95/README.md) |
+| `interop/rttp-iqa-lease-boundary-replay-sparysh-0e0064b` | [`README.md`](interop/rttp-iqa-lease-boundary-replay-sparysh-0e0064b/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24/README.md) |
 | `interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417/README.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
