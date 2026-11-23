@@ -1,0 +1,1219 @@
+# Run report: aicent-lease-boundary, Mode B
+
+**Who ran it:** Andrii Sparysh (GitHub `andreysparish`), using an AI assistant.
+
+**Date:** 2026-11-18.
+
+**Run mode:** B, alternate recomputation.
+
+**Implementation name, and its repository and version:** the checker in `reader/`, written by the runner for this run; not published in a repository. Identified by the SHA-256 of each source file: `reader/checker.py` `f9ae67010db2edac0cdf10ac99f6e184f08ff15389830d78276cd54b08fc3d55`; `reader/compare.py` `40075b71e176a6abf10bca440d3dc81097701a0e3d5ceb170806aae4f8fd7dfa`.
+
+**Corpus reference:** `aps-conformance-suite` at `0e0064bf2cc6b221bb0b22c893964e389fa7aa3d`, candidate `aicent-lease-boundary`, revision 1.
+
+**Environment:** Python 3.13.18 (CPython), standard library only; Ubuntu 24.04.5 LTS, Linux 6.18.44.
+
+**Author-produced or independent:** author-produced, for every claim; see "Labels per claim". The runner wrote the checker that supplies the recomputation. The runner authored none of the candidate, its vectors, its checker or the draft. Phase 1 was frozen before the expected verdicts were opened.
+
+**Suspected defective vectors:** none. Data observations:
+- LB-D05: the expected `conformant` rests on the reading that frame validity under 7.2 and reliance under 6.1 are different layers; the text read in this run does not state that layering (F01). This is a divergence, not a claim that the vector is wrong.
+- LB-D04: the part `declaration` in `expect_parts` names a fact of the input (`declared_boundary: null`), not a member of the outcome (F02).
+- The `grant_ref` member is the same in all fifteen outcomes except `observation_as_of_ms`, which is 800, 1050, 1250000 or null. In LB-W01 and LB-W02 it is 1250000, later than the input's `issued_at_ms` of 1000000. These values were not scored (section 8.2 was not read).
+- `basis` lists `sect-8.1` for LB-M01, LB-M03 and LB-M05, a section not among the four the candidate's `sources` names.
+
+## Labels per claim
+
+| claim (candidate rule) | cases | mode | label | implementation |
+|---|---|---|---|---|
+| R-DECLARED | LB-D01, LB-D02, LB-D03, LB-D04, LB-D05 | B | author-produced | `reader/checker.py` |
+| R-NOEXTEND | LB-E01, LB-E02, LB-E03 | B | author-produced | `reader/checker.py` |
+| R-MODE | LB-M01, LB-M02, LB-M03, LB-M04, LB-M05 | B | author-produced | `reader/checker.py` |
+| R-WINDOW | LB-W01, LB-W02 | B | author-produced | `reader/checker.py` |
+| LB-D04 `ambiguous`, parts `answer_within_a_convention`, `declaration` | LB-D04 | B | author-produced | `reader/checker.py`, `reader/compare.py` |
+
+The sensitivity table, the ambiguity log and the findings are this run's own analysis, not claims of the candidate.
+
+## Per-vector table
+
+| original id | blind id | this run's verdict | expected verdict | result |
+|---|---|---|---|---|
+| LB-D01 | B11 | conformant | conformant | match |
+| LB-D02 | B15 | conformant | conformant | match |
+| LB-D03 | B03 | nonconformant | nonconformant | match |
+| LB-D04 | B04 | ambiguous | ambiguous | match |
+| LB-D05 | B06 | ambiguous | conformant | diverge |
+| LB-E01 | B01 | conformant | conformant | match |
+| LB-E02 | B09 | nonconformant | nonconformant | match |
+| LB-E03 | B10 | nonconformant | nonconformant | match |
+| LB-M01 | B08 | conformant | conformant | match |
+| LB-M02 | B02 | nonconformant | nonconformant | match |
+| LB-M03 | B13 | conformant | conformant | match |
+| LB-M04 | B12 | conformant | conformant | match |
+| LB-M05 | B07 | conformant | conformant | match |
+| LB-W01 | B14 | conformant | conformant | match |
+| LB-W02 | B05 | nonconformant | nonconformant | match |
+
+LB-D04 parts: expected `answer_within_a_convention: conformant`, `declaration: ambiguous`; this run: `reason: ambiguous`, `reason member present: held`, `reason is null or in the closed set: held`, `grant_ref member present: held`. No part name is shared.
+
+## Commands
+
+The content of `logs/transcript.log`, uncut. Commands listed under events 1, 5, 6 and 10 of `PROVENANCE.md` are not in it.
+
+````
+$ bash aicent-lease-boundary-reading-1-fetch-inputs.sh > logs/fetch.log 2>&1; rc=$?; cat logs/fetch.log; exit $rc
+ok  inputs/sealed/vectors.json
+ok  inputs/sealed/CANDIDATE.md
+ok  inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+draft read from: https://www.ietf.org/archive/id/draft-li-rttp-iqa-addressing-02.txt
+blind copy: 15 cases
+done: inputs/SHA256SUMS
+[exit 0]
+
+$ cat inputs/SHA256SUMS
+a840c8a4f5d370ebe8a19b58ab6db74a4a1e07eeda3995fb9dbc437e246e0447  ./aicent-lease-boundary-reading-1-fetch-inputs.sh
+9f94b748437c0544e5b02bf35fb14f99be80f88774f85e992387b2219a8c0e46  ./blind/cases.json
+02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044  ./draft/draft-li-rttp-iqa-addressing-02.txt
+076693695c6142dabe98046ca4c47bb80bee733309726316f5902a793d56ad6f  ./sealed/CANDIDATE.md
+1410ed0293112ef7db1d498428e7fc4405fa5e4912865feccea129d10b5216ac  ./sealed/id-map.json
+71735739303dcbc248e3939535d754c702d00109cb4c6f1b4a02316ff29d773c  ./sealed/vectors.json
+[exit 0]
+
+$ wc -l inputs/draft/draft-li-rttp-iqa-addressing-02.txt; grep -n "^[0-9]\+\(\.[0-9]\+\)*\.\? " inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+2240 inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+173:1.  Introduction
+242:2.  Conventions and Terminology
+346:3.  The Shared Addressing Model
+361:4.  The rttp URI Scheme
+370:4.1.  Syntax
+416:4.2.  Reserved Characters and Exclusions
+440:4.3.  Default Operation
+462:4.4.  The Address: ROUTE_SHARD Derivation
+491:4.5.  Client Requirements
+509:4.5.1.  No Navigation to the URI
+517:4.5.2.  Scheme Prefix Check
+524:4.5.3.  Consent, Never Silence
+532:4.5.4.  No Lookup
+540:5.  The iqa URI Scheme
+547:5.1.  Syntax
+599:5.2.  Reserved Characters and Exclusions
+621:5.3.  Default Operation
+640:5.4.  Action Safety Classes
+700:5.5.  Client Requirements
+707:5.5.1.  Parsing Is Not Attestation
+715:6.  Trust Lease and Freshness
+733:6.1.  The Lease
+756:6.2.  Answer Modes
+813:6.3.  Evaluation at the Moment of Use
+845:6.4.  Out of Scope
+854:7.  Wire Formats
+881:7.1.  The Pulse Header (rttp)
+915:7.1.1.  The Extension Block
+976:7.1.2.  Time Fields of the Pulse
+1020:7.2.  The Attestation Envelope (iqa)
+1098:7.2.1.  Test Vector AE128-VECTOR-1
+1153:8.  Attestation Response Semantics
+1161:8.1.  Refusal Reasons
+1218:8.2.  Grant Reference
+1266:8.3.  Provenance of the Vocabulary
+1275:8.4.  Interpreters Consume the Answer
+1304:9.  Security Considerations
+1358:9.1.  The rttp scheme
+1389:9.2.  The iqa scheme
+1466:10.  Privacy Considerations
+1497:11.  IANA Considerations
+1522:11.1.  The "rttp" URI Scheme
+1545:11.2.  The "iqa" URI Scheme
+1578:12.  Related Work
+1698:13.  Internationalization Considerations
+1708:14.  Acknowledgements
+1774:15.  Normative References
+1824:16.  Informative References
+[exit 0]
+
+$ sed -n '733,853p' inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+6.1.  The Lease
+
+   Every attestation answer produced under the iqa scheme carries its
+   freshness window in-band: the answer states the instant until which
+   it may be relied on, in a field of the answer itself (the
+   lease_expiry field of Section 7.2), not in a cache header, a lookup
+   result, or an out-of-band agreement.
+
+   A verifier checks the stated expiry against its own clock.  The check
+   is local and offline: no network call is involved in deciding whether
+   an answer is fresh.  An answer whose lease has expired MUST be
+   treated as expired; a verifier MUST NOT extend, renew, or reinterpret
+   an expired lease except by obtaining a new answer.
+
+   The window is short by design.  Current deployments use 120 seconds.
+   The number constrains the verifier's honesty, not the speed of any
+   channel: a verifier that accepts a statement older than its lease is
+   asserting more than it knows.  Operators MAY configure other window
+   lengths; the mechanism does not depend on this value.  Whether the
+   lease instant itself counts as fresh or as expired is a deployment
+   convention; implementations SHOULD declare which boundary they use,
+   and conformance material MAY test both.
+
+6.2.  Answer Modes
+
+   A deployment declares one of two modes for standing reads, and each
+   run or deployment SHOULD state which mode it operates in.  The two
+   modes are distinguishable by more than a flag: under the same
+   revocation timeline they yield different answers, because the live
+   read reports the revocation itself while the cached answer can only
+   report that current validity is not established.
+
+   *cached-lease mode* — The verifier relies on a previously obtained
+   answer whose lease (Section 6.1) has not expired, checked locally and
+   offline: establishing that the evidence is fresh requires no network
+   call, and this property is the design point of the mode, not a
+   degradation.  A cached answer is, however, as-of an earlier instant:
+   it does not by itself establish the subject's current validity, and
+   the mode makes no claim that it does.  Whether an action proceeds on
+   lease-fresh evidence is decided by the calling layer's action policy,
+   not by this document: a policy that demands a current observation
+   refuses the call with authority_not_determined (Section 8.1); a
+   policy that accepts lease-fresh evidence may admit it, with any
+   exposure bounded by the lease itself.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 14]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *live-standing-read mode* — The verifier consults the named organ at
+   the time of each request.  If the organ cannot be reached, the read
+   fails closed: an organ that cannot be reached is not read as silent
+   consent.  Every call in this mode is expected to be refused when the
+   organ is unreachable, regardless of the age of any cached answer.
+
+   In both modes the following rules are normative: an answer whose
+   lease has expired MUST be refused; and an organ that cannot be
+   reached MUST NOT be read as affirmative standing (Section 9.2).
+
+   The modes also settle the mid-task case.  A condition that only has
+   to hold when the delegation is made can be checked once; a condition
+   that has to hold at every later use is re-checked at each use, and
+   the lease is what makes the re-check possible without a network call.
+   When a lease expires mid-task — an employee whose authority has
+   ended, a grant whose window has closed — the next verification
+   answers authority_revoked or evidence_expired (Section 8.1); the
+   caller that holds the answer has held its expiry timestamp since that
+   first answer, and can arm its halt at the boundary before the
+   boundary arrives.  The physical act of halting remains enforcement
+   and stays with the calling layer.  The condition may belong to the
+   delegator's policy; the freshness of the facts that policy consumes
+   comes from the wire.
+
+6.3.  Evaluation at the Moment of Use
+
+   An access policy is expressed when the delegation is made; the
+   condition it states is judged when the resource is invoked.  This
+   document fixes only the second moment: the facts a condition consumes
+   — who the subject is, and whether that subject's authority stands
+   verified — MUST be re-derivable at the moment of use, and the lease
+   and its expiry timestamp (Section 6.1) are what carry that re-
+   derivability.  A condition evaluated only at grant time says nothing
+   about the state of the world at invocation.
+
+   The boundary case is stated honestly rather than wished away.  A
+   revocation that arrives just before, or just after, an invocation
+   ends is a boundary no protocol can erase; the wire's job is to make
+   that boundary legible.  An answer read past its expiry MUST be
+   answered as expired (Section 8.1), never replayed as fresh.  Where an
+   answer cannot arrive in time, the deployment's declared mode
+   (Section 6.2) and the residual treatment of Section 6.4 apply: the
+   bytes state how old the claim is, so the caller decides with the age
+   on the table instead of on a silent assumption.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 15]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+6.4.  Out of Scope
+
+   Store-and-forward and archival uses — cases in which a statement is
+   verified long after its lease has expired, with its age stated in the
+   bytes rather than checked against a window — are the lease's residual
+   treatment; they are not defined by this document.  They do not
+   contradict the lease: a statement that makes no freshness claim is
+   never falsified by one.
+[exit 0]
+
+$ sed -n '1020,1097p' inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+7.2.  The Attestation Envelope (iqa)
+
+   The attestation envelope is the fixed 128-octet answer frame that
+   carries an iqa attestation answer: the standing verdict, its lease,
+   and its authentication.
+
+   Offset  Len  Field         Description
+     0      4   magic         0x49 0x51 0x41 0x45 (ASCII "IQAE")
+     4      1   version       0x01 (this revision)
+     5      1   algorithm     0x01 = HMAC-SHA256; 0x00 invalid;
+                              other values undefined in version 1
+     6      2   flags         unsigned, big-endian; unassigned;
+                              sent as 0x0000
+     8      8   lease_expiry  unsigned, big-endian; Unix seconds;
+                              the instant until which the answer
+                              counts as fresh (Section 6.1)
+    16     16   intent_shard  ROUTE_SHARD of the subject
+                              (Section 4.4)
+    32     32   attestation   HMAC-SHA256 over the frame (below)
+    64      8   organ         exactly 8 octets of US-ASCII
+    72      8   nonce         unsigned, big-endian; unique per
+                              verdict issued
+    80      1   standing      the verdict state (below)
+    81     15   reserved      MUST be all zeros
+    96     32   extension     MUST be all zeros in version 1
+
+   *The standing byte.* The octet at offset 80 takes one of four values,
+   a closed set fixed in this document: 0x00 (ghost), 0x01 (probation),
+   0x02 (radiant), 0x03 (genesis).  No other value is valid.  A receiver
+   MUST reject a frame whose standing byte is outside this set.  The set
+   is closed in version 1; extending it requires a revision of this
+   document.  The semantics of the states — what each means, and whether
+   and how a subject moves between them — are the business of the
+   reference specification, not of this document; this document fixes
+   only the wire encoding.
+
+   *Canonical rule.* The attestation field covers the entire frame with
+   the attestation field itself zeroed, keyed as specified by HMAC
+   [RFC2104]:
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 19]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   attestation = HMAC-SHA256(key,
+       frame[0:32] || 0x00*32 || frame[64:128])
+
+   Covering the full frame authenticates the organ tag, the nonce, and
+   the standing byte as well: a rewrite of the named answerer, the
+   verdict state, or a replayed frame with a swapped standing does not
+   survive verification.
+
+   *Verification procedure.* A receiver: (1) rejects the frame if its
+   length is not 128, its magic is not "IQAE", its version is not 1, its
+   algorithm is not 0x01, its standing byte is outside the closed set,
+   its reserved or extension fields are not all zero; (2) rejects the
+   frame if lease_expiry is earlier than the current time, checked
+   against the receiver's own clock (Section 6.1); (3) copies the frame,
+   zeroes bytes 32..63, computes HMAC-SHA256 with the organ's key
+   material — carried by the verifier per [IQA-SPEC], with no directory
+   and no network call — and compares in constant time; (4) interprets
+   the standing byte.
+
+   *Security properties.* Replay is mitigated by lease_expiry and by
+   nonce uniqueness per organ; receivers SHOULD reject a repeated
+   (organ, nonce) pair within one lease window.  The algorithm byte
+   exists so that the keyed hash can be replaced without a frame
+   redesign; 0x01 is the only defined value of version 1.  Section 12
+   compares this construction with portable attestation formats built on
+   general parser stacks: the envelope trades expressiveness for fixed-
+   offset determinism, so that a verifier with nothing but SHA-256
+   [FIPS180] and a key can verify with zero dependencies.
+[exit 0]
+
+$ cat inputs/blind/cases.json
+{
+ "label": "aicent-lease-boundary",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the refusal reason and the members it carries are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and rules, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 6.1 (The Lease), 6.2 (Answer Modes), 6.3 (Evaluation at the Moment of Use) and the verification procedure of section 7.2 are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "note_on_this_copy": "blind copy made by the fetch script: per case only basis, input and outcome; identifiers replaced; rule, note, expect and expect_parts withheld until phase 1 is saved",
+ "cases": [
+  {
+   "id": "B01",
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B02",
+   "basis": [
+    "sect-6.2"
+   ],
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B03",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B04",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": null,
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B05",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1250000
+    }
+   }
+  },
+  {
+   "id": "B06",
+   "basis": [
+    "sect-6.1",
+    "sect-7.2"
+   ],
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true,
+    "frame_accepted_at_equality": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B07",
+   "basis": [
+    "sect-6.1",
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": false,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B08",
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B09",
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B10",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000,
+    "grace_added": true
+   },
+   "outcome": {
+    "reason": null,
+    "lease_note": "lease treated as extended by a local grace period after issuance",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B11",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B12",
+   "basis": [
+    "sect-6.2"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B13",
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "current"
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B14",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1250000
+    }
+   }
+  },
+  {
+   "id": "B15",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  }
+ ]
+}
+[exit 0]
+
+$ sed -n '1161,1217p' inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+8.1.  Refusal Reasons
+
+   The refusal reason is null when there is no refusal: the response is
+   a permit, and the answer may be relied on under the rules of
+   Section 6.  A null refusal reason is the only representation of
+   "permitted"; there is no affirmative "granted" value.
+
+   For a refusal, the reason is exactly one value from the following
+   closed set, and it is the first value in the list whose condition
+   applies (the priority order is part of this definition):
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 21]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *evidence_binding_mismatch* — The presented evidence is bound to a
+   different grant or subject than the one in the request.
+
+   *evidence_expired* — The lease of the presented evidence has expired
+   (Section 6.1).
+
+   *authority_not_determined* — The authority for the subject could not
+   be determined at answer time — because the organ or the authority
+   source could not be reached, or because the only observation
+   available predates the request and therefore establishes nothing
+   about the present.  An unreachable source is refused under this
+   value, never read as assent.
+
+   *authority_revoked* — The authority for the subject has been revoked.
+
+   *operation_not_permitted* — The requested operation is not permitted
+   for this subject or grant, for reasons other than the four above.
+
+   The set is closed: implementations MUST NOT emit values outside it,
+   and MUST NOT reinterpret an emitted value to mean something else.  A
+   response that reports an outcome without its reason is not
+   conformant: the reason is what makes a refusal auditable.
+
+   The closed set also answers an argument from deployment practice: if
+   a refusal is fatal and unexplained, sharing credentials becomes the
+   rational shortcut for the blocked party.  A legible refusal — a
+   closed set of reasons with an auditable receipt — gives the caller
+   something to read, degrade on, retry, or reroute, and attenuation
+   survives precisely because a refusal can be read, re-derived by a
+   third party, and answered to.
+
+   For the same reason, a refusal reason MUST be computed over the
+   authority facts the response carries — facts a third party can re-
+   derive from pinned inputs.  A refusal computed over labels, opinions,
+   or unrecorded context alone is not auditable, and producing one is
+   not a conformance target of this section.
+[exit 0]
+
+$ sed -n '242,345p' inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+2.  Conventions and Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document uses the ABNF notation of [RFC5234] and the URI syntax
+   of [RFC3986].
+
+   Terminology:
+
+   *authority* — The three-segment component of either scheme:
+   <intent>.<pillar>.<root> for "rttp" (Section 4.1) and
+   <subject>.<organ>.<root> for "iqa" (Section 5.1).  It is a name, not
+   a host name, and is never resolved.
+
+   *subject* — The entity a URI names or is directed at.  It is a claim
+   about which identity is of interest, not a proof of that identity.
+
+   *organ* — The segment that identifies the subject or answers for it:
+   in "rttp", a readable token (readable form of intent) or a fixed-
+   width derived value (hash form); in "iqa", one of three defined names
+   (Section 5.1).
+
+   *root* — The root label of the "iqa" authority.  It is a name and is
+   not resolved.
+
+   *claim of intent* — A statement that a subject intends an action.  It
+   is a claim, not evidence, and establishes no identity by itself.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 5]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *standing* — The attestation answer an organ returns for a subject.
+   The values it may take form the closed set fixed in Section 7.2;
+   their semantics are the business of the reference specification
+   [IQA-SPEC].  It carries the attestation algorithm, the standing
+   vocabulary and the conformance material.
+
+   *standing read* — A read of a subject's current attestation answer
+   from the named organ, as in the default operation of Section 5.3.  It
+   is a safe, read-only operation.
+
+   *trust lease* — The freshness window carried in-band by an
+   attestation answer, and the mechanism of Section 6 by which a
+   verifier decides whether an answer may be relied on.
+
+   *pulse header* — The fixed-length wire format that carries the "rttp"
+   scheme (Section 7.1).
+
+   *attestation envelope* — The fixed-length wire format that carries an
+   "iqa" attestation answer (Section 7.2).
+
+   *refusal reason* — The closed vocabulary by which an attestation
+   response states that, and only that, an answer was refused
+   (Section 8.1).
+
+   *grant reference* — The structure by which an attestation response
+   names the authorisation it relied on (Section 8.2).
+
+   *action* — The optional final path segment naming what is claimed to
+   be intended ("rttp") or an operation requested of the organ ("iqa").
+
+   *fail closed* — To reject non-conforming input rather than repair,
+   normalise, or fall back: both schemes fail closed at parse time
+   (Sections 4 and 5), and both wire formats fail closed on length,
+   magic, and version (Section 7).
+
+   *derived address* — The 16-octet value computed from the authority
+   alone (Section 4.4): the first 16 octets of the SHA-256 digest of the
+   canonical authority.  It is deterministic, pure computation, one-way,
+   and action-independent, and it is an entry fingerprint, not a proof
+   of identity.  The same value appears at a fixed offset in both wire
+   formats (Section 7).
+
+   *ROUTE_SHARD* — The 16-byte value derived from the "rttp" authority
+   as specified in Section 4.4.
+
+
+
+
+
+
+
+Li                         Expires 5 May 2027                   [Page 6]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *AID* — A self-certifying subject identifier defined outside this
+   document.  Nothing here depends on an AID registry or authority, and
+   no assumption is made about its length or encoding beyond what
+   Sections 4.2, 5.2 and 9 require.
+[exit 0]
+
+$ sed -n '1389,1465p' inputs/draft/draft-li-rttp-iqa-addressing-02.txt
+9.2.  The iqa scheme
+
+   *  An iqa URI is a *claim about the attestation standing of a named
+      subject*.  Neither the syntax nor any component of the URI is
+      evidence of standing.
+
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 25]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  *Seal forgery.* Standing is carried by a keyed message
+      authentication code over the subject's identity material and its
+      deployment parameters (Section 7.2), not by the URI; no key
+      material is ever present in an iqa URI.
+
+   *  *Subject spoofing.* A seal presented for one subject fails binding
+      when replayed for another, because the binding covers hardware and
+      deployment parameters of the subject; a client MUST NOT treat a
+      syntactically valid subject as a verified one.
+
+   *  *Silence is not assent.* An endpoint that is unreachable, times
+      out, or returns an error MUST NOT be read as affirmative standing:
+      absence of evidence is not evidence of compliance.  The refusal
+      vocabulary of Section 8.1 gives this rule a wire representation:
+      the value authority_not_determined.
+
+   *  *Lease and replay.* The lease of Section 6 bounds how long an
+      answer may be relied on; the nonce of Section 7.2 makes each
+      verdict unique per organ.  A repeated (organ, nonce) pair within
+      one lease window SHOULD be rejected.
+
+   *  *Linkability and disclosure of interest.* An iqa URI names the
+      subject being attested, so citing one discloses which identity is
+      of interest, and querying several organs for the same subject is
+      trivially correlatable.  *This scheme cannot be used for anonymous
+      reference.* Deployments SHOULD prefer the routing-hash form over
+      readable labels, SHOULD NOT encode personal identifiers in the
+      action, and SHOULD treat iqa URIs in logs as an identity
+      assertion.
+
+   *  *Downgrade and scheme confusion.* No "iqas" variant exists and no
+      fallback is defined.  A client that does not implement this scheme
+      MUST fail closed and MUST NOT silently rewrite an iqa URI as some
+      other scheme.
+
+   *  *Detection of observers.* A measurement requested by the audit
+      action compares observed execution timing against an expected
+      path: execution slower than predicted is treated as evidence of an
+      attached observer, and measurable deviation is itself the
+      detector.  This is a property of the answering organ, not of the
+      URI syntax.
+
+   *  *Replay across epochs.* Standing material is rotated on a defined
+      cycle, so a previously valid answer can become invalid without any
+      change to the URI; a client MUST NOT treat a cached answer as
+      current indefinitely.
+
+
+
+
+
+Li                         Expires 5 May 2027                  [Page 26]
+
+Internet-Draft          rttp and iqa URI Schemes           November 2026
+
+
+   *  *Cryptographic suite.* The current construction uses a keyed
+      symmetric hash rather than a public-key signature, and is
+      therefore not directly affected by quantum algorithms that break
+      factoring or discrete logarithms.
+[exit 0]
+
+$ python3 -B reader/checker.py --draft inputs/draft/draft-li-rttp-iqa-addressing-02.txt --cases inputs/blind/cases.json --out out/phase1.json --sensitivity out/phase1-sensitivity.json
+citations verified: 27
+tally: conformant 8, nonconformant 5, ambiguous 2
+B01 conformant
+B02 nonconformant
+B03 nonconformant
+B04 ambiguous
+B05 nonconformant
+B06 ambiguous
+B07 conformant
+B08 conformant
+B09 nonconformant
+B10 nonconformant
+B11 conformant
+B12 conformant
+B13 conformant
+B14 conformant
+B15 conformant
+[exit 0]
+
+$ python3 -B -c "import json;d=json.load(open(\"out/phase1-sensitivity.json\"));[print(v[\"rule\"],v[\"variant\"],json.dumps(v[\"changed\"])) for v in d[\"variants\"]];print(\"no case depends on:\",d[\"rules_no_case_depends_on\"])"
+R01-expired-refused removed {"B01": {"from": "conformant", "to": "nonconformant"}, "B04": {"from": "ambiguous", "to": "conformant"}, "B06": {"from": "ambiguous", "to": "nonconformant"}, "B07": {"from": "conformant", "to": "nonconformant"}, "B09": {"from": "nonconformant", "to": "conformant"}, "B10": {"from": "nonconformant", "to": "conformant"}, "B15": {"from": "conformant", "to": "nonconformant"}}
+R02-stated-expiry inverted {"B05": {"from": "nonconformant", "to": "conformant"}, "B14": {"from": "conformant", "to": "nonconformant"}}
+R03-strict-compare inverted {}
+R04-no-extend removed {"B10": {"from": "nonconformant", "to": "conformant"}}
+R05-declared-boundary removed {"B04": {"from": "ambiguous", "to": "conformant"}, "B06": {"from": "ambiguous", "to": "nonconformant"}, "B15": {"from": "conformant", "to": "nonconformant"}}
+R05-declared-boundary inverted {"B03": {"from": "nonconformant", "to": "conformant"}, "B06": {"from": "ambiguous", "to": "nonconformant"}, "B11": {"from": "conformant", "to": "nonconformant"}, "B15": {"from": "conformant", "to": "nonconformant"}}
+R06-boundary-vs-7.2 removed {"B06": {"from": "ambiguous", "to": "conformant"}}
+R06-boundary-vs-7.2 inverted {"B06": {"from": "ambiguous", "to": "nonconformant"}}
+R07-undeclared-boundary removed {"B04": {"from": "ambiguous", "to": "conformant"}}
+R07-undeclared-boundary inverted {"B04": {"from": "ambiguous", "to": "nonconformant"}}
+R08-live-fail-closed removed {"B02": {"from": "nonconformant", "to": "conformant"}, "B08": {"from": "conformant", "to": "nonconformant"}}
+R09-cached-policy removed {"B13": {"from": "conformant", "to": "nonconformant"}}
+R09-cached-policy inverted {"B12": {"from": "conformant", "to": "nonconformant"}}
+R10-cached-admit-specific inverted {"B12": {"from": "conformant", "to": "nonconformant"}}
+R11-priority removed {}
+R11-priority inverted {"B07": {"from": "conformant", "to": "nonconformant"}}
+R12-condition-holds removed {"B03": {"from": "nonconformant", "to": "conformant"}, "B05": {"from": "nonconformant", "to": "conformant"}, "B06": {"from": "ambiguous", "to": "conformant"}}
+R13-reason-present removed {}
+R14-closed-set removed {}
+R15-grant-ref-present removed {}
+no case depends on: ['R03-strict-compare', 'R13-reason-present', 'R14-closed-set', 'R15-grant-ref-present']
+[exit 0]
+
+$ mkdir -p twice && python3 -B reader/checker.py --draft inputs/draft/draft-li-rttp-iqa-addressing-02.txt --cases inputs/blind/cases.json --out twice/phase1.json --sensitivity twice/phase1-sensitivity.json > /dev/null && cmp out/phase1.json twice/phase1.json && cmp out/phase1-sensitivity.json twice/phase1-sensitivity.json && echo "byte-identical: phase1.json, phase1-sensitivity.json"
+byte-identical: phase1.json, phase1-sensitivity.json
+[exit 0]
+
+$ sha256sum out/phase1.json out/phase1-sensitivity.json twice/phase1.json twice/phase1-sensitivity.json
+0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f  out/phase1.json
+bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6  out/phase1-sensitivity.json
+0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f  twice/phase1.json
+bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6  twice/phase1-sensitivity.json
+[exit 0]
+
+$ mkdir -p citetest && sed "s/Current deployments use 120 seconds\./Current deployments use 120 secs./" inputs/draft/draft-li-rttp-iqa-addressing-02.txt > citetest/altered.txt && python3 -B reader/checker.py --draft citetest/altered.txt --cases inputs/blind/cases.json --out citetest/p.json --sensitivity citetest/s.json; echo "checker exit code: $?"; ls citetest
+citation not found verbatim in the draft: C61-120
+checker exit code: 3
+altered.txt
+[exit 0]
+
+$ rm -r twice citetest
+[exit 0]
+
+$ cat inputs/sealed/id-map.json
+{
+ "B01": "LB-E01",
+ "B02": "LB-M02",
+ "B03": "LB-D03",
+ "B04": "LB-D04",
+ "B05": "LB-W02",
+ "B06": "LB-D05",
+ "B07": "LB-M05",
+ "B08": "LB-M01",
+ "B09": "LB-E02",
+ "B10": "LB-E03",
+ "B11": "LB-D01",
+ "B12": "LB-M04",
+ "B13": "LB-M03",
+ "B14": "LB-W01",
+ "B15": "LB-D02"
+}
+[exit 0]
+
+$ python3 -B -c "import json;d=json.load(open(\"inputs/sealed/vectors.json\"));print(json.dumps({k:v for k,v in d.items() if k!=\"cases\"},indent=1,ensure_ascii=False));[print(json.dumps({k:v for k,v in c.items() if k not in (\"input\",\"outcome\")},ensure_ascii=False)) for c in d[\"cases\"]]"
+{
+ "label": "aicent-lease-boundary",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the refusal reason and the members it carries are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and rules, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 6.1 (The Lease), 6.2 (Answer Modes), 6.3 (Evaluation at the Moment of Use) and the verification procedure of section 7.2 are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ]
+}
+{"id": "LB-D01", "rule": "R-DECLARED", "basis": ["sect-6.1"], "note": "the read happens exactly at the lease instant and the deployment declared the inclusive convention; a permit is what the declared boundary owes", "expect": "conformant"}
+{"id": "LB-D02", "rule": "R-DECLARED", "basis": ["sect-6.1"], "note": "same boundary instant under the declared exclusive convention; refusing the answer as expired is what the declared boundary owes, and conformance material may test both boundaries", "expect": "conformant"}
+{"id": "LB-D03", "rule": "R-DECLARED", "basis": ["sect-6.1"], "note": "the deployment declared the inclusive convention but answers expired at the boundary instant; the declaration states which boundary they use, and a declaration that contradicts use tells the caller the opposite of the behavior", "expect": "nonconformant"}
+{"id": "LB-D04", "rule": "R-DECLARED", "basis": ["sect-6.1"], "note": "open question: the read happens at the boundary instant and no boundary is declared; both boundary readings are licensed conventions and the declaration is asked for with SHOULD, so the answer at the instant sits inside a licensed reading while the case cannot be settled until the implementation declares", "expect": "ambiguous", "expect_parts": {"answer_within_a_convention": "conformant", "declaration": "ambiguous"}}
+{"id": "LB-D05", "rule": "R-DECLARED", "basis": ["sect-6.1", "sect-7.2"], "note": "the envelope frame is accepted at the boundary instant, which the verification procedure of section 7.2 requires (it rejects only when lease_expiry is earlier than the current time), and the answer is then refused under the declared exclusive convention; frame validity and reliance on the answer are different layers, and the wire floor does not decide the convention", "expect": "conformant"}
+{"id": "LB-E01", "rule": "R-NOEXTEND", "basis": ["sect-6.1", "sect-6.3-eval"], "note": "the answer is read past its lease; the observation member keeps the as-of instant of what the answer relied on when it was issued, and the read is answered as expired", "expect": "conformant"}
+{"id": "LB-E02", "rule": "R-NOEXTEND", "basis": ["sect-6.1", "sect-6.3-eval"], "note": "same facts, but the expired answer is answered as a permit carrying the original observation as if it were current; an answer read past its expiry is never replayed as fresh", "expect": "nonconformant"}
+{"id": "LB-E03", "rule": "R-NOEXTEND", "basis": ["sect-6.1"], "note": "same facts, but the lease is reinterpreted as still standing inside a locally added grace period; a verifier MUST NOT extend, renew, or reinterpret an expired lease except by obtaining a new answer", "expect": "nonconformant"}
+{"id": "LB-M01", "rule": "R-MODE", "basis": ["sect-6.2", "sect-8.1"], "note": "the deployment operates in live mode and the organ cannot be reached; the call is refused as authority_not_determined even though a cached answer within its lease exists, and the observation member is null because the answer relied on no observation", "expect": "conformant"}
+{"id": "LB-M02", "rule": "R-MODE", "basis": ["sect-6.2"], "note": "same facts, but the fresh cached answer is admitted as a permit; in live mode every call is expected to be refused when the organ is unreachable, regardless of the age of any cached answer", "expect": "nonconformant"}
+{"id": "LB-M03", "rule": "R-MODE", "basis": ["sect-6.2", "sect-8.1"], "note": "cached-lease mode with the cache within its lease and the organ unreachable, under a declared policy that demands a current observation; the call is refused with authority_not_determined", "expect": "conformant"}
+{"id": "LB-M04", "rule": "R-MODE", "basis": ["sect-6.2"], "note": "same facts under a declared policy that accepts lease-fresh evidence; the call may be admitted, with any exposure bounded by the lease itself", "expect": "conformant"}
+{"id": "LB-M05", "rule": "R-MODE", "basis": ["sect-6.1", "sect-6.2", "sect-8.1"], "note": "cached-lease mode with the cache itself past its lease and the organ unreachable; the expired cache is refused as evidence_expired, the first applicable value, and the unreachable organ adds nothing to an answer whose lease has already expired", "expect": "conformant"}
+{"id": "LB-W01", "rule": "R-WINDOW", "basis": ["sect-6.1"], "note": "the answer states a lease 300 seconds ahead of issuance under an operator-configured window, and the read happens inside the stated lease; a permit is what checking the stated expiry owes", "expect": "conformant"}
+{"id": "LB-W02", "rule": "R-WINDOW", "basis": ["sect-6.1"], "note": "same facts, but the verifier refuses the answer because it assumes the 120-second deployment default instead of checking the stated expiry; the verifier checks the stated expiry against its own clock, and the mechanism does not depend on the default value", "expect": "nonconformant"}
+[exit 0]
+
+$ cat inputs/sealed/CANDIDATE.md
+# Candidate: aicent-lease-boundary
+
+Cases for the lease of an attestation answer: which boundary convention an implementation may
+declare and apply at the lease instant, what an expired lease still owes, how the declared answer
+mode shapes the refusal when the organ cannot be reached, and which expiry a verifier checks. Each
+case gives the facts at answer time and one response an implementation could produce, and states
+whether that response satisfies the source text and which rule decides. This is a candidate under
+`docs/CANDIDATES.md`. It is not a reviewed fixture and adds nothing to the lab's schema, failure
+classes or verifier behavior.
+
+The source is a published Internet-Draft rather than a proposal under discussion: the lease, its
+boundary convention and the prohibition on extending an expired lease are defined by
+draft-li-rttp-iqa-addressing-02, section 6.1; the two answer modes and their normative rules by
+section 6.2; the evaluation-at-the-moment-of-use rule by section 6.3; and the frame-level
+verification procedure by section 7.2. The expected values are anchored in the published text
+itself and were checked against it sentence by sentence.
+
+## Submitter
+
+ShaoBao Li (Lee), author of the draft. RTTP & IQA Organization.
+
+## Normative target
+
+- `spec`: draft-li-rttp-iqa-addressing-02, posted 2026-11-01
+  (https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02), sha256
+  `02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044` of the retrieved TXT copy.
+  Sections 6.1 (The Lease), 6.2 (Answer Modes), 6.3 (Evaluation at the Moment of Use) and the
+  verification procedure of section 7.2 are used. The draft is Informational and published for the
+  public record; it is not the agreed text of any working group, and a later revision can change it.
+
+Rule descriptions quote single sentences. Each case lists the sections it rests on in `basis`.
+
+## Source
+
+Written for this candidate: `CANDIDATE.md`, `vectors.json`, `check.py`, `mutate.py`. No files are
+copied from the sources. Rule descriptions quote single sentences.
+
+## License
+
+Apache 2.0, the license of this repository. The draft is an IETF Internet-Draft contribution; this
+candidate reuses no text from it beyond short quoted sentences for identification and rule
+description, names the document and the sha256 of the retrieved copy, and adds no code from any
+implementation.
+
+## What the cases test
+
+Fifteen cases: 9 conformant, 5 nonconformant and 1 `ambiguous`. Identifiers and times are
+illustrative.
+
+| ids | rule | what is tested | basis |
+|---|---|---|---|
+| LB-D01 to LB-D05 | R-DECLARED | the boundary convention of section 6.1: whether the lease instant counts as fresh or as expired is a deployment convention, so a permit under a declared inclusive boundary (D01) and an expired refusal under a declared exclusive boundary (D02) are both conformant; a declaration that contradicts use is not (D03); with no declaration the boundary answer is scored in parts and cannot be settled (D04); and a frame accepted at the instant under the verification procedure of section 7.2 does not decide the reliance convention, because frame validity and reliance are different layers (D05) | sect-6.1, sect-7.2 |
+| LB-E01 to LB-E03 | R-NOEXTEND | an expired lease: an answer read past its expiry is answered as expired (E01); replaying the original observation as fresh is not (E02); reinterpreting the lease inside a locally added grace period is not (E03) | sect-6.1, sect-6.3 |
+| LB-M01 to LB-M05 | R-MODE | the declared answer mode with an unreachable organ: in live mode the call is refused regardless of the age of any cached answer (M01), and a fresh cache does not rescue it (M02); in cached-lease mode a policy demanding a current observation refuses with authority_not_determined (M03) and a policy accepting lease-fresh evidence may admit the call (M04); an expired cache is refused as evidence_expired, the first applicable value (M05) | sect-6.1, sect-6.2, sect-8.1 |
+| LB-W01, LB-W02 | R-WINDOW | the window length is an operator choice: an answer whose stated lease has not expired is not refused (W01), and refusing it by assuming the 120-second deployment default instead of checking the stated expiry is not (W02) | sect-6.1 |
+
+R-DECLARED scores the undeclared case in named parts, listed in `expect_parts`, so the case can
+show which part of the outcome holds and which does not. A case is ambiguous when no part is
+nonconformant and one is ambiguous.
+
+Reading rules, stated in `vectors.json`: an outcome is read as the record it presents; an absent
+key is not the same as an explicit null; outcome field names are this candidate's own
+representation, since the source names values and rules, not a JSON binding.
+
+## How to run
+
+```
+python3 -I check.py vectors.json
+python3 -I mutate.py
+```
+
+`check.py` recomputes each case's verdict from its input and outcome, compares the verdict with
+`expect` and the parts with `expect_parts`. To test an implementation, give it each case's input,
+replace `outcome` with the response it produced, and run `check.py`. `mutate.py` weakens or
+distorts one rule of `check.py` at a time, including a version of every rule that always answers
+nonconformant and one that always answers conformant, and fails unless some case catches each
+change.
+
+At the revision submitted, the submitter's runs on Python 3 printed `15/15 agree` and `17/17
+mutants killed`, each with exit 0. These show that the checker agrees with the expected results and
+that every rule has a case depending on it, in both directions. They say nothing about any
+implementation, and they do not show that the expected results are the right reading of the source.
+
+## Evidence
+
+No implementation has been run against these cases. The cases were reviewed by the author against
+the source text section by section during construction; the reviews are author-produced and are not
+runs.
+
+## Known limitations
+
+- The source is one document at one revision. A revised draft needs a new revision of this
+  candidate.
+- LB-D03 rests on a strict reading: section 6.1 says implementations SHOULD declare which boundary
+  they use and does not attach an explicit consequence to a declaration that contradicts use. The
+  case treats a contradicting declaration as nonconformant because a declaration that does not
+  state the boundary used defeats the function the clause gives declarations.
+- LB-D04 is ambiguous by design: the clause licenses both boundary readings and asks (SHOULD) for
+  a declaration; with no declaration given, the answer at the instant cannot be settled either way.
+- The mode cases take the never-assent mapping of an unreachable source (refused under
+  authority_not_determined, never read as assent) as given; that mapping is tested by the
+  aicent-grant-ref candidate and is not re-tested here. What these cases test is the
+  mode-conditional refusal and the policy split of cached-lease mode.
+- Mid-task halting and the calling layer's enforcement are out of scope here; only the answer the
+  verification owes is tested (the basis of LB-E01 quotes the mid-task sentence for the expiry
+  answer it names).
+- LB-D05 reads the verification procedure of section 7.2 as a rejection floor for the envelope
+  frame, distinct from the reliance convention of section 6.1; a revision that fuses the two layers
+  would need a new case.
+- LB-D01 to LB-D05 take `at_boundary` as a given input. They test how an implementation handles
+  that boundary, not whether it correctly determines the boundary from the observation time and
+  lease expiry.
+- The window cases test the stated-expiry check only; the 120-second figure itself is a deployment
+  observation in the source, not a conformance target.
+- The checker encodes one reading of the source. A correction in a later revision of the draft
+  overrides it.
+[exit 0]
+
+$ python3 -B reader/compare.py --phase1 out/phase1.json --vectors inputs/sealed/vectors.json --idmap inputs/sealed/id-map.json --out out/final.json
+LB-D01 B11 conformant    conformant    match
+LB-D02 B15 conformant    conformant    match
+LB-D03 B03 nonconformant nonconformant match
+LB-D04 B04 ambiguous     ambiguous     match
+LB-D05 B06 ambiguous     conformant    diverge
+LB-E01 B01 conformant    conformant    match
+LB-E02 B09 nonconformant nonconformant match
+LB-E03 B10 nonconformant nonconformant match
+LB-M01 B08 conformant    conformant    match
+LB-M02 B02 nonconformant nonconformant match
+LB-M03 B13 conformant    conformant    match
+LB-M04 B12 conformant    conformant    match
+LB-M05 B07 conformant    conformant    match
+LB-W01 B14 conformant    conformant    match
+LB-W02 B05 nonconformant nonconformant match
+match 14, diverge 1
+[exit 0]
+
+$ sha256sum -c logs/phase1-zip.sha256 --status 2>/dev/null; (cd logs && sha256sum -c phase1-zip.sha256) && unzip -p logs/sparysh-reading-aicent-lease-boundary-0e0064b-phase1.zip sparysh-reading-aicent-lease-boundary-0e0064b/out/phase1.json | cmp - out/phase1.json && echo "out/phase1.json identical to the copy in the phase-1 zip"
+sparysh-reading-aicent-lease-boundary-0e0064b-phase1.zip: OK
+out/phase1.json identical to the copy in the phase-1 zip
+[exit 0]
+
+$ date -u -r logs/fetch.log +%Y-%m-%dT%H:%M:%SZ; date -u -r out/phase1.json +%Y-%m-%dT%H:%M:%SZ; date -u +%Y-%m-%dT%H:%M:%SZ; python3 -B --version; uname -sr; grep PRETTY_NAME /etc/os-release
+2026-11-18T08:22:18Z
+2026-11-18T08:26:33Z
+2026-11-18T08:29:10Z
+Python 3.13.18
+Linux 6.18.44-fc-v595
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+[exit 0]
+
+$ sha256sum reader/checker.py reader/compare.py out/phase1.json out/phase1-sensitivity.json out/final.json ambiguity-log.md
+f9ae67010db2edac0cdf10ac99f6e184f08ff15389830d78276cd54b08fc3d55  reader/checker.py
+40075b71e176a6abf10bca440d3dc81097701a0e3d5ceb170806aae4f8fd7dfa  reader/compare.py
+0f73cf747351218369a395a138851b164dbd1ff0ffb97eaf4d279af075ba457f  out/phase1.json
+bcbc23295b3a3231488aea217df698dde86fe3f679c50095b4cd98d2d7c542c6  out/phase1-sensitivity.json
+eba83874c48b5be358f7a42ed4d06239d5b8ea965ccdcaa0d2652903855ca77b  out/final.json
+c2183e35183e060fdc22df2266c4d1b49bff7d9cbf4bb60c8628adc1f2dda601  ambiguity-log.md
+[exit 0]
+
+$ mkdir -p rerun/inputs && cp -r inputs/blind inputs/draft inputs/sealed rerun/inputs/ && (cd rerun/inputs && sha256sum -c ../../inputs/SHA256SUMS --ignore-missing)
+./blind/cases.json: OK
+./draft/draft-li-rttp-iqa-addressing-02.txt: OK
+./sealed/CANDIDATE.md: OK
+./sealed/id-map.json: OK
+./sealed/vectors.json: OK
+[exit 0]
+
+$ python3 -B reader/checker.py --draft rerun/inputs/draft/draft-li-rttp-iqa-addressing-02.txt --cases rerun/inputs/blind/cases.json --out rerun/phase1.json --sensitivity rerun/phase1-sensitivity.json > /dev/null && python3 -B reader/compare.py --phase1 rerun/phase1.json --vectors rerun/inputs/sealed/vectors.json --idmap rerun/inputs/sealed/id-map.json --out rerun/final.json > /dev/null && cmp rerun/phase1.json out/phase1.json && cmp rerun/phase1-sensitivity.json out/phase1-sensitivity.json && cmp rerun/final.json out/final.json && echo "rerun: phase1.json, phase1-sensitivity.json, final.json identical to out/"
+rerun: phase1.json, phase1-sensitivity.json, final.json identical to out/
+[exit 0]
+
+$ rm -r rerun
+[exit 0]
+
+$ date -u -r out/final.json +%Y-%m-%dT%H:%M:%SZ; date -u -r logs/sparysh-reading-aicent-lease-boundary-0e0064b-phase1.zip +%Y-%m-%dT%H:%M:%SZ
+2026-11-18T08:29:01Z
+2026-11-18T08:28:06Z
+[exit 0]
+````
