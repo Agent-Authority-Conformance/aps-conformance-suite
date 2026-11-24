@@ -15,8 +15,9 @@ The answer is read on four separate axes, because each can fail while the others
 - `key_binding`: that key is the key the access token is bound to (`cnf.jkt`, section 6.1), and
   the proof's `ath` is the hash of the presented token (section 4.3, item 12).
 - `request_binding`: the proof was made for this method and URI, with the server's nonce, inside
-  the accepted time window, and its `jti` was not seen before for this URI (items 8 to 11 and
-  section 11.1).
+  the accepted time window (items 8 to 11). When the case declares that the server tracks
+  `jti`, the proof's `jti` was also not seen before for this URI. Section 11.1 describes that
+  tracking as an optional replay defense.
 - `authority`: the operation's required scope is in the token's scope.
 
 A valid signature shows that someone holds a key. It does not show that the key is the one the
@@ -124,6 +125,18 @@ missing nonce. Like PK-04, PK-21 and PK-22, they are nonconformant only on the r
 expected results and that each rule has a case depending on it. It does not show that the
 expected results are the only reading of RFC 9449, and no implementation has been run against
 these cases.
+
+## Revisions
+
+- Revision 2 changes the stated basis of PK-18 and adds one sentence to `readings` in
+  `vectors.json`. With replay tracking enabled, the verifier should reject a proof whose `jti`
+  it has already seen for the same URI. PK-18 records acceptance, so the result fails the
+  case's declared replay policy. RFC 9449 section 11.1 describes `jti` tracking as an optional
+  replay defense, so the expected result does not rest on a requirement in the RFC. The input,
+  the outcome and the expected result of PK-18 are unchanged, and no other case changes.
+  Raised by andreysparish in issue #236, from finding F01 of the run record
+  `interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468`. That record read
+  revision 1 at `6ad8468` and stays as filed, including its `ambiguous` verdict for PK-18.
 
 ## Known limitations
 

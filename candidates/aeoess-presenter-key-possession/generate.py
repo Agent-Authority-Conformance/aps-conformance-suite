@@ -84,7 +84,7 @@ cases = [
     case("PK-15", "Server issued a nonce, proof carries another, accepted", ["4.3 item 10"], proof(nonce="n-old"), out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(server_nonce="n-2026-11-03")),
     case("PK-16", "Proof created ten minutes ago with a 300 s window, accepted", ["4.3 item 11", "11.1"], proof(iat=NOW - 600), out(True, True, True, True, "accept"), "nonconformant", ALL),
     case("PK-17", "Proof dated 20 s ahead, no future skew declared, accepted", ["4.3 item 11", "11.1"], proof(iat=NOW + 20), out(True, True, True, True, "accept"), "ambiguous", ALL),
-    case("PK-18", "Server tracks jti, proof jti already seen at this URI, accepted", ["11.1"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(seen_jti=[[URI, "p-0001"]])),
+    case("PK-18", "Server tracks jti, proof jti already seen at this URI, accepted", ["policy tracks_jti declared by the case", "11.1 describes jti tracking as optional"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(seen_jti=[[URI, "p-0001"]])),
     case("PK-19", "Possession established, operation outside the token scope, accepted", ["7.1"], good, out(True, True, True, True, "accept"), "nonconformant", ALL, req=request(required_scope="refunds:write")),
     case("PK-20", "Possession established, operation outside the token scope, refused for authority", ["7.1"], good, out(True, True, True, False, "reject", "authority"), "conformant", ALL, req=request(required_scope="refunds:write")),
     case("PK-21", "Operation outside the token scope, refused but blamed on key binding", ["7.1", "6.1", "axis reporting is this candidate's representation"], good, out(True, False, True, False, "reject", "key_binding"), "nonconformant", ALL, req=request(required_scope="refunds:write")),
@@ -99,9 +99,9 @@ cases = [
 
 doc = {
     "label": "aeoess-presenter-key-possession",
-    "revision": 1,
+    "revision": 2,
     "text_status": "RFC 9449 is a published Proposed Standard. The scope check and the axis names are this candidate's representation, not RFC 9449 text",
-    "readings": "an outcome is the verifier's answer for one request. Each axis is read on its own, whatever the other axes say",
+    "readings": "an outcome is the verifier's answer for one request. Each axis is read on its own, whatever the other axes say. A case that declares tracks_jti holds the server to decline a (URI, jti) pair it has already seen. That expected result rests on the policy the case declares, because RFC 9449 section 11.1 describes jti tracking as an optional replay defense",
     "now": NOW,
     "keys": {"agent": AGENT_JWK, "attacker": ATTACKER_JWK, "seed_rule": "Ed25519 private key = sha256('aeoess-presenter-key-possession/' + label), test keys only"},
     "cases": cases,
