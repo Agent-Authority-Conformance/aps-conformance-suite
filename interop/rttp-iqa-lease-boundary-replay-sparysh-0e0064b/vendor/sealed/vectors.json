@@ -1,0 +1,257 @@
+{
+ "label": "aicent-lease-boundary",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the refusal reason and the members it carries are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and rules, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 6.1 (The Lease), 6.2 (Answer Modes), 6.3 (Evaluation at the Moment of Use) and the verification procedure of section 7.2 are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "cases": [
+  {
+   "id": "LB-D01",
+   "rule": "R-DECLARED",
+   "basis": ["sect-6.1"],
+   "note": "the read happens exactly at the lease instant and the deployment declared the inclusive convention; a permit is what the declared boundary owes",
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-D02",
+   "rule": "R-DECLARED",
+   "basis": ["sect-6.1"],
+   "note": "same boundary instant under the declared exclusive convention; refusing the answer as expired is what the declared boundary owes, and conformance material may test both boundaries",
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-D03",
+   "rule": "R-DECLARED",
+   "basis": ["sect-6.1"],
+   "note": "the deployment declared the inclusive convention but answers expired at the boundary instant; the declaration states which boundary they use, and a declaration that contradicts use tells the caller the opposite of the behavior",
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "LB-D04",
+   "rule": "R-DECLARED",
+   "basis": ["sect-6.1"],
+   "note": "open question: the read happens at the boundary instant and no boundary is declared; both boundary readings are licensed conventions and the declaration is asked for with SHOULD, so the answer at the instant sits inside a licensed reading while the case cannot be settled until the implementation declares",
+   "input": {
+    "declared_boundary": null,
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "ambiguous",
+   "expect_parts": {"answer_within_a_convention": "conformant", "declaration": "ambiguous"}
+  },
+  {
+   "id": "LB-D05",
+   "rule": "R-DECLARED",
+   "basis": ["sect-6.1", "sect-7.2"],
+   "note": "the envelope frame is accepted at the boundary instant, which the verification procedure of section 7.2 requires (it rejects only when lease_expiry is earlier than the current time), and the answer is then refused under the declared exclusive convention; frame validity and reliance on the answer are different layers, and the wire floor does not decide the convention",
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true,
+    "frame_accepted_at_equality": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-E01",
+   "rule": "R-NOEXTEND",
+   "basis": ["sect-6.1", "sect-6.3-eval"],
+   "note": "the answer is read past its lease; the observation member keeps the as-of instant of what the answer relied on when it was issued, and the read is answered as expired",
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-E02",
+   "rule": "R-NOEXTEND",
+   "basis": ["sect-6.1", "sect-6.3-eval"],
+   "note": "same facts, but the expired answer is answered as a permit carrying the original observation as if it were current; an answer read past its expiry is never replayed as fresh",
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "LB-E03",
+   "rule": "R-NOEXTEND",
+   "basis": ["sect-6.1"],
+   "note": "same facts, but the lease is reinterpreted as still standing inside a locally added grace period; a verifier MUST NOT extend, renew, or reinterpret an expired lease except by obtaining a new answer",
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000,
+    "grace_added": true
+   },
+   "outcome": {
+    "reason": null,
+    "lease_note": "lease treated as extended by a local grace period after issuance",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 800}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "LB-M01",
+   "rule": "R-MODE",
+   "basis": ["sect-6.2", "sect-8.1"],
+   "note": "the deployment operates in live mode and the organ cannot be reached; the call is refused as authority_not_determined even though a cached answer within its lease exists, and the observation member is null because the answer relied on no observation",
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": null}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-M02",
+   "rule": "R-MODE",
+   "basis": ["sect-6.2"],
+   "note": "same facts, but the fresh cached answer is admitted as a permit; in live mode every call is expected to be refused when the organ is unreachable, regardless of the age of any cached answer",
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1050}
+   },
+   "expect": "nonconformant"
+  },
+  {
+   "id": "LB-M03",
+   "rule": "R-MODE",
+   "basis": ["sect-6.2", "sect-8.1"],
+   "note": "cached-lease mode with the cache within its lease and the organ unreachable, under a declared policy that demands a current observation; the call is refused with authority_not_determined",
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "current"
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1050}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-M04",
+   "rule": "R-MODE",
+   "basis": ["sect-6.2"],
+   "note": "same facts under a declared policy that accepts lease-fresh evidence; the call may be admitted, with any exposure bounded by the lease itself",
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1050}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-M05",
+   "rule": "R-MODE",
+   "basis": ["sect-6.1", "sect-6.2", "sect-8.1"],
+   "note": "cached-lease mode with the cache itself past its lease and the organ unreachable; the expired cache is refused as evidence_expired, the first applicable value, and the unreachable organ adds nothing to an answer whose lease has already expired",
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": false,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1050}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-W01",
+   "rule": "R-WINDOW",
+   "basis": ["sect-6.1"],
+   "note": "the answer states a lease 300 seconds ahead of issuance under an operator-configured window, and the read happens inside the stated lease; a permit is what checking the stated expiry owes",
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1250000}
+   },
+   "expect": "conformant"
+  },
+  {
+   "id": "LB-W02",
+   "rule": "R-WINDOW",
+   "basis": ["sect-6.1"],
+   "note": "same facts, but the verifier refuses the answer because it assumes the 120-second deployment default instead of checking the stated expiry; the verifier checks the stated expiry against its own clock, and the mechanism does not depend on the default value",
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {"grant": "grant-7f3a", "evidence_id": "ev-0042", "issued_at_ms": 1000000, "expires_at_ms": 9000000, "observation_as_of_ms": 1250000}
+   },
+   "expect": "nonconformant"
+  }
+ ]
+}
