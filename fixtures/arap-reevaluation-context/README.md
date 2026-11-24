@@ -40,6 +40,12 @@ The rules under test:
   cannot build the request and stops.
 - 976 to 982: exact-match approval scope, and the PDP must not treat a bound
   member absent from the request as matching.
+- 942, with 585 and 621: at re-evaluation the PDP evaluates the new request
+  under current policy and state, and an approval does not override policy
+  conditions. When the approval is valid and in scope but current policy or
+  risk state denies, the reason is `policy_denied` and the next action is
+  `none`. These lines are in the profile on `main` as well and are not part of
+  what #745 changes.
 
 ## What runs
 
@@ -65,6 +71,15 @@ that comparison too.
 | R5b | approval-only | same unreachable input | a request is sent anyway, `out_of_scope` |
 | R6 | ordinary rules | a conditional member the rules now omit, not bound | `approval_applies` |
 | R7 | ordinary rules | the same conditional member, bound | `out_of_scope` |
+| R8 | ordinary rules | bound `beneficiary` and `amount` match, unbound `fraud_status` changed from `clear` to `alert` | `approval_applies`, decision `deny` (`policy_denied`) |
+| R8b | ordinary rules | the same approval and request with `fraud_status` `clear` | `approval_applies`, decision `allow` |
+
+R1 to R7 test whether the approval matches the request. They declare no policy
+and expect no decision. R8 and R8b add one thing: a case can declare a current
+policy rule of the deployment, and then the expected result has two parts, the
+approval outcome and the decision. The fraud rule is an example of a
+deployment's own policy. ARAP does not define it. The vector for R8 was
+proposed by lumirosh in openid/authzen issue #787.
 
 R6 and R7 exercise the reason the pull request puts the obligation on the
 construction path rather than on an inventory of the original members. An
@@ -80,20 +95,26 @@ Each must fail exactly its declared set, checked in both directions.
   It fails R2, R5b and R7, each of which reaches the PDP with a bound member
   missing.
 - **approval-only PEP**: swapped into every ordinary-rules case. It fails all
-  six. In R3 and R7 the PDP returns `out_of_scope` either way, so the PDP
+  eight. In R3 and R7 the PDP returns `out_of_scope` either way, so the PDP
   outcome alone would not catch it. The member-set comparison does.
 - **PEPs that drop or alter the approval**: four of them, one leaving the
   approval out, one changing its id, one rewriting `approved_until` in a copy,
   and one rewriting `approved_at` in place on the object it was handed. 822
   says the approval goes in unchanged. The runner keeps a pristine copy of the
   approval, compares the emitted approval with it, and passes the emitted
-  approval to the PDP. Each fails the five ordinary-rules cases that send a
+  approval to the PDP. Each fails the seven ordinary-rules cases that send a
   request. Here the PDP resolves the approval by id from trusted state, so only
   the unchanged-approval check catches the two timestamp rewrites.
 - **alternating PEP**: its first request carries a member no ordinary rule
   produces, and its later requests are clean. The member is unbound, so the
-  PDP outcome does not change. It fails the same five cases because the runner
+  PDP outcome does not change. It fails the same seven cases because the runner
   calls the PEP once and runs the member-set test on the request it emitted.
+
+- **deciders that skip the policy or deny everything**: an approval-only
+  decider allows whenever the approval applies and never evaluates the
+  declared rule. It fails R8. An always-deny decider gives the expected answer
+  for R8 without evaluating anything, and fails R8b. They run only on the
+  cases that expect a decision.
 
 Each run works on its own copies of the case's rules, inputs, approval and
 ledger record. The ordinary construction the member-set test compares against
