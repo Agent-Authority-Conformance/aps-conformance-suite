@@ -102,7 +102,7 @@ def request_binding(i):
         if iat > r["now"] + pol["future_skew_s"]:
             return False
     if pol.get("tracks_jti") and [strip_uri(r["uri"]), claims.get("jti")] in [[strip_uri(u), j] for u, j in r.get("seen_jti", [])]:
-        return False                                    # 11.1: jti seen before for the same URI
+        return False                                    # declared policy tracks_jti: jti seen before for the same URI (11.1 describes tracking as optional)
     return True
 
 def strip_uri(u):
