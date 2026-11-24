@@ -5,11 +5,12 @@
 // Each case builds a re-evaluation request with the PEP the case names, checks
 // the member-set comparison against an ordinary evaluation of the same
 // operation, and, where a request is sent, runs the reference PDP verifier
-// from fixtures/arap-binding. Seven negative controls must fail exactly their
+// from fixtures/arap-binding. Nine negative controls must fail exactly their
 // declared sets, in both directions: a PDP that skips absent bound members,
 // the approval-only PEP swapped into every ordinary-rules case, four PEPs that
-// drop or alter the approval, and a PEP whose first request differs from its
-// later ones. Each run works on its own copies of the fixture. The ordinary
+// drop or alter the approval, a PEP whose first request differs from its
+// later ones, and two deciders (R8, R8b) that skip the declared policy or deny
+// everything. Each run works on its own copies of the fixture. The ordinary
 // construction is built before the PEP runs, the PEP is called once, and the
 // member-set test and the PDP both see that one emitted request. The emitted
 // approval is compared with a pristine copy of the one the PEP was given (822)
@@ -33,20 +34,25 @@ import {
   type AuthzenContext,
 } from '../arap-binding/harness.js'
 import {
+  ALWAYS_DENY_DECIDER,
+  APPROVAL_ONLY_DECIDER,
   APPROVAL_ONLY_PEP,
   CHANGED_ID_PEP,
   CHANGED_TIMESTAMP_PEP,
   DROP_APPROVAL_PEP,
   IN_PLACE_APPROVAL_PEP,
   ORDINARY_RULES_PEP,
+  REFERENCE_DECIDER,
   buildOrdinaryContext,
   makeAlternatingPep,
   memberSetsMatch,
   type BuildResult,
   presentOnlyVerifier,
   type ContextRule,
+  type Decider,
   type Inputs,
   type Pep,
+  type PolicyRule,
 } from './harness.js'
 
 interface Expected {
@@ -56,6 +62,10 @@ interface Expected {
   member_sets_match: boolean
   time?: string
   unreachable?: string
+  /** Present only on cases that declare a current policy (R8, R8b). */
+  decision?: 'allow' | 'deny'
+  decision_reason?: string | null
+  decision_next_action?: string | null
 }
 interface Case {
   id: string
@@ -66,6 +76,8 @@ interface Case {
   record: ApprovalRecord
   approval: Record<string, unknown>
   now: string
+  /** Declared current-policy rules of the deployment. Absent on the matching-only cases. */
+  policy?: PolicyRule[]
   expected: Expected
 }
 interface Vectors {
@@ -78,7 +90,7 @@ const here = dirname(fileURLToPath(import.meta.url))
 const vectors = JSON.parse(readFileSync(join(here, 'vectors.json'), 'utf8')) as Vectors
 const PEPS: Record<string, Pep> = { 'ordinary-rules': ORDINARY_RULES_PEP, 'approval-only': APPROVAL_ONLY_PEP }
 
-function run(c: Case, pep: Pep, verifier: (c: Case) => ApprovalVerifier): { ok: boolean; detail: string } {
+function run(c: Case, pep: Pep, verifier: (c: Case) => ApprovalVerifier, decider: Decider = REFERENCE_DECIDER): { ok: boolean; detail: string } {
   // The runner keeps pristine copies. The PEP gets its own copies, so nothing it
   // does to them can change what it is checked against. The ordinary
   // construction is built before the PEP runs, and the PEP is called once.
@@ -112,7 +124,17 @@ function run(c: Case, pep: Pep, verifier: (c: Case) => ApprovalVerifier): { ok: 
   const r = verifier(c).verify(presented, evaluation, Date.parse(c.now), vectors.pdp_id, ledger, new JwksRegistry(), new PolicyStub())
   if (r.outcome !== c.expected.outcome) problems.push(`outcome ${r.outcome}, expected ${c.expected.outcome}`)
   if ((r.nextAction ?? null) !== c.expected.next_action) problems.push(`next_action ${String(r.nextAction ?? null)}`)
-  return { ok: problems.length === 0, detail: `${r.outcome}${problems.length ? ': ' + problems.join('; ') : ''}` }
+  // 942: where the case declares a current policy, the approval outcome is not
+  // the decision. The decider sees the request's own Context, not the approved one.
+  let decided = ''
+  if (c.expected.decision !== undefined) {
+    const d = decider.decide(r.outcome, r.nextAction ?? null, ctx, structuredClone(c.policy ?? []))
+    decided = `, decision ${d.decision}${d.reason ? ' (' + d.reason + ')' : ''}`
+    if (d.decision !== c.expected.decision) problems.push(`decision ${d.decision}, expected ${c.expected.decision}`)
+    if (d.reason !== (c.expected.decision_reason ?? null)) problems.push(`decision reason ${String(d.reason)}`)
+    if (d.next_action !== (c.expected.decision_next_action ?? null)) problems.push(`decision next_action ${String(d.next_action)}`)
+  }
+  return { ok: problems.length === 0, detail: `${r.outcome}${decided}${problems.length ? ': ' + problems.join('; ') : ''}` }
 }
 
 let failed = 0
@@ -154,6 +176,13 @@ for (const pep of [DROP_APPROVAL_PEP, CHANGED_ID_PEP, CHANGED_TIMESTAMP_PEP, IN_
 // Control 4: a PEP whose first request differs from its later ones, fresh per case.
 const alternating = sending.map(c => ({ id: c.id, ...run(c, makeAlternatingPep(), correct) }))
 checkControl('alternating-extra-member', alternating, vectors.negative_controls.alternating_pep.declared_to_fail)
+
+// Control 5: deciders that skip the declared policy or deny everything, on every case that expects a decision.
+const deciding = vectors.cases.filter(c => c.expected.decision !== undefined)
+for (const [decider, key] of [[APPROVAL_ONLY_DECIDER, 'approval_only_decider'], [ALWAYS_DENY_DECIDER, 'always_deny_decider']] as const) {
+  const r = deciding.map(c => ({ id: c.id, ...run(c, PEPS[c.pep], correct, decider) }))
+  checkControl(decider.name, r, vectors.negative_controls[key].declared_to_fail)
+}
 
 console.log()
 if (failed > 0) { console.log('FAILED'); process.exit(1) }
