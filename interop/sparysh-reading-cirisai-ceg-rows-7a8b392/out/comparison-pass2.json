@@ -1,0 +1,1636 @@
+{
+ "rows": [
+  {
+   "description": "A null member.",
+   "expected": "invalid:malformed:ceg-value",
+   "id": "c-01ff72f6e1f1",
+   "level": "statement",
+   "ours": "invalid:malformed:x",
+   "section": "refusals",
+   "source_id": "null_member",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-061404c6389e",
+   "level": "value",
+   "ours": [
+    "row",
+    "adc376f3b632de3ca02e1b6597d37c8143147c2f4287c8d0df9ecf0ee3bda9fc"
+   ],
+   "section": "references",
+   "source_id": "row_ref_not_a_digest",
+   "verdict": "differ"
+  },
+  {
+   "description": "As rotation_b2_as_b, records inserted in the reverse order.",
+   "expected": "valid",
+   "id": "c-074678d83bd4",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_b2_as_b_reverse_order",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "B's record has no valid_until on a node: the key, and the statement, are Invalid.",
+   "expected": "invalid:key_not_valid",
+   "id": "c-08624a8a480f",
+   "level": "statement",
+   "ours": "invalid:key_not_valid",
+   "section": "key_directory",
+   "source_id": "record_breaks_end_rule",
+   "verdict": "agree"
+  },
+  {
+   "description": "iss whose 43rd character carries trailing bits.",
+   "expected": "invalid:malformed:iss",
+   "id": "c-09dc7605e788",
+   "level": "statement",
+   "ours": "invalid:malformed:iss",
+   "section": "refusals",
+   "source_id": "iss_bad_last_char",
+   "verdict": "agree"
+  },
+  {
+   "description": "A row type outside the five.",
+   "expected": "invalid:malformed:row-type",
+   "id": "c-0bdbefb18480",
+   "level": "statement",
+   "ours": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "section": "refusals",
+   "source_id": "unknown_row_type",
+   "verdict": "differ"
+  },
+  {
+   "id": "c-0ce8a198963b",
+   "level": "family",
+   "source_id": "other_signer_no_role",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: B's self-signed record, B2's record naming it (B2's and B's statements), a later self-signed record of B (asserted at T0+50), and B3's record (asserted at T0+11) naming that later record, with B3's and B's statements.",
+   "expected": "valid",
+   "id": "c-0e67f9060cdf",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_rival_names_uncovered_record",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "A disclosure whose digest the payload does not carry.",
+   "expected": "invalid:disclosure_unmatched",
+   "id": "c-10e6c7928482",
+   "level": "statement",
+   "ours": "invalid:set_order:list",
+   "readings": [
+    "R-SET-OUTSIDE-REFS"
+   ],
+   "section": "refusals",
+   "source_id": "disclosure_unmatched",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-1186466d9159",
+   "level": "family",
+   "source_id": "v_key_record_voice_alone",
+   "verdict": "not_read"
+  },
+  {
+   "description": null,
+   "expected": [
+    "key",
+    null
+   ],
+   "id": "c-12b24e140058",
+   "level": "value",
+   "ours": [
+    "key",
+    "4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23"
+   ],
+   "section": "references",
+   "source_id": "key_b",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by A with iss A; records: B's self-signed record only.",
+   "expected": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "id": "c-15f3d86f2ade",
+   "level": "statement",
+   "ours": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "section": "cases",
+   "source_id": "a_not_held_records",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-15ff05877dcb",
+   "level": "family",
+   "source_id": "v_leaf_counted_with_author",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-17e1eafafb6a",
+   "level": "family",
+   "source_id": "v_accord_lifecycle_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": "valid_until equal to asserted_at.",
+   "expected": "ok",
+   "id": "c-19c274e6ad6b",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "node_at_asserted",
+   "verdict": "agree"
+  },
+  {
+   "description": "hardware_class without pq_custody: carried (the consumer weighs it at 0.0), not refused.",
+   "expected": "ok",
+   "id": "c-1a10f371fa8a",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "pq_custody_missing",
+   "verdict": "agree"
+  },
+  {
+   "description": "A pseudonym may carry valid_until.",
+   "expected": "ok",
+   "id": "c-1ac663701449",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "pseudonym_with_end",
+   "verdict": "agree"
+  },
+  {
+   "description": "A text label in the unprotected header.",
+   "expected": "invalid:unexpected:unprotected",
+   "id": "c-1ba27c0ac8c8",
+   "level": "statement",
+   "ours": "invalid:unexpected:unprotected",
+   "section": "refusals",
+   "source_id": "unprotected_text_label",
+   "verdict": "agree"
+  },
+  {
+   "description": "An empty refs map.",
+   "expected": "invalid:malformed:refs",
+   "id": "c-1bdf94c158c6",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "refs_empty",
+   "verdict": "agree"
+  },
+  {
+   "description": "cty carries parameters.",
+   "expected": "invalid:malformed:cty",
+   "id": "c-1c0c7f363cac",
+   "level": "statement",
+   "ours": "invalid:malformed:cty",
+   "section": "refusals",
+   "source_id": "cty_with_parameters",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: A's and B's self-signed records and B2's record naming A's record, with B2's statement (iss B) and A's statement (iss B).",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-1d42ababb975",
+   "level": "statement",
+   "ours": "invalid:key_not_valid",
+   "section": "cases",
+   "source_id": "rotation_cosigned_by_another_key",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: B's self-signed record, B2's record naming it and B3's record naming it, each with its own and B's statements.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-2229fcafeb5f",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_contested",
+   "verdict": "differ"
+  },
+  {
+   "description": "A counted row (no author, on group:roster, counted in CC's model) with refs, a salt, nbf/exp and both redaction forms.",
+   "expected": "valid",
+   "id": "c-2236534a442a",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-REGISTRY",
+    "R-STEP9-AUTHOR"
+   ],
+   "section": "valid",
+   "source_id": "counted_with_refs",
+   "value_checks": {
+    "iss": true,
+    "kid_hex": true,
+    "row_id_hex": true,
+    "statement_id_hex": true
+   },
+   "verdict": "agree"
+  },
+  {
+   "description": "An empty further_heads set (a set is non-empty; absence is its one encoding).",
+   "expected": "invalid:malformed:further_heads",
+   "id": "c-227ae979e0c0",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "refs_empty_set",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-239cadc972fa",
+   "level": "family",
+   "source_id": "v_when_role_admitted",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-26911e4f7f65",
+   "level": "family",
+   "source_id": "v_act_group_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": null,
+   "expected": [
+    "row",
+    "4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5"
+   ],
+   "id": "c-269d9aadb935",
+   "level": "value",
+   "ours": [
+    "digest",
+    "4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5"
+   ],
+   "section": "references",
+   "source_id": "row_id_of_vector",
+   "verdict": "differ"
+  },
+  {
+   "id": "c-27cb80d2aaad",
+   "level": "family",
+   "source_id": "authored_without_author",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-28652c18e745",
+   "level": "family",
+   "source_id": "v_licensure_act_withheld",
+   "verdict": "not_read"
+  },
+  {
+   "description": "-70002 absent.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-2982161d8cfb",
+   "level": "statement",
+   "ours": "invalid:malformed:family-id",
+   "readings": [
+    "R-MISSING-MEMBER"
+   ],
+   "section": "refusals",
+   "source_id": "no_family",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "node, one millisecond past the bound.",
+   "expected": "key_record_out_of_window",
+   "id": "c-2b958707565b",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "node_one_ms_over",
+   "verdict": "differ"
+  },
+  {
+   "id": "c-2de82291e4eb",
+   "level": "family",
+   "source_id": "v_leaf_authored_without_author",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: B's self-signed record and B2's record naming it, with B2's statement only.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-2e1360b72546",
+   "level": "statement",
+   "ours": "waiting:statement-of:4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23-over:2a366c87660e6c97addc62974cad1f6d7bc8b445ad5b38c71916429576fb7110",
+   "section": "cases",
+   "source_id": "rotation_without_predecessor_statement",
+   "verdict": "differ"
+  },
+  {
+   "description": "node, one second past the bound.",
+   "expected": "key_record_out_of_window",
+   "id": "c-2e1b43e00f55",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "node_one_second_over",
+   "verdict": "differ"
+  },
+  {
+   "description": "An authored scores row signed by its author.",
+   "expected": "valid",
+   "id": "c-2e5d93ca0e7d",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN"
+   ],
+   "section": "valid",
+   "source_id": "authored_score",
+   "value_checks": {
+    "iss": true,
+    "kid_hex": true,
+    "row_id_hex": true,
+    "statement_id_hex": true
+   },
+   "verdict": "agree"
+  },
+  {
+   "description": "A disclosure of a member its map already holds.",
+   "expected": "invalid:disclosure_unmatched",
+   "id": "c-2e7b9ee8a2e9",
+   "level": "statement",
+   "ours": "invalid:set_order:list",
+   "readings": [
+    "R-SET-OUTSIDE-REFS"
+   ],
+   "section": "refusals",
+   "source_id": "disclosure_key_present",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "-70001 absent.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-2fe4a2ee5b39",
+   "level": "statement",
+   "ours": "invalid:malformed:row-type",
+   "readings": [
+    "R-MISSING-MEMBER",
+    "R-ROWTYPE"
+   ],
+   "section": "refusals",
+   "source_id": "no_row_type",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-324b94c6c9fc",
+   "level": "family",
+   "source_id": "v_selector_undetermined",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by C with iss A and author A; records: A's self-signed record and a record of C signed by A with iss A, without C's statement.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-35e612add6a0",
+   "level": "statement",
+   "ours": "invalid:kid_not_of_iss",
+   "readings": [
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "record_by_other_key_only",
+   "verdict": "agree"
+  },
+  {
+   "description": "further_heads out of order.",
+   "expected": "invalid:set_order:further_heads",
+   "id": "c-3a5c2f7d4258",
+   "level": "statement",
+   "ours": "invalid:set_order:further_heads",
+   "section": "refusals",
+   "source_id": "refs_unsorted_set",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-3bc6d6266104",
+   "level": "family",
+   "source_id": "v_key_record_act_withheld",
+   "verdict": "not_read"
+  },
+  {
+   "description": "valid_until present, exp absent.",
+   "expected": "invalid:time:exp",
+   "id": "c-3c5225fa93e4",
+   "level": "statement",
+   "ours": "invalid:time:exp",
+   "section": "refusals",
+   "source_id": "exp_missing",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-40cf4a994152",
+   "level": "family",
+   "source_id": "a_iss_a_author_b_family",
+   "verdict": "not_read"
+  },
+  {
+   "description": "A row-ref tuple with its members swapped: [id, edition].",
+   "expected": "invalid:malformed:head",
+   "id": "c-478d7d4dd103",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "row_ref_tuple_reversed",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "Signed by room key R with iss R and author R; records: R's self-signed record (identity_type room).",
+   "expected": "valid",
+   "id": "c-48762166da25",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB"
+   ],
+   "section": "cases",
+   "source_id": "room_key_self",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "One digest carried twice.",
+   "expected": "invalid:duplicate_digest",
+   "id": "c-48cefe1b9571",
+   "level": "statement",
+   "ours": "invalid:set_order:list",
+   "readings": [
+    "R-SET-OUTSIDE-REFS"
+   ],
+   "section": "refusals",
+   "source_id": "digest_repeated",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "ceg-row/2 is not an object typ.",
+   "expected": "invalid:malformed:typ",
+   "id": "c-48de6f8518f1",
+   "level": "object",
+   "ours": "invalid:malformed:cty",
+   "section": "objects",
+   "source_id": "row_typ_as_object",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "A valid statement whose key is not held: Waiting on its kid.",
+   "expected": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "id": "c-4ae13dc87157",
+   "level": "statement",
+   "ours": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "section": "refusals",
+   "source_id": "waiting_on_key",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-4bee3dae5799",
+   "level": "family",
+   "source_id": "g_licensure_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": "iat is not floor(asserted_at / 1000).",
+   "expected": "invalid:time:iat",
+   "id": "c-4e0dafdde8a0",
+   "level": "statement",
+   "ours": "invalid:time:iat",
+   "section": "refusals",
+   "source_id": "iat_disagrees",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by C with iss B and author B; records: B's self-signed record and C's record signed by C with iss B, naming no predecessor.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-4f070977aa40",
+   "level": "statement",
+   "ours": "invalid:key_not_valid",
+   "section": "cases",
+   "source_id": "unrelated_key_claims_iss",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-513122490c1c",
+   "level": "family",
+   "source_id": "v_group_seats_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": "A hash-digest under an algorithm other than -16.",
+   "expected": "invalid:malformed:head",
+   "id": "c-52514e44bdf2",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "row_ref_other_hash",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-52ee2dcdbaf6",
+   "level": "family",
+   "source_id": "g_key_record_counted",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-5315190be683",
+   "level": "family",
+   "source_id": "counted_with_author",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-569d2af02a22",
+   "level": "family",
+   "source_id": "v_key_record_predecessor_not_from_payload",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-5780f0377f45",
+   "level": "family",
+   "source_id": "attested_key",
+   "verdict": "not_read"
+  },
+  {
+   "description": "A set mixing user and node.",
+   "expected": "key_record_mixed_roles",
+   "id": "c-58e47c6eb5fc",
+   "level": "payload",
+   "ours": "key_record_mixed_roles",
+   "readings": [
+    "R-MIXED-FIRST"
+   ],
+   "section": "key_records",
+   "source_id": "mixed_user_node",
+   "verdict": "agree"
+  },
+  {
+   "description": "A CBOR float in the payload.",
+   "expected": "invalid:not_deterministic:payload",
+   "id": "c-5b39a639d6af",
+   "level": "statement",
+   "ours": "invalid:not_deterministic:payload",
+   "readings": [
+    "R-DET-ORDER"
+   ],
+   "section": "refusals",
+   "source_id": "float_member",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: B's self-signed record and B2's record naming it, with B's statement only.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-5c1ad414d1b8",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_without_own_statement",
+   "verdict": "differ"
+  },
+  {
+   "id": "c-5c1fb3c5f5f2",
+   "level": "family",
+   "source_id": "v_identity_node_authored",
+   "verdict": "not_read"
+  },
+  {
+   "description": "score below -10^6.",
+   "expected": "invalid:malformed:score",
+   "id": "c-5ff2dc8476f6",
+   "level": "statement",
+   "ours": "invalid:malformed:score",
+   "section": "refusals",
+   "source_id": "score_below_range",
+   "verdict": "agree"
+  },
+  {
+   "description": "-70001 on a non-row object.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-6132f8215005",
+   "level": "object",
+   "ours": "invalid:unexpected:protected",
+   "section": "objects",
+   "source_id": "object_with_row_type",
+   "verdict": "agree"
+  },
+  {
+   "description": "The same disclosure presented twice.",
+   "expected": "invalid:disclosure_unmatched",
+   "id": "c-62a126edf4dc",
+   "level": "statement",
+   "ours": "invalid:set_order:list",
+   "readings": [
+    "R-SET-OUTSIDE-REFS"
+   ],
+   "section": "refusals",
+   "source_id": "disclosure_twice",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "Signed by B2 with iss B and author B; records: B's self-signed record and B2's record naming it in refs.target, with B2's statement and B's statement (iss B) over it.",
+   "expected": "valid",
+   "id": "c-63523cc66c4c",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_b2_as_b",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by A with iss B and author B; records: A's and B's self-signed records.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-63f847167c76",
+   "level": "statement",
+   "ours": "invalid:kid_not_of_iss",
+   "readings": [
+    "R-KID-BY-SUB"
+   ],
+   "section": "cases",
+   "source_id": "a_iss_b_records",
+   "verdict": "agree"
+  },
+  {
+   "description": "An also role outside {ack, cites}.",
+   "expected": "invalid:unexpected:also",
+   "id": "c-64855174d1d9",
+   "level": "statement",
+   "ours": "invalid:unexpected:also",
+   "section": "refusals",
+   "source_id": "also_unknown_role",
+   "verdict": "agree"
+  },
+  {
+   "description": "A role outside both groups takes no end rule.",
+   "expected": "ok",
+   "id": "c-6598a610e39a",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "steward_no_end_rule",
+   "verdict": "agree"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-6614ee351325",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "identity_ref_trailing_bits",
+   "verdict": "agree"
+  },
+  {
+   "description": "edition claim 1.",
+   "expected": "invalid:malformed:edition",
+   "id": "c-66518ba8e00f",
+   "level": "statement",
+   "ours": "invalid:malformed:edition",
+   "section": "refusals",
+   "source_id": "edition_1",
+   "verdict": "agree"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-68b79e6a8cc1",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "bare_hex",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by A with iss A and author A; raw directory holding A.",
+   "expected": "valid",
+   "id": "c-69ca4e0ce09e",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN"
+   ],
+   "section": "cases",
+   "source_id": "a_as_a_raw",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: a later self-signed record of B (not the one named), and B2's record naming B's first record, with B2's and B's statements.",
+   "expected": "waiting:record:bd50ac2a1e10da6aaa2c069ecd3008af7fe084d1034e1fa20746d3db4933346f",
+   "id": "c-69da10372252",
+   "level": "statement",
+   "ours": "waiting:row:bd50ac2a1e10da6aaa2c069ecd3008af7fe084d1034e1fa20746d3db4933346f",
+   "section": "cases",
+   "source_id": "rotation_target_not_held",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "A COSE_Sign1 without tag 18.",
+   "expected": "invalid:not_cose_sign1",
+   "id": "c-6ad83f7a9a4d",
+   "level": "statement",
+   "ours": "invalid:not_cose_sign1",
+   "section": "refusals",
+   "source_id": "untagged",
+   "verdict": "agree"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-6db888385463",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "short_digest",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-6de744a6caf1",
+   "level": "family",
+   "source_id": "v_act_own_counted_refused",
+   "verdict": "not_read"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-6e6391df35bb",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "other_hash_alg",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-6f07ed6e6659",
+   "level": "family",
+   "source_id": "author_signs",
+   "verdict": "not_read"
+  },
+  {
+   "description": "B's record signed by A, A's self-signed: Valid.",
+   "expected": "valid",
+   "id": "c-77582ed206e4",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB"
+   ],
+   "section": "key_directory",
+   "source_id": "held_through_chain",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "id": "c-78bb280fc1a6",
+   "level": "family",
+   "source_id": "v_author_signs",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B3 with iss B; records: B's self-signed record, B2's record naming it (B2's and B's statements), B3's record naming B2's (B3's and B2's statements, iss B).",
+   "expected": "valid",
+   "id": "c-79486ac657b8",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB",
+    "R-ROTATION"
+   ],
+   "section": "cases",
+   "source_id": "rotation_two_hops",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "As rotation_two_hops without B2's rotation record.",
+   "expected": "waiting:kid:bd27864d58303131cc36fae29c51457d56a32e2bb999d1d4df50227fe255ac10",
+   "id": "c-7b56d87cb09c",
+   "level": "statement",
+   "ours": "waiting:row:2a366c87660e6c97addc62974cad1f6d7bc8b445ad5b38c71916429576fb7110",
+   "section": "cases",
+   "source_id": "rotation_two_hops_middle_missing",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-7b6ac882a5e6",
+   "level": "family",
+   "source_id": "g_key_record_authored_as_group",
+   "verdict": "not_read"
+  },
+  {
+   "description": "The ML-DSA half signed with the empty FIPS 204 context.",
+   "expected": "invalid:bad_signature",
+   "id": "c-7c6401d61045",
+   "level": "statement",
+   "ours": "invalid:bad_signature",
+   "section": "refusals",
+   "source_id": "ml_dsa_empty_ctx",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-8115ca480761",
+   "level": "family",
+   "source_id": "v_delegate_is_sub",
+   "verdict": "not_read"
+  },
+  {
+   "description": "dimension resolves to evidence:.suite:.kind:.cell:.prefix; the header says conscience:coherence.",
+   "expected": "invalid:dimension_family",
+   "id": "c-830683e0e32f",
+   "level": "statement",
+   "ours": "invalid:dimension_family",
+   "readings": [
+    "R-REGISTRY"
+   ],
+   "section": "refusals",
+   "source_id": "dimension_other_family",
+   "verdict": "agree"
+  },
+  {
+   "description": "score above 10^6.",
+   "expected": "invalid:malformed:score",
+   "id": "c-84167e2cf683",
+   "level": "statement",
+   "ours": "invalid:malformed:score",
+   "section": "refusals",
+   "source_id": "score_out_of_range",
+   "verdict": "agree"
+  },
+  {
+   "description": "cty on a non-row object.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-8463a46c5c80",
+   "level": "object",
+   "ours": "invalid:unexpected:protected",
+   "section": "objects",
+   "source_id": "object_with_cty",
+   "verdict": "agree"
+  },
+  {
+   "description": "asserted_at absent.",
+   "expected": "invalid:malformed:asserted_at",
+   "id": "c-8596ef032579",
+   "level": "statement",
+   "ours": "invalid:malformed:asserted_at",
+   "section": "refusals",
+   "source_id": "no_asserted_at",
+   "verdict": "agree"
+  },
+  {
+   "description": "agent with no valid_until (the private-room exception fails closed).",
+   "expected": "key_record_out_of_window",
+   "id": "c-897c29f78ddd",
+   "level": "payload",
+   "ours": "key_record_out_of_window",
+   "section": "key_records",
+   "source_id": "agent_without_end",
+   "verdict": "agree"
+  },
+  {
+   "description": "v1's valid row naming five earlier-form objects by edition-1 row-refs (target the key record, cites all five), unchanged: no row of this form names the earlier form; refused at also.",
+   "expected": "invalid:malformed:also",
+   "id": "c-8b862cdecacf",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "names_earlier_form",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "attestation_evidence that is not a map.",
+   "expected": "key_record_bad_pq_custody",
+   "id": "c-8e233744eff5",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "attestation_evidence_not_map",
+   "verdict": "differ"
+  },
+  {
+   "description": "accord:lifecycle:confirmed:v1 resolves to accord:lifecycle:.kind; a header of accord:. is refused.",
+   "expected": "invalid:dimension_family",
+   "id": "c-8f18ebdef3db",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-STEP9-AUTHOR"
+   ],
+   "section": "refusals",
+   "source_id": "dimension_less_specific_header",
+   "verdict": "differ"
+  },
+  {
+   "description": "The protected header carries crit.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-8fa5ce4804eb",
+   "level": "statement",
+   "ours": "invalid:unexpected:protected",
+   "section": "refusals",
+   "source_id": "extra_protected_member",
+   "verdict": "agree"
+  },
+  {
+   "description": "Signed by A with iss A; raw directory holding nothing.",
+   "expected": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "id": "c-909c00272f2f",
+   "level": "statement",
+   "ours": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+   "section": "cases",
+   "source_id": "a_not_held_raw",
+   "verdict": "agree"
+  },
+  {
+   "description": "A target row-ref of edition 1 naming an earlier-form key record (CDDL: the edition is the constant 2).",
+   "expected": "invalid:malformed:target",
+   "id": "c-9141e9ee4a7f",
+   "level": "statement",
+   "ours": "invalid:malformed:refs",
+   "section": "refusals",
+   "source_id": "row_ref_edition_1",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "-70002 well formed but not registered.",
+   "expected": "invalid:unregistered_family",
+   "id": "c-91bb6f489dba",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-REGISTRY",
+    "R-STEP9-AUTHOR"
+   ],
+   "section": "refusals",
+   "source_id": "family_unregistered",
+   "verdict": "differ"
+  },
+  {
+   "description": "Signed by B with iss B and author B; records: A's and B's self-signed records.",
+   "expected": "valid",
+   "id": "c-93644e7648f9",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB"
+   ],
+   "section": "cases",
+   "source_id": "b_as_b_records",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "description": "The COSE_Sign1 array head in a two-byte form.",
+   "expected": "invalid:not_deterministic:statement",
+   "id": "c-945422b76bd8",
+   "level": "statement",
+   "ours": "invalid:not_deterministic:statement",
+   "readings": [
+    "R-DET-ORDER"
+   ],
+   "section": "refusals",
+   "source_id": "long_array_head",
+   "verdict": "agree"
+  },
+  {
+   "description": "An accord holder's key: hardware_class names the Ed25519 half, pq_custody removable_offline (CC 4.2.2).",
+   "expected": "ok",
+   "id": "c-9688405b1b4d",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "pq_custody_removable_offline",
+   "verdict": "agree"
+  },
+  {
+   "description": "identity_type not sorted.",
+   "expected": "key_record_bad_identity_type",
+   "id": "c-98f295fffa8c",
+   "level": "payload",
+   "ours": "malformed:identity_type",
+   "readings": [
+    "R-IDTYPE-SET"
+   ],
+   "section": "key_records",
+   "source_id": "roles_unsorted",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "-70002 on a non-row object.",
+   "expected": "invalid:unexpected:protected",
+   "id": "c-9b4f9f26b4cc",
+   "level": "object",
+   "ours": "invalid:unexpected:protected",
+   "section": "objects",
+   "source_id": "object_with_family",
+   "verdict": "agree"
+  },
+  {
+   "description": "node, valid_until exactly asserted_at + 365 days.",
+   "expected": "ok",
+   "id": "c-9d0656481226",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "node_at_bound",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-9da56dc55a7c",
+   "level": "family",
+   "source_id": "v_identity_user_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": "The payload map's keys out of bytewise order.",
+   "expected": "invalid:not_deterministic:payload",
+   "id": "c-a1d502a28a89",
+   "level": "statement",
+   "ours": "invalid:not_deterministic:payload",
+   "readings": [
+    "R-DET-ORDER"
+   ],
+   "section": "refusals",
+   "source_id": "payload_keys_unsorted",
+   "verdict": "agree"
+  },
+  {
+   "description": "pq_custody outside the three values.",
+   "expected": "key_record_bad_pq_custody",
+   "id": "c-a2207994da64",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "pq_custody_unknown",
+   "verdict": "differ"
+  },
+  {
+   "description": "A family id with an upper-case letter.",
+   "expected": "invalid:malformed:family-id",
+   "id": "c-a324db596b16",
+   "level": "statement",
+   "ours": "invalid:malformed:family-id",
+   "readings": [
+    "R-MISSING-MEMBER"
+   ],
+   "section": "refusals",
+   "source_id": "family_leaf_uppercase",
+   "verdict": "agree"
+  },
+  {
+   "description": "A closed vocab segment with an unregistered value.",
+   "expected": "invalid:dimension_refused:namespace_vocab_value_unregistered",
+   "id": "c-a3428bcd497d",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN"
+   ],
+   "section": "refusals",
+   "source_id": "dimension_refused_by_matcher",
+   "verdict": "differ"
+  },
+  {
+   "description": "Signed by A with iss B and author B; raw directory holding A and B.",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-a37031749c85",
+   "level": "statement",
+   "ours": "waiting:key-record-of:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463@urn:ietf:params:oauth:ckt:sha-256:TjkwzcxCJYXe8Of_OiKEuHShc9mC2cS0IwRkf5PZnyM",
+   "readings": [
+    "R-RAW-WAIT"
+   ],
+   "section": "cases",
+   "source_id": "a_iss_b_raw",
+   "verdict": "differ"
+  },
+  {
+   "description": "An sd_claims disclosure with a 15-byte salt.",
+   "expected": "invalid:malformed:sd-disclosure",
+   "id": "c-a5a0c5f996bd",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN"
+   ],
+   "section": "refusals",
+   "source_id": "disclosure_short_salt",
+   "verdict": "differ"
+  },
+  {
+   "id": "c-a9fce2e32686",
+   "level": "family",
+   "source_id": "v_key_record_second_signer_no_target",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-ab178120d5b6",
+   "level": "family",
+   "source_id": "v_when_role_member_absent",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B with iss B and author B; raw directory holding B.",
+   "expected": "valid",
+   "id": "c-ad900e0395af",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN"
+   ],
+   "section": "cases",
+   "source_id": "b_as_b_raw",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "id": "c-aded448812b2",
+   "level": "family",
+   "source_id": "v_act_own_authored",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-b0744ed89ab9",
+   "level": "family",
+   "source_id": "v_leaf_authored",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-b31404cf0fb6",
+   "level": "family",
+   "source_id": "delegate_named",
+   "verdict": "not_read"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-b33f7b4ff56b",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "identity_ref_42_chars",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-b4621276103a",
+   "level": "family",
+   "source_id": "v_leaf_counted",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-b7380cbb18d4",
+   "level": "family",
+   "source_id": "g_several_rows",
+   "verdict": "not_read"
+  },
+  {
+   "description": "confidence below 0.",
+   "expected": "invalid:malformed:confidence",
+   "id": "c-b9b8d14b5ff9",
+   "level": "statement",
+   "ours": "invalid:malformed:confidence",
+   "section": "refusals",
+   "source_id": "confidence_negative",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-ba88f6cd7403",
+   "level": "family",
+   "source_id": "v_act_withheld",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-babf4292ea0c",
+   "level": "family",
+   "source_id": "delegate_names_other",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-bb4699dadaa4",
+   "level": "family",
+   "source_id": "unregistered_family",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-bb8d231ce84e",
+   "level": "family",
+   "source_id": "v_act_derived_own",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-bbb95cc91e63",
+   "level": "family",
+   "source_id": "v_when_role_not_holding",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: B2's rotation record with B2's and B's statements; B's own record not held.",
+   "expected": "waiting:kid:4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23",
+   "id": "c-c0bf1c2c9a3e",
+   "level": "statement",
+   "ours": "waiting:row:bd50ac2a1e10da6aaa2c069ecd3008af7fe084d1034e1fa20746d3db4933346f",
+   "section": "cases",
+   "source_id": "rotation_genesis_not_held",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "A typ outside the closed set.",
+   "expected": "invalid:malformed:typ",
+   "id": "c-c61053e0b115",
+   "level": "object",
+   "ours": "invalid:malformed:typ",
+   "section": "objects",
+   "source_id": "object_unknown_typ",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-c6ad354d8eca",
+   "level": "family",
+   "source_id": "v_when_role_unknown",
+   "verdict": "not_read"
+  },
+  {
+   "description": "accord_holder carrying valid_until.",
+   "expected": "key_record_out_of_window",
+   "id": "c-c703dc340a1f",
+   "level": "payload",
+   "ours": "key_record_out_of_window",
+   "section": "key_records",
+   "source_id": "accord_holder_with_end",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-c8c2cdb9ba5b",
+   "level": "family",
+   "source_id": "v_owner_of_sub_not_a_member",
+   "verdict": "not_read"
+  },
+  {
+   "id": "c-caf13c5986eb",
+   "level": "family",
+   "source_id": "v_no_dimension_undetermined",
+   "verdict": "not_read"
+  },
+  {
+   "description": null,
+   "expected": [
+    "neither",
+    null
+   ],
+   "id": "c-cd0ddfc85436",
+   "level": "value",
+   "ours": [
+    "neither",
+    null
+   ],
+   "section": "references",
+   "source_id": "identity_ref_sha512",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-cef1393791bd",
+   "level": "family",
+   "source_id": "v_counted_with_author",
+   "verdict": "not_read"
+  },
+  {
+   "description": "user with no valid_until.",
+   "expected": "ok",
+   "id": "c-d2275122d150",
+   "level": "payload",
+   "ours": "ok",
+   "readings": [
+    "R-MAXSECS"
+   ],
+   "section": "key_records",
+   "source_id": "user_without_end",
+   "verdict": "agree"
+  },
+  {
+   "description": "body.note and an array element blinded, both disclosed in sd_claims.",
+   "expected": "valid",
+   "id": "c-d39de2b15dbe",
+   "level": "statement",
+   "ours": "invalid:set_order:list",
+   "readings": [
+    "R-SET-OUTSIDE-REFS"
+   ],
+   "section": "valid",
+   "source_id": "disclosed",
+   "verdict": "differ"
+  },
+  {
+   "description": null,
+   "expected": [
+    "row",
+    "adc376f3b632de3ca02e1b6597d37c8143147c2f4287c8d0df9ecf0ee3bda9fc"
+   ],
+   "id": "c-d640ff377753",
+   "level": "value",
+   "ours": [
+    "digest",
+    "adc376f3b632de3ca02e1b6597d37c8143147c2f4287c8d0df9ecf0ee3bda9fc"
+   ],
+   "section": "references",
+   "source_id": "row_id",
+   "verdict": "differ"
+  },
+  {
+   "description": "The counted row above signed by a second key, a second voice: same row id, another statement id.",
+   "expected": "valid",
+   "id": "c-dbf7949ddfa8",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-REGISTRY",
+    "R-STEP9-AUTHOR"
+   ],
+   "section": "valid",
+   "source_id": "second_voice",
+   "value_checks": {
+    "iss": true,
+    "kid_hex": true,
+    "row_id_hex": true,
+    "statement_id_hex": true
+   },
+   "verdict": "agree"
+  },
+  {
+   "id": "c-dc4408df654c",
+   "level": "family",
+   "source_id": "dimension_missing",
+   "verdict": "not_read"
+  },
+  {
+   "description": "A revocation snapshot's header: no cty, no -70001/-70002, no iat.",
+   "expected": "valid",
+   "id": "c-e362eaa87b67",
+   "level": "object",
+   "ours": "valid",
+   "section": "objects",
+   "source_id": "revocation_snapshot_header",
+   "value_checks": {
+    "object_id_hex": true,
+    "statement_id_hex": true
+   },
+   "verdict": "agree"
+  },
+  {
+   "description": "user carrying valid_until.",
+   "expected": "key_record_out_of_window",
+   "id": "c-e39af313e474",
+   "level": "payload",
+   "ours": "key_record_out_of_window",
+   "section": "key_records",
+   "source_id": "user_with_end",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-e8e6e26e99cb",
+   "level": "family",
+   "source_id": "v_delegate_not_sub",
+   "verdict": "not_read"
+  },
+  {
+   "description": "B's record is signed by G, whom nobody holds: the statement waits on G, the deepest key.",
+   "expected": "waiting:kid:3b1adf0d6418248db5214e17379d85b8debc51b89a2e55ae0e46792f50d7e10f",
+   "id": "c-eb5aea86598e",
+   "level": "statement",
+   "ours": "waiting:kid:3b1adf0d6418248db5214e17379d85b8debc51b89a2e55ae0e46792f50d7e10f",
+   "section": "key_directory",
+   "source_id": "deep_waiting",
+   "verdict": "agree"
+  },
+  {
+   "description": "further_heads repeats an element.",
+   "expected": "invalid:set_order:further_heads",
+   "id": "c-f08fd3340819",
+   "level": "statement",
+   "ours": "invalid:set_order:further_heads",
+   "section": "refusals",
+   "source_id": "refs_duplicate",
+   "verdict": "agree"
+  },
+  {
+   "description": null,
+   "expected": [
+    "key",
+    null
+   ],
+   "id": "c-f200abf82b32",
+   "level": "value",
+   "ours": [
+    "key",
+    "d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463"
+   ],
+   "section": "references",
+   "source_id": "key_a",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-f2857bf7131b",
+   "level": "family",
+   "source_id": "v_when_role_member_named",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by B2 with iss B; records: A's and B's self-signed records and B2's record naming A's record in refs.target, with B2's and B's statements (iss B).",
+   "expected": "invalid:kid_not_of_iss",
+   "id": "c-f2fedbf46f9e",
+   "level": "statement",
+   "ours": "invalid:key_not_valid",
+   "section": "cases",
+   "source_id": "rotation_names_another_record",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "id": "c-f4827f4efd0a",
+   "level": "family",
+   "source_id": "v_licensure_own",
+   "verdict": "not_read"
+  },
+  {
+   "description": "Signed by A with iss A and author A; records: A's and B's self-signed records.",
+   "expected": "valid",
+   "id": "c-f543da184bb3",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB"
+   ],
+   "section": "cases",
+   "source_id": "a_as_a_records",
+   "value_checks": {},
+   "verdict": "agree"
+  },
+  {
+   "id": "c-f5487bfaac38",
+   "level": "family",
+   "source_id": "v_counted",
+   "verdict": "not_read"
+  },
+  {
+   "description": "One signature byte flipped.",
+   "expected": "invalid:bad_signature",
+   "id": "c-f6cb3136a273",
+   "level": "statement",
+   "ours": "invalid:bad_signature",
+   "section": "refusals",
+   "source_id": "bad_signature",
+   "verdict": "agree"
+  },
+  {
+   "id": "c-f76d3fda6777",
+   "level": "family",
+   "source_id": "v_false_beats_unknown",
+   "verdict": "not_read"
+  },
+  {
+   "description": "valid_until before asserted_at.",
+   "expected": "key_record_out_of_window",
+   "id": "c-f86175a4f133",
+   "level": "payload",
+   "ours": "key_record_out_of_window",
+   "section": "key_records",
+   "source_id": "node_before_asserted",
+   "verdict": "agree"
+  },
+  {
+   "description": "A dimension no registered family claims.",
+   "expected": "invalid:dimension_unregistered",
+   "id": "c-f9e3af56a15e",
+   "level": "statement",
+   "ours": "invalid:dimension_family",
+   "readings": [
+    "R-REGISTRY"
+   ],
+   "section": "refusals",
+   "source_id": "dimension_open_vocabulary",
+   "verdict": "same_class_other_reason"
+  },
+  {
+   "description": "A statement asserted after the held record's valid_until: no held record of B covers the instant, so it waits on one that does (CC 2.4.1.1: retryable).",
+   "expected": "waiting:covering_record:4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23:1763200001001",
+   "id": "c-fe02f57a9d3e",
+   "level": "statement",
+   "ours": "valid",
+   "readings": [
+    "R-DIM-UNKNOWN",
+    "R-KID-BY-SUB"
+   ],
+   "section": "key_directory",
+   "source_id": "after_valid_until",
+   "verdict": "differ"
+  }
+ ],
+ "summary": {
+  "family/not_read": 47,
+  "object/agree": 5,
+  "object/same_class_other_reason": 1,
+  "payload/agree": 12,
+  "payload/differ": 4,
+  "payload/same_class_other_reason": 1,
+  "statement/agree": 43,
+  "statement/differ": 11,
+  "statement/same_class_other_reason": 19,
+  "value/agree": 8,
+  "value/differ": 3
+ }
+}

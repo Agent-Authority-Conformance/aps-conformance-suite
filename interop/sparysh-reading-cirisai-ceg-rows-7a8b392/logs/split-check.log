@@ -1,0 +1,16 @@
+$ sha256sum vectors/row_statements_v3.json vectors/key_of_iss_v1.json
+0c072516dea1d89132567e0f343ca47a2183df79697651685aa557d739cdf920  vectors/row_statements_v3.json
+bd584d9b31b7271dc86c05a29eec75044b5fe74aae8dd586701a227f09001333  vectors/key_of_iss_v1.json
+[exit 0]
+
+$ python3 -I split.py --source vectors --check
+split: 154 cases, 6 public keys; compared
+[exit 0]
+
+$ sha256sum -c CHECKSUMS.sha256
+inputs/cases.json: OK
+inputs/keys.json: OK
+inputs/family_model.json: OK
+expected.json: OK
+split.py: OK
+[exit 0]

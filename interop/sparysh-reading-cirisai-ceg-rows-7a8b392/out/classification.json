@@ -1,0 +1,314 @@
+[
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-01ff72f6e1f1",
+  "level": "statement",
+  "source_id": "null_member",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "vocabulary",
+  "finding": "F09",
+  "id": "c-061404c6389e",
+  "level": "value",
+  "source_id": "row_ref_not_a_digest",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F01",
+  "id": "c-0bdbefb18480",
+  "level": "statement",
+  "source_id": "unknown_row_type",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-10e6c7928482",
+  "level": "statement",
+  "source_id": "disclosure_unmatched",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "reading",
+  "finding": "F05",
+  "id": "c-1d42ababb975",
+  "level": "statement",
+  "source_id": "rotation_cosigned_by_another_key",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F03",
+  "id": "c-2229fcafeb5f",
+  "level": "statement",
+  "source_id": "rotation_contested",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-227ae979e0c0",
+  "level": "statement",
+  "source_id": "refs_empty_set",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "vocabulary",
+  "finding": "F09",
+  "id": "c-269d9aadb935",
+  "level": "value",
+  "source_id": "row_id_of_vector",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F02",
+  "id": "c-2982161d8cfb",
+  "level": "statement",
+  "source_id": "no_family",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-2b958707565b",
+  "level": "payload",
+  "source_id": "node_one_ms_over",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F04",
+  "id": "c-2e1360b72546",
+  "level": "statement",
+  "source_id": "rotation_without_predecessor_statement",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-2e1b43e00f55",
+  "level": "payload",
+  "source_id": "node_one_second_over",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-2e7b9ee8a2e9",
+  "level": "statement",
+  "source_id": "disclosure_key_present",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "reading",
+  "finding": "F02",
+  "id": "c-2fe4a2ee5b39",
+  "level": "statement",
+  "source_id": "no_row_type",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-478d7d4dd103",
+  "level": "statement",
+  "source_id": "row_ref_tuple_reversed",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-48cefe1b9571",
+  "level": "statement",
+  "source_id": "digest_repeated",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "omission",
+  "finding": null,
+  "id": "c-48de6f8518f1",
+  "level": "object",
+  "source_id": "row_typ_as_object",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "reading",
+  "finding": "F05",
+  "id": "c-4f070977aa40",
+  "level": "statement",
+  "source_id": "unrelated_key_claims_iss",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-52514e44bdf2",
+  "level": "statement",
+  "source_id": "row_ref_other_hash",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F03",
+  "id": "c-5c1ad414d1b8",
+  "level": "statement",
+  "source_id": "rotation_without_own_statement",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-62a126edf4dc",
+  "level": "statement",
+  "source_id": "disclosure_twice",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "naming",
+  "finding": "F04",
+  "id": "c-69da10372252",
+  "level": "statement",
+  "source_id": "rotation_target_not_held",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "reading",
+  "finding": "F04",
+  "id": "c-7b56d87cb09c",
+  "level": "statement",
+  "source_id": "rotation_two_hops_middle_missing",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-8b862cdecacf",
+  "level": "statement",
+  "source_id": "names_earlier_form",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "omission",
+  "finding": "F07",
+  "id": "c-8e233744eff5",
+  "level": "payload",
+  "source_id": "attestation_evidence_not_map",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-8f18ebdef3db",
+  "level": "statement",
+  "source_id": "dimension_less_specific_header",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-9141e9ee4a7f",
+  "level": "statement",
+  "source_id": "row_ref_edition_1",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-91bb6f489dba",
+  "level": "statement",
+  "source_id": "family_unregistered",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "naming",
+  "finding": "F07",
+  "id": "c-98f295fffa8c",
+  "level": "payload",
+  "source_id": "roles_unsorted",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "omission",
+  "finding": "F07",
+  "id": "c-a2207994da64",
+  "level": "payload",
+  "source_id": "pq_custody_unknown",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-a3428bcd497d",
+  "level": "statement",
+  "source_id": "dimension_refused_by_matcher",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F04",
+  "id": "c-a37031749c85",
+  "level": "statement",
+  "source_id": "a_iss_b_raw",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "omission",
+  "finding": null,
+  "id": "c-a5a0c5f996bd",
+  "level": "statement",
+  "source_id": "disclosure_short_salt",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F04",
+  "id": "c-c0bf1c2c9a3e",
+  "level": "statement",
+  "source_id": "rotation_genesis_not_held",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-d39de2b15dbe",
+  "level": "statement",
+  "source_id": "disclosed",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "vocabulary",
+  "finding": "F09",
+  "id": "c-d640ff377753",
+  "level": "value",
+  "source_id": "row_id",
+  "verdict_pass2": "differ"
+ },
+ {
+  "category": "reading",
+  "finding": "F05",
+  "id": "c-f2fedbf46f9e",
+  "level": "statement",
+  "source_id": "rotation_names_another_record",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F08",
+  "id": "c-f9e3af56a15e",
+  "level": "statement",
+  "source_id": "dimension_open_vocabulary",
+  "verdict_pass2": "same_class_other_reason"
+ },
+ {
+  "category": "not_in_draft",
+  "finding": "F06",
+  "id": "c-fe02f57a9d3e",
+  "level": "statement",
+  "source_id": "after_valid_until",
+  "verdict_pass2": "differ"
+ }
+]

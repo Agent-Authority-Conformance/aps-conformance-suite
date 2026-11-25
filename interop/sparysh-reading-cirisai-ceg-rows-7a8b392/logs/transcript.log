@@ -1,0 +1,59 @@
+$ python3 -I -c import sys; sys.path.insert(0,'reader'); import ceg_reader_pass1 as R; R.main('fetched/inputs/cases.json','fetched/inputs/keys.json','rerun/answers-pass1.json')
+[exit 0]
+
+$ python3 -I -c import sys; sys.path.insert(0,'reader'); import ceg_reader_pass2 as R; R.main('fetched/inputs/cases.json','fetched/inputs/keys.json','rerun/answers-pass2.json')
+[exit 0]
+
+$ python3 -I -c import sys; sys.path.insert(0,'reader'); import ceg_reader_pass3 as R; R.main('fetched/inputs/cases.json','fetched/inputs/keys.json','rerun/answers-pass3.json')
+[exit 0]
+
+$ python3 -I reader/compare.py rerun/answers-pass2.json fetched/sealed/expected.json fetched/inputs/cases.json rerun/comparison-pass2.json
+  47  family     not_read
+   5  object     agree
+   1  object     same_class_other_reason
+  12  payload    agree
+   4  payload    differ
+   1  payload    same_class_other_reason
+  43  statement  agree
+  11  statement  differ
+  19  statement  same_class_other_reason
+   8  value      agree
+   3  value      differ
+[exit 0]
+
+$ python3 -I reader/compare.py rerun/answers-pass3.json fetched/sealed/expected.json fetched/inputs/cases.json rerun/comparison-pass3.json
+  47  family     not_read
+   6  object     agree
+  12  payload    agree
+   2  payload    differ
+   3  payload    same_class_other_reason
+  43  statement  agree
+  10  statement  differ
+  20  statement  same_class_other_reason
+   8  value      agree
+   3  value      differ
+[exit 0]
+
+$ env PYTHONPATH=reader python3 -B reader/b1_check.py fetched/draft/draft-moore-scitt-ciris-ceg-03.txt
+payload: 236 bytes, deterministic: True
+row id input: 382 bytes; starts with the draft's prefix: True; then 58ec
+row id: 4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5
+draft:  4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5
+match
+[exit 0]
+
+$ cmp rerun/answers-pass1.json out/answers-pass1.json
+[exit 0]
+
+$ cmp rerun/answers-pass2.json out/answers-pass2.json
+[exit 0]
+
+$ cmp rerun/answers-pass3.json out/answers-pass3.json
+[exit 0]
+
+$ cmp rerun/comparison-pass2.json out/comparison-pass2.json
+[exit 0]
+
+$ cmp rerun/comparison-pass3.json out/comparison-pass3.json
+[exit 0]
+
