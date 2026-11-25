@@ -4,11 +4,15 @@
 Run from this directory: python3 gen.py
 Deterministic: every derived key comes from a published label, ECDSA
 signatures use RFC 6979. A second run produces the same bytes.
+Two families: `vectors` (TQB-01 to TQB-06, a quote over a key thumbprint) and
+`bound_key_vectors` (TQB-07 to TQB-16, a TPM2_Certify of a TPM key and a DPoP
+proof that key signed, both over verifier challenges).
 """
 import hashlib, json, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tpmq
+import boundkey as bk
 
 PREFIX = 'aps-conformance-suite:tactiq-tpm-bound-key:'
 # AK name from the signed AK registration record (source repository, rc13 and rc14 L3 evidence).
@@ -25,6 +29,78 @@ def rd(p):
 def wr(p, b):
     with open(p, 'wb') as f:
         f.write(b)
+
+
+def nonce(path):
+    return rd(path).decode().strip()
+
+
+def bound_key_vectors(ak):
+    """TQB-07 to TQB-16 from the 2026-11-25 board evidence in source/bk.* and source/xk.*."""
+    n1, n2, n3 = nonce('source/n1.hex'), nonce('source/n2.hex'), nonce('source/n3.hex')
+    bpub, bmsg, bsig = rd('source/bk.pub'), rd('source/bk.certify.msg'), rd('source/bk.certify.sig')
+    xpub, xmsg, xsig = rd('source/xk.pub'), rd('source/xk.certify.msg'), rd('source/xk.certify.sig')
+    jwt = rd('source/bk.pop.jwt').decode().strip()
+    for pub, msg, sig, n in ((bpub, bmsg, bsig, n1), (xpub, xmsg, xsig, n3)):
+        a = bk.parse_certify(msg)
+        assert tpmq.verify_sig(ak, msg, sig) and a['type'] == bk.TPM_ST_ATTEST_CERTIFY
+        assert a['extra'].hex() == n and a['name'] == tpmq.name(pub)
+    hdr, pl, ok = bk.jws_verify(jwt)
+    assert ok and hdr['jwk'] == bk.jwk_of(bpub) and pl['nonce'] == n2
+    jkt = bk.ec_thumbprint(bk.jwk_of(bpub))
+
+    # TQB-09: the certify of the board key signed instead by the software AK of TQB-03.
+    sk = tpmq.p256_key(PREFIX + 'unregistered-ak')
+    wr('derived/tqb09.sig', tpmq.sign_tpmt(sk, bmsg))
+    # TQB-10: one byte of the certified name changed, AK signature kept.
+    a = bk.parse_certify(bmsg)
+    m = bytearray(bmsg); m[a['name_off'] + 10] ^= 0x01
+    wr('derived/tqb10.msg', bytes(m))
+    # TQB-13: one claim of the DPoP payload changed, signature kept.
+    h, p, sg = jwt.split('.')
+    pl2 = dict(pl, htm='GET')
+    wr('derived/tqb13.jwt', ('.'.join([h, bk.b64u(json.dumps(pl2, separators=(',', ':')).encode()), sg]) + '\n').encode())
+    # TQB-14: a valid DPoP proof over the same challenge from a software key with its own JWK.
+    other = tpmq.p256_key(PREFIX + 'other-pop-key')
+    wr('derived/tqb14.jwt', (bk.jws_sign(other, dict(hdr, jwk=bk.jwk_of_key(other)), pl) + '\n').encode())
+    other_jkt = bk.ec_thumbprint(bk.jwk_of_key(other))
+
+    good = {'ak': 'source/ak.pub', 'key': 'source/bk.pub',
+            'certify': {'msg': 'source/bk.certify.msg', 'sig': 'source/bk.certify.sig'},
+            'pop': 'source/bk.pop.jwt', 'grant_cnf_jkt': jkt.hex(),
+            'challenge': {'certify': n1, 'pop': n2}}
+
+    def vec(vid, title, verdict, reason, **over):
+        v = json.loads(json.dumps(good))
+        for k, val in over.items():
+            v[k] = val
+        return dict({'id': vid, 'title': title}, **v, expected={'verdict': verdict, 'reason': reason})
+
+    return [
+        vec('TQB-07-control', 'TPM key certified by the registered AK over the certify challenge, DPoP proof signed by it over the proof challenge, grant bound to its thumbprint',
+            'accept', 'all_checks_passed'),
+        vec('TQB-08-exportable-key-certified', 'key created on the board without fixedTPM and fixedParent, honestly certified by the same AK over its own challenge',
+            'reject', 'key_exportable', key='source/xk.pub',
+            certify={'msg': 'source/xk.certify.msg', 'sig': 'source/xk.certify.sig'},
+            challenge={'certify': n3, 'pop': n2}),
+        vec('TQB-09-certify-by-unregistered-ak', 'same certify bytes signed by the software AK of TQB-03, not registered',
+            'reject', 'ak_not_registered', ak='derived/unregistered-ak.pub',
+            certify={'msg': 'source/bk.certify.msg', 'sig': 'derived/tqb09.sig'}),
+        vec('TQB-10-certified-name-edited', 'one byte of the certified name changed, AK signature kept',
+            'reject', 'certify_signature_invalid', certify={'msg': 'derived/tqb10.msg', 'sig': 'source/bk.certify.sig'}),
+        vec('TQB-11-certify-replayed', 'the certify of TQB-07 presented to a verifier whose challenge was another value',
+            'reject', 'certify_challenge_mismatch', challenge={'certify': n3, 'pop': n2}),
+        vec('TQB-12-key-not-the-certified-one', 'certify of the board key presented with the public area of a different key from the same TPM',
+            'reject', 'key_not_certified', key='source/xk.pub'),
+        vec('TQB-13-proof-payload-edited', 'one claim of the DPoP payload changed, signature kept',
+            'reject', 'proof_signature_invalid', pop='derived/tqb13.jwt'),
+        vec('TQB-14-proof-from-another-key', 'valid DPoP proof over the right challenge, signed by a software key that carries its own JWK',
+            'reject', 'proof_key_not_certified_key', pop='derived/tqb14.jwt'),
+        vec('TQB-15-proof-replayed', 'the DPoP proof of TQB-07 presented to a verifier whose proof challenge was another value',
+            'reject', 'proof_challenge_mismatch', challenge={'certify': n1, 'pop': n3}),
+        vec('TQB-16-grant-bound-to-another-key', 'evidence and proof valid, grant bound to the thumbprint of another key',
+            'reject', 'key_not_bound', grant_cnf_jkt=other_jkt.hex()),
+    ]
 
 
 def main():
@@ -93,6 +169,7 @@ def main():
         vec('TQB-06-same-device-changed-state', 'same device and AK, measured boot state differs from the reference the grant was issued against',
             'source/ak.pub', q15p, tpmq.thumbprint(WORKLOAD_X), ref02, 'source/q02', 'reject', 'state_mismatch', 'verifies'),
     ]
+    bound = bound_key_vectors(ak)
     doc = {
         'candidate': 'tactiq-tpm-bound-key',
         'trust': {'registered_ak_name': REGISTERED_AK_NAME,
@@ -100,10 +177,11 @@ def main():
         'reference_pcrs': REF_PCRS,
         'seed_prefix': PREFIX,
         'vectors': vectors,
+        'bound_key_vectors': bound,
     }
     with open('vectors.json', 'w') as f:
         json.dump(doc, f, indent=2); f.write('\n')
-    print(f'wrote {len(vectors)} vectors')
+    print(f'wrote {len(vectors)} quote vectors and {len(bound)} bound-key vectors')
 
 
 if __name__ == '__main__':

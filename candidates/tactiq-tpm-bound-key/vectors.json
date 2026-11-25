@@ -209,5 +209,207 @@
         "tpm2_checkquote": "verifies"
       }
     }
+  ],
+  "bound_key_vectors": [
+    {
+      "id": "TQB-07-control",
+      "title": "TPM key certified by the registered AK over the certify challenge, DPoP proof signed by it over the proof challenge, grant bound to its thumbprint",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "accept",
+        "reason": "all_checks_passed"
+      }
+    },
+    {
+      "id": "TQB-08-exportable-key-certified",
+      "title": "key created on the board without fixedTPM and fixedParent, honestly certified by the same AK over its own challenge",
+      "ak": "source/ak.pub",
+      "key": "source/xk.pub",
+      "certify": {
+        "msg": "source/xk.certify.msg",
+        "sig": "source/xk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "ae6515f4b3e2cb0c5edab0b8cab1f1445fafc6c67f85cdc115501863abaaa50e",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "key_exportable"
+      }
+    },
+    {
+      "id": "TQB-09-certify-by-unregistered-ak",
+      "title": "same certify bytes signed by the software AK of TQB-03, not registered",
+      "ak": "derived/unregistered-ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "derived/tqb09.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "ak_not_registered"
+      }
+    },
+    {
+      "id": "TQB-10-certified-name-edited",
+      "title": "one byte of the certified name changed, AK signature kept",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "derived/tqb10.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "certify_signature_invalid"
+      }
+    },
+    {
+      "id": "TQB-11-certify-replayed",
+      "title": "the certify of TQB-07 presented to a verifier whose challenge was another value",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "ae6515f4b3e2cb0c5edab0b8cab1f1445fafc6c67f85cdc115501863abaaa50e",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "certify_challenge_mismatch"
+      }
+    },
+    {
+      "id": "TQB-12-key-not-the-certified-one",
+      "title": "certify of the board key presented with the public area of a different key from the same TPM",
+      "ak": "source/ak.pub",
+      "key": "source/xk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "key_not_certified"
+      }
+    },
+    {
+      "id": "TQB-13-proof-payload-edited",
+      "title": "one claim of the DPoP payload changed, signature kept",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "derived/tqb13.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "proof_signature_invalid"
+      }
+    },
+    {
+      "id": "TQB-14-proof-from-another-key",
+      "title": "valid DPoP proof over the right challenge, signed by a software key that carries its own JWK",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "derived/tqb14.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "proof_key_not_certified_key"
+      }
+    },
+    {
+      "id": "TQB-15-proof-replayed",
+      "title": "the DPoP proof of TQB-07 presented to a verifier whose proof challenge was another value",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "bda43da2ff61cfd7c81f0a564106f777377fe2d873c0b5a9ed6ec00f58353a2d",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "ae6515f4b3e2cb0c5edab0b8cab1f1445fafc6c67f85cdc115501863abaaa50e"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "proof_challenge_mismatch"
+      }
+    },
+    {
+      "id": "TQB-16-grant-bound-to-another-key",
+      "title": "evidence and proof valid, grant bound to the thumbprint of another key",
+      "ak": "source/ak.pub",
+      "key": "source/bk.pub",
+      "certify": {
+        "msg": "source/bk.certify.msg",
+        "sig": "source/bk.certify.sig"
+      },
+      "pop": "source/bk.pop.jwt",
+      "grant_cnf_jkt": "0a4e2b8b0e14ff879ad7042618f4cd583d443c78934553dabb7bb23c9375e50f",
+      "challenge": {
+        "certify": "e113b510dfb6cd589b486edc441c8954f8aa65369e1062dd16ccb2ffbd97958a",
+        "pop": "40f0175bbdb9ae99e2cc3e667b6fce19f400a4a19dfa19d1e8b463a522d1a509"
+      },
+      "expected": {
+        "verdict": "reject",
+        "reason": "key_not_bound"
+      }
+    }
   ]
 }

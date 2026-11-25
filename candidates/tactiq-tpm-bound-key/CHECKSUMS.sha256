@@ -1,14 +1,29 @@
 # SHA-256 of the evidence copied from revenue7-eng/tactiq-os at
-# ce65daec5d5352c2d8bd65bd6a3a25b4a65d4bec (source/) and of the files gen.py
-# derives from it (derived/). Paths relative to this directory.
+# ce65daec5d5352c2d8bd65bd6a3a25b4a65d4bec (source/ak.pub, q02.*, q15.*) and at
+# b033444fa8f4da41b9d08d0d5e43251cfc4fde99 (source/bk.*, xk.*, n*.hex), and of the
+# files gen.py derives from it (derived/). Paths relative to this directory.
 7305eb2f5c44527681eefff026fcfbd86a98ecbe0565a2b12c721ecd3d4a04bd  source/ak.pub
+44bb5627dc0bb4c950bf42c70abf031e676c031c51a4b3edf09dd94a5b616c6b  source/bk.certify.msg
+4edfbde6219686efd9331721c01e9a1cb92baa1f0853f1f08f2486d1edff6518  source/bk.certify.sig
+b6b855465c9af62e750aca888f758fd7078211bea3c975aab264e2a1a69ded51  source/bk.pop.jwt
+3f5fc5c0de992e458ff97a25c573937669477f5f29eff298e5d0e69d5a58c983  source/bk.pub
+99c49287e21d0fa4161a50b392eef9c7e3b021e80a5fc5351598802ac10bb709  source/n1.hex
+8327ec7d86e71e1c0c01dbbf874f6825e291787dff6d579d19ffa590af5b3c74  source/n2.hex
+a5676ea4dbad128e2c96ee2b57f31ebc21014c0905394eb0972fa177b33b6dc7  source/n3.hex
 70221fd9ae77ccdecd641db2b24f8314a0b6199c87b4944092bf576ea29701bd  source/q02.msg
 96028ab534c6e325ca9b7d234e354eefa8c1762df56f5244e46c67d716d52766  source/q02.pcr
 1cb4db423189eaca45501c340b08f205f7ed86d680f8080f96dbfdd7a7aa5141  source/q02.sig
 d3e2a352ebe51431b077ec853c469f2b5e6e09106c5b09a4a2eabba7b8c1bdad  source/q15.msg
 b4b18805e70cdff4dc5795ce231f16ee991ec855931ef9d183820573cd3ff6fc  source/q15.pcr
 612bd81b47f8f8f0a1804bdb8b267946475e5d233cc6ca9f6d978f1c65ee6beb  source/q15.sig
+20d165902b73d68d7dc84dc44293bfbf52131b5b8f33e805d125e47338cd4992  source/xk.certify.msg
+f6f336a26e5094c6b2b954481d6050eff8edff984a45da44686a7e7f1f2e87bd  source/xk.certify.sig
+c1ea0fdd2b382f4799c6de4722229d54226d4fd51312cef7195ed24d9cabeac7  source/xk.pub
 ab85648a53a84b4dc98c639b0252b486af8da9dffe0df4cd19b99255165ade88  derived/tqb03.sig
 e5c7fcafa0ffbaa00b1d11598d5ce6897fde8702e900e8f3968e6cb2c159faa4  derived/tqb04.msg
 79de6d3c3001bb6cbba80d40b9a8639a281eb9cc62ffe9085b8ea318604eddb2  derived/tqb05.pcr
+204cd532fd831b0438fcb3cb3ef95fc7303788d2b6f236e2659b27617e984928  derived/tqb09.sig
+81c686727173353ceb066364b281f294df53fd5ba3230d185971db97165f4492  derived/tqb10.msg
+9272b30224865a67dda405e6a9be188dcac21d00fd6c4ac89725ad3b695f68ad  derived/tqb13.jwt
+146e76340e5dd138af44c7e31db0ef946180e63d47791b25c919369b35d48f91  derived/tqb14.jwt
 23975b4ba9f89ae2da21d3c22b9db590e6112c1fef288ffa8e47fa9c9da85587  derived/unregistered-ak.pub
