@@ -1,0 +1,39 @@
+{
+  "candidate": "abisheakp197-stolen-key-cannot-self-report-measurement",
+  "harness_note": "Each case is an invocation of TrustEngine::evaluate_with_measurement at the pinned source. The declared measurement travels inside the signed request; the observed measurement is supplied by the caller, standing in for the enforcement point.",
+  "cases": [
+    {
+      "id": "SK-00",
+      "name": "attested matching measurement is allowed",
+      "role": "positive control",
+      "bound_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_declared_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_signature": "valid, generated key",
+      "observed_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "expected_decision": "Allow",
+      "rationale": "The control that distinguishes a correct denial suite from an engine that denies everything."
+    },
+    {
+      "id": "SK-01",
+      "name": "stolen key with a self-declared matching measurement, no observation",
+      "role": "negative",
+      "bound_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_declared_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_signature": "valid, generated key (the attacker holds the key)",
+      "observed_measurement": null,
+      "expected_decision": "Deny",
+      "rationale": "A caller-supplied claim about its own workload must never satisfy the binding, even when it matches the registered value and is correctly signed."
+    },
+    {
+      "id": "SK-02",
+      "name": "stolen key, observation contradicts the declaration",
+      "role": "negative",
+      "bound_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_declared_measurement": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "request_signature": "valid, generated key (the attacker holds the key)",
+      "observed_measurement": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "expected_decision": "Deny",
+      "rationale": "The observed measurement overrides what the request claims."
+    }
+  ]
+}
