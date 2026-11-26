@@ -1,0 +1,10 @@
+{"kind":"directory_practices","source":"/v1/practices","latency_seconds":{"bound":300,"status_list_refresh":10,"without_status_check":300}}
+{"case":"AG3-01 wider-than-parent refused","expected":"refused","observed":"refused: exceeds_parent_authority","pass":true}
+{"case":"AG3-02a child within its own limit","expected":"allow","observed":"allow","pass":true}
+{"case":"AG3-02b child above its limit, below parent","expected":"deny","observed":"deny [\"amount 80 USD exceeds authorized limit 50 USD\"]","pass":true}
+{"case":"RV1-01a parent purchase after its authorization is revoked","expected":"deny","observed":"error invalid_grant []","pass":true}
+{"case":"RV1-01b parent registration still issues IDs","expected":"ID issued","observed":"ID issued","pass":true}
+{"case":"AG3-03 child purchase after parent authorization revoked","expected":"deny","observed":"deny [\"authorization not accepted: grant is INVALID\"]","pass":true,"note":"reading of AG-3 \"no broader\", not stated in those words"}
+{"case":"RV2-00 child allowed before parent revoked (control)","expected":"allow","observed":"allow","pass":true}
+{"case":"RV1-02 child gets no new ID after parent registration revoked","expected":"refused","observed":"refused: registration_inactive","pass":true}
+{"case":"RV2-01 shop refuses the child within the published latency","expected":"refused within bound","observed":"refused after 4 ms: deny [\"registration no longer active (revoked or expired)\"]","pass":true,"note":"compare with latency_seconds.bound above"}
