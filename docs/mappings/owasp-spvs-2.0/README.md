@@ -2,7 +2,7 @@
 
 Provisional example, open for review. Passing this example does not establish that a pipeline meets SPVS v2.0-V3.10.2 or any SPVS level.
 
-v2.0-V3.10.2 (Sub-Agent Permission Bounding, L3) asks that sub-agents are technically prevented from operating with permissions beyond those explicitly delegated at invocation. This example tests one part of that. A sub-agent receives limited authority when it is invoked. One enforcement point allows a write inside that authority and refuses seven attempts to write outside it, two of them while the sub-agent also holds a valid standing grant that covers the pipeline file. The test checks the authorization decision and the resource separately, and checks that each refused write never executes.
+v2.0-V3.10.2 (Sub-Agent Permission Bounding, L3) asks that sub-agents are technically prevented from operating with permissions beyond those explicitly delegated at invocation. This example tests one part of that. A sub-agent receives limited authority when it is invoked. One enforcement point allows a write inside that authority and refuses eight attempts to write outside it, three of them while the sub-agent also holds a valid standing grant that covers the pipeline file. In a separate invocation that relies on the standing grant, the same pipeline edit is allowed. The test checks the authorization decision and the resource separately, and checks that each refused write never executes.
 
 ## What happens
 
@@ -22,11 +22,15 @@ v2.0-V3.10.2 (Sub-Agent Permission Bounding, L3) asks that sub-agents are techni
 | R5 | Present a root the sub-agent issued to itself | deny, `chain_invalid` with `ROOT_UNTRUSTED` | stays v1 |
 | R6 | Write `src/app.js`, a path the policy does not map | deny, `path_unmapped` | stays v1 |
 | R7 | Write the pipeline file presenting both the invocation delegation and the standing grant | deny, `scope_not_covered` | stays v1 |
+| R7b | As R7, with the two grants presented in reverse order | deny, `scope_not_covered` | stays v1 |
 | R8 | Write the pipeline file presenting only the standing grant | deny, `not_invocation_delegation` | stays v1 |
+| R9 | In a separate invocation whose delegation is the standing grant, write the pipeline file presenting the standing grant | allow, `ok` | changes from v1 to v2 |
 
-The run also checks that the standing grant's chain verifies as `valid` and that it covers the pipeline file, so R7 and R8 are refused because of the invocation and not because the standing grant is broken. If either check fails, the run exits 1.
+R9 is the positive control for the standing grant. It shows that refusing it in the documentation invocation does not invalidate it everywhere. R9 runs last because it changes the pipeline file.
 
-R7 and R8 follow a reading of question 3 in OWASP/www-project-spvs#37 offered by a participant who is not a maintainer: a sub-agent's permissions for one invocation are those delegated for it, whatever other grants it holds. The maintainers have not confirmed that reading.
+The run also checks that the standing grant's chain verifies as `valid` and that it covers the pipeline file, so R7, R7b and R8 are refused because of the invocation and not because the standing grant is broken. If either check fails, the run exits 1.
+
+R7, R7b, R8 and R9 follow a reading of question 3 in OWASP/www-project-spvs#37 offered by a participant who is not a maintainer: a sub-agent's permissions for one invocation are those delegated for it, whatever other grants it holds. The maintainers have not confirmed that reading.
 
 For every request the test also checks the exact decision reason, the target file's contents, and that no other file changed and no new file appeared. An allowed request must call the executor once and a refused one must not call it.
 
@@ -41,7 +45,7 @@ Exit 0 means every expectation held. Each request produces a `decision` line and
 
 ## Checks that the example can fail
 
-Each of these single changes to the enforcement point or executor was run on 2026-11-19 (UTC), and each run exits 1. The last one was added after review found that the earlier check missed a new file. The requests that catch it are listed. The rows marked 2026-11-26 were run on that date (UTC) against the version with R7 and R8. For those rows the first failing request is listed, since a wrong write also makes later requests fail.
+Each of these single changes to the enforcement point or executor was run on 2026-11-19 (UTC), and each run exits 1. The last one was added after review found that the earlier check missed a new file. The requests that catch it are listed. The rows marked 2026-11-26 were run on that date (UTC) against the version with R7 to R9. For those rows the first failing request is listed, since a wrong write also makes later requests fail.
 
 | Change | Caught by |
 |---|---|
@@ -59,6 +63,8 @@ Each of these single changes to the enforcement point or executor was run on 202
 | 2026-11-26: Skip the invocation check, so any valid chain the sub-agent holds is accepted | R8 |
 | 2026-11-26: Take coverage from the union of all presented chains | R7 |
 | 2026-11-26: Evaluate the last presented chain instead of the one issued for this invocation | R7 |
+| 2026-11-26: Evaluate the first presented chain instead of the one issued for this invocation | R7b |
+| 2026-11-26: Ignore the invocation a request belongs to and always use the documentation invocation | R9 |
 | 2026-11-26: Skip the scope check (rerun on this version) | R2 |
 
 ## Limits
