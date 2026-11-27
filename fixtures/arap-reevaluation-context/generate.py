@@ -16,13 +16,23 @@ MFA_RULES = BASE_RULES + [{"member": "mfa_session", "input": "session.mfa", "whe
 T1 = "2026-04-30T20:43:00Z"
 
 
-def record(context, bound):
-    return {"id": APPROVAL["id"], "taskId": "task-001", "subject": SUBJ, "resource": RES, "action": ACT,
+def record(context, bound, resource=RES, action=ACT):
+    return {"id": APPROVAL["id"], "taskId": "task-001", "subject": SUBJ, "resource": resource, "action": action,
             "context": context, "boundContextMembers": bound,
             "approvedAt": APPROVAL["approved_at"], "approvedUntil": APPROVAL["approved_until"], "status": "active"}
 
 
 REC = record({"project": "customer-renewal", "time": "2026-04-30T20:15:00Z"}, ["project"])
+# R8 and R8b: a payment approval that binds beneficiary and amount. fraud_status is a current
+# observation the ordinary rules always send. It is not bound, so the approval still applies
+# when it changes, and the deployment's declared fraud rule decides.
+PAY_RULES = [{"member": "beneficiary", "input": "payment.beneficiary"}, {"member": "amount", "input": "payment.amount"},
+             {"member": "fraud_status", "input": "risk.fraud_status"}, {"member": "time", "input": "now"}]
+PAY_RES = {"type": "payment", "id": "pay-7781"}
+PAY_ACT = {"name": "can_execute"}
+REC_PAY = record({"beneficiary": "acct-A", "amount": "100.00", "fraud_status": "clear", "time": "2026-04-30T20:15:00Z"},
+                 ["beneficiary", "amount"], PAY_RES, PAY_ACT)
+FRAUD_POLICY = [{"member": "fraud_status", "deny_when_equals": "alert", "reason": "policy_denied"}]
 REC_MFA = record({"project": "customer-renewal", "time": "2026-04-30T20:15:00Z", "mfa_session": "mfa-7f3"}, ["project", "mfa_session"])
 
 
@@ -62,11 +72,24 @@ CASES = [
          "approval-reevaluation-request (824, 826), approval-scope (982)", "ordinary-rules", MFA_RULES,
          {"task.project": "customer-renewal", "now": T1, "session.active": False, "session.mfa": "mfa-7f3"},
          REC_MFA, T1, "request", "out_of_scope", "request", True),
+    case("R8", "bound beneficiary and amount still match, the unbound fraud status changed from clear to alert: the approval applies and the declared fraud rule denies",
+         "pdp-verify (942), reevaluation-denials policy_denied (621), completion-semantics (585)", "ordinary-rules", PAY_RULES,
+         {"payment.beneficiary": "acct-A", "payment.amount": "100.00", "risk.fraud_status": "alert", "now": T1},
+         REC_PAY, T1, "request", "approval_applies", None, True,
+         decision="deny", decision_reason="policy_denied", decision_next_action="none"),
+    case("R8b", "positive control for R8: the same approval, request and declared fraud rule with the fraud status clear: the approval applies and the decision is allow",
+         "pdp-verify (942)", "ordinary-rules", PAY_RULES,
+         {"payment.beneficiary": "acct-A", "payment.amount": "100.00", "risk.fraud_status": "clear", "now": T1},
+         REC_PAY, T1, "request", "approval_applies", None, True,
+         decision="allow", decision_reason=None, decision_next_action=None),
 ]
+for _c in CASES:
+    if _c["id"] in ("R8", "R8b"):
+        _c["policy"] = FRAUD_POLICY
 
 VECTORS = {
     "family": "arap-reevaluation-context",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "status": "candidate against a proposed, unmerged pull request",
     "source": {
         "repository": "openid/authzen",
@@ -88,21 +111,32 @@ VECTORS = {
         },
         "approval_tampering_peps": {
             "applies_to": "every ordinary-rules case that sends a request, rerun with each of four PEPs: drop-approval, changed-approval-id, changed-approval-timestamp, in-place-approval-rewrite",
-            "declared_to_fail": ["R1", "R3", "R4", "R6", "R7"],
+            "declared_to_fail": ["R1", "R3", "R4", "R6", "R7", "R8", "R8b"],
             "defect": ("Leaves the approval out, changes its id, rewrites approved_until in a copy, or rewrites approved_at "
                        "in place on the object it was handed, which 822 rules out. The runner compares the emitted approval "
                        "with its own pristine copy and passes the emitted one to the PDP."),
         },
         "alternating_pep": {
             "applies_to": "every ordinary-rules case that sends a request, with a fresh alternating PEP per case",
-            "declared_to_fail": ["R1", "R3", "R4", "R6", "R7"],
+            "declared_to_fail": ["R1", "R3", "R4", "R6", "R7", "R8", "R8b"],
             "defect": ("Its first request carries a member no ordinary rule produces and its later requests are clean. "
                        "The member is unbound, so the PDP outcome does not change. The runner calls the PEP once and "
                        "runs the member-set test on that emitted request."),
         },
+        "approval_only_decider": {
+            "applies_to": "every case that declares a policy and an expected decision",
+            "declared_to_fail": ["R8"],
+            "defect": ("Allows whenever the approval applies and never evaluates the declared current policy, "
+                       "which 942 rules out: approval does not override policy conditions at enforcement time."),
+        },
+        "always_deny_decider": {
+            "applies_to": "every case that declares a policy and an expected decision",
+            "declared_to_fail": ["R8b"],
+            "defect": "Denies every re-evaluation. It passes R8 for the wrong reason, and the positive control catches it.",
+        },
         "approval_only_pep": {
             "applies_to": "every ordinary-rules case, rerun with the approval-only PEP",
-            "declared_to_fail": ["R1", "R3", "R4", "R5", "R6", "R7"],
+            "declared_to_fail": ["R1", "R3", "R4", "R5", "R6", "R7", "R8", "R8b"],
             "defect": ("Builds re-evaluation Context from the approval and time only, which 824 rules out. "
                        "In R3 and R7 the PDP outcome is the same either way, and the member-set comparison still catches it."),
         },

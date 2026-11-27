@@ -1,8 +1,8 @@
 {
  "label": "aeoess-presenter-key-possession",
- "revision": 1,
+ "revision": 2,
  "text_status": "RFC 9449 is a published Proposed Standard. The scope check and the axis names are this candidate's representation, not RFC 9449 text",
- "readings": "an outcome is the verifier's answer for one request. Each axis is read on its own, whatever the other axes say",
+ "readings": "an outcome is the verifier's answer for one request. Each axis is read on its own, whatever the other axes say. A case that declares tracks_jti holds the server to decline a (URI, jti) pair it has already seen. That expected result rests on the policy the case declares, because RFC 9449 section 11.1 describes jti tracking as an optional replay defense",
  "now": 1793750400,
  "keys": {
   "agent": {
@@ -866,7 +866,8 @@
    "id": "PK-18",
    "title": "Server tracks jti, proof jti already seen at this URI, accepted",
    "basis": [
-    "11.1"
+    "policy tracks_jti declared by the case",
+    "11.1 describes jti tracking as optional"
    ],
    "rules": [
     "R-SIG",

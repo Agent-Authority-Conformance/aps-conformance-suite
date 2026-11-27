@@ -16,7 +16,9 @@
 //   5. four PEPs that drop or alter the approval, as negative controls for
 //      822's requirement that the approval is included unchanged;
 //   6. a PEP whose first request differs from its later ones, as a negative
-//      control on the runner checking the request actually sent.
+//      control on the runner checking the request actually sent;
+//   7. a decision step for cases that declare a current policy (942), with
+//      an approval-only decider and an always-deny decider as negative controls.
 // None of these is an AuthZEN implementation. Nothing reads wall time.
 
 import {
@@ -175,5 +177,64 @@ export const CHANGED_TIMESTAMP_PEP: Pep = {
   name: 'changed-approval-timestamp',
   buildReevaluation(rules, inputs, approval) {
     return ORDINARY_RULES_PEP.buildReevaluation(rules, inputs, { ...approval, approved_until: '2099-01-01T00:00:00Z' })
+  },
+}
+
+// ── Decision under a declared current policy (R8, R8b) ─────────────
+//
+// 942 (pdp-verify): the PDP evaluates the new request using current policy
+// and the approval reference, and approval does not override policy
+// conditions. 621: `policy_denied` is the reason when the approval is valid
+// and in scope but current policy or risk state denies, with next action
+// `none`. The rule itself (here, a fraud status) is the deployment's, not
+// ARAP's. Cases R1 to R7 declare no policy and expect no decision.
+
+/** One declared current-policy rule: deny while the member has this value. */
+export interface PolicyRule {
+  member: string
+  deny_when_equals: unknown
+  reason: string
+}
+
+export interface Decision {
+  decision: 'allow' | 'deny'
+  reason: string | null
+  next_action: string | null
+}
+
+export interface Decider {
+  readonly name: string
+  decide(approvalOutcome: string, approvalNextAction: string | null, context: AuthzenContext, rules: readonly PolicyRule[]): Decision
+}
+
+/** Reference: the approval must apply, and every declared rule is evaluated on the request's current Context. */
+export const REFERENCE_DECIDER: Decider = {
+  name: 'reference-decider',
+  decide(approvalOutcome, approvalNextAction, context, rules) {
+    if (approvalOutcome !== 'approval_applies') return { decision: 'deny', reason: approvalOutcome, next_action: approvalNextAction }
+    for (const r of rules) {
+      // A rule whose member is missing cannot be evaluated, so the decision is deny.
+      if (!(r.member in context) || structurallyEqual(context[r.member], r.deny_when_equals)) {
+        return { decision: 'deny', reason: r.reason, next_action: 'none' }
+      }
+    }
+    return { decision: 'allow', reason: null, next_action: null }
+  },
+}
+
+/** Negative control: allows whenever the approval applies and never evaluates current policy. */
+export const APPROVAL_ONLY_DECIDER: Decider = {
+  name: 'approval-only-decider',
+  decide(approvalOutcome, approvalNextAction) {
+    if (approvalOutcome !== 'approval_applies') return { decision: 'deny', reason: approvalOutcome, next_action: approvalNextAction }
+    return { decision: 'allow', reason: null, next_action: null }
+  },
+}
+
+/** Negative control: denies every re-evaluation. */
+export const ALWAYS_DENY_DECIDER: Decider = {
+  name: 'always-deny-decider',
+  decide() {
+    return { decision: 'deny', reason: 'policy_denied', next_action: 'none' }
   },
 }

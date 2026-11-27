@@ -1,0 +1,339 @@
+{
+ "label": "aicent-lease-boundary",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "readings": "an outcome is read as the record it presents: the refusal reason and the members it carries are final, and no case asks what the implementation intended",
+ "absent_fields": "an outcome lists the fields its rule reads; a field the rule reads that is missing from the outcome means the response does not carry it (an absent key is not the same as an explicit null)",
+ "field_names": "outcome field names are this candidate's own representation; the source names values and rules, not a JSON binding",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 6.1 (The Lease), 6.2 (Answer Modes), 6.3 (Evaluation at the Moment of Use) and the verification procedure of section 7.2 are used"
+ },
+ "verdicts": [
+  "conformant",
+  "nonconformant",
+  "ambiguous"
+ ],
+ "note_on_this_copy": "blind copy made by the fetch script: per case only basis, input and outcome; identifiers replaced; rule, note, expect and expect_parts withheld until phase 1 is saved",
+ "cases": [
+  {
+   "id": "B01",
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B02",
+   "basis": [
+    "sect-6.2"
+   ],
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B03",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B04",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": null,
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B05",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1250000
+    }
+   }
+  },
+  {
+   "id": "B06",
+   "basis": [
+    "sect-6.1",
+    "sect-7.2"
+   ],
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true,
+    "frame_accepted_at_equality": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B07",
+   "basis": [
+    "sect-6.1",
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": false,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B08",
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "live",
+    "organ_unreachable": true,
+    "cache_fresh": true
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": null
+    }
+   }
+  },
+  {
+   "id": "B09",
+   "basis": [
+    "sect-6.1",
+    "sect-6.3-eval"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B10",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "now_ms": 1200000,
+    "lease_expiry_ms": 1100000,
+    "grace_added": true
+   },
+   "outcome": {
+    "reason": null,
+    "lease_note": "lease treated as extended by a local grace period after issuance",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B11",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "fresh_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  },
+  {
+   "id": "B12",
+   "basis": [
+    "sect-6.2"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "lease_fresh"
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B13",
+   "basis": [
+    "sect-6.2",
+    "sect-8.1"
+   ],
+   "input": {
+    "mode": "cached",
+    "organ_unreachable": true,
+    "cache_fresh": true,
+    "policy": "current"
+   },
+   "outcome": {
+    "reason": "authority_not_determined",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1050
+    }
+   }
+  },
+  {
+   "id": "B14",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "issued_at_ms": 1000000,
+    "lease_expiry_ms": 1300000,
+    "now_ms": 1299000
+   },
+   "outcome": {
+    "reason": null,
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 1250000
+    }
+   }
+  },
+  {
+   "id": "B15",
+   "basis": [
+    "sect-6.1"
+   ],
+   "input": {
+    "declared_boundary": "expired_at_instant",
+    "at_boundary": true
+   },
+   "outcome": {
+    "reason": "evidence_expired",
+    "grant_ref": {
+     "grant": "grant-7f3a",
+     "evidence_id": "ev-0042",
+     "issued_at_ms": 1000000,
+     "expires_at_ms": 9000000,
+     "observation_as_of_ms": 800
+    }
+   }
+  }
+ ]
+}

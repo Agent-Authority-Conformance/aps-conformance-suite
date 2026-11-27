@@ -1,6 +1,6 @@
 {
   "family": "arap-reevaluation-context",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "candidate against a proposed, unmerged pull request",
   "source": {
     "repository": "openid/authzen",
@@ -485,6 +485,166 @@
         "next_action": "request",
         "member_sets_match": true
       }
+    },
+    {
+      "id": "R8",
+      "label": "bound beneficiary and amount still match, the unbound fraud status changed from clear to alert: the approval applies and the declared fraud rule denies",
+      "section": "pdp-verify (942), reevaluation-denials policy_denied (621), completion-semantics (585)",
+      "pep": "ordinary-rules",
+      "rules": [
+        {
+          "member": "beneficiary",
+          "input": "payment.beneficiary"
+        },
+        {
+          "member": "amount",
+          "input": "payment.amount"
+        },
+        {
+          "member": "fraud_status",
+          "input": "risk.fraud_status"
+        },
+        {
+          "member": "time",
+          "input": "now"
+        }
+      ],
+      "inputs": {
+        "payment.beneficiary": "acct-A",
+        "payment.amount": "100.00",
+        "risk.fraud_status": "alert",
+        "now": "2026-04-30T20:43:00Z"
+      },
+      "record": {
+        "id": "apr_01HX4Y8E2NE3Y2X7P0K4JE6WVH",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com"
+        },
+        "resource": {
+          "type": "payment",
+          "id": "pay-7781"
+        },
+        "action": {
+          "name": "can_execute"
+        },
+        "context": {
+          "beneficiary": "acct-A",
+          "amount": "100.00",
+          "fraud_status": "clear",
+          "time": "2026-04-30T20:15:00Z"
+        },
+        "boundContextMembers": [
+          "beneficiary",
+          "amount"
+        ],
+        "approvedAt": "2026-04-30T20:42:00Z",
+        "approvedUntil": "2026-05-01T00:42:00Z",
+        "status": "active"
+      },
+      "approval": {
+        "id": "apr_01HX4Y8E2NE3Y2X7P0K4JE6WVH",
+        "approved_at": "2026-04-30T20:42:00Z",
+        "approved_until": "2026-05-01T00:42:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected": {
+        "build": "request",
+        "outcome": "approval_applies",
+        "next_action": null,
+        "member_sets_match": true,
+        "decision": "deny",
+        "decision_reason": "policy_denied",
+        "decision_next_action": "none"
+      },
+      "policy": [
+        {
+          "member": "fraud_status",
+          "deny_when_equals": "alert",
+          "reason": "policy_denied"
+        }
+      ]
+    },
+    {
+      "id": "R8b",
+      "label": "positive control for R8: the same approval, request and declared fraud rule with the fraud status clear: the approval applies and the decision is allow",
+      "section": "pdp-verify (942)",
+      "pep": "ordinary-rules",
+      "rules": [
+        {
+          "member": "beneficiary",
+          "input": "payment.beneficiary"
+        },
+        {
+          "member": "amount",
+          "input": "payment.amount"
+        },
+        {
+          "member": "fraud_status",
+          "input": "risk.fraud_status"
+        },
+        {
+          "member": "time",
+          "input": "now"
+        }
+      ],
+      "inputs": {
+        "payment.beneficiary": "acct-A",
+        "payment.amount": "100.00",
+        "risk.fraud_status": "clear",
+        "now": "2026-04-30T20:43:00Z"
+      },
+      "record": {
+        "id": "apr_01HX4Y8E2NE3Y2X7P0K4JE6WVH",
+        "taskId": "task-001",
+        "subject": {
+          "type": "user",
+          "id": "alice@example.com"
+        },
+        "resource": {
+          "type": "payment",
+          "id": "pay-7781"
+        },
+        "action": {
+          "name": "can_execute"
+        },
+        "context": {
+          "beneficiary": "acct-A",
+          "amount": "100.00",
+          "fraud_status": "clear",
+          "time": "2026-04-30T20:15:00Z"
+        },
+        "boundContextMembers": [
+          "beneficiary",
+          "amount"
+        ],
+        "approvedAt": "2026-04-30T20:42:00Z",
+        "approvedUntil": "2026-05-01T00:42:00Z",
+        "status": "active"
+      },
+      "approval": {
+        "id": "apr_01HX4Y8E2NE3Y2X7P0K4JE6WVH",
+        "approved_at": "2026-04-30T20:42:00Z",
+        "approved_until": "2026-05-01T00:42:00Z"
+      },
+      "now": "2026-04-30T20:43:00Z",
+      "expected": {
+        "build": "request",
+        "outcome": "approval_applies",
+        "next_action": null,
+        "member_sets_match": true,
+        "decision": "allow",
+        "decision_reason": null,
+        "decision_next_action": null
+      },
+      "policy": [
+        {
+          "member": "fraud_status",
+          "deny_when_equals": "alert",
+          "reason": "policy_denied"
+        }
+      ]
     }
   ],
   "negative_controls": {
@@ -504,7 +664,9 @@
         "R3",
         "R4",
         "R6",
-        "R7"
+        "R7",
+        "R8",
+        "R8b"
       ],
       "defect": "Leaves the approval out, changes its id, rewrites approved_until in a copy, or rewrites approved_at in place on the object it was handed, which 822 rules out. The runner compares the emitted approval with its own pristine copy and passes the emitted one to the PDP."
     },
@@ -515,9 +677,25 @@
         "R3",
         "R4",
         "R6",
-        "R7"
+        "R7",
+        "R8",
+        "R8b"
       ],
       "defect": "Its first request carries a member no ordinary rule produces and its later requests are clean. The member is unbound, so the PDP outcome does not change. The runner calls the PEP once and runs the member-set test on that emitted request."
+    },
+    "approval_only_decider": {
+      "applies_to": "every case that declares a policy and an expected decision",
+      "declared_to_fail": [
+        "R8"
+      ],
+      "defect": "Allows whenever the approval applies and never evaluates the declared current policy, which 942 rules out: approval does not override policy conditions at enforcement time."
+    },
+    "always_deny_decider": {
+      "applies_to": "every case that declares a policy and an expected decision",
+      "declared_to_fail": [
+        "R8b"
+      ],
+      "defect": "Denies every re-evaluation. It passes R8 for the wrong reason, and the positive control catches it."
     },
     "approval_only_pep": {
       "applies_to": "every ordinary-rules case, rerun with the approval-only PEP",
@@ -527,7 +705,9 @@
         "R4",
         "R5",
         "R6",
-        "R7"
+        "R7",
+        "R8",
+        "R8b"
       ],
       "defect": "Builds re-evaluation Context from the approval and time only, which 824 rules out. In R3 and R7 the PDP outcome is the same either way, and the member-set comparison still catches it."
     }
