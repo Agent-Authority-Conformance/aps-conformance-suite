@@ -15,7 +15,7 @@
 //
 // Run from the suite root:
 //
-//     npx tsx fixtures/principal-authority-association/generate.ts
+//     npx tsx candidates/aeoess-principal-authority-association/generate.ts
 
 import { createHash } from 'node:crypto'
 import fs from 'node:fs'
@@ -372,7 +372,7 @@ const document = {
     'AIN-WRP': 'draft-tanase-ain-authoritative-resolution-00',
   },
   generated_at: GENERATED_AT,
-  generator: 'fixtures/principal-authority-association/generate.ts',
+  generator: 'candidates/aeoess-principal-authority-association/generate.ts',
   sdk: {
     package: 'agent-passport-system',
     version: SDK_VERSION,

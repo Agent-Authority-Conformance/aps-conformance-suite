@@ -148,14 +148,16 @@ agent itself would stop at the unrecognized source check. No case presents one.
 
 ## SDK
 
-`agent-passport-system` 7.1.0, the version the suite pins in `package.json`.
+`agent-passport-system` 8.0.1, the version the suite pins in `package.json`. The vectors were
+first generated under 7.1.0 on 2026-10-06 and regenerated under 8.0.1 on 2026-11-27. The cases
+and pairs are byte-identical, and only the recorded SDK version and generator path changed.
 
 - The root is issued with `issueAuthorityDelegation` and verified with
   `verifyAuthorityDelegationChain`, both from the package root. Revocation state
   is fixture supplied and every delegation is active. Revocation is not what this
   family tests.
 - The binding is issued with `issuePrincipalBindingV1` and verified with
-  `verifyPrincipalBindingV1`. In 7.1.0 these are compiled into
+  `verifyPrincipalBindingV1`. In 8.0.1, as in 7.1.0, these are compiled into
   `dist/src/v2/identity-binding/principal-binding.js` but exported from neither
   the package root nor `./core`. `sdk.ts` loads that compiled module by file URL.
   This runs the published code unchanged but is not the package's public API.
@@ -174,10 +176,10 @@ Run from the suite root.
 
 | file | command | what it does |
 |---|---|---|
-| `generate.ts` | `npx tsx fixtures/principal-authority-association/generate.ts` | writes `vectors.json`, byte for byte the same on every run. Fails if the binding or root does not verify or a pair differs in more than its declared paths |
-| `run.ts` | `npx tsx fixtures/principal-authority-association/run.ts [--report <path>]` | compares every case on all four axes and every pair. Exits 1 on any mismatch, writes no report and prints no PASS line |
-| `negative-runner-check.ts` | `npx tsx fixtures/principal-authority-association/negative-runner-check.ts` | in fresh temporary directories, runs an unchanged copy (expects exit 0, a report, PASS) and a copy whose checker throws (expects nonzero exit, no report, no PASS) |
-| `mutation-check.ts` | `npx tsx fixtures/principal-authority-association/mutation-check.ts` | four checker mutations, each in a fresh copy: conflict treated as established, expiry ignored, any signer accepted, the negative mapped to not established. Each must fail at least one case |
+| `generate.ts` | `npx tsx candidates/aeoess-principal-authority-association/generate.ts` | writes `vectors.json`, byte for byte the same on every run. Fails if the binding or root does not verify or a pair differs in more than its declared paths |
+| `run.ts` | `npx tsx candidates/aeoess-principal-authority-association/run.ts [--report <path>]` | compares every case on all four axes and every pair. Exits 1 on any mismatch, writes no report and prints no PASS line |
+| `negative-runner-check.ts` | `npx tsx candidates/aeoess-principal-authority-association/negative-runner-check.ts` | in fresh temporary directories, runs an unchanged copy (expects exit 0, a report, PASS) and a copy whose checker throws (expects nonzero exit, no report, no PASS) |
+| `mutation-check.ts` | `npx tsx candidates/aeoess-principal-authority-association/mutation-check.ts` | four checker mutations, each in a fresh copy: conflict treated as established, expiry ignored, any signer accepted, the negative mapped to not established. Each must fail at least one case |
 
 `check.ts` is the reference checker, `pairs.ts` computes pair differences,
 `sdk.ts` gathers the SDK surface and `fresh-copy.ts` builds the temporary copies.

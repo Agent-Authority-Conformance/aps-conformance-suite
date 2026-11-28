@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const suiteRoot = path.resolve(here, '..', '..')
-const FAMILY_DIR = path.join('fixtures', 'principal-authority-association')
+const FAMILY_DIR = path.join('candidates', 'aeoess-principal-authority-association')
 
 export interface Patch {
   file: string

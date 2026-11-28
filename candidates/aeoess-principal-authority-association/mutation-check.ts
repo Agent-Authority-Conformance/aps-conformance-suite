@@ -9,7 +9,7 @@
 //
 // Exits 0 only when every mutation is caught.
 //
-//     npx tsx fixtures/principal-authority-association/mutation-check.ts
+//     npx tsx candidates/aeoess-principal-authority-association/mutation-check.ts
 
 import { runInFreshCopy, type Patch } from './fresh-copy.js'
 

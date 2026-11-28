@@ -15,10 +15,10 @@
     "AIN-WRP": "draft-tanase-ain-authoritative-resolution-00"
   },
   "generated_at": "2026-10-06",
-  "generator": "fixtures/principal-authority-association/generate.ts",
+  "generator": "candidates/aeoess-principal-authority-association/generate.ts",
   "sdk": {
     "package": "agent-passport-system",
-    "version": "7.1.0",
+    "version": "8.0.1",
     "principal_binding_module": "dist/src/v2/identity-binding/principal-binding.js",
     "principal_binding_module_note": "not exported from the package root in this version. Loaded by file URL."
   },

@@ -11,7 +11,7 @@
 // Only after every case and pair matches does it write the report, when
 // --report <path> is given, and then print the PASS line.
 //
-//     npx tsx fixtures/principal-authority-association/run.ts [--report <path>]
+//     npx tsx candidates/aeoess-principal-authority-association/run.ts [--report <path>]
 
 import { createHash } from 'node:crypto'
 import fs from 'node:fs'

@@ -9,7 +9,7 @@
 //
 // Exits 0 only when both hold.
 //
-//     npx tsx fixtures/principal-authority-association/negative-runner-check.ts
+//     npx tsx candidates/aeoess-principal-authority-association/negative-runner-check.ts
 
 import { runInFreshCopy, type FreshRun } from './fresh-copy.js'
 
