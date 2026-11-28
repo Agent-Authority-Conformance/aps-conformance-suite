@@ -1,0 +1,7751 @@
+{
+ "axis_mapping_under_primary_reading": {
+  "authority": [
+   "RS_scope_contains_required"
+  ],
+  "key_binding": [
+   "R03b_claim_ath",
+   "R12a_ath_matches",
+   "R12b_key_bound_matches"
+  ],
+  "proof_signature": [
+   "R01_single_header",
+   "R02_well_formed_jwt",
+   "R04_typ",
+   "R05_alg",
+   "R06_signature",
+   "R07_no_private_key"
+  ],
+  "request_binding": [
+   "R03a_claims_jti_htm_htu_iat",
+   "R08_htm",
+   "R09_htu",
+   "R03c_claim_nonce",
+   "R10_nonce",
+   "R11_iat_not_too_old",
+   "R11f_iat_future",
+   "R13_jti_not_replayed"
+  ]
+ },
+ "choices": {
+  "C1_item3_axis": {
+   "A": "A: a missing required claim is charged only to the axis whose later check uses it",
+   "B": "B: a missing required claim is also charged to proof_signature (the proof as a JWT is incomplete)"
+  },
+  "C2_future_iat_null_skew": {
+   "A": "A: future_skew_s null means no allowance for an iat ahead of now",
+   "B": "B: future_skew_s null means the policy is silent; an iat ahead of now is not a failure (RFC 9449 11.1 MAY)"
+  },
+  "C3_jti_replay": {
+   "A": "A: with tracks_jti, a seen (URI, jti) is a failed check (RFC 9449 11.1 'would be declined')",
+   "B": "B: RFC 9449 11.1 says servers 'can' store jti; no MUST; a replay is not a failed check"
+  },
+  "C5_freshness_axis": {
+   "A": "A: nonce, iat window and jti replay (items 10, 11, 11.1) are reported by request_binding",
+   "B": "B: nonce, iat window and jti replay are reported by proof_signature"
+  }
+ },
+ "citations_verified_at_start_up": 54,
+ "facts": {
+  "B01": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001x"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": false,
+    "reason": "Ed25519 verification failed",
+    "signing_input_sha256": "08223a22e242f4d9aec71cc295a51a84bf919afa17c5553b11d15e64a1951eaf"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001x",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B02": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "GET",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "65861957ab5b86aad47fb32cd5d176e80e95802a1f66f73a3e917da2624154fd"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": false,
+    "htm": "GET",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B03": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": false,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "dcfd03ea4618db7da510cb141001790956be4a79926a20fb70b3f21da4c16df9"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": null,
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": false
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B04": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": false,
+    "required_scope": "refunds:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B05": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": false,
+    "required_scope": "refunds:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B06": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": false,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": "2 dot-separated parts, compact JWS needs exactly 3"
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": false,
+    "reason": "no signature to verify",
+    "signing_input_sha256": null
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B07": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "AZxmuuke1OpOSAJmDPOsNklUVxhOMnRJJdlabuPFbjI",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "e7b625b773904a16fe1e0e4267f7e56ac1d9f9d38af2af0cb3e602d1d3ddc82e"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "AZxmuuke1OpOSAJmDPOsNklUVxhOMnRJJdlabuPFbjI",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": false
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B08": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": null,
+    "holds": false,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": false
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B09": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders?page=2",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B10": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": false,
+    "required_scope": "refunds:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B11": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "d": "3anwyr1NxkoK1Q48UUSOPeXJIVEACwdd7Zjza9RWMXI",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "a62a00bdbca75e0167b16e29ebe8b8443a0305a5f31be345f7ca9ecc4d09fb17"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": false,
+    "jwk_present": true,
+    "private_members": [
+     "d"
+    ]
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B12": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "16cc17a9fde49fa22d830f48e5bf4637d4149a6940aa5a3723658816f7869ea7"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": false,
+    "thumbprint_computed": "kApwaulV5e2dstZEUjq7IumwhCwUtq9f6OguDXDfRCI",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B13": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": false,
+    "server_nonce_provided": true
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": false,
+    "nonce": null,
+    "server_nonce": "n-2026-11-03"
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B14": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "none",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "none",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": false,
+    "parts": {
+     "acceptable_per_policy": false,
+     "not_none": false,
+     "registered_asymmetric": false,
+     "supported_by_application": false
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": false,
+    "reason": "alg 'none': no EdDSA verification applies",
+    "signing_input_sha256": "8f3292babd3c9a7263fdca1f07495d3a2e94ea3df2bbf8c35bc384314b76688b"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B15": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "16cc17a9fde49fa22d830f48e5bf4637d4149a6940aa5a3723658816f7869ea7"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": false,
+    "thumbprint_computed": "kApwaulV5e2dstZEUjq7IumwhCwUtq9f6OguDXDfRCI",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B16": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B17": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750420,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "7688380bb24161ef10f168cc3bf7965018d61c69ce9311d57f8d76ef3d1f35ab"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750420,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": -20
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": false,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 20
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B18": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001",
+     "nonce": "n-old"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": true
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "383a429311adb48c987c7e2a12486c72d1dca3813fc4d7e769c45ba8fc819c6f"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": false,
+    "nonce": "n-old",
+    "server_nonce": "n-2026-11-03"
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B19": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": false,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "dcfd03ea4618db7da510cb141001790956be4a79926a20fb70b3f21da4c16df9"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": null,
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": false
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B20": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793749800,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "6a80359757916193589ad1880b9dec86dcb0aed8512d069cd3b6143e1b03ca91"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": false,
+    "iat": 1793749800,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 600
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B21": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "16cc17a9fde49fa22d830f48e5bf4637d4149a6940aa5a3723658816f7869ea7"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": false,
+    "thumbprint_computed": "kApwaulV5e2dstZEUjq7IumwhCwUtq9f6OguDXDfRCI",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B22": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/refunds",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "e5cc0585c5a42a0241916896b537b4c9e95fe082cad22014a81871447e93f22f"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": false,
+    "htu": "https://api.example.test/refunds",
+    "htu_normalised": "https://api.example.test/refunds",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B23": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001x"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": false,
+    "reason": "Ed25519 verification failed",
+    "signing_input_sha256": "08223a22e242f4d9aec71cc295a51a84bf919afa17c5553b11d15e64a1951eaf"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001x",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B24": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "16cc17a9fde49fa22d830f48e5bf4637d4149a6940aa5a3723658816f7869ea7"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": false,
+    "thumbprint_computed": "kApwaulV5e2dstZEUjq7IumwhCwUtq9f6OguDXDfRCI",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B25": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "JWT"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": false,
+    "typ": "JWT"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "2b67b2469a53d2d99d87459899fb27ab5108aae83a605607af6eefe6590d43b0"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B26": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": false,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "dcfd03ea4618db7da510cb141001790956be4a79926a20fb70b3f21da4c16df9"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": null,
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": false
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B27": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": true,
+    "server_nonce_provided": false
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": true,
+    "nonce": null,
+    "server_nonce": null
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": false,
+    "jti": "p-0001",
+    "replay": true,
+    "seen_jti": [
+     [
+      "https://api.example.test/orders",
+      "p-0001"
+     ]
+    ],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  },
+  "B28": {
+   "R01_single_header": {
+    "cite": [
+     "9449-4.3-1"
+    ],
+    "header_fields": 1,
+    "holds": true
+   },
+   "R02_well_formed_jwt": {
+    "cite": [
+     "9449-4.3-2",
+     "7515-5.2-1",
+     "7515-5.2-3",
+     "7515-5.2-4",
+     "7519-7.2-10",
+     "7519-4-dup",
+     "7515-2-b64url"
+    ],
+    "header": {
+     "alg": "EdDSA",
+     "jwk": {
+      "crv": "Ed25519",
+      "kty": "OKP",
+      "x": "s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"
+     },
+     "typ": "dpop+jwt"
+    },
+    "holds": true,
+    "payload": {
+     "ath": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+     "htm": "POST",
+     "htu": "https://api.example.test/orders",
+     "iat": 1793750395,
+     "jti": "p-0001"
+    },
+    "reason": null
+   },
+   "R03a_claims_jti_htm_htu_iat": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-claims",
+     "7519-4.1.6"
+    ],
+    "holds": true,
+    "iat_not_number": false,
+    "missing": []
+   },
+   "R03b_claim_ath": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-ath-req"
+    ],
+    "holds": true,
+    "note": "the case presents an access token to a protected resource"
+   },
+   "R03c_claim_nonce": {
+    "cite": [
+     "9449-4.3-3",
+     "9449-4.2-nonce-req"
+    ],
+    "holds": false,
+    "server_nonce_provided": true
+   },
+   "R04_typ": {
+    "cite": [
+     "9449-4.3-4",
+     "9449-4.2-typ"
+    ],
+    "holds": true,
+    "typ": "dpop+jwt"
+   },
+   "R05_alg": {
+    "alg": "EdDSA",
+    "cite": [
+     "9449-4.3-5",
+     "9449-4.2-alg"
+    ],
+    "holds": true,
+    "parts": {
+     "acceptable_per_policy": true,
+     "not_none": true,
+     "registered_asymmetric": true,
+     "supported_by_application": true
+    }
+   },
+   "R06_signature": {
+    "cite": [
+     "9449-4.3-6",
+     "7515-5.2-8",
+     "8037-3.1.2",
+     "8037-3.1-variant"
+    ],
+    "holds": true,
+    "reason": null,
+    "signing_input_sha256": "86b2dee1e3bb33f00530da0266dfcd06a2600ca00aef45d41b4c1879f3a6b203"
+   },
+   "R07_no_private_key": {
+    "cite": [
+     "9449-4.3-7",
+     "9449-4.2-jwk",
+     "8037-2-d"
+    ],
+    "holds": true,
+    "jwk_present": true,
+    "private_members": []
+   },
+   "R08_htm": {
+    "cite": [
+     "9449-4.3-8",
+     "9449-4.2-htm"
+    ],
+    "holds": true,
+    "htm": "POST",
+    "method": "POST"
+   },
+   "R09_htu": {
+    "cite": [
+     "9449-4.3-9",
+     "9449-4.2-htu",
+     "9449-4.3-norm",
+     "3986-6.2.2.1",
+     "3986-6.2.2.1-hex",
+     "3986-6.2.2.2",
+     "3986-6.2.2.3",
+     "3986-6.2.3-path",
+     "3986-6.2.3-port"
+    ],
+    "holds": true,
+    "htu": "https://api.example.test/orders",
+    "htu_normalised": "https://api.example.test/orders",
+    "uri": "https://api.example.test/orders",
+    "uri_normalised": "https://api.example.test/orders"
+   },
+   "R10_nonce": {
+    "cite": [
+     "9449-4.3-10"
+    ],
+    "holds": false,
+    "nonce": null,
+    "server_nonce": "n-2026-11-03"
+   },
+   "R11_iat_not_too_old": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-limit"
+    ],
+    "holds": true,
+    "iat": 1793750395,
+    "iat_window_s": 300,
+    "now": 1793750400,
+    "now_minus_iat": 5
+   },
+   "R11f_iat_future": {
+    "cite": [
+     "9449-4.3-11",
+     "9449-11.1-future"
+    ],
+    "future_skew_s": null,
+    "holds": true,
+    "holds_if_null_skew_is_silent": true,
+    "iat_ahead_of_now": 0
+   },
+   "R12a_ath_matches": {
+    "ath_computed": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "ath_in_proof": "B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0",
+    "cite": [
+     "9449-4.3-12a",
+     "9449-4.2-ath"
+    ],
+    "holds": true
+   },
+   "R12b_key_bound_matches": {
+    "cite": [
+     "9449-4.3-12b",
+     "9449-6.1-jkt",
+     "9449-7.1-check",
+     "7638-3-1",
+     "7638-3-2",
+     "7638-3.3-esc",
+     "8037-2-tp"
+    ],
+    "cnf_jkt": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "holds": true,
+    "thumbprint_computed": "cOcBgQLwawngecIAW38DspRnV75EbcX0JwpOppcXZ6Q",
+    "thumbprint_input": "{\"crv\":\"Ed25519\",\"kty\":\"OKP\",\"x\":\"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ\"}",
+    "token_bound": true
+   },
+   "R13_jti_not_replayed": {
+    "cite": [
+     "9449-11.1-store",
+     "9449-11.1-declined"
+    ],
+    "holds": true,
+    "jti": "p-0001",
+    "replay": false,
+    "seen_jti": [],
+    "tracks_jti": true
+   },
+   "RS_scope_contains_required": {
+    "cite": [
+     "candidate-representation"
+    ],
+    "holds": true,
+    "required_scope": "orders:write",
+    "token_scope": "orders:write orders:read"
+   }
+  }
+ },
+ "label": "aeoess-presenter-key-possession",
+ "primary_reading": {
+  "C1_item3_axis": "A",
+  "C2_future_iat_null_skew": "A",
+  "C3_jti_replay": "A",
+  "C5_freshness_axis": "A"
+ },
+ "results": [
+  {
+   "ambiguity": null,
+   "id": "B01",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B02",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R08_htm"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R08_htm"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B03",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B04",
+   "outcome": {
+    "authority": false,
+    "decision": "reject",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": "authority",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "authority"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "authority",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B05",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B06",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R02_well_formed_jwt",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R02_well_formed_jwt",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B07",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B08",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B09",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": true,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B10",
+   "outcome": {
+    "authority": false,
+    "decision": "reject",
+    "key_binding": false,
+    "proof_signature": true,
+    "reject_axis": "key_binding",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": false,
+     "failing_conditions": [
+      "RS_scope_contains_required"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "authority"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B11",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R07_no_private_key"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R07_no_private_key"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B12",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": false,
+    "proof_signature": true,
+    "reject_axis": "proof_signature",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B13",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B14",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R05_alg",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R05_alg",
+      "R06_signature"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B15",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B16",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [],
+     "holds": true,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": true,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C2_future_iat_null_skew",
+      "parts_that_change": [
+       "decision",
+       "request_binding"
+      ],
+      "reading_A": "A: future_skew_s null means no allowance for an iat ahead of now",
+      "reading_B": "B: future_skew_s null means the policy is silent; an iat ahead of now is not a failure (RFC 9449 11.1 MAY)",
+      "verdict_A": "nonconformant",
+      "verdict_B": "conformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "AAAA": "nonconformant",
+     "AAAB": "nonconformant",
+     "AABA": "nonconformant",
+     "AABB": "nonconformant",
+     "ABAA": "conformant",
+     "ABAB": "conformant",
+     "ABBA": "conformant",
+     "ABBB": "conformant",
+     "BAAA": "nonconformant",
+     "BAAB": "nonconformant",
+     "BABA": "nonconformant",
+     "BABB": "nonconformant",
+     "BBAA": "conformant",
+     "BBAB": "conformant",
+     "BBBA": "conformant",
+     "BBBB": "conformant"
+    },
+    "verdicts_over_all_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "id": "B17",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R11f_iat_future"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R11f_iat_future"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B18",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B19",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": true,
+    "proof_signature": false,
+    "reject_axis": "proof_signature",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B20",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R11_iat_not_too_old"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R11_iat_not_too_old"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B21",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": false,
+    "proof_signature": true,
+    "reject_axis": "key_binding",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B22",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R09_htu"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R09_htu"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B23",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": true,
+    "proof_signature": false,
+    "reject_axis": "proof_signature",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R06_signature"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "proof_signature"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "conformant",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B24",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": false,
+    "proof_signature": false,
+    "reject_axis": "proof_signature",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R12b_key_bound_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": null,
+   "id": "B25",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R04_typ"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": false,
+     "failing_conditions": [
+      "R04_typ"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "nonconformant",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C1_item3_axis",
+      "parts_that_change": [
+       "proof_signature"
+      ],
+      "reading_A": "A: a missing required claim is charged only to the axis whose later check uses it",
+      "reading_B": "B: a missing required claim is also charged to proof_signature (the proof as a JWT is incomplete)",
+      "verdict_A": "conformant",
+      "verdict_B": "nonconformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "AAAA": "conformant",
+     "AAAB": "conformant",
+     "AABA": "conformant",
+     "AABB": "conformant",
+     "ABAA": "conformant",
+     "ABAB": "conformant",
+     "ABBA": "conformant",
+     "ABBB": "conformant",
+     "BAAA": "nonconformant",
+     "BAAB": "nonconformant",
+     "BABA": "nonconformant",
+     "BABB": "nonconformant",
+     "BBAA": "nonconformant",
+     "BBAB": "nonconformant",
+     "BBBA": "nonconformant",
+     "BBBB": "nonconformant"
+    },
+    "verdicts_over_all_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "id": "B26",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": false,
+    "proof_signature": true,
+    "reject_axis": "key_binding",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03b_claim_ath",
+      "R12a_ath_matches"
+     ],
+     "holds": true,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "key_binding"
+     ],
+     "holds": true,
+     "named_axis_fact": false,
+     "reported": "key_binding",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "conformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C3_jti_replay",
+      "parts_that_change": [
+       "decision",
+       "request_binding"
+      ],
+      "reading_A": "A: with tracks_jti, a seen (URI, jti) is a failed check (RFC 9449 11.1 'would be declined')",
+      "reading_B": "B: RFC 9449 11.1 says servers 'can' store jti; no MUST; a replay is not a failed check",
+      "verdict_A": "nonconformant",
+      "verdict_B": "conformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "AAAA": "nonconformant",
+     "AAAB": "nonconformant",
+     "AABA": "conformant",
+     "AABB": "conformant",
+     "ABAA": "nonconformant",
+     "ABAB": "nonconformant",
+     "ABBA": "conformant",
+     "ABBB": "conformant",
+     "BAAA": "nonconformant",
+     "BAAB": "nonconformant",
+     "BABA": "conformant",
+     "BABB": "conformant",
+     "BBAA": "nonconformant",
+     "BBAB": "nonconformant",
+     "BBBA": "conformant",
+     "BBBB": "conformant"
+    },
+    "verdicts_over_all_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "id": "B27",
+   "outcome": {
+    "authority": true,
+    "decision": "accept",
+    "key_binding": true,
+    "proof_signature": true,
+    "reject_axis": null,
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "failing_rfc_conditions": [
+      "R13_jti_not_replayed"
+     ],
+     "holds": false,
+     "reported": "accept",
+     "rests_on": "9449-7.1-grant (RFC checks); candidate representation (scope)",
+     "rfc_checks_all_successful": false,
+     "scope_check": true
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "holds": true,
+     "reported": null,
+     "rests_on": "mapping: an accept names no axis"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R13_jti_not_replayed"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "nonconformant"
+  },
+  {
+   "ambiguity": {
+    "readings_order": [
+     "C1_item3_axis",
+     "C2_future_iat_null_skew",
+     "C3_jti_replay",
+     "C5_freshness_axis"
+    ],
+    "single_choices_that_flip_the_primary_verdict": [
+     {
+      "choice": "C5_freshness_axis",
+      "parts_that_change": [
+       "proof_signature",
+       "reject_axis",
+       "request_binding"
+      ],
+      "reading_A": "A: nonce, iat window and jti replay (items 10, 11, 11.1) are reported by request_binding",
+      "reading_B": "B: nonce, iat window and jti replay are reported by proof_signature",
+      "verdict_A": "nonconformant",
+      "verdict_B": "conformant"
+     }
+    ],
+    "verdict_by_reading": {
+     "AAAA": "nonconformant",
+     "AAAB": "conformant",
+     "AABA": "nonconformant",
+     "AABB": "conformant",
+     "ABAA": "nonconformant",
+     "ABAB": "conformant",
+     "ABBA": "nonconformant",
+     "ABBB": "conformant",
+     "BAAA": "nonconformant",
+     "BAAB": "conformant",
+     "BABA": "nonconformant",
+     "BABB": "conformant",
+     "BBAA": "nonconformant",
+     "BBAB": "conformant",
+     "BBBA": "nonconformant",
+     "BBBB": "conformant"
+    },
+    "verdicts_over_all_readings": [
+     "conformant",
+     "nonconformant"
+    ]
+   },
+   "id": "B28",
+   "outcome": {
+    "authority": true,
+    "decision": "reject",
+    "key_binding": true,
+    "proof_signature": false,
+    "reject_axis": "proof_signature",
+    "request_binding": true
+   },
+   "parts_under_primary_reading": {
+    "authority": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "candidate representation (scope check)"
+    },
+    "decision": {
+     "holds": true,
+     "reported": "reject",
+     "rests_on": "RFC 9449 does not require granting access; a rejection is not contrary to the text",
+     "rfc_checks_all_successful": false
+    },
+    "key_binding": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": true,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "proof_signature": {
+     "fact": true,
+     "failing_conditions": [],
+     "holds": false,
+     "reported": false,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    },
+    "reject_axis": {
+     "failing_axes": [
+      "request_binding"
+     ],
+     "holds": false,
+     "named_axis_fact": true,
+     "reported": "proof_signature",
+     "rests_on": "9449-4.3-order (any failing check may be the one reported); mapping chosen in this run"
+    },
+    "request_binding": {
+     "fact": false,
+     "failing_conditions": [
+      "R03c_claim_nonce",
+      "R10_nonce"
+     ],
+     "holds": false,
+     "reported": true,
+     "rests_on": "mapping chosen in this run (axis -> RFC 9449 4.3 items)"
+    }
+   },
+   "verdict": "ambiguous",
+   "verdict_under_primary_reading": "nonconformant"
+  }
+ ],
+ "revision": 1,
+ "self_tests_from_rfc_examples": {
+  "3986-6.2.2-example": true,
+  "3986-6.2.3-example": true,
+  "8037-A.3-thumbprint": true,
+  "8037-A.5-verify": true
+ },
+ "tally": {
+  "ambiguous": 4,
+  "conformant": 5,
+  "nonconformant": 19
+ }
+}

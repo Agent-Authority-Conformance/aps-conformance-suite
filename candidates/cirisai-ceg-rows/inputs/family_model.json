@@ -1,0 +1,21 @@
+{
+ "accord:lifecycle:.kind": {
+  "authored": false,
+  "roles": [],
+  "scores_dimension": true
+ },
+ "conscience:coherence": {
+  "authored": true,
+  "roles": [
+   [
+    "delegate",
+    "delegate"
+   ],
+   [
+    "attested",
+    "sub"
+   ]
+  ],
+  "scores_dimension": false
+ }
+}

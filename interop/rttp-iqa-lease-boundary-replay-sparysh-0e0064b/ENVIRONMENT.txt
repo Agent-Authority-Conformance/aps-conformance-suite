@@ -1,0 +1,16 @@
+Replay host environment (2026-11-24)
+=====================================
+python_version : 3.14.2
+platform       : Windows-11-10.0.26300-SP0
+sys.platform   : win32
+stdlib only    : the wrapper imports hashlib, json, os, subprocess, sys, tempfile, pathlib (no third-party packages)
+network        : none during the replay (all vendor and recorded material is vendored frozen in this directory;
+                 every command recorded in run-output.txt is offline); the vendor material was acquired before
+                 the replay — the record's checker and comparison script copied from the merged record, the
+                 sealed vectors and description fetched from raw.githubusercontent.com at the pinned lab
+                 commit 0e0064b exactly as the record's fetch script does, the draft taken from the author's
+                 local copy (the digest decides, per the fetch script), and the blind copy and id-map
+                 regenerated deterministically (see PROVENANCE.md)
+line endings   : the replayed record was produced on Linux (LF); the replay host writes CRLF, the replay
+                 compares byte-identical after line-ending normalization plus canonical JSON equality
+                 (raw digests differ by CRLF only)

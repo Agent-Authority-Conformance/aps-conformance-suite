@@ -1,0 +1,10 @@
+$ ./self_test.sh <vaid-a2a-0.1.1 wheel>/vaid_a2a/vectors vectors-vaid-a2a-0.1.1.sha256
+ok   pinned corpus exit 0
+ok   empty corpus exit 2
+ok   empty manifest exit 2
+ok   missing vector exit 2
+ok   edited vector, old manifest exit 2
+ok   wrong expected code exit 1
+ok   unparseable vector exit 1
+ok   unsupported sig_version exit 1
+exit=0

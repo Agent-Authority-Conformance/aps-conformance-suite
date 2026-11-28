@@ -1,0 +1,628 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MoltyCel/aae-conformance-vectors/schema/interop-composition-vector-schema.json",
+  "title": "AAE cross-profile composition vector",
+  "description": "Schema for a composition vector that pairs one AAE (draft-kroehl-agentic-trust-aae-00) with one artifact from another profile and states the composed verdict. This schema EXTENDS the vector set; it does not replace schema/vector-schema.json, which continues to govern the 15 AAE-native vectors in vectors/ unchanged. A composition vector carries two join axes: join_what (the shared action digest) and join_who (the principal resolution). Both must hold for AUTHORIZED.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "status",
+    "section_ref",
+    "verification_mode",
+    "input",
+    "expected",
+    "rationale"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^xp-[0-9]+[a-z]?$",
+      "description": "Composition-vector id, distinct from the aae-vector-NN namespace of the native set."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "confirmed"],
+      "description": "'proposed' until a second independent implementation recomputes the vector, per Section 7 of draft-mih-sato-agent-accountability-composition-00, or until the counterpart profile confirms a convention that cannot be recomputed because it is supplied rather than derived. A vector whose join_who block is still marked as a proposal MUST stay 'proposed'; the validator enforces that pairing."
+    },
+    "section_ref": {
+      "type": "string",
+      "pattern": "draft-kroehl-agentic-trust-aae-[0-9]{2}",
+      "description": "AAE draft sections exercised on the AAE side, plus any counterpart-profile references."
+    },
+    "verification_mode": {
+      "type": "string",
+      "enum": ["runtime", "structural"],
+      "description": "Same derivation axis as the native set: 'structural' = the verdict follows from document-only properties; 'runtime' = it requires live external state (clock, revocation lookup, consumed-id tracking). Orthogonal to enforcement posture."
+    },
+    "input": {
+      "type": "object",
+      "required": ["secured_aae", "context", "secondary_artifact", "join_what", "join_who"],
+      "additionalProperties": false,
+      "properties": {
+        "secured_aae": {
+          "type": "string",
+          "description": "The AAE side: JWS in compact serialization (header.payload.signature).",
+          "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+        },
+        "context": {
+          "type": "object",
+          "description": "Facts a static file cannot reproduce live, passed to the AAE Section 5 algorithm unchanged. Same shape as the native vector set.",
+          "required": ["current_time"],
+          "properties": {
+            "current_time": { "type": "string", "format": "date-time" },
+            "requested_action": { "type": "string" },
+            "action_context": { "type": "object" },
+            "subject_binding": { "type": "object" },
+            "consumed_ids": { "type": "array", "items": { "type": "string" } },
+            "revocation_responses": { "type": "object" },
+            "delegation_chain": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": true
+        },
+        "secondary_artifact": {
+          "type": "object",
+          "description": "The non-AAE artifact this vector composes with. Embedded exactly as the counterpart profile published it — never re-encoded, re-signed, or normalized.",
+          "required": [
+            "profile",
+            "format",
+            "artifact_id",
+            "token",
+            "signer_kid",
+            "enrollment_binding",
+            "native_verdict",
+            "payload_digest",
+            "source"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "profile": {
+              "type": "string",
+              "description": "Counterpart profile identifier, e.g. draft-yossif-psea-02."
+            },
+            "format": {
+              "type": "string",
+              "description": "Wire format of `token`, e.g. 'JWS compact serialization, typ psea-proof+jwt, alg ES256'."
+            },
+            "artifact_id": {
+              "type": "string",
+              "description": "Identifier the source fixture gives the artifact, e.g. PSEA-A."
+            },
+            "token": {
+              "type": "string",
+              "description": "The artifact verbatim as delivered by the counterpart profile.",
+              "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+            },
+            "signer_kid": {
+              "type": "string",
+              "description": "kid from the artifact's protected header; the key it is verified against must be the enrolled key carrying this kid."
+            },
+            "enrollment_binding": {
+              "type": "string",
+              "description": "The principal label the source fixture binds `signer_kid` to. Copied from the fixture, not derived."
+            },
+            "native_verdict": {
+              "type": "string",
+              "description": "The verdict the counterpart profile's own verifier returns for this artifact, as the source fixture records it. A composition vector never restates it."
+            },
+            "payload_digest": {
+              "$ref": "#/$defs/encoded_digest",
+              "description": "The action digest the artifact commits to, in the counterpart profile's own wire encoding."
+            },
+            "uv_anchoring": { "type": "string" },
+            "source": {
+              "type": "object",
+              "description": "Provenance of the artifact, so a reviewer can re-fetch and re-hash it.",
+              "required": ["repository", "path", "sha256"],
+              "additionalProperties": false,
+              "properties": {
+                "repository": { "type": "string" },
+                "path": { "type": "string" },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$",
+                  "description": "SHA-256 over the exact bytes of the source fixture file. Integrity pin."
+                }
+              }
+            }
+          }
+        },
+        "join_what": {
+          "type": "object",
+          "description": "Axis 1 — the shared action digest. Both profiles hash the SAME action payload with the SAME canonicalization and compare the resulting 32 octets.",
+          "required": [
+            "definition",
+            "comparison_rule",
+            "payload",
+            "payload_jcs_utf8",
+            "aae_digest",
+            "secondary_digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "definition": {
+              "type": "string",
+              "const": "SHA-256 over JCS (RFC 8785) of the action payload"
+            },
+            "comparison_rule": {
+              "type": "string",
+              "const": "compare the 32 octets, never the encoded strings",
+              "description": "A string comparison across encodings reports a mismatch on identical octets. Every wire form in this vector decodes to 32 octets before comparison."
+            },
+            "payload": {
+              "$ref": "#/$defs/integer_only_object",
+              "description": "The action payload in cleartext. Integers only: no floating-point numbers, no decimal fractions, no exponent notation (draft-yossif-psea-02 Section 2.5). Monetary values are integer minor units. JSON Schema cannot see the lexical form of a number, so tools/validate_interop_schema.py additionally re-parses the raw file bytes with a Decimal float hook and fails on any non-integer numeric literal."
+            },
+            "payload_jcs_utf8": {
+              "type": "string",
+              "minLength": 2,
+              "description": "The RFC 8785 canonical UTF-8 form of `payload`, recorded so a reviewer can diff canonicalizers without running one."
+            },
+            "aae_digest": { "$ref": "#/$defs/encoded_digest" },
+            "secondary_digest": { "$ref": "#/$defs/encoded_digest" }
+          }
+        },
+        "join_who": {
+          "type": "object",
+          "description": "Axis 2 — the principal resolution. SUPPLIED, NOT DERIVED. Neither draft-kroehl-agentic-trust-aae-00 nor draft-yossif-psea-02 fixes a shared principal identifier space: AAE names a principal with a DID in mandate.principal_did, the counterpart profile binds a kid to a deployment-issued label it does not specify. This table is the DECLARED mapping of both identifier forms onto one canonical space. It is data in the vector, never inferred by a verifier at run time. The counterpart profile confirmed the mapping at head 8bed788, which is agreement that the correspondence is the intended one rather than a recomputation; nothing here is derivable from either specification.",
+          "required": [
+            "status",
+            "canonical_space",
+            "unresolved_rule",
+            "principal_resolution"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "proposed convention, pending cross-run confirmation",
+                "confirmed at head 8bed788 (Mohamad Khalil-Yossif); WHO linkage established, PSEA conformance not established, kid-to-principal mapping supplied not derived"
+              ],
+              "description": "Two admissible states. The enum permits either wording, so a vector predating the confirmation stays valid. All six vectors in this set now carry the confirmed value; the exchange fixture under fixtures/ keeps the earlier one, because it is a frozen record pinned by hash in an independent re-performance."
+            },
+            "canonical_space": {
+              "type": "string",
+              "description": "URN prefix of the canonical principal space both sides map into."
+            },
+            "unresolved_rule": {
+              "type": "string",
+              "const": "an identifier with no entry in the table is unresolved",
+              "description": "Absence of an entry is a missing input, not a conflict. It yields UNRESOLVED on principal_linkage, never DIVERGENT."
+            },
+            "resolution_state": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Which relying-party enrollment state this vector is evaluated in, named in the states map of the counterpart resolution file. Omitted means the default state, in which every signer key is enrolled. Present when the relying party has not yet enrolled some binding, so a reader sees why an entry is missing from the table below instead of inferring it from a gap. The identifiers and the artifacts are unaffected: a state changes only what the relying party knows."
+            },
+            "state_note": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The named state's own note, copied from the resolution file so the vector stays self-contained."
+            },
+            "principal_resolution": {
+              "type": "object",
+              "required": ["aae", "secondary"],
+              "additionalProperties": false,
+              "properties": {
+                "aae": {
+                  "type": "object",
+                  "description": "mandate.principal_did -> canonical principal.",
+                  "additionalProperties": { "type": "string", "minLength": 1 }
+                },
+                "secondary": {
+                  "type": "object",
+                  "description": "enrollment_binding label -> canonical principal. The kid -> label hop comes from the counterpart fixture's own enrollment_bindings and is not restated here.",
+                  "additionalProperties": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "description": "The staged result. There is no single composition verdict: a composition failure is located at the stage that produced it, so two failures that a one-column verdict would render identically stay distinguishable here. Every row is reported; a row is never omitted because an earlier row failed.",
+      "required": ["stages"],
+      "additionalProperties": false,
+      "properties": {
+        "custody": {
+          "type": "object",
+          "description": "Optional sibling of `stages`, for a profile that tracks admission custody across attempts - a reservation identifier, an execution right, a prior admission. Deliberately left without required members or a fixed shape: no vector in this set exercises custody, so prescribing its structure would fix a contract this side has not tested. A profile that does track it records it here rather than overloading the admission row, which stays a statement about the decision at hand.",
+          "additionalProperties": true
+        },
+        "stages": {
+          "type": "object",
+          "description": "Eight ordered stages, framework-neutral. Each is a row carrying a `value` from its own closed enum and an optional `reason`. The enums do not overlap across stages: INDETERMINATE on `action_linkage` (the linkage could not be established) and INDETERMINATE on `outcome` (what happened could not be established) are different facts about different stages and cannot be collapsed into one another, nor into UNRESOLVED on `principal_linkage`.",
+          "required": [
+            "aae_native",
+            "action_linkage",
+            "principal_linkage",
+            "evidence_satisfaction",
+            "freshness",
+            "decision",
+            "admission",
+            "outcome"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "aae_native": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["ACCEPT", "REJECT"],
+                  "description": "What the unmodified AAE Section 5 algorithm returns for input.secured_aae."
+                },
+                "reason": { "type": ["string", "null"] },
+                "verification_step": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9,
+                  "description": "The Section 5 step at which the algorithm stopped. Only meaningful on this row."
+                }
+              },
+              "unevaluatedProperties": false
+            },
+            "action_linkage": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["EQUIVALENT", "NOT_EQUIVALENT", "INDETERMINATE"],
+                  "description": "Whether both artifacts demonstrably commit to the same action. EQUIVALENT: the two digests decode to 32 identical octets. NOT_EQUIVALENT: they decode to 32 octets that differ. INDETERMINATE: the linkage could not be established at all - a digest was undecodable, or an artifact whose commitment would be needed did not authenticate. Not the same fact as UNRESOLVED on principal_linkage, and not the same fact as INDETERMINATE on outcome."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "principal_linkage": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["SAME", "DIVERGENT", "UNRESOLVED"],
+                  "description": "Whether both sides name the same principal, resolved through the vector's declared join_who table. SAME: both resolve, to the same canonical principal. DIVERGENT: both resolve, to different canonical principals - a conflict that was observed. UNRESOLVED: at least one identifier has no entry, or came from an artifact that did not authenticate - a missing input, not a conflict. The value on this row depends on the join_who table, which the counterpart profile confirmed at head 8bed788 as a supplied mapping; it does not follow from either specification."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "evidence_satisfaction": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["SATISFIED", "UNSATISFIED", "NOT_EVALUATED"],
+                  "description": "Whether the approval evidence satisfies the requirement for this action by this principal. SATISFIED: the evidence authenticates, covers this action, and comes from the mandating principal. UNSATISFIED: the evidence authenticates but does not satisfy the requirement, or does not authenticate at all. NOT_EVALUATED: satisfaction was not reached because a prerequisite stage did not establish what to evaluate against."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "freshness": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["WELL_FORMED", "CLAIMS_MALFORMED", "NOT_EVALUATED"],
+                  "description": "Whether the replay-defence claims the counterpart profile requires are present and well-formed in the signed token: psea_counter an integer at or above zero, jti a non-empty string (draft-yossif-psea Sections 3.5 and 3.11). WELL_FORMED: both hold. CLAIMS_MALFORMED: one is absent or of the wrong shape. NOT_EVALUATED: an earlier stage did not establish what to read them from. The token also carries iat and exp; those are checked in the native verification and are deliberately not folded into this row, because temporal validity of the grant is governed by the AAE VALIDITY axis. Counter monotonicity and jti uniqueness are state across presentations and are outside this row."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "decision": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["AUTHORIZED", "REFUSED"],
+                  "description": "The authorization decision, binary by construction. Uncertainty is never expressed here - it is expressed on the stage that carries it. A refusal for a divergence and a refusal for a missing input are both REFUSED at this row and are told apart by principal_linkage and evidence_satisfaction."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "admission": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["NONE", "RESERVED", "CONSUMED", "DISPATCH_PENDING", "INVOKED"],
+                  "description": "What the relying party did with a single-use or otherwise consumable admission on the strength of the decision. NONE: nothing was admitted. RESERVED: an admission was held but not spent. CONSUMED: an admission was spent. DISPATCH_PENDING: dispatch was initiated and its acceptance is not yet known. INVOKED: the action was handed to the executing system."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            },
+            "outcome": {
+              "allOf": [{ "$ref": "#/$defs/stage_row" }],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "enum": ["EXECUTED", "FAILED", "INDETERMINATE", "NONE"],
+                  "description": "What the executing system reports back. EXECUTED: the action completed. FAILED: it did not. INDETERMINATE: what happened could not be established - the distinct case where an admission was spent and the result is unknown. NONE: nothing was attempted. INDETERMINATE here is a fact about execution, never about linkage."
+                },
+                "reason": { "type": ["string", "null"] }
+              },
+              "unevaluatedProperties": false
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "description": "A refusal must be locatable: at least one row carries a reason.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "decision": { "properties": { "value": { "const": "REFUSED" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "anyOf": [
+                  { "properties": { "aae_native": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "action_linkage": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "principal_linkage": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "evidence_satisfaction": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "decision": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "admission": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } },
+                  { "properties": { "outcome": { "required": ["reason"], "properties": { "reason": { "type": "string" } } } } }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "description": "AUTHORIZED requires every upstream stage to have established its fact positively.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "decision": { "properties": { "value": { "const": "AUTHORIZED" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "aae_native": { "properties": { "value": { "const": "ACCEPT" } } },
+                  "action_linkage": { "properties": { "value": { "const": "EQUIVALENT" } } },
+                  "principal_linkage": { "properties": { "value": { "const": "SAME" } } },
+                  "evidence_satisfaction": { "properties": { "value": { "const": "SATISFIED" } } },
+                  "freshness": { "properties": { "value": { "const": "WELL_FORMED" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A divergent principal is an observed conflict: the evidence is unsatisfied and the decision refuses. The reason belongs on the row that observed it.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "principal_linkage": { "properties": { "value": { "const": "DIVERGENT" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "principal_linkage": { "required": ["reason"], "properties": { "reason": { "type": "string" } } },
+                  "evidence_satisfaction": { "properties": { "value": { "const": "UNSATISFIED" } } },
+                  "decision": { "properties": { "value": { "const": "REFUSED" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "An unresolved principal is a missing input, not a conflict. Satisfaction may not be SATISFIED - either NOT_EVALUATED, when nothing was there to evaluate against, or UNSATISFIED, when the evidence itself failed to authenticate and the principal is unresolved for that same reason - and the decision refuses. A divergence and a missing binding cannot collapse into one another because DIVERGENT and UNRESOLVED are distinct values on this same row; the row is what a reader consults, not the decision column.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "principal_linkage": { "properties": { "value": { "const": "UNRESOLVED" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "principal_linkage": { "required": ["reason"], "properties": { "reason": { "type": "string" } } },
+                  "evidence_satisfaction": { "properties": { "value": { "enum": ["NOT_EVALUATED", "UNSATISFIED"] } } },
+                  "decision": { "properties": { "value": { "const": "REFUSED" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A native AAE rejection propagates: nothing downstream may claim to have been established.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "aae_native": { "properties": { "value": { "const": "REJECT" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "action_linkage": { "properties": { "value": { "const": "INDETERMINATE" } } },
+                  "principal_linkage": { "properties": { "value": { "const": "UNRESOLVED" } } },
+                  "evidence_satisfaction": { "properties": { "value": { "const": "NOT_EVALUATED" } } },
+                  "freshness": { "properties": { "value": { "const": "NOT_EVALUATED" } } },
+                  "decision": { "properties": { "value": { "const": "REFUSED" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Malformed replay-defence claims carry a reason. The row names which claim failed, since psea_counter and jti fail for different reasons and a bare CLAIMS_MALFORMED leaves a reader unable to tell them apart.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "freshness": { "properties": { "value": { "const": "CLAIMS_MALFORMED" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "freshness": { "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1 } } },
+                  "decision": { "properties": { "value": { "const": "REFUSED" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A refusal admits nothing and executes nothing. Both rows read NONE without exception, because both describe what THIS decision did, and a decision that refused did neither. An earlier decision's custody state is a different fact and belongs beside the rows rather than inside them: `expected.custody` is available for it, and a profile that tracks a spent admission records the prior state there while `admission` stays NONE with `already_consumed` as its reason. An earlier draft of this constraint admitted CONSUMED and RESERVED here on the argument that NONE would deny the state a refusal rests on; the counterpart implementation models the same case with the row at NONE and the prior admission named alongside, which keeps the row about this decision only.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "decision": { "properties": { "value": { "const": "REFUSED" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "admission": { "properties": { "value": { "const": "NONE" } } },
+                  "outcome": { "properties": { "value": { "const": "NONE" } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A non-NONE outcome requires a qualifying admission. Reporting that something executed, failed, or came back unknown presupposes that an admission was spent or handed over; RESERVED is held rather than spent, and NONE is nothing at all, so neither can carry an outcome. Constraint 7 states the same rule from the admission side and stays, because a reader consulting the admission row is owed the answer there too.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "outcome": { "properties": { "value": { "enum": ["EXECUTED", "FAILED", "INDETERMINATE"] } } }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "admission": { "properties": { "value": { "enum": ["CONSUMED", "DISPATCH_PENDING", "INVOKED"] } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "An INDETERMINATE outcome carries a reason. This is the row's hardest case - an admission was spent and what followed cannot be established - and a bare INDETERMINATE leaves a reader unable to tell a lost provider response from an unread one. The reason set stays open; only its presence is required.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "outcome": { "properties": { "value": { "const": "INDETERMINATE" } } }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": {
+                  "outcome": { "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1 } } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Nothing may be reported as executed without an admission.",
+          "if": {
+            "properties": {
+              "stages": {
+                "properties": { "admission": { "properties": { "value": { "const": "NONE" } } } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "stages": {
+                "properties": { "outcome": { "properties": { "value": { "const": "NONE" } } } }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rationale": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "stage_row": {
+      "type": "object",
+      "description": "One stage of the staged result. `value` comes from that stage's own closed enum, declared on the stage itself. `reason` is optional and belongs on the row that produced the condition it names - for example already_consumed on admission, or principal_divergence on principal_linkage - so a reader can locate a failure rather than infer it.",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "reason": {
+          "type": ["string", "null"],
+          "description": "Short machine-readable token, snake_case. Not drawn from a closed list: the set of conditions a profile can report is open, while the stage values are not."
+        }
+      }
+    },
+    "encoded_digest": {
+      "type": "object",
+      "description": "A digest carried in a declared wire encoding. The encoding is data, not a guess: a consumer decodes it to raw octets and compares octets. base64url-nopad is the AAE-native form (matching the sha-256:<base64url> shape used elsewhere in the draft), base64-pad is the PSEA wire form, hex is the third form seen in practice.",
+      "required": ["alg", "encoding", "value", "octets"],
+      "additionalProperties": false,
+      "properties": {
+        "alg": { "type": "string", "const": "sha-256" },
+        "encoding": {
+          "type": "string",
+          "enum": ["base64url-nopad", "base64-pad", "hex"]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The digest as the producing side writes it, including any profile-specific prefix such as 'sha-256:'."
+        },
+        "octets": {
+          "type": "integer",
+          "const": 32,
+          "description": "Decoded length. Every allowed encoding normalizes to 32 octets; anything else is a length mismatch, not an encoding difference."
+        }
+      }
+    },
+    "integer_only_object": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/integer_only_value" }
+    },
+    "integer_only_value": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "boolean" },
+        { "type": "null" },
+        { "type": "integer", "multipleOf": 1 },
+        { "type": "array", "items": { "$ref": "#/$defs/integer_only_value" } },
+        { "$ref": "#/$defs/integer_only_object" }
+      ]
+    }
+  }
+}

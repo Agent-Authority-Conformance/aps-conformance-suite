@@ -1,0 +1,22 @@
+vaid_cr.py sha256 fa652557b5997eeaf83a10211c3400be86fed265ba5dfa487254ba29b9450445
+manifest sha256 db8c0142df8d2f898c1d712afa8e72e79d85680b00e78d09eeac2157964d6b95
+sig_version accepted 4
+OK  01-valid-two-hop-chain.json                    expected=('pass', None) got=('pass', None) step=None 
+OK  02-child-scope-wider-than-parent.json          expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-000000000004
+OK  03-expired-leaf.json                           expected=('fail', 'expired') got=('fail', 'expired') step=2 leaf
+OK  04-revoked-middle-link.json                    expected=('fail', 'revoked') got=('fail', 'revoked') step=6 
+OK  05-action-outside-leaf-scope.json              expected=('fail', 'out_of_scope') got=('fail', 'out_of_scope') step=5 data.acme.customers
+OK  06-unknown-root-key.json                       expected=('fail', 'issuer_mismatch') got=('fail', 'issuer_mismatch') step=1 kernel_key_thumbprint names no trusted key
+OK  07-sibling-scope-child.json                    expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-00000000000f
+OK  08-capability-not-in-parent.json               expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 capabilities at 00000000-0000-0000-0000-000000000011
+OK  09-tenant-changed.json                         expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 tenant at 00000000-0000-0000-0000-000000000013
+OK  10-child-outlives-parent.json                  expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 expiry at 00000000-0000-0000-0000-000000000015
+OK  11-unrestricted-child.json                     expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-000000000017
+OK  12-trust-domain-not-bound-to-signing-key.json  expected=('fail', 'issuer_mismatch') got=('fail', 'issuer_mismatch') step=1 trust_domain differs from the trusted entry
+OK  13-unknown-scope-kind-future-compat.json       expected=('fail', 'unknown_scope_kind') got=('fail', 'unknown_scope_kind') step=2a leaf
+OK  14-no-privilege-via-unused-field.json          expected=('fail', 'out_of_scope') got=('fail', 'out_of_scope') step=5 data.acme.customers
+OK  15-invalid-leaf-signature-complete-chain.json  expected=('fail', 'inauthentic') got=('fail', 'inauthentic') step=1 Ed25519 signature does not verify
+OK  16-incomplete-chain-valid-signature.json       expected=('fail', 'unverifiable') got=('fail', 'unverifiable') step=3 ancestor 00000000-0000-0000-0000-000000000020 not presented
+OK  17-missing-vaid-not-a-denial.json              expected=('pass', 'no_vaid') got=('pass', 'no_vaid') step=shape extension degrades to absent
+OK  18-invalid-signature-and-incomplete-chain-ordering-trap.json expected=('fail', 'inauthentic') got=('fail', 'inauthentic') step=1 Ed25519 signature does not verify
+18/18 as expected

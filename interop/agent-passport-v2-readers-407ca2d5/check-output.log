@@ -1,0 +1,6 @@
+R1 cases 20, state and code differing from the vectors: none
+R2 cases 20, outcome differing from the vectors' state: 3
+  did-web-resolver-not-found: R2 indeterminate, vectors invalid
+  version-changed: R2 unsupported, vectors invalid
+  record-type-changed: R2 unsupported, vectors invalid
+exit=0

@@ -1,0 +1,8 @@
+delegated-child -> delegated-parent: rfc8785_match=True sort_keys_match=True
+delegated-grandchild -> delegated-child: rfc8785_match=True sort_keys_match=True
+supplementary-plane-child -> supplementary-plane-parent: rfc8785_match=True sort_keys_match=False
+  ref id=spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-parent digest_matches=delegated-parent id_equals_subject=True
+  ref id=spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-child digest_matches=delegated-child id_equals_subject=True
+  ref id=spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-grandchild digest_matches=delegated-grandchild id_equals_subject=True
+aggregate: 3 references, 3 distinct members, all digests and ids match
+ALL CHECKS PASS

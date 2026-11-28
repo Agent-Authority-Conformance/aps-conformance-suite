@@ -1,0 +1,1 @@
+[{"type":"payment_initiation","actions":["initiate"],"locations":["https://bank.example/payments"],"instructedAmount":{"currency":"EUR","amount":"4000.00"},"creditorAccount":{"iban":"DE89370400440532013000"}}]

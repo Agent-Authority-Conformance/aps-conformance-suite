@@ -1,0 +1,15 @@
+{
+ "schema_version": "aep/v0.5",
+ "run_id": "conf-minimal-v05",
+ "created_at_ms": 1700000000000,
+ "dsse_envelope": {
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiY3JlYXRlZF9hdF9tcyI6MTcwMDAwMDAwMDAwMCwicnVuX2lkIjoiY29uZi1taW5pbWFsLXYwNSIsInNjaGVtYV92ZXJzaW9uIjoiYWVwL3YwLjUifSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vd2FzbWFnZW50LmRldi9hdHRlc3RhdGlvbnMvYWVwL3YwLjQiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiOWNjODhjMDBjOTRhZjRjYTJkYmNiOGQzYmU5ODVlMTUzODM2ZGUwMjZlODMzZTJhMmEyMGQyNzY0NDc2ZTgxNSJ9LCJuYW1lIjoidXJuOndhc21hZ2VudDpydW46Y29uZi1taW5pbWFsLXYwNSJ9LHsiZGlnZXN0Ijp7InNoYTI1NiI6IjExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEifSwibmFtZSI6InVybjp3YXNtYWdlbnQ6cnVuOm90aGVyIn1dfQ==",
+  "signatures": [
+   {
+    "keyid": "extra-key-01",
+    "sig": "mFSqn+tFBaVRjxnAroYuUGrHFALDRZWmvD7wBD6/Er+dZFfMGOo7Cw1+zBqd5sZMFpYpbeDvnkfcBA3vWUb0Bw=="
+   }
+  ]
+ }
+}

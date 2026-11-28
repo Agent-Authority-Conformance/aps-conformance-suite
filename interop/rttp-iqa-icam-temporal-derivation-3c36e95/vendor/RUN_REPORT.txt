@@ -1,0 +1,47 @@
+$ python3 -I check.py vectors.json
+PASS TD-B01 [reliance/normative] expected=fresh actual=fresh
+PASS TD-B02 [reliance/normative] expected=fresh actual=fresh
+PASS TD-B03 [reliance/normative] expected=expired actual=expired
+PASS TD-B04 [reliance/normative] expected=fresh actual=fresh
+PASS TD-B05 [reliance/normative] expected=expired actual=expired
+PASS TD-B06 [reliance/normative] expected=expired actual=expired
+PASS TD-N01 [reliance/normative] expected=expired actual=expired
+PASS TD-N02 [reliance/normative] expected=fresh actual=fresh
+PASS TD-N03 [reliance/normative] expected=expired actual=expired
+PASS TD-N04 [reliance/normative] expected=fresh actual=fresh
+PASS TD-N05 [reliance/normative] expected=expired actual=expired
+PASS TD-N06 [reliance/normative] expected=fresh actual=fresh
+PASS TD-X01 [reliance/normative] expected=fresh actual=fresh
+PASS TD-X02 [reliance/normative] expected=expired actual=expired
+PASS TD-X03 [reliance/interpretive] expected=boundary_undetermined actual=boundary_undetermined
+PASS TD-X04 [reliance/local_precondition] expected=insufficient_input actual=insufficient_input
+PASS TD-X05 [reliance/local_precondition] expected=insufficient_input actual=insufficient_input
+PASS TD-X06 [reliance/local_precondition] expected=invalid_convention actual=invalid_convention
+PASS TD-W01 [wire_time_gate_only/normative] expected=time_gate_pass actual=time_gate_pass
+PASS TD-W02 [wire_time_gate_only/normative] expected=time_gate_pass actual=time_gate_pass
+PASS TD-W03 [wire_time_gate_only/normative] expected=time_gate_reject actual=time_gate_reject
+PASS TD-W04 [wire_time_gate_only/normative] expected=time_gate_pass actual=time_gate_pass
+PASS TD-B07 [reliance/normative] expected=fresh actual=fresh
+PASS TD-B08 [reliance/normative] expected=expired actual=expired
+SUMMARY 24/24 agree; author-produced fixture consistency only
+
+exit_code=0
+
+$ python3 -I mutate.py
+KILLED trust-unverified-boundary-flag by TD-N01,TD-N02,TD-N03,TD-N04,TD-N06,TD-X04,TD-X05,TD-X06,TD-B08
+KILLED always-fresh-at-equality by TD-B05,TD-N03,TD-X03
+KILLED always-expired-at-equality by TD-B02,TD-N04,TD-X03
+KILLED reversed-time-order by TD-B01,TD-B03,TD-B04,TD-B06,TD-N01,TD-N02,TD-N05,TD-N06,TD-X01,TD-X02,TD-X06,TD-B07,TD-B08
+KILLED assume-inclusive-undeclared by TD-X03
+KILLED missing-clock-fails-open by TD-X04
+KILLED missing-expiry-fails-open by TD-X05
+KILLED wire-frame-equality-rejected by TD-W02,TD-W04
+SUMMARY 8/8 mutants killed (author-produced)
+
+exit_code=0
+
+$ python3 -I metamorphic.py
+PASS 120 flag-substitution invariance checks; equality wire-time gate separate (author-produced)
+
+exit_code=0
+

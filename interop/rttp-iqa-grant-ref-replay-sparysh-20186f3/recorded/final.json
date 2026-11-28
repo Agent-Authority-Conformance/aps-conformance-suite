@@ -1,0 +1,256 @@
+{
+ "cases": [
+  {
+   "blind_id": "B13",
+   "candidate_rule": "R-NOTDET",
+   "expect": "ambiguous",
+   "original_id": "GR-A01",
+   "parts": {
+    "computation_source": {
+     "expect": "ambiguous",
+     "reader": "ambiguous",
+     "result": "match",
+     "rules": [
+      "R7-computed-over-facts"
+     ]
+    },
+    "value_and_assent": {
+     "expect": "conformant",
+     "reader": "conformant",
+     "result": "match",
+     "rules": [
+      "R1-reason-present",
+      "R2-closed-set",
+      "R3-no-granted",
+      "R4-priority"
+     ]
+    }
+   },
+   "result": "match",
+   "verdict": "ambiguous"
+  },
+  {
+   "blind_id": "B19",
+   "candidate_rule": "R-ORDER",
+   "expect": "ambiguous",
+   "original_id": "GR-A02",
+   "parts": {
+    "boundary_call": {
+     "expect": "ambiguous",
+     "reader": "ambiguous",
+     "result": "match",
+     "rules": [
+      "R12-race-observation-vs-revocation"
+     ]
+    },
+    "value": {
+     "expect": "conformant",
+     "reader": "conformant",
+     "result": "match",
+     "rules": [
+      "R1-reason-present",
+      "R2-closed-set",
+      "R3-no-granted",
+      "R4-priority"
+     ]
+    }
+   },
+   "result": "match",
+   "verdict": "ambiguous"
+  },
+  {
+   "blind_id": "B20",
+   "candidate_rule": "R-CLOSED",
+   "expect": "nonconformant",
+   "original_id": "GR-C01",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B16",
+   "candidate_rule": "R-CLOSED",
+   "expect": "nonconformant",
+   "original_id": "GR-C02",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B25",
+   "candidate_rule": "R-CLOSED",
+   "expect": "nonconformant",
+   "original_id": "GR-C03",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B17",
+   "candidate_rule": "R-CLOSED",
+   "expect": "conformant",
+   "original_id": "GR-C04",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B23",
+   "candidate_rule": "R-GRANTREF",
+   "expect": "conformant",
+   "original_id": "GR-G01",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B24",
+   "candidate_rule": "R-GRANTREF",
+   "expect": "nonconformant",
+   "original_id": "GR-G02",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B14",
+   "candidate_rule": "R-GRANTREF",
+   "expect": "nonconformant",
+   "original_id": "GR-G03",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B12",
+   "candidate_rule": "R-GRANTREF",
+   "expect": "nonconformant",
+   "original_id": "GR-G04",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B22",
+   "candidate_rule": "R-NULLOBS",
+   "expect": "conformant",
+   "original_id": "GR-N01",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B21",
+   "candidate_rule": "R-NULLOBS",
+   "expect": "conformant",
+   "original_id": "GR-N02",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B09",
+   "candidate_rule": "R-NULLOBS",
+   "expect": "nonconformant",
+   "original_id": "GR-N03",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B18",
+   "candidate_rule": "R-NOTDET",
+   "expect": "nonconformant",
+   "original_id": "GR-N04",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B11",
+   "candidate_rule": "R-NULLOBS",
+   "expect": "conformant",
+   "original_id": "GR-N05",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B08",
+   "candidate_rule": "R-NULLOBS",
+   "expect": "nonconformant",
+   "original_id": "GR-N06",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B15",
+   "candidate_rule": "R-ORDER",
+   "expect": "conformant",
+   "original_id": "GR-P01",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B01",
+   "candidate_rule": "R-ORDER",
+   "expect": "nonconformant",
+   "original_id": "GR-P02",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B05",
+   "candidate_rule": "R-ORDER",
+   "expect": "conformant",
+   "original_id": "GR-P03",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B03",
+   "candidate_rule": "R-ORDER",
+   "expect": "nonconformant",
+   "original_id": "GR-P04",
+   "result": "match",
+   "verdict": "nonconformant"
+  },
+  {
+   "blind_id": "B10",
+   "candidate_rule": "R-ORDER",
+   "expect": "conformant",
+   "original_id": "GR-P05",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B02",
+   "candidate_rule": "R-ORDER",
+   "expect": "conformant",
+   "original_id": "GR-P06",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B04",
+   "candidate_rule": "R-NOTDET",
+   "expect": "conformant",
+   "original_id": "GR-P07",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B07",
+   "candidate_rule": "R-ORDER",
+   "expect": "conformant",
+   "original_id": "GR-P08",
+   "result": "match",
+   "verdict": "conformant"
+  },
+  {
+   "blind_id": "B06",
+   "candidate_rule": "R-ORDER",
+   "expect": "nonconformant",
+   "original_id": "GR-P09",
+   "result": "match",
+   "verdict": "nonconformant"
+  }
+ ],
+ "part_divergences": [],
+ "phase": 2,
+ "phase1_sha256_input": "4ec54b036a9be76e72944623079c30c891cbdcc67bc90e220a68428c199d1a4a",
+ "tally": {
+  "ambiguous": 2,
+  "conformant": 11,
+  "nonconformant": 12
+ },
+ "verdict_agreement": "25/25",
+ "verdict_changes_from_phase1": []
+}

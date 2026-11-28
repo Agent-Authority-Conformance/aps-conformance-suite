@@ -1,0 +1,158 @@
+== candidate bytes equal the source at 6bb462f578c12d339b8fa964a5b1d8f97dbffa68
+ok: 64 files
+== native, draft-kroehl-agentic-trust-aae-00
+$ python3 tools/validate_schema.py
+OK    01-valid-root-aae.json
+OK    02-expired-not-after.json
+OK    03-too-early-not-before.json
+OK    04-revocation-endpoint-5xx.json
+OK    05-single-use-replay.json
+OK    06-delegation-valid-depth-2.json
+OK    07-delegation-action-superset.json
+OK    08-delegation-constraint-relaxation.json
+OK    09-delegation-depth-exceeded.json
+OK    10-delegation-cycle-detection.json
+OK    11-delegation-cascade-revocation.json
+OK    12-signing-authority-mismatch.json
+OK    13-unrecognized-required-constraint.json
+OK    14-cty-header-wrong.json
+OK    15-currency-mismatch-delegation.json
+
+15/15 vectors valid against schema
+$ python3 examples/python-verify.py
+PASS  01-valid-root-aae.json                     ACCEPT @ step 7  [structural]
+PASS  02-expired-not-after.json                  REJECT @ step 3  [runtime] (expired_not_after)
+PASS  03-too-early-not-before.json               REJECT @ step 3  [runtime] (not_yet_valid_not_before)
+PASS  04-revocation-endpoint-5xx.json            REJECT @ step 8  [runtime] (revocation_status_indeterminate)
+PASS  05-single-use-replay.json                  REJECT @ step 5  [runtime] (single_use_already_consumed)
+PASS  06-delegation-valid-depth-2.json           ACCEPT @ step 9  [structural]
+PASS  07-delegation-action-superset.json         REJECT @ step 9  [structural] (delegated_actions_not_subset)
+PASS  08-delegation-constraint-relaxation.json   REJECT @ step 9  [structural] (delegated_constraint_relaxed)
+PASS  09-delegation-depth-exceeded.json          REJECT @ step 9  [structural] (delegation_depth_exceeded)
+PASS  10-delegation-cycle-detection.json         REJECT @ step 9  [structural] (delegation_cycle_detected)
+PASS  11-delegation-cascade-revocation.json      REJECT @ step 9  [runtime] (ancestor_revoked)
+PASS  12-signing-authority-mismatch.json         REJECT @ step 1  [structural] (signing_authority_mismatch)
+PASS  13-unrecognized-required-constraint.json   REJECT @ step 7  [structural] (unrecognized_required_constraint)
+PASS  14-cty-header-wrong.json                   REJECT @ step 2  [structural] (cty_not_aae_json)
+PASS  15-currency-mismatch-delegation.json       REJECT @ step 9  [structural] (delegation_currency_mismatch)
+
+15/15 vectors passed  (5 runtime, 10 structural)
+$ python3 -m pytest -q -p no:cacheprovider tests/
+..............                                                           [100%]
+14 passed in 0.07s
+== enforce, draft-kroehl-agentic-trust-aae-02
+$ python3 tools/validate_enforce_schema.py
+PASS  01-type-form-matches-permit.json
+PASS  02-instance-value-inside-the-action-deny.json
+PASS  03-type-field-missing-from-the-action-deny.json
+PASS  04-action-is-a-string-deny.json
+PASS  05-action-is-an-array-deny.json
+PASS  06-action-is-a-number-deny.json
+PASS  07-action-is-null-deny.json
+PASS  08-grant-without-type_fields-deny.json
+PASS  09-type_fields-without-verb-deny.json
+PASS  10-duplicate-name-in-type_fields-deny.json
+PASS  11-exact-holds-permit.json
+PASS  12-exact-fails-on-a-vanity-prefix-deny.json
+PASS  13-enum-holds-permit.json
+PASS  14-enum-fails-deny.json
+PASS  15-range-holds-at-the-upper-bound-permit.json
+PASS  16-range-fails-one-over-the-bound-deny.json
+PASS  17-unknown-constraint-type-deny.json
+PASS  18-field-path-with-an-empty-segment-deny.json
+PASS  19-explicit-hold-pending.json
+PASS  20-unaddressed-action-is-never-pending-deny.json
+PASS  21-forbid-outranks-an-allowing-grant-deny.json
+PASS  22-ratified-by-the-issuing-principal.json
+PASS  23-stranger-with-a-valid-signature-rejected.json
+PASS  24-a-permit-is-not-ratifiable-caller-error.json
+PASS  25-chain-link-pointing-elsewhere-caller-error.json
+PASS  26-chain-link-set-explicitly-to-the-ratified-record.json
+
+26/26 enforce vectors valid
+$ python3 examples/enforce-verify.py
+PASS  01-type-form-matches-permit.json             PERMIT
+PASS  02-instance-value-inside-the-action-deny.json DENY
+PASS  03-type-field-missing-from-the-action-deny.json DENY
+PASS  04-action-is-a-string-deny.json              DENY
+PASS  05-action-is-an-array-deny.json              DENY
+PASS  06-action-is-a-number-deny.json              DENY
+PASS  07-action-is-null-deny.json                  DENY
+PASS  08-grant-without-type_fields-deny.json       DENY
+PASS  09-type_fields-without-verb-deny.json        DENY
+PASS  10-duplicate-name-in-type_fields-deny.json   DENY
+PASS  11-exact-holds-permit.json                   PERMIT
+PASS  12-exact-fails-on-a-vanity-prefix-deny.json  DENY
+PASS  13-enum-holds-permit.json                    PERMIT
+PASS  14-enum-fails-deny.json                      DENY
+PASS  15-range-holds-at-the-upper-bound-permit.json PERMIT
+PASS  16-range-fails-one-over-the-bound-deny.json  DENY
+PASS  17-unknown-constraint-type-deny.json         DENY
+PASS  18-field-path-with-an-empty-segment-deny.json DENY
+PASS  19-explicit-hold-pending.json                PENDING
+PASS  20-unaddressed-action-is-never-pending-deny.json DENY
+PASS  21-forbid-outranks-an-allowing-grant-deny.json DENY
+PASS  22-ratified-by-the-issuing-principal.json    RATIFIED
+PASS  23-stranger-with-a-valid-signature-rejected.json REJECTED
+PASS  24-a-permit-is-not-ratifiable-caller-error.json RatifyError
+PASS  25-chain-link-pointing-elsewhere-caller-error.json RatifyError
+PASS  26-chain-link-set-explicitly-to-the-ratified-record.json RATIFIED
+
+26/26 enforce vectors passed
+== composition, draft-kroehl-agentic-trust-aae-00 with draft-yossif-psea-02
+$ python3 tools/validate_interop_schema.py
+OK    interop/psea/vectors/xp-1-aligned-principal.json
+OK    interop/psea/vectors/xp-2-principal-divergence.json
+OK    interop/psea/vectors/xp-3-unresolved-binding.json
+OK    interop/psea/vectors/xp-5a-enrollment-pending.json
+OK    interop/psea/vectors/xp-5b-enrollment-complete.json
+OK    interop/psea/vectors/xp-6-alias-convergence.json
+
+6/6 composition vectors valid against schema
+$ python3 examples/composition-verify.py
+stages: aae_native | action_linkage | principal_linkage | evidence_satisfaction | freshness | decision | admission | outcome
+
+PASS  xp-1-aligned-principal.json
+        ACCEPT | EQUIVALENT | SAME | SATISFIED | WELL_FORMED | AUTHORIZED | NONE | NONE
+PASS  xp-2-principal-divergence.json
+        ACCEPT | EQUIVALENT | DIVERGENT(principal_divergence) | UNSATISFIED(principal_divergence) | WELL_FORMED | REFUSED(principal_divergence) | NONE | NONE
+PASS  xp-3-unresolved-binding.json
+        ACCEPT | EQUIVALENT | UNRESOLVED(unresolved_binding) | NOT_EVALUATED(unresolved_binding) | WELL_FORMED | REFUSED(unresolved_binding) | NONE | NONE
+PASS  xp-5a-enrollment-pending.json
+        ACCEPT | EQUIVALENT | UNRESOLVED(unresolved_binding) | NOT_EVALUATED(unresolved_binding) | WELL_FORMED | REFUSED(unresolved_binding) | NONE | NONE
+PASS  xp-5b-enrollment-complete.json
+        ACCEPT | EQUIVALENT | SAME | SATISFIED | WELL_FORMED | AUTHORIZED | NONE | NONE
+PASS  xp-6-alias-convergence.json
+        ACCEPT | EQUIVALENT | SAME | SATISFIED | WELL_FORMED | AUTHORIZED | NONE | NONE
+
+6/6 composition vectors passed (row-by-row)
+$ python3 tools/run_negative_controls.py
+stages: aae_native | action_linkage | principal_linkage | evidence_satisfaction | freshness | decision | admission | outcome
+
+PASS  C1  One octet of the secondary-side digest flipped
+        ACCEPT | NOT_EQUIVALENT(join_mismatch) | SAME | UNSATISFIED(evidence_covers_a_different_action) | WELL_FORMED | REFUSED(join_mismatch) | NONE | NONE
+PASS  C2  XP-3's principal given a table entry resolving to a different principal
+        ACCEPT | EQUIVALENT | DIVERGENT(principal_divergence) | UNSATISFIED(principal_divergence) | WELL_FORMED | REFUSED(principal_divergence) | NONE | NONE
+PASS  C3  PSEA proof signature tampered
+        ACCEPT | INDETERMINATE(secondary_unauthenticated) | UNRESOLVED(secondary_unauthenticated) | UNSATISFIED(invalid_signature) | NOT_EVALUATED(secondary_unauthenticated) | REFUSED(secondary_native_reject) | NONE | NONE
+PASS  C4  Clock moved past the AAE not_after
+        REJECT(expired_not_after) | INDETERMINATE(aae_not_admitted) | UNRESOLVED(aae_not_admitted) | NOT_EVALUATED(aae_not_admitted) | NOT_EVALUATED(aae_not_admitted) | REFUSED(aae_native_reject) | NONE | NONE
+PASS  C5  Another instant inside both validity windows
+        ACCEPT | EQUIVALENT | SAME | SATISFIED | WELL_FORMED | AUTHORIZED | NONE | NONE
+PASS  C6  Declared aae_digest differs from the signed action_binding
+        ACCEPT | INDETERMINATE(aae_binding_mismatch) | UNRESOLVED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | REFUSED(action_linkage_unestablished) | NONE | NONE
+PASS  C7  Signed envelope carries no action_binding
+        ACCEPT | INDETERMINATE(aae_binding_absent) | UNRESOLVED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | REFUSED(action_linkage_unestablished) | NONE | NONE
+PASS  C8  Payload does not hash to the declared action digest
+        ACCEPT | NOT_EQUIVALENT(payload_digest_mismatch) | SAME | UNSATISFIED(payload_digest_mismatch) | WELL_FORMED | REFUSED(payload_digest_mismatch) | NONE | NONE
+PASS  C9  Payload leaves the I-JSON subset
+        ACCEPT | INDETERMINATE(payload_not_i_json) | UNRESOLVED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | NOT_EVALUATED(action_linkage_unestablished) | REFUSED(action_linkage_unestablished) | NONE | NONE
+PASS  C10  Token carries its own key material and claims an enrolled kid
+        ACCEPT | INDETERMINATE(secondary_unauthenticated) | UNRESOLVED(secondary_unauthenticated) | UNSATISFIED(invalid_signature) | NOT_EVALUATED(secondary_unauthenticated) | REFUSED(secondary_native_reject) | NONE | NONE
+PASS  C11  Signed token with psea_counter absent
+        ACCEPT | EQUIVALENT | SAME | SATISFIED | CLAIMS_MALFORMED(counter_malformed) | REFUSED(counter_malformed) | NONE | NONE
+
+11/11 negative controls passed (row-by-row)
+psea-fixture-v0.json: OK
+== regeneration: every generator rebuilds its files byte for byte
+ok: rebuild is byte-identical

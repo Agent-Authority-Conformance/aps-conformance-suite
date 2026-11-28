@@ -1,0 +1,23 @@
+structural: 33/33
+semantic: 33/33
+authenticity: 17/33
+chain: 7/9
+mismatches: 18
+  ('invalid-semantic/floor-roundup.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/floor-not-observed.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/unknown-attribution-grade.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/duplicate-observed-grade.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/negative-authorization-evidence-count.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/floor-without-observed.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/floor-with-empty-observed.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/observed-without-floor.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-semantic/empty-observed.json', 'authenticity', 'not-checked', 'unsigned', [])
+  ('dsse/js-signed-v05.json', 'chain', 'not-checked', 'not-present', [])
+  ('dsse/rust-signed-v05.json', 'chain', 'not-checked', 'not-present', [])
+  ('chain/intact-3.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('chain/missing-all.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('chain/partial-last.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('chain/partial-middle.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('chain/broken-middle.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('chain/singleton-with-prev.jsonl', 'authenticity', 'not-checked', 'unsigned', [])
+  ('invalid-schema/missing-required-field.json', 'authenticity', 'not-checked', 'unsigned', [])

@@ -1,0 +1,46 @@
+selfcheck ok   seed issuer derived == test-keys.json
+selfcheck ok   seed buyer derived == test-keys.json
+selfcheck ok   seed mallory derived == test-keys.json
+selfcheck ok   seed principal derived == test-keys.json
+selfcheck ok   DID did:example:buyer-sub key == derived public key
+selfcheck ok   DID did:example:buyer key == derived public key
+selfcheck ok   DID did:example:issuer key == derived public key
+selfcheck ok   DID did:example:other-agent key == derived public key
+selfcheck ok   DID did:example:supplier key == derived public key
+selfcheck ok   vector spec-6.1-example jcs octets
+selfcheck ok   vector spec-6.1-example request_digest
+selfcheck ok   vector member-order-and-numbers jcs octets
+selfcheck ok   vector member-order-and-numbers request_digest
+selfcheck ok   vector same-skill-other-transaction jcs octets
+selfcheck ok   vector same-skill-other-transaction request_digest
+selfcheck ok   vector appendix-a-request jcs octets
+selfcheck ok   vector appendix-a-request request_digest
+endpoint http://127.0.0.1:8790/a2a/jsonrpc, audience http://127.0.0.1:8790/a2a/jsonrpc
+XR-01  pass  TASK_STATE_COMPLETED 
+XR-02  pass  TASK_STATE_FAILED 
+XR-03  pass  TASK_STATE_REJECTED step 7 max_transaction_value_exceeded
+XR-04  pass  TASK_STATE_COMPLETED 
+XR-05  pass  TASK_STATE_COMPLETED 
+XR-06  pass  TASK_STATE_COMPLETED 
+XR-07  pass  TASK_STATE_REJECTED step 1 invalid_signature
+XR-08  pass  TASK_STATE_REJECTED step 3 expired_not_after
+XR-09  pass  TASK_STATE_REJECTED step 4 challenge_signature_invalid
+XR-10  pass  TASK_STATE_REJECTED step 6 action_not_in_mandate
+XR-11  pass  TASK_STATE_REJECTED step 7 domain_not_in_allowlist
+XR-12  pass  error -32008 
+XR-13  pass  error -32602 
+XR-14  pass  TASK_STATE_COMPLETED 
+XR-15  pass  TASK_STATE_REJECTED step 4 iat_too_old
+XR-16  pass  TASK_STATE_COMPLETED 
+XR-17  pass  TASK_STATE_REJECTED step 4 iat_in_future
+XR-18  pass  TASK_STATE_REJECTED step 2 payload_not_json
+XR-19  pass  TASK_STATE_REJECTED step 2 payload_not_json
+XR-20  pass   TASK_STATE_COMPLETED / TASK_STATE_REJECTED step 5
+XR-21  pass  TASK_STATE_INPUT_REQUIRED 
+XR-22  pass  TASK_STATE_COMPLETED 
+XR-23  pass  TASK_STATE_INPUT_REQUIRED 
+XR-24  pass   TASK_STATE_COMPLETED / TASK_STATE_COMPLETED
+
+client checks: 217 ok, 0 not ok
+
+24 pass, 0 fail, 0 skipped -> results/client-run-1.json

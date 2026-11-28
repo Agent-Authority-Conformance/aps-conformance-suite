@@ -1,0 +1,11 @@
+CX-01  expected=allow     observed=allow     AGREE strongest, inside the grant
+CX-W   expected=warmed    observed=warmed    AGREE cache warm-up, each response validated
+CX-02  expected=allow     observed=allow     AGREE default, inside the grant, cache warm
+CX-03  expected=deny      observed=deny      AGREE default, after expiry, same chain, cache warm for 00:30
+CX-04  expected=deny      observed=deny      AGREE strongest, after expiry
+CX-05  expected=allow     observed=allow     AGREE default, one second before expiry
+CX-06  expected=deny      observed=deny      AGREE default, at expiry, strict less-than
+CX-07  expected=absent    observed=absent    AGREE default lookup after expiry, cache warm for 00:30
+CX-08  expected=allow     observed=allow     AGREE default, back inside the grant after the expired checks
+CX-09  expected=ERROR400-names-current_time observed=ERROR400-names-current_time AGREE default, current_time omitted, body={"code": "validation_error", "message": "failed to evaluate relationship condition: 'not_expired' - tuple 'folder:x#viewer@group:eng#member' is missing context parameters '[current_time]'"}
+TOTAL 10 AGREE 10 DIFF 0 ERROR 0

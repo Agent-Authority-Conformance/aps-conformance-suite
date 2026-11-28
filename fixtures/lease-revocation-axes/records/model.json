@@ -1,0 +1,142 @@
+{
+  "family": "lease-revocation-axes",
+  "vectors_sha256": "f1ec71d06bd0c0d91b4d28e834a5e9fd4516f760314fb883e1f297e4254d73a8",
+  "status": "model_checks_matched",
+  "provenance": "author-produced",
+  "baseline_runs": 44,
+  "baseline_calls": 164,
+  "baseline_scored_axes": 492,
+  "negative_controls": 8,
+  "reporting_checks": {
+    "no_scored_coverage": true,
+    "statement_only_not_scored_as_enforcement": true,
+    "policy_mismatch_not_supported": true,
+    "oracle_inputs_not_read": true
+  },
+  "profiles": [
+    {
+      "mode": "cached_lease",
+      "boundary": "exclusive",
+      "runs": 11
+    },
+    {
+      "mode": "cached_lease",
+      "boundary": "inclusive",
+      "runs": 11
+    },
+    {
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "runs": 11
+    },
+    {
+      "mode": "live_standing_read",
+      "boundary": "inclusive",
+      "runs": 11
+    }
+  ],
+  "mutation_failure_sets": [
+    {
+      "name": "lease-ignores-expiry",
+      "mode": "cached_lease",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-04",
+        "LRA-05",
+        "LRA-07",
+        "LRA-08",
+        "LRA-10"
+      ]
+    },
+    {
+      "name": "sliding-lease",
+      "mode": "cached_lease",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-04",
+        "LRA-05",
+        "LRA-07",
+        "LRA-08",
+        "LRA-10"
+      ]
+    },
+    {
+      "name": "live-fail-open",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-03",
+        "LRA-07",
+        "LRA-11"
+      ]
+    },
+    {
+      "name": "sticky-unavailable",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-11"
+      ]
+    },
+    {
+      "name": "retrieval-renews-evidence",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-04",
+        "LRA-05",
+        "LRA-08",
+        "LRA-10"
+      ]
+    },
+    {
+      "name": "deny-but-dispatch",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-02",
+        "LRA-03",
+        "LRA-04",
+        "LRA-05",
+        "LRA-06",
+        "LRA-07",
+        "LRA-08",
+        "LRA-09",
+        "LRA-10",
+        "LRA-11"
+      ]
+    },
+    {
+      "name": "deny-everything",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-01",
+        "LRA-02",
+        "LRA-03",
+        "LRA-05",
+        "LRA-06",
+        "LRA-07",
+        "LRA-08",
+        "LRA-10",
+        "LRA-11"
+      ]
+    },
+    {
+      "name": "live-first-read-only",
+      "mode": "live_standing_read",
+      "boundary": "exclusive",
+      "failed_cases": [
+        "LRA-01",
+        "LRA-02",
+        "LRA-03",
+        "LRA-06",
+        "LRA-07",
+        "LRA-08",
+        "LRA-09",
+        "LRA-10",
+        "LRA-11"
+      ]
+    }
+  ]
+}

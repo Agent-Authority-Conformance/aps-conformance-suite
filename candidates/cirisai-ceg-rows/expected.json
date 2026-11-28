@@ -1,0 +1,1111 @@
+{
+ "c-01ff72f6e1f1": {
+  "description": "A null member.",
+  "expect": "invalid:malformed:ceg-value",
+  "id": "null_member",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-061404c6389e": {
+  "form": "neither",
+  "id": "row_ref_not_a_digest",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-074678d83bd4": {
+  "description": "As rotation_b2_as_b, records inserted in the reverse order.",
+  "expect": "valid",
+  "id": "rotation_b2_as_b_reverse_order",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-08624a8a480f": {
+  "description": "B's record has no valid_until on a node: the key, and the statement, are Invalid.",
+  "expect": "invalid:key_not_valid",
+  "id": "record_breaks_end_rule",
+  "section": "key_directory",
+  "source": "row_statements_v3.json"
+ },
+ "c-09dc7605e788": {
+  "description": "iss whose 43rd character carries trailing bits.",
+  "expect": "invalid:malformed:iss",
+  "id": "iss_bad_last_char",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-0bdbefb18480": {
+  "description": "A row type outside the five.",
+  "expect": "invalid:malformed:row-type",
+  "id": "unknown_row_type",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-0ce8a198963b": {
+  "description": "A signer other than the author, in no role.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "other_signer_no_role",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-0e67f9060cdf": {
+  "description": "Signed by B2 with iss B; records: B's self-signed record, B2's record naming it (B2's and B's statements), a later self-signed record of B (asserted at T0+50), and B3's record (asserted at T0+11) naming that later record, with B3's and B's statements.",
+  "expect": "valid",
+  "id": "rotation_rival_names_uncovered_record",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-10e6c7928482": {
+  "description": "A disclosure whose digest the payload does not carry.",
+  "expect": "invalid:disclosure_unmatched",
+  "id": "disclosure_unmatched",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-1186466d9159": {
+  "description": "key:record with no author, one statement read alone: a voice of a counted row gives no act alone, so arm 0 (act=group) is unknown (see family_vendored_groups for the row read together).",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_key_record_voice_alone",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-12b24e140058": {
+  "form": "key",
+  "id": "key_b",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-15f3d86f2ade": {
+  "description": "Signed by A with iss A; records: B's self-signed record only.",
+  "expect": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+  "id": "a_not_held_records",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-15ff05877dcb": {
+  "description": "membership:widening is counted: an author is refused.",
+  "expect": "family_invalid:author_column",
+  "id": "v_leaf_counted_with_author",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-17e1eafafb6a": {
+  "description": "accord:lifecycle:{kind} (the family accord:lifecycle:confirmed:v1 resolves to; under accord:* the same dimension binds leaf lifecycle:confirmed and arm 0 holds): counted.",
+  "expect": "valid",
+  "id": "v_accord_lifecycle_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-19c274e6ad6b": {
+  "description": "valid_until equal to asserted_at.",
+  "expect": "ok",
+  "id": "node_at_asserted",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-1a10f371fa8a": {
+  "description": "hardware_class without pq_custody: carried (the consumer weighs it at 0.0), not refused.",
+  "expect": "ok",
+  "id": "pq_custody_missing",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-1ac663701449": {
+  "description": "A pseudonym may carry valid_until.",
+  "expect": "ok",
+  "id": "pseudonym_with_end",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-1ba27c0ac8c8": {
+  "description": "A text label in the unprotected header.",
+  "expect": "invalid:unexpected:unprotected",
+  "id": "unprotected_text_label",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-1bdf94c158c6": {
+  "description": "An empty refs map.",
+  "expect": "invalid:malformed:refs",
+  "id": "refs_empty",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-1c0c7f363cac": {
+  "description": "cty carries parameters.",
+  "expect": "invalid:malformed:cty",
+  "id": "cty_with_parameters",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-1d42ababb975": {
+  "description": "Signed by B2 with iss B; records: A's and B's self-signed records and B2's record naming A's record, with B2's statement (iss B) and A's statement (iss B).",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "rotation_cosigned_by_another_key",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-2229fcafeb5f": {
+  "description": "Signed by B2 with iss B; records: B's self-signed record, B2's record naming it and B3's record naming it, each with its own and B's statements.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "rotation_contested",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-2236534a442a": {
+  "description": "A counted row (no author, on group:roster, counted in CC's model) with refs, a salt, nbf/exp and both redaction forms.",
+  "expect": "valid",
+  "family_vendored_expect": "valid",
+  "id": "counted_with_refs",
+  "iss": "urn:ietf:params:oauth:ckt:sha-256:w7DbHNKuHi5uU2nSXjTLkVNkr5vBJN_bSeMFvFuBmvQ",
+  "key_seed": 3,
+  "kid_hex": "c3b0db1cd2ae1e2e6e5369d25e34cb915364af9bc124dfdb49e305bc5b819af4",
+  "row_id_hex": "9e937e88de538c32a53de4228eeffcba5a280f0208060f9731ed62638fcea3ce",
+  "section": "valid",
+  "source": "row_statements_v3.json",
+  "statement_id_hex": "df61067795bd2a13d4044141650af516735aac0f0548c1260e5b755b13d56d5e"
+ },
+ "c-227ae979e0c0": {
+  "description": "An empty further_heads set (a set is non-empty; absence is its one encoding).",
+  "expect": "invalid:malformed:further_heads",
+  "id": "refs_empty_set",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-239cadc972fa": {
+  "description": "trust:{job}:{version}, leaf confers, act=own: the delegate (CWT sub) role's when holds.",
+  "expect": "valid:role:delegate",
+  "id": "v_when_role_admitted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-26911e4f7f65": {
+  "description": "collection:{kind} with act=group: arm 0 holds, counted.",
+  "expect": "valid",
+  "id": "v_act_group_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-269d9aadb935": {
+  "digest_hex": "4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5",
+  "form": "row",
+  "id": "row_id_of_vector",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-27cb80d2aaad": {
+  "description": "An authored family whose payload has no author.",
+  "expect": "family_invalid:author_column",
+  "id": "authored_without_author",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-28652c18e745": {
+  "description": "licensure:{authority_id} read as given with act withheld (a harness): arm 0 is unknown.",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_licensure_act_withheld",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-2982161d8cfb": {
+  "description": "-70002 absent.",
+  "expect": "invalid:unexpected:protected",
+  "id": "no_family",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-2b958707565b": {
+  "description": "node, one millisecond past the bound.",
+  "expect": "key_record_out_of_window",
+  "id": "node_one_ms_over",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-2de82291e4eb": {
+  "description": "membership:proposal is authored: a row with no author is refused.",
+  "expect": "family_invalid:author_column",
+  "id": "v_leaf_authored_without_author",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-2e1360b72546": {
+  "description": "Signed by B2 with iss B; records: B's self-signed record and B2's record naming it, with B2's statement only.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "rotation_without_predecessor_statement",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-2e1b43e00f55": {
+  "description": "node, one second past the bound.",
+  "expect": "key_record_out_of_window",
+  "id": "node_one_second_over",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-2e5d93ca0e7d": {
+  "description": "An authored scores row signed by its author.",
+  "expect": "valid",
+  "family_vendored_expect": "valid",
+  "id": "authored_score",
+  "iss": "urn:ietf:params:oauth:ckt:sha-256:1vCVtzih4Y-2L6kkeANhicuJQgOUbUxxpS2bJ7QRdGM",
+  "key_seed": 1,
+  "kid_hex": "d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+  "row_id_hex": "4d7193e4b48b2313b7f03a9a79fbf8749202c988d94f8909e2fdc652ae74e1f5",
+  "section": "valid",
+  "source": "row_statements_v3.json",
+  "statement_id_hex": "7d868e399743467fd3f01b0c92ab3e10a442ad1141f68a54261dd558c111bad4"
+ },
+ "c-2e7b9ee8a2e9": {
+  "description": "A disclosure of a member its map already holds.",
+  "expect": "invalid:disclosure_unmatched",
+  "id": "disclosure_key_present",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-2fe4a2ee5b39": {
+  "description": "-70001 absent.",
+  "expect": "invalid:unexpected:protected",
+  "id": "no_row_type",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-324b94c6c9fc": {
+  "description": "accord:* arm 0 is leaf=lifecycle:{kind}; with no dimension the leaf is unknown, so the arm is unknown before the decider and the authorship is undetermined.",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_selector_undetermined",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-35e612add6a0": {
+  "description": "Signed by C with iss A and author A; records: A's self-signed record and a record of C signed by A with iss A, without C's statement.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "record_by_other_key_only",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-3a5c2f7d4258": {
+  "description": "further_heads out of order.",
+  "expect": "invalid:set_order:further_heads",
+  "id": "refs_unsorted_set",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-3bc6d6266104": {
+  "description": "key:record read as given with act withheld (a harness): arm 0 is unknown.",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_key_record_act_withheld",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-3c5225fa93e4": {
+  "description": "valid_until present, exp absent.",
+  "expect": "invalid:time:exp",
+  "id": "exp_missing",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-40cf4a994152": {
+  "description": "Signed by A with iss A and author B, read with the vendored family model; raw directory holding A.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "a_iss_a_author_b_family",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-478d7d4dd103": {
+  "description": "A row-ref tuple with its members swapped: [id, edition].",
+  "expect": "invalid:malformed:head",
+  "id": "row_ref_tuple_reversed",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-48762166da25": {
+  "description": "Signed by room key R with iss R and author R; records: R's self-signed record (identity_type room).",
+  "expect": "valid",
+  "id": "room_key_self",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-48cefe1b9571": {
+  "description": "One digest carried twice.",
+  "expect": "invalid:duplicate_digest",
+  "id": "digest_repeated",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-48de6f8518f1": {
+  "description": "ceg-row/2 is not an object typ.",
+  "expect": "invalid:malformed:typ",
+  "id": "row_typ_as_object",
+  "section": "objects",
+  "source": "row_statements_v3.json"
+ },
+ "c-4ae13dc87157": {
+  "description": "A valid statement whose key is not held: Waiting on its kid.",
+  "expect": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+  "id": "waiting_on_key",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-4bee3dae5799": {
+  "act": "group",
+  "description": "licensure:{authority_id} signed by two voices over one payload: act group, counted.",
+  "expect": [
+   "valid",
+   "valid"
+  ],
+  "id": "g_licensure_counted",
+  "row_id_hex": "befb2729ffbdd301cecbe637d4bf9178d4385340512fc71086d64930a46b57a9",
+  "section": "family_vendored_groups",
+  "source": "row_statements_v3.json"
+ },
+ "c-4e0dafdde8a0": {
+  "description": "iat is not floor(asserted_at / 1000).",
+  "expect": "invalid:time:iat",
+  "id": "iat_disagrees",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-4f070977aa40": {
+  "description": "Signed by C with iss B and author B; records: B's self-signed record and C's record signed by C with iss B, naming no predecessor.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "unrelated_key_claims_iss",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-513122490c1c": {
+  "description": "quarantine:{state} with group=affiliations and seats=1: counted.",
+  "expect": "valid",
+  "id": "v_group_seats_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-52514e44bdf2": {
+  "description": "A hash-digest under an algorithm other than -16.",
+  "expect": "invalid:malformed:head",
+  "id": "row_ref_other_hash",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-52ee2dcdbaf6": {
+  "act": "group",
+  "description": "key:record signed by two voices over one payload with no author: act group, arm 0 holds, counted; each voice is valid and both name one row.",
+  "expect": [
+   "valid",
+   "valid"
+  ],
+  "id": "g_key_record_counted",
+  "row_id_hex": "cbfb2b46ebba0de2c0a9f568d9a4a300c49a8adbfd1f3d4bf252ffc17e250dff",
+  "section": "family_vendored_groups",
+  "source": "row_statements_v3.json"
+ },
+ "c-5315190be683": {
+  "description": "A counted family whose payload names an author.",
+  "expect": "family_invalid:author_column",
+  "id": "counted_with_author",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-569d2af02a22": {
+  "description": "key:record's predecessor_key is by target: the issuer of the row refs.target names (CC 3.1.3), which the row does not carry; a payload member target naming the signer does not admit it from the vendored model.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_key_record_predecessor_not_from_payload",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-5780f0377f45": {
+  "description": "The attested key (CWT sub) signs.",
+  "expect": "valid:role:attested",
+  "id": "attested_key",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-58e47c6eb5fc": {
+  "description": "A set mixing user and node.",
+  "expect": "key_record_mixed_roles",
+  "id": "mixed_user_node",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-5b39a639d6af": {
+  "description": "A CBOR float in the payload.",
+  "expect": "invalid:not_deterministic:payload",
+  "id": "float_member",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-5c1ad414d1b8": {
+  "description": "Signed by B2 with iss B; records: B's self-signed record and B2's record naming it, with B's statement only.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "rotation_without_own_statement",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-5c1fb3c5f5f2": {
+  "description": "identity:occurrence_revocation with identity {node}: arm 0 false, authored.",
+  "expect": "valid",
+  "id": "v_identity_node_authored",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-5ff2dc8476f6": {
+  "description": "score below -10^6.",
+  "expect": "invalid:malformed:score",
+  "id": "score_below_range",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-6132f8215005": {
+  "description": "-70001 on a non-row object.",
+  "expect": "invalid:unexpected:protected",
+  "id": "object_with_row_type",
+  "section": "objects",
+  "source": "row_statements_v3.json"
+ },
+ "c-62a126edf4dc": {
+  "description": "The same disclosure presented twice.",
+  "expect": "invalid:disclosure_unmatched",
+  "id": "disclosure_twice",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-63523cc66c4c": {
+  "description": "Signed by B2 with iss B and author B; records: B's self-signed record and B2's record naming it in refs.target, with B2's statement and B's statement (iss B) over it.",
+  "expect": "valid",
+  "id": "rotation_b2_as_b",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-63f847167c76": {
+  "description": "Signed by A with iss B and author B; records: A's and B's self-signed records.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "a_iss_b_records",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-64855174d1d9": {
+  "description": "An also role outside {ack, cites}.",
+  "expect": "invalid:unexpected:also",
+  "id": "also_unknown_role",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-6598a610e39a": {
+  "description": "A role outside both groups takes no end rule.",
+  "expect": "ok",
+  "id": "steward_no_end_rule",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-6614ee351325": {
+  "form": "neither",
+  "id": "identity_ref_trailing_bits",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-66518ba8e00f": {
+  "description": "edition claim 1.",
+  "expect": "invalid:malformed:edition",
+  "id": "edition_1",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-68b79e6a8cc1": {
+  "form": "neither",
+  "id": "bare_hex",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-69ca4e0ce09e": {
+  "description": "Signed by A with iss A and author A; raw directory holding A.",
+  "expect": "valid",
+  "id": "a_as_a_raw",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-69da10372252": {
+  "description": "Signed by B2 with iss B; records: a later self-signed record of B (not the one named), and B2's record naming B's first record, with B2's and B's statements.",
+  "expect": "waiting:record:bd50ac2a1e10da6aaa2c069ecd3008af7fe084d1034e1fa20746d3db4933346f",
+  "id": "rotation_target_not_held",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-6ad83f7a9a4d": {
+  "description": "A COSE_Sign1 without tag 18.",
+  "expect": "invalid:not_cose_sign1",
+  "id": "untagged",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-6db888385463": {
+  "form": "neither",
+  "id": "short_digest",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-6de744a6caf1": {
+  "description": "collection:{kind} with act=own is authored: a row with no author is refused.",
+  "expect": "family_invalid:author_column",
+  "id": "v_act_own_counted_refused",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-6e6391df35bb": {
+  "form": "neither",
+  "id": "other_hash_alg",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-6f07ed6e6659": {
+  "description": "The author signs its own authored row.",
+  "expect": "valid",
+  "id": "author_signs",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-77582ed206e4": {
+  "description": "B's record signed by A, A's self-signed: Valid.",
+  "expect": "valid",
+  "id": "held_through_chain",
+  "section": "key_directory",
+  "source": "row_statements_v3.json"
+ },
+ "c-78bb280fc1a6": {
+  "description": "key:record, act own (derived from the one statement, its author's): authored; its author signs.",
+  "expect": "valid",
+  "id": "v_author_signs",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-79486ac657b8": {
+  "description": "Signed by B3 with iss B; records: B's self-signed record, B2's record naming it (B2's and B's statements), B3's record naming B2's (B3's and B2's statements, iss B).",
+  "expect": "valid",
+  "id": "rotation_two_hops",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-7b56d87cb09c": {
+  "description": "As rotation_two_hops without B2's rotation record.",
+  "expect": "waiting:kid:bd27864d58303131cc36fae29c51457d56a32e2bb999d1d4df50227fe255ac10",
+  "id": "rotation_two_hops_middle_missing",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-7b6ac882a5e6": {
+  "act": "group",
+  "description": "An authored key:record read as a group: act group is counted, and the row names an author.",
+  "expect": [
+   "family_invalid:author_column"
+  ],
+  "id": "g_key_record_authored_as_group",
+  "section": "family_vendored_groups",
+  "source": "row_statements_v3.json"
+ },
+ "c-7c6401d61045": {
+  "description": "The ML-DSA half signed with the empty FIPS 204 context.",
+  "expect": "invalid:bad_signature",
+  "id": "ml_dsa_empty_ctx",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-8115ca480761": {
+  "description": "self:delegates_to: the delegate (CWT sub) signs the author's payload.",
+  "expect": "valid:role:delegate",
+  "id": "v_delegate_is_sub",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-830683e0e32f": {
+  "description": "dimension resolves to evidence:.suite:.kind:.cell:.prefix; the header says conscience:coherence.",
+  "expect": "invalid:dimension_family",
+  "id": "dimension_other_family",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-84167e2cf683": {
+  "description": "score above 10^6.",
+  "expect": "invalid:malformed:score",
+  "id": "score_out_of_range",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-8463a46c5c80": {
+  "description": "cty on a non-row object.",
+  "expect": "invalid:unexpected:protected",
+  "id": "object_with_cty",
+  "section": "objects",
+  "source": "row_statements_v3.json"
+ },
+ "c-8596ef032579": {
+  "description": "asserted_at absent.",
+  "expect": "invalid:malformed:asserted_at",
+  "id": "no_asserted_at",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-897c29f78ddd": {
+  "description": "agent with no valid_until (the private-room exception fails closed).",
+  "expect": "key_record_out_of_window",
+  "id": "agent_without_end",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-8b862cdecacf": {
+  "description": "v1's valid row naming five earlier-form objects by edition-1 row-refs (target the key record, cites all five), unchanged: no row of this form names the earlier form; refused at also.",
+  "expect": "invalid:malformed:also",
+  "id": "names_earlier_form",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-8e233744eff5": {
+  "description": "attestation_evidence that is not a map.",
+  "expect": "key_record_bad_pq_custody",
+  "id": "attestation_evidence_not_map",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-8f18ebdef3db": {
+  "description": "accord:lifecycle:confirmed:v1 resolves to accord:lifecycle:.kind; a header of accord:. is refused.",
+  "expect": "invalid:dimension_family",
+  "id": "dimension_less_specific_header",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-8fa5ce4804eb": {
+  "description": "The protected header carries crit.",
+  "expect": "invalid:unexpected:protected",
+  "id": "extra_protected_member",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-909c00272f2f": {
+  "description": "Signed by A with iss A; raw directory holding nothing.",
+  "expect": "waiting:kid:d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+  "id": "a_not_held_raw",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-9141e9ee4a7f": {
+  "description": "A target row-ref of edition 1 naming an earlier-form key record (CDDL: the edition is the constant 2).",
+  "expect": "invalid:malformed:target",
+  "id": "row_ref_edition_1",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-91bb6f489dba": {
+  "description": "-70002 well formed but not registered.",
+  "expect": "invalid:unregistered_family",
+  "id": "family_unregistered",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-93644e7648f9": {
+  "description": "Signed by B with iss B and author B; records: A's and B's self-signed records.",
+  "expect": "valid",
+  "id": "b_as_b_records",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-945422b76bd8": {
+  "description": "The COSE_Sign1 array head in a two-byte form.",
+  "expect": "invalid:not_deterministic:statement",
+  "id": "long_array_head",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-9688405b1b4d": {
+  "description": "An accord holder's key: hardware_class names the Ed25519 half, pq_custody removable_offline (CC 4.2.2).",
+  "expect": "ok",
+  "id": "pq_custody_removable_offline",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-98f295fffa8c": {
+  "description": "identity_type not sorted.",
+  "expect": "key_record_bad_identity_type",
+  "id": "roles_unsorted",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-9b4f9f26b4cc": {
+  "description": "-70002 on a non-row object.",
+  "expect": "invalid:unexpected:protected",
+  "id": "object_with_family",
+  "section": "objects",
+  "source": "row_statements_v3.json"
+ },
+ "c-9d0656481226": {
+  "description": "node, valid_until exactly asserted_at + 365 days.",
+  "expect": "ok",
+  "id": "node_at_bound",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-9da56dc55a7c": {
+  "description": "identity:occurrence_revocation with identity {user}: counted.",
+  "expect": "valid",
+  "id": "v_identity_user_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-a1d502a28a89": {
+  "description": "The payload map's keys out of bytewise order.",
+  "expect": "invalid:not_deterministic:payload",
+  "id": "payload_keys_unsorted",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-a2207994da64": {
+  "description": "pq_custody outside the three values.",
+  "expect": "key_record_bad_pq_custody",
+  "id": "pq_custody_unknown",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-a324db596b16": {
+  "description": "A family id with an upper-case letter.",
+  "expect": "invalid:malformed:family-id",
+  "id": "family_leaf_uppercase",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-a3428bcd497d": {
+  "description": "A closed vocab segment with an unregistered value.",
+  "expect": "invalid:dimension_refused:namespace_vocab_value_unregistered",
+  "id": "dimension_refused_by_matcher",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-a37031749c85": {
+  "description": "Signed by A with iss B and author B; raw directory holding A and B.",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "a_iss_b_raw",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-a5a0c5f996bd": {
+  "description": "An sd_claims disclosure with a 15-byte salt.",
+  "expect": "invalid:malformed:sd-disclosure",
+  "id": "disclosure_short_salt",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-a9fce2e32686": {
+  "description": "key:record, act own (derived): a signer other than the author, and the row names no predecessor: no role admits it.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_key_record_second_signer_no_target",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-ab178120d5b6": {
+  "description": "retirement:{state}, leaf retired: the custodian role's when holds, but the payload has no custodian member naming the signer.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_when_role_member_absent",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-ad900e0395af": {
+  "description": "Signed by B with iss B and author B; raw directory holding B.",
+  "expect": "valid",
+  "id": "b_as_b_raw",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-aded448812b2": {
+  "description": "collection:{kind} with act=own: arm 0 is false, authored.",
+  "expect": "valid",
+  "id": "v_act_own_authored",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-b0744ed89ab9": {
+  "description": "membership:{stage}: leaf proposal reads arm 0 false, so the `*` arm decides: authored.",
+  "expect": "valid",
+  "id": "v_leaf_authored",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-b31404cf0fb6": {
+  "description": "A signer other than the author, named as the delegate.",
+  "expect": "valid:role:delegate",
+  "id": "delegate_named",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-b33f7b4ff56b": {
+  "form": "neither",
+  "id": "identity_ref_42_chars",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-b4621276103a": {
+  "description": "membership:{stage}: leaf widening holds arm 0 (leaf=widening|removal): counted, no author.",
+  "expect": "valid",
+  "id": "v_leaf_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-b7380cbb18d4": {
+  "act": "group",
+  "description": "Two key:record statements over different payloads are not one row.",
+  "expect": "several_rows",
+  "id": "g_several_rows",
+  "section": "family_vendored_groups",
+  "source": "row_statements_v3.json"
+ },
+ "c-b9b8d14b5ff9": {
+  "description": "confidence below 0.",
+  "expect": "invalid:malformed:confidence",
+  "id": "confidence_negative",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-ba88f6cd7403": {
+  "description": "collection:{kind} read as given with act withheld (a harness): arm 0 is unknown.",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_act_withheld",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-babf4292ea0c": {
+  "description": "The delegate member names someone else.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "delegate_names_other",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-bb4699dadaa4": {
+  "description": "-70002 names no family the CC registry registers (refused before any family model).",
+  "expect": "invalid:unregistered_family",
+  "id": "unregistered_family",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-bb8d231ce84e": {
+  "description": "collection:{kind} with act not supplied: derived own from the one statement of a row with an author, so arm 0 is false: authored.",
+  "expect": "valid",
+  "id": "v_act_derived_own",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-bbb95cc91e63": {
+  "description": "trust:{job}:{version}, leaf accepts: the delegate role's when is false.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_when_role_not_holding",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-c0bf1c2c9a3e": {
+  "description": "Signed by B2 with iss B; records: B2's rotation record with B2's and B's statements; B's own record not held.",
+  "expect": "waiting:kid:4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23",
+  "id": "rotation_genesis_not_held",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-c61053e0b115": {
+  "description": "A typ outside the closed set.",
+  "expect": "invalid:malformed:typ",
+  "id": "object_unknown_typ",
+  "section": "objects",
+  "source": "row_statements_v3.json"
+ },
+ "c-c6ad354d8eca": {
+  "description": "trust:{job}:{version} with no dimension and act=own: authored, but the roles' when is unknown, so no second signer is admitted.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_when_role_unknown",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-c703dc340a1f": {
+  "description": "accord_holder carrying valid_until.",
+  "expect": "key_record_out_of_window",
+  "id": "accord_holder_with_end",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-c8c2cdb9ba5b": {
+  "description": "self:delegates_to's delegate_owner role is by owner_of_sub, the owner the owner-binding of sub names; a payload member of that name does not admit the signer.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_owner_of_sub_not_a_member",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-caf13c5986eb": {
+  "description": "membership:{stage} with no dimension: arm 0 is unknown.",
+  "expect": "family_invalid:authorship_undetermined",
+  "id": "v_no_dimension_undetermined",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-cd0ddfc85436": {
+  "form": "neither",
+  "id": "identity_ref_sha512",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-cef1393791bd": {
+  "description": "group:roster with an author.",
+  "expect": "family_invalid:author_column",
+  "id": "v_counted_with_author",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-d2275122d150": {
+  "description": "user with no valid_until.",
+  "expect": "ok",
+  "id": "user_without_end",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-d39de2b15dbe": {
+  "description": "body.note and an array element blinded, both disclosed in sd_claims.",
+  "expect": "valid",
+  "family_vendored_expect": "valid",
+  "id": "disclosed",
+  "iss": "urn:ietf:params:oauth:ckt:sha-256:1vCVtzih4Y-2L6kkeANhicuJQgOUbUxxpS2bJ7QRdGM",
+  "key_seed": 1,
+  "kid_hex": "d6f095b738a1e18fb62fa92478036189cb894203946d4c71a52d9b27b4117463",
+  "row_id_hex": "9977a0afbd3ac88946b1ca372142704468fa0240103c9ad35974a2b6a1fd078a",
+  "section": "valid",
+  "source": "row_statements_v3.json",
+  "statement_id_hex": "492f9dbbe5197025faed54e4b63deb81b91d13d626dc66de8d09b1284c3b1e08"
+ },
+ "c-d640ff377753": {
+  "digest_hex": "adc376f3b632de3ca02e1b6597d37c8143147c2f4287c8d0df9ecf0ee3bda9fc",
+  "form": "row",
+  "id": "row_id",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-dbf7949ddfa8": {
+  "description": "The counted row above signed by a second key, a second voice: same row id, another statement id.",
+  "expect": "valid",
+  "family_vendored_expect": "valid",
+  "id": "second_voice",
+  "iss": "urn:ietf:params:oauth:ckt:sha-256:TjkwzcxCJYXe8Of_OiKEuHShc9mC2cS0IwRkf5PZnyM",
+  "key_seed": 2,
+  "kid_hex": "4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23",
+  "row_id_hex": "9e937e88de538c32a53de4228eeffcba5a280f0208060f9731ed62638fcea3ce",
+  "section": "valid",
+  "source": "row_statements_v3.json",
+  "statement_id_hex": "36a9659234b75a8a39a5e92d462a94c9a35054c44b2eb7d7791a103785b348a7"
+ },
+ "c-dc4408df654c": {
+  "description": "A family that scores a dimension, without one.",
+  "expect": "family_invalid:dimension_missing",
+  "id": "dimension_missing",
+  "section": "family",
+  "source": "row_statements_v3.json"
+ },
+ "c-e362eaa87b67": {
+  "description": "A revocation snapshot's header: no cty, no -70001/-70002, no iat.",
+  "expect": "valid",
+  "id": "revocation_snapshot_header",
+  "object_id_hex": "c5b7ab7a03b3cce00bf26bd6e9a43cc79e389cdd2f352efc3b01aa0da427d7e7",
+  "section": "objects",
+  "source": "row_statements_v3.json",
+  "statement_id_hex": "79e7d55e440eda4e591a556814cfa46b5b2b25d70bc778b5b7435f4e2187255d"
+ },
+ "c-e39af313e474": {
+  "description": "user carrying valid_until.",
+  "expect": "key_record_out_of_window",
+  "id": "user_with_end",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-e8e6e26e99cb": {
+  "description": "self:delegates_to: a signer other than the author who is not the sub.",
+  "expect": "family_invalid:iss_not_in_role",
+  "id": "v_delegate_not_sub",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-eb5aea86598e": {
+  "description": "B's record is signed by G, whom nobody holds: the statement waits on G, the deepest key.",
+  "expect": "waiting:kid:3b1adf0d6418248db5214e17379d85b8debc51b89a2e55ae0e46792f50d7e10f",
+  "id": "deep_waiting",
+  "section": "key_directory",
+  "source": "row_statements_v3.json"
+ },
+ "c-f08fd3340819": {
+  "description": "further_heads repeats an element.",
+  "expect": "invalid:set_order:further_heads",
+  "id": "refs_duplicate",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-f200abf82b32": {
+  "form": "key",
+  "id": "key_a",
+  "section": "references",
+  "source": "row_statements_v3.json"
+ },
+ "c-f2857bf7131b": {
+  "description": "retirement:{state}, leaf retired: the custodian role (rc20: by custodian) admits the signer the payload's custodian names.",
+  "expect": "valid:role:custodian",
+  "id": "v_when_role_member_named",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-f2fedbf46f9e": {
+  "description": "Signed by B2 with iss B; records: A's and B's self-signed records and B2's record naming A's record in refs.target, with B2's and B's statements (iss B).",
+  "expect": "invalid:kid_not_of_iss",
+  "id": "rotation_names_another_record",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-f4827f4efd0a": {
+  "description": "licensure:{authority_id} (rc20: act=group => counted ; authored), act own (derived): authored; its author signs.",
+  "expect": "valid",
+  "id": "v_licensure_own",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-f543da184bb3": {
+  "description": "Signed by A with iss A and author A; records: A's and B's self-signed records.",
+  "expect": "valid",
+  "id": "a_as_a_records",
+  "section": "cases",
+  "source": "key_of_iss_v1.json"
+ },
+ "c-f5487bfaac38": {
+  "description": "group:roster is counted: no author.",
+  "expect": "valid",
+  "id": "v_counted",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-f6cb3136a273": {
+  "description": "One signature byte flipped.",
+  "expect": "invalid:bad_signature",
+  "id": "bad_signature",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-f76d3fda6777": {
+  "description": "quarantine:{state} with group=family and seats not supplied: group reads false, so arm 0 is false whatever seats reads, and the `*` arm decides: authored.",
+  "expect": "valid",
+  "id": "v_false_beats_unknown",
+  "section": "family_vendored",
+  "source": "row_statements_v3.json"
+ },
+ "c-f86175a4f133": {
+  "description": "valid_until before asserted_at.",
+  "expect": "key_record_out_of_window",
+  "id": "node_before_asserted",
+  "section": "key_records",
+  "source": "row_statements_v3.json"
+ },
+ "c-f9e3af56a15e": {
+  "description": "A dimension no registered family claims.",
+  "expect": "invalid:dimension_unregistered",
+  "id": "dimension_open_vocabulary",
+  "section": "refusals",
+  "source": "row_statements_v3.json"
+ },
+ "c-fe02f57a9d3e": {
+  "description": "A statement asserted after the held record's valid_until: no held record of B covers the instant, so it waits on one that does (CC 2.4.1.1: retryable).",
+  "expect": "waiting:covering_record:4e3930cdcc422585def0e7ff3a2284b874a173d982d9c4b42304647f93d99f23:1763200001001",
+  "id": "after_valid_until",
+  "section": "key_directory",
+  "source": "row_statements_v3.json"
+ }
+}

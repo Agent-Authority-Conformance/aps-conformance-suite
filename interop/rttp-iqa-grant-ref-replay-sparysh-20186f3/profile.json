@@ -1,0 +1,68 @@
+{
+ "profile_version": 1,
+ "operator": "ShaoBao Li (Lee) / Aicent Stack",
+ "mode": "pipeline replay of a merged lab record — our pipeline executes the record's own checker as code-as-run and compares the outputs against the recorded bytes",
+ "record": {
+  "name": "sparysh-reading-aicent-grant-ref-20186f3",
+  "record_dir_upstream": "interop/sparysh-reading-aicent-grant-ref-20186f3",
+  "repository": "Agent-Authority-Conformance/aps-conformance-suite",
+  "merged": {
+   "pr": 234,
+   "merge_commit_sha": "dbf9c245ecca1636344dc7f2e23af7dd8844f58d",
+   "merged_at": "2026-11-17T20:40:28Z"
+  },
+  "record_operator": "Andrii Sparysh (andreysparish)",
+  "classification": "the replayed run was blind to the candidate's expected results; its semantic verdicts are labeled author-produced Mode B because Andrii wrote the checker — a reading record, not a certification, not an independent run"
+ },
+ "corpus": {
+  "candidate": "aicent-grant-ref",
+  "candidate_revision": 1,
+  "lab_commit": "20186f3ebc78de2f34e79a0b4bfe5f828599653b",
+  "draft": {
+   "name": "draft-li-rttp-iqa-addressing-02",
+   "txt_sha256": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044",
+   "sections": ["8.1", "8.2"]
+  }
+ },
+ "vendor_pins": {
+  "vendor/reader/check_reader.py": "5eeb294a5e3cd039ff40e94581afc097ac9d1f1e290795a387af7eba405a02f2",
+  "vendor/reader/compare.py": "1394a8ce0240aabc092e96f427c88cf4c09ab1b2d805f249a3aa75047d97e136",
+  "vendor/draft/draft-li-rttp-iqa-addressing-02.txt": "02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044",
+  "vendor/blind/cases.json": "86c9aa2c2f6151cd5f8ebcf33c01e08a4a19a3cdac7bdd9936fe00ddc0309205",
+  "vendor/sealed/vectors.json": "f1924f07be2b7dcf93c3832938bdb288f0f2868057fe8396c9c5b4935b71a303",
+  "vendor/sealed/CANDIDATE.md": "089091faec6d63e7515f8279b23495866c65438929353a5e7fb8d22daddda0a3",
+  "vendor/sealed/id-map.json": "04a7f8df180f8841ba534950deec6d06f4dd8ed5cdaa9b139a850fafc7938141"
+ },
+ "recorded_pins": {
+  "recorded/phase1.json": "4ec54b036a9be76e72944623079c30c891cbdcc67bc90e220a68428c199d1a4a",
+  "recorded/phase1-sensitivity.json": "688a6822a609d3e9a7e1a1d3426cc97c2bfec0f170622a14dcd36a38820beb50",
+  "recorded/final.json": "e61ca93a1f01447a7234475e939b5cf5fd9edf0cab2f85f6b75b6e29b1149cc3"
+ },
+ "commands": [
+  {
+   "name": "phase1",
+   "argv": ["vendor/reader/check_reader.py", "vendor/draft/draft-li-rttp-iqa-addressing-02.txt", "vendor/blind/cases.json", "{out}/phase1.json", "--sensitivity", "{out}/phase1-sensitivity.json"],
+   "expected_stdout": "{\"ambiguous\": 2, \"conformant\": 11, \"nonconformant\": 12}",
+   "produces": [
+    {"path": "{out}/phase1.json", "recorded": "recorded/phase1.json"},
+    {"path": "{out}/phase1-sensitivity.json", "recorded": "recorded/phase1-sensitivity.json"}
+   ]
+  },
+  {
+   "name": "compare",
+   "argv": ["vendor/reader/compare.py", "recorded/phase1.json", "vendor/sealed/vectors.json", "vendor/sealed/id-map.json", "{out}/final.json"],
+   "produces": [
+    {"path": "{out}/final.json", "recorded": "recorded/final.json"}
+   ]
+  }
+ ],
+ "expected": {
+  "verdict_agreement": "25/25",
+  "part_divergences": 0,
+  "tally": {"ambiguous": 2, "conformant": 11, "nonconformant": 12}
+ },
+ "compare": {
+  "line_endings": "normalize-to-lf",
+  "canonical_json": true
+ }
+}

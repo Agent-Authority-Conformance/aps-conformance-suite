@@ -1,0 +1,59 @@
+{
+  "record": "results/04-aeoess-native-mode-a-run",
+  "date": "2026-10-07",
+  "runner": "Tymofii Pidlisnyi (@aeoess); executed by Codex under his mandate on his machine (macOS arm64)",
+  "mode": "Mode A",
+  "label": "independent",
+  "label_basis": "The runner authored neither the vectors, the claim inputs, nor the native verifiers. The orchestration only invoked node and captured stdout, stderr and exit codes; no runner-written code decides any claimed result.",
+  "not": "An independently operated run of the producer's verifiers, not an independent implementation.",
+  "implementation": {
+    "v0": {
+      "file": "v0/verify.mjs",
+      "sha256": "0746eba3b60e89ee70030d79803519bccc3e04193662af0dd9fc24ef2170b720",
+      "upstream": "AgentAvow/AgentAvow@4404df2c4176ca5390f1af5a2e63f069a503a01f"
+    },
+    "v1": {
+      "file": "v1/verify.mjs",
+      "sha256": "deb7c41e99dc7f08850d040db4f081e9fbfad1632030bdc59697837f14eef06d",
+      "upstream": "AgentAvow/AgentAvow@36426cfd5152bba6a27766febfac8aaef47b6f34"
+    }
+  },
+  "inputs": {
+    "pr_head": "f071e102153ded97d1d6bdc5c9306bcbf4a08b4d",
+    "v0_vectors_sha256": "2f4632b03305471b3262109dce7db2cf71d029fe6d9ec85fe54e9bf5c82bb9df",
+    "v1_vectors_sha256": "488496079155830caf83593be0cafcb21367f72cd70ea363c2400f40eda72647"
+  },
+  "interpreter": "node v24.11.1",
+  "runs": [
+    {
+      "cwd": "$ROOT/v0",
+      "command": [
+        "node",
+        "verify.mjs"
+      ],
+      "exit": 0,
+      "stdout": "v0-verify.txt",
+      "stderr_bytes": 0
+    },
+    {
+      "cwd": "$ROOT/v1",
+      "command": [
+        "node",
+        "verify.mjs"
+      ],
+      "exit": 0,
+      "stdout": "v1-verify.txt",
+      "stderr_bytes": 0
+    }
+  ],
+  "covers": [
+    "v0: signature and canonical bytes, gate verdicts for the five cases, and the property checks including every negative fails exactly one axis",
+    "v1 C6: every negative fails exactly one axis, as asserted by the native verifier"
+  ],
+  "limits": [
+    "Same machine and maintainer as results/03",
+    "The native v1 verifier does not check the key_encoding count or bind the unsigned toolDigests map to the signed payload; the lab pin check in scripts/check-tool-manifest-digest-pins.mjs guards the exact vector bytes at this pin",
+    "No runtime behavior, production signing trust or adoption established",
+    "$ROOT stands for the run directory"
+  ]
+}

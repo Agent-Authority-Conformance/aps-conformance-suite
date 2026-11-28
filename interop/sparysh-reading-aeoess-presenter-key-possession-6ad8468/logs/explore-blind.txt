@@ -1,0 +1,112 @@
+B01 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001x"}
+B02 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"GET","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B03 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B04 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":false,"decision":"reject","reject_axis":"authority"}
+   diffs: {'request.required_scope': 'refunds:write'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B05 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'request.required_scope': 'refunds:write'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B06 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 2
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B07 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"AZxmuuke1OpOSAJmDPOsNklUVxhOMnRJJdlabuPFbjI","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B08 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'token_claims.cnf': None} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B09 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'request.uri': 'https://api.example.test/orders?page=2'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B10 {"proof_signature":true,"key_binding":false,"request_binding":true,"authority":false,"decision":"reject","reject_axis":"key_binding"}
+   diffs: {'request.required_scope': 'refunds:write'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B11 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","d":"3anwyr1NxkoK1Q48UUSOPeXJIVEACwdd7Zjza9RWMXI","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B12 {"proof_signature":true,"key_binding":false,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"proof_signature"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B13 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'request.server_nonce': 'n-2026-11-03'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B14 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"none","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B15 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B16 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B17 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750420,"jti":"p-0001"}
+B18 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'request.server_nonce': 'n-2026-11-03'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001","nonce":"n-old"}
+B19 {"proof_signature":false,"key_binding":true,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"proof_signature"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B20 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793749800,"jti":"p-0001"}
+B21 {"proof_signature":true,"key_binding":false,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"key_binding"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B22 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/refunds","iat":1793750395,"jti":"p-0001"}
+B23 {"proof_signature":false,"key_binding":true,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"proof_signature"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001x"}
+B24 {"proof_signature":false,"key_binding":false,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"proof_signature"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"nSTCN36lL9LqVqNs0oheqNt0Z0WYUdarPXth1m5nwvg"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B25 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"JWT"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B26 {"proof_signature":true,"key_binding":false,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"key_binding"}
+   diffs: {} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B27 {"proof_signature":true,"key_binding":true,"request_binding":true,"authority":true,"decision":"accept","reject_axis":null}
+   diffs: {'request.seen_jti': [['https://api.example.test/orders', 'p-0001']]} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}
+B28 {"proof_signature":false,"key_binding":true,"request_binding":true,"authority":true,"decision":"reject","reject_axis":"proof_signature"}
+   diffs: {'request.server_nonce': 'n-2026-11-03'} other: set() nparts: 3
+   H: {"alg":"EdDSA","jwk":{"crv":"Ed25519","kty":"OKP","x":"s08tgBeilGl3TAZ94T3RwNKsACFVkcFMgJtjIJvDeaQ"},"typ":"dpop+jwt"}
+   P: {"ath":"B5iTFvaDdm6GxikTB18xe4mvPqiDaY16c_oX4m6kAH0","htm":"POST","htu":"https://api.example.test/orders","iat":1793750395,"jti":"p-0001"}

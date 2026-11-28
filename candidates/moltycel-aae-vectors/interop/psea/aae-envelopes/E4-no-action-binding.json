@@ -1,0 +1,45 @@
+{
+  "name": "E4-no-action-binding",
+  "note": "AAE grant with mandate.action_binding omitted. Well-formed as an AAE; a composition checker cannot anchor the declared action digest to it. Used by negative control C7, paired with no vector.",
+  "signed_by": "did:web:example.com:agent-a",
+  "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1hI2tleS0xIn0.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDEwNC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwZDQiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmFnZW50LWEiLCJ2YWxpZEZyb20iOiIyMDI2LTA3LTI5VDA4OjAwOjAwWiIsImNyZWRlbnRpYWxTdWJqZWN0Ijp7ImlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC0wMDEiLCJhYWUiOnsibWFuZGF0ZSI6eyJhY3Rpb25zIjpbInRyYW5zZmVyIiwicGF5bWVudC5leGVjdXRlIl0sInB1cnBvc2UiOiJQU0VBL0FBRSBpbnRlcm9wIGNyb3NzLXJ1biAtIHNpbmdsZSBvdXRib3VuZCB0cmFuc2ZlciIsInNjb3BlIjoicGF5bWVudHMtdmVydGljYWwiLCJwcmluY2lwYWxfZGlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpwcmluY2lwYWwtQSJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMDAwMCwiY3VycmVuY3kiOiJDSEYiLCJyZXF1aXJlZCI6dHJ1ZX19LCJ2YWxpZGl0eSI6eyJub3RfYmVmb3JlIjoiMjAyNi0wNy0yOVQwODowMDowMFoiLCJub3RfYWZ0ZXIiOiIyMDI2LTA3LTI5VDA5OjAwOjAwWiIsInNpbmdsZV91c2UiOmZhbHNlfX19fQ.ROq5ZTfUiD4gXvdtCzGJ25eTCJTQLhO3wfVpI0fsWnQKsEcAIXGC7VU9eXnvIfZzdQbXBOG45V7gMpg1AXznCA",
+  "decoded_payload": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://moltrust.ch/contexts/aae/v1"
+    ],
+    "type": [
+      "VerifiableCredential",
+      "AgentAuthorizationEnvelope"
+    ],
+    "id": "urn:uuid:00000104-0000-4000-8000-0000000000d4",
+    "issuer": "did:web:example.com:agent-a",
+    "validFrom": "2026-07-29T08:00:00Z",
+    "credentialSubject": {
+      "id": "did:web:example.com:agent-001",
+      "aae": {
+        "mandate": {
+          "actions": [
+            "transfer",
+            "payment.execute"
+          ],
+          "purpose": "PSEA/AAE interop cross-run - single outbound transfer",
+          "scope": "payments-vertical",
+          "principal_did": "did:web:example.com:principal-A"
+        },
+        "constraints": {
+          "max_transaction_value": {
+            "value": 500000,
+            "currency": "CHF",
+            "required": true
+          }
+        },
+        "validity": {
+          "not_before": "2026-07-29T08:00:00Z",
+          "not_after": "2026-07-29T09:00:00Z",
+          "single_use": false
+        }
+      }
+    }
+  }
+}

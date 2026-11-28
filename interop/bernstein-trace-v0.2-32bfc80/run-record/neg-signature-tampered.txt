@@ -1,0 +1,15 @@
+
+TRACE Conformance Report -- Level 0
+Format : trace
+Record : run/neg-signature-tampered.json
+
+  TR-ENV  PASS        eat_profile sentinel matches
+  TR-ENV  PASS        iat is valid and fresh (1700000007)
+  TR-ENV  PASS        subject is a valid workload identity URI ('spiffe://bernstein.run/run/trust-record-vector-run/exec/trust-record-vector-solo')
+  TR-ENV  PASS        cnf.jwk.kty present ('OKP')
+  TR-SIG  PASS        cnf.jwk key type is supported (kty='OKP', crv='Ed25519')
+  TR-SIG  FAIL        signature verification failed
+  TR-POL  PASS        policy.bundle_hash has valid digest format
+  TR-POL  PASS        policy.enforcement_mode is valid ('enforce')
+
+Result: FAIL  (8 checks, 1 failure(s), 0 skipped)

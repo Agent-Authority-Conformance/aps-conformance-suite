@@ -1,0 +1,10 @@
+# Provenance
+
+- **Record:** independent run of `candidates/moltycel-aae-vectors` (PR #190), 2026-11-04 (UTC+8).
+- **Operator:** ShaoBao Li (Lee), [@Aicent-com](https://github.com/Aicent-com); repository maintained under [@Aicent-Stack](https://github.com/Aicent-Stack). The operator is not affiliated with MoltyCel, MolTrust or CryptoKRI GmbH, was not involved in authoring the vectors, generators, verifiers or expected values, and had no stake in the outcome.
+- **Authorship class:** non-author-produced. The runner is the candidate's own shipped pipeline (`run.sh` + `offline.py` + the three schema validators, three reference verifiers and three generators), executed unmodified; no lab code, no candidate code, and no expectation was changed or added by the operator.
+- **Corpus:** MoltyCel/aae-conformance-vectors at commit `6bb462f578c12d339b8fa964a5b1d8f97dbffa68` (vector set 1.4.0 plus the pinned verifier changes; no vector or expected result changed after 1.4.0), merged into this repository as PR #190 on 2026-10-26. The candidate's 64 listed files were byte-verified against a fresh clone at that commit before the run.
+- **Environment:** Python 3.11.2, Debian GNU/Linux 12, kernel 6.1.0-53-amd64, x86_64; cryptography 50.0.2, jcs 0.2.1, jsonschema 4.26.0, jsonschema-specifications 2025.9.1, pytest 9.2.0.
+- **Recording:** `run-output.txt`, sha256 `d33a484a643298e3054417bc9683c9be994a23326549fdc46dd357fbeac4bd80`, captured as the complete console output of the run (uncut).
+- **Sealed artifact:** `aae-runner-20261104a.tar.gz`, SHA-256 `5dd92d2729c90932768a408f39c0a9bb2767c8b9194d1a52b774dfaf56d85695`, organ-sealed (organ `forge`, AID `ba92fadd46a51caf25633e0f315c4ad10103b879d7397397362f89dc33817153`), report page <https://iqa.org/conformance/aae-runner/>.
+- **Independence qualifier:** this record scores the author's frozen bytes by the author's own pipeline, executed by an operator with no stake in the corpus. It complements, and does not substitute for, alternate-implementation runs; equally, the author-produced runs in the candidate's evidence table do not substitute for this one.

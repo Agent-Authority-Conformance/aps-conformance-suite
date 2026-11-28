@@ -296,3 +296,21 @@ A pass does **not** establish:
   and its records are minted and verified in TypeScript only. `verify.py` is a
   from-scratch, no-dependency reimplementation of the boundary rules, not a Python SDK
   run, and its own module docstring says so.
+
+## Clarification, 2026-10-12: receipt key resolution in verify.ts
+
+Until this date `verify.ts` resolved a receipt signature key by key id alone. Any key in
+`chain.json` resolved for any signer, so a policy-decision record that named the
+boundary as issuer and signer but was signed with the principal's key, under the
+principal's key id, verified `valid` at step 0 and was admitted. No vector presents
+such a record, so the nine results above were not affected.
+
+`verify.ts` now resolves a key only for the signer (or, for delegations, the issuer)
+whose identifier prefixes the key id. It also runs a signer-binding probe after the
+nine presentations. The probe re-signs `decision_permit_1`'s fields with the principal's
+published seed key while still naming the boundary as signer, presents it to a fresh
+reference boundary, and requires `signature_or_shape_invalid`. The probe is not a
+presentation, is not in `vectors.json`, and does not change the 9/9 count or the
+declared failing set. With the old resolver the probe prints `NOT REFUSED
+admitted=true reason=dispatch_admitted` and the run exits 1. `verify.py` checks no
+signatures and is unchanged.

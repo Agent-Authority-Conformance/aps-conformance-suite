@@ -15,3 +15,14 @@ updates:
       # reviewed decision that changes with a commit saying why, so an automated
       # bump would silently move the thing under test.
       - dependency-name: agent-passport-system
+
+  # The second Rust canonical-bytes runner, maintained by its contributor
+  # (#153). Bumps here keep the lockfile current: yanked crates, security
+  # fixes and toolchain drift. A jcs-admit bump changes the implementation the
+  # interop record observed, so its PR also adds a new
+  # interop/jcs-admit-<version>-canonical-bytes-* record rather than editing
+  # the existing one.
+  - package-ecosystem: cargo
+    directory: "/fixtures/canonical-bytes/crossrun/rust-jcs-admit"
+    schedule:
+      interval: weekly

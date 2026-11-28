@@ -1,0 +1,5693 @@
+{
+  "family": "argument-designated-resources",
+  "profile": "caller-supplied-resource profile, revision 0.2",
+  "status": "candidate_against_proposed",
+  "status_meaning": "The proposed text these vectors test is immature. This is an ordinary lab-authored fixture, not a docs/CANDIDATES.md submission.",
+  "description": "Resources designated inside invocation arguments (the confused deputy). A synthetic boundary in front of a synthetic tool registry decides whether every resource operand a call designates is authorized by the credential the caller selected for that operand, separately from service-owned effects that run under a declared service credential. Admitted calls run against an in-memory store with an access trace. Every vector is candidate against proposed text. draft-pidlisnyi-aps-04 states no such rule. See README.",
+  "evaluation": "Each presentation is an independent evaluation against a fresh copy of initial_store. No state is carried between presentations and presentation order does not matter.",
+  "assumptions": [
+    "The requester is an assumed authenticated identity.",
+    "Tool contracts are trusted and honest: each tool performs exactly the accesses its program in README \"Tools\" lists. Dishonest or stale contracts are outside v0.",
+    "Credentials and issuer records are trusted fixture-side state. A call names credentials by identifier only.",
+    "Resolution is lexical and pinned. The boundary and the tool resolve through the same function and nothing changes between admission and execution."
+  ],
+  "proposed_text": {
+    "target-binding": {
+      "role": "motivating concept, not the rule under test",
+      "repository": "https://github.com/aeoess/agent-authority-lifecycle",
+      "document": "AUTHORITY-LIFECYCLE.md",
+      "section": "Lifecycle concepts are separate > Authority and dependencies",
+      "commit": "5c1bf09ee29d517f2f19c9bb9212543a7c44b227",
+      "commit_version": "0.1.2-draft",
+      "also_verbatim_at_commit": "57eb7421e3437d8d5fc372225dc49a9176c281f4",
+      "quote": "Target binding. Which resource, counterparty or object the authority applies to. Continuity of a name does not by itself establish continuity of the thing named.",
+      "status_in_that_document": "proposed",
+      "draft04_counterpart": {
+        "section": "8.1. Concepts",
+        "lines": "3634-3636",
+        "quote": "Target binding Which resource, counterparty or object the authority applies to. Continuity of a name does not on its own establish continuity of the thing named.",
+        "attaches_a_rule": false
+      }
+    },
+    "csr-operands": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "For this family's caller-supplied-resource profile, the boundary identifies every resource operand that the trusted tool contract says will be accessed, and the operation required on that operand.",
+      "status": "proposed in README.md"
+    },
+    "csr-selected-authority": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "It authorizes each operand using authority explicitly selected for that operand in this invocation. It does not substitute ambient service credentials or other credentials held by the requester.",
+      "status": "proposed in README.md"
+    },
+    "csr-closed-arguments": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "Supplied arguments the contract does not classify are refused under this profile, and so is a call that omits an operand the contract requires.",
+      "status": "proposed in README.md"
+    },
+    "csr-service-effects": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "Any service-owned effect uses a separately declared authority source and cannot be redirected by that exception to a resource the caller selects.",
+      "status": "proposed in README.md"
+    },
+    "csr-holder-bound-credentials": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "Under this profile a credential is resolved against trusted state, must be held by the authenticated requester, and must chain to an issuer the trusted issuer records give standing over the resource. A delegated credential needs a delegable parent held by its issuer and may be equal to that parent but no wider.",
+      "status": "proposed in README.md"
+    },
+    "csr-exact-call": {
+      "profile": "caller-supplied-resource profile, revision 0.2",
+      "quote": "When a decision is presented, the boundary admits only the exact call the decision names, including its authority selections.",
+      "status": "proposed in README.md, an analogue of draft-pidlisnyi-aps-04 section 9.2 over this family's own call reference"
+    }
+  },
+  "draft04": {
+    "document": "draft-pidlisnyi-aps-04",
+    "url": "https://www.ietf.org/archive/id/draft-pidlisnyi-aps-04.txt",
+    "states_this_rule": false,
+    "target": {
+      "section": "5.1. Action Reference Computation",
+      "lines": "2433-2436",
+      "quote": "target is the exact resource, tool, or endpoint against which the action will be dispatched; a profile MUST define its target string construction."
+    },
+    "exact_call": {
+      "section": "9.2. The Exact Call",
+      "lines": "6237-6241",
+      "quote": "At the next authorization boundary the boundary MUST compare the call it is about to admit against the action the approval names, and MUST NOT admit a call whose action reference differs from it. An argument changed after the decision produces a different action reference, so the comparison catches it without any separate argument-level rule."
+    },
+    "exact_call_non_establishment": {
+      "section": "9.2. The Exact Call",
+      "lines": "6252-6253",
+      "quote": "It does not establish that the arguments mean what the requesting agent intended them to mean."
+    }
+  },
+  "identifiers": {
+    "definition": "README.md, section Identifier grammar",
+    "covering_rule": "A credential over canonical identifier E covers canonical identifier R when R equals E or R begins with E followed by /."
+  },
+  "call_ref": {
+    "domain": "ADR-CALL-REF-V0",
+    "construction": "\"sha256:\" || lowercase-hex(SHA-256(ASCII(domain) || 0x00 || UTF8(JCS(call))))",
+    "note": "This family's own call reference over its own call object {tool, requester, arguments, authority}. It is not an APS action_ref."
+  },
+  "categories": [
+    "unsafe_admission",
+    "admission_without_forbidden_access",
+    "false_refusal",
+    "wrong_diagnosis",
+    "wrong_effect",
+    "wrong_attribution"
+  ],
+  "tools": {
+    "copy": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "dst": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        },
+        "label": {
+          "kind": "data",
+          "required": false
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": []
+    },
+    "copy_audited": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "dst": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": [
+        {
+          "resource": "res:/svc/stats",
+          "operation": "write",
+          "authority": "cred:svc-stats-write"
+        }
+      ]
+    },
+    "copy_with_capability": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "dst": {
+          "kind": "capability",
+          "operation": "write",
+          "required": true
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": []
+    },
+    "export": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "options.output.format": {
+          "kind": "data",
+          "required": true
+        },
+        "options.output.path": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": []
+    },
+    "normalize": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "dst": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": []
+    },
+    "overwrite": {
+      "service_identity": "party:svc-tools",
+      "target": "target",
+      "arguments": {
+        "content": {
+          "kind": "data",
+          "required": true
+        },
+        "target": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        }
+      },
+      "service_effects": []
+    },
+    "replicate": {
+      "service_identity": "party:svc-tools",
+      "target": "src",
+      "arguments": {
+        "dsts[]": {
+          "kind": "resource",
+          "operation": "write",
+          "required": true
+        },
+        "src": {
+          "kind": "resource",
+          "operation": "read",
+          "required": true
+        }
+      },
+      "service_effects": []
+    }
+  },
+  "issuer_records": {
+    "party:store-admin": [
+      "res:/store"
+    ],
+    "party:svc-tools": [
+      "res:/svc"
+    ]
+  },
+  "initial_store": {
+    "res:/store/r1": "alpha",
+    "res:/store/r2": "beta",
+    "res:/store/r3": "gamma",
+    "res:/svc/bill": "billing-records",
+    "res:/svc/stats": "none"
+  },
+  "defective_policies": [
+    {
+      "name": "no-call-binding",
+      "stage": "B",
+      "change": "A presented decision is not compared with the call.",
+      "characteristic_cases": [
+        "ADR-11-refuse-argument-changed-after-decision"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-11-refuse-argument-changed-after-decision"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-11-refuse-argument-changed-after-decision": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dst",
+              "authority": "cred:alice-r3-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r3": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "leaf-walk",
+      "stage": "V",
+      "change": "Undeclared-path refusal and designation see only non-container values, as in revision 0.1. An empty container is invisible, and a declared operand holding one yields no designation.",
+      "characteristic_cases": [
+        "ADR-07b-refuse-empty-container-not-classified",
+        "ADR-07d-refuse-resource-operand-not-a-string"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [
+          "ADR-07b-refuse-empty-container-not-classified",
+          "ADR-07d-refuse-resource-operand-not-a-string",
+          "ADR-07e-refuse-inherited-property-name-not-classified"
+        ],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07b-refuse-empty-container-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-07e-refuse-inherited-property-name-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "open-schema",
+      "stage": "V",
+      "change": "An argument path the contract does not declare is ignored instead of refused.",
+      "characteristic_cases": [
+        "ADR-07-refuse-argument-not-classified-by-contract"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [
+          "ADR-07-refuse-argument-not-classified-by-contract",
+          "ADR-07b-refuse-empty-container-not-classified",
+          "ADR-07e-refuse-inherited-property-name-not-classified"
+        ],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07-refuse-argument-not-classified-by-contract": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07b-refuse-empty-container-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-07e-refuse-inherited-property-name-not-classified": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "no-required-check",
+      "stage": "V",
+      "change": "Required operands are not checked for presence.",
+      "characteristic_cases": [
+        "ADR-07c-refuse-required-operand-missing"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [
+          "ADR-07c-refuse-required-operand-missing"
+        ],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07c-refuse-required-operand-missing": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        }
+      }
+    },
+    {
+      "name": "target-only",
+      "stage": "E",
+      "change": "Only the operand at the contract's target path is a designation. Validation, binding and service effects are unchanged.",
+      "characteristic_cases": [
+        "ADR-02-refuse-destination-not-covered",
+        "ADR-04-refuse-nested-designation-not-covered",
+        "ADR-05-refuse-one-array-element-not-covered"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-02-refuse-destination-not-covered",
+          "ADR-03-refuse-deputy-holds-destination-caller-does-not",
+          "ADR-04-refuse-nested-designation-not-covered",
+          "ADR-05-refuse-one-array-element-not-covered",
+          "ADR-08-refuse-traversal-resolves-outside-credential",
+          "ADR-10b-refuse-capability-held-by-another-party",
+          "ADR-10c-refuse-capability-wider-than-issuer-authority",
+          "ADR-10d-refuse-capability-operation-narrower-than-tool-operation",
+          "ADR-10f-refuse-issuer-may-exercise-but-not-delegate",
+          "ADR-10g-refuse-root-issuer-without-standing",
+          "ADR-12-refuse-read-credential-selected-for-destination",
+          "ADR-12c-refuse-no-credential-selected-for-destination",
+          "ADR-13-refuse-repeated-resource-sources-swapped",
+          "ADR-14b-refuse-destination-in-service-home",
+          "ADR-14c-refuse-caller-selects-service-effect-credential"
+        ],
+        "admission_without_forbidden_access": [
+          "ADR-07d-refuse-resource-operand-not-a-string",
+          "ADR-08c-refuse-traversal-above-root"
+        ],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": [
+          "ADR-01-admit-copy-source-and-destination-covered",
+          "ADR-04b-admit-nested-designation-covered",
+          "ADR-05b-admit-every-array-element-covered",
+          "ADR-05c-admit-then-second-write-fails",
+          "ADR-06-admit-resource-shaped-label-declared-data",
+          "ADR-08b-admit-cased-alias-resolves-inside-credential",
+          "ADR-10-admit-capability-held-by-requester",
+          "ADR-10e-admit-equal-authority-delegation",
+          "ADR-11b-admit-unchanged-call-under-decision",
+          "ADR-12b-admit-write-credential-selected-for-destination",
+          "ADR-13b-admit-repeated-resource-each-source-selected",
+          "ADR-14-admit-service-writes-own-statistics"
+        ]
+      },
+      "defective_admissions": {
+        "ADR-02-refuse-destination-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-03-refuse-deputy-holds-destination-caller-does-not": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-04-refuse-nested-designation-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "options.output.path",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "csv:alpha"
+          }
+        },
+        "ADR-05-refuse-one-array-element-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dsts[0]",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dsts[1]",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha",
+            "res:/store/r3": "alpha"
+          }
+        },
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-08-refuse-traversal-resolves-outside-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-08c-refuse-traversal-above-root": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        },
+        "ADR-10b-refuse-capability-held-by-another-party": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10c-refuse-capability-wider-than-issuer-authority": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10d-refuse-capability-operation-narrower-than-tool-operation": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10f-refuse-issuer-may-exercise-but-not-delegate": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-10g-refuse-root-issuer-without-standing": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12c-refuse-no-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        },
+        "ADR-14b-refuse-destination-in-service-home": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/bill",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/bill": "alpha",
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/bill"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
+      }
+    },
+    {
+      "name": "shallow-args",
+      "stage": "E",
+      "change": "Only top-level operands are designations. An operand inside an object or an array is not.",
+      "characteristic_cases": [
+        "ADR-04-refuse-nested-designation-not-covered"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-04-refuse-nested-designation-not-covered",
+          "ADR-05-refuse-one-array-element-not-covered"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": [
+          "ADR-04b-admit-nested-designation-covered",
+          "ADR-05b-admit-every-array-element-covered",
+          "ADR-05c-admit-then-second-write-fails"
+        ]
+      },
+      "defective_admissions": {
+        "ADR-04-refuse-nested-designation-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "options.output.path",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "csv:alpha"
+          }
+        },
+        "ADR-05-refuse-one-array-element-not-covered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dsts[0]",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r3",
+              "path": "dsts[1]",
+              "authority": null,
+              "holder": null
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha",
+            "res:/store/r3": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "shape-guessing",
+      "stage": "E",
+      "change": "A declared node holding a string that begins with res: in any case is a resource designation, with the contract's operation for a resource operand and read for data. A resource operand holding anything else is not a designation. Capability operands are unchanged.",
+      "characteristic_cases": [
+        "ADR-06-admit-resource-shaped-label-declared-data"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [
+          "ADR-07d-refuse-resource-operand-not-a-string"
+        ],
+        "false_refusal": [
+          "ADR-06-admit-resource-shaped-label-declared-data",
+          "ADR-06b-admit-identifier-passed-by-value"
+        ],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-07d-refuse-resource-operand-not-a-string": {
+          "execution": {
+            "status": "partial",
+            "stopped_at": "dst",
+            "cause": "operand_unresolvable"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {}
+        }
+      }
+    },
+    {
+      "name": "dedup-by-resource",
+      "stage": "E",
+      "change": "After resolution, a designation whose resource was already designated earlier in the walk is skipped.",
+      "characteristic_cases": [
+        "ADR-13c-refuse-repeated-resource-second-operation-uncovered"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-13c-refuse-repeated-resource-second-operation-uncovered"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": [
+          "ADR-13b-admit-repeated-resource-each-source-selected"
+        ]
+      },
+      "defective_admissions": {
+        "ADR-13c-refuse-repeated-resource-second-operation-uncovered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": null,
+              "holder": null
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
+      }
+    },
+    {
+      "name": "no-canonicalization",
+      "stage": "R",
+      "change": "Coverage compares the raw designation string with the same covering rule. The tool still resolves canonically.",
+      "characteristic_cases": [
+        "ADR-08-refuse-traversal-resolves-outside-credential"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-08-refuse-traversal-resolves-outside-credential"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [
+          "ADR-08b-admit-cased-alias-resolves-inside-credential"
+        ],
+        "wrong_diagnosis": [
+          "ADR-08c-refuse-traversal-above-root"
+        ],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-08-refuse-traversal-resolves-outside-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "wallet-search",
+      "stage": "A",
+      "change": "When the selected credential fails for a name-form operand, any credential the requester holds in trusted state that passes C and K is used instead.",
+      "characteristic_cases": [
+        "ADR-12-refuse-read-credential-selected-for-destination"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-12-refuse-read-credential-selected-for-destination",
+          "ADR-12c-refuse-no-credential-selected-for-destination",
+          "ADR-13-refuse-repeated-resource-sources-swapped"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12c-refuse-no-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
+      }
+    },
+    {
+      "name": "pooled-selection",
+      "stage": "A",
+      "change": "When the selected credential fails for a name-form operand, any credential selected anywhere in the call that passes C and K is used instead.",
+      "characteristic_cases": [
+        "ADR-13-refuse-repeated-resource-sources-swapped"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-13-refuse-repeated-resource-sources-swapped"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
+      }
+    },
+    {
+      "name": "deputy-authority",
+      "stage": "A",
+      "change": "When the selected credential fails for a name-form operand, any credential held by the tool's service identity that passes C and K for that identity is used instead.",
+      "characteristic_cases": [
+        "ADR-03-refuse-deputy-holds-destination-caller-does-not"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-03-refuse-deputy-holds-destination-caller-does-not",
+          "ADR-14b-refuse-destination-in-service-home",
+          "ADR-14c-refuse-caller-selects-service-effect-credential"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-03-refuse-deputy-holds-destination-caller-does-not": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-rw",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:svc-r2-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-14b-refuse-destination-in-service-home": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/bill",
+              "path": "dst",
+              "authority": "cred:svc-home",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/bill": "alpha",
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/bill"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": "cred:svc-home",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
+      }
+    },
+    {
+      "name": "holder-unchecked",
+      "stage": "C",
+      "change": "The credential's holder is not compared with the requester.",
+      "characteristic_cases": [
+        "ADR-10b-refuse-capability-held-by-another-party"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-10b-refuse-capability-held-by-another-party",
+          "ADR-14c-refuse-caller-selects-service-effect-credential"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10b-refuse-capability-held-by-another-party": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:mallory-r2-write",
+              "holder": "party:mallory"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-14c-refuse-caller-selects-service-effect-credential": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "dst",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/svc/stats",
+              "path": "service_effects[0]",
+              "authority": "cred:svc-stats-write",
+              "holder": "party:svc-tools"
+            }
+          ],
+          "store_changes": {
+            "res:/svc/stats": "copy res:/store/r1 -> res:/svc/stats"
+          }
+        }
+      }
+    },
+    {
+      "name": "self-asserted-issuer",
+      "stage": "C",
+      "change": "A root credential's issuer is accepted without consulting the trusted issuer records.",
+      "characteristic_cases": [
+        "ADR-10g-refuse-root-issuer-without-standing"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-10g-refuse-root-issuer-without-standing"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10g-refuse-root-issuer-without-standing": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-from-mallory",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "delegation-equals-exercise",
+      "stage": "C",
+      "change": "A parent credential's delegable flag is ignored, so holding an exercise right is treated as permission to delegate it.",
+      "characteristic_cases": [
+        "ADR-10f-refuse-issuer-may-exercise-but-not-delegate"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-10f-refuse-issuer-may-exercise-but-not-delegate"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10f-refuse-issuer-may-exercise-but-not-delegate": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-via-bob-not-delegable",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "no-attenuation-check",
+      "stage": "C",
+      "change": "A delegated credential is not compared with its parent's resource and operations.",
+      "characteristic_cases": [
+        "ADR-10c-refuse-capability-wider-than-issuer-authority"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-10c-refuse-capability-wider-than-issuer-authority"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-10c-refuse-capability-wider-than-issuer-authority": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write-via-drafts",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "strict-attenuation",
+      "stage": "C",
+      "change": "A delegated credential must be strictly narrower than its parent, so an equal delegation is refused.",
+      "characteristic_cases": [
+        "ADR-10e-admit-equal-authority-delegation"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [
+          "ADR-10e-admit-equal-authority-delegation"
+        ],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {}
+    },
+    {
+      "name": "resource-not-operation",
+      "stage": "K",
+      "change": "Coverage checks the resource and ignores the operation. Attenuation along the chain is unchanged.",
+      "characteristic_cases": [
+        "ADR-09-refuse-operation-not-granted-on-resource"
+      ],
+      "declared": {
+        "unsafe_admission": [
+          "ADR-09-refuse-operation-not-granted-on-resource",
+          "ADR-10d-refuse-capability-operation-narrower-than-tool-operation",
+          "ADR-12-refuse-read-credential-selected-for-destination",
+          "ADR-13-refuse-repeated-resource-sources-swapped",
+          "ADR-13c-refuse-repeated-resource-second-operation-uncovered"
+        ],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {
+        "ADR-09-refuse-operation-not-granted-on-resource": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "target",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "quarterly figures"
+          }
+        },
+        "ADR-10d-refuse-capability-operation-narrower-than-tool-operation": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-12-refuse-read-credential-selected-for-destination": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r1",
+              "path": "src",
+              "authority": "cred:alice-r1-read",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "alpha"
+          }
+        },
+        "ADR-13-refuse-repeated-resource-sources-swapped": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-rw-via-bob",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-read",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        },
+        "ADR-13c-refuse-repeated-resource-second-operation-uncovered": {
+          "execution": {
+            "status": "completed"
+          },
+          "trace": [
+            {
+              "operation": "read",
+              "resource": "res:/store/r2",
+              "path": "src",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            },
+            {
+              "operation": "write",
+              "resource": "res:/store/r2",
+              "path": "dst",
+              "authority": "cred:alice-r2-write",
+              "holder": "party:alice"
+            }
+          ],
+          "store_changes": {
+            "res:/store/r2": "BETA"
+          }
+        }
+      }
+    },
+    {
+      "name": "caller-authority-for-service-effects",
+      "stage": "F",
+      "change": "A service-owned effect needs a credential the caller selects for it, which is revision 0.1's rule that service authority is never used. No call selects one.",
+      "characteristic_cases": [
+        "ADR-14-admit-service-writes-own-statistics"
+      ],
+      "declared": {
+        "unsafe_admission": [],
+        "admission_without_forbidden_access": [],
+        "false_refusal": [
+          "ADR-14-admit-service-writes-own-statistics"
+        ],
+        "wrong_diagnosis": [],
+        "wrong_effect": [],
+        "wrong_attribution": []
+      },
+      "defective_admissions": {}
+    }
+  ],
+  "presentations": [
+    {
+      "id": "ADR-01-admit-copy-source-and-destination-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands",
+        "csr-selected-authority",
+        "csr-exact-call"
+      ],
+      "differs_from": null,
+      "note": "Control. Alice selects her r1 read credential for src and her r2 write credential for dst, and a decision naming this exact call is presented. The copy runs.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": {
+        "call": {
+          "tool": "copy",
+          "requester": "party:alice",
+          "arguments": {
+            "dst": "res:/store/r2",
+            "src": "res:/store/r1"
+          },
+          "authority": {
+            "dst": "cred:alice-r2-write",
+            "src": "cred:alice-r1-read"
+          }
+        },
+        "call_ref": "sha256:cde139e4850d96bc30f64ae20f4a2d9d7810704ed4faa07536fd6ffb2c57eb3c"
+      },
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-02-refuse-destination-not-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands",
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-01: Alice holds only an r1 read and write credential and selects it for both operands. No decision is presented.",
+      "note": "The call target (src) is covered. Only the destination named inside an argument is not.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-rw",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r1-rw",
+          "src": "cred:alice-r1-rw"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-03-refuse-deputy-holds-destination-caller-does-not",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-selected-authority",
+        "csr-service-effects"
+      ],
+      "differs_from": "ADR-02: the service identity also holds cred:svc-r2-write. Alice's credentials and selection are unchanged.",
+      "note": "The name-based confused deputy (Hardy 1988). The service could write r2 under its own credential, and a boundary that lets the service's credentials stand in for the caller's admits the call.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-rw",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-r2-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r1-rw",
+          "src": "cred:alice-r1-rw"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-04-refuse-nested-designation-not-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-02: the uncovered destination is two levels deep, at options.output.path, next to a data sibling options.output.format.",
+      "note": "export reads src and writes the resource named at options.output.path. Alice has only an r1 read credential and selects it for both.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "export",
+        "requester": "party:alice",
+        "arguments": {
+          "options": {
+            "output": {
+              "format": "csv",
+              "path": "res:/store/r2"
+            }
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "options.output.path": "cred:alice-r1-read",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "options.output.path",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "options.output.path"
+        }
+      }
+    },
+    {
+      "id": "ADR-04b-admit-nested-designation-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-04: Alice also holds an r2 write credential and selects it for options.output.path.",
+      "note": "Positive control for nesting. The export writes csv:alpha into r2.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "export",
+        "requester": "party:alice",
+        "arguments": {
+          "options": {
+            "output": {
+              "format": "csv",
+              "path": "res:/store/r2"
+            }
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "options.output.path": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "options.output.path",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "csv:alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-04c-refuse-literal-dotted-key",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-04b: the destination is supplied under one literal top-level key \"options.output.path\" instead of nested objects.",
+      "note": "An argument key must match [a-z][a-z0-9_]*, so a path string can never be read two ways. The refusal names the key in bracket-quoted form.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "export",
+        "requester": "party:alice",
+        "arguments": {
+          "options.output.path": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "options.output.path": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_key_invalid",
+          "path": "[\"options.output.path\"]"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-05-refuse-one-array-element-not-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-02: the destinations are an array. dsts[0] is covered, dsts[1] is r3 and Alice selects her r2 credential for it.",
+      "note": "replicate writes every element of dsts. The refusal names the exact index, and the covered r2 is not written either, because nothing runs before full admission.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "replicate",
+        "requester": "party:alice",
+        "arguments": {
+          "dsts": [
+            "res:/store/r2",
+            "res:/store/r3"
+          ],
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dsts[0]": "cred:alice-r2-write",
+          "dsts[1]": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dsts[1]",
+          "resource": "res:/store/r3",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r3",
+          "path": "dsts[1]"
+        }
+      }
+    },
+    {
+      "id": "ADR-05b-admit-every-array-element-covered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-05: Alice also holds an r3 write credential and selects it for dsts[1].",
+      "note": "Positive control for arrays. Both destinations receive alpha.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r3-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r3",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "replicate",
+        "requester": "party:alice",
+        "arguments": {
+          "dsts": [
+            "res:/store/r2",
+            "res:/store/r3"
+          ],
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dsts[0]": "cred:alice-r2-write",
+          "dsts[1]": "cred:alice-r3-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dsts[0]",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r3",
+            "path": "dsts[1]",
+            "authority": "cred:alice-r3-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha",
+          "res:/store/r3": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-05c-admit-then-second-write-fails",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-05b: the fixture injects a failure at the dsts[1] write.",
+      "note": "Admission is unchanged. Execution stops at dsts[1] and is reported as partial. The r2 write already done is kept and nothing is rolled back. The profile governs authority, not atomicity.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r3-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r3",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "replicate",
+        "requester": "party:alice",
+        "arguments": {
+          "dsts": [
+            "res:/store/r2",
+            "res:/store/r3"
+          ],
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dsts[0]": "cred:alice-r2-write",
+          "dsts[1]": "cred:alice-r3-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": {
+        "path": "dsts[1]"
+      },
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "partial",
+          "stopped_at": "dsts[1]",
+          "cause": "injected_failure"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dsts[0]",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-06-admit-resource-shaped-label-declared-data",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-01: a label argument carries the string res:/store/r3, over which Alice holds nothing. No decision is presented.",
+      "note": "The contract declares label as data. Designation comes from the contract, not from what a string looks like, and the tool never touches r3.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "label": "res:/store/r3",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-06b-admit-identifier-passed-by-value",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-09: Alice selects an r2 write credential, and the content written is the string res:/store/r3.",
+      "note": "By value. overwrite writes the characters res:/store/r3 into r2. It needs authority over r2 only, and r3 is never read.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "overwrite",
+        "requester": "party:alice",
+        "arguments": {
+          "content": "res:/store/r3",
+          "target": "res:/store/r2"
+        },
+        "authority": {
+          "target": "cred:alice-r2-write"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "target",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "res:/store/r3"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-06c-refuse-identifier-passed-by-reference",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands",
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-06b: the same identifier is passed by reference, as the src of a copy into r2. Alice holds only her r2 write credential and selects it for both operands.",
+      "note": "By reference. copy reads r3, so it needs read authority over r3, which Alice does not have.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r3"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r2-write"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "src",
+          "resource": "res:/store/r3",
+          "operation": "read"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "read",
+          "resource": "res:/store/r3",
+          "path": "src"
+        }
+      }
+    },
+    {
+      "id": "ADR-07-refuse-argument-not-classified-by-contract",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-01: the call carries an argument, compression, that the copy contract does not mention. No decision is presented.",
+      "note": "Closed-argument profile. The value does not look like a resource and the tool would ignore it. The profile refuses it anyway, because the boundary cannot know what an unclassified argument does.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "compression": "gzip",
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_designation_unknown",
+          "path": "compression"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07b-refuse-empty-container-not-classified",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-07: the undeclared argument is extra, holding an empty object.",
+      "note": "An empty container is still a supplied argument. A walk that visits only leaves never sees it.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "extra": {},
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_designation_unknown",
+          "path": "extra"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07c-refuse-required-operand-missing",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-01: dst is absent. No decision is presented.",
+      "note": "The contract declares dst as required. A call that omits it is refused before any designation is checked.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_operand_missing",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07d-refuse-resource-operand-not-a-string",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-01: dst holds an empty object instead of an identifier. No decision is presented.",
+      "note": "A declared resource operand is a node, whatever its value. An object there has no identifier.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {},
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_identifier_invalid",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07e-refuse-inherited-property-name-not-classified",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-07b: the undeclared argument is named constructor instead of extra.",
+      "note": "constructor is a valid key under the key grammar, and it is also a property every JavaScript object inherits. A contract lookup that reads inherited properties finds something there and treats the argument as declared. The contract declares no such argument, so it is refused as unknown, exactly like extra.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "constructor": {},
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_designation_unknown",
+          "path": "constructor"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-07f-refuse-inherited-method-name-invalid-key",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-closed-arguments"
+      ],
+      "differs_from": "ADR-07e: the undeclared argument is named toString.",
+      "note": "toString is also inherited, but it is not a valid key, because the grammar has no capitals. It is refused at the key check, before any contract lookup. Under the key grammar constructor is the only inherited Object.prototype name a key can spell, so ADR-07e is the case that reaches the lookup.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1",
+          "toString": {}
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_key_invalid",
+          "path": "[\"toString\"]"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-08-refuse-traversal-resolves-outside-credential",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-02: dst is spelled res:/store/r1/../r2, which begins with the covered res:/store/r1/ and resolves to res:/store/r2.",
+      "note": "Coverage is decided on the resolved identifier, the same one the tool writes. A raw prefix comparison reads it as beneath r1.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-rw",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r1/../r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r1-rw",
+          "src": "cred:alice-r1-rw"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-08b-admit-cased-alias-resolves-inside-credential",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-01: dst is spelled RES:/Store/R2, a cased spelling of the covered res:/store/r2. No decision is presented.",
+      "note": "Resolution works in both directions. A boundary that refuses every non-canonical spelling passes ADR-08 and fails this one.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "RES:/Store/R2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-08c-refuse-traversal-above-root",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-operands"
+      ],
+      "differs_from": "ADR-08: dst is res:/store/../../r2, whose second .. has no segment left to remove.",
+      "note": "The designation has no canonical identifier, so it is refused as invalid before any credential is consulted.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-rw",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/../../r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r1-rw",
+          "src": "cred:alice-r1-rw"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_identifier_invalid",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-09-refuse-operation-not-granted-on-resource",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-06b: Alice holds and selects only an r2 read credential.",
+      "note": "The credential names the resource. It does not carry the operation the tool performs on it. Read and write are disjoint toy rights.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "overwrite",
+        "requester": "party:alice",
+        "arguments": {
+          "content": "quarterly figures",
+          "target": "res:/store/r2"
+        },
+        "authority": {
+          "target": "cred:alice-r2-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "target",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "target"
+        }
+      }
+    },
+    {
+      "id": "ADR-10-admit-capability-held-by-requester",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-01: dst carries a capability reference to cred:alice-r2-write instead of a name, so designation and authority arrive together.",
+      "note": "Capability form. The designated resource is the credential's own. The credential is resolved against trusted state, is held by Alice and is issued by the owner of res:/store.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-write"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-10b-refuse-capability-held-by-another-party",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-10: the capability is cred:mallory-r2-write, held by party:mallory.",
+      "note": "Holder-bound profile only. A capability passed along by its holder is not Alice's authority here. This says nothing about bearer tokens, which this profile does not model.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:mallory-r2-write",
+            "holder": "party:mallory",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:mallory-r2-write"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "authority_not_held_by_requester",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-10c-refuse-capability-wider-than-issuer-authority",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-10: the capability is delegated by party:bob from a parent over res:/store/r2/drafts only, and asserts all of res:/store/r2.",
+      "note": "The write to r2 lies outside the parent's authority, so it is refused whether the over-broad child is rejected outright, as here, or intersected with its parent.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write-via-drafts",
+            "holder": "party:alice",
+            "issuer": "party:bob",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": "cred:bob-drafts-rw-delegable"
+          },
+          {
+            "id": "cred:bob-drafts-rw-delegable",
+            "holder": "party:bob",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2/drafts",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": true,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-write-via-drafts"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "authority_exceeds_issuer_authority",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-10d-refuse-capability-operation-narrower-than-tool-operation",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials",
+        "csr-operands"
+      ],
+      "differs_from": "ADR-10: the capability is cred:alice-r2-read, and the tool writes dst.",
+      "note": "The capability-form counterpart of ADR-09.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-read"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-10e-admit-equal-authority-delegation",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-10: the capability is delegated by party:bob, whose delegable parent covers exactly r2 write, the same as the child.",
+      "note": "Non-amplification permits equality. A child no wider than its parent is valid even when it is not narrower.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write-via-bob",
+            "holder": "party:alice",
+            "issuer": "party:bob",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": "cred:bob-r2-write-delegable"
+          },
+          {
+            "id": "cred:bob-r2-write-delegable",
+            "holder": "party:bob",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": true,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-write-via-bob"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write-via-bob",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-10f-refuse-issuer-may-exercise-but-not-delegate",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-10e: party:bob's parent covers r2 write but is not delegable.",
+      "note": "Holding an exercise right does not grant a delegation right. Bob could write r2 himself and still cannot pass that on.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write-via-bob-not-delegable",
+            "holder": "party:alice",
+            "issuer": "party:bob",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": "cred:bob-r2-write-not-delegable"
+          },
+          {
+            "id": "cred:bob-r2-write-not-delegable",
+            "holder": "party:bob",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-write-via-bob-not-delegable"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "authority_issuer_cannot_delegate",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-10g-refuse-root-issuer-without-standing",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-10: the capability is a root credential issued by party:mallory, which the trusted issuer records do not list as owning anything under res:/store.",
+      "note": "Issuer standing comes from trusted fixture-side records, not from what the credential says about itself.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write-from-mallory",
+            "holder": "party:alice",
+            "issuer": "party:mallory",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_with_capability",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": {
+            "capability": "cred:alice-r2-write-from-mallory"
+          },
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "authority_issuer_without_standing",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-11-refuse-argument-changed-after-decision",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-exact-call"
+      ],
+      "differs_from": "ADR-11b: the decision names copy(src=r1, dst=r2), and the presented call has dst=r3 with Alice's r3 write credential selected for it.",
+      "note": "Both destinations are fully authorized, so scope checking cannot mask the binding check. The call is refused only because it is not the call the decision named.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r3-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r3",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r3",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r3-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": {
+        "call": {
+          "tool": "copy",
+          "requester": "party:alice",
+          "arguments": {
+            "dst": "res:/store/r2",
+            "src": "res:/store/r1"
+          },
+          "authority": {
+            "dst": "cred:alice-r2-write",
+            "src": "cred:alice-r1-read"
+          }
+        },
+        "call_ref": "sha256:cde139e4850d96bc30f64ae20f4a2d9d7810704ed4faa07536fd6ffb2c57eb3c"
+      },
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "call_does_not_match_decision"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r3",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-11b-admit-unchanged-call-under-decision",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-exact-call"
+      ],
+      "differs_from": "ADR-11: the presented call is the decided call.",
+      "note": "Unchanged-call control with the same trusted state as ADR-11.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r3-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r3",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": {
+        "call": {
+          "tool": "copy",
+          "requester": "party:alice",
+          "arguments": {
+            "dst": "res:/store/r2",
+            "src": "res:/store/r1"
+          },
+          "authority": {
+            "dst": "cred:alice-r2-write",
+            "src": "cred:alice-r1-read"
+          }
+        },
+        "call_ref": "sha256:cde139e4850d96bc30f64ae20f4a2d9d7810704ed4faa07536fd6ffb2c57eb3c"
+      },
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-12-refuse-read-credential-selected-for-destination",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-12b: Alice holds both an r2 read and an r2 write credential and selects the read one for dst.",
+      "note": "Holding authority is weaker than selecting it. The boundary evaluates only the credential selected for the operand and does not search Alice's other credentials.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-read",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-12b-admit-write-credential-selected-for-destination",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-12: Alice selects her r2 write credential for dst.",
+      "note": "Explicit-selection positive control.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-12c-refuse-no-credential-selected-for-destination",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-12: Alice selects nothing for dst.",
+      "note": "An operand with no selected authority is refused even though Alice holds a credential that would cover it.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_authority_not_selected",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-13-refuse-repeated-resource-sources-swapped",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-13b: the two selections are swapped, so the stronger delegated read and write credential sits on src and the read-only root credential sits on dst.",
+      "note": "normalize(src=r2, dst=r2) designates r2 twice with different operations. Each occurrence is checked against its own selection. The stronger credential selected for src does not stand in for dst.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-rw-via-bob",
+            "holder": "party:alice",
+            "issuer": "party:bob",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": "cred:bob-store-rw-delegable"
+          },
+          {
+            "id": "cred:bob-store-rw-delegable",
+            "holder": "party:bob",
+            "issuer": "party:store-admin",
+            "resource": "res:/store",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": true,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "normalize",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r2"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-read",
+          "src": "cred:alice-r2-rw-via-bob"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/store/r2",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/store/r2",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-13b-admit-repeated-resource-each-source-selected",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "target-binding",
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-13: src selects the root r2 read credential and dst selects the r2 read and write credential delegated by party:bob.",
+      "note": "Positive control. Two authority sources, one per occurrence. normalize upper-cases r2 in place.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-rw-via-bob",
+            "holder": "party:alice",
+            "issuer": "party:bob",
+            "resource": "res:/store/r2",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": "cred:bob-store-rw-delegable"
+          },
+          {
+            "id": "cred:bob-store-rw-delegable",
+            "holder": "party:bob",
+            "issuer": "party:store-admin",
+            "resource": "res:/store",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": true,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "normalize",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r2"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-rw-via-bob",
+          "src": "cred:alice-r2-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r2",
+            "path": "src",
+            "authority": "cred:alice-r2-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-rw-via-bob",
+            "holder": "party:alice"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "BETA"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-13c-refuse-repeated-resource-second-operation-uncovered",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority"
+      ],
+      "differs_from": "ADR-13b: Alice holds only an r2 write credential and selects it for both occurrences.",
+      "note": "dst is covered for write. src is not covered for read. The read must not disappear because r2 was already checked once for another operation.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "normalize",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r2"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r2-write"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "src",
+          "resource": "res:/store/r2",
+          "operation": "read"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "read",
+          "resource": "res:/store/r2",
+          "path": "src"
+        }
+      }
+    },
+    {
+      "id": "ADR-14-admit-service-writes-own-statistics",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority",
+        "csr-service-effects"
+      ],
+      "differs_from": "ADR-01: the tool is copy_audited, whose contract declares a service-owned write to res:/svc/stats under cred:svc-stats-write.",
+      "note": "Hardy's statistics file. Caller data moves under Alice's selected credentials, and the service records the copy in its own fixed resource under its own declared credential.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_audited",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/store/r2",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "admitted",
+          "reason": "all_designations_authorized"
+        },
+        "execution": {
+          "status": "completed"
+        },
+        "trace": [
+          {
+            "operation": "read",
+            "resource": "res:/store/r1",
+            "path": "src",
+            "authority": "cred:alice-r1-read",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/store/r2",
+            "path": "dst",
+            "authority": "cred:alice-r2-write",
+            "holder": "party:alice"
+          },
+          {
+            "operation": "write",
+            "resource": "res:/svc/stats",
+            "path": "service_effects[0]",
+            "authority": "cred:svc-stats-write",
+            "holder": "party:svc-tools"
+          }
+        ],
+        "store_changes": {
+          "res:/store/r2": "alpha",
+          "res:/svc/stats": "copy res:/store/r1 -> res:/store/r2"
+        },
+        "forbidden_access": null
+      }
+    },
+    {
+      "id": "ADR-14b-refuse-destination-in-service-home",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-selected-authority",
+        "csr-service-effects"
+      ],
+      "differs_from": "ADR-14: dst is res:/svc/bill, inside the service's own home, and Alice selects her r2 write credential for it.",
+      "note": "Hardy's billing file. The service could write there under cred:svc-home, but the caller chose this destination and holds no authority over it.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_audited",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/svc/bill",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:alice-r2-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "argument_resource_not_authorized",
+          "path": "dst",
+          "resource": "res:/svc/bill",
+          "operation": "write"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/svc/bill",
+          "path": "dst"
+        }
+      }
+    },
+    {
+      "id": "ADR-14c-refuse-caller-selects-service-effect-credential",
+      "status": "candidate_against_proposed",
+      "tests_proposed_text": [
+        "csr-service-effects",
+        "csr-holder-bound-credentials"
+      ],
+      "differs_from": "ADR-14: dst is the service's statistics resource and Alice selects the service-effect credential cred:svc-stats-write for it.",
+      "note": "The service-owned exception cannot be redirected. The declared service credential authorizes the service's fixed effect, and a caller cannot select it for an operand of its own.",
+      "trusted_state": {
+        "credentials": [
+          {
+            "id": "cred:alice-r1-read",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r1",
+            "operations": [
+              "read"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:alice-r2-write",
+            "holder": "party:alice",
+            "issuer": "party:store-admin",
+            "resource": "res:/store/r2",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-home",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          },
+          {
+            "id": "cred:svc-stats-write",
+            "holder": "party:svc-tools",
+            "issuer": "party:svc-tools",
+            "resource": "res:/svc/stats",
+            "operations": [
+              "write"
+            ],
+            "delegable": false,
+            "parent": null
+          }
+        ]
+      },
+      "call": {
+        "tool": "copy_audited",
+        "requester": "party:alice",
+        "arguments": {
+          "dst": "res:/svc/stats",
+          "src": "res:/store/r1"
+        },
+        "authority": {
+          "dst": "cred:svc-stats-write",
+          "src": "cred:alice-r1-read"
+        }
+      },
+      "decision": null,
+      "inject_failure": null,
+      "expected": {
+        "decision": {
+          "verdict": "refused",
+          "reason": "authority_not_held_by_requester",
+          "path": "dst"
+        },
+        "execution": {
+          "status": "not_run"
+        },
+        "trace": [],
+        "store_changes": {},
+        "forbidden_access": {
+          "operation": "write",
+          "resource": "res:/svc/stats",
+          "path": "dst"
+        }
+      }
+    }
+  ]
+}

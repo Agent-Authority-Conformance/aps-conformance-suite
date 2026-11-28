@@ -1,0 +1,22 @@
+valid-did-key-minimal                agree                
+valid-did-key-with-self-asserted     agree                
+valid-did-web-resolved               agree                
+valid-at-issued-at                   agree                
+tampered-display-name-stale-id       agree                
+tampered-display-name-id-repaired    agree                
+passport-id-wrong-signature-valid    agree                
+signed-by-other-key                  agree                
+public-key-not-the-did-key           agree                
+expired                              agree                
+not-yet-valid                        agree                
+did-web-no-resolver                  agree                
+did-web-resolver-answers-other-key   agree                
+did-web-resolver-not-found           declared difference  outcome invalid / indeterminate; key_authority rejected / unresolved
+did-web-resolver-unreachable         agree                
+version-changed                      declared difference  outcome invalid / unsupported
+record-type-changed                  declared difference  outcome invalid / unsupported
+capabilities-unsorted                agree                
+principal-member-present             agree                
+timestamp-without-milliseconds       agree                
+
+17 agree, 3 declared differences as declared, 0 problems

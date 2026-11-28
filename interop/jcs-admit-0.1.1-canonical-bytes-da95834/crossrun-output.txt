@@ -1,0 +1,18 @@
+> aps-conformance-suite@0.1.0 crossrun:canonical-bytes
+> node fixtures/canonical-bytes/crossrun/run.mjs
+
+RFC 8785 canonical-byte cross-run
+  fixture        fixtures/canonical-bytes/canonical-bytes-jcs-v2.json
+  fixture sha256 9502d72102b10f083ce91529e025e4a9c8a18881c5a9ec8f9ac46b1c0e48f593
+  orchestrator   node v22.23.3 on linux/x64
+
+runner          implementation                                      kind                  version     bytes   sha256
+----------------------------------------------------------------------------------------------------------------------
+ts              agent-passport-system canonicalizeJCS               first_party           7.1.0       10/10   10/10
+python          agent_passport.canonical.canonicalize_jcs           first_party           2.11.0      10/10   10/10
+go              github.com/aeoess/agent-passport-go/jcs.Canonicali  first_party           v0.5.0      10/10   10/10
+rust            agent_passport::jcs::canonicalize                   first_party           0.1.0       10/10   10/10
+rust-jcs-admit  jcs_admit::admit                                    rfc8785               0.1.1       10/10   10/10
+
+results written to fixtures/canonical-bytes/crossrun-results/
+A byte or digest mismatch is a recorded result, not a failure of this run.

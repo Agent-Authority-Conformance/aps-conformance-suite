@@ -1,0 +1,521 @@
+[
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "valid/unsigned-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "valid/default-emitter-build-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "dsse-valid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/js-default-emitter-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "valid/minimal-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "valid/proto-key-preserved.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "floor_not_weakest_observed"
+   ],
+   "structural": []
+  },
+  "path": "invalid-semantic/floor-roundup.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "floor_not_in_observed",
+    "floor_not_weakest_observed"
+   ],
+   "structural": []
+  },
+  "path": "invalid-semantic/floor-not-observed.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": [
+    "'self_asserted' is not one of ['operator_asserted', 'principal_key_signed', 'qualified_signature', 'unknown']"
+   ]
+  },
+  "path": "invalid-semantic/unknown-attribution-grade.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "invalid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "observed_not_unique"
+   ],
+   "structural": [
+    "['operator_asserted', 'operator_asserted'] has non-unique elements"
+   ]
+  },
+  "path": "invalid-semantic/duplicate-observed-grade.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "invalid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "negative_count"
+   ],
+   "structural": [
+    "-1 is less than the minimum of 0"
+   ]
+  },
+  "path": "invalid-semantic/negative-authorization-evidence-count.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "invalid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "floor_without_observed"
+   ],
+   "structural": []
+  },
+  "path": "invalid-semantic/floor-without-observed.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "floor_without_observed"
+   ],
+   "structural": []
+  },
+  "path": "invalid-semantic/floor-with-empty-observed.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [
+    "observed_without_floor"
+   ],
+   "structural": []
+  },
+  "path": "invalid-semantic/observed-without-floor.json",
+  "records": 1,
+  "semantic": "invalid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "invalid-semantic/empty-observed.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "dsse-valid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/js-signed-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "dsse-valid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/rust-signed-v05.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "subject_name",
+    "subject_digest",
+    "predicate_not_record"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/tampered-run-id.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "payload_type",
+    "legacy_signature_not_derived_from_envelope"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/wrong-payload-type-resigned.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "predicate_type",
+    "legacy_signature_not_derived_from_envelope"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/wrong-predicate-type-resigned.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "statement_type",
+    "legacy_signature_not_derived_from_envelope"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/wrong-statement-type-resigned.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "subject_name",
+    "legacy_signature_not_derived_from_envelope"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/missing-subject-name-resigned.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "subject_name",
+    "legacy_signature_not_derived_from_envelope"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/wrong-subject-name-resigned.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "signature_count"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/multiple-signatures.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "dsse-valid",
+  "chain": "intact",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/intact-dsse-3.jsonl",
+  "records": 3,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "intact",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/intact-3.jsonl",
+  "records": 3,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/missing-all.jsonl",
+  "records": 3,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "partial",
+  "detail": {
+   "authenticity": [],
+   "chain": [
+    "missing_link_2"
+   ],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/partial-last.jsonl",
+  "records": 3,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "partial",
+  "detail": {
+   "authenticity": [],
+   "chain": [
+    "missing_link_1"
+   ],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/partial-middle.jsonl",
+  "records": 3,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "broken",
+  "detail": {
+   "authenticity": [],
+   "chain": [
+    "mismatch_1"
+   ],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/broken-middle.jsonl",
+  "records": 2,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "orphaned",
+  "detail": {
+   "authenticity": [],
+   "chain": [
+    "first_record_has_prev"
+   ],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "chain/singleton-with-prev.jsonl",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "unsigned",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [],
+   "chain": [],
+   "semantic": [],
+   "structural": [
+    "'run_id' is a required property"
+   ]
+  },
+  "path": "invalid-schema/missing-required-field.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "invalid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "subject_digest",
+    "predicate_not_record"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/tampered-created-at.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ },
+ {
+  "authenticity": "invalid",
+  "chain": "not-present",
+  "detail": {
+   "authenticity": [
+    "signature"
+   ],
+   "chain": [],
+   "semantic": [],
+   "structural": []
+  },
+  "path": "dsse/tampered-sig-only.json",
+  "records": 1,
+  "semantic": "valid",
+  "structural": "valid"
+ }
+]

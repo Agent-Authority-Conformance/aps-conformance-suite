@@ -1,0 +1,955 @@
+{
+  "implementation": "agent-passport-system",
+  "version": "7.1.0",
+  "node": "v24.11.1",
+  "entry_sha256": "026e71c4fb4df87baa28c39576869186bac1d34519ab1ff88dd7cda58f9d5bca",
+  "vectors_sha256": "f1ec71d06bd0c0d91b4d28e834a5e9fd4516f760314fb883e1f297e4254d73a8",
+  "record_kind": "Mode A",
+  "provenance": "author-produced",
+  "claims": [
+    {
+      "claim": "exclusive original-evidence expiry at integer-second 120s lease",
+      "status": "supported",
+      "api": "createSnapshotFreshness + isEvidenceFresh with explicit Date",
+      "boundary": "exclusive only; other lease lengths/subsecond expiry not assessed"
+    },
+    {
+      "claim": "signed chain result under supplied active/revoked/unknown answers",
+      "status": "supported",
+      "api": "verifyAuthorityDelegationChain",
+      "boundary": "fixture-provided resolver, fixed signed chain; no status retrieval, freshness or enforcement inference"
+    },
+    {
+      "claim": "complete cached lease verification mode",
+      "status": "not_supported",
+      "reason": "only primitive composition exercised; no native cached-mode execution was inspected or tested"
+    },
+    {
+      "claim": "complete live standing read mode",
+      "status": "not_supported",
+      "reason": "resolver transport and source observation are supplied by this bridge, not performed by the SDK"
+    },
+    {
+      "claim": "inclusive lease endpoint",
+      "status": "not_supported",
+      "reason": "selected freshness API exposes exclusive comparison, not a declared inclusive endpoint"
+    },
+    {
+      "claim": "observation provenance and bounded authority claim",
+      "status": "not_supported",
+      "reason": "no bridge mapping established for source timestamps and evidence identity"
+    },
+    {
+      "claim": "P1 action enforcement and independent downstream observation",
+      "status": "not_supported",
+      "reason": "chain validation is not a dispatch boundary; no protected resource is invoked"
+    },
+    {
+      "claim": "second-worker revocation synchronization",
+      "status": "not_supported",
+      "reason": "no worker cache or synchronization component is tested"
+    }
+  ],
+  "checks": 123,
+  "observations": [
+    {
+      "call": "LRA-01-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-01-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-01-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-01-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-01-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-01-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-02-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-02-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-02-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-02-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-02-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-02-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-02-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-03-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-03-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-03-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-03-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-03-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-03-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-03-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-03-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-03-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-03-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-03-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-03-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-04-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-04-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-04-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-04-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-04-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-04-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-05-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-05-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-05-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-05-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-05-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-05-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-05-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-05-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-05-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-06-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-06-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-06-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-06-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-06-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-06-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-06-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-06-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-06-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-07-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-07-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-07-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-07-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-07-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-07-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-07-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-08-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-08-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-08-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-08-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-08-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-08-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-08-r5",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-08-r5",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-08-r5",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-09-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-09-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-09-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-09-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-09-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-09-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-10-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-10-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-10-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-10-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r5",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-10-r5",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r5",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r6",
+      "kind": "original-evidence-expiry",
+      "fresh": false
+    },
+    {
+      "call": "LRA-10-r6",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-10-r6",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-11-r1",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-11-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-11-r1",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-11-r2",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-11-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-11-r2",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "unknown",
+      "state": "indeterminate",
+      "codes": [
+        "REVOCATION_UNKNOWN"
+      ]
+    },
+    {
+      "call": "LRA-11-r3",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-11-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-11-r3",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "revoked",
+      "state": "invalid",
+      "codes": [
+        "REVOKED"
+      ]
+    },
+    {
+      "call": "LRA-11-r4",
+      "kind": "original-evidence-expiry",
+      "fresh": true
+    },
+    {
+      "call": "LRA-11-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "cached_lease",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "call": "LRA-11-r4",
+      "kind": "chain-under-supplied-answer",
+      "mode": "live_standing_read",
+      "supplied": "active",
+      "state": "valid",
+      "codes": []
+    }
+  ],
+  "signature_negative_control": "rejected",
+  "boundary": "primitive API run, not a family conformance verdict or a complete mode adapter"
+}

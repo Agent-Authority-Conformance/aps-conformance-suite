@@ -1,0 +1,27 @@
+ok  inputs/sealed/vectors.json
+ok  inputs/sealed/CANDIDATE.md
+blind copy: 28 cases
+rfc9449 read from: supplied copy /mnt/user-data/uploads/rfc9449.txt
+ok  inputs/rfc/rfc9449.txt
+rfc7638 read from: supplied copy /mnt/user-data/uploads/rfc7638.txt
+recorded  inputs/rfc/rfc7638.txt  98b29ab9652070e6a5fec748d43e221bbedc66b6b22e05903fb5366c04ef3110
+rfc8037 read from: supplied copy /mnt/user-data/uploads/rfc8037.txt
+recorded  inputs/rfc/rfc8037.txt  f14347f9d8eead78ef6e7a1ea3d795d35d664033095a76a80fcd567904aaedaa
+rfc7515 read from: supplied copy /mnt/user-data/uploads/rfc7515.txt
+recorded  inputs/rfc/rfc7515.txt  ecbf84674118e62526511c1237e1deaa86aada86d25b247623a2a7e04ae62e40
+rfc7517 read from: https://www.rfc-editor.org/rfc/rfc7517.txt
+recorded  inputs/rfc/rfc7517.txt  681c19b92a85068716b7e89c5815aa821bd3f11c755ff1c641b40ae9851bb33c
+rfc7519 read from: https://www.rfc-editor.org/rfc/rfc7519.txt
+recorded  inputs/rfc/rfc7519.txt  fecd930e9ccf2276b95c0017c6c4ff5d09352e4bc3c7629946447894e0f97248
+rfc8032 read from: https://www.rfc-editor.org/rfc/rfc8032.txt
+recorded  inputs/rfc/rfc8032.txt  ed63657ff389301282b169b0abde9b5dd2c7e4d524fdfa5da6ff3094fc93c4c3
+rfc3986 read from: https://www.rfc-editor.org/rfc/rfc3986.txt
+recorded  inputs/rfc/rfc3986.txt  3102dae4b68cebe40337730312fcb612297b8928547267e8b3d1ee6002b2d683
+rfc4648 read from: https://www.rfc-editor.org/rfc/rfc4648.txt
+recorded  inputs/rfc/rfc4648.txt  84e14418f795d503be5f34bf23ce4ebaa119e9ec7c9f667d8caeb111385b178f
+rfc2119 read from: https://www.rfc-editor.org/rfc/rfc2119.txt
+recorded  inputs/rfc/rfc2119.txt  3c2ceb7bfc84cd34720f4a5271338ab9d8280d34bdd1eb250c64306202f2ed8b
+rfc8174 read from: https://www.rfc-editor.org/rfc/rfc8174.txt
+recorded  inputs/rfc/rfc8174.txt  5ca0e2f90be0bc5928ee465f76518fee316dfa775aed885658a29a419cc293b7
+cryptography 50.0.1
+done: inputs/SHA256SUMS

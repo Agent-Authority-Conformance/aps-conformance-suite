@@ -1,0 +1,342 @@
+[
+  {
+    "case": "LRA-01",
+    "call": "LRA-01-r1",
+    "mode": "cached_lease",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "active",
+        "as_of_ms": 0,
+        "retrieved_at_ms": 0
+      },
+      "authority_answer": "valid",
+      "current_validity": "valid",
+      "verification_accepted": true,
+      "action_decision": "permit",
+      "refusal_reason": null,
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 0
+      }
+    },
+    "downstream_reached": true
+  },
+  {
+    "case": "LRA-02",
+    "call": "LRA-02-r4",
+    "mode": "cached_lease",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "revoked",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "active",
+        "as_of_ms": 0,
+        "retrieved_at_ms": 0
+      },
+      "authority_answer": "valid",
+      "current_validity": "not_established",
+      "verification_accepted": true,
+      "action_decision": "deny",
+      "refusal_reason": "authority_not_determined",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 0
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-02",
+    "call": "LRA-02-r2",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "revoked",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "revoked",
+        "as_of_ms": 30000,
+        "retrieved_at_ms": 30000
+      },
+      "authority_answer": "revoked",
+      "current_validity": "revoked",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "authority_revoked",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 30000
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-03",
+    "call": "LRA-03-r2",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "revoked",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": null,
+      "authority_answer": "not_established",
+      "current_validity": "not_established",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "authority_not_determined",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-04",
+    "call": "LRA-04-r1",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "revoked",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "expired",
+      "observation": null,
+      "authority_answer": "not_established",
+      "current_validity": "not_established",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "evidence_expired",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-04",
+    "call": "LRA-04-r1",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": true,
+    "truth": "revoked",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "expired",
+      "observation": {
+        "status": "revoked",
+        "as_of_ms": 121000,
+        "retrieved_at_ms": 121000
+      },
+      "authority_answer": "revoked",
+      "current_validity": "revoked",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "evidence_expired",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-05",
+    "call": "LRA-05-r2",
+    "mode": "live_standing_read",
+    "boundary": "inclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "active",
+        "as_of_ms": 120000,
+        "retrieved_at_ms": 120000
+      },
+      "authority_answer": "valid",
+      "current_validity": "valid",
+      "verification_accepted": true,
+      "action_decision": "permit",
+      "refusal_reason": null,
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 120000
+      }
+    },
+    "downstream_reached": true
+  },
+  {
+    "case": "LRA-05",
+    "call": "LRA-05-r2",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "expired",
+      "observation": null,
+      "authority_answer": "not_established",
+      "current_validity": "not_established",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "evidence_expired",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-09",
+    "call": "LRA-09-r1",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "active",
+        "as_of_ms": 0,
+        "retrieved_at_ms": 0
+      },
+      "authority_answer": "valid",
+      "current_validity": "valid",
+      "verification_accepted": true,
+      "action_decision": "deny",
+      "refusal_reason": "operation_not_permitted",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 0
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-12",
+    "call": "LRA-12-r2",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "mismatch",
+      "evidence_freshness": "fresh",
+      "observation": null,
+      "authority_answer": "not_established",
+      "current_validity": "not_established",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "evidence_binding_mismatch",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  },
+  {
+    "case": "LRA-06",
+    "call": "LRA-06-r3",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": {
+        "status": "active",
+        "as_of_ms": 30000,
+        "retrieved_at_ms": 30000
+      },
+      "authority_answer": "valid",
+      "current_validity": "valid",
+      "verification_accepted": true,
+      "action_decision": "permit",
+      "refusal_reason": null,
+      "grant_ref": {
+        "grant": "g2",
+        "evidence_id": "e2",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": 30000
+      }
+    },
+    "downstream_reached": true
+  },
+  {
+    "case": "LRA-07",
+    "call": "LRA-07-r2",
+    "mode": "live_standing_read",
+    "boundary": "exclusive",
+    "diagnostic": false,
+    "truth": "active",
+    "answer": {
+      "evidence_binding": "matched",
+      "evidence_freshness": "fresh",
+      "observation": null,
+      "authority_answer": "not_established",
+      "current_validity": "not_established",
+      "verification_accepted": false,
+      "action_decision": "deny",
+      "refusal_reason": "authority_not_determined",
+      "grant_ref": {
+        "grant": "g1",
+        "evidence_id": "e1",
+        "issued_at_ms": 0,
+        "expires_at_ms": 120000,
+        "observation_as_of_ms": null
+      }
+    },
+    "downstream_reached": false
+  }
+]

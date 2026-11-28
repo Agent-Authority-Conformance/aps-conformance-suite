@@ -1,0 +1,281 @@
+{
+ "label": "aicent-ae128-fail-closed",
+ "revision": 1,
+ "text_status": "the source is a published Internet-Draft, not agreed text of any working group: draft-li-rttp-iqa-addressing-02 is Informational and published for the public record",
+ "case_style": "byte-level: every case is a 128-octet frame (hex) built from the draft-published test parameters; the checker re-derives the parse and verification decisions from the frame bytes alone",
+ "sources": {
+  "spec": "draft-li-rttp-iqa-addressing-02, posted 2026-11-01, https://datatracker.ietf.org/doc/html/draft-li-rttp-iqa-addressing-02, sha256 02491c5a59d1e7471be04e8e0d4933dfc22ce19f9b054ead0aa449d6b4485044 of the retrieved TXT copy; sections 7.2 (The Attestation Envelope) and 7.2.1 (Test Vector AE128-VECTOR-1) are used"
+ },
+ "key_note": "the organ test key 'PLSF-TEST-ORG-KEY-00012345678901' is published in the source text itself (sec. 7.2.1); it is a public test parameter, not a secret",
+ "freshness_note": "verification step (2) of sec. 7.2 (lease_expiry against the receiver's clock) is time-dependent and is not exercised here; the lease boundary is tested by the aicent-lease-boundary candidate",
+ "verdicts": [
+  "accept",
+  "reject"
+ ],
+ "cases": [
+  {
+   "id": "AE-P01",
+   "rule": "R-REPRODUCE",
+   "status": "normative",
+   "name": "AE128-VECTOR-1 (draft sec. 7.2.1, byte for byte)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "pass",
+   "basis": [
+    "sect-7.2.1"
+   ],
+   "note": "any implementation MUST reproduce this frame byte for byte from the parameters alone and MUST accept it after a round trip; the checker re-derives parse and verification decisions from the frame bytes"
+  },
+  {
+   "id": "AE-N01",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "length 127 (truncated)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d5445535400000000000000010200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "length",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N02",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "length 129 (padded)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d54455354000000000000000102000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "length",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N03",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "pulse-frame magic 'RTTP'",
+   "frame_hex": "5254545001010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "magic",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N04",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "version 2",
+   "frame_hex": "4951414502010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "version",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N05",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "algorithm 0x00",
+   "frame_hex": "4951414501000000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "algorithm",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N06",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "algorithm 0x02 (undefined)",
+   "frame_hex": "4951414501020000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "algorithm",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N07",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "flags 0x0100 (unassigned bit set)",
+   "frame_hex": "4951414501010100000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "flags",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "sec. 7.2 step (1) does not list the flags check; support = field row 'flags - unsigned, big-endian; unassigned; sent as 0x0000'. The -03 revision adds flags to the MUST-reject list (author decision 2026-11-09). As frozen, this frame's attestation is invalid (the mutation breaks the MAC), so a receiver that reports only a final rejection passes it for the wrong reason; the parser-isolated variant with a valid attestation is AE-N12."
+  },
+  {
+   "id": "AE-N08",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "standing 0x04 (outside the closed set)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "standing",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N09",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "reserved nonzero (byte 85)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "reserved",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N10",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "normative",
+   "name": "extension nonzero (byte 100)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "extension",
+   "basis": [
+    "sect-7.2"
+   ]
+  },
+  {
+   "id": "AE-N11",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "organ tag non-ASCII (0xFF)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596aff52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "organ",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "sec. 7.2 step (1) does not list the organ charset check; support = field row 'organ - exactly 8 octets of US-ASCII'. The -03 revision adds it (author decision 2026-11-09). As frozen, this frame's attestation is invalid (the mutation breaks the MAC), so a receiver that reports only a final rejection passes it for the wrong reason; the parser-isolated variant with a valid attestation is AE-N13."
+  },
+  {
+   "id": "AE-N12",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "flags 0x0100 (unassigned bit set), valid attestation",
+   "frame_hex": "4951414501010100000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c304a8716ff80bd33e09ca273b3e6d5ceb7ed61a6b13610c44649a7b10446fb954f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "flags",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "parser-isolated variant of AE-N07: the attestation is recomputed over this exact frame under the canonical rule (sec. 7.2), so it verifies, and a conformant receiver's rejection can come only from the flags check, whatever order the implementation checks in. -02 does not require the flags check (the step (1) list omits it); the -03 revision adds it (author decision 2026-11-09). An implementation that does not check flags accepts this frame."
+  },
+  {
+   "id": "AE-N13",
+   "rule": "R-PARSE-FAIL-CLOSED",
+   "status": "authoritative-tightening",
+   "name": "organ tag non-ASCII (0xFF), valid attestation",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331cfe60f4ccd8b7369daaacfd23336ff4283f12fabcd273b7410262d0cc1ab737ccff52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "reject",
+   "reject_reason": "organ",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "parser-isolated variant of AE-N11: the attestation is recomputed over this exact frame under the canonical rule (sec. 7.2), so it verifies, and a conformant receiver's rejection can come only from the organ charset check, whatever order the implementation checks in. -02 does not require the organ charset check (the step (1) list omits it); the -03 revision adds it (author decision 2026-11-09). An implementation that does not check the charset accepts this frame."
+  },
+  {
+   "id": "AE-T01",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "one attestation bit flipped",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4ad14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T02",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "organ tag altered (ORG-TESU)",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553550000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T03",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "nonce altered",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000002020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T04",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "standing flipped radiant -> genesis",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T05",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "lease_expiry altered",
+   "frame_hex": "4951414501010000000000006b36ec81557c8154d3780cb78cc5fa1bd72b331c4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T06",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "intent_shard swapped for another subject",
+   "frame_hex": "4951414501010000000000006b36ec80000102030405060708090a0b0c0d0e0f4bd14b6ae7b00904986294a326a0f0255847184ff2c9185539d4863efb84596a4f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  },
+  {
+   "id": "AE-T07",
+   "rule": "R-HMAC-COVERS-FRAME",
+   "status": "normative",
+   "name": "attestation from a different key",
+   "frame_hex": "4951414501010000000000006b36ec80557c8154d3780cb78cc5fa1bd72b331c7dff5e97f9ff451e7989f47b670fe003964a26aced4df399a9f242541dcd93f84f52472d544553540000000000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect_parse": "accept",
+   "expect_verify": "fail",
+   "basis": [
+    "sect-7.2"
+   ],
+   "note": "the attestation field covers the entire frame with the attestation field itself zeroed, so this rewrite does not survive verification"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "schema_version": "aep/v0.5",
+ "run_id": "conf-minimal-v05",
+ "created_at_ms": 1700000000000,
+ "dsse_envelope": {
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiY3JlYXRlZF9hdF9tcyI6MTcwMDAwMDAwMDAwMSwicnVuX2lkIjoiY29uZi1taW5pbWFsLXYwNSIsInNjaGVtYV92ZXJzaW9uIjoiYWVwL3YwLjUifSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vd2FzbWFnZW50LmRldi9hdHRlc3RhdGlvbnMvYWVwL3YwLjQiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiNGMyM2M3YzIwYjM4MzFiNzAzMmJhOTVkMjJmZDYwYzE3M2I3YzU1YmNhYzMwMjA3OTUyNjMzNzhkMzZhZTc2ZSJ9LCJuYW1lIjoidXJuOndhc21hZ2VudDpydW46Y29uZi1taW5pbWFsLXYwNSJ9XX0=",
+  "signatures": [
+   {
+    "keyid": "extra-key-01",
+    "sig": "aQqGSA0kmfbWMMTUN18SC/t//yNSM+1i7+1+IoEG1A3rnAPNYOdZvWccVMz2yTFuw7whh9VC5NmqnNa7YkDEBg=="
+   }
+  ]
+ }
+}

@@ -48,6 +48,13 @@ does not bind today, and this file does not pretend otherwise.
 - Keep releases and reports free of promotion of any implementation, reference or commercial.
 - Answer contributions in public, with a reason and, where one exists, a path.
 
+## Intake
+
+Tymofii Pidlisnyi handles intake: acknowledging submissions, running publication review for
+candidates as described in `docs/CANDIDATES.md`, and stating a next step. There is no backup yet.
+A volunteer who accepts that responsibility is added here by pull request. No response time is
+promised until there is one.
+
 ## How to become a maintainer
 
 Committer access follows the criteria in the approved lab proposal. In summary, a candidate needs:

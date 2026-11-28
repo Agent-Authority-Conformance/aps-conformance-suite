@@ -1,0 +1,1245 @@
+{
+ "R01_single_header": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": true,
+  "removed": []
+ },
+ "R02_well_formed_jwt": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": true,
+  "removed": []
+ },
+ "R03a_claims_jti_htm_htu_iat": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": true,
+  "removed": []
+ },
+ "R03b_claim_ath": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B10",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R03c_claim_nonce": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": true,
+  "removed": []
+ },
+ "R04_typ": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B25",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B25",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R05_alg": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": true,
+  "removed": []
+ },
+ "R06_signature": {
+  "inverted": [
+   {
+    "case": "B01",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B01",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "R07_no_private_key": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B11",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B11",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R08_htm": {
+  "inverted": [
+   {
+    "case": "B02",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B02",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R09_htu": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B22",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B22",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R10_nonce": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B18",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B18",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R11_iat_not_too_old": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B20",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B20",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R11f_iat_future": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R12a_ath_matches": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B07",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B10",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B07",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "R12b_key_bound_matches": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B08",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B10",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B15",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B08",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B15",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "R13_jti_not_replayed": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B24",
+    "from": "nonconformant",
+    "to": "ambiguous"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "conformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "conformant"
+   }
+  ]
+ },
+ "RS_scope_contains_required": {
+  "inverted": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B05",
+    "from": "nonconformant",
+    "to": "conformant"
+   },
+   {
+    "case": "B09",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B16",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B21",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B23",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ],
+  "no_case_depends_on_removal": false,
+  "removed": [
+   {
+    "case": "B04",
+    "from": "conformant",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B05",
+    "from": "nonconformant",
+    "to": "conformant"
+   }
+  ]
+ },
+ "reading C1_item3_axis fixed to A": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C1_item3_axis fixed to B": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C2_future_iat_null_skew fixed to A": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C2_future_iat_null_skew fixed to B": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C3_jti_replay fixed to A": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C3_jti_replay fixed to B": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C5_freshness_axis fixed to A": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   }
+  ]
+ },
+ "reading C5_freshness_axis fixed to B": {
+  "changed": [
+   {
+    "case": "B17",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B26",
+    "from": "ambiguous",
+    "to": "conformant"
+   },
+   {
+    "case": "B27",
+    "from": "ambiguous",
+    "to": "nonconformant"
+   },
+   {
+    "case": "B28",
+    "from": "ambiguous",
+    "to": "conformant"
+   }
+  ]
+ }
+}

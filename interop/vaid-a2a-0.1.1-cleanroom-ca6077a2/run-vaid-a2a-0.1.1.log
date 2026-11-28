@@ -1,0 +1,17 @@
+$ python3 -I run_vectors.py <vaid-a2a-0.1.1 wheel>/vaid_a2a/vectors vectors-vaid-a2a-0.1.1.sha256
+vaid_cr.py sha256 ca6077a2950519abae1e921e25236fe57892bb554b825b2b72907efcc26888f8
+manifest sha256 8d9b9339efc7c631419a4d6004ccfac1767a2c9f08197797434b04540b773cf0
+OK  01-valid-two-hop-chain.json                    expected=('pass', None) got=('pass', None) step=None 
+OK  02-child-scope-wider-than-parent.json          expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-000000000004
+OK  03-expired-leaf.json                           expected=('fail', 'expired') got=('fail', 'expired') step=2 leaf
+OK  04-revoked-middle-link.json                    expected=('fail', 'revoked') got=('fail', 'revoked') step=6 
+OK  05-action-outside-leaf-scope.json              expected=('fail', 'out_of_scope') got=('fail', 'out_of_scope') step=5 data.acme.customers
+OK  06-unknown-root-key.json                       expected=('fail', 'issuer_mismatch') got=('fail', 'issuer_mismatch') step=1 kernel_key_thumbprint names no trusted key
+OK  07-sibling-scope-child.json                    expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-00000000000f
+OK  08-capability-not-in-parent.json               expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 capabilities at 00000000-0000-0000-0000-000000000011
+OK  09-tenant-changed.json                         expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 tenant at 00000000-0000-0000-0000-000000000013
+OK  10-child-outlives-parent.json                  expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 expiry at 00000000-0000-0000-0000-000000000015
+OK  11-unrestricted-child.json                     expected=('fail', 'not_attenuated') got=('fail', 'not_attenuated') step=4 scope at 00000000-0000-0000-0000-000000000017
+OK  12-trust-domain-not-bound-to-signing-key.json  expected=('fail', 'issuer_mismatch') got=('fail', 'issuer_mismatch') step=1 trust_domain differs from the trusted entry
+12/12 as expected
+exit=0

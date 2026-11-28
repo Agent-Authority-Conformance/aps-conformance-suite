@@ -1,0 +1,81 @@
+{
+  "family": "aeoess-relationship-revocation-propagation",
+  "revision": "r2.1 cases (wording of the warm-up steps corrected 2026-11-18, see CLARIFICATIONS.md)",
+  "date": "2026-11-18",
+  "scope": "Inherited permission through a relationship chain in a relationship-based authorization server. No signed agent delegation is minted or validated, no protected operation is invoked, no effect is observed.",
+  "chain": {
+    "subject": "user:alice{k}",
+    "object": "doc:y{k}",
+    "permission": "view (OpenFGA relation viewer)",
+    "edges": {
+      "M": "user:alice{k} is member of group:eng{k}",
+      "G": "group:eng{k}#member is viewer of folder:x{k}",
+      "P": "folder:x{k} is parent of doc:y{k}; doc view includes parent view"
+    },
+    "note": "{k} is a fresh suffix per scenario and edge, so no two scenarios share cache entries for the same chain."
+  },
+  "modes": {
+    "openfga": {"strongest": "HIGHER_CONSISTENCY", "default": "MINIMIZE_LATENCY"},
+    "spicedb": {"strongest": "fully_consistent, and at_least_as_fresh with the write token", "default": "minimize_latency"},
+    "permify": {"strongest": "snap_token returned by the write under test", "default": "no snap_token"}
+  },
+  "scenarios": {
+    "IM": {
+      "purpose": "Immediate reads after an acknowledged write, in the strongest mode the implementation names. Default-mode caches are warmed first on the same chain.",
+      "cases": [
+        {"id": "IM-E-01", "step": "strongest check before revoke", "expected": "allow"},
+        {"id": "IM-E-W", "step": "default check and default lookup together until both show allow and listed 3 times in a row", "expected": "warmed (precondition, recorded)"},
+        {"id": "IM-E-02", "step": "first request after the revoke is acknowledged: strongest check", "expected": "deny"},
+        {"id": "IM-E-03", "step": "next request: strongest lookup", "expected": "absent"},
+        {"id": "IM-E-04", "step": "SpiceDB only: at_least_as_fresh(revoke token) check", "expected": "deny"},
+        {"id": "IM-E-05", "step": "SpiceDB only: at_exact_snapshot(setup token) check, historic control", "expected": "allow"},
+        {"id": "IM-E-09", "step": "first request after the re-grant is acknowledged: strongest check", "expected": "allow"},
+        {"id": "IM-E-10", "step": "next request: strongest lookup", "expected": "listed"},
+        {"id": "IM-E-11", "step": "SpiceDB only: at_least_as_fresh(re-grant token) check", "expected": "allow"}
+      ]
+    },
+    "PR": {
+      "purpose": "Default-mode propagation of a revoke. No strongest-mode read touches this chain.",
+      "cases": [
+        {"id": "PR-E-W", "step": "default check and default lookup together until both show allow and listed 3 times in a row", "expected": "warmed (precondition, a failed warm-up is ERROR)"},
+        {"id": "PR-E-06", "step": "first default check after the revoke is acknowledged", "expected": "either (recorded)"},
+        {"id": "PR-E-07", "step": "default checks every 0.25 s until ack + bound + tolerance + horizon_extra", "expected": "deny for every request that starts at or after ack + bound + tolerance"},
+        {"id": "PR-E-08", "step": "default lookups interleaved with PR-E-07", "expected": "absent under the same rule"}
+      ]
+    },
+    "RG": {
+      "purpose": "Default-mode recovery from a cached deny after a re-grant. No strongest-mode read touches this chain.",
+      "cases": [
+        {"id": "RG-E-W", "step": "check and lookup together show allow and listed 3 times in a row, revoke, then check and lookup together show deny and absent 3 times in a row", "expected": "warmed (precondition, a failed warm-up is ERROR)"},
+        {"id": "RG-E-10", "step": "default checks after the re-grant is acknowledged", "expected": "allow for every request that starts at or after ack + bound + tolerance"},
+        {"id": "RG-E-11", "step": "default lookups interleaved", "expected": "listed under the same rule"}
+      ]
+    },
+    "CX": {
+      "purpose": "OpenFGA only. The G edge carries the CEL condition current_time < grant_time + grant_duration, grant_time 2026-11-18T00:00:00Z, duration 1h. Check cache on.",
+      "cases": [
+        {"id": "CX-01", "step": "strongest, current_time 00:30", "expected": "allow"},
+        {"id": "CX-W", "step": "3 default checks and lookups at 00:30", "expected": "warmed"},
+        {"id": "CX-02", "step": "default, 00:30", "expected": "allow"},
+        {"id": "CX-03", "step": "default, 01:30", "expected": "deny"},
+        {"id": "CX-04", "step": "strongest, 01:30", "expected": "deny"},
+        {"id": "CX-05", "step": "default, 00:59:59", "expected": "allow"},
+        {"id": "CX-06", "step": "default, 01:00:00", "expected": "deny"},
+        {"id": "CX-07", "step": "default lookup, 01:30", "expected": "absent"},
+        {"id": "CX-08", "step": "default, back at 00:30", "expected": "allow"},
+        {"id": "CX-09", "step": "default, current_time omitted", "expected": "HTTP 400 whose message names current_time"}
+      ]
+    }
+  },
+  "scoring": {
+    "validation": "Each response is checked for status and field types before scoring. Transport errors, non-2xx status, unknown enum values and missing fields are ERROR or MALFORMED and never count as deny or absent.",
+    "timing_rule": "For PR and RG, every default-mode request that starts at or after ack_end + bound + tolerance must return the post-change answer. Requests before that are recorded only. At least 4 scored requests are required past the limit, otherwise ERROR. Finite sampling every 0.25 s, not an all-times proof.",
+    "tolerance_s": 0.5,
+    "bound_classes": {
+      "documented": "the implementation's text states the behavior for this configuration",
+      "configured-setting": "the bound is a cache TTL the server was started with, read from its flag text; layering and clock origin are the submitter's reading",
+      "submitter-derived": "the bound is the submitter's reading of the flags the text names; not a number the implementation states",
+      "observational": "no timing verdict, samples recorded"
+    }
+  }
+}

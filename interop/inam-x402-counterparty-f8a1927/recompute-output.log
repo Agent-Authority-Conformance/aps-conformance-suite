@@ -1,0 +1,12 @@
+1 MATCH canon-py canon-js sha256 presented decision | allow: bound payTo, countersigned history
+2 MATCH canon-py canon-js sha256 presented decision | deny: payTo not bound to the DID (borrowed DID)
+3 MATCH canon-py canon-js sha256 presented decision | deny: newcomer with no countersigned work
+4 MATCH canon-py canon-js sha256 presented decision | deny: revoked DID
+5 MATCH canon-py canon-js sha256 presented decision | deny: score below policy minimum
+6 MATCH canon-py canon-js sha256 presented decision | deny: two conditions fail (payTo unbound and newcomer), payTo reason wins
+7 MATCH canon-py canon-js sha256 presented decision | allow: checksummed mixed-case payTo matches a lowercase bound wallet
+8 MATCH canon-py canon-js sha256 presented decision | allow: invalid EIP-55 casing of the bound address (checksum validation is out of scope)
+8/8 match
+corpus sha256 b3ddccb56489593246cd15411eed70897779849899fa3eac589e0c6e3f54c0eb
+Python 3.14.6; rfc8785 0.1.4
+Node v24.11.1

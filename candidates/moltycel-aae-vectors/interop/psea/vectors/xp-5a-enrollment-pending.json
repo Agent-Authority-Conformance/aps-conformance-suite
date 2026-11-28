@@ -1,0 +1,117 @@
+{
+  "id": "xp-5a",
+  "name": "Enrollment pending - binding not yet resolved",
+  "description": "Identical AAE grant (principal-A) and identical PSEA-A proof as the second pass. The relying party has not yet enrolled the PSEA signer's key, so the secondary binding does not resolve. Same 32-octet action digest.",
+  "status": "confirmed",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 Section 5 steps 1-7; draft-yossif-psea-02 Sections 2.5, 3.8; draft-yossif-enrollment-problem-00",
+  "verification_mode": "structural",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1hI2tleS0xIn0.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDEwMS0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwYTEiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmFnZW50LWEiLCJ2YWxpZEZyb20iOiIyMDI2LTA3LTI5VDA4OjAwOjAwWiIsImNyZWRlbnRpYWxTdWJqZWN0Ijp7ImlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC0wMDEiLCJhYWUiOnsibWFuZGF0ZSI6eyJhY3Rpb25zIjpbInRyYW5zZmVyIiwicGF5bWVudC5leGVjdXRlIl0sInB1cnBvc2UiOiJQU0VBL0FBRSBpbnRlcm9wIGNyb3NzLXJ1biAtIHNpbmdsZSBvdXRib3VuZCB0cmFuc2ZlciIsInNjb3BlIjoicGF5bWVudHMtdmVydGljYWwiLCJwcmluY2lwYWxfZGlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpwcmluY2lwYWwtQSIsImFjdGlvbl9iaW5kaW5nIjp7ImFsZyI6InNoYS0yNTYiLCJjYW5vbmljYWxpemF0aW9uIjoiSkNTIChSRkMgODc4NSkiLCJwYXlsb2FkX2RpZ2VzdCI6InNoYS0yNTY6MWxnOHZHTEJKNE1SclRFYVdHMmlCeGlXazZtQlFfZHpxUHlXQ3VXYXhnWSJ9fSwiY29uc3RyYWludHMiOnsibWF4X3RyYW5zYWN0aW9uX3ZhbHVlIjp7InZhbHVlIjo1MDAwMDAsImN1cnJlbmN5IjoiQ0hGIiwicmVxdWlyZWQiOnRydWV9fSwidmFsaWRpdHkiOnsibm90X2JlZm9yZSI6IjIwMjYtMDctMjlUMDg6MDA6MDBaIiwibm90X2FmdGVyIjoiMjAyNi0wNy0yOVQwOTowMDowMFoiLCJzaW5nbGVfdXNlIjpmYWxzZX19fX0.LgptbAepCHlwNR0a9nNXiPaQhBWsfnuLYYkkZHq5CEK_ubs4Dernd_a52ohZZ2krbSLmQMOIM2qiYK1UT2ztDw",
+    "context": {
+      "current_time": "2026-07-29T08:30:00Z",
+      "requested_action": "transfer",
+      "action_context": {
+        "amount": 250000,
+        "currency": "CHF",
+        "target": "iban:CH9300762011623852957",
+        "sequence": 1
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      }
+    },
+    "secondary_artifact": {
+      "profile": "draft-yossif-psea-02",
+      "format": "JWS compact serialization, typ psea-proof+jwt, alg ES256",
+      "artifact_id": "PSEA-A",
+      "token": "eyJhbGciOiJFUzI1NiIsInR5cCI6InBzZWEtcHJvb2Yrand0Iiwia2lkIjoicHNlYS1rZXktQSJ9.eyJpc3MiOiJhcy5pbnRlcm9wLmV4YW1wbGUiLCJhdWQiOiJycy5pbnRlcm9wLmV4YW1wbGUiLCJpYXQiOjE3ODUzMTIwMDAsImV4cCI6MTc4NTMxNTYwMCwianRpIjoicHNlYS1pbnRlcm9wLWFhZS0wMDEiLCJwc2VhX29wIjoicGF5bWVudC5leGVjdXRlIiwicHNlYV90aWVyIjoiaGlnaCIsInBzZWFfcGF5bG9hZF9oYXNoIjoiMWxnOHZHTEJKNE1SclRFYVdHMmlCeGlXazZtQlEvZHpxUHlXQ3VXYXhnWT0iLCJwc2VhX2NvdW50ZXIiOjEsInBzZWFfdXYiOnsidmVyaWZpZWQiOnRydWUsIm1ldGhvZCI6ImJpb21ldHJpYyJ9LCJwc2VhX3Byb29mX3ZlcnNpb24iOjF9.QUZZYRNo_XOWd2GG64xye9sRJfO3u_FEzCRtI4ivHEX3quCerf-Nxv__o8fYiCP97ZXrA3TX3n3Yd1755Z9_jw",
+      "signer_kid": "psea-key-A",
+      "enrollment_binding": "principal-A",
+      "native_verdict": "VERIFIED",
+      "payload_digest": {
+        "alg": "sha-256",
+        "encoding": "base64-pad",
+        "value": "1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ/dzqPyWCuWaxgY=",
+        "octets": 32
+      },
+      "uv_anchoring": "attested",
+      "source": {
+        "repository": "https://github.com/yuthent/psea-spec",
+        "path": "conformance/interop-aae/psea-fixture-v0.json",
+        "sha256": "f7d89f4df629d0b7318131ddfd8274c58ea96308c8aa557616baa4b88e60d188"
+      }
+    },
+    "join_what": {
+      "definition": "SHA-256 over JCS (RFC 8785) of the action payload",
+      "comparison_rule": "compare the 32 octets, never the encoded strings",
+      "payload": {
+        "operation": "transfer",
+        "target": "iban:CH9300762011623852957",
+        "amount_minor": 250000,
+        "currency": "CHF",
+        "sequence": 1
+      },
+      "payload_jcs_utf8": "{\"amount_minor\":250000,\"currency\":\"CHF\",\"operation\":\"transfer\",\"sequence\":1,\"target\":\"iban:CH9300762011623852957\"}",
+      "aae_digest": {
+        "alg": "sha-256",
+        "encoding": "base64url-nopad",
+        "value": "sha-256:1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ_dzqPyWCuWaxgY",
+        "octets": 32
+      },
+      "secondary_digest": {
+        "alg": "sha-256",
+        "encoding": "base64-pad",
+        "value": "1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ/dzqPyWCuWaxgY=",
+        "octets": 32
+      }
+    },
+    "join_who": {
+      "status": "confirmed at head 8bed788 (Mohamad Khalil-Yossif); WHO linkage established, PSEA conformance not established, kid-to-principal mapping supplied not derived",
+      "canonical_space": "urn:interop:aae-psea:principal",
+      "unresolved_rule": "an identifier with no entry in the table is unresolved",
+      "resolution_state": "pending_enrollment",
+      "state_note": "The relying party has not yet enrolled the key bound to principal-A, so that binding does not resolve on the secondary side. Nothing about the artifacts differs from the enrolled state - only what the relying party knows. Used by xp-5a; xp-5b is the same artifacts evaluated after enrollment.",
+      "principal_resolution": {
+        "aae": {
+          "did:web:example.com:principal-A": "urn:interop:aae-psea:principal:A",
+          "did:web:example.com:principal-B": "urn:interop:aae-psea:principal:B",
+          "did:web:example.com:principal-A-alias": "urn:interop:aae-psea:principal:A"
+        },
+        "secondary": {
+          "principal-B": "urn:interop:aae-psea:principal:B"
+        }
+      }
+    }
+  },
+  "expected": {
+    "stages": {
+      "aae_native": {
+        "value": "ACCEPT",
+        "verification_step": 7
+      },
+      "action_linkage": {
+        "value": "EQUIVALENT"
+      },
+      "principal_linkage": {
+        "value": "UNRESOLVED",
+        "reason": "unresolved_binding"
+      },
+      "evidence_satisfaction": {
+        "value": "NOT_EVALUATED"
+      },
+      "freshness": {
+        "value": "WELL_FORMED"
+      },
+      "decision": {
+        "value": "REFUSED"
+      },
+      "admission": {
+        "value": "NONE"
+      },
+      "outcome": {
+        "value": "NONE"
+      }
+    }
+  },
+  "rationale": "The agent's identity is byte-identical to the second pass - same AAE envelope, same PSEA proof. What is missing is the relying party's enrollment of the signer key, so the secondary side has no resolution and principal_linkage is UNRESOLVED, one row that separates it from the DIVERGENT of xp-2. Evidence is NOT_EVALUATED because there is no second resolution to compare. Paired with xp-5b, this isolates enrollment as the only thing that changed between refusal and authorization."
+}

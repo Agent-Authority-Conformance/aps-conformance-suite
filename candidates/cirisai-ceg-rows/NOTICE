@@ -1,0 +1,21 @@
+CIRIS CEG row statement vectors, candidate copy
+Copyright (c) 2026 CIRIS L3C
+
+The files of this directory are licensed under the Apache License, Version 2.0,
+the license of this repository.
+
+inputs/cases.json, inputs/keys.json, inputs/family_model.json and expected.json
+are derived by split.py from two files of CIRISAI/CIRISVerify at the tag
+v23.3.0, commit ffd7af1f1b53:
+
+  src/ciris-verify-core/tests/vectors/edition2/row_statements_v3.json
+    sha256 0c072516dea1d89132567e0f343ca47a2183df79697651685aa557d739cdf920
+  src/ciris-verify-core/tests/vectors/edition2/key_of_iss_v1.json
+    sha256 bd584d9b31b7271dc86c05a29eec75044b5fe74aae8dd586701a227f09001333
+
+CIRISVerify as a whole is licensed under the GNU Affero General Public License,
+version 3. CIRIS L3C, the copyright holder of those two files, licenses the
+derived files of this directory under the Apache License, Version 2.0. No other
+part of CIRISVerify is copied here or relicensed.
+
+Written for this candidate: CANDIDATE.md, CHECKSUMS.sha256, NOTICE, split.py.

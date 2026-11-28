@@ -74,3 +74,31 @@ The token-vector set also moved between 0.8.0 and 0.11.0 (reject_unsafe_integer,
 valid_jcs_big_integer, valid_jcs_unmarked_header are new). The 0.8.0 record's clean-room -00
 verifier was not re-run; that is a separate successor observation. The envelope rows
 rafaelasor announced for a later drop are not in this file.
+
+## Classification clarification (dated append, 2026-10-18)
+
+`CONTRIBUTING.md` defines a record as independent when the runner authored neither the vectors
+nor any claim inputs being checked, and did not author the implementation whose behavior or
+output supplies the recomputation. Under that definition the direction 1 package layer (Python,
+attenu-guard 0.11.0) above is independent, not author-produced. The runner, aeoess, wrote
+neither the vectors nor attenu-guard. Both are by the attenu-guard author.
+
+The harness that ran it is runner-authored and only transports and compares. It loads the vector
+file through the package's own loader, wraps each case's own `signer` secret and `kid` as
+`HS256TestSigner`, calls the package's `verify_bundle`, and compares the returned verdicts and
+failures with the declared ones. Those values are per-case fields of the vector file, which the
+lab's clean-room verifier reads as well. That the harness passed them through rests on the run
+record's description. The harness decides no verdict, so under the thin harness rule it does not
+make the record author-produced. Its source is not committed in this directory, so this
+classification rests on the description above.
+
+The same reading is recorded for `interop/arpa-v0.9.5-1ec3008` in
+`docs/RUN-CLASSIFICATION-AUDIT-2026-08-29.md`: Mode A on ARPA's own release gate, independent,
+because the runner authored neither the vectors nor the implementation.
+
+What this layer establishes is that the published package, run by someone who wrote neither it
+nor its vectors, returned the recorded verdicts. It is not an independently authored
+verification algorithm. The lab's own README-derived verifier run (direction 2) remains
+author-produced, because the lab wrote that verifier. The run records and results files above
+are unchanged. This note changes only the label, and the reclassified rows are removed from
+`docs/OPEN-RUNS.md` in the same commit.

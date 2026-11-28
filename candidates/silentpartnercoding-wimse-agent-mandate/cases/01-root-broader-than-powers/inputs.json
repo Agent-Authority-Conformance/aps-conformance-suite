@@ -1,0 +1,15 @@
+{
+  "case": "Root perms broader than powers",
+  "change_from_baseline": "Root mandate max on /instructedAmount/amount is 200000.00 instead of 20000.00. The Authority Assertion powers allow at most 100000.00.",
+  "time": 1792972800,
+  "rp": "https://bank.example",
+  "profile": {
+    "uri": "https://bank.example/profiles/agents/3",
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
+  },
+  "pop": {
+    "outcome": "ok",
+    "nonce": "vector-nonce-0001"
+  },
+  "status_list_tokens": []
+}

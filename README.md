@@ -6,7 +6,7 @@ Run it: `npm ci --include=dev && npm test`. After dependencies are installed, th
 
 Report your run: copy the verbatim output into a Run report issue, or commit it under `interop/` and open a PR. Ran the vectors with your own implementation instead? docs/RUN-REPORT.md describes the independent-run report. Both passes and divergences are useful. Every published report records who ran it and which revision was tested.
 
-> **Status:** the corpus carries APS-native vectors, cross-stack fixtures from outside parties, and interop records from independently authored implementations, each labelled by who ran what (Mode A, the author's runner; Mode B, an independent runner) and by whether it was author-produced or independent. The inventory below is generated from the tree; nothing here is a conformance verdict about any implementation.
+> **Status:** the corpus carries APS-native vectors, cross-stack fixtures from outside parties, and interop records from independently authored implementations, each labelled by who ran what (Mode A, a reproduction with this repository's runner, Mode B, a recomputation with another implementation or primitive) and by whether it was author-produced or independent. The inventory below is generated from the tree; nothing here is a conformance verdict about any implementation.
 
 ## What this suite is
 
@@ -193,6 +193,7 @@ document for provenance, pins and the verification split.
 | `fixtures/cross-stack/oracle-safety-check` | [`SOURCE.md`](fixtures/cross-stack/oracle-safety-check/SOURCE.md) |
 | `fixtures/cross-stack/receipts-aeoess` | [`SOURCE.md`](fixtures/cross-stack/receipts-aeoess/SOURCE.md) |
 | `fixtures/cross-stack/receipts-amdal` | [`SOURCE.md`](fixtures/cross-stack/receipts-amdal/SOURCE.md) |
+| `fixtures/cross-stack/tool-manifest-digest` | [`SOURCE.md`](fixtures/cross-stack/tool-manifest-digest/SOURCE.md) |
 
 ### Lab-authored regression fixtures
 
@@ -214,7 +215,10 @@ own mode, authorship and pins; open it to read them.
 |---|---|
 | `interop/a2a-go-368-jcs` | [`RUN.md`](interop/a2a-go-368-jcs/RUN.md) |
 | `interop/a2a-go-368-jcs-ea003f9` | [`RUN.md`](interop/a2a-go-368-jcs-ea003f9/RUN.md) |
+| `interop/aae-a2a-client-08f41146` | [`RUN.md`](interop/aae-a2a-client-08f41146/RUN.md) |
 | `interop/aae-envelope` | [`README.md`](interop/aae-envelope/README.md) |
+| `interop/agent-passport-v2-readers-407ca2d5` | [`RUN.md`](interop/agent-passport-v2-readers-407ca2d5/RUN.md) |
+| `interop/aos-catalog-lra-cold-3e882bc` | [`run-report.md`](interop/aos-catalog-lra-cold-3e882bc/run-report.md) |
 | `interop/arpa-v0.9.5-1ec3008` | [`RUN.md`](interop/arpa-v0.9.5-1ec3008/RUN.md) |
 | `interop/attenu-guard-0.11.0-bundles` | [`SOURCE.md`](interop/attenu-guard-0.11.0-bundles/SOURCE.md) |
 | `interop/attenu-guard-0.13.0-envelopes` | [`SOURCE.md`](interop/attenu-guard-0.13.0-envelopes/SOURCE.md) |
@@ -222,6 +226,9 @@ own mode, authorship and pins; open it to read them.
 | `interop/attenu-guard-0.6.0` | [`SOURCE.md`](interop/attenu-guard-0.6.0/SOURCE.md) |
 | `interop/attenu-guard-0.6.1` | [`SOURCE.md`](interop/attenu-guard-0.6.1/SOURCE.md) |
 | `interop/attenu-guard-0.8.0` | [`SOURCE.md`](interop/attenu-guard-0.8.0/SOURCE.md) |
+| `interop/authelia-oauth2-provider-0.4.3-pk` | [`RUN.md`](interop/authelia-oauth2-provider-0.4.3-pk/RUN.md) |
+| `interop/bacs-oauth-server-8c61947c` | [`RUN.md`](interop/bacs-oauth-server-8c61947c/RUN.md) |
+| `interop/bernstein-trace-v0.2-32bfc80` | [`README.md`](interop/bernstein-trace-v0.2-32bfc80/README.md) |
 | `interop/ca2a-validity-window-d3db81c` | [`RUN.md`](interop/ca2a-validity-window-d3db81c/RUN.md) |
 | `interop/cleanroom-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/cleanroom-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/cosai-odis-148dc41` | [`README.md`](interop/cosai-odis-148dc41/README.md) |
@@ -236,14 +243,30 @@ own mode, authorship and pins; open it to read them.
 | `interop/ethers-oracle-safety-check-6e8b05b2` | [`SOURCE.md`](interop/ethers-oracle-safety-check-6e8b05b2/SOURCE.md) |
 | `interop/ethers-oracle-safety-check-9b4ffee` | [`run-report.md`](interop/ethers-oracle-safety-check-9b4ffee/run-report.md) |
 | `interop/hjs-bb6be62` | [`SOURCE.md`](interop/hjs-bb6be62/SOURCE.md) |
+| `interop/inam-x402-counterparty-f8a1927` | [`RUN.md`](interop/inam-x402-counterparty-f8a1927/RUN.md) |
 | `interop/insight-oracle-safety-check-13bd3ed` | [`run-report.md`](interop/insight-oracle-safety-check-13bd3ed/run-report.md) |
+| `interop/jcs-admit-0.1.1-canonical-bytes-da95834` | [`run-report.md`](interop/jcs-admit-0.1.1-canonical-bytes-da95834/run-report.md) |
+| `interop/jcs-admit-0.1.3-canonical-bytes-b9918fc` | [`run-report.md`](interop/jcs-admit-0.1.3-canonical-bytes-b9918fc/run-report.md) |
 | `interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0` | [`SOURCE.md`](interop/mcp-audit-gateway-v0.6-cleanroom-a0f14a0/SOURCE.md) |
 | `interop/mih-sato-composition-00` | [`README.md`](interop/mih-sato-composition-00/README.md) |
 | `interop/priorseal-aps-payment-limit-d749d269` | [`run-report.md`](interop/priorseal-aps-payment-limit-d749d269/run-report.md) |
 | `interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376` | [`RUN.md`](interop/receipt-signature-veritasacta-verify-0.10.21-8f81e376/RUN.md) |
 | `interop/remora-edd8a4e` | [`SOURCE.md`](interop/remora-edd8a4e/SOURCE.md) |
+| `interop/rttp-iqa-aae-moltycel-vectors-6bb462f` | [`README.md`](interop/rttp-iqa-aae-moltycel-vectors-6bb462f/README.md) |
+| `interop/rttp-iqa-grant-ref-replay-sparysh-20186f3` | [`README.md`](interop/rttp-iqa-grant-ref-replay-sparysh-20186f3/README.md) |
+| `interop/rttp-iqa-icam-temporal-derivation-3c36e95` | [`README.md`](interop/rttp-iqa-icam-temporal-derivation-3c36e95/README.md) |
+| `interop/rttp-iqa-lease-boundary-replay-sparysh-0e0064b` | [`README.md`](interop/rttp-iqa-lease-boundary-replay-sparysh-0e0064b/README.md) |
+| `interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-8cb2e24/README.md) |
+| `interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417` | [`README.md`](interop/rttp-iqa-lra-runner-lease-revocation-axes-rev3-42eb417/README.md) |
 | `interop/scitt-cose-vectors-ietf126` | [`README.md`](interop/scitt-cose-vectors-ietf126/README.md) |
 | `interop/sharif-aat-03` | [`README.md`](interop/sharif-aat-03/README.md) |
+| `interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468` | [`README.md`](interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468/README.md) |
+| `interop/sparysh-reading-aicent-grant-ref-20186f3` | [`README.md`](interop/sparysh-reading-aicent-grant-ref-20186f3/README.md) |
+| `interop/sparysh-reading-aicent-lease-boundary-0e0064b` | [`README.md`](interop/sparysh-reading-aicent-lease-boundary-0e0064b/README.md) |
+| `interop/vaid-a2a-0.1.1-cleanroom-ca6077a2` | [`RUN.md`](interop/vaid-a2a-0.1.1-cleanroom-ca6077a2/RUN.md) |
+| `interop/vaid-a2a-main-abe1448-cleanroom-fa652557` | [`RUN.md`](interop/vaid-a2a-main-abe1448-cleanroom-fa652557/RUN.md) |
+| `interop/verax-accountability-record-f59ece9` | [`run-report.md`](interop/verax-accountability-record-f59ece9/run-report.md) |
+| `interop/wasmagent-aep-0.1.12-blind` | [`RUN.md`](interop/wasmagent-aep-0.1.12-blind/RUN.md) |
 | `interop/wasmagent-aep-2026-09-13-03` | [`RUN.md`](interop/wasmagent-aep-2026-09-13-03/RUN.md) |
 | `interop/x402-receipts-debc94f` | [`RUN.md`](interop/x402-receipts-debc94f/RUN.md) |
 

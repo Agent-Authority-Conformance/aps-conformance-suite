@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
         with:
           node-version: '22'
 
@@ -82,13 +82,15 @@ jobs:
         # Pinned bytes are the evidence. A carriage return inside these trees
         # changes a fixture digest and every claim recorded against it.
         # .gitattributes is what prevents a checkout from introducing one; this
-        # is what catches one that was committed.
+        # is what catches one that was committed. Binary evidence (TPM quotes,
+        # PCR blobs, signatures) can hold a 0x0D byte as data, so binary files
+        # are skipped and only a carriage return at a line end counts.
         run: |
           set -euo pipefail
-          files=$(git ls-files 'fixtures/**' 'interop/**' 'cross-impl-receipts/**')
+          files=$(git ls-files 'fixtures/**' 'interop/**' 'cross-impl-receipts/**' 'candidates/**')
           hits=""
           if [ -n "$files" ]; then
-            hits=$(printf '%s\n' "$files" | tr '\n' '\0' | xargs -0 -r grep -l -U -P '\r' 2>/dev/null || true)
+            hits=$(printf '%s\n' "$files" | tr '\n' '\0' | xargs -0 -r grep -l -I -U -P '\r$' 2>/dev/null || true)
           fi
           if [ -n "$hits" ]; then
             echo "::error::CRLF inside pinned evidence:"

@@ -1,0 +1,41 @@
+{
+  "record": "results/05-aeoess-native-mode-a-annotations-run",
+  "date": "2026-10-13",
+  "runner": "Tymofii Pidlisnyi (@aeoess); executed by Claude under his mandate on his machine (macOS 26.5 arm64)",
+  "mode": "Mode A",
+  "label": "independent",
+  "label_basis": "The runner authored neither the vectors, the claim inputs, nor the native verifier. The orchestration only invoked node and captured stdout, stderr and the exit code; no runner-written code decides any claimed result.",
+  "not": "An independently operated run of the producer's verifier, not an independent implementation.",
+  "implementation": {
+    "file": "v1-annotations/verify.mjs",
+    "sha256": "8d423fe533155f87da8280fa01de1bbf1ee1b505f02244bd0d31e4d30e4d39f5",
+    "upstream": "AgentAvow/AgentAvow@3fbda96f7c53d6d3f094df483ff6b33c71d70c2e"
+  },
+  "inputs": {
+    "vectors_sha256": "3fbe9b22750956623aba5657bcd647d0fcbe2fcc844e2af72011b07f0463a4b2",
+    "source_sha256": "661e8f3583363080dbf78010acbd3ac56b81c9218df1fb2a63cfe4b8b0c59d3e"
+  },
+  "interpreter": "node v24.11.1",
+  "runs": [
+    {
+      "cwd": "$ROOT/v1-annotations",
+      "command": [
+        "node",
+        "verify.mjs"
+      ],
+      "exit": 0,
+      "stdout": "v1-annotations-verify.txt",
+      "stderr_bytes": 0
+    }
+  ],
+  "covers": [
+    "A1 to A6 as asserted by the native verifier, including the annotation-only difference (A6) and every negative failing exactly one axis (A5)",
+    "the unsigned toolDigests map equals the signed scan.toolDigests (checked by this verifier, unlike the v1 verifier at 36426cf)"
+  ],
+  "limits": [
+    "Same machine and maintainer as results/03 and results/04",
+    "No runtime behavior, production signing trust or adoption established",
+    "readOnlyHint is a declaration by the server; this packet shows only that changing it breaks the per-tool binding",
+    "$ROOT stands for the family directory"
+  ]
+}

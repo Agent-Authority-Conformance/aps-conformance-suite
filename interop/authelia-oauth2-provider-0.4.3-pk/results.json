@@ -1,0 +1,164 @@
+[
+  {
+    "id": "PK-01",
+    "decision": "accept",
+    "error": ""
+  },
+  {
+    "id": "PK-02",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof key does not match the key the access token is bound to."
+  },
+  {
+    "id": "PK-03",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof key does not match the key the access token is bound to."
+  },
+  {
+    "id": "PK-04",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof key does not match the key the access token is bound to."
+  },
+  {
+    "id": "PK-05",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof signature is invalid."
+  },
+  {
+    "id": "PK-06",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof signature is invalid."
+  },
+  {
+    "id": "PK-07",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof could not be parsed: failed to unmarshal JWK: go-jose/go-jose: JWK contains private parameters."
+  },
+  {
+    "id": "PK-08",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof could not be parsed: unexpected signature algorithm \"none\"; expected [\"EdDSA\"]."
+  },
+  {
+    "id": "PK-09",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof has an invalid 'typ' header value of 'JWT'."
+  },
+  {
+    "id": "PK-10",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof 'ath' claim does not match the access token."
+  },
+  {
+    "id": "PK-11",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_token: The access token is not bound to a DPoP key."
+  },
+  {
+    "id": "PK-12",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "invalid_dpop_proof: The DPoP proof 'htm' claim 'GET' does not match the request method 'POST'."
+  },
+  {
+    "id": "PK-13",
+    "decision": "accept",
+    "error": ""
+  },
+  {
+    "id": "PK-14",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "invalid_dpop_proof: The DPoP proof 'htu' claim 'https://api.example.test/refunds' does not match the request URI 'https://api.example.test/orders'."
+  },
+  {
+    "id": "PK-15",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "use_dpop_nonce: The DPoP proof 'nonce' claim is invalid or expired."
+  },
+  {
+    "id": "PK-16",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "invalid_dpop_proof: The DPoP proof 'iat' claim is outside of the acceptable time window."
+  },
+  {
+    "id": "PK-17",
+    "decision": "not_run",
+    "error": "harness: future iat not exercisable under the time shift"
+  },
+  {
+    "id": "PK-18",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "invalid_dpop_proof: The DPoP proof has already been used."
+  },
+  {
+    "id": "PK-19",
+    "decision": "accept",
+    "error": ""
+  },
+  {
+    "id": "PK-20",
+    "decision": "accept",
+    "error": ""
+  },
+  {
+    "id": "PK-21",
+    "decision": "accept",
+    "error": ""
+  },
+  {
+    "id": "PK-22",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof key does not match the key the access token is bound to."
+  },
+  {
+    "id": "PK-23",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof is missing the required 'ath' claim."
+  },
+  {
+    "id": "PK-24",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "use_dpop_nonce: The DPoP proof is missing the required 'nonce' claim."
+  },
+  {
+    "id": "PK-25",
+    "decision": "reject",
+    "axis": "proof_signature",
+    "error": "invalid_dpop_proof: The DPoP proof could not be parsed: go-jose/go-jose: compact JWS format must have three parts."
+  },
+  {
+    "id": "PK-26",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof is missing the required 'ath' claim."
+  },
+  {
+    "id": "PK-27",
+    "decision": "reject",
+    "axis": "key_binding",
+    "error": "invalid_dpop_proof: The DPoP proof is missing the required 'ath' claim."
+  },
+  {
+    "id": "PK-28",
+    "decision": "reject",
+    "axis": "request_binding",
+    "error": "use_dpop_nonce: The DPoP proof is missing the required 'nonce' claim."
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "id": "aae-vector-01",
+  "name": "Valid root AAE \u2014 baseline accept",
+  "description": "Root AAE issued by the registry, within the temporal window, no delegation. Exercises Section 5 steps 1-7.",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a75 steps 1-7",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwMS0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDEiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtMDAxIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIiwiYm9vayIsInBheSJdLCJwdXJwb3NlIjoiQnVzaW5lc3MgdHJhdmVsIGJvb2tpbmciLCJzY29wZSI6InRyYXZlbC12ZXJ0aWNhbCIsInByaW5jaXBhbF9kaWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmVudGVycHJpc2UtY29ycCJ9LCJjb25zdHJhaW50cyI6eyJtYXhfdHJhbnNhY3Rpb25fdmFsdWUiOnsidmFsdWUiOjUwMCwiY3VycmVuY3kiOiJVU0QiLCJyZXF1aXJlZCI6dHJ1ZX0sImFsbG93ZWRfZG9tYWlucyI6eyJ2YWx1ZSI6WyJmbGlnaHRzLmV4YW1wbGUuY29tIiwiaG90ZWxzLmV4YW1wbGUuY29tIl0sInJlcXVpcmVkIjp0cnVlfX0sInZhbGlkaXR5Ijp7Im5vdF9iZWZvcmUiOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsIm5vdF9hZnRlciI6IjIwMjYtMDUtMjBUMTY6MDA6MDBaIiwic2luZ2xlX3VzZSI6ZmFsc2V9fX19.HTqERSh6PpLkB_yhMWHQoFCI8A2qJdvr38-Ujsc-B3FyE_blLFvh_mEuFzeJQxV6x0kpAtPObfrDaT4BgBtYBg",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "book",
+      "action_context": {
+        "amount": 300,
+        "currency": "USD",
+        "domain": "flights.example.com"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      }
+    }
+  },
+  "expected": {
+    "result": "ACCEPT",
+    "verification_step": 7,
+    "rejection_reason": null
+  },
+  "rationale": "All required checks pass: valid EdDSA signature whose signing DID equals the issuer (\u00a75 step 1), well-formed payload with cty aae+json (step 2), current time inside not_before/not_after (step 3), subject binding satisfied (step 4), action 'book' present in mandate.actions (step 6), and both required constraints satisfied (step 7). No revocation_check and no delegation, so steps 8-9 do not apply.",
+  "verification_mode": "structural"
+}

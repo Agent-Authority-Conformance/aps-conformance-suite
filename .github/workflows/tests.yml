@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
         with:
           node-version: '22'
           cache: npm
@@ -25,7 +25,7 @@ jobs:
       # python3 ubuntu-latest happens to ship that week, which is the one thing
       # a determinism regression must not depend on. setup-python is CI
       # environment setup; the test itself reaches no network and no index.
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.12'
 
@@ -45,6 +45,20 @@ jobs:
       # only. It uses the Python set up above, reads only files in this
       # checkout, and installs nothing.
       - run: npm run verify:teardown-accounting:py
+
+      # The approval-authority-expiry family's second runner, a separately written
+      # standard-library Python implementation of its consumption boundary. Not in
+      # `npm test` for the same reason as the step above. It uses the Python set up
+      # above, reads only chain.json and vectors.json in this checkout, and installs
+      # nothing.
+      - run: npm run verify:approval-authority-expiry:py
+
+      # The argument-designated-resources family's second runner, written
+      # separately from its TypeScript harness against README.md and
+      # vectors.json. Not in `npm test` for the same reason as the steps above.
+      # Standard library only, reads only vectors.json in this checkout, and
+      # installs nothing.
+      - run: npm run verify:argument-designated-resources:py
 
   # The suite's Python schema validators. Independent second implementations, in
   # Python with jsonschema instead of Node with ajv. Their value is
@@ -67,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.12'
       # Version-pinned, not hash-pinned. The versions are what the parity claim
@@ -104,11 +118,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
         with:
           node-version: '22'
           cache: npm
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.12'
       # Version-pinned, not hash-pinned, matching schema-parity. cryptography is
@@ -127,7 +141,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
         with:
           node-version: '22'
           cache: npm

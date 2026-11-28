@@ -1,0 +1,30 @@
+{
+  "id": "aae-vector-08",
+  "name": "Delegation relaxes a numeric constraint \u2014 reject",
+  "description": "Delegated max_transaction_value (1000 USD) exceeds the parent cap (500 USD).",
+  "section_ref": "draft-kroehl-agentic-trust-aae-00 \u00a73 (numeric upper-bound), \u00a75 step 9",
+  "input": {
+    "secured_aae": "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1hI2tleS0xIn0.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwOC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDgiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOmFnZW50LWEiLCJ2YWxpZEZyb20iOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsImNyZWRlbnRpYWxTdWJqZWN0Ijp7ImlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTphZ2VudC1iIiwiYWFlIjp7Im1hbmRhdGUiOnsiYWN0aW9ucyI6WyJyZWFkIl0sImRlbGVnYXRpb24iOnsiZGVsZWdhdG9yX2RpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtYSIsImRlbGVnYXRvcl9hYWVfaWQiOiJ1cm46dXVpZDowMDAwMDAwOC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwYTgiLCJkZWxlZ2F0b3JfYWFlX3VyaSI6Imh0dHBzOi8vYWFlLmV4YW1wbGUvcC8wMDAwMDAwOC1hOCIsImRlcHRoIjoxLCJtYXhfZGVwdGgiOjJ9fSwiY29uc3RyYWludHMiOnsibWF4X3RyYW5zYWN0aW9uX3ZhbHVlIjp7InZhbHVlIjoxMDAwLCJjdXJyZW5jeSI6IlVTRCIsInJlcXVpcmVkIjp0cnVlfX0sInZhbGlkaXR5Ijp7Im5vdF9iZWZvcmUiOiIyMDI2LTA1LTIwVDA4OjAwOjAwWiIsIm5vdF9hZnRlciI6IjIwMjYtMDUtMjBUMTY6MDA6MDBaIiwic2luZ2xlX3VzZSI6ZmFsc2V9fX19.sGudvYVoeS0CnaL3C4bJKyErHHqLaC8P3s3dPS-zOtSbexNlm2QSg7E8dZlFebTEuude3YTiQ6JkHeGnkw8dCQ",
+    "context": {
+      "current_time": "2026-05-20T12:00:00Z",
+      "requested_action": "read",
+      "action_context": {
+        "amount": 50,
+        "currency": "USD"
+      },
+      "subject_binding": {
+        "challenge_response_valid": true
+      },
+      "delegation_chain": [
+        "eyJhbGciOiJFZERTQSIsImN0eSI6ImFhZStqc29uIiwia2lkIjoiZGlkOndlYjpleGFtcGxlLmNvbTpyZWdpc3RyeSNrZXktMSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL21vbHRydXN0LmNoL2NvbnRleHRzL2FhZS92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiQWdlbnRBdXRob3JpemF0aW9uRW52ZWxvcGUiXSwiaWQiOiJ1cm46dXVpZDowMDAwMDAwOC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwYTgiLCJpc3N1ZXIiOiJkaWQ6d2ViOmV4YW1wbGUuY29tOnJlZ2lzdHJ5IiwidmFsaWRGcm9tIjoiMjAyNi0wNS0yMFQwODowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDp3ZWI6ZXhhbXBsZS5jb206YWdlbnQtYSIsImFhZSI6eyJtYW5kYXRlIjp7ImFjdGlvbnMiOlsicmVhZCIsImJvb2siXSwicHVycG9zZSI6IkJ1c2luZXNzIHRyYXZlbCBib29raW5nIiwic2NvcGUiOiJ0cmF2ZWwtdmVydGljYWwiLCJwcmluY2lwYWxfZGlkIjoiZGlkOndlYjpleGFtcGxlLmNvbTplbnRlcnByaXNlLWNvcnAiLCJkZWxlZ2F0aW9uX3BvbGljeSI6eyJtYXhfZGVwdGgiOjJ9fSwiY29uc3RyYWludHMiOnsibWF4X3RyYW5zYWN0aW9uX3ZhbHVlIjp7InZhbHVlIjo1MDAsImN1cnJlbmN5IjoiVVNEIiwicmVxdWlyZWQiOnRydWV9fSwidmFsaWRpdHkiOnsibm90X2JlZm9yZSI6IjIwMjYtMDUtMjBUMDg6MDA6MDBaIiwibm90X2FmdGVyIjoiMjAyNi0wNS0yMFQxNjowMDowMFoiLCJzaW5nbGVfdXNlIjpmYWxzZX19fX0.WiPuhFPBeRQ2s-rWk9DVvB0HidyKvnTePQH4urAOmRBMhME85Wuc1a6Qb2pqKsZNl0Jv-LTtzWJCSXu-R1EPBQ"
+      ]
+    }
+  },
+  "expected": {
+    "result": "REJECT",
+    "verification_step": 9,
+    "rejection_reason": "delegated_constraint_relaxed"
+  },
+  "rationale": "Section 3 requires a delegated numeric upper-bound constraint value to be less than or equal to the parent value. 1000 USD exceeds the parent's 500 USD, so the delegated AAE is not strictly subordinate and is rejected at step 9.",
+  "verification_mode": "structural"
+}

@@ -1,0 +1,91 @@
+# Candidates
+
+A candidate is test material published in this repository so that other people can examine,
+run and challenge it before it has been reviewed for admission. Candidates live under
+`candidates/<submitter>-<name>/`. The index at the end of this file lists every candidate.
+
+## What a candidate is and is not
+
+A candidate can be published with whatever evidence its submitter has, including none yet. An
+independent reproduction is not required first, because publication is what gives other people
+something to reproduce.
+
+A candidate is not a reviewed fixture and is not counted in any corpus total. It may not be
+described as admitted to, accepted by, validated by or certified by the lab. Its record below is
+the only status it has.
+
+A candidate may use its own protocol's terms. Those terms belong to the submitter and do not
+become corpus vocabulary.
+
+## What publication review checks
+
+A maintainer reads each candidate before it is published and checks five things.
+
+1. It is in scope, meaning agent identity, delegated authority, authorization or the evidence
+   produced under them.
+2. Its source is pinned to a repository and commit or version.
+3. It declares a license that allows redistribution under Apache 2.0, and keeps any source
+   notices that license requires. The declaration is checked, not the submitter's every right.
+4. It contains no credentials, live keys, private personal data or confidential material.
+   Contributor names and required attribution are expected.
+5. Its stated evidence and limitations are accurate as written.
+
+Publication review does not establish technical correctness or replace admission review. A
+reviewer who sees a known contradiction or a misleading claim says so before publishing. A
+candidate that fails publication review gets a public reason and, where one exists, a path to
+fix it.
+
+## What a candidate pull request contains
+
+A candidate pull request changes only its own `candidates/<submitter>-<name>/` directory and its
+row in the index below. A pull request that also changes `package.json`, `scripts/`, `runners/`,
+`tests/`, `.github/` or any other path is not a candidate pull request and is reviewed as an
+ordinary change.
+
+Lab CI runs only the scripts named in `package.json` and in the workflows. It does not discover or
+execute files under `candidates/`. Repository checks may still read them, for example the digest
+gate reads any `CHECKSUMS.sha256` file a candidate includes. Verification code is better linked
+at its pinned source than copied in.
+
+The directory holds `CANDIDATE.md` and the vectors with their expected results. `CANDIDATE.md`
+states the submitter, the normative target and its revision, the source repository and commit,
+the license, what the vectors test, how to run them, the evidence available, and known
+limitations. The DCO sign-off and license terms in `CONTRIBUTING.md` apply. A passing run does
+not.
+
+## The record for each candidate
+
+Three things are recorded separately, because they change independently.
+
+- **Publication.** `published`, `promoted` with a link to the admission pull request, or
+  `withdrawn` with the reason.
+- **Evidence.** Each run is its own entry: who ran it, against which candidate revision, which
+  claims it exercised, Mode A or Mode B, author-produced or independent as defined in
+  `CONTRIBUTING.md`, and a link. `none yet` is a valid entry. A run covers only the revision and
+  claims it names.
+- **Disputes.** Links to open or resolved disputes, or `none`.
+
+Entries are appended. A later run, correction or dispute does not edit an earlier entry, and an
+author-produced run does not become independent by being run again elsewhere.
+
+## Index
+
+| candidate | submitter | target | publication | evidence | disputes |
+|---|---|---|---|---|---|
+| [moltycel-aae-vectors](../candidates/moltycel-aae-vectors/CANDIDATE.md) | Lars Kroehl (MoltyCel) | draft-kroehl-agentic-trust-aae-00 (native, composition), -02 (enforce) | published | author-produced: Mode A 2026-10-25, Mode B 2026-09-05 (enforce). Independent, full claims: Mode A 2026-11-04 | none |
+| [tactiq-tpm-bound-key](../candidates/tactiq-tpm-bound-key/CANDIDATE.md) | Andrey Lazarev | OWASP AIMM Pillar 2 working draft, 5.1 L4 and L5, read 2026-10-27 | published | author-produced only: Mode A and Mode B 2026-10-28 | none |
+| [silentpartnercoding-wimse-agent-mandate](../candidates/silentpartnercoding-wimse-agent-mandate/CANDIDATE.md) | Silent Partner (Silentpartnercoding) | draft-hulea-wimse-agent-mandate-00, cases 00 to 03 | published | author-produced: Mode A 2026-10-30. Independent, partial claims: Mode A and Mode B 2026-10-30 | none |
+| [aeoess-oauth-actor-profile](../candidates/aeoess-oauth-actor-profile/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | draft-mcguinness-oauth-actor-profile -01 at d76465c, and -01 with open PR #32 | published | none yet | none |
+| [aeoess-running-call-halt](../candidates/aeoess-running-call-halt/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | NTI × LGD transition-contract spec v0.1.4 (proposed, sha256 83d88a70) and public-agentprotocol 2026Oct/0088, 0090, 0108 and the 2026-10-31 reply quoted in 0121 | published | none yet | none |
+| [aicent-grant-ref](../candidates/aicent-grant-ref/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 8.1 and 8.2 (sha256 02491c5a) | published | author-produced: Mode B 2026-11-16, full claims, 25/25 cases and 4/4 named parts; the runner wrote the checker (Andrii Sparysh, [run](../interop/sparysh-reading-aicent-grant-ref-20186f3/README.md)) | none |
+| [aicent-lease-boundary](../candidates/aicent-lease-boundary/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 6.1, 6.2, 6.3 and 7.2 (sha256 02491c5a) | published | author-produced: Mode B 2026-11-18, full claims, 14/15 cases, LB-D05 diverges; the runner wrote the checker (Andrii Sparysh, [run](../interop/sparysh-reading-aicent-lease-boundary-0e0064b/README.md)) | none |
+| [aeoess-presenter-key-possession](../candidates/aeoess-presenter-key-possession/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | RFC 9449 sections 4.2, 4.3, 6.1, 7.1, 11.1 (sha256 3842c58e) | published | author-produced: Mode B 2026-11-17, full claims, 27/28 cases, PK-18 diverges; the runner wrote the checker. Independent, partial claims (Ed25519 signature validity under the embedded key, 26 cases): Mode B 2026-11-17 (Andrii Sparysh, [run](../interop/sparysh-reading-aeoess-presenter-key-possession-6ad8468/README.md)) | none |
+| [icam-temporal-derivation](../candidates/icam-temporal-derivation/CANDIDATE.md) | Nika Novak (ICAM / aiclavis) | draft-li-rttp-iqa-addressing-02, §§6.1, 6.3, 7.2 (TXT sha256 `02491c5a`); package v0.3 / vectors `0.2.0-prepublication` | published candidate, PR #218 review pending | ICAM original: author-produced Mode B, 2026-11-05, 24/24 cases, 8/8 mutants, 120/120 invariance ([run](../candidates/icam-temporal-derivation/RUN_REPORT.txt)); Aicent / ShaoBao Li: distinct author-produced Mode B `icam_runner.py`, 2026-11-07, 24/24 vectors and 6/6 own mutants ([run](https://iqa.org/conformance/icam-runner/)); oracle-level only, no runtime certification | none |
+| [aicent-ae128-fail-closed](../candidates/aicent-ae128-fail-closed/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 7.2 and 7.2.1 (sha256 02491c5a) | published | author-produced: Mode A family run 2026-11-14, 21/21 cases and 15/15 mutants ([run](https://iqa.org/conformance/aicent-ae128-fail-closed/)) | none |
+| [aicent-pulse-header](../candidates/aicent-pulse-header/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 7.1, 7.1.1, 7.1.2, 4.1 and 4.3 (sha256 02491c5a) | published | author-produced: Mode A family run 2026-11-09, 24/24 cases and 19/19 mutants ([run](https://iqa.org/conformance/aicent-pulse-header/)) | none |
+| [aicent-route-shard](../candidates/aicent-route-shard/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 4.4, 4.2 and 9.1 (sha256 02491c5a) | published | author-produced: Mode A family run 2026-11-09, 16/16 cases and 9/9 mutants ([run](https://iqa.org/conformance/aicent-route-shard/)) | none |
+| [aeoess-relationship-revocation-propagation](../candidates/aeoess-relationship-revocation-propagation/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | OpenFGA v1.22.1, SpiceDB v1.57.1 and Permify v1.7.6 consistency documentation, pinned in CANDIDATE.md. Some bounds are the submitter's reading | published | author-produced: Mode A 2026-11-18, harness r2.1, 289 scored case instances across 10 result files, 0 differ ([runs](../candidates/aeoess-relationship-revocation-propagation/RUNS.md)) | none |
+| [aicent-uri-grammar](../candidates/aicent-uri-grammar/CANDIDATE.md) | ShaoBao Li (RTTP & IQA Organization) | draft-li-rttp-iqa-addressing-02, sections 4.1 and 4.2 (sha256 02491c5a) | published | author-produced: Mode A family run 2026-11-17, 24/24 normative cases, 2/2 proposed consistent and 12/12 mutants ([run](https://iqa.org/conformance/aicent-uri-grammar/)) | none |
+| [aeoess-ans77-version-retirement](../candidates/aeoess-ans77-version-retirement/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | ANS-6 and ANS-1 at agentnameservice/ans-spec 9284c7e, and the change proposed in ans-spec#77 with comments 6178618043 and 6239228769 (proposed) | published | author-produced: 2026-11-19 | none |
+| [aeoess-aaf-ag3-rv2](../candidates/aeoess-aaf-ag3-rv2/CANDIDATE.md) | Tymofii Pidlisnyi (Agent Passport System) | AAF paper Appendix A, AG-3, RV-1, RV-2 (paper.pdf sha256 f5c38044), run against christortheak/accountable-agents-framework 4a5acd5. AG3-03 is the submitter's reading | published | author-produced: Mode A 2026-11-26, 9/9 cases; RV2-01 is local in-process behavior, not the published 300 s bound across a network | none |
+| [cirisai-ceg-rows](../candidates/cirisai-ceg-rows/CANDIDATE.md) | Eric Moore (CIRIS L3C) | draft-moore-scitt-ciris-ceg-03, sections 2, 4, 5, 6, 8 and appendix A | published | author-produced only: the source repository's own tests replay the source files at v23.3.0 | none |

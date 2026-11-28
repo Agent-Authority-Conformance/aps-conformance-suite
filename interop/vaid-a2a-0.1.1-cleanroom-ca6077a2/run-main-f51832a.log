@@ -1,0 +1,19 @@
+$ python3 -I run_vectors.py <vaid main f51832a>/docs/a2a/v1/vectors vectors-main-f51832a.sha256
+vaid_cr.py sha256 ca6077a2950519abae1e921e25236fe57892bb554b825b2b72907efcc26888f8
+manifest sha256 cd8b1f66e68ae3c9e377006fa79dbcb18413b35f3e7166295852e7c4410ed181
+XX  01-valid-two-hop-chain.json                    expected=('pass', None) got=('fail', 'unsupported_sig_version') step=1 4
+XX  02-child-scope-wider-than-parent.json          expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  03-expired-leaf.json                           expected=('fail', 'expired') got=('fail', 'unsupported_sig_version') step=1 4
+XX  04-revoked-middle-link.json                    expected=('fail', 'revoked') got=('fail', 'unsupported_sig_version') step=1 4
+XX  05-action-outside-leaf-scope.json              expected=('fail', 'out_of_scope') got=('fail', 'unsupported_sig_version') step=1 4
+XX  06-unknown-root-key.json                       expected=('fail', 'issuer_mismatch') got=('fail', 'unsupported_sig_version') step=1 4
+XX  07-sibling-scope-child.json                    expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  08-capability-not-in-parent.json               expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  09-tenant-changed.json                         expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  10-child-outlives-parent.json                  expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  11-unrestricted-child.json                     expected=('fail', 'not_attenuated') got=('fail', 'unsupported_sig_version') step=1 4
+XX  12-trust-domain-not-bound-to-signing-key.json  expected=('fail', 'issuer_mismatch') got=('fail', 'unsupported_sig_version') step=1 4
+XX  13-unknown-scope-kind-future-compat.json       expected=('fail', 'unknown_scope_kind') got=('fail', 'unsupported_sig_version') step=1 4
+XX  14-no-privilege-via-unused-field.json          expected=('fail', 'out_of_scope') got=('fail', 'unsupported_sig_version') step=1 4
+0/14 as expected
+exit=1

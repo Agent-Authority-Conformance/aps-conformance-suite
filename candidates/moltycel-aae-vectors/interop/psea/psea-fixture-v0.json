@@ -1,0 +1,92 @@
+{
+ "@version": "PSEA-AAE-INTEROP-v0",
+ "note": "Candidate fixture for a two-way PSEA/AAE cross-run. Not frozen. PSEA side only; the AAE side is Kroehl's to encode.",
+ "psea_profile": "draft-yossif-psea-02",
+ "join_key": {
+  "definition": "SHA-256 over JCS(RFC 8785) of the action payload",
+  "octets_hex": "d6583cbc62c1278311ad311a586da207189693a98143f773a8fc960ae59ac606",
+  "psea_wire_encoding": "standard base64 with padding",
+  "psea_wire_value": "1lg8vGLBJ4MRrTEaWG2iBxiWk6mBQ/dzqPyWCuWaxgY=",
+  "comparison_rule": "compare the 32 octets, never the encoded strings",
+  "constraint": "draft-yossif-psea-02 Section 2.5 restricts the action payload to integers. Floats, decimal fractions and exponent notation are non-conformant. Monetary values are integer minor units."
+ },
+ "action_payload_cleartext": {
+  "operation": "transfer",
+  "target": "iban:CH9300762011623852957",
+  "amount_minor": 250000,
+  "currency": "CHF",
+  "sequence": 1
+ },
+ "action_payload_jcs_utf8": "{\"amount_minor\":250000,\"currency\":\"CHF\",\"operation\":\"transfer\",\"sequence\":1,\"target\":\"iban:CH9300762011623852957\"}",
+ "enrolled_keys": [
+  {
+   "kty": "EC",
+   "crv": "P-256",
+   "kid": "psea-key-A",
+   "x": "cmiHbhnbfXplHVXV880IsPFPDy2ZrDg9VucFzFiy3gk",
+   "y": "Jy80YNEIRNnYp3wPb1dUyOHH-jpYxmcfkZnYcQr0OHg"
+  },
+  {
+   "kty": "EC",
+   "crv": "P-256",
+   "kid": "psea-key-B",
+   "x": "2swlmGltj-_xaToAOjMk25pgBdpqk9m9e3gMoFg_TLs",
+   "y": "OvJHinIKdipv5H8yQ-06Yh55Su5VMjqip6lgSKBrvTw"
+  }
+ ],
+ "enrollment_bindings": {
+  "psea-key-A": "principal-A",
+  "psea-key-B": "principal-B"
+ },
+ "context": {
+  "iss": "as.interop.example",
+  "aud": "rs.interop.example",
+  "psea_op": "payment.execute",
+  "psea_tier": "high",
+  "iat": 1785312000,
+  "exp": 1785315600
+ },
+ "artifacts": [
+  {
+   "id": "PSEA-A",
+   "signer_principal": "principal-A",
+   "token": "eyJhbGciOiJFUzI1NiIsInR5cCI6InBzZWEtcHJvb2Yrand0Iiwia2lkIjoicHNlYS1rZXktQSJ9.eyJpc3MiOiJhcy5pbnRlcm9wLmV4YW1wbGUiLCJhdWQiOiJycy5pbnRlcm9wLmV4YW1wbGUiLCJpYXQiOjE3ODUzMTIwMDAsImV4cCI6MTc4NTMxNTYwMCwianRpIjoicHNlYS1pbnRlcm9wLWFhZS0wMDEiLCJwc2VhX29wIjoicGF5bWVudC5leGVjdXRlIiwicHNlYV90aWVyIjoiaGlnaCIsInBzZWFfcGF5bG9hZF9oYXNoIjoiMWxnOHZHTEJKNE1SclRFYVdHMmlCeGlXazZtQlEvZHpxUHlXQ3VXYXhnWT0iLCJwc2VhX2NvdW50ZXIiOjEsInBzZWFfdXYiOnsidmVyaWZpZWQiOnRydWUsIm1ldGhvZCI6ImJpb21ldHJpYyJ9LCJwc2VhX3Byb29mX3ZlcnNpb24iOjF9.QUZZYRNo_XOWd2GG64xye9sRJfO3u_FEzCRtI4ivHEX3quCerf-Nxv__o8fYiCP97ZXrA3TX3n3Yd1755Z9_jw",
+   "psea_native_verdict": "VERIFIED",
+   "uv_anchoring": "attested"
+  },
+  {
+   "id": "PSEA-B",
+   "signer_principal": "principal-B",
+   "token": "eyJhbGciOiJFUzI1NiIsInR5cCI6InBzZWEtcHJvb2Yrand0Iiwia2lkIjoicHNlYS1rZXktQiJ9.eyJpc3MiOiJhcy5pbnRlcm9wLmV4YW1wbGUiLCJhdWQiOiJycy5pbnRlcm9wLmV4YW1wbGUiLCJpYXQiOjE3ODUzMTIwMDAsImV4cCI6MTc4NTMxNTYwMCwianRpIjoicHNlYS1pbnRlcm9wLWFhZS0wMDIiLCJwc2VhX29wIjoicGF5bWVudC5leGVjdXRlIiwicHNlYV90aWVyIjoiaGlnaCIsInBzZWFfcGF5bG9hZF9oYXNoIjoiMWxnOHZHTEJKNE1SclRFYVdHMmlCeGlXazZtQlEvZHpxUHlXQ3VXYXhnWT0iLCJwc2VhX2NvdW50ZXIiOjEsInBzZWFfdXYiOnsidmVyaWZpZWQiOnRydWUsIm1ldGhvZCI6ImJpb21ldHJpYyJ9LCJwc2VhX3Byb29mX3ZlcnNpb24iOjF9.GIzbaJHljbZR3xbwUZ-fr6WHFOocGxwoXV9_E3nnsGxLorn6oZILv4chKiuP4CWgm5xE7KOnX_ACA8n7jGsdNg",
+   "psea_native_verdict": "VERIFIED",
+   "uv_anchoring": "attested"
+  }
+ ],
+ "composition_cases": [
+  {
+   "id": "XP-1",
+   "aae_grant_principal": "principal-A",
+   "psea_artifact": "PSEA-A",
+   "psea_native": "VERIFIED",
+   "expected_composition": "AUTHORIZED",
+   "rationale": "one human both mandated and approved"
+  },
+  {
+   "id": "XP-2",
+   "aae_grant_principal": "principal-A",
+   "psea_artifact": "PSEA-B",
+   "psea_native": "VERIFIED",
+   "expected_composition": "REFUSE",
+   "refusal_reason": "principal_divergence",
+   "rationale": "both artifacts verify natively and join on the same action digest; no single human both mandated and approved. This is the class neither vector set carries."
+  },
+  {
+   "id": "XP-3",
+   "aae_grant_principal": "unresolved",
+   "psea_artifact": "PSEA-A",
+   "psea_native": "VERIFIED",
+   "expected_composition": "INDETERMINATE",
+   "rationale": "enrollment binding not established on one side. Distinct from XP-2: absence of a resolution is not divergence of resolutions."
+  }
+ ]
+}

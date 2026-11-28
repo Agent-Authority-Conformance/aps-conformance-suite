@@ -1,0 +1,41 @@
+2026-11-18T20:45:10Z selftest
+2026-11-18T20:45:16Z EXIT 0 selftest
+2026-11-18T20:45:16Z SERVER ../ofga/openfga run --datastore-engine memory --playground-enabled=false --metrics-enabled=false
+2026-11-18T20:45:17Z RUN openfga r2-c0-nocache --bound 0 --tolerance 0.5 --bound-class documented --bound-source openfga-consistency.mdx: caching disabled means strong consistency --server-pattern ofga/openfga run
+2026-11-18T20:45:46Z EXIT 0 r2-c0-nocache
+2026-11-18T20:45:47Z SERVER ../ofga/openfga run --datastore-engine memory --playground-enabled=false --metrics-enabled=false --check-query-cache-enabled --check-iterator-cache-enabled --list-objects-iterator-cache-enabled
+2026-11-18T20:45:48Z RUN openfga r2-c1-cache-ttl10 --bound 10 --tolerance 0.5 --bound-class configured-setting --bound-source run --help: check-query-cache values cleared after the configured TTL (10s default); iterator caches TTL 10s --server-pattern ofga/openfga run
+2026-11-18T20:47:45Z EXIT 0 r2-c1-cache-ttl10
+2026-11-18T20:47:45Z RUN cx
+2026-11-18T20:47:45Z EXIT 0 cx
+2026-11-18T20:47:47Z SERVER ../ofga/openfga run --datastore-engine memory --playground-enabled=false --metrics-enabled=false --check-query-cache-enabled --check-iterator-cache-enabled --list-objects-iterator-cache-enabled --check-query-cache-ttl 60s --check-iterator-cache-ttl 60s --list-objects-iterator-cache-ttl 60s --cache-controller-enabled --cache-controller-ttl 10s
+2026-11-18T20:47:47Z RUN openfga r2-c2-ttl60-controller10 --bound 60 --tolerance 0.5 --bound-class configured-setting --bound-source cache TTL 60s; cache-controller-ttl 10s is a minimum invalidation-trigger interval, observed only --server-pattern ofga/openfga run
+2026-11-18T20:54:17Z EXIT 0 r2-c2-ttl60-controller10
+2026-11-18T20:54:19Z SERVER ../sdb/spicedb serve --grpc-preshared-key rplabkey --http-enabled --metrics-enabled=false --telemetry-endpoint= --datastore-engine memory
+2026-11-18T20:54:20Z RUN spicedb r2-s0-memory --bound 5.5 --tolerance 0.5 --bound-class submitter-derived --bound-source interval 5s x (1 + max staleness 0.1), submitter reading of read-after-write page --server-pattern sdb/spicedb serve
+2026-11-18T20:56:05Z EXIT 0 r2-s0-memory
+waiting for server to start.... done
+server started
+2026-11-18T20:56:09Z EXIT 0 migrate
+2026-11-18T20:56:09Z SERVER ../sdb/spicedb serve --grpc-preshared-key rplabkey --http-enabled --metrics-enabled=false --telemetry-endpoint= --datastore-engine postgres --datastore-conn-uri postgres://postgres@127.0.0.1:55432/postgres?sslmode=disable
+2026-11-18T20:56:10Z RUN spicedb r2-s1-postgres-q5 --bound 5.5 --tolerance 0.5 --bound-class submitter-derived --bound-source interval 5s x 1.1 --server-pattern sdb/spicedb serve
+2026-11-18T20:57:45Z EXIT 0 r2-s1-postgres-q5
+2026-11-18T20:57:46Z SERVER ../sdb/spicedb serve --grpc-preshared-key rplabkey --http-enabled --metrics-enabled=false --telemetry-endpoint= --datastore-engine postgres --datastore-conn-uri postgres://postgres@127.0.0.1:55432/postgres?sslmode=disable --datastore-revision-quantization-interval 20s
+2026-11-18T20:57:47Z RUN spicedb r2-s2-postgres-q20 --bound 22 --tolerance 0.5 --bound-class submitter-derived --bound-source interval 20s x 1.1 --server-pattern sdb/spicedb serve
+2026-11-18T21:03:47Z EXIT 0 r2-s2-postgres-q20
+2026-11-18T21:03:49Z SERVER ../sdb/spicedb serve --grpc-preshared-key rplabkey --http-enabled --metrics-enabled=false --telemetry-endpoint= --datastore-engine postgres --datastore-conn-uri postgres://postgres@127.0.0.1:55432/postgres?sslmode=disable --experimental-full-relation-cache=enabled --experimental-full-relation-cache-materialize-threshold 1
+2026-11-18T21:03:50Z RUN spicedb r2-s3-postgres-fullrelcache --bound 5.5 --tolerance 0.5 --bound-class submitter-derived --bound-source interval 5s x 1.1, experimental full relation cache on --server-pattern sdb/spicedb serve
+2026-11-18T21:05:25Z EXIT 0 r2-s3-postgres-fullrelcache
+waiting for server to shut down.... done
+server stopped
+2026-11-18T21:05:26Z SERVER ../pmf/permify serve --distributed-port 5099 --meter-enabled=false --database-engine memory
+2026-11-18T21:05:27Z RUN permify r2-m0-memory --bound 0 --tolerance 0.5 --bound-class documented --bound-source snap-tokens.mdx: no snap token reads the latest transaction id; sequential single-node reading --server-pattern pmf/permify serve
+2026-11-18T21:05:55Z EXIT 0 r2-m0-memory
+waiting for server to start.... done
+server started
+2026-11-18T21:05:59Z SERVER ../pmf/permify serve --distributed-port 5099 --meter-enabled=false --database-engine postgres --database-uri postgres://postgres@127.0.0.1:55433/postgres?sslmode=disable
+2026-11-18T21:06:03Z RUN permify r2-p1-postgres --bound 0 --tolerance 0.5 --bound-class documented --bound-source same as m0 --server-pattern pmf/permify serve
+2026-11-18T21:06:32Z EXIT 0 r2-p1-postgres
+waiting for server to shut down.... done
+server stopped
+2026-11-18T21:06:34Z DONE
