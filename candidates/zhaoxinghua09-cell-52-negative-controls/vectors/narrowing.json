@@ -1,0 +1,442 @@
+{
+ "profile": "zc/narrowing-v0",
+ "cases": [
+  {
+   "id": "ok-same",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "ok-tighter",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767222000,
+    "reputation": 3,
+    "values": [
+     "no-pii",
+     "no-exfil"
+    ],
+    "reversibility": false
+   },
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "scope-widen",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write",
+     "payments:wire"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "spend-widen",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 800,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "depth-widen",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 5,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "time-later",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767312000,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "reputation-lower",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 1,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "values-drop",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [],
+    "reversibility": false
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "irreversible-open",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": true
+   },
+   "expect": "REJECT"
+  },
+  {
+   "id": "facet-missing",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "expect": "INVALID"
+  },
+  {
+   "id": "facet-unknown",
+   "parent": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "child": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 3,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false,
+    "geo_fence": [
+     "EU"
+    ]
+   },
+   "expect": "UNSUPPORTED"
+  }
+ ]
+}

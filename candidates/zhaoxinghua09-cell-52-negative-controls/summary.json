@@ -1,0 +1,106 @@
+{
+  "commit": "203cb9eee5d0d85dbe24426f3b0ca2416987d15c",
+  "families": [
+    {
+      "family": "narrowing",
+      "cases": 11,
+      "ids": [
+        "ok-same",
+        "ok-tighter",
+        "scope-widen",
+        "spend-widen",
+        "depth-widen",
+        "time-later",
+        "reputation-lower",
+        "values-drop",
+        "irreversible-open",
+        "facet-missing",
+        "facet-unknown"
+      ],
+      "expected": [
+        "ACCEPT",
+        "INVALID",
+        "REJECT",
+        "UNSUPPORTED"
+      ]
+    },
+    {
+      "family": "cascade-revocation",
+      "cases": 10,
+      "ids": [
+        "chain-valid",
+        "revoke-root",
+        "revoke-leaf",
+        "revoke-mid",
+        "revoke-forged-signer",
+        "revoke-tampered",
+        "revoke-unknown-target",
+        "evidence-not-cause",
+        "chain-expired",
+        "revoke-twice-idempotent"
+      ],
+      "expected": [
+        "indeterminate",
+        "invalid",
+        "valid"
+      ]
+    },
+    {
+      "family": "pre-dispatch-authorization",
+      "cases": 12,
+      "ids": [
+        "allow-basic",
+        "scope-out",
+        "spend-tx",
+        "spend-day",
+        "depth",
+        "expired",
+        "reputation",
+        "values-pii",
+        "irreversible",
+        "facet-missing",
+        "facet-unknown",
+        "multi-violation"
+      ],
+      "expected": [
+        "ALLOW",
+        "DENY",
+        "INVALID",
+        "UNSUPPORTED"
+      ]
+    },
+    {
+      "family": "session-gate",
+      "cases": 19,
+      "ids": [
+        "allow-all",
+        "L2-policy-unbound",
+        "L2-policy-sig-missing",
+        "L2-policy-not-leaf",
+        "L2-policy-issuer-mismatch",
+        "L2-policy-sig-invalid",
+        "L4-policy-widens-delegated",
+        "L1-policy-missing",
+        "L1-policy-unknown",
+        "L2-chain-sig-bad",
+        "L3-chain-expired",
+        "L3-revoke-root",
+        "L3-revoke-forged",
+        "L4-policy-widen-scope",
+        "L4-policy-widen-spend",
+        "L5-call-scope-out",
+        "L5-call-spend-day",
+        "L5-call-irreversible",
+        "evidence-not-cause-allow"
+      ],
+      "expected": [
+        "ALLOW",
+        "DENY",
+        "INDETERMINATE",
+        "INVALID",
+        "UNSUPPORTED"
+      ]
+    }
+  ],
+  "total": 52
+}

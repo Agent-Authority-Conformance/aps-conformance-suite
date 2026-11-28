@@ -1,0 +1,892 @@
+{
+ "profile": "zc/cascade-v0",
+ "now": 1800000000,
+ "cases": [
+  {
+   "id": "chain-valid",
+   "now": 1800000000,
+   "expect": "valid",
+   "want_code": null,
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": []
+  },
+  {
+   "id": "revoke-root",
+   "now": 1800000000,
+   "expect": "invalid",
+   "want_code": "REVOKED_CASCADE",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:root",
+      "issuer": "principal:acme",
+      "issued_at": 1799999990,
+      "signature": "fd79479f8186e3e433aa9f4191d303deeafbfde1439398f73338970554e97479e78407376b2f0d8232a9dabfeff796fdec746b1aea6ce2de9ae12bd916e3e904"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    }
+   ]
+  },
+  {
+   "id": "revoke-leaf",
+   "now": 1800000000,
+   "expect": "invalid",
+   "want_code": "REVOKED_CASCADE",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:leaf",
+      "issuer": "agent:b",
+      "issued_at": 1799999990,
+      "signature": "e92a746c17212f251d062954fcc22c7cd7a435bd28b208f6348ae97325aea12b7dae217e2c818d41c0211d79e6de5edbbfd8415c3812c3c1a9d86742ae72e806"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ]
+  },
+  {
+   "id": "revoke-mid",
+   "now": 1800000000,
+   "expect": "invalid",
+   "want_code": "REVOKED_CASCADE",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:mid",
+      "issuer": "agent:a",
+      "issued_at": 1799999990,
+      "signature": "23df37ea0ba139ccdaacd2c6d80b61506a39e42c921df03cdc24689313906c0a3a432ea5bf501867c25b5150715dc19a7ee2ad9693c4999db850f5486e9e9d0c"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    }
+   ]
+  },
+  {
+   "id": "revoke-forged-signer",
+   "now": 1800000000,
+   "expect": "indeterminate",
+   "want_code": "REVOCATION_UNESTABLISHED",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:mid",
+      "issuer": "agent:a",
+      "issued_at": 1799999990,
+      "signature": "fdafbaea9e9acb29ca3e479c4c275ead239387bc03c797b8e68516558a50f320a678f7de88630e0ebd9d1821e76e37c7845c8d01b88da0af89f05a39792c570a"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    }
+   ]
+  },
+  {
+   "id": "revoke-tampered",
+   "now": 1800000000,
+   "expect": "indeterminate",
+   "want_code": "REVOCATION_UNESTABLISHED",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:mid",
+      "issuer": "agent:a",
+      "issued_at": 1799999980,
+      "signature": "23df37ea0ba139ccdaacd2c6d80b61506a39e42c921df03cdc24689313906c0a3a432ea5bf501867c25b5150715dc19a7ee2ad9693c4999db850f5486e9e9d0c"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    }
+   ]
+  },
+  {
+   "id": "revoke-unknown-target",
+   "now": 1800000000,
+   "expect": "indeterminate",
+   "want_code": "REVOCATION_UNKNOWN_TARGET",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:ghost",
+      "issuer": "agent:a",
+      "issued_at": 1799999990,
+      "signature": "c830992faf2b44caceea2eaee11578ebfb76d265b71baa28a92a0bec6c89a549bab1b34477aa3b8ab569e9c90e999df7af661f1dba2c77258bfa7978b4931006"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    }
+   ]
+  },
+  {
+   "id": "evidence-not-cause",
+   "now": 1800000000,
+   "expect": "valid",
+   "want_code": "EVIDENCE_IS_NOT_CAUSE",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:cascade-evidence:v0",
+      "delegation_id": "d:root",
+      "claims": "revoked",
+      "signature": "03e34866fa47643d24794e89098338155c07aaee594970a60e0b290ae64e9ef6575f448fde8eae7a300ae98640f5b83c934d869173e2c4a2b088b11828dfcb0d"
+     },
+     "pubkey": "df65a4a3ca55c00f5004fe192062df9983ed5794770b538de5b454b670c26fac",
+     "signer": "witness:third"
+    }
+   ]
+  },
+  {
+   "id": "chain-expired",
+   "now": 1800000000,
+   "expect": "invalid",
+   "want_code": "DELEGATION_EXPIRED",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1799999999,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "68193cac34b0d89d0be3a6086ea09f72cb8d25fcf7860d9c022501bcf060fe828ea7cc3c7c0a5052a1130ba6bdf891ba4b0a55cc18f7efa6f52dfdaaa525390f"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": []
+  },
+  {
+   "id": "revoke-twice-idempotent",
+   "now": 1800000000,
+   "expect": "invalid",
+   "want_code": "REVOKED_CASCADE",
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1800003600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "0e8001fc08cb86acaf99836a03dce370645eb6988034ad6484b04e8c71c0c4ff709a43db635ad8a1c47821f89676c5ce9ec8d1c037ce98a982464c0c9716c302"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1800001800,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "1de5128cc988c7e9f4b3fb20b16343b6732a4336a3164dd9c1b42689b5af8f623526e6eb9f0274947e0b65541ad45561d0b5cda61077d3538e517be579fa2a07"
+     },
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+     "signer": "agent:a"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1800000600,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "09945502328b5bb70169b453de4155b8221a841c628af471c68304770f407e17d632f27e98999f0aaf724c42ff704eafc550fa998302cd7a94058abf27fafe0c"
+     },
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+     "signer": "agent:b"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:root",
+      "issuer": "principal:acme",
+      "issued_at": 1799999990,
+      "signature": "fd79479f8186e3e433aa9f4191d303deeafbfde1439398f73338970554e97479e78407376b2f0d8232a9dabfeff796fdec746b1aea6ce2de9ae12bd916e3e904"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:root",
+      "issuer": "principal:acme",
+      "issued_at": 1799999990,
+      "signature": "fd79479f8186e3e433aa9f4191d303deeafbfde1439398f73338970554e97479e78407376b2f0d8232a9dabfeff796fdec746b1aea6ce2de9ae12bd916e3e904"
+     },
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8",
+     "signer": "principal:acme"
+    }
+   ]
+  }
+ ]
+}
