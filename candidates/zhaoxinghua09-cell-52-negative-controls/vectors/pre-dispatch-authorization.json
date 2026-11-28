@@ -1,0 +1,431 @@
+{
+ "profile": "zc/predispatch-v0",
+ "cases": [
+  {
+   "id": "allow-basic",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "ALLOW",
+   "want_code": null
+  },
+  {
+   "id": "scope-out",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "payments:wire",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_SCOPE"
+  },
+  {
+   "id": "spend-tx",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 800,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_SPEND_TX"
+  },
+  {
+   "id": "spend-day",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 300,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {
+    "spent_today": 1800
+   },
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_SPEND_DAY"
+  },
+  {
+   "id": "depth",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 3,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_DEPTH"
+  },
+  {
+   "id": "expired",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225600,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_EXPIRED"
+  },
+  {
+   "id": "reputation",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 1,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_REPUTATION"
+  },
+  {
+   "id": "values-pii",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [
+     "pii"
+    ],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_VALUES"
+  },
+  {
+   "id": "irreversible",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": false
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_IRREVERSIBLE"
+  },
+  {
+   "id": "facet-missing",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "INVALID",
+   "want_code": "FACET_MISSING"
+  },
+  {
+   "id": "facet-unknown",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false,
+    "geo_fence": [
+     "EU"
+    ]
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 1,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "UNSUPPORTED",
+   "want_code": "FACET_UNKNOWN"
+  },
+  {
+   "id": "multi-violation",
+   "policy": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "x:y",
+    "amount": 900,
+    "depth": 5,
+    "at": 1767225540,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "state": {},
+   "expect": "DENY",
+   "want_code": "PREDISPATCH_SCOPE"
+  }
+ ]
+}

@@ -1,0 +1,3326 @@
+{
+ "profile": "zc/session-gate-v0",
+ "cases": [
+  {
+   "id": "allow-all",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "ALLOW",
+   "want_layer": null,
+   "want_code": null
+  },
+  {
+   "id": "L2-policy-unbound",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": null,
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "POLICY_UNBOUND"
+  },
+  {
+   "id": "L2-policy-sig-missing",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "POLICY_SIG_MISSING"
+  },
+  {
+   "id": "L2-policy-not-leaf",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:mid",
+    "signed_by": "agent:b",
+    "signature": "d1d2929575896f41732cf25824b09e937b9fe277a062b60a2b821e9418ba58485bcae46bf69d20cd5fd0fb9e3b3a185af1c533f8c206f9e1d45494c98e6d280c"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "POLICY_NOT_LEAF"
+  },
+  {
+   "id": "L2-policy-issuer-mismatch",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:a",
+    "signature": "fefaa9baf16b51f087432091b6d8758a4aaec0309f178796bd3404bb7d678c1b52058f86a9e94b0eaf5caa0e972cd25ce7ded026d3047a1e8e67d6e715ee5e0a"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "POLICY_ISSUER_MISMATCH"
+  },
+  {
+   "id": "L2-policy-sig-invalid",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 9,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 9,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "POLICY_SIG_INVALID"
+  },
+  {
+   "id": "L4-policy-widens-delegated",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 300,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "50163c64442bf101f1ea3333d1fd0cf78603e04b5658b4c5f76af698c899bfd0d4e1d7e3bc160ed1d7fcdfdaf6ba70ad5bab740e41fb74f55d3fd4743ad65403"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 300,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L4",
+   "want_code": "POLICY_WIDENS_DELEGATED"
+  },
+  {
+   "id": "L1-policy-missing",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "433c8331442481ae5a6433f4faef3a5ed68ff71a221ce7563cd0a307f4b04772fd13194d92d822481e732986cd16844e21b236a4b522e1907cfb516398c5620f"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INVALID",
+   "want_layer": "L1",
+   "want_code": "FACET_MISSING"
+  },
+  {
+   "id": "L1-policy-unknown",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false,
+     "geo_fence": [
+      "EU"
+     ]
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "056ae90e382ac744d0d59e8366dacade8d855db94c162f9420536b85777c8250571689fc8d8b23c8ae660e7e5fd52648b9ce5ae55ab6ac06d4a0d2ecd3aedf07"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false,
+    "geo_fence": [
+     "EU"
+    ]
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "UNSUPPORTED",
+   "want_layer": "L1",
+   "want_code": "FACET_UNKNOWN"
+  },
+  {
+   "id": "L2-chain-sig-bad",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 99,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "INDETERMINATE",
+   "want_layer": "L2",
+   "want_code": "DECL_SIG_INVALID"
+  },
+  {
+   "id": "L3-chain-expired",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": "x",
+    "spend": "x",
+    "depth": "x",
+    "time": "x",
+    "reputation": "x",
+    "values": "x",
+    "reversibility": "x"
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767224999,
+      "authority": {
+       "scope": "x",
+       "spend": "x",
+       "depth": "x",
+       "time": "x",
+       "reputation": "x",
+       "values": "x",
+       "reversibility": "x"
+      },
+      "signature": "f28e869c26825df7abd2ceeb4c4a39a043b91a79a78e3d119fbcb61f7e0410b44f6b21efac26eb05156ce4b82640d45e85708fb36b7a91cbe408427fe3459c00"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L3",
+   "want_code": "DELEGATION_EXPIRED"
+  },
+  {
+   "id": "L3-revoke-root",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:root",
+      "issuer": "principal:acme",
+      "issued_at": 1767224990,
+      "signature": "cacc792fbd59d6b0d6468b2124b8618b87d92b9b677eadb818b83fc192dd43b395d0b4e6132f87fd3e205e8c72460f2a63701bbaad2166125a2210562bcf1803"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    }
+   ],
+   "expect": "DENY",
+   "want_layer": "L3",
+   "want_code": "REVOKED_CASCADE"
+  },
+  {
+   "id": "L3-revoke-forged",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:authority-revocation:v1",
+      "delegation_id": "d:mid",
+      "issuer": "agent:a",
+      "issued_at": 1767224990,
+      "signature": "1ce0bff17db601f5c8b2c7d0404daf21bec1f76c560e72b0f6d4f71242eb87e2f7b9007abd768fa18fafbae96443a7feb500421ca26f430ae68d4aa15d739502"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    }
+   ],
+   "expect": "INDETERMINATE",
+   "want_layer": "L3",
+   "want_code": "REVOCATION_UNESTABLISHED"
+  },
+  {
+   "id": "L4-policy-widen-scope",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read",
+      "payments:wire"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "02385cdb77c954935ad2b6a2c5ecac95fab221d35db8d0f4af6f7561bc0878aca4c25bebe59de8216ab3255746c5f03a44124a37ef981594f62f03e8bb611202"
+   },
+   "policy": {
+    "scope": [
+     "tools:read",
+     "payments:wire"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "c5c8c5ab33f5ea09822ee36e0fedb2eb576e04ba5c3d0ed8a40341c2562731ea981933376ec2e8eee7a79a06a8a862a6146c0ee154748d162bd9ae2abca3170c"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "8e614f97b14ebfdc65a2df56bb778bff2f3ab1b609fc335739e93b5d6e6d0c40b903f3e825c0a992ba86c3a9a526d98b65adf904553fcba272588b30ed919d08"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L4",
+   "want_code": "NARROW_SCOPE"
+  },
+  {
+   "id": "L4-policy-widen-spend",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 800,
+      "daily_cap": 2000
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "62c6a146f5fc942fe568fc0df46fd5ea5ef23c66706b382d17f2d99299d7bbbb5b46a8bcf74913e914408042df7fa9eb651a2bdb18627e8eb725cbb6318a5b0f"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 800,
+     "daily_cap": 2000
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "c5c8c5ab33f5ea09822ee36e0fedb2eb576e04ba5c3d0ed8a40341c2562731ea981933376ec2e8eee7a79a06a8a862a6146c0ee154748d162bd9ae2abca3170c"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "8e614f97b14ebfdc65a2df56bb778bff2f3ab1b609fc335739e93b5d6e6d0c40b903f3e825c0a992ba86c3a9a526d98b65adf904553fcba272588b30ed919d08"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L4",
+   "want_code": "NARROW_SPEND"
+  },
+  {
+   "id": "L5-call-scope-out",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "payments:wire",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L5",
+   "want_code": "PREDISPATCH_SCOPE"
+  },
+  {
+   "id": "L5-call-spend-day",
+   "now": 1767225000,
+   "state": {
+    "spent_today": 1600
+   },
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 100,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L5",
+   "want_code": "PREDISPATCH_SPEND_DAY"
+  },
+  {
+   "id": "L5-call-irreversible",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": false
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [],
+   "expect": "DENY",
+   "want_layer": "L5",
+   "want_code": "PREDISPATCH_IRREVERSIBLE"
+  },
+  {
+   "id": "evidence-not-cause-allow",
+   "now": 1767225000,
+   "state": {},
+   "envelope": {
+    "policy": {
+     "scope": [
+      "tools:read"
+     ],
+     "spend": {
+      "currency": "USD",
+      "max_per_tx": 100,
+      "daily_cap": 500
+     },
+     "depth": 1,
+     "time": 1767225600,
+     "reputation": 2,
+     "values": [
+      "no-pii"
+     ],
+     "reversibility": false
+    },
+    "delegation_id": "d:leaf",
+    "signed_by": "agent:b",
+    "signature": "7e354d1f8cc4f6ff1119534d819d9f06aad0b65817ecb0fb83f97ec6179e6664035bc5b71f240cb90681b9294e40776ef138a00b852489c7b95fd3ec353a2909"
+   },
+   "policy": {
+    "scope": [
+     "tools:read"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 100,
+     "daily_cap": 500
+    },
+    "depth": 1,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "policy_pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9",
+   "call": {
+    "server": "mcp://files",
+    "tool": "read_file",
+    "scope_tag": "tools:read",
+    "amount": 0,
+    "depth": 0,
+    "at": 1767225260,
+    "reputation": 3,
+    "tags": [],
+    "reversible": true
+   },
+   "root_authority": {
+    "scope": [
+     "tools:read",
+     "tools:write"
+    ],
+    "spend": {
+     "currency": "USD",
+     "max_per_tx": 500,
+     "daily_cap": 2000
+    },
+    "depth": 2,
+    "time": 1767225600,
+    "reputation": 2,
+    "values": [
+     "no-pii"
+    ],
+    "reversibility": false
+   },
+   "chain": [
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:root",
+      "parent_delegation_id": null,
+      "issuer": "principal:acme",
+      "subject": "agent:a",
+      "issued_at": 0,
+      "expires_at": 1767229200,
+      "authority": {
+       "scope": [
+        "tools:read",
+        "tools:write"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 500,
+        "daily_cap": 2000
+       },
+       "depth": 2,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "1779ba578e1c86c669c60a81e242298268a3c648c13bef22c59158b575c129f0aefd532d400e235703c8b11e9e142687c2c16a7a5d4954448c925024ae4c560b"
+     },
+     "signer": "principal:acme",
+     "pubkey": "6e82232a03dca4865f93c8e3056b3b8587c91b13e42590ea9cd68a0667ee64e8"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:mid",
+      "parent_delegation_id": "d:root",
+      "issuer": "agent:a",
+      "subject": "agent:b",
+      "issued_at": 0,
+      "expires_at": 1767227400,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "906a159288c616943ccdafa2876ab244e6a158d9e8d2e5a168211de7a067b88127a30ec7c9298cca57f0f73d8d3670bb927b1d62fd0e61714c523c8d962a360b"
+     },
+     "signer": "agent:a",
+     "pubkey": "1d2b2332fea71cc0fd975fb36d6d9e09ee32db0edb7624bb388f1b3c30eb34eb"
+    },
+    {
+     "rec": {
+      "record_type": "aps:authority-delegation:v1",
+      "delegation_id": "d:leaf",
+      "parent_delegation_id": "d:mid",
+      "issuer": "agent:b",
+      "subject": "agent:c",
+      "issued_at": 0,
+      "expires_at": 1767226200,
+      "authority": {
+       "scope": [
+        "tools:read"
+       ],
+       "spend": {
+        "currency": "USD",
+        "max_per_tx": 100,
+        "daily_cap": 500
+       },
+       "depth": 1,
+       "time": 1767225600,
+       "reputation": 2,
+       "values": [
+        "no-pii"
+       ],
+       "reversibility": false
+      },
+      "signature": "b4c69c74440bc3e7a10ebcf7dc819952b2e20c901ac5534a6fe3c2af36d33f3261d5c9c4b536303fcf452dd6f294d65d6dc38d8758a2df8cacae7a738e8df300"
+     },
+     "signer": "agent:b",
+     "pubkey": "62e83e82dfcb29f4e3c0a4c7cc90e863b6fed85112c84e916bff4d8f945c50b9"
+    }
+   ],
+   "revocations": [
+    {
+     "rec": {
+      "record_type": "aps:cascade-evidence:v0",
+      "delegation_id": "d:root",
+      "claims": "revoked",
+      "signature": "03e34866fa47643d24794e89098338155c07aaee594970a60e0b290ae64e9ef6575f448fde8eae7a300ae98640f5b83c934d869173e2c4a2b088b11828dfcb0d"
+     },
+     "signer": "witness:third",
+     "pubkey": "df65a4a3ca55c00f5004fe192062df9983ed5794770b538de5b454b670c26fac"
+    }
+   ],
+   "expect": "ALLOW",
+   "want_layer": null,
+   "want_code": null
+  }
+ ]
+}
