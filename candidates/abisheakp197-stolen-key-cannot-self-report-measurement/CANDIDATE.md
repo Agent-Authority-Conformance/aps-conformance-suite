@@ -71,14 +71,13 @@ The project's CI runs the same suite with `--lib --tests` in
 
 ## Evidence
 
-Author-produced, Mode A, one run, link:
-https://github.com/abisheakp197/Neutral-Trust-Infrastructure/actions/runs/45229840510
+`none yet`.
 
-That run executed `cargo +1.90.0 test --locked --manifest-path ube-foundation/Cargo.toml
---lib --tests` and every test binary reported `test result: ok`. Caveat, stated
-because it bounds what the link shows: the workflow prints aggregate per-binary
-results, not individual test names, so the log establishes that the
-`workload_binding` binary passed and not that this test was selected by name.
+No author-produced run against the pinned revision has been recorded. An earlier
+draft of this file linked run 45229840510, which is at commit `7b7cb29`. That
+commit predates `f00c22d` and does not contain `tests/workload_binding.rs`, so the
+run cannot evidence these vectors. It is recorded as `none yet` rather than
+replaced with a different run, because no run of the suite exists at `f00c22d`.
 
 No independent reproduction has been run. `none yet` for independent evidence.
 
