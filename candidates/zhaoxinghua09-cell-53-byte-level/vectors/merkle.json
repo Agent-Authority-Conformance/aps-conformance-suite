@@ -1,0 +1,219 @@
+{
+ "profile": "merkle-root-inclusion-proof",
+ "note": "RFC 6962 式域分隔（0x00 叶 / 0x01 节点）；奇数末位原样上提，不与自身配对；空树根 32×0x00。期望根由 Python 侧公式一次性冻结，因此 py 侧恒等；本族的真信号是 py 与 js 两侧逐字节同根、同证明结论。",
+ "cases": [
+  {
+   "id": "empty-tree",
+   "leaves": [],
+   "why": "空树根是 32 字节全零，不是 sha256(\"\")",
+   "expect": {
+    "root": "0000000000000000000000000000000000000000000000000000000000000000"
+   }
+  },
+  {
+   "id": "single-leaf",
+   "leaves": [
+    {
+     "a": 1
+    }
+   ],
+   "why": "单叶树根 = 叶哈希，不经任何内部节点",
+   "expect": {
+    "root": "c7261463ebd776f4650b6d0fe942d9cc38c925d90f77d440ab6df8d5dd258c5f"
+   }
+  },
+  {
+   "id": "two-leaves",
+   "leaves": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    }
+   ],
+   "why": "两叶一节点",
+   "expect": {
+    "root": "6e69587a0b570d8c5d0114c51a9d6775ad2650718b1b98198de75131437a4c06"
+   }
+  },
+  {
+   "id": "three-odd-promote",
+   "leaves": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    },
+    {
+     "c": 3
+    }
+   ],
+   "why": "3 叶：末位第 1 层上提，形状 (h01, c)",
+   "expect": {
+    "root": "15a780c86283d42c8c13ad385bf96794f2b61becf22ceff08d0255e0551c878f"
+   }
+  },
+  {
+   "id": "five-odd-two-levels",
+   "leaves": [
+    {
+     "seq": 0
+    },
+    {
+     "seq": 1
+    },
+    {
+     "seq": 2
+    },
+    {
+     "seq": 3
+    },
+    {
+     "seq": 4
+    }
+   ],
+   "why": "5 叶：两层都遇奇数，上提发生两次",
+   "expect": {
+    "root": "147dc477479a3b69a24b1ff601b6fc6284fdf15fd50abfeb0cf70ea8e3722c1d"
+   }
+  },
+  {
+   "id": "order-matters",
+   "leaves": [
+    {
+     "b": 2
+    },
+    {
+     "a": 1
+    }
+   ],
+   "why": "左右交换必须换根；与 two-leaves 比",
+   "expect": {
+    "root": "7673264e0014faa0f593a422cab882e1a572938819e2d7495c0cedae392a6729"
+   }
+  },
+  {
+   "id": "dup-leaves",
+   "leaves": [
+    {
+     "a": 1
+    },
+    {
+     "a": 1
+    }
+   ],
+   "why": "重复叶的树根必须不等于单叶树根（末位复制自身那种做法会相等）",
+   "expect": {
+    "root": "54a05011b8a1351068a333ec7b8cd4c962f4b77a3a66569e88d2fb1149b96f3d"
+   }
+  },
+  {
+   "id": "leaf-not-node",
+   "leaves": [
+    {
+     "a": 1,
+     "b": 2
+    }
+   ],
+   "why": "叶与内部节点域分隔：改一个字节的 JCS 串应换根",
+   "expect": {
+    "root": "40060fbe600ff69fe282432bab604c500b59ed6100453244cbb24bb30b20be74"
+   }
+  },
+  {
+   "id": "proof-mid-5",
+   "leaves": [
+    {
+     "seq": 0
+    },
+    {
+     "seq": 1
+    },
+    {
+     "seq": 2
+    },
+    {
+     "seq": 3
+    },
+    {
+     "seq": 4
+    }
+   ],
+   "index": 2,
+   "why": "5 叶第 2 叶（下标从 0）的包含证明必须自验通过",
+   "expect": {
+    "root": "147dc477479a3b69a24b1ff601b6fc6284fdf15fd50abfeb0cf70ea8e3722c1d",
+    "code": "PROOF_ACCEPT"
+   }
+  },
+  {
+   "id": "proof-edge-5",
+   "leaves": [
+    {
+     "seq": 0
+    },
+    {
+     "seq": 1
+    },
+    {
+     "seq": 2
+    },
+    {
+     "seq": 3
+    },
+    {
+     "seq": 4
+    }
+   ],
+   "index": 4,
+   "why": "末位叶的证明路径短一截（上提）",
+   "expect": {
+    "root": "147dc477479a3b69a24b1ff601b6fc6284fdf15fd50abfeb0cf70ea8e3722c1d",
+    "code": "PROOF_ACCEPT"
+   }
+  },
+  {
+   "id": "proof-single",
+   "leaves": [
+    {
+     "a": 1
+    }
+   ],
+   "index": 0,
+   "why": "单叶证明路径为空",
+   "expect": {
+    "root": "c7261463ebd776f4650b6d0fe942d9cc38c925d90f77d440ab6df8d5dd258c5f",
+    "code": "PROOF_ACCEPT"
+   }
+  },
+  {
+   "id": "proof-tampered",
+   "leaves": [
+    {
+     "seq": 0
+    },
+    {
+     "seq": 1
+    },
+    {
+     "seq": 2
+    },
+    {
+     "seq": 3
+    },
+    {
+     "seq": 4
+    }
+   ],
+   "index": 2,
+   "tamper": true,
+   "why": "拿改过的叶去验原证明，必须拒",
+   "expect": {
+    "root": "147dc477479a3b69a24b1ff601b6fc6284fdf15fd50abfeb0cf70ea8e3722c1d",
+    "code": "PROOF_REJECT"
+   }
+  }
+ ]
+}

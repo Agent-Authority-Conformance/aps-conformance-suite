@@ -1,0 +1,22 @@
+{
+ "note": "directory name records the first submission (53 cases); the candidate now carries 113 in eight families",
+ "families": {
+  "jcs": 21,
+  "merkle": 12,
+  "action-ref": 25,
+  "dup-member": 12,
+  "nonce-replay": 12,
+  "recompute-41": 12,
+  "actionref-historical": 6,
+  "actionref-v2-members": 13
+ },
+ "cases_total": 113,
+ "clauses": ["REQ-4.1-1", "REQ-4.1-2", "REQ-4.1-4", "REQ-4.1-5", "REQ-4.1-6", "REQ-4.1-7", "REQ-4.1-8", "REQ-4.1-9", "REQ-4.2-2", "REQ-4.2-3"],
+ "verdict": "PASS",
+ "runner": "parity_check.py",
+ "evidence_class": "author-produced (Mode A); no independent run"
+}
+
+
+
+

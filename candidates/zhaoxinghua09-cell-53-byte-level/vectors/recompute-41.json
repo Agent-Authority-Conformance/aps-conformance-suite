@@ -1,0 +1,325 @@
+{
+ "profile": "aps-recompute-41-side",
+ "note": "expectations computed by agent-passport-system SDK (computePayloadRefV1 / computeActionRefV2) at 79e9a7d4",
+ "cases": [
+  {
+   "id": "r01-match-dispatch",
+   "expect": "DISPATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r02-match-deny",
+   "expect": "POLICY_DENIED",
+   "policy": "DENY",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r03-payload-ref-wrong",
+   "expect": "PAYLOAD_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "c31076bfeabd15eed4dd926db60a97b3d5920e99f6285c0c0ce78d7ddcbe8747",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ebab5f9eb10d94604b30741d7903fc9113f6a632b7d39dfd5220fce01e4cef74"
+   }
+  },
+  {
+   "id": "r04-action-ref-wrong",
+   "expect": "ACTION_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "0000000000000000000000000000000000000000000000000000000000000001"
+   }
+  },
+  {
+   "id": "r05-both-wrong",
+   "expect": "BOTH_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "2222222222222222222222222222222222222222222222222222222222222222"
+   }
+  },
+  {
+   "id": "r06-payload-absent",
+   "expect": "PAYLOAD_ABSENT",
+   "policy": "ALLOW",
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r07-v1-form-in-41",
+   "expect": "ACTION_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "8ad15452d01996492d81b652ef2320282a56cebc8aa7d35a9c01dae658c56869"
+   }
+  },
+  {
+   "id": "r08-nonce-swapped",
+   "expect": "ACTION_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "ffffffffffffffffffffffffffffffff",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r09-scope-widened",
+   "expect": "ACTION_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write",
+     "calendar:delete"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r10-target-swapped",
+   "expect": "ACTION_REF_MISMATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "event_id": "evt-2026-11-28-0001",
+    "title": "Quarterly review",
+    "attendees": [
+     "a@example.com",
+     "b@example.com"
+    ],
+    "duration_minutes": 45
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/admin/wipe",
+    "payload_ref": "d57c48d923518599ac440bb1cf77a0b3b91dda57d2a4136684529504f5bc6af3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "ff8e140736ba82f2d9c192240219a4372e94c5475cf2c7f1bb5fb8d46ec82fd4"
+   }
+  },
+  {
+   "id": "r11-nested-unicode",
+   "expect": "DISPATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "a": {
+     "b": [
+      1,
+      2,
+      {
+       "c": "值"
+      }
+     ]
+    },
+    "": "empty-key",
+    "€": "euro",
+    "z": null
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "35dbb25e45cff4fbd994090354273474361d5aa6d5ad68c708c834c16f6f5cd3",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "295b25e532f1d8228d4f7921619931223e98d2d31bccbc15b69738581a270504"
+   }
+  },
+  {
+   "id": "r12-float-shapes",
+   "expect": "DISPATCH",
+   "policy": "ALLOW",
+   "payload": {
+    "tiny": 1e-7,
+    "tiny2": 1.25e-100,
+    "negzero": 0,
+    "frac": 1.5,
+    "safe": 9007199254740991
+   },
+   "received": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:example:recompute-001",
+    "action_type": "calendar.write",
+    "target": "https://calendar.example/api/v1/events",
+    "payload_ref": "4c9100c9dbf883179ff85826d51337569e066a3a93bf350db0166411b8c06519",
+    "scope_required": [
+     "calendar:write"
+    ],
+    "issued_at": "2026-11-28T02:00:00.000Z",
+    "nonce": "9f2c6b0a7d1e4c88a5b3f0d2e1c9a876",
+    "action_ref": "c8734cf68707e46e10a787b626c78b1f576192322d6f52c63083cebe958616d7"
+   }
+  }
+ ]
+}

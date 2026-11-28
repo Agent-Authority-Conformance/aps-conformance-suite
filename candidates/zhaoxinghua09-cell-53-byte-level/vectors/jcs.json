@@ -1,0 +1,132 @@
+{
+ "profile": "rfc8785-jcs-bytes",
+ "note": "RFC 8785 常用分支：键按 UTF-16 码元排序；无空白；数字按 ECMAScript Number::toString；控制字符小写 \\u00xx；非 ASCII 原样；重复键与不安全整数判 INVALID。本集不含 NaN/Infinity（JSON 文本里没有这两种字面量）与时区/时间字符串。",
+ "cases": [
+  {
+   "id": "keys-lexicographic",
+   "input": "{\"b\":1,\"a\":2}",
+   "expect": "{\"a\":2,\"b\":1}",
+   "why": "键按码元升序，不按插入顺序"
+  },
+  {
+   "id": "nested-order",
+   "input": "{\"z\":{\"y\":1,\"x\":[3,2,1]}}",
+   "expect": "{\"z\":{\"x\":[3,2,1],\"y\":1}}",
+   "why": "递归到每一层对象；数组顺序不动"
+  },
+  {
+   "id": "utf16-key-order",
+   "input": "{\"\\ufffd\":2,\"\\ud800\\udc00\":3,\"\\u20ac\":1}",
+   "expect": "{\"€\":1,\"𐀀\":3,\"�\":2}",
+   "why": "JCS 按 UTF-16 码元排序：U+20AC < 0xD800(代理首) < U+FFFD；按 Unicode 码点排会把星平面字符排到最后，两种排法结果不同——这条正是分叉点"
+  },
+  {
+   "id": "int-vs-float",
+   "input": "{\"a\":1.0}",
+   "expect": "{\"a\":1}",
+   "why": "1.0 序列化成 1，不带小数点"
+  },
+  {
+   "id": "exp-large",
+   "input": "{\"a\":1e21}",
+   "expect": "{\"a\":1e+21}",
+   "why": "≥1e21 走指数式，正指数带 +"
+  },
+  {
+   "id": "exp-small",
+   "input": "{\"a\":1e-7}",
+   "expect": "{\"a\":1e-7}",
+   "why": "<1e-6 走指数式，指数不补零"
+  },
+  {
+   "id": "decimal-boundary",
+   "input": "{\"a\":0.000001}",
+   "expect": "{\"a\":0.000001}",
+   "why": "1e-6 是十进制与指数的分界，恰好落在十进制一侧"
+  },
+  {
+   "id": "neg-zero",
+   "input": "{\"a\":-0}",
+   "expect": "{\"a\":0}",
+   "why": "-0 序列化成 0，符号位不泄漏"
+  },
+  {
+   "id": "big-exp",
+   "input": "{\"a\":1.5e300}",
+   "expect": "{\"a\":1.5e+300}",
+   "why": "大数指数式"
+  },
+  {
+   "id": "string-escapes",
+   "input": "{\"a\":\"q\\\"b\\\\c\\n\\t\"}",
+   "expect": "{\"a\":\"q\\\"b\\\\c\\n\\t\"}",
+   "why": "引号、反斜杠、换行、制表符用短转义，不得输出成 \\u0022 之类"
+  },
+  {
+   "id": "control-char-hex",
+   "input": "{\"a\":\"\\u0001\"}",
+   "expect": "{\"a\":\"\\u0001\"}",
+   "why": "0x01 用 \\u0001，小写十六进制四位"
+  },
+  {
+   "id": "control-char-1f",
+   "input": "{\"a\":\"\\u001f\"}",
+   "expect": "{\"a\":\"\\u001f\"}",
+   "why": "0x1F 用 \\u001f；大写 \\u001F 不是 JCS 输出"
+  },
+  {
+   "id": "unicode-literal",
+   "input": "{\"a\":\"中文\"}",
+   "expect": "{\"a\":\"中文\"}",
+   "why": "非 ASCII 原样保留，不转成 \\uXXXX"
+  },
+  {
+   "id": "empty-containers",
+   "input": "{\"b\":[],\"a\":{}}",
+   "expect": "{\"a\":{},\"b\":[]}",
+   "why": "空容器保持紧凑，无空白"
+  },
+  {
+   "id": "dup-keys-top",
+   "input": "{\"a\":1,\"a\":2}",
+   "expect": "INVALID",
+   "why": "同一层重复键不是 JCS 输入（I-JSON 禁止），必须拒而不是取后者"
+  },
+  {
+   "id": "unsafe-int",
+   "input": "{\"a\":9007199254740993}",
+   "expect": "INVALID",
+   "why": "超过 2^53-1 的整数在双精度里不可表示，静默取整等于改数据"
+  },
+  {
+   "id": "lone-surrogate-high",
+   "input": "{\"a\":\"\\ud800\"}",
+   "expect": "INVALID",
+   "why": "未配对的代理首。草案 REQ-4.1-5/-6 要的是拒，不是把它替换成 U+FFFD 后照常输出——替换会产出一个自己的字节串，签名能过，收据却已经换了内容"
+  },
+  {
+   "id": "lone-surrogate-low",
+   "input": "{\"a\":\"\\udc00\"}",
+   "expect": "INVALID",
+   "why": "未配对的代理尾，同上"
+  },
+  {
+   "id": "lone-surrogate-in-key",
+   "input": "{\"\\ud800\":1}",
+   "expect": "INVALID",
+   "why": "键名里的未配对代理；按 UTF-16 码元排序也不会让这件事变合法"
+  },
+  {
+   "id": "reversed-surrogate-pair",
+   "input": "{\"a\":\"\\udc00\\ud800\"}",
+   "expect": "INVALID",
+   "why": "尾在前的“对”，两个都不配对；按“成对即可”的宽松实现会放过它"
+  },
+  {
+   "id": "surrogate-pair-ok",
+   "input": "{\"a\":\"\\ud83d\\ude00\"}",
+   "expect": "{\"a\":\"😀\"}",
+   "why": "正对照：真正的代理对必须接受，并原样输出星平面字符——只拒不放的实现在这条上暴露"
+  }
+ ]
+}

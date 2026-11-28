@@ -1,0 +1,192 @@
+{
+ "profile": "nonce-replay-window",
+ "note": "window is closed on both ends; pair key is (agent_id, nonce)",
+ "cases": [
+  {
+   "id": "n01-no-prior",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-9a77",
+    "issued_at": 1010
+   },
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "n02-exact-replay-inside",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 1005
+   },
+   "expect": "NONCE_REUSE"
+  },
+  {
+   "id": "n03-boundary-equal-window",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 1300
+   },
+   "expect": "NONCE_REUSE"
+  },
+  {
+   "id": "n04-just-outside",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 1301
+   },
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "n05-other-agent-same-nonce",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-b",
+    "nonce": "n-2f1c",
+    "issued_at": 1005
+   },
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "n06-nonce-empty",
+   "window_seconds": 300,
+   "ledger": [],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "",
+    "issued_at": 1000
+   },
+   "expect": "NONCE_MISSING"
+  },
+  {
+   "id": "n07-window-missing",
+   "window_seconds": null,
+   "ledger": [],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-1",
+    "issued_at": 1000
+   },
+   "expect": "WINDOW_UNSPECIFIED"
+  },
+  {
+   "id": "n08-window-negative",
+   "window_seconds": -1,
+   "ledger": [],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-1",
+    "issued_at": 1000
+   },
+   "expect": "WINDOW_UNSPECIFIED"
+  },
+  {
+   "id": "n09-ledger-entry-no-issued-at",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c"
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 1005
+   },
+   "expect": "LEDGER_MALFORMED"
+  },
+  {
+   "id": "n10-ledger-not-a-list",
+   "window_seconds": 300,
+   "ledger": "oops",
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-1",
+    "issued_at": 1000
+   },
+   "expect": "LEDGER_MALFORMED"
+  },
+  {
+   "id": "n11-same-nonce-diff-target",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000,
+     "target": "https://a"
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 1002,
+    "target": "https://b"
+   },
+   "expect": "NONCE_REUSE"
+  },
+  {
+   "id": "n12-one-of-two-inside",
+   "window_seconds": 300,
+   "ledger": [
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 1000
+    },
+    {
+     "agent_id": "agent-a",
+     "nonce": "n-2f1c",
+     "issued_at": 5000
+    }
+   ],
+   "presented": {
+    "agent_id": "agent-a",
+    "nonce": "n-2f1c",
+    "issued_at": 5100
+   },
+   "expect": "NONCE_REUSE"
+  }
+ ]
+}
