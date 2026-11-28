@@ -1,0 +1,108 @@
+{
+ "profile": "draft-01 historical 4.1 action_ref (camelCase, NFC scope, code-point order, no domain prefix)",
+ "provenance": "expected values from aps-conformance-suite@79e9a7d4 fixtures/actionref-canonical/actionref-canonical-fixture-v1.json",
+ "cases": [
+  {
+   "id": "h-plain-single-scope-ascii",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "document.sign",
+    "scopeRequired": [
+     "repo:write"
+    ],
+    "timestamp": "2026-07-10T00:00:00Z"
+   },
+   "expect": "c3828feae93209059a038cd3a39c088493a68e1099a6b4dba3cac0223f66c3bf",
+   "canonical_scope_order": [
+    "repo:write"
+   ],
+   "source": "corpus actionref-canonical-fixture-v1.json"
+  },
+  {
+   "id": "h-unsorted-multi-scope-ascii",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "commerce_preflight",
+    "scopeRequired": [
+     "repo:write",
+     "admin:keys",
+     "commerce:read"
+    ],
+    "timestamp": "2026-07-10T00:00:01Z"
+   },
+   "expect": "9f49b6ea908b45f428f554085f57e2f4ec462c87f393d8797d07c29152502c3c",
+   "canonical_scope_order": [
+    "admin:keys",
+    "commerce:read",
+    "repo:write"
+   ],
+   "source": "corpus actionref-canonical-fixture-v1.json"
+  },
+  {
+   "id": "h-nfd-scope-normalizes-to-nfc",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "document.sign",
+    "scopeRequired": [
+     "café:read"
+    ],
+    "timestamp": "2026-07-10T00:00:02Z"
+   },
+   "expect": "8f89060853f7e50fbfaabc5277e025355eb274d7b3fd5e6ed5bb0aa02bb93f92",
+   "canonical_scope_order": [
+    "café:read"
+   ],
+   "source": "corpus actionref-canonical-fixture-v1.json"
+  },
+  {
+   "id": "h-astral-scope-orders-after-bmp-high",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "document.sign",
+    "scopeRequired": [
+     "scope:𐐀",
+     "scope:Ａ"
+    ],
+    "timestamp": "2026-07-10T00:00:03Z"
+   },
+   "expect": "2adf3d32f65a24aa65f29f595be88fbd91fccbb980e14ea36a2be2f61bdba433",
+   "canonical_scope_order": [
+    "scope:Ａ",
+    "scope:𐐀"
+   ],
+   "source": "corpus actionref-canonical-fixture-v1.json"
+  },
+  {
+   "id": "h-negative-duplicate-scope-raw",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "document.sign",
+    "scopeRequired": [
+     "repo:write",
+     "repo:write"
+    ],
+    "timestamp": "2026-07-10T00:00:04Z"
+   },
+   "expect": "REJECT",
+   "rejection_kind": "duplicate_scope_required",
+   "source": "corpus actionref-canonical-fixture-v1.json",
+   "note": "Implementation-specific negative test, not required by draft-01 section 4.1. agent-passport-system ca7413c rejects a duplicated scopeRequired array rather than deduplicating it, because a silent dedupe would map this input and [\"repo:write\"] onto the same action_ref without surfacing the malformed input."
+  },
+  {
+   "id": "h-negative-duplicate-scope-nfc-collision",
+   "input": {
+    "agentId": "did:aps:zVectorAgent01",
+    "actionType": "document.sign",
+    "scopeRequired": [
+     "café:read",
+     "café:read"
+    ],
+    "timestamp": "2026-07-10T00:00:05Z"
+   },
+   "expect": "REJECT",
+   "rejection_kind": "duplicate_scope_required",
+   "source": "corpus actionref-canonical-fixture-v1.json",
+   "note": "Distinct code points that collide under NFC (U+00E9 vs e + U+0301). Duplicate detection runs AFTER normalization, so this rejects too."
+  }
+ ]
+}

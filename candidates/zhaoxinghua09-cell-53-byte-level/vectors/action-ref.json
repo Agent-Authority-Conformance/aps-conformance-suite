@@ -1,0 +1,491 @@
+{
+ "profile": "action-ref-v1-v2-dual-form",
+ "note": "v1 = 4.2 外部形态 sha256(JCS({agent_id,action_type,scope,timestamp}))，无域名前缀，标签 action-ref-v1-jcs-sha256；v2 = 4.1 形态 sha256(\"APS-ACTION-REF-V2\\0\" + JCS(8 成员))。v1 的 14 条来自对方语料库原值；v2 的期望 ref 由对方 SDK computeActionRefV2 计算回填。两形态不得互认：v1 摘要进 v2 槽位、或缺域名前缀的哈希冒充 v2 ref，都必须拒。",
+ "cases": [
+  {
+   "id": "v1pos-0001-basic",
+   "form": "v1",
+   "preimage": {
+    "action_type": "trail.anchor",
+    "agent_id": "recompute-agent-001",
+    "scope": "argentum:recompute_baseline",
+    "timestamp": "2026-06-11T10:00:00.123Z"
+   },
+   "claim": "de7d7f40147b9b7f41134b14752aa36e3435bda89c51938ba358a69be04dccf6",
+   "expect": {
+    "code": "MATCH",
+    "ref": "de7d7f40147b9b7f41134b14752aa36e3435bda89c51938ba358a69be04dccf6"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/positive_fixture",
+   "why": "按对方写死的 jcs_payload 复算，参考实现（他们的 TS）与 stdlib 两条路径已互检"
+  },
+  {
+   "id": "v1pos-0002-unicode-fields",
+   "form": "v1",
+   "preimage": {
+    "action_type": "negotiation.accept",
+    "agent_id": "agentur-zürich-07",
+    "scope": "mycelium:übergabe:été",
+    "timestamp": "2026-06-11T10:15:00.500Z"
+   },
+   "claim": "a5c0ec37b01673b6ca9d593d4dba6e6f40dafdfc25fde3ad3673dceb79b72cc4",
+   "expect": {
+    "code": "MATCH",
+    "ref": "a5c0ec37b01673b6ca9d593d4dba6e6f40dafdfc25fde3ad3673dceb79b72cc4"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/positive_fixture",
+   "why": "按对方写死的 jcs_payload 复算，参考实现（他们的 TS）与 stdlib 两条路径已互检"
+  },
+  {
+   "id": "v1pos-0003-empty-scope",
+   "form": "v1",
+   "preimage": {
+    "action_type": "oracle.signal",
+    "agent_id": "recompute-agent-001",
+    "scope": "",
+    "timestamp": "2026-06-11T10:30:00.250Z"
+   },
+   "claim": "8a5e53417ae5a4e1cdfc1659980ece6518611d7610c173ccf7d14121924b241e",
+   "expect": {
+    "code": "MATCH",
+    "ref": "8a5e53417ae5a4e1cdfc1659980ece6518611d7610c173ccf7d14121924b241e"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/positive_fixture",
+   "why": "按对方写死的 jcs_payload 复算，参考实现（他们的 TS）与 stdlib 两条路径已互检"
+  },
+  {
+   "id": "v1pos-0004-ms-floor",
+   "form": "v1",
+   "preimage": {
+    "action_type": "payment.send",
+    "agent_id": "pioneer-agent-001",
+    "scope": "nobulex:bilateral",
+    "timestamp": "2026-06-11T23:59:59.000Z"
+   },
+   "claim": "01eb9688d2a1ababeb993c900bd7b7836f9b334f179030fafec2ecc8b33c4f6c",
+   "expect": {
+    "code": "MATCH",
+    "ref": "01eb9688d2a1ababeb993c900bd7b7836f9b334f179030fafec2ecc8b33c4f6c"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/positive_fixture",
+   "why": "按对方写死的 jcs_payload 复算，参考实现（他们的 TS）与 stdlib 两条路径已互检"
+  },
+  {
+   "id": "v1pos-0005-ms-ceiling",
+   "form": "v1",
+   "preimage": {
+    "action_type": "payment.send",
+    "agent_id": "pioneer-agent-001",
+    "scope": "nobulex:bilateral",
+    "timestamp": "2026-06-11T23:59:59.999Z"
+   },
+   "claim": "0cc0a719600948603fbefabb5167145df36215f63b7f677a0e84466540b445e5",
+   "expect": {
+    "code": "MATCH",
+    "ref": "0cc0a719600948603fbefabb5167145df36215f63b7f677a0e84466540b445e5"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/positive_fixture",
+   "why": "按对方写死的 jcs_payload 复算，参考实现（他们的 TS）与 stdlib 两条路径已互检"
+  },
+  {
+   "id": "v1neg-neg-a01-received-order",
+   "form": "v1",
+   "payload": {
+    "action_type": "payment.send",
+    "agent_id": "pioneer-agent-001",
+    "scope": "nobulex:bilateral",
+    "timestamp": "2026-06-11T12:00:00.000Z"
+   },
+   "claim": "5fcfb5213cbb304570a3cf4e2f472feba3cf9fd8c13410f14a45431fc9f72dd6",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "field_order_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-a02-reversed-order",
+   "form": "v1",
+   "payload": {
+    "action_type": "trail.anchor",
+    "agent_id": "giskard-self",
+    "scope": "mycelium:baseline",
+    "timestamp": "2026-06-11T12:05:00.000Z"
+   },
+   "claim": "9c34dad62de307e4c65e34a56b83fa91be9efe221682580d8ed6813ecb9d1288",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "field_order_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-b01-epoch-integer",
+   "form": "v1",
+   "payload": {
+    "action_type": "oracle.signal",
+    "agent_id": "nexus-agent-xa12.onrender.com",
+    "scope": "BTC",
+    "timestamp": 1781166600123
+   },
+   "claim": "d807275082611d69aa0cf3fbd265ac52df68c380eb32e7e6614bc9df61415763",
+   "expect": {
+    "code": "GRAMMAR_REJECT"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "timestamp_form_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-b02-second-precision",
+   "form": "v1",
+   "payload": {
+    "action_type": "oracle.signal",
+    "agent_id": "nexus-agent-xa12.onrender.com",
+    "scope": "BTC",
+    "timestamp": "2026-06-11T08:45:00.000Z"
+   },
+   "claim": "48862e6601dcdf9b951fbe1b41a9113231e02e775567813531ad8eb3ad8ee451",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "timestamp_form_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-b03-microsecond-precision",
+   "form": "v1",
+   "payload": {
+    "action_type": "oracle.signal",
+    "agent_id": "nexus-agent-xa12.onrender.com",
+    "scope": "BTC",
+    "timestamp": "2026-06-11T08:30:00.123Z"
+   },
+   "claim": "fa3f63e9b37fe877bb8ffdc855577f031d022bee993989c01d98916c7eea2d16",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "timestamp_form_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-c01-agent-id-lowercased",
+   "form": "v1",
+   "payload": {
+    "action_type": "delegation.execute",
+    "agent_id": "did:aps:zAgentExample",
+    "scope": "aps:delegation",
+    "timestamp": "2026-06-11T14:00:00.000Z"
+   },
+   "claim": "b63e4aba6b21f718cbd425972fe536b77645578d2cf4320074a9f9a01b887c65",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "casing_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-c02-agent-id-uppercased",
+   "form": "v1",
+   "payload": {
+    "action_type": "payment.send",
+    "agent_id": "did:aps:zagent",
+    "scope": "aps:payments",
+    "timestamp": "2026-06-11T14:05:00.000Z"
+   },
+   "claim": "2d555e3e5191b7ebd935f3e2d9aaddaf7c3fb8fd478e8b6c0b407e22266b1303",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "casing_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-d01-scope-changed",
+   "form": "v1",
+   "payload": {
+    "action_type": "payment.send",
+    "agent_id": "pioneer-agent-001",
+    "scope": "argentum:payments:send",
+    "timestamp": "2026-06-11T16:00:00.000Z"
+   },
+   "claim": "1bf527c864278ecbb6a1da5158264efd966fc29db453d88b6e7b658654493c7a",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "payload_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v1neg-neg-d02-action-type-changed",
+   "form": "v1",
+   "payload": {
+    "action_type": "payment.send",
+    "agent_id": "pioneer-agent-001",
+    "scope": "nobulex:bilateral",
+    "timestamp": "2026-06-11T16:05:00.000Z"
+   },
+   "claim": "202f0cc855fc50602cfb3d96298381fb959f90447c916eadba86e147de340c1d",
+   "expect": {
+    "code": "RECOMPUTE_MISMATCH"
+   },
+   "source": "aps-conformance-suite/action-ref-v1-negatives/negative_fixture",
+   "why": "payload_drift；他们要求 fail-closed 于调用之前，不得换前像重试"
+  },
+  {
+   "id": "v2-baseline",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "why": "8 成员、域名前缀 APS-ACTION-REF-V2\\0 + JCS",
+   "expect": {
+    "code": "OK",
+    "ref": "ffb36d37f03df1eebd50f68559f08454b795defd09ba01772babefb470193b7d"
+   }
+  },
+  {
+   "id": "v2-cjk-scope",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:支付",
+     "aps:账本"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "33333333333333333333333333333333"
+   },
+   "why": "非 ASCII scope 原样进 JCS，不转义",
+   "expect": {
+    "code": "OK",
+    "ref": "7e77fbe4fe501884d38f0535e9758fee8046a236b5932399eed6ff92e40a4578"
+   }
+  },
+  {
+   "id": "v2-target-differs",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/refund",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "why": "target 不同则 ref 必不同",
+   "expect": {
+    "code": "OK",
+    "ref": "c147ee161de6b626acf7a515a2e4a4f32cfbab7f7758a0f28c4812395444e554"
+   }
+  },
+  {
+   "id": "v2-scope-unsorted",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:payments",
+     "aps:ledger"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "expect": {
+    "code": "SCOPE_NOT_SORTED"
+   },
+   "why": "scope_required 必须按 UTF-8 字节升序；乱序不许静默排序后再算"
+  },
+  {
+   "id": "v2-scope-not-nfc",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:lédger"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "expect": {
+    "code": "SCOPE_NOT_NFC"
+   },
+   "why": "scope 必须 NFC；NFD 与 NFC 视觉同形但字节不同"
+  },
+  {
+   "id": "v2-payload-ref-uppercase",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "11111111111111111111111111111111111111111111111111111111111111FF",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "expect": {
+    "code": "HEX_CASE"
+   },
+   "why": "十六进制字段必须小写 64 位"
+  },
+  {
+   "id": "v2-issued-at-no-ms",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "expect": {
+    "code": "ISSUED_AT_SHAPE"
+   },
+   "why": "issued_at 必须恰好三位小数 + Z"
+  },
+  {
+   "id": "v2-plain-hash-claimed",
+   "form": "v2",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "claim_plain": true,
+   "expect": {
+    "code": "REF_DOMAIN_MISSING"
+   },
+   "why": "少域名前缀的哈希不能冒充 v2 ref——这是 4.2 与 4.1 两形态最容易被混同的一处"
+  },
+  {
+   "id": "v2-v1-in-slot",
+   "form": "v2slot",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "claimed": "de7d7f40147b9b7f41134b14752aa36e3435bda89c51938ba358a69be04dccf6",
+   "expect": {
+    "code": "SLOT_NOT_V2_REF"
+   },
+   "why": "把 4.2 的 v1 摘要放进 4.1 的 action_ref 槽位，必然不等于重算的 v2 ref，故拒；此处的 v1 摘要来自另一组事实（recompute-agent-001），不满足归属条件，所以只报槽位不符，不报 V1_DIGEST_IN_V2_SLOT"
+  },
+  {
+   "id": "v2-v1-in-slot-fresh",
+   "form": "v2slot",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "did:aps:zagent-example",
+    "action_type": "payment.send",
+    "target": "https://api.example.com/v1/transfer",
+    "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+    "scope_required": [
+     "aps:ledger",
+     "aps:payments"
+    ],
+    "issued_at": "2026-11-28T09:00:00.000Z",
+    "nonce": "22222222222222222222222222222222"
+   },
+   "claimed": "475eb7355c08623ca49c5c6536d84be15cdc209b06d732fcc422cf5f528d6f50",
+   "expect": {
+    "code": "V1_DIGEST_IN_V2_SLOT"
+   },
+   "why": "即时用同一 agent/action_type 造 v1 摘要再塞进 v2 槽，仍须拒"
+  },
+  {
+   "id": "v2-nonce-reuse-pair",
+   "form": "v2pair",
+   "inputs": [
+    {
+     "profile": "aps-action-ref-v2",
+     "agent_id": "did:aps:zagent-example",
+     "action_type": "payment.send",
+     "target": "https://api.example.com/v1/transfer",
+     "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+     "scope_required": [
+      "aps:ledger",
+      "aps:payments"
+     ],
+     "issued_at": "2026-11-28T09:00:00.000Z",
+     "nonce": "22222222222222222222222222222222"
+    },
+    {
+     "profile": "aps-action-ref-v2",
+     "agent_id": "did:aps:zagent-example",
+     "action_type": "payment.send",
+     "target": "https://api.example.com/v1/refund",
+     "payload_ref": "1111111111111111111111111111111111111111111111111111111111111111",
+     "scope_required": [
+      "aps:ledger",
+      "aps:payments"
+     ],
+     "issued_at": "2026-11-28T09:00:00.000Z",
+     "nonce": "22222222222222222222222222222222"
+    }
+   ],
+   "expect": {
+    "refs_differ": true,
+    "refs": [
+     "ffb36d37f03df1eebd50f68559f08454b795defd09ba01772babefb470193b7d",
+     "c147ee161de6b626acf7a515a2e4a4f32cfbab7f7758a0f28c4812395444e554"
+    ]
+   },
+   "why": "同 agent 同 nonce、只差 target —— 两个 ref 必须不同（对方记 REQ-4.1-9 未行使）"
+  }
+ ]
+}

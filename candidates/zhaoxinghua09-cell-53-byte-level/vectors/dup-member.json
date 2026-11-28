@@ -1,0 +1,65 @@
+{
+ "profile": "serialized-json-duplicate-members",
+ "cases": [
+  {
+   "id": "d01-unique-flat",
+   "input": "{\"a\":1,\"b\":2,\"c\":[3,4]}",
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "d02-dup-top-level",
+   "input": "{\"a\":1,\"a\":2}",
+   "expect": "DUPLICATE_MEMBER"
+  },
+  {
+   "id": "d03-dup-nested",
+   "input": "{\"outer\":{\"a\":1,\"a\":2}}",
+   "expect": "DUPLICATE_MEMBER"
+  },
+  {
+   "id": "d04-dup-escaped-equiv",
+   "input": "{\"a\":1,\"\\u0061\":2}",
+   "expect": "DUPLICATE_MEMBER"
+  },
+  {
+   "id": "d05-same-key-diff-objects",
+   "input": "{\"x\":{\"k\":1},\"y\":{\"k\":2}}",
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "d06-same-key-array-siblings",
+   "input": "[{\"k\":1},{\"k\":2}]",
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "d07-dup-surrogate-equiv",
+   "input": "{\"\\ud83d\\ude00\":1,\"😀\":2}",
+   "expect": "DUPLICATE_MEMBER"
+  },
+  {
+   "id": "d08-dup-three-times",
+   "input": "{\"a\":1,\"a\":2,\"a\":3}",
+   "expect": "DUPLICATE_MEMBER"
+  },
+  {
+   "id": "d09-trailing-comma",
+   "input": "{\"a\":1,}",
+   "expect": "NOT_JSON"
+  },
+  {
+   "id": "d10-missing-colon",
+   "input": "{\"a\" 1}",
+   "expect": "NOT_JSON"
+  },
+  {
+   "id": "d11-key-text-in-string-value",
+   "input": "{\"note\":\"{\\\"a\\\":1,\\\"a\\\":2}\"}",
+   "expect": "ACCEPT"
+  },
+  {
+   "id": "d12-lone-surrogate-escape",
+   "input": "{\"a\":\"\\ud800\"}",
+   "expect": "NOT_JSON"
+  }
+ ]
+}

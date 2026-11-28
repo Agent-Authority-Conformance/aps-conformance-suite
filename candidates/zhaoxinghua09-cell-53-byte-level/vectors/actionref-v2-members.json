@@ -1,0 +1,241 @@
+{
+ "family": "actionref-v2-members",
+ "requirement": [
+  "REQ-4.1-1",
+  "REQ-4.1-2"
+ ],
+ "basis": "draft-pidlisnyi-aps-04 §4.1 sentence text; not from any implementation",
+ "case_count": 13,
+ "cases": [
+  {
+   "id": "v2m-ok-baseline",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "ACCEPT",
+   "why": "profile 正确、六个字符串成员非空、scope_required 非空"
+  },
+  {
+   "id": "v2m-profile-v1-name",
+   "input": {
+    "profile": "aps-action-ref-v1",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "profile 不等于 aps-action-ref-v2；v1 名只是另一个 profile 的取值，不是本要求允许的值"
+  },
+  {
+   "id": "v2m-profile-case-variant",
+   "input": {
+    "profile": "APS-ACTION-REF-V2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "大小写变体不等于字面值；要求是 equal，不是 case-insensitive"
+  },
+  {
+   "id": "v2m-profile-empty",
+   "input": {
+    "profile": "",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "空串既不是字面值，也落在“字符串字段非空”之下"
+  },
+  {
+   "id": "v2m-profile-absent",
+   "input": {
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "缺 profile 即不等于字面值"
+  },
+  {
+   "id": "v2m-empty-agent-id",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "agent_id 为空串，违反“字符串字段非空”"
+  },
+  {
+   "id": "v2m-empty-action-type",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "action_type 为空串"
+  },
+  {
+   "id": "v2m-empty-target",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "target 为空串"
+  },
+  {
+   "id": "v2m-empty-payload-ref",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "payload_ref 为空串"
+  },
+  {
+   "id": "v2m-empty-nonce",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "nonce 为空串"
+  },
+  {
+   "id": "v2m-empty-issued-at",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     "orders:read"
+    ]
+   },
+   "expect": "REJECT",
+   "why": "issued_at 为空串"
+  },
+  {
+   "id": "v2m-empty-scope-array",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": []
+   },
+   "expect": "REJECT",
+   "why": "空 scope_required 数组只有在 profile 明确允许时才合法；本 profile 未作此声明，按拒处理——这一条是实现读法，草案给的是 MAY，不是 MUST"
+  },
+  {
+   "id": "v2m-empty-scope-element",
+   "input": {
+    "profile": "aps-action-ref-v2",
+    "agent_id": "agent:orders-picker-04",
+    "action_type": "orders.ship",
+    "target": "tool:orders.ship.v2",
+    "payload_ref": "9d3b2c1f7a5e461088bc20ff4f6dd0b7f8e3a1c25d9b7a604f3e2138cba7d095",
+    "issued_at": "2026-11-28T10:00:00Z",
+    "nonce": "5c1b8a0e2d7f4936",
+    "scope_required": [
+     "orders:write",
+     ""
+    ]
+   },
+   "expect": "REJECT",
+   "why": "scope_required 里的空串元素按“字符串字段非空”拒；把数组元素算不算“字段”是读法，草案未逐字写明"
+  }
+ ]
+}
